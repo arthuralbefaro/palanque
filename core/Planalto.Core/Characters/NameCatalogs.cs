@@ -9,6 +9,28 @@ public sealed class RankedName
     public required long Frequencia { get; init; }
 }
 
+/// <summary>Prenome complementar com a frequência nacional por década (mesma chave de <see cref="FirstNamesFile.ByDecade"/>).</summary>
+public sealed class DecadeName
+{
+    public required string Nome { get; init; }
+
+    public required Dictionary<int, long> ByDecade { get; init; }
+}
+
+public sealed class ComplementaryNames
+{
+    public required List<DecadeName> Masculino { get; init; }
+
+    public required List<DecadeName> Feminino { get; init; }
+}
+
+public sealed class NamesByPlace
+{
+    public required NamesBySex Brasil { get; init; }
+
+    public required Dictionary<string, NamesBySex> Ufs { get; init; }
+}
+
 public sealed class NamesBySex
 {
     public required List<RankedName> Masculino { get; init; }
@@ -29,8 +51,39 @@ public sealed class FirstNamesFile : IValidatable
 
     public required Dictionary<string, NamesBySex> Ufs { get; init; }
 
+    /// <summary>
+    /// Ranking por década de nascimento, com a chave do parâmetro "decada" da API do IBGE: a chave D cobre quem
+    /// nasceu em [D − 10, D); a primeira (1930) cobre quem nasceu antes de 1930.
+    /// </summary>
+    public required Dictionary<int, NamesByPlace> ByDecade { get; init; }
+
+    /// <summary>
+    /// Prenomes fora dos rankings (que só trazem os 20 primeiros), com frequência oficial por década consultada
+    /// nome a nome na mesma API; ampliam a variedade (DECISOES D-017).
+    /// </summary>
+    public required ComplementaryNames Complementary { get; init; }
+
+    /// <summary>Chave de década da API para um ano de nascimento, limitada às décadas importadas.</summary>
+    public int DecadeKey(int birthYear)
+    {
+        int key = ((birthYear / 10) + 1) * 10;
+        return Math.Clamp(key, ByDecade.Keys.Min(), ByDecade.Keys.Max());
+    }
+
     public IEnumerable<string> Validate()
     {
+        if (ByDecade is null || ByDecade.Count == 0)
+        {
+            yield return "'by_decade' vazio.";
+        }
+
+        foreach (var (decade, place) in ByDecade ?? [])
+        {
+            if (place?.Brasil is null || place.Brasil.Masculino.Count == 0 || place.Brasil.Feminino.Count == 0 || place.Ufs is null || place.Ufs.Count != 27)
+            {
+                yield return $"década {decade}: falta o Brasil ou alguma das 27 UFs.";
+            }
+        }
         if (Brasil is null || Brasil.Masculino.Count == 0 || Brasil.Feminino.Count == 0)
         {
             yield return "'brasil' sem nomes.";
@@ -71,6 +124,12 @@ public sealed class NameStyleCatalog : IValidatable
 
     /// <summary>Padrões de nome de urna, com {prenome}, {sobrenome} e {titulo} (título de profissão com gênero).</summary>
     public required List<string> BallotPatterns { get; init; }
+
+    /// <summary>Frequência nacional mínima (soma das décadas) para um candidato complementar entrar.</summary>
+    public required long ComplementaryMinFrequency { get; init; }
+
+    /// <summary>Prenomes candidatos por sexo ("masculino", "feminino"), consultados no IBGE pelo importador.</summary>
+    public required Dictionary<string, List<string>> ComplementaryCandidates { get; init; }
 
     public IEnumerable<string> Validate()
     {

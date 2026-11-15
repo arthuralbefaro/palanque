@@ -29,7 +29,7 @@ public static class PersonGenerator
         int age = request.Age ?? rng.NextInt(ages.Min, ages.Max + 1);
         DateOnly birth = request.Today.AddYears(-age).AddDays(-rng.NextInt(365));
 
-        string first = FirstName(rng, content, request.Uf, gender);
+        string first = FirstName(rng, content, request.Uf, gender, birth.Year);
         string surname = Surname(rng, content);
         string second = rng.Chance(0.6) ? Surname(rng, content) : "";
         string civil = string.Join(' ', new[] { first, second, surname }.Where(s => s.Length > 0).Distinct());
@@ -91,18 +91,45 @@ public static class PersonGenerator
     public static Gender PickGender(Rng rng) =>
         rng.Chance(NonBinaryShare) ? Gender.NaoBinario : rng.Chance(0.5) ? Gender.Feminino : Gender.Masculino;
 
-    /// <summary>Prenome pela frequência do IBGE na UF; pessoas não binárias sorteiam entre as duas listas.</summary>
-    public static string FirstName(Rng rng, PeopleContent content, string uf, Gender gender)
+    /// <summary>
+    /// Prenome pela frequência do IBGE na década de nascimento e na UF (caindo para o ranking geral da UF e
+    /// depois para o do Brasil se faltar dado), somado aos prenomes complementares, cuja frequência nacional na
+    /// década é escalada pelo peso da UF. Pessoas não binárias sorteiam entre as duas listas (DECISOES D-017).
+    /// </summary>
+    public static string FirstName(Rng rng, PeopleContent content, string uf, Gender gender, int? birthYear = null)
     {
-        NamesBySex names = content.FirstNames.Ufs.TryGetValue(uf, out NamesBySex? byUf) ? byUf : content.FirstNames.Brasil;
-        List<RankedName> list = gender switch
+        FirstNamesFile names = content.FirstNames;
+        bool masculine = gender switch
         {
-            Gender.Masculino => names.Masculino,
-            Gender.Feminino => names.Feminino,
-            _ => rng.Chance(0.5) ? names.Masculino : names.Feminino,
+            Gender.Masculino => true,
+            Gender.Feminino => false,
+            _ => rng.Chance(0.5),
         };
-        var valid = list.Where(n => !content.Names.Excluded.Contains(n.Nome)).ToList();
-        return content.Names.Display(rng.PickWeighted(valid, n => n.Frequencia).Nome);
+
+        static List<RankedName> Pick(NamesBySex s, bool m) => m ? s.Masculino : s.Feminino;
+
+        int decade = names.DecadeKey(birthYear ?? 1980);
+        NamesByPlace? place = names.ByDecade.GetValueOrDefault(decade);
+        List<RankedName>? local = place is not null && place.Ufs.TryGetValue(uf, out NamesBySex? byUfDecade) ? Pick(byUfDecade, masculine) : null;
+        local ??= names.Ufs.TryGetValue(uf, out NamesBySex? byUf) ? Pick(byUf, masculine) : Pick(names.Brasil, masculine);
+        var options = local
+            .Where(n => !content.Names.Excluded.Contains(n.Nome))
+            .Select(n => (n.Nome, Weight: (double)n.Frequencia))
+            .ToList();
+
+        // Escala dos complementares: quanto a lista da UF pesa frente à do Brasil na mesma década.
+        List<RankedName> national = place is not null ? Pick(place.Brasil, masculine) : Pick(names.Brasil, masculine);
+        double scale = national.Sum(n => (double)n.Frequencia) is double total and > 0 ? local.Sum(n => (double)n.Frequencia) / total : 0;
+        var known = options.Select(o => o.Nome).ToHashSet(StringComparer.Ordinal);
+        foreach (DecadeName extra in masculine ? names.Complementary.Masculino : names.Complementary.Feminino)
+        {
+            if (!known.Contains(extra.Nome) && extra.ByDecade.GetValueOrDefault(decade) is long f and > 0)
+            {
+                options.Add((extra.Nome, f * scale));
+            }
+        }
+
+        return content.Names.Display(rng.PickWeighted(options, o => o.Weight).Nome);
     }
 
     public static string Surname(Rng rng, PeopleContent content) =>
