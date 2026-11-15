@@ -104,7 +104,7 @@ Cada peça tem cor primária e secundária; a cor do partido pode ser aplicada c
 |---|---|
 | Número de urna | Definido pelo partido (prefixo) + escolha dos dígitos finais |
 | Slogan | Livre ou sugestões geradas |
-| Logotipo | Ícone (estrela, mão, casa, árvore, coração, engrenagem, livro etc.), fonte (6), cores |
+| Logotipo | Ícone (mão, casa, árvore, coração, engrenagem, livro etc., do catálogo data/parties/logo_icons.json, sem símbolos ligados a partidos reais, como estrela, tucano ou foice e martelo), fonte (6), cores |
 | Jingle | Escolha de estilo musical (forró, sertanejo, pagode, funk, marchinha, rock) — muda a faixa tocada em comícios e no horário eleitoral |
 | Foto oficial | Pose (3), expressão, fundo (bandeira do estado, gabinete, cidade, cor sólida) |
 
