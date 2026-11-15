@@ -1,0 +1,12 @@
+{
+  "offices": [
+    { "id": "vereador", "name": { "masculine": "Vereador", "feminine": "Vereadora", "neutral": "Vereador(a)" }, "level": 1 },
+    { "id": "prefeito", "name": { "masculine": "Prefeito", "feminine": "Prefeita", "neutral": "Prefeito(a)" }, "level": 2 },
+    { "id": "deputado_estadual", "name": { "masculine": "Deputado estadual", "feminine": "Deputada estadual", "neutral": "Deputado(a) estadual" }, "level": 2 },
+    { "id": "deputado_distrital", "name": { "masculine": "Deputado distrital", "feminine": "Deputada distrital", "neutral": "Deputado(a) distrital" }, "level": 2 },
+    { "id": "deputado_federal", "name": { "masculine": "Deputado federal", "feminine": "Deputada federal", "neutral": "Deputado(a) federal" }, "level": 3 },
+    { "id": "senador", "name": { "masculine": "Senador", "feminine": "Senadora", "neutral": "Senador(a)" }, "level": 4 },
+    { "id": "governador", "name": { "masculine": "Governador", "feminine": "Governadora", "neutral": "Governador(a)" }, "level": 4 },
+    { "id": "presidente", "name": { "masculine": "Presidente", "feminine": "Presidenta", "neutral": "Presidente" }, "level": 5 }
+  ]
+}

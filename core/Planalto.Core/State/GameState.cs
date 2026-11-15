@@ -28,6 +28,8 @@ public sealed class GameParty
 
     public required LeadershipStyle Leadership { get; set; }
 
+    public PartyCharter? Charter { get; set; }
+
     public static GameParty From(PartyDraft draft) => new()
     {
         Id = draft.Id,
@@ -40,6 +42,7 @@ public sealed class GameParty
         Colors = draft.Colors,
         LogoIcon = draft.LogoIcon,
         Leadership = draft.Leadership,
+        Charter = draft.Charter,
     };
 }
 

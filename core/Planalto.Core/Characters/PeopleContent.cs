@@ -153,6 +153,8 @@ public sealed class PeopleContent
 
     public required BiographyCatalog Biography { get; init; }
 
+    public required Elections.OfficeCatalog Offices { get; init; }
+
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, out PeopleContent? content)
     {
         var reports = new List<DataFileReport>();
@@ -161,6 +163,7 @@ public sealed class PeopleContent
         SocialOriginCatalog? origins = Check<SocialOriginCatalog>(dataDirectory, OriginsFile, o => o.Origins.Count, reports);
         CampaignIdentityCatalog? campaign = Check<CampaignIdentityCatalog>(dataDirectory, CampaignFile, c => c.Slogans.Count, reports);
         BiographyCatalog? biography = Check<BiographyCatalog>(dataDirectory, BiographyCatalog.File, b => b.Templates.Count, reports);
+        Elections.OfficeCatalog? offices = Check<Elections.OfficeCatalog>(dataDirectory, Elections.OfficeCatalog.File, o => o.Offices.Count, reports);
         var professions = JsonData.LoadFile<ProfessionCatalog>(Path.Combine(dataDirectory, "professions.json"));
         var traits = JsonData.LoadFile<TraitCatalog>(Path.Combine(dataDirectory, "traits.json"));
         var appearanceReports = AppearanceContent.Load(dataDirectory, out AppearanceContent? appearance);
@@ -184,6 +187,7 @@ public sealed class PeopleContent
                 Campaign = campaign!,
                 Appearance = appearance,
                 Biography = biography!,
+                Offices = offices!,
             }
             : null;
         return reports;

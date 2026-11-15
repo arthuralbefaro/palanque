@@ -43,6 +43,9 @@ public sealed class PartyDraft
 
     public HashSet<PartyField> Locks { get; init; } = [];
 
+    /// <summary>Estatuto, só no partido criado pelo jogador.</summary>
+    public PartyCharter? Charter { get; set; }
+
     public bool IsLocked(PartyField field) => Locks.Contains(field);
 
     public void SetLocked(PartyField field, bool locked)
@@ -69,6 +72,7 @@ public sealed class PartyDraft
         Colors = Colors,
         LogoIcon = LogoIcon,
         Leadership = Leadership,
+        Charter = Charter,
         Locks = [.. Locks],
     };
 }
