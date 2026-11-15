@@ -31,12 +31,19 @@ Dono do projeto e único autor: Arthur Albefaro.
 - Textos ao jogador em PT-BR via Tr(), respeitando os pronomes do personagem.
 - Nomes: PascalCase para tipos e métodos, camelCase para locais, _camelCase para campos privados.
 - Comentários em português, só quando o "porquê" não for óbvio.
+- Pacotes NuGet: só os aprovados — xUnit e dependências de teste; Godot.NET.Sdk/GodotSharp no projeto Godot; NetTopologySuite e NetTopologySuite.IO.Esri.Shapefile SOMENTE em tools/Planalto.DataImporter. Nenhum pacote novo no Core ou no projeto Godot sem eu aprovar.
+- Parâmetros que vêm de lei (percentuais, prazos, limites) ficam em objetos de configuração com padrão igual à lei vigente (ex.: ProportionalRulesConfig). Em dúvida sobre regra eleitoral, pergunte.
 
 ## Dados dos municípios
 - O jogo inclui TODOS os municípios do Brasil. Nunca reduza a lista, nunca use amostra ou lista inventada.
-- Dados vêm só de fontes oficiais (IBGE, TSE) via tools/Planalto.DataImporter. Nunca escreva números de população ou eleitorado à mão.
+- Dados vêm só de fontes oficiais (IBGE e TSE; ver GDD 12.2) via tools/Planalto.DataImporter, cruzados pelo código IBGE de 7 dígitos. Nunca escreva números de população, eleitorado, vagas ou coordenadas à mão.
+- Se uma fonte bloquear o download automatizado, não contorne: pare e me informe a URL e o nome do arquivo para eu colocar no cache.
+- Lacunas (ex.: município criado depois do Censo): use só alternativa aprovada e registre em data/municipios/_fontes.json. Nunca invente número.
 - Os arquivos gerados em data/municipios/ são commitados; os brutos baixados ficam em tools/Planalto.DataImporter/cache/ (no .gitignore).
-- Toda mudança no importador deve manter o teste que confere a contagem total de municípios e a soma de população por UF contra o total oficial.
+- Perfil do Censo é gravado como publicado; percentuais sempre normalizados pela soma das categorias do bloco, nunca pelo total publicado.
+- Vagas de vereador são as reais do TSE; o teto do art. 29, IV é só limite (regra de jogo no GDD 12.4).
+- Agregação regional por região geográfica imediata (microrregiao pode ser null). Municípios com eleicoes_municipais = false (DF e Fernando de Noronha) não têm eleição municipal.
+- Toda mudança no importador deve manter os testes: contagem igual à lista do IBGE, códigos únicos, população por UF igual ao total oficial (sem tolerância), eleitorado > 0 onde há eleição municipal, soma de vagas igual ao total do TSE e todo ponto dentro do polígono do próprio município.
 - Simulação por nível de detalhe (ver GDD seção 12): nunca simule todos os municípios em detalhe ao mesmo tempo.
 
 ## Verificação obrigatória (antes de dar qualquer tarefa como concluída)
@@ -44,6 +51,7 @@ Dono do projeto e único autor: Arthur Albefaro.
 - dotnet test core/Planalto.Core.Tests
 - dotnet run --project tools/Planalto.DataValidator
 - godot --headless --build-solutions --quit
+- Se o DataImporter mudou: dotnet test tools/Planalto.DataImporter.Tests (precisa do cache preenchido)
 Nenhuma tarefa está concluída com build quebrado, testes falhando, dados inválidos ou erros no console.
 
 ## Fluxo de trabalho
@@ -56,6 +64,10 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando, dados invá
 ## Neutralidade e representação
 - Partidos, políticos, empresas, institutos e veículos de mídia são fictícios. Nunca use nomes reais de políticos, partidos ou marcas.
 - Municípios, estados e dados demográficos são reais; prefeitos, vereadores e personalidades locais são fictícios.
-- Nenhuma ideologia é favorecida; toda posição tem custos e benefícios.
+- Nenhuma ideologia é favorecida; toda posição tem custos e benefícios. O espectro democrático completo é coberto por famílias ideológicas fictícias (GDD 14), todas com caminho viável até a Presidência.
+- Nomes e siglas de partidos, gerados ou digitados pelo jogador, são validados contra data/parties/blocklist.json para nunca coincidir com partidos reais.
+- Cenários espelhados do real (GDD 16.4): a correspondência partido real → fictício existe só no pipeline de dados em tools/ e nunca vai para data/ nem para o jogo; os arquivos finais têm só IDs fictícios e números, e um teste garante que nenhum nome ou sigla real aparece neles.
+- O jogo nunca julga moralmente: só simula consequências plausíveis (eleitorais, judiciais, midiáticas, pessoais).
 - Aparência do personagem nunca altera votos ou atributos.
-- Nenhum evento baseado em estereótipo regional, religioso, racial ou de gênero.
+- Nenhum evento cita pessoas, partidos ou empresas reais nem se baseia em estereótipo regional, religioso, racial ou de gênero; tragédias são tratadas com seriedade.
+- Urna, edifícios e símbolos oficiais só em versões estilizadas: sem réplicas de edifícios reais, brasões ou marcas oficiais; sons originais.
