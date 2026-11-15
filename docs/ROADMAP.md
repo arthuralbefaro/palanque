@@ -12,10 +12,10 @@
 
 ## Fase 1 — Núcleo de simulação
 - [ ] Rng, Calendar, GameState *(Rng com semente feito na Fase 0; faltam Calendar e GameState)*
-- [ ] Character, atributos, traços, recursos
+- [x] Character, atributos, traços, recursos
 - [ ] Eleitorado, modelo de voto, pesquisas
 - [ ] ElectionRules (proporcional e majoritário) com testes
-- [ ] Carregamento e validação de JSON + DataValidator
+- [x] Carregamento e validação de JSON + DataValidator
 - [ ] Planalto.DataImporter: baixa IBGE (Localidades, Censo 2022/SIDRA, coordenadas) e TSE (perfil do eleitorado), cruza pelo código IBGE e gera data/municipios/{UF}.json (27 arquivos), com brutos em cache fora do Git e créditos das fontes em assets/CREDITS.md
 - [ ] Testes do importador: contagem total de municípios igual à lista oficial, nenhum código duplicado, soma de população por UF igual ao total oficial, todo município com eleitorado > 0
 - [ ] Regras derivadas por município: vagas de vereador (CF art. 29, IV, de 9 a 55), 2º turno para prefeito acima de 200 mil eleitores, porte (pequeno, médio, grande, metrópole) e regras próprias do Distrito Federal

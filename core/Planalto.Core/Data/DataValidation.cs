@@ -1,0 +1,26 @@
+using Planalto.Core.Characters;
+
+namespace Planalto.Core.Data;
+
+public sealed record DataFileReport(string File, int ItemCount, IReadOnlyList<string> Errors)
+{
+    public bool IsValid => Errors.Count == 0;
+}
+
+/// <summary>Lista dos arquivos de data/ conferidos pelo DataValidator e pelos testes.</summary>
+public static class DataValidation
+{
+    public static IReadOnlyList<DataFileReport> ValidateAll(string dataDirectory) =>
+    [
+        Check<TraitCatalog>(dataDirectory, "traits.json", catalog => catalog.Traits.Count),
+        Check<ProfessionCatalog>(dataDirectory, "professions.json", catalog => catalog.Professions.Count),
+    ];
+
+    private static DataFileReport Check<T>(string dataDirectory, string file, Func<T, int> count)
+        where T : class, IValidatable
+    {
+        DataLoadResult<T> result = JsonData.LoadFile<T>(Path.Combine(dataDirectory, file));
+        int items = result.Value is null ? 0 : count(result.Value);
+        return new DataFileReport(file, items, result.Errors);
+    }
+}

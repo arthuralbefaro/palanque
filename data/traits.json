@@ -1,0 +1,74 @@
+{
+  "traits": [
+    {
+      "id": "bom_de_papo",
+      "name": { "masculine": "Bom de papo", "feminine": "Boa de papo", "neutral": "Bom/boa de papo" },
+      "description": "Mais Oratória; risco de falar demais em entrevistas.",
+      "attribute_modifiers": { "oratoria": 5 }
+    },
+    {
+      "id": "workaholic",
+      "name": { "masculine": "Workaholic", "feminine": "Workaholic", "neutral": "Workaholic" },
+      "description": "Mais Energia semanal; eventos de desgaste familiar."
+    },
+    {
+      "id": "esquentado",
+      "name": { "masculine": "Esquentado", "feminine": "Esquentada", "neutral": "Esquentado(a)" },
+      "description": "Ataques mais fortes nos debates; risco de vídeo viral negativo."
+    },
+    {
+      "id": "tecnico",
+      "name": { "masculine": "Técnico", "feminine": "Técnica", "neutral": "Técnico(a)" },
+      "description": "Mais Gestão; menos Carisma em comícios.",
+      "attribute_modifiers": { "gestao": 5 }
+    },
+    {
+      "id": "populista",
+      "name": { "masculine": "Populista", "feminine": "Populista", "neutral": "Populista" },
+      "description": "Mais Carisma com eleitores de renda baixa; desconfiança do mercado."
+    },
+    {
+      "id": "articulador_nato",
+      "name": { "masculine": "Articulador nato", "feminine": "Articuladora nata", "neutral": "Articulador(a) nato(a)" },
+      "description": "Mais Articulação; eventos de bastidores.",
+      "attribute_modifiers": { "articulacao": 5 }
+    },
+    {
+      "id": "idealista",
+      "name": { "masculine": "Idealista", "feminine": "Idealista", "neutral": "Idealista" },
+      "description": "Mais Integridade; dificuldade em fechar alianças pragmáticas.",
+      "attribute_modifiers": { "integridade": 5 }
+    },
+    {
+      "id": "pragmatico",
+      "name": { "masculine": "Pragmático", "feminine": "Pragmática", "neutral": "Pragmático(a)" },
+      "description": "Alianças mais baratas; penalidade de incoerência menor."
+    },
+    {
+      "id": "midiatico",
+      "name": { "masculine": "Midiático", "feminine": "Midiática", "neutral": "Midiático(a)" },
+      "description": "Mais ganho nas redes sociais; maior exposição a polêmicas."
+    },
+    {
+      "id": "discreto",
+      "name": { "masculine": "Discreto", "feminine": "Discreta", "neutral": "Discreto(a)" },
+      "description": "Escândalos demoram mais a aparecer; menos reconhecimento."
+    },
+    {
+      "id": "religioso",
+      "name": { "masculine": "Religioso", "feminine": "Religiosa", "neutral": "Religioso(a)" },
+      "description": "Afinidade com segmentos religiosos; eventos exclusivos."
+    },
+    {
+      "id": "esportista",
+      "name": { "masculine": "Esportista", "feminine": "Esportista", "neutral": "Esportista" },
+      "description": "Mais Saúde (envelhece melhor); eventos esportivos."
+    },
+    {
+      "id": "maleavel",
+      "name": { "masculine": "Maleável", "feminine": "Maleável", "neutral": "Maleável" },
+      "description": "Ganho ao ceder a pressões várias vezes ao longo da carreira.",
+      "selectable_at_creation": false
+    }
+  ]
+}

@@ -5,4 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Planalto.DataValidator</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../core/Planalto.Core/Planalto.Core.csproj" />
+  </ItemGroup>
 </Project>

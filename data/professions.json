@@ -1,0 +1,76 @@
+{
+  "professions": [
+    {
+      "id": "medico",
+      "name": { "masculine": "Médico", "feminine": "Médica", "neutral": "Médico(a)" },
+      "description": "Contatos na área da saúde e eventos exclusivos.",
+      "attribute_modifiers": { "gestao": 5 }
+    },
+    {
+      "id": "advogado",
+      "name": { "masculine": "Advogado", "feminine": "Advogada", "neutral": "Advogado(a)" },
+      "description": "Contatos no meio jurídico e eventos exclusivos.",
+      "attribute_modifiers": { "oratoria": 5 }
+    },
+    {
+      "id": "professor",
+      "name": { "masculine": "Professor", "feminine": "Professora", "neutral": "Professor(a)" },
+      "description": "Contatos na área da educação e eventos exclusivos.",
+      "attribute_modifiers": { "oratoria": 5 }
+    },
+    {
+      "id": "lider_religioso",
+      "name": { "masculine": "Pastor / líder religioso", "feminine": "Pastora / líder religiosa", "neutral": "Pastor(a) / líder religioso(a)" },
+      "description": "Contatos em comunidades religiosas e eventos exclusivos.",
+      "attribute_modifiers": { "carisma": 5 }
+    },
+    {
+      "id": "sindicalista",
+      "name": { "masculine": "Sindicalista", "feminine": "Sindicalista", "neutral": "Sindicalista" },
+      "description": "Contatos no movimento sindical e eventos exclusivos.",
+      "attribute_modifiers": { "articulacao": 5 }
+    },
+    {
+      "id": "empresario",
+      "name": { "masculine": "Empresário", "feminine": "Empresária", "neutral": "Empresário(a)" },
+      "description": "Contatos no meio empresarial e eventos exclusivos.",
+      "attribute_modifiers": { "gestao": 5 }
+    },
+    {
+      "id": "policial",
+      "name": { "masculine": "Policial", "feminine": "Policial", "neutral": "Policial" },
+      "description": "Contatos na área da segurança pública e eventos exclusivos.",
+      "attribute_modifiers": { "gestao": 5 }
+    },
+    {
+      "id": "jornalista",
+      "name": { "masculine": "Jornalista", "feminine": "Jornalista", "neutral": "Jornalista" },
+      "description": "Contatos na imprensa e eventos exclusivos.",
+      "attribute_modifiers": { "oratoria": 5 }
+    },
+    {
+      "id": "influenciador",
+      "name": { "masculine": "Influenciador", "feminine": "Influenciadora", "neutral": "Influenciador(a)" },
+      "description": "Contatos nas redes sociais e eventos exclusivos.",
+      "attribute_modifiers": { "carisma": 5 }
+    },
+    {
+      "id": "atleta",
+      "name": { "masculine": "Atleta", "feminine": "Atleta", "neutral": "Atleta" },
+      "description": "Contatos no esporte e eventos exclusivos.",
+      "attribute_modifiers": { "carisma": 5 }
+    },
+    {
+      "id": "agricultor",
+      "name": { "masculine": "Agricultor", "feminine": "Agricultora", "neutral": "Agricultor(a)" },
+      "description": "Contatos em cooperativas e associações rurais e eventos exclusivos.",
+      "attribute_modifiers": { "articulacao": 5 }
+    },
+    {
+      "id": "servidor_publico",
+      "name": { "masculine": "Servidor público", "feminine": "Servidora pública", "neutral": "Servidor(a) público(a)" },
+      "description": "Contatos na administração pública e eventos exclusivos.",
+      "attribute_modifiers": { "gestao": 5 }
+    }
+  ]
+}
