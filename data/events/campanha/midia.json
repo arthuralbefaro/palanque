@@ -1,0 +1,144 @@
+{
+  "events": [
+    {
+      "id": "campanha_ataque_rival_video",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 8,
+      "conditions": { "needs_rival": true },
+      "portrait": "rival",
+      "portrait_expression": "bravo",
+      "title": "Ataque em vídeo",
+      "variants": [
+        "{rival.nome} ({rival.partido}) publicou um vídeo dizendo que você nunca morou de verdade em {municipio.nome}.",
+        "Um vídeo de {rival.nome} ({rival.partido}) questiona a sua experiência e está circulando nos grupos da cidade."
+      ],
+      "choices": [
+        {
+          "label": "Responder com dados e calma",
+          "test": { "attribute": "oratoria", "success_text": "Sua resposta foi mais compartilhada que o ataque.", "success": { "image": 0.05, "rival_image": -0.03 }, "failure_text": "A resposta soou defensiva.", "failure": { "image": -0.02 } }
+        },
+        { "label": "Ignorar", "effects": { "image": -0.02 }, "result": "O ataque perdeu força, mas deixou dúvida em alguns eleitores." },
+        { "label": "Contra-atacar no mesmo tom", "effects": { "image": -0.03, "rival_image": -0.05, "relation": -20 }, "result": "A troca de farpas cansou parte do eleitorado." }
+      ]
+    },
+    {
+      "id": "campanha_pesquisa_vazada",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 10,
+      "title": "Pesquisa vazada",
+      "variants": ["Uma pesquisa interna da sua campanha vazou para um blog local de {municipio.nome}."],
+      "choices": [
+        { "label": "Confirmar os números e usar a seu favor", "effects": { "recognition": 2, "image": 0.01 }, "result": "O assunto deu visibilidade à sua candidatura." },
+        { "label": "Dizer que é falsa", "effects": { "image": -0.03 }, "result": "A negativa não convenceu quem viu a planilha." },
+        { "label": "Não comentar", "effects": {}, "result": "A notícia passou em dois dias." }
+      ]
+    },
+    {
+      "id": "campanha_fake_news",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 10,
+      "title": "Corrente de mensagens falsas",
+      "variants": ["Uma corrente de mensagens afirma que você vai fechar postos de saúde se for eleit{jogador.o}. É falso."],
+      "choices": [
+        { "label": "Desmentir com vídeo e documentos", "effects": { "money": -1000 }, "test": { "attribute": "carisma", "success_text": "O desmentido alcançou mais gente que a mentira.", "success": { "image": 0.04 }, "failure_text": "O desmentido chegou tarde para muita gente.", "failure": { "image": -0.03 } } },
+        { "label": "Representar na Justiça Eleitoral", "effects": { "money": -2500, "image": 0.02 }, "result": "O pedido de remoção foi protocolado." },
+        { "label": "Deixar passar", "effects": { "image": -0.06, "support": { "idade_60_69": -0.03, "idade_70_mais": -0.03 } }, "result": "A mentira ficou circulando entre os mais velhos." }
+      ]
+    },
+    {
+      "id": "campanha_radio_local",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 8,
+      "conditions": { "porte": ["pequeno", "medio", "grande"] },
+      "title": "Convite da rádio",
+      "variants": ["A rádio mais ouvida de {municipio.nome} oferece dez minutos ao vivo no programa da manhã."],
+      "choices": [
+        {
+          "label": "Aceitar e responder aos ouvintes",
+          "test": { "attribute": "oratoria", "bonus": 0.1, "success_text": "Os ouvintes ligaram elogiando.", "success": { "recognition": 4, "image": 0.03 }, "failure_text": "Um ouvinte fez uma pergunta que você não soube responder.", "failure": { "recognition": 2, "image": -0.03 } }
+        },
+        { "label": "Recusar por falta de agenda", "effects": {}, "result": "A vaga foi para outro candidato." }
+      ]
+    },
+    {
+      "id": "campanha_influenciador",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 12,
+      "title": "Influenciador local",
+      "variants": ["Um influenciador de {municipio.nome} com muitos seguidores oferece divulgar sua campanha, com cachê declarado na prestação de contas."],
+      "choices": [
+        { "label": "Contratar e declarar a despesa", "effects": { "money": -3000, "recognition": 4, "support": { "idade_18_34": 0.04 } }, "result": "O vídeo chegou a muita gente nova." },
+        { "label": "Recusar", "effects": {}, "result": "Você preferiu não depender de terceiros." }
+      ]
+    },
+    {
+      "id": "campanha_jingle_hit",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "title": "O jingle pegou",
+      "variants": ["Crianças cantam o seu jingle na saída da escola e o refrão virou vídeo curto nas redes."],
+      "choices": [
+        { "label": "Liberar versões e remixes", "effects": { "recognition": 5, "support": { "idade_16_17": 0.03 } }, "result": "O refrão grudou na cidade." },
+        { "label": "Manter a versão oficial", "effects": { "recognition": 3 }, "result": "Você manteve o controle da mensagem." }
+      ]
+    },
+    {
+      "id": "campanha_meme_simpatico",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "raro",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "title": "Você virou meme",
+      "variants": ["Uma foto sua tropeçando num degrau e rindo virou meme simpático em {municipio.nome}."],
+      "choices": [
+        { "label": "Entrar na brincadeira", "effects": { "recognition": 6, "image": 0.03 }, "result": "A cidade riu com você, não de você." },
+        { "label": "Pedir para tirarem do ar", "effects": { "image": -0.04 }, "result": "O pedido só espalhou mais a foto." }
+      ]
+    },
+    {
+      "id": "campanha_debate_tv_cancelado",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "conditions": { "porte": ["grande", "metropole"] },
+      "title": "Debate cancelado",
+      "variants": ["A emissora regional cancelou o debate entre candidatos a vereador por falta de horário."],
+      "choices": [
+        { "label": "Organizar um debate nas redes", "effects": { "energy": -15, "recognition": 3, "support": { "idade_18_34": 0.02 } }, "result": "Alguns candidatos aceitaram e o debate rendeu." },
+        { "label": "Protestar publicamente", "effects": { "image": 0.02 }, "result": "O protesto foi registrado pela imprensa." }
+      ]
+    },
+    {
+      "id": "campanha_entrevista_pegadinha",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 10,
+      "title": "Pergunta-pegadinha",
+      "variants": ["Numa entrevista ao vivo, o apresentador pergunta quanto custa o pão francês em {municipio.nome}."],
+      "choices": [
+        {
+          "label": "Responder com naturalidade",
+          "test": { "attribute": "carisma", "success_text": "Você acertou e ainda fez graça com a pergunta.", "success": { "image": 0.04, "support": { "baixa": 0.02 } }, "failure_text": "Você errou feio e o trecho circulou.", "failure": { "image": -0.05 } }
+        },
+        { "label": "Admitir que não sabe e virar o assunto", "effects": { "image": -0.01 }, "result": "Honesto, mas sem brilho." }
+      ]
+    }
+  ]
+}

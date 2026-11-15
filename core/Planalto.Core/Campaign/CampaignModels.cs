@@ -49,7 +49,7 @@ public sealed class Effects
     public static Effects None { get; } = new();
 }
 
-public sealed record Skeleton(string Type, int Severity, DateOnly Created);
+public sealed record Skeleton(string Type, int Severity, DateOnly Created = default);
 
 public sealed record ScheduledEvent(string Event, int DelayWeeks);
 

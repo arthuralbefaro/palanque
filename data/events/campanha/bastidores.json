@@ -1,0 +1,185 @@
+{
+  "events": [
+    {
+      "id": "campanha_doacao_por_fora",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 16,
+      "conditions": { "money_lt": 20000 },
+      "title": "Uma oferta generosa",
+      "variants": [
+        "Um empresário da construção oferece {valor} \"por fora\" para a sua campanha em {municipio.nome}.",
+        "Um fornecedor da prefeitura sugere ajudar sua campanha com {valor} em dinheiro vivo, sem recibo."
+      ],
+      "choices": [
+        { "label": "Aceitar", "effects": { "money": 8000, "add_skeleton": { "type": "caixa_dois", "severity": 3 }, "schedule": [{ "event": "campanha_investigacao_doacao", "delay_weeks": 5 }] }, "result": "O dinheiro resolve as contas desta semana." },
+        { "label": "Pedir que doe oficialmente", "effects": { "money": 2000 }, "result": "Ele doou bem menos, com recibo." },
+        { "label": "Recusar", "effects": { "attributes": { "integridade": 2 } }, "result": "Você ficou sem o dinheiro e com a consciência tranquila." }
+      ]
+    },
+    {
+      "id": "campanha_investigacao_doacao",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 0,
+      "chain_only": true,
+      "title": "Perguntas sobre a doação",
+      "variants": ["Um jornal local de {municipio.nome} pergunta sobre gastos da sua campanha que não aparecem na prestação de contas."],
+      "choices": [
+        {
+          "label": "Negar tudo",
+          "test": { "attribute": "integridade", "bonus": -0.2, "success_text": "O jornal não encontrou provas e a pauta morreu.", "success": {}, "failure_text": "O jornal publicou documentos; o caso ganhou a cidade.", "failure": { "image": -0.12, "recognition": 3 } }
+        },
+        { "label": "Retificar a prestação de contas", "effects": { "money": -4000, "image": -0.03 }, "result": "O caso virou nota de rodapé." },
+        { "label": "Contratar advogado eleitoral", "effects": { "money": -5000 }, "result": "O advogado assumiu as respostas à imprensa." }
+      ]
+    },
+    {
+      "id": "campanha_cabo_eleitoral_brinde",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 12,
+      "title": "Brindes proibidos",
+      "variants": ["Um cabo eleitoral da sua campanha foi visto distribuindo camisetas, o que a lei proíbe."],
+      "choices": [
+        { "label": "Afastar o cabo eleitoral e recolher o material", "effects": { "energy": -10, "image": 0.02 }, "result": "Você agiu rápido e o episódio não cresceu." },
+        { "label": "Orientar a equipe e seguir", "effects": { "image": -0.01 }, "result": "Ficou o aviso para toda a equipe." },
+        { "label": "Fingir que não viu", "effects": { "add_skeleton": { "type": "propaganda_irregular", "severity": 1 } }, "result": "Por enquanto, ninguém reclamou." }
+      ]
+    },
+    {
+      "id": "campanha_tregua_rival",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "conditions": { "needs_rival": true },
+      "portrait": "rival",
+      "portrait_expression": "sorriso",
+      "title": "Proposta de trégua",
+      "variants": ["{rival.nome} ({rival.partido}) propõe que os dois parem com ataques até o fim da campanha."],
+      "choices": [
+        { "label": "Aceitar a trégua", "effects": { "relation": 30, "set_flags": ["tregua_rival"] }, "result": "A campanha ficou mais propositiva." },
+        { "label": "Recusar", "effects": { "relation": -15 }, "result": "O clima entre as campanhas esquentou." }
+      ]
+    },
+    {
+      "id": "campanha_colega_reclama",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 10,
+      "title": "Disputa dentro do partido",
+      "variants": ["Um colega de chapa do {partido.sigla} reclama que você está ficando com todo o espaço do partido."],
+      "choices": [
+        { "label": "Dividir agendas e materiais", "effects": { "political_capital": 2, "recognition": -1 }, "result": "O clima na chapa melhorou." },
+        { "label": "Seguir sua estratégia", "effects": { "political_capital": -2 }, "result": "A reclamação chegou à direção do partido." }
+      ]
+    },
+    {
+      "id": "campanha_apoio_ex_prefeito",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "incomum",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "title": "Apoio de um ex-prefeito",
+      "variants": ["Um ex-prefeito de {municipio.nome}, querido por uns e criticado por outros, oferece gravar um vídeo de apoio."],
+      "choices": [
+        { "label": "Aceitar o vídeo", "effects": { "support": { "idade_60_69": 0.05, "idade_70_mais": 0.05 }, "image": -0.03 }, "result": "Os eleitores mais velhos gostaram; os críticos dele, não." },
+        { "label": "Agradecer e recusar", "effects": { "political_capital": -1 }, "result": "Ele ficou chateado, mas entendeu." }
+      ]
+    },
+    {
+      "id": "campanha_sindicato_pauta",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 12,
+      "title": "Pauta do sindicato",
+      "variants": ["O sindicato dos trabalhadores do comércio quer que você assine uma carta-compromisso com a pauta da categoria."],
+      "choices": [
+        { "label": "Assinar a carta", "effects": { "support": { "media": 0.05 }, "set_flags": ["compromisso_sindicato"] }, "result": "A categoria passou a divulgar seu nome." },
+        {
+          "label": "Negociar alguns pontos",
+          "test": { "attribute": "articulacao", "success_text": "O texto ajustado agradou aos dois lados.", "success": { "support": { "media": 0.04 } }, "failure_text": "A negociação travou.", "failure": { "support": { "media": -0.01 } } }
+        },
+        { "label": "Recusar", "effects": { "support": { "media": -0.02 } }, "result": "O sindicato apoiou outro candidato." }
+      ]
+    },
+    {
+      "id": "campanha_convite_comunidade_religiosa",
+      "category": "campanha",
+      "phases": ["pre_campanha", "campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 12,
+      "title": "Convite de uma comunidade religiosa",
+      "variants": ["Uma comunidade religiosa de {municipio.nome} convida você para a festa anual da paróquia e do bairro."],
+      "choices": [
+        { "label": "Ir, ouvir e ajudar na organização", "effects": { "energy": -15, "support": { "catolica": 0.04, "evangelica": 0.02 } }, "result": "Você passou a tarde servindo e conversando." },
+        { "label": "Ir só para cumprimentar", "effects": { "support": { "catolica": 0.01 } }, "result": "Rápido, mas foi visto." },
+        { "label": "Recusar", "effects": {}, "result": "A agenda não permitiu." }
+      ]
+    },
+    {
+      "id": "campanha_familia_reclama",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 10,
+      "title": "Saudade em casa",
+      "variants": ["Sua família reclama que você não aparece em casa há semanas."],
+      "choices": [
+        { "label": "Tirar o domingo com a família", "effects": { "energy": -20, "stress": -10 }, "result": "Um domingo inteiro sem celular." },
+        { "label": "Prometer compensar depois da eleição", "effects": { "stress": 5 }, "result": "A promessa ficou registrada." }
+      ]
+    },
+    {
+      "id": "campanha_cansaco",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 6,
+      "conditions": { "stress_gt": 30 },
+      "title": "O corpo pede pausa",
+      "variants": ["Depois de semanas de agenda cheia, você acorda com febre e a voz fraca."],
+      "choices": [
+        { "label": "Descansar dois dias", "effects": { "energy": -30, "health": 5, "stress": -8 }, "result": "Você voltou inteir{jogador.o}." },
+        { "label": "Seguir a agenda", "effects": { "health": -8, "stress": 5 }, "result": "A agenda seguiu; a saúde, nem tanto." }
+      ]
+    },
+    {
+      "id": "campanha_reta_final",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "comum",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "conditions": { "weeks_to_election_lt": 2 },
+      "title": "Reta final",
+      "variants": ["Faltam poucos dias para a eleição. A equipe propõe virar a madrugada em panfletagem."],
+      "choices": [
+        { "label": "Virar a madrugada com a equipe", "effects": { "energy": 20, "stress": 10, "recognition": 2 }, "result": "Cansaço e adrenalina na mesma medida." },
+        { "label": "Poupar a equipe para o dia da eleição", "effects": { "stress": -5 }, "result": "Equipe descansada para fiscalizar as seções." }
+      ]
+    },
+    {
+      "id": "campanha_cachorro_palanque",
+      "category": "campanha",
+      "phases": ["campanha"],
+      "rarity": "raro",
+      "cooldown_weeks": 0,
+      "unique": true,
+      "title": "Um apoiador inesperado",
+      "variants": ["No meio do seu discurso, um cachorro vira-lata sobe no palanque e deita aos seus pés."],
+      "choices": [
+        { "label": "Adotar o cachorro na hora", "effects": { "recognition": 5, "image": 0.04 }, "result": "O novo mascote da campanha ganhou nome e fã-clube." },
+        { "label": "Seguir o discurso", "effects": { "recognition": 1 }, "result": "O cachorro ficou até o fim, e as fotos também." }
+      ]
+    }
+  ]
+}
