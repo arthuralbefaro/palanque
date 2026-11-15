@@ -1,11 +1,17 @@
 using System.Numerics;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Planalto.Core.State;
+
+/// <summary>Estado completo do gerador, para salvar e continuar a mesma sequência.</summary>
+public readonly record struct RngState(ulong Seed, ulong S0, ulong S1, ulong S2, ulong S3);
 
 /// <summary>
 /// Gerador pseudoaleatório determinístico (xoshiro256**) usado por toda a simulação.
 /// A mesma semente produz sempre a mesma sequência, em qualquer versão do .NET.
 /// </summary>
+[JsonConverter(typeof(RngJsonConverter))]
 public sealed class Rng
 {
     private ulong _s0;
@@ -25,7 +31,25 @@ public sealed class Rng
         _s3 = SplitMix64(ref x);
     }
 
+    private Rng(RngState state)
+    {
+        if ((state.S0 | state.S1 | state.S2 | state.S3) == 0)
+        {
+            throw new ArgumentException("O estado do xoshiro256** não pode ser todo zero.", nameof(state));
+        }
+
+        Seed = state.Seed;
+        _s0 = state.S0;
+        _s1 = state.S1;
+        _s2 = state.S2;
+        _s3 = state.S3;
+    }
+
     public ulong Seed { get; }
+
+    public RngState GetState() => new(Seed, _s0, _s1, _s2, _s3);
+
+    public static Rng FromState(RngState state) => new(state);
 
     public ulong NextUInt64()
     {
@@ -90,4 +114,13 @@ public sealed class Rng
         z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
         return z ^ (z >> 31);
     }
+}
+
+internal sealed class RngJsonConverter : JsonConverter<Rng>
+{
+    public override Rng Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+        Rng.FromState(JsonSerializer.Deserialize<RngState>(ref reader, options));
+
+    public override void Write(Utf8JsonWriter writer, Rng value, JsonSerializerOptions options) =>
+        JsonSerializer.Serialize(writer, value.GetState(), options);
 }

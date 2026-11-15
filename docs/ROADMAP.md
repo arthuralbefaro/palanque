@@ -11,7 +11,7 @@
 - [x] Build e testes passando
 
 ## Fase 1 — Núcleo de simulação
-- [ ] Rng, Calendar, GameState *(Rng com semente feito na Fase 0; faltam Calendar e GameState)*
+- [x] Rng, Calendar, GameState
 - [x] Character, atributos, traços, recursos
 - [ ] Eleitorado, modelo de voto, pesquisas
 - [ ] ElectionRules (proporcional e majoritário) com testes
