@@ -95,3 +95,10 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Pergunta:** que temperatura e pesos usar no softmax?
 - **Decisão:** calibrado contra a votação real de prefeito de 2024 (força local para prefeito do cenário) em 250 municípios sorteados, com um candidato por partido e reconhecimento igual: temperatura 0,35 dava erro médio de 19,7 pontos por candidato; temperatura 1,3 com peso ideológico 1,5 e partidário 2,0 dá 11,1 pontos e acerta o vencedor em 72% dos municípios (a qualidade individual dos candidatos reais, não modelada, explica o resto). Temperaturas maiores quase não melhoram e achatam a disputa.
 - **Como reverter:** vote_model.json; o balanceamento fino fica para o BalanceSim (Fase 10).
+
+## D-016 — Pesos regionais de tom de pele
+- **Data:** 2026-11-15 · **Fase:** 2
+- **Pergunta:** de onde vêm os "pesos realistas por região do Brasil" da aparência dos NPCs (GDD 3.8)?
+- **Decisão:** composição por cor ou raça de cada UF do Censo 2022 (SIDRA 9605, importada por `dotnet run --project tools/Planalto.DataImporter -- aparencia` para data/appearance/cor_raca_uf.json). Cada categoria declarada tem uma faixa de pesos sobre os 24 tons da paleta (palettes.json, `skin_by_cor_raca`); o tom sorteado mistura as faixas pela composição da UF. A correspondência categoria → faixa de tom é parâmetro de jogo (cor ou raça é autodeclaração, não tom de pele), e aparência nunca altera votos nem atributos. Peças e acessórios usam pesos por gênero, sem proibir nenhuma combinação.
+- **Alternativas:** pesos uniformes.
+- **Como reverter:** editar `skin_by_cor_raca` ou passar `uf: null` ao gerador (usa o total do Brasil).

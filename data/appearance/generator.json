@@ -1,0 +1,78 @@
+{
+  "presence": {
+    "beard": {
+      "masculino": 0.4,
+      "feminino": 0.0,
+      "nao_binario": 0.12
+    },
+    "mustache": {
+      "masculino": 0.18,
+      "feminino": 0.0,
+      "nao_binario": 0.06
+    },
+    "glasses": {
+      "masculino": 0.3,
+      "feminino": 0.3,
+      "nao_binario": 0.3
+    },
+    "earrings": {
+      "masculino": 0.08,
+      "feminino": 0.75,
+      "nao_binario": 0.45
+    },
+    "piercing": {
+      "masculino": 0.03,
+      "feminino": 0.06,
+      "nao_binario": 0.15
+    },
+    "necklace": {
+      "masculino": 0.1,
+      "feminino": 0.35,
+      "nao_binario": 0.25
+    },
+    "makeup": {
+      "masculino": 0.02,
+      "feminino": 0.65,
+      "nao_binario": 0.35
+    },
+    "scar": {
+      "masculino": 0.06,
+      "feminino": 0.03,
+      "nao_binario": 0.05
+    },
+    "freckles": {
+      "masculino": 0.12,
+      "feminino": 0.12,
+      "nao_binario": 0.12
+    },
+    "moles": {
+      "masculino": 0.2,
+      "feminino": 0.2,
+      "nao_binario": 0.2
+    },
+    "dimples": {
+      "masculino": 0.12,
+      "feminino": 0.12,
+      "nao_binario": 0.12
+    },
+    "dyed_hair": {
+      "masculino": 0.03,
+      "feminino": 0.12,
+      "nao_binario": 0.2
+    }
+  },
+  "aging": {
+    "gray_start_age": 35,
+    "gray_full_age": 75,
+    "wrinkle_start_age": 35,
+    "wrinkle_full_age": 80,
+    "eyebags_start_age": 30,
+    "eyebags_full_age": 75,
+    "stress_aging_factor": 0.25,
+    "balding_chance_per_decade": {
+      "masculino": 0.18,
+      "feminino": 0.01,
+      "nao_binario": 0.06
+    }
+  }
+}

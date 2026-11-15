@@ -6,7 +6,7 @@ using Planalto.DataImporter;
 
 // Uso: dotnet run --project tools/Planalto.DataImporter
 // Baixa as fontes oficiais para o cache (uma vez só) e gera data/municipios/.
-// Com o argumento "cenario", gera data/parties/scenarios/brasil_2026/.
+// Com o argumento "cenario", gera data/parties/scenarios/brasil_2026/; com "aparencia", data/appearance/cor_raca_uf.json.
 
 // O .dbf da malha do IBGE pode declarar páginas de código que o .NET só lê com este provedor.
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -28,12 +28,14 @@ using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(15) };
 http.DefaultRequestHeaders.UserAgent.ParseAdd("Planalto.DataImporter/1.0");
 var cache = new SourceCache(cacheDirectory, http);
 
-// Modo "cenario": gera o cenário Brasil 2026 (GDD 16.4) a partir de data/municipios/ e do TSE.
-if (args.Length > 0 && args[0] == "cenario")
+// Modos "cenario" (Brasil 2026, GDD 16.4) e "aparencia" (cor ou raça por UF, GDD 3.8).
+if (args.Length > 0 && args[0] is "cenario" or "aparencia")
 {
     try
     {
-        return await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory);
+        return args[0] == "cenario"
+            ? await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory)
+            : await Planalto.DataImporter.Appearance.CorRacaImport.RunAsync(cache, dataDirectory);
     }
     catch (DownloadBlockedException ex)
     {

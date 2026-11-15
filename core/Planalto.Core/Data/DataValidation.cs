@@ -45,6 +45,7 @@ public static class DataValidation
         }
 
         reports.AddRange(Electorate.ElectorateContent.Load(dataDirectory, world?.Parties.Themes, dataSet, out _));
+        reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
         return reports;
     }
 

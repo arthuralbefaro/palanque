@@ -1,0 +1,196 @@
+{
+  "fonte": "IBGE, Censo Demográfico 2022, tabela 9605 do SIDRA (população residente por cor ou raça).",
+  "url": "https://apisidra.ibge.gov.br/values/t/9605/n3/all/v/93/p/2022/c86/allxt",
+  "consultado_em": "2026-11-15",
+  "ufs": {
+    "AC": {
+      "branca": 177992,
+      "preta": 71086,
+      "amarela": 1878,
+      "parda": 549889,
+      "indigena": 29163
+    },
+    "AL": {
+      "branca": 915400,
+      "preta": 298709,
+      "amarela": 5505,
+      "parda": 1887865,
+      "indigena": 20095
+    },
+    "AM": {
+      "branca": 725007,
+      "preta": 193667,
+      "amarela": 5963,
+      "parda": 2711618,
+      "indigena": 305243
+    },
+    "AP": {
+      "branca": 157022,
+      "preta": 86662,
+      "amarela": 748,
+      "parda": 478975,
+      "indigena": 10340
+    },
+    "BA": {
+      "branca": 2772837,
+      "preta": 3164691,
+      "amarela": 16017,
+      "parda": 8103964,
+      "indigena": 83658
+    },
+    "CE": {
+      "branca": 2456214,
+      "preta": 595694,
+      "amarela": 11256,
+      "parda": 5690973,
+      "indigena": 39982
+    },
+    "DF": {
+      "branca": 1126334,
+      "preta": 301765,
+      "amarela": 12810,
+      "parda": 1370836,
+      "indigena": 5536
+    },
+    "ES": {
+      "branca": 1479275,
+      "preta": 429680,
+      "amarela": 4268,
+      "parda": 1908803,
+      "indigena": 11617
+    },
+    "GO": {
+      "branca": 2557454,
+      "preta": 648560,
+      "amarela": 16985,
+      "parda": 3822864,
+      "indigena": 10432
+    },
+    "MA": {
+      "branca": 1361865,
+      "preta": 854424,
+      "amarela": 6541,
+      "parda": 4499018,
+      "indigena": 54682
+    },
+    "MG": {
+      "branca": 8437697,
+      "preta": 2432877,
+      "amarela": 31681,
+      "parda": 9605151,
+      "indigena": 31885
+    },
+    "MS": {
+      "branca": 1168407,
+      "preta": 179101,
+      "amarela": 19616,
+      "parda": 1293797,
+      "indigena": 96029
+    },
+    "MT": {
+      "branca": 1181590,
+      "preta": 360698,
+      "amarela": 10813,
+      "parda": 2048782,
+      "indigena": 56687
+    },
+    "PA": {
+      "branca": 1570281,
+      "preta": 793621,
+      "amarela": 12432,
+      "parda": 5673446,
+      "indigena": 69180
+    },
+    "PB": {
+      "branca": 1419778,
+      "preta": 316572,
+      "amarela": 4912,
+      "parda": 2207880,
+      "indigena": 25478
+    },
+    "PE": {
+      "branca": 3043916,
+      "preta": 909557,
+      "amarela": 13225,
+      "parda": 5006802,
+      "indigena": 83667
+    },
+    "PI": {
+      "branca": 740322,
+      "preta": 400662,
+      "amarela": 3078,
+      "parda": 2120880,
+      "indigena": 6198
+    },
+    "PR": {
+      "branca": 7389932,
+      "preta": 485781,
+      "amarela": 100244,
+      "parda": 3440037,
+      "indigena": 28000
+    },
+    "RJ": {
+      "branca": 6739901,
+      "preta": 2594253,
+      "amarela": 21837,
+      "parda": 6682740,
+      "indigena": 15904
+    },
+    "RN": {
+      "branca": 1304317,
+      "preta": 302749,
+      "amarela": 5237,
+      "parda": 1680960,
+      "indigena": 9385
+    },
+    "RO": {
+      "branca": 486123,
+      "preta": 136793,
+      "amarela": 4257,
+      "parda": 936708,
+      "indigena": 17278
+    },
+    "RR": {
+      "branca": 131260,
+      "preta": 49195,
+      "amarela": 784,
+      "parda": 364494,
+      "indigena": 89882
+    },
+    "RS": {
+      "branca": 8534229,
+      "preta": 709837,
+      "amarela": 8158,
+      "parda": 1596357,
+      "indigena": 34184
+    },
+    "SC": {
+      "branca": 5805552,
+      "preta": 309908,
+      "amarela": 12436,
+      "parda": 1462988,
+      "indigena": 19294
+    },
+    "SE": {
+      "branca": 556908,
+      "preta": 283960,
+      "amarela": 2978,
+      "parda": 1361504,
+      "indigena": 4580
+    },
+    "SP": {
+      "branca": 25661895,
+      "preta": 3546562,
+      "amarela": 513066,
+      "parda": 14636695,
+      "indigena": 50528
+    },
+    "TO": {
+      "branca": 350613,
+      "preta": 199394,
+      "amarela": 3405,
+      "parda": 939260,
+      "indigena": 18735
+    }
+  }
+}

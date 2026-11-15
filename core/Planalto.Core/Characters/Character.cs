@@ -20,6 +20,9 @@ public sealed class Character
 
     public Resources Resources { get; init; } = new();
 
+    /// <summary>Aparência do retrato; nunca altera atributos nem votos.</summary>
+    public Appearance? Appearance { get; set; }
+
     public int AgeOn(DateOnly date)
     {
         int age = date.Year - BirthDate.Year;
