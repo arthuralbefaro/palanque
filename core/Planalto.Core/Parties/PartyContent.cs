@@ -39,6 +39,11 @@ public sealed class PartyContent
             AddErrors(reports, PartyPaths.NameTerms, terms.ValidateAgainst(families));
         }
 
+        if (families is not null && icons is not null)
+        {
+            AddErrors(reports, PartyPaths.LogoIcons, icons.ValidateAgainst(families));
+        }
+
         content = reports.All(r => r.IsValid)
             ? new PartyContent
             {

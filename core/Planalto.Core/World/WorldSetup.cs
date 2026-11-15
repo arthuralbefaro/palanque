@@ -320,8 +320,8 @@ public sealed class WorldSetup
 
         // Prefere ícones que ainda não aparecem no mundo.
         var used = _parties.Where(p => p != party).Select(p => p.LogoIcon).ToHashSet(StringComparer.Ordinal);
-        var unused = Content.Parties.LogoIcons.Icons.Where(i => !used.Contains(i.Id)).ToList();
-        party.LogoIcon = unused.Count > 0 ? rng.Pick(unused).Id : _generator.PickLogoIcon(rng);
+        var unused = Content.Parties.LogoIcons.ForFamily(party.FamilyId).Where(i => !used.Contains(i.Id)).ToList();
+        party.LogoIcon = unused.Count > 0 ? rng.Pick(unused).Id : _generator.PickLogoIcon(rng, party.FamilyId);
     }
 
     private int? PickNumber(Rng rng, TakenIdentities taken) =>

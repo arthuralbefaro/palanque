@@ -70,9 +70,27 @@ public class PartyBlocklistTests
     }
 
     [Theory]
-    [InlineData("Partido dos Trabalhadores Unidos")]
+    [InlineData("Partido Liberal Brasileiro", "Partido Liberal")]
+    [InlineData("Movimento Solidariedade Nacional", "Solidariedade")]
+    [InlineData("Partido dos Trabalhadores Unidos", "Partido dos Trabalhadores")]
+    [InlineData("Aliança Renovadora Nacional do Brasil", "Aliança Renovadora Nacional")]
+    [InlineData("Frente Cidadania Ativa", "Cidadania")]
+    [InlineData("Nova União Democrática Nacional", "União Democrática Nacional")]
+    [InlineData("Movimento PARTIDO   VERDE", "Partido Verde")]
+    public void NomeQueContemNomeRealInteiro_EBloqueado(string name, string real)
+    {
+        BlockMatch? match = Blocklist.CheckName(name);
+
+        Assert.Equal(BlockReason.NomeContemNomeBloqueado, match?.Reason);
+        Assert.Equal(Blocklist.NormalizeName(real), Blocklist.NormalizeName(match!.Entry.Name));
+    }
+
+    [Theory]
     [InlineData("Movimento Democrático Popular")]
     [InlineData("Aliança Verde")]
+    [InlineData("Frente Republicana")]
+    [InlineData("União Brasileira Cívica")]
+    [InlineData("Partido Trabalhista Unido")]
     public void NomeDiferente_NaoEBloqueado(string name)
     {
         Assert.Null(Blocklist.CheckName(name));

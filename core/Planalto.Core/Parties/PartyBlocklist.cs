@@ -106,6 +106,11 @@ public sealed class BlocklistFile : IValidatable
                 yield return error;
             }
 
+            if (!string.IsNullOrWhiteSpace(entry.Name) && PartyBlocklist.NormalizeName(entry.Name, ignored).Length == 0)
+            {
+                yield return $"{where}: o nome fica vazio depois de tirar as palavras ignoradas.";
+            }
+
             if (entry.Sigla is not null && PartyBlocklist.NormalizeSigla(entry.Sigla).Length == 0)
             {
                 yield return $"{where}: sigla '{entry.Sigla}' sem letras.";
@@ -140,13 +145,14 @@ public enum BlockReason
     SiglaIgual,
     SiglaComLetrasReordenadas,
     NomeIgual,
+    NomeContemNomeBloqueado,
 }
 
 public sealed record BlockMatch(BlockReason Reason, BlocklistEntry Entry);
 
 /// <summary>
 /// Compara nomes e siglas com a lista de bloqueio: sigla exata, sigla que só muda a ordem das letras
-/// e nome normalizado (sem acentos, sem caixa e sem as palavras ignoradas).
+/// e nome normalizado (sem acentos, sem caixa e sem as palavras ignoradas) igual a um real ou que o contenha.
 /// </summary>
 public sealed class PartyBlocklist
 {
@@ -168,7 +174,11 @@ public sealed class PartyBlocklist
                 _siglaLetters.TryAdd(SortLetters(sigla), entry);
             }
 
-            _names.TryAdd(NormalizeName(entry.Name, _ignoredWords), entry);
+            string name = NormalizeName(entry.Name, _ignoredWords);
+            if (name.Length > 0)
+            {
+                _names.TryAdd(name, entry);
+            }
         }
     }
 
@@ -187,10 +197,31 @@ public sealed class PartyBlocklist
             : null;
     }
 
-    public BlockMatch? CheckName(string name) =>
-        _names.TryGetValue(NormalizeName(name, _ignoredWords), out BlocklistEntry? entry)
-            ? new BlockMatch(BlockReason.NomeIgual, entry)
-            : null;
+    /// <summary>
+    /// Bloqueia o nome igual a um real ou que contenha um nome real inteiro como sequência de palavras,
+    /// depois da normalização ("Partido Liberal Brasileiro" contém "partido liberal").
+    /// </summary>
+    public BlockMatch? CheckName(string name)
+    {
+        string[] words = NormalizeName(name, _ignoredWords).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (_names.TryGetValue(string.Join(' ', words), out BlocklistEntry? exact))
+        {
+            return new BlockMatch(BlockReason.NomeIgual, exact);
+        }
+
+        for (int length = words.Length - 1; length >= 1; length--)
+        {
+            for (int start = 0; start + length <= words.Length; start++)
+            {
+                if (_names.TryGetValue(string.Join(' ', words, start, length), out BlocklistEntry? contained))
+                {
+                    return new BlockMatch(BlockReason.NomeContemNomeBloqueado, contained);
+                }
+            }
+        }
+
+        return null;
+    }
 
     public bool IsBlocked(string name, string sigla) => CheckName(name) is not null || CheckSigla(sigla) is not null;
 

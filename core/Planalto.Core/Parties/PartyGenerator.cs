@@ -202,7 +202,8 @@ public sealed class PartyGenerator(PartyContent content)
         }
     }
 
-    public string PickLogoIcon(Rng rng) => rng.Pick(Content.LogoIcons.Icons).Id;
+    /// <summary>Ícone sorteado entre os que servem à família.</summary>
+    public string PickLogoIcon(Rng rng, string familyId) => rng.Pick(Content.LogoIcons.ForFamily(familyId)).Id;
 
     public LeadershipStyle PickLeadership(Rng rng) =>
         rng.PickWeighted(Enum.GetValues<LeadershipStyle>(), s => Config.LeadershipWeights[s]);
@@ -235,7 +236,7 @@ public sealed class PartyGenerator(PartyContent content)
             family.Id,
             GeneratePosition(rng, family),
             colors,
-            PickLogoIcon(rng),
+            PickLogoIcon(rng, family.Id),
             PickLeadership(rng));
         taken.Add(party.Name, party.Sigla, party.Number, party.Colors);
         return party;

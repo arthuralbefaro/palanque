@@ -162,7 +162,26 @@ public class PartyGeneratorTests
             Assert.True(OkColor.TryParseHex(colors.Primary, out OkLab primary));
             Assert.True(OkColor.TryParseHex(colors.Secondary, out OkLab secondary));
             Assert.True(primary.DistanceTo(secondary) >= Content.Generator.Colors.SecondaryMinDistance - 1e-9);
-            Assert.DoesNotContain(Generator.PickLogoIcon(rng), excluded);
+            Assert.DoesNotContain(Generator.PickLogoIcon(rng, rng.Pick(Content.Families.Families).Id), excluded);
+        }
+    }
+
+    [Fact]
+    public void Icone_ComFamiliaSoESorteadoParaElas()
+    {
+        var rng = new Rng(14);
+        var restricted = Content.LogoIcons.Icons.Where(i => i.Families.Count > 0).ToDictionary(i => i.Id, i => i.Families);
+
+        foreach (FamilyDefinition family in Content.Families.Families)
+        {
+            for (int i = 0; i < 300; i++)
+            {
+                string icon = Generator.PickLogoIcon(rng, family.Id);
+                if (restricted.TryGetValue(icon, out List<string>? families))
+                {
+                    Assert.Contains(family.Id, families);
+                }
+            }
         }
     }
 
