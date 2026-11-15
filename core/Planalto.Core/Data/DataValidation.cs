@@ -30,6 +30,7 @@ public static class DataValidation
         }
 
         reports.Add(families);
+        reports.Add(Check<BlocklistFile>(dataDirectory, PartyPaths.Blocklist, file => file.Entries.Count, out _));
 
         if (portes is null)
         {

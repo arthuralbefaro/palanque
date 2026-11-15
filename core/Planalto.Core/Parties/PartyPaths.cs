@@ -4,4 +4,5 @@ namespace Planalto.Core.Parties;
 public static class PartyPaths
 {
     public const string Families = "parties/families.json";
+    public const string Blocklist = "parties/blocklist.json";
 }
