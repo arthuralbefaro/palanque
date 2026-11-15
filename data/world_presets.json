@@ -1,0 +1,66 @@
+{
+  "default_preset": "multipartidario_moderado",
+  "presets": [
+    {
+      "id": "brasil_realista",
+      "name": "Brasil realista",
+      "description": "Muitos partidos, centro pragmático forte, federações.",
+      "available": true,
+      "min_parties": 28,
+      "max_parties": 32,
+      "family_weight_multipliers": { "centro_pragmatico": 3 },
+      "size_weights": { "nanico": 10, "pequeno": 9, "medio": 6, "grande": 4, "dominante": 1 },
+      "large_size_family_bias": { "centro_pragmatico": 2.5 }
+    },
+    {
+      "id": "multipartidario_moderado",
+      "name": "Multipartidário moderado",
+      "description": "Padrão do jogo.",
+      "available": true,
+      "min_parties": 12,
+      "max_parties": 16,
+      "family_weight_multipliers": {},
+      "size_weights": { "nanico": 2, "pequeno": 4, "medio": 4, "grande": 3, "dominante": 1 },
+      "large_size_family_bias": {}
+    },
+    {
+      "id": "poucos_partidos",
+      "name": "Poucos partidos",
+      "description": "Disputas mais polarizadas.",
+      "available": true,
+      "min_parties": 4,
+      "max_parties": 6,
+      "family_weight_multipliers": {},
+      "size_weights": { "nanico": 0, "pequeno": 1, "medio": 2, "grande": 2, "dominante": 1 },
+      "large_size_family_bias": {}
+    },
+    {
+      "id": "bipartidario",
+      "name": "Bipartidário",
+      "description": "Experimental: dois grandes blocos.",
+      "available": true,
+      "min_parties": 2,
+      "max_parties": 2,
+      "family_weight_multipliers": { "regionalista": 0.1 },
+      "size_weights": { "nanico": 0, "pequeno": 0, "medio": 0, "grande": 1, "dominante": 1 },
+      "large_size_family_bias": {}
+    },
+    {
+      "id": "personalizado",
+      "name": "Personalizado",
+      "description": "Tudo livre.",
+      "available": true,
+      "custom": true,
+      "min_parties": 2,
+      "max_parties": 35,
+      "starts_from": "multipartidario_moderado"
+    },
+    {
+      "id": "brasil_2026",
+      "name": "Brasil 2026",
+      "description": "Estrutura política real após as eleições de 2026, com nomes fictícios.",
+      "available": false,
+      "unavailable_reason": "Depende dos dados do cenário Brasil 2026 (etapa 1D do roadmap)."
+    }
+  ]
+}

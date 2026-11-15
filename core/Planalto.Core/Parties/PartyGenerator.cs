@@ -125,6 +125,24 @@ public sealed class PartyGenerator(PartyContent content)
         return builder.ToString();
     }
 
+    /// <summary>
+    /// Sigla livre para um nome já escolhido: as iniciais e, se estiverem bloqueadas ou em uso,
+    /// variantes que estendem uma inicial com a letra seguinte da palavra ("FLB" → "FLBr").
+    /// Null se nenhuma variante servir.
+    /// </summary>
+    public string? PickSigla(string name, TakenIdentities taken)
+    {
+        foreach (string candidate in SiglaCandidates(name))
+        {
+            if (IsSiglaLengthValid(candidate) && Content.Blocklist.CheckSigla(candidate) is null && !taken.HasSigla(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
+
     public bool IsSiglaLengthValid(string sigla)
     {
         int length = PartyBlocklist.NormalizeSigla(sigla).Length;
@@ -221,6 +239,34 @@ public sealed class PartyGenerator(PartyContent content)
             PickLeadership(rng));
         taken.Add(party.Name, party.Sigla, party.Number, party.Colors);
         return party;
+    }
+
+    private IEnumerable<string> SiglaCandidates(string name)
+    {
+        var words = name.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(w => Content.Blocklist.NormalizeName(w).Length > 0)
+            .Select(w => PartyBlocklist.NormalizeSigla(w))
+            .Where(w => w.Length > 0)
+            .ToList();
+        if (words.Count == 0)
+        {
+            yield break;
+        }
+
+        string Initials(int extended, int extraLetters) => string.Concat(words.Select((w, i) =>
+            i == extended ? w[..1] + w.Substring(1, Math.Min(extraLetters, w.Length - 1)).ToLowerInvariant() : w[..1]));
+
+        yield return Initials(-1, 0);
+        for (int extra = 1; extra <= 2; extra++)
+        {
+            for (int i = words.Count - 1; i >= 0; i--)
+            {
+                if (words[i].Length > extra)
+                {
+                    yield return Initials(i, extra);
+                }
+            }
+        }
     }
 
     private double QualifierWeight(NameQualifier qualifier, FamilyDefinition family)

@@ -1,6 +1,6 @@
 using Planalto.Core.Characters;
 using Planalto.Core.Municipios;
-using Planalto.Core.Parties;
+using Planalto.Core.World;
 
 namespace Planalto.Core.Data;
 
@@ -21,7 +21,7 @@ public static class DataValidation
             Check<PorteCatalog>(dataDirectory, "portes.json", catalog => catalog.Portes.Count, out PorteCatalog? portes),
         };
 
-        reports.AddRange(PartyContent.Load(dataDirectory, out _));
+        reports.AddRange(WorldContent.Load(dataDirectory, out _));
 
         if (portes is null)
         {

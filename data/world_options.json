@@ -1,0 +1,15 @@
+{
+  "min_start_year": 2028,
+  "difficulties": [
+    { "id": "facil", "name": "Fácil" },
+    { "id": "normal", "name": "Normal" },
+    { "id": "dificil", "name": "Difícil" }
+  ],
+  "defaults": {
+    "start_year": 2028,
+    "difficulty": "normal",
+    "event_frequency": "normal",
+    "ironman": false,
+    "legal_realism": "rigoroso"
+  }
+}
