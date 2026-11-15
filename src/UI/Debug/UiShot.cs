@@ -43,6 +43,12 @@ public partial class UiShot : Node
             return;
         }
 
+        if (target == "campaign")
+        {
+            await PlayCampaign(shot);
+            return;
+        }
+
         Node screen = target switch
         {
             "newworld" => GD.Load<PackedScene>(Game.Scenes.NewWorld).Instantiate(),
@@ -79,6 +85,110 @@ public partial class UiShot : Node
 
         GD.Print($"Smoke {target}: ok");
         GetTree().Quit(0);
+    }
+
+    /// <summary>Joga uma campanha inteira pela UI: hub, eventos, urna com teclas simuladas, apuração e save.</summary>
+    private async Task PlayCampaign(string? shot)
+    {
+        Game game = Game.Instance;
+        var creator = (CharacterCreatorScreen)GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate();
+        AddChild(creator);
+        await Frames(3);
+        creator.TryStartCareer();
+        RemoveChild(creator);
+        creator.QueueFree();
+        var engine = game.Engine!;
+        var campaign = game.State!.Campaign!;
+        var policy = new Rng(99);
+        Node? hub = null;
+        int week = 0;
+        while (campaign.Phase != Core.Campaign.CampaignPhase.Votacao)
+        {
+            if (week++ % 6 == 0)
+            {
+                hub?.QueueFree();
+                hub = GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
+                AddChild(hub);
+                await Frames(2);
+                if (shot is not null && campaign.Phase == Core.Campaign.CampaignPhase.Campanha && campaign.Events.Pending.Count == 0)
+                {
+                    GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_hub.png"));
+                }
+            }
+
+            while (campaign.Events.Pending.Count > 0)
+            {
+                var pending = campaign.Events.Pending[0];
+                var definition = game.Events.Find(pending.EventId)!;
+                int choice = Enumerable.Range(0, definition.Choices.Count).First(i => Core.Events.EventEngine.Blocked(engine.Context, definition.Choices[i]) is null);
+                Core.Events.EventEngine.Resolve(engine.Context, pending, choice, game.State.Rng);
+            }
+
+            foreach (var action in game.Campaign.Actions.Actions)
+            {
+                engine.Execute(action.Id, action.Targets.Count > 0 ? policy.Pick(action.Targets).Id : null);
+            }
+
+            engine.AdvanceWeek();
+        }
+
+        hub?.QueueFree();
+        var urna = GD.Load<PackedScene>(Game.Scenes.Urna).Instantiate();
+        AddChild(urna);
+        await Frames(3);
+        foreach (char digit in campaign.Player.Number)
+        {
+            Press((Key)((int)Key.Key0 + (digit - '0')));
+        }
+
+        await Frames(2);
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_urna.png"));
+        }
+
+        Press(Key.Enter);
+        foreach (char digit in campaign.ForOffice(Core.Elections.Office.Prefeito).First().Number)
+        {
+            Press((Key)((int)Key.Key0 + (digit - '0')));
+        }
+
+        Press(Key.Enter);
+        await Frames(4);
+        await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
+        if (campaign.Outcome is null || game.LastNavigation != Game.Scenes.ElectionNight || campaign.PlayerVotes.Count != 2)
+        {
+            GD.PushError("Smoke: a urna não registrou os dois votos e a apuração.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        urna.QueueFree();
+        var night = GD.Load<PackedScene>(Game.Scenes.ElectionNight).Instantiate();
+        AddChild(night);
+        await ToSignal(GetTree().CreateTimer(1.5), SceneTreeTimer.SignalName.Timeout);
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_apuracao.png"));
+        }
+
+        SaveManager.Instance.Save("smoke");
+        string? error = SaveManager.Instance.Load("smoke");
+        if (error is not null || game.State!.Campaign?.Outcome is null)
+        {
+            GD.PushError("Smoke: save/load falhou: " + error);
+            GetTree().Quit(1);
+            return;
+        }
+
+        GD.Print($"Smoke campaign: ok ({week} semanas, eleito: {game.State.Campaign.Outcome.PlayerElected})");
+        GetTree().Quit(0);
+    }
+
+    private static void Press(Key key)
+    {
+        Input.ParseInputEvent(new InputEventKey { Keycode = key, Pressed = true });
+        Input.ParseInputEvent(new InputEventKey { Keycode = key, Pressed = false });
     }
 
     private async Task Frames(int n)
