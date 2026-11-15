@@ -1,0 +1,35 @@
+{
+  "icons": [
+    { "id": "sol", "name": "Sol" },
+    { "id": "folha", "name": "Folha" },
+    { "id": "arvore", "name": "Árvore" },
+    { "id": "onda", "name": "Onda" },
+    { "id": "montanha", "name": "Montanha" },
+    { "id": "ponte", "name": "Ponte" },
+    { "id": "coluna", "name": "Coluna" },
+    { "id": "livro", "name": "Livro" },
+    { "id": "engrenagem", "name": "Engrenagem" },
+    { "id": "espiga", "name": "Espiga" },
+    { "id": "mao", "name": "Mão" },
+    { "id": "casa", "name": "Casa" },
+    { "id": "coracao", "name": "Coração" },
+    { "id": "gota", "name": "Gota" },
+    { "id": "farol", "name": "Farol" },
+    { "id": "ancora", "name": "Âncora" },
+    { "id": "catavento", "name": "Catavento" },
+    { "id": "circulo", "name": "Círculo" },
+    { "id": "triangulo", "name": "Triângulo" },
+    { "id": "hexagono", "name": "Hexágono" },
+    { "id": "seta", "name": "Seta" },
+    { "id": "raio", "name": "Raio" }
+  ],
+  "excluded": [
+    { "id": "estrela", "reason": "Símbolo ligado a partido real." },
+    { "id": "tucano", "reason": "Símbolo ligado a partido real." },
+    { "id": "foice_e_martelo", "reason": "Símbolo ligado a partidos reais." },
+    { "id": "punho_cerrado", "reason": "Símbolo ligado a partidos e movimentos reais." },
+    { "id": "rosa", "reason": "Símbolo ligado a partidos reais." },
+    { "id": "brasao", "reason": "Símbolo oficial; o jogo não reproduz brasões." },
+    { "id": "bandeira_nacional", "reason": "Símbolo oficial." }
+  ]
+}

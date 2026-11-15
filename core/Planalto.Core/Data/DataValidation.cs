@@ -1,5 +1,4 @@
 using Planalto.Core.Characters;
-using Planalto.Core.Ideology;
 using Planalto.Core.Municipios;
 using Planalto.Core.Parties;
 
@@ -20,17 +19,9 @@ public static class DataValidation
             Check<TraitCatalog>(dataDirectory, "traits.json", catalog => catalog.Traits.Count, out _),
             Check<ProfessionCatalog>(dataDirectory, "professions.json", catalog => catalog.Professions.Count, out _),
             Check<PorteCatalog>(dataDirectory, "portes.json", catalog => catalog.Portes.Count, out PorteCatalog? portes),
-            Check<ThemeCatalog>(dataDirectory, "themes.json", catalog => catalog.Themes.Count, out ThemeCatalog? themes),
         };
 
-        DataFileReport families = Check<FamilyCatalog>(dataDirectory, PartyPaths.Families, catalog => catalog.Families.Count, out FamilyCatalog? familyCatalog);
-        if (familyCatalog is not null && themes is not null)
-        {
-            families = families with { Errors = [.. families.Errors, .. familyCatalog.ValidateAgainst(themes).Select(e => $"families.json: {e}")] };
-        }
-
-        reports.Add(families);
-        reports.Add(Check<BlocklistFile>(dataDirectory, PartyPaths.Blocklist, file => file.Entries.Count, out _));
+        reports.AddRange(PartyContent.Load(dataDirectory, out _));
 
         if (portes is null)
         {

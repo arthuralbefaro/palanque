@@ -1,0 +1,24 @@
+{
+  "sigla": { "min_length": 2, "max_length": 8 },
+  "names": {
+    "second_qualifier_chance": 0.35,
+    "suffix_chance": 0.3,
+    "family_term_weight": 3,
+    "generic_term_weight": 1,
+    "max_attempts": 400
+  },
+  "colors": {
+    "lightness": { "min": 0.42, "max": 0.72 },
+    "chroma": { "min": 0.09, "max": 0.19 },
+    "min_distance": 0.09,
+    "min_distance_floor": 0.02,
+    "relax_factor": 0.8,
+    "attempts_per_level": 60,
+    "secondary_min_distance": 0.3,
+    "secondary_light": { "lightness": { "min": 0.94, "max": 0.99 }, "chroma": { "min": 0, "max": 0.02 } },
+    "secondary_dark": { "lightness": { "min": 0.18, "max": 0.28 }, "chroma": { "min": 0, "max": 0.03 } }
+  },
+  "size_share_weights": { "nanico": 1, "pequeno": 3, "medio": 8, "grande": 15, "dominante": 30 },
+  "size_warnings": { "max_dominant": 2, "max_nanico_share": 0.10, "min_main_size": "medio" },
+  "leadership_weights": { "ideologica": 3, "pragmatica": 3, "fisiologica": 2, "personalista": 2 }
+}
