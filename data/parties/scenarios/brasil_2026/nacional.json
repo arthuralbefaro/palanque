@@ -1,0 +1,1148 @@
+{
+  "format_version": 1,
+  "id": "brasil_2026",
+  "general_election_year": 2026,
+  "municipal_election_year": 2024,
+  "sources": [
+    {
+      "id": "tse_cand_2026",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Candidaturas e eleitos de 2026 (todas as UFs)."
+    },
+    {
+      "id": "tse_cand_2024",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2024.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Candidaturas e eleitos de 2024, com as eleições suplementares posteriores."
+    },
+    {
+      "id": "tse_cand_2022",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2022.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Senadores eleitos em 2022 e composição proporcional usada onde 2026 não tem resultado (D-005)."
+    },
+    {
+      "id": "tse_cand_2020",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2020.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Prefeitos e vereadores eleitos em 2020: reeleição em 2024 (D-007) e Câmara onde 2024 não tem eleitos (D-011)."
+    },
+    {
+      "id": "tse_votos_2026",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_partido_munzona/votacao_partido_munzona_2026.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Votos válidos por partido para a Câmara em 2026."
+    },
+    {
+      "id": "tse_votos_2024",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_partido_munzona/votacao_partido_munzona_2024.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Votos válidos por partido para vereador e prefeito em 2024 (força local)."
+    },
+    {
+      "id": "tse_coligacoes_2026",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_coligacao/consulta_coligacao_2026.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Coligações presidenciais de 2026 (base e oposição, D-006)."
+    },
+    {
+      "id": "tse_coligacoes_2024",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_coligacao/consulta_coligacao_2024.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Coligações de prefeito de 2024 (base do prefeito e alianças)."
+    },
+    {
+      "id": "tse_vagas_2026",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_vagas/consulta_vagas_2026.zip",
+      "consulted_on": "2026-11-15",
+      "note": "Vagas de 2026 por UF e cargo."
+    }
+  ],
+  "ideology": {
+    "citation": "Bolognesi, B.; Ribeiro, E.; Codato, A.; Silva, B. F. O desaparecimento do centro ideológico no sistema partidário brasileiro: a classificação mais atualizada dos experts. Opinião Pública, v. 31, e31120, 2025.",
+    "doi": "10.1590/1807-0191202531120",
+    "url": "https://www.scielo.br/j/op/a/hv8GBg9hfCCZLwcWktfYhtC/",
+    "method": "Escore esquerda–direita de 2022 (0 a 10, Tabela 1). Eixo econômico = (escore − 5) × 20; eixo de costumes = o mesmo valor mais variação sorteada, não derivada da fonte; família geral que contém o ponto (DECISOES D-001 a D-004)."
+  },
+  "parties": [
+    {
+      "id": "p01",
+      "name": "Bloco Cívico Reformista",
+      "sigla": "BCR",
+      "number": 96,
+      "family_id": "centro_direita",
+      "position": {
+        "economic": 20,
+        "social": 26,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.01,
+      "social_variation": 6,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#44519E",
+        "secondary": "#FEFAF3"
+      },
+      "logo_icon": "ponte",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p02",
+      "name": "Aliança Produtiva",
+      "sigla": "AP",
+      "number": 92,
+      "family_id": "direita_liberal",
+      "position": {
+        "economic": 54,
+        "social": -2,
+        "is_valid": true
+      },
+      "classified": false,
+      "source_score": null,
+      "social_variation": null,
+      "social_variation_origin": null,
+      "size": "nanico",
+      "colors": {
+        "primary": "#CB659F",
+        "secondary": "#F6F5FB"
+      },
+      "logo_icon": "tucano",
+      "leadership": "fisiologica"
+    },
+    {
+      "id": "p03",
+      "name": "Movimento Liberal",
+      "sigla": "ML",
+      "number": 82,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 46,
+        "social": 36,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 7.29,
+      "social_variation": -10,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#9E823C",
+        "secondary": "#F4F4EF"
+      },
+      "logo_icon": "triangulo",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p04",
+      "name": "Frente Reformista do Brasil",
+      "sigla": "FRB",
+      "number": 42,
+      "family_id": "centro_direita",
+      "position": {
+        "economic": 35,
+        "social": 45,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.76,
+      "social_variation": 10,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#8C3032",
+        "secondary": "#F1F5F4"
+      },
+      "logo_icon": "ponte",
+      "leadership": "fisiologica"
+    },
+    {
+      "id": "p05",
+      "name": "Coletivo Popular",
+      "sigla": "CP",
+      "number": 86,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 50,
+        "social": 49,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 7.49,
+      "social_variation": -1,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#188AA6",
+        "secondary": "#F3F5EA"
+      },
+      "logo_icon": "onda",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p06",
+      "name": "Ação Social",
+      "sigla": "AS",
+      "number": 79,
+      "family_id": "centro_esquerda",
+      "position": {
+        "economic": -23,
+        "social": -13,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 3.86,
+      "social_variation": 10,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#B055C4",
+        "secondary": "#162A2D"
+      },
+      "logo_icon": "punho_cerrado",
+      "leadership": "personalista"
+    },
+    {
+      "id": "p07",
+      "name": "Liga Reformista Brasileira",
+      "sigla": "LRB",
+      "number": 51,
+      "family_id": "centro_direita",
+      "position": {
+        "economic": 30,
+        "social": 27,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.5,
+      "social_variation": -3,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "medio",
+      "colors": {
+        "primary": "#D97974",
+        "secondary": "#1B1B1A"
+      },
+      "logo_icon": "hexagono",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p08",
+      "name": "Movimento Cívico",
+      "sigla": "MC",
+      "number": 59,
+      "family_id": "centro_direita",
+      "position": {
+        "economic": 23,
+        "social": 27,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.17,
+      "social_variation": 4,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#834E82",
+        "secondary": "#FFF2FD"
+      },
+      "logo_icon": "ramo_de_oliveira",
+      "leadership": "personalista"
+    },
+    {
+      "id": "p09",
+      "name": "Coletivo Social",
+      "sigla": "CS",
+      "number": 72,
+      "family_id": "esquerda_socialista",
+      "position": {
+        "economic": -86,
+        "social": -85,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 0.69,
+      "social_variation": 1,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#DB8C2D",
+        "secondary": "#1C2121"
+      },
+      "logo_icon": "chama",
+      "leadership": "personalista"
+    },
+    {
+      "id": "p10",
+      "name": "Movimento Moderado",
+      "sigla": "MM",
+      "number": 84,
+      "family_id": "centro_direita",
+      "position": {
+        "economic": 35,
+        "social": 28,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.74,
+      "social_variation": -7,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#1A9FF2",
+        "secondary": "#262027"
+      },
+      "logo_icon": "rosa",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p11",
+      "name": "Partido Social",
+      "sigla": "PS",
+      "number": 39,
+      "family_id": "direita_conservadora",
+      "position": {
+        "economic": 39,
+        "social": 48,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.94,
+      "social_variation": 9,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "grande",
+      "colors": {
+        "primary": "#8E84EC",
+        "secondary": "#F2EEEE"
+      },
+      "logo_icon": "girassol",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p12",
+      "name": "Partido Nacional",
+      "sigla": "PN",
+      "number": 54,
+      "family_id": "centro_esquerda",
+      "position": {
+        "economic": -28,
+        "social": -36,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 3.59,
+      "social_variation": -8,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#0A77D4",
+        "secondary": "#121513"
+      },
+      "logo_icon": "ramo_de_oliveira",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p13",
+      "name": "Ação Conservadora Nacional do Brasil",
+      "sigla": "ACNB",
+      "number": 46,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 64,
+        "social": 55,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.21,
+      "social_variation": -9,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#73B66C",
+        "secondary": "#8E4D9A"
+      },
+      "logo_icon": "livro",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p14",
+      "name": "Ação Renovadora Liberal",
+      "sigla": "ARL",
+      "number": 31,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 73,
+        "social": 76,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.67,
+      "social_variation": 3,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#925A12",
+        "secondary": "#231922"
+      },
+      "logo_icon": "triangulo",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p15",
+      "name": "Movimento Cristão Renovador",
+      "sigla": "MCR",
+      "number": 85,
+      "family_id": "direita_conservadora",
+      "position": {
+        "economic": 51,
+        "social": 53,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 7.55,
+      "social_variation": 2,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#C53D69",
+        "secondary": "#27211F"
+      },
+      "logo_icon": "punho_cerrado",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p16",
+      "name": "Convergência Operária do Brasil",
+      "sigla": "COB",
+      "number": 90,
+      "family_id": "esquerda_socialista",
+      "position": {
+        "economic": -72,
+        "social": -69,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 1.41,
+      "social_variation": 3,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#672D87",
+        "secondary": "#EDF5F2"
+      },
+      "logo_icon": "punho_cerrado",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p17",
+      "name": "Frente Progressista Socialista",
+      "sigla": "FPS",
+      "number": 74,
+      "family_id": "esquerda",
+      "position": {
+        "economic": -64,
+        "social": -63,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 1.78,
+      "social_variation": 1,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#449143",
+        "secondary": "#EFEEEE"
+      },
+      "logo_icon": "espiga",
+      "leadership": "fisiologica"
+    },
+    {
+      "id": "p18",
+      "name": "Coletivo Republicano Comunitário Brasileiro",
+      "sigla": "CRCB",
+      "number": 73,
+      "family_id": "centro_esquerda",
+      "position": {
+        "economic": -18,
+        "social": -27,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 4.12,
+      "social_variation": -9,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#27B2BC",
+        "secondary": "#241619"
+      },
+      "logo_icon": "tucano",
+      "leadership": "fisiologica"
+    },
+    {
+      "id": "p19",
+      "name": "Frente Moderada",
+      "sigla": "FM",
+      "number": 93,
+      "family_id": "centro_direita",
+      "position": {
+        "economic": 29,
+        "social": 37,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 6.47,
+      "social_variation": 8,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#6584C4",
+        "secondary": "#ECEDEB"
+      },
+      "logo_icon": "engrenagem",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p20",
+      "name": "Pacto Liberal Nacional",
+      "sigla": "PLN",
+      "number": 66,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 63,
+        "social": 54,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.16,
+      "social_variation": -9,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "pequeno",
+      "colors": {
+        "primary": "#E25D20",
+        "secondary": "#F5F9F7"
+      },
+      "logo_icon": "livro",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p21",
+      "name": "Movimento Republicano",
+      "sigla": "MR",
+      "number": 17,
+      "family_id": "esquerda_socialista",
+      "position": {
+        "economic": -90,
+        "social": -98,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 0.51,
+      "social_variation": -8,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#3B5E27",
+        "secondary": "#F3E9ED"
+      },
+      "logo_icon": "tucano",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p22",
+      "name": "União Solidária",
+      "sigla": "US",
+      "number": 58,
+      "family_id": "centro_esquerda",
+      "position": {
+        "economic": -26,
+        "social": -35,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 3.69,
+      "social_variation": -9,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#AF6057",
+        "secondary": "#EFEFF0"
+      },
+      "logo_icon": "livro",
+      "leadership": "fisiologica"
+    },
+    {
+      "id": "p23",
+      "name": "Pacto Democrático Brasileiro",
+      "sigla": "PDB",
+      "number": 88,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 70,
+        "social": 70,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.49,
+      "social_variation": 0,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "grande",
+      "colors": {
+        "primary": "#A8176E",
+        "secondary": "#15181F"
+      },
+      "logo_icon": "tucano",
+      "leadership": "fisiologica"
+    },
+    {
+      "id": "p24",
+      "name": "Coletivo Comunitário",
+      "sigla": "CC",
+      "number": 76,
+      "family_id": "esquerda",
+      "position": {
+        "economic": -46,
+        "social": -51,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 2.68,
+      "social_variation": -5,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "grande",
+      "colors": {
+        "primary": "#774CBF",
+        "secondary": "#0D1411"
+      },
+      "logo_icon": "chama",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p25",
+      "name": "Aliança Cristã",
+      "sigla": "AC",
+      "number": 34,
+      "family_id": "direita_conservadora",
+      "position": {
+        "economic": 49,
+        "social": 55,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 7.44,
+      "social_variation": 6,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "medio",
+      "colors": {
+        "primary": "#69670F",
+        "secondary": "#F0F8F3"
+      },
+      "logo_icon": "triangulo",
+      "leadership": "ideologica"
+    },
+    {
+      "id": "p26",
+      "name": "Movimento Democrático",
+      "sigla": "MD",
+      "number": 97,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 67,
+        "social": 65,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.33,
+      "social_variation": -2,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "grande",
+      "colors": {
+        "primary": "#E379C0",
+        "secondary": "#262728"
+      },
+      "logo_icon": "folha",
+      "leadership": "personalista"
+    },
+    {
+      "id": "p27",
+      "name": "Força Comunitária",
+      "sigla": "FC",
+      "number": 49,
+      "family_id": "esquerda",
+      "position": {
+        "economic": -67,
+        "social": -64,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 1.63,
+      "social_variation": 3,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#9E6EA7",
+        "secondary": "#F7F4FD"
+      },
+      "logo_icon": "seta",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p28",
+      "name": "Aliança Operária",
+      "sigla": "AO",
+      "number": 64,
+      "family_id": "esquerda_socialista",
+      "position": {
+        "economic": -89,
+        "social": -83,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 0.55,
+      "social_variation": 6,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "nanico",
+      "colors": {
+        "primary": "#5B6AAF",
+        "secondary": "#262422"
+      },
+      "logo_icon": "folha",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p29",
+      "name": "União Renovadora",
+      "sigla": "UR",
+      "number": 63,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 76,
+        "social": 76,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.8,
+      "social_variation": 0,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "dominante",
+      "colors": {
+        "primary": "#832A6A",
+        "secondary": "#EBECEB"
+      },
+      "logo_icon": "ponte",
+      "leadership": "pragmatica"
+    },
+    {
+      "id": "p30",
+      "name": "Força Liberal",
+      "sigla": "FL",
+      "number": 99,
+      "family_id": "liberal_conservador",
+      "position": {
+        "economic": 63,
+        "social": 61,
+        "is_valid": true
+      },
+      "classified": true,
+      "source_score": 8.15,
+      "social_variation": -2,
+      "social_variation_origin": "variação sorteada, não derivada da fonte",
+      "size": "grande",
+      "colors": {
+        "primary": "#1B794E",
+        "secondary": "#F7FBF9"
+      },
+      "logo_icon": "farol",
+      "leadership": "pragmatica"
+    }
+  ],
+  "federations": [
+    {
+      "id": "f1",
+      "members": [
+        "p04",
+        "p08"
+      ]
+    },
+    {
+      "id": "f2",
+      "members": [
+        "p17",
+        "p18",
+        "p24"
+      ]
+    },
+    {
+      "id": "f3",
+      "members": [
+        "p16",
+        "p22"
+      ]
+    },
+    {
+      "id": "f4",
+      "members": [
+        "p01",
+        "p20"
+      ]
+    },
+    {
+      "id": "f5",
+      "members": [
+        "p23",
+        "p30"
+      ]
+    }
+  ],
+  "camara": {
+    "seats": 513,
+    "by_party": {
+      "p01": 2,
+      "p02": 1,
+      "p03": 0,
+      "p04": 11,
+      "p05": 0,
+      "p06": 6,
+      "p07": 37,
+      "p08": 0,
+      "p09": 0,
+      "p10": 0,
+      "p11": 43,
+      "p12": 15,
+      "p13": 0,
+      "p14": 10,
+      "p15": 0,
+      "p16": 15,
+      "p17": 11,
+      "p18": 7,
+      "p19": 5,
+      "p20": 5,
+      "p21": 0,
+      "p22": 1,
+      "p23": 43,
+      "p24": 70,
+      "p25": 26,
+      "p26": 42,
+      "p27": 0,
+      "p28": 0,
+      "p29": 121,
+      "p30": 42
+    },
+    "source_year": null
+  },
+  "senado": {
+    "seats": 81,
+    "by_party": {
+      "p01": 0,
+      "p02": 0,
+      "p03": 0,
+      "p04": 2,
+      "p05": 0,
+      "p06": 1,
+      "p07": 8,
+      "p08": 0,
+      "p09": 0,
+      "p10": 0,
+      "p11": 4,
+      "p12": 4,
+      "p13": 0,
+      "p14": 3,
+      "p15": 0,
+      "p16": 0,
+      "p17": 0,
+      "p18": 0,
+      "p19": 0,
+      "p20": 0,
+      "p21": 0,
+      "p22": 1,
+      "p23": 8,
+      "p24": 10,
+      "p25": 3,
+      "p26": 4,
+      "p27": 0,
+      "p28": 0,
+      "p29": 27,
+      "p30": 6
+    },
+    "source_year": null
+  },
+  "camara_votes": {
+    "p01": 930053,
+    "p02": 1222752,
+    "p03": 27195,
+    "p04": 2839853,
+    "p05": 0,
+    "p06": 1785491,
+    "p07": 7863351,
+    "p08": 291324,
+    "p09": 0,
+    "p10": 34272,
+    "p11": 9384647,
+    "p12": 5007592,
+    "p13": 114247,
+    "p14": 2914121,
+    "p15": 7155,
+    "p16": 5293926,
+    "p17": 1284721,
+    "p18": 1302692,
+    "p19": 1807942,
+    "p20": 1189831,
+    "p21": 18696,
+    "p22": 263139,
+    "p23": 7756919,
+    "p24": 14764744,
+    "p25": 5807216,
+    "p26": 7933253,
+    "p27": 45431,
+    "p28": 3015,
+    "p29": 25768929,
+    "p30": 7590308
+  },
+  "presidente": {
+    "party": "p24",
+    "vice_party": "p12"
+  },
+  "base_governista": [
+    "p06",
+    "p12",
+    "p16",
+    "p17",
+    "p18",
+    "p22",
+    "p24"
+  ],
+  "oposicao": [
+    "p29"
+  ],
+  "gaps": [
+    {
+      "kind": "camara",
+      "uf": "AP",
+      "ibge": null,
+      "note": "Sem eleitos de 2026 no consulta_cand (todas as candidaturas com situação #NULO); composição eleita em 2022 (DECISOES D-005)."
+    },
+    {
+      "kind": "assembleia",
+      "uf": "AP",
+      "ibge": null,
+      "note": "Sem eleitos de 2026 no consulta_cand (todas as candidaturas com situação #NULO); composição eleita em 2022 (DECISOES D-005)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5200258,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "GO",
+      "ibge": 5200852,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5203906,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5205307,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "GO",
+      "ibge": 5210208,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5210208,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5211909,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5219753,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5219803,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "GO",
+      "ibge": 5221858,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "MA",
+      "ibge": 2100709,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2103125,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "MA",
+      "ibge": 2104909,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2105401,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2107357,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "MA",
+      "ibge": 2110237,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2110401,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2111409,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2112233,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "MA",
+      "ibge": 2113009,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "MG",
+      "ibge": 3141603,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "PA",
+      "ibge": 1500800,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "PA",
+      "ibge": 1501782,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara_sem_fonte",
+      "uf": "PA",
+      "ibge": 1505650,
+      "note": "0 vereadores de 2024 e 13 de 2020 na fonte para 11 vagas."
+    },
+    {
+      "kind": "camara",
+      "uf": "PA",
+      "ibge": 1506195,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "PA",
+      "ibge": 1508100,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "PI",
+      "ibge": 2202539,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "PI",
+      "ibge": 2203701,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "RN",
+      "ibge": 2403400,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "RN",
+      "ibge": 2412559,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "SE",
+      "ibge": 2800605,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "SE",
+      "ibge": 2801603,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "camara",
+      "uf": "SE",
+      "ibge": 2804607,
+      "note": "Sem vereadores eleitos de 2024 no consulta_cand (candidaturas #NULO); Câmara eleita em 2020 (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "SE",
+      "ibge": 2804805,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "SP",
+      "ibge": 3532207,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    },
+    {
+      "kind": "prefeito",
+      "uf": "SP",
+      "ibge": 3551207,
+      "note": "Eleição de prefeito de 2024 anulada (candidaturas #NULO) e sem suplementar com resultado no consulta_cand_2024; prefeito pendente (D-011)."
+    }
+  ]
+}

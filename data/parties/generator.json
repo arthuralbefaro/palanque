@@ -20,5 +20,10 @@
   },
   "size_share_weights": { "nanico": 1, "pequeno": 3, "medio": 8, "grande": 15, "dominante": 30 },
   "size_warnings": { "max_dominant": 2, "max_nanico_share": 0.10, "min_main_size": "medio" },
-  "leadership_weights": { "ideologica": 3, "pragmatica": 3, "fisiologica": 2, "personalista": 2 }
+  "leadership_weights": { "ideologica": 3, "pragmatica": 3, "fisiologica": 2, "personalista": 2 },
+  "scenario": {
+    "social_variation_max": 10,
+    "min_seat_share_by_size": { "pequeno": 0.005, "medio": 0.03, "grande": 0.08, "dominante": 0.15 }
+  }
 }
+

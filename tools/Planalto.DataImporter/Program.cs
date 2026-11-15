@@ -6,6 +6,7 @@ using Planalto.DataImporter;
 
 // Uso: dotnet run --project tools/Planalto.DataImporter
 // Baixa as fontes oficiais para o cache (uma vez só) e gera data/municipios/.
+// Com o argumento "cenario", gera data/parties/scenarios/brasil_2026/.
 
 // O .dbf da malha do IBGE pode declarar páginas de código que o .NET só lê com este provedor.
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -26,6 +27,26 @@ PorteCatalog portes = JsonData.LoadFile<PorteCatalog>(Path.Combine(dataDirectory
 using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(15) };
 http.DefaultRequestHeaders.UserAgent.ParseAdd("Planalto.DataImporter/1.0");
 var cache = new SourceCache(cacheDirectory, http);
+
+// Modo "cenario": gera o cenário Brasil 2026 (GDD 16.4) a partir de data/municipios/ e do TSE.
+if (args.Length > 0 && args[0] == "cenario")
+{
+    try
+    {
+        return await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory);
+    }
+    catch (DownloadBlockedException ex)
+    {
+        Console.Error.WriteLine($"Download bloqueado ou falho: {ex.Message}");
+        Console.Error.WriteLine($"  URL: {ex.Url}  arquivo: {ex.FileName}  destino: {ex.TargetPath}");
+        return 2;
+    }
+    catch (ImportException ex)
+    {
+        Console.Error.WriteLine($"Importação interrompida: {ex.Message}");
+        return 1;
+    }
+}
 
 RawSources raw;
 BuildResult result;

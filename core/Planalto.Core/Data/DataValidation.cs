@@ -1,5 +1,6 @@
 using Planalto.Core.Characters;
 using Planalto.Core.Municipios;
+using Planalto.Core.Scenarios;
 using Planalto.Core.World;
 
 namespace Planalto.Core.Data;
@@ -21,7 +22,7 @@ public static class DataValidation
             Check<PorteCatalog>(dataDirectory, "portes.json", catalog => catalog.Portes.Count, out PorteCatalog? portes),
         };
 
-        reports.AddRange(WorldContent.Load(dataDirectory, out _));
+        reports.AddRange(WorldContent.Load(dataDirectory, out WorldContent? world));
 
         if (portes is null)
         {
@@ -31,6 +32,18 @@ public static class DataValidation
 
         var (dataSet, errors) = MunicipiosDataSet.Load(dataDirectory, portes);
         reports.Add(new DataFileReport($"{MunicipiosDataSet.DirectoryName}/", dataSet?.All.Count() ?? 0, errors));
+
+        string scenario = $"{ScenarioPaths.Brasil2026Directory}/";
+        if (dataSet is null || world is null)
+        {
+            reports.Add(new DataFileReport(scenario, 0, ["não validado: municípios ou partidos inválidos."]));
+        }
+        else
+        {
+            var (loaded, scenarioErrors) = Brasil2026Scenario.Load(dataDirectory, dataSet, world.Parties);
+            reports.Add(new DataFileReport(scenario, loaded?.States.Values.Sum(s => s.Municipios.Count) ?? 0, scenarioErrors));
+        }
+
         return reports;
     }
 

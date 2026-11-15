@@ -73,6 +73,30 @@ public sealed class SizeWarningConfig
     public required PartySize MinMainSize { get; init; }
 }
 
+/// <summary>Parâmetros dos cenários espelhados do real (GDD 16.4, DECISOES D-004).</summary>
+public sealed class ScenarioMirrorConfig
+{
+    /// <summary>Variação máxima, para cada lado, sorteada no eixo de costumes dos partidos espelhados.</summary>
+    public required int SocialVariationMax { get; init; }
+
+    /// <summary>Fatia mínima das cadeiras da Câmara para cada tamanho; abaixo da menor, nanico.</summary>
+    public required Dictionary<PartySize, double> MinSeatShareBySize { get; init; }
+
+    public PartySize SizeForSeatShare(double share)
+    {
+        PartySize size = PartySize.Nanico;
+        foreach (var (candidate, minimum) in MinSeatShareBySize.OrderBy(p => p.Value))
+        {
+            if (share >= minimum)
+            {
+                size = candidate;
+            }
+        }
+
+        return size;
+    }
+}
+
 /// <summary>Conteúdo de data/parties/generator.json.</summary>
 public sealed class PartyGeneratorConfig : IValidatable
 {
@@ -88,6 +112,8 @@ public sealed class PartyGeneratorConfig : IValidatable
     public required SizeWarningConfig SizeWarnings { get; init; }
 
     public required Dictionary<LeadershipStyle, int> LeadershipWeights { get; init; }
+
+    public required ScenarioMirrorConfig Scenario { get; init; }
 
     public double ShareOf(PartySize size, IEnumerable<PartySize> allSizes)
     {
@@ -129,6 +155,14 @@ public sealed class PartyGeneratorConfig : IValidatable
             .Concat(AllPositive(LeadershipWeights, "leadership_weights")))
         {
             yield return error;
+        }
+
+        if (Scenario is null || Scenario.SocialVariationMax < 0 || Scenario.MinSeatShareBySize is null
+            || Scenario.MinSeatShareBySize.ContainsKey(PartySize.Nanico)
+            || Scenario.MinSeatShareBySize.Values.Any(v => v is <= 0 or > 1)
+            || !Scenario.MinSeatShareBySize.OrderBy(p => p.Key).Select(p => p.Value).SequenceEqual(Scenario.MinSeatShareBySize.Values.Order()))
+        {
+            yield return "scenario: 'social_variation_max' >= 0 e 'min_seat_share_by_size' sem nanico, com fatias em (0, 1] crescentes com o tamanho.";
         }
 
         if (SizeWarnings is null)
