@@ -71,3 +71,27 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Alternativas:** descartar os municípios do cenário; ratear as cadeiras pelos votos válidos parciais.
 - **Como reverter:** quando o TSE publicar os resultados, rodar `dotnet run --project tools/Planalto.DataImporter -- cenario` de novo.
 - **Adendo (força para prefeito):** usa os votos válidos da eleição que definiu o prefeito, 1º turno; se a fonte não tiver votos válidos do 1º turno (Aracaju/SE: só o 2º turno publicado), o 2º turno; se o prefeito veio de suplementar, os votos dela.
+
+## D-012 — Segmentos de eleitores
+- **Data:** 2026-11-15 · **Fase:** 1E
+- **Pergunta:** como montar os segmentos a partir do perfil do Censo, que só traz cada bloco separado (sem tabela conjunta)?
+- **Decisão:** segmentos = cruzamento de 5 dimensões agrupadas em data/electorate/segments.json: zona (urbana, rural), idade (16–17, 18–34, 35–59, 60–69, 70+; as faixas 16–17 e 70+ marcadas como voto facultativo; 0–15 excluída), renda (baixa até 1 SM, média 1–3 SM, alta acima de 3 SM), religião (católica, evangélica, outras, sem religião; "não sabe" e "sem declaração" fora do denominador) e escolaridade (até fundamental, médio ou mais) = 240 segmentos por município. A fatia de cada grupo é a soma das categorias dividida pela soma das categorias do bloco (nunca o total publicado). Sem tabela conjunta, o peso do segmento é o produto das fatias (independência entre dimensões) vezes o eleitorado do TSE.
+- **Ideologia, temas e engajamento por grupo:** parâmetros de jogo em segments.json (deslocamentos moderados nos dois eixos, pesos de temas, ajuste de comparecimento), sem fonte empírica; ajustáveis no balanceamento. Nenhum parâmetro altera atributos de personagens nem é usado em texto de evento.
+- **Alternativas:** cruzar todas as categorias do Censo (milhares de segmentos); importar tabelas conjuntas do SIDRA (não existem para todas as combinações por município).
+- **Como reverter:** editar as dimensões em segments.json; o código não fixa nenhuma.
+
+## D-013 — Afinidade partidária inicial dos segmentos
+- **Data:** 2026-11-15 · **Fase:** 1E
+- **Decisão:** no cenário Brasil 2026, a força local de 2024 para vereador vira a afinidade dos segmentos por ajuste proporcional iterativo (IPF): parte de força × proximidade ideológica segmento–partido e ajusta até a média ponderada pelos eleitores reproduzir a força local e cada segmento somar 1. Nos demais cenários, a força municipal é gerada pelo tamanho do partido (pesos de generator.json) × proximidade ao centro ideológico do município × ruído pelo Rng, e passa pelo mesmo IPF. O centro do município é a média das posições dos partidos ponderada pela força (Brasil 2026) ou um sorteio em torno de 0 (demais).
+- **Como reverter:** parâmetros em data/electorate/vote_model.json.
+
+## D-014 — Modelo de voto e pesquisas
+- **Data:** 2026-11-15 · **Fase:** 1E
+- **Decisão:** utilidade da fórmula do GDD 5.3 com pesos em vote_model.json; intenção = softmax com temperatura; brancos e nulos crescem quando a melhor utilidade do segmento é baixa; comparecimento = base + engajamento do segmento, multiplicado pelo fator de voto facultativo em 16–17 e 70+. Pesquisas: amostra multinomial simulada pelo Rng entre os prováveis eleitores, viés de casa do instituto inclinando o eixo econômico (vieses simétricos: soma zero entre os institutos), margem de erro = 1,96 × √(0,25/n) × √(efeito de desenho), "não sabe" decrescendo até a eleição; pesquisa interna com amostra maior, sem viés e mais cara. Institutos fictícios em data/electorate/pollsters.json.
+- **Como reverter:** parâmetros nos arquivos de data/electorate/.
+
+## D-015 — Calibração inicial do modelo de voto
+- **Data:** 2026-11-15 · **Fase:** 1E
+- **Pergunta:** que temperatura e pesos usar no softmax?
+- **Decisão:** calibrado contra a votação real de prefeito de 2024 (força local para prefeito do cenário) em 250 municípios sorteados, com um candidato por partido e reconhecimento igual: temperatura 0,35 dava erro médio de 19,7 pontos por candidato; temperatura 1,3 com peso ideológico 1,5 e partidário 2,0 dá 11,1 pontos e acerta o vencedor em 72% dos municípios (a qualidade individual dos candidatos reais, não modelada, explica o resto). Temperaturas maiores quase não melhoram e achatam a disputa.
+- **Como reverter:** vote_model.json; o balanceamento fino fica para o BalanceSim (Fase 10).
