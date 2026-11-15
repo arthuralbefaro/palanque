@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Planalto</RootNamespace>
     <!-- core/ e tools/ têm projetos próprios; sem isso o glob padrão compilaria os .cs deles aqui. -->
     <DefaultItemExcludes>$(DefaultItemExcludes);core/**;tools/**</DefaultItemExcludes>

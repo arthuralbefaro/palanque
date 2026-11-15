@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 Game="*res://src/Autoload/Game.cs"
 EventBus="*res://src/Autoload/EventBus.cs"
 SaveManager="*res://src/Autoload/SaveManager.cs"
+PortraitCache="*res://src/UI/Portrait/PortraitCache.cs"
 
 [display]
 

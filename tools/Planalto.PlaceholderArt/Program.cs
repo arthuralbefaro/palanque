@@ -15,11 +15,8 @@ if (data is null)
 
 AppearanceCatalog catalog = JsonData.LoadFile<AppearanceCatalog>(Path.Combine(data, AppearanceContent.PartsFile)).GetValueOrThrow();
 string root = Path.Combine(Directory.GetParent(data)!.FullName, catalog.ArtRoot.Replace("res://", "", StringComparison.Ordinal));
-if (Directory.Exists(root))
-{
-    Directory.Delete(root, recursive: true);
-}
-
+// Só os SVGs obsoletos são apagados; os .import (com os UIDs do Godot) dos que continuam são preservados.
+var generated = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 int files = 0;
 foreach (PartDefinition part in catalog.Parts)
 {
@@ -33,12 +30,30 @@ foreach (PartDefinition part in catalog.Parts)
             string path = Path.Combine(root, layer.FileFor(expression).Replace('/', Path.DirectorySeparatorChar));
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, Art.Svg(body), new UTF8Encoding(false));
+            generated.Add(Path.GetFullPath(path));
             files++;
         }
     }
 }
 
+foreach (string stale in Directory.EnumerateFiles(root, "*.svg", SearchOption.AllDirectories).Where(f => !generated.Contains(Path.GetFullPath(f))))
+{
+    File.Delete(stale);
+    File.Delete(stale + ".import");
+}
+
 Console.WriteLine($"{files} camadas geradas em {root}");
+
+// Ícones de logotipo (data/parties/logo_icons.json): brancos para receber a cor do partido.
+var icons = JsonData.LoadFile<Planalto.Core.Parties.LogoIconCatalog>(Path.Combine(data, "parties/logo_icons.json")).GetValueOrThrow();
+string iconRoot = Path.Combine(Directory.GetParent(data)!.FullName, "assets", "icons", "logo");
+Directory.CreateDirectory(iconRoot);
+foreach (var icon in icons.Icons)
+{
+    File.WriteAllText(Path.Combine(iconRoot, $"{icon.Id}.svg"), Art.Icon(icon.Id), new UTF8Encoding(false));
+}
+
+Console.WriteLine($"{icons.Icons.Count} ícones de logotipo gerados em {iconRoot}");
 return 0;
 
 /// <summary>Desenhos vetoriais simples por categoria. Coordenadas no quadro 1024×1024; cabeça centrada em (512, 400).</summary>
@@ -88,7 +103,7 @@ internal static class Art
 
     private static string Body(int v)
     {
-        int w = 300 + (v * 40);
+        int w = 250 + (v * 20);
         return Rect(452, 560, 120, 160, "#FFFFFF") + Rect(472, 600, 80, 40, Shade, opacity: 0.6)
             + Path($"M{512 - w} 1024 Q{512 - w} 760 {512 - 150} 720 L{512 + 150} 720 Q{512 + w} 760 {512 + w} 1024 Z", "none", fill: "#FFFFFF");
     }
@@ -353,6 +368,61 @@ internal static class Art
         "background_cidade" => Rect(0, 0, 1024, 1024, "#FFFFFF") + string.Concat(Enumerable.Range(0, 9).Select(i => Rect(i * 118, 520 - (i * 47 % 200), 96, 600, Shade, opacity: 0.8))),
         _ => Rect(0, 0, 1024, 1024, "#FFFFFF"),
     };
+
+    /// <summary>Ícone de logotipo em 256×256, branco sobre transparente.</summary>
+    public static string Icon(string id)
+    {
+        string body = id switch
+        {
+            "sol" => Circle(128, 128, 48, "#FFFFFF") + string.Concat(Enumerable.Range(0, 12).Select(i =>
+                Path($"M{F(128 + (70 * Math.Cos(i * Math.PI / 6)))} {F(128 + (70 * Math.Sin(i * Math.PI / 6)))} L{F(128 + (100 * Math.Cos(i * Math.PI / 6)))} {F(128 + (100 * Math.Sin(i * Math.PI / 6)))}", "#FFFFFF", 12))),
+            "folha" => Path("M60 200 Q60 60 200 56 Q196 196 60 200 Z", "none", fill: "#FFFFFF") + Path("M70 190 L180 70", "#13233C", 6),
+            "arvore" => Circle(128, 100, 70, "#FFFFFF") + Rect(112, 150, 32, 80, "#FFFFFF"),
+            "onda" => Path("M30 140 Q70 90 110 140 T190 140 T230 140", "#FFFFFF", 22) + Path("M30 190 Q70 140 110 190 T190 190 T230 190", "#FFFFFF", 22),
+            "montanha" => Path("M20 220 L100 70 L150 150 L180 110 L236 220 Z", "none", fill: "#FFFFFF"),
+            "ponte" => Path("M20 180 Q128 40 236 180", "#FFFFFF", 22) + Rect(20, 176, 216, 22, "#FFFFFF"),
+            "coluna" => Rect(80, 50, 96, 20, "#FFFFFF") + Rect(96, 70, 64, 130, "#FFFFFF") + Rect(72, 200, 112, 20, "#FFFFFF"),
+            "livro" => Path("M40 70 Q90 50 128 80 Q166 50 216 70 L216 200 Q166 180 128 206 Q90 180 40 200 Z", "none", fill: "#FFFFFF") + Path("M128 80 L128 206", "#13233C", 6),
+            "engrenagem" => Circle(128, 128, 70, "#FFFFFF") + string.Concat(Enumerable.Range(0, 8).Select(i => Circle(128 + (80 * Math.Cos(i * Math.PI / 4)), 128 + (80 * Math.Sin(i * Math.PI / 4)), 20, "#FFFFFF"))) + Circle(128, 128, 26, "#13233C"),
+            "espiga" => Path("M128 230 L128 40", "#FFFFFF", 10) + string.Concat(Enumerable.Range(0, 5).Select(i => Ellipse(110, 60 + (i * 32), 16, 26, "#FFFFFF") + Ellipse(146, 60 + (i * 32), 16, 26, "#FFFFFF"))),
+            "mao" => Rect(80, 110, 100, 110, "#FFFFFF") + string.Concat(Enumerable.Range(0, 4).Select(i => Rect(82 + (i * 26), 40, 20, 90, "#FFFFFF"))) + Rect(170, 120, 50, 22, "#FFFFFF"),
+            "casa" => Path("M40 120 L128 40 L216 120 Z", "none", fill: "#FFFFFF") + Rect(64, 120, 128, 100, "#FFFFFF"),
+            "coracao" => Path("M128 220 L40 120 Q20 60 80 50 Q118 46 128 90 Q138 46 176 50 Q236 60 216 120 Z", "none", fill: "#FFFFFF"),
+            "gota" => Path("M128 30 Q200 130 190 170 Q180 226 128 226 Q76 226 66 170 Q56 130 128 30 Z", "none", fill: "#FFFFFF"),
+            "farol" => Path("M100 220 L112 70 L144 70 L156 220 Z", "none", fill: "#FFFFFF") + Rect(100, 40, 56, 30, "#FFFFFF"),
+            "ancora" => Path("M128 50 L128 210 M60 160 Q128 250 196 160", "#FFFFFF", 20) + Circle(128, 50, 20, "none", "#FFFFFF", 14) + Rect(88, 90, 80, 18, "#FFFFFF"),
+            "catavento" => string.Concat(Enumerable.Range(0, 4).Select(i => Path($"M128 128 L{F(128 + (90 * Math.Cos(i * Math.PI / 2)))} {F(128 + (90 * Math.Sin(i * Math.PI / 2)))} L{F(128 + (60 * Math.Cos((i * Math.PI / 2) + 0.6)))} {F(128 + (60 * Math.Sin((i * Math.PI / 2) + 0.6)))} Z", "none", fill: "#FFFFFF"))),
+            "triangulo" => Path("M128 30 L230 210 L26 210 Z", "none", fill: "#FFFFFF"),
+            "hexagono" => Path("M128 24 L218 76 L218 180 L128 232 L38 180 L38 76 Z", "none", fill: "#FFFFFF"),
+            "seta" => Path("M40 150 L160 150 L160 200 L230 128 L160 56 L160 106 L40 106 Z", "none", fill: "#FFFFFF"),
+            "raio" => Path("M150 20 L60 140 L120 140 L100 236 L196 104 L134 104 Z", "none", fill: "#FFFFFF"),
+            "estrela" => Path(StarPath(128, 132, 104, 44, 5), "none", fill: "#FFFFFF"),
+            "tucano" => Ellipse(110, 150, 70, 60, "#FFFFFF") + Path("M160 120 Q236 120 236 150 Q200 170 160 160 Z", "none", fill: "#FFFFFF") + Circle(140, 128, 8, "#13233C"),
+            "punho_cerrado" => Rect(78, 90, 100, 90, "#FFFFFF") + Rect(100, 180, 56, 56, "#FFFFFF") + string.Concat(Enumerable.Range(0, 4).Select(i => Path($"M{F(84 + (i * 24))} 92 L{F(84 + (i * 24))} 150", "#13233C", 4))),
+            "rosa" => Circle(128, 100, 52, "#FFFFFF") + Path("M128 100 m-26 0 a26 26 0 1 0 52 0 a26 26 0 1 0 -52 0", "#13233C", 5) + Path("M128 150 L128 236", "#FFFFFF", 10) + Ellipse(100, 200, 24, 12, "#FFFFFF"),
+            "pomba" => Path("M40 150 Q100 90 170 110 L230 80 L200 130 Q180 190 100 190 Q60 190 40 150 Z", "none", fill: "#FFFFFF"),
+            "foice_e_martelo" => Path("M70 80 Q190 60 190 170", "#FFFFFF", 18) + Path("M80 210 L170 120", "#FFFFFF", 18) + Rect(150, 96, 60, 26, "#FFFFFF"),
+            "girassol" => string.Concat(Enumerable.Range(0, 12).Select(i => Ellipse(128 + (66 * Math.Cos(i * Math.PI / 6)), 128 + (66 * Math.Sin(i * Math.PI / 6)), 22, 22, "#FFFFFF"))) + Circle(128, 128, 48, "#FFFFFF") + Circle(128, 128, 40, "#13233C", "none", 0),
+            "chama" => Path("M128 230 Q50 200 70 130 Q90 90 110 40 Q130 100 160 110 Q210 150 180 200 Q160 232 128 230 Z", "none", fill: "#FFFFFF"),
+            "ramo_de_oliveira" => Path("M50 210 Q128 150 200 40", "#FFFFFF", 10) + string.Concat(Enumerable.Range(0, 5).Select(i => Ellipse(80 + (i * 26), 180 - (i * 30), 22, 10, "#FFFFFF"))),
+            "maos_dadas" => Rect(30, 110, 110, 50, "#FFFFFF") + Rect(116, 110, 110, 50, "#FFFFFF") + Circle(128, 135, 36, "#FFFFFF"),
+            _ => Circle(128, 128, 96, "#FFFFFF"),
+        };
+        return $"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"256\" height=\"256\" viewBox=\"0 0 256 256\">{body}</svg>\n";
+    }
+
+    private static string StarPath(double cx, double cy, double outer, double inner, int points)
+    {
+        var sb = new StringBuilder();
+        for (int i = 0; i < points * 2; i++)
+        {
+            double r = i % 2 == 0 ? outer : inner;
+            double a = (Math.PI / points * i) - (Math.PI / 2);
+            sb.Append(i == 0 ? "M" : "L").Append(F(cx + (r * Math.Cos(a)))).Append(' ').Append(F(cy + (r * Math.Sin(a)))).Append(' ');
+        }
+
+        return sb.Append('Z').ToString();
+    }
 
     private static string F(double value) => value.ToString("0.#", CultureInfo.InvariantCulture);
 
