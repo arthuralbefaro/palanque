@@ -63,3 +63,11 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Data:** 2026-11-15 · **Fase:** 1D
 - **Decisão:** o cenário guarda só as entradas (cadeiras e votos para a Câmara); a divisão é calculada no Core por objeto de configuração com o padrão da lei (Lei 9.504/1997, art. 16-D: 2% igual, 35% votos para a Câmara entre partidos com deputado, 48% cadeiras na Câmara, 15% cadeiras no Senado; art. 47, §2º: 90% proporcional à bancada na Câmara, 10% igual).
 - **Como reverter:** mudar os padrões no objeto de configuração.
+
+## D-011 — Municípios sem resultado de 2024 na fonte
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Pergunta:** no consulta_cand_2024, 14 municípios têm todas as candidaturas a prefeito com situação "#NULO" (eleição anulada, sem suplementar com resultado) e 21 têm todas as de vereador assim. Como compor?
+- **Decisão:** prefeito e vice ficam `null` (pendentes) e a lacuna é registrada em `gaps` do arquivo nacional; o jogo trata como prefeitura interina até a próxima eleição. Câmara sem eleitos em 2024 usa a eleita em 2020 (consulta_cand_2020) quando o número de cadeiras é igual às vagas atuais, com `camara_fonte_ano: 2020`. Onde nem isso fecha (Placas/PA: 11 vagas, 13 eleitos em 2020), a Câmara fica vazia, registrada como `camara_sem_fonte`; nenhum número é inventado.
+- **Alternativas:** descartar os municípios do cenário; ratear as cadeiras pelos votos válidos parciais.
+- **Como reverter:** quando o TSE publicar os resultados, rodar `dotnet run --project tools/Planalto.DataImporter -- cenario` de novo.
+- **Adendo (força para prefeito):** usa os votos válidos da eleição que definiu o prefeito, 1º turno; se a fonte não tiver votos válidos do 1º turno (Aracaju/SE: só o 2º turno publicado), o 2º turno; se o prefeito veio de suplementar, os votos dela.
