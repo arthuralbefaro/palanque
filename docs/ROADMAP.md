@@ -112,6 +112,7 @@
 - [ ] Animações, áudio, jingles, música
 - [ ] Tutorial na primeira campanha
 - [ ] Opções e acessibilidade
+- [ ] Converter as telas principais para cenas .tscn editáveis no editor, mantendo a lógica em C#
 
 ## Fase 10 — Balanceamento e lançamento
 - [ ] Relatórios do BalanceSim e ajustes
