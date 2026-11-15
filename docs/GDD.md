@@ -581,17 +581,20 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando ou dados inv
 ### 12.2 Fontes de dados (oficiais e públicas)
 | Dado | Fonte |
 |---|---|
-| Lista, código IBGE, UF, região, micro/mesorregião | IBGE — API de Localidades |
-| População, urbana/rural, faixa etária, renda, religião | IBGE — Censo 2022 (SIDRA) e estimativas mais recentes |
-| Eleitorado por município (total, faixa etária, gênero, escolaridade) | TSE — Portal de Dados Abertos (perfil do eleitorado) |
-| Coordenadas | IBGE |
+| Lista, código IBGE, UF, região, microrregião, região geográfica imediata | IBGE — API de Localidades |
+| População | IBGE — Estimativas da População (SIDRA 6579), ano mais recente |
+| Urbana/rural, faixa etária, renda, religião, escolaridade | IBGE — Censo 2022 (SIDRA 10211, 9514, 10296, 10198, 10061) |
+| Eleitorado por município (total, faixa etária, gênero, escolaridade) | TSE — Portal de Dados Abertos (perfil do eleitorado atual) |
+| Correspondência de códigos TSE ↔ IBGE | TSE — Códigos oficiais de UF e municípios |
+| Vagas de vereador | TSE — Consulta de vagas da última eleição municipal |
+| Coordenadas (centroide) e área | IBGE — API de Malhas (metadados) |
 | Contornos (mapa) | IBGE — malhas territoriais, simplificadas |
 Créditos das fontes em assets/CREDITS.md.
 
 ### 12.3 Pipeline de dados
-- `tools/Planalto.DataImporter` (console .NET) baixa, cruza pelo código IBGE e gera `data/municipios/{UF}.json` (27 arquivos).
-- Brutos em cache local (não versionados); saída versionada.
-- Testes: contagem total de municípios, nenhum código duplicado, soma de população por UF igual ao total oficial, todo município com eleitorado > 0.
+- `tools/Planalto.DataImporter` (console .NET) baixa, cruza pelo código IBGE de 7 dígitos e gera `data/municipios/{UF}.json` (27 arquivos) e `data/municipios/_fontes.json` (fonte, ano e data de download de cada campo, totais oficiais e lacunas).
+- Brutos em cache local (`tools/Planalto.DataImporter/cache/`, não versionado); saída versionada.
+- Testes: contagem total de municípios igual à lista do IBGE, nenhum código duplicado, soma de população por UF igual ao total oficial, todo município com eleições municipais com eleitorado > 0, soma de vagas de vereador igual ao total do TSE.
 - Campos por município:
 ```json
 {
@@ -599,23 +602,32 @@ Créditos das fontes em assets/CREDITS.md.
   "nome": "São Paulo",
   "uf": "SP",
   "regiao": "SE",
-  "microrregiao": "São Paulo",
-  "lat": -23.55, "lon": -46.63,
-  "populacao": 11451999,
+  "microrregiao": { "id": 35061, "nome": "São Paulo" },
+  "regiao_imediata": { "id": 350001, "nome": "São Paulo" },
+  "lat": -23.65, "lon": -46.65,
+  "populacao": 11900000,
   "eleitorado": 9300000,
   "urbana_pct": 99.1,
-  "perfil": { "idade": {...}, "renda": {...}, "religiao": {...}, "escolaridade": {...} },
+  "perfil_fonte": "municipio",
+  "perfil": { "populacao_censo": 11451999, "situacao": {...}, "idade": {...}, "renda": {...}, "religiao": {...}, "escolaridade": {...} },
+  "eleicoes_municipais": true,
   "vagas_vereador": 55,
+  "vagas_vereador_max": 55,
+  "vagas_fonte": "tse_2024",
   "segundo_turno_prefeito": true,
   "porte": "metropole"
 }
 ```
 (valores ilustrativos; os reais vêm do importador)
+- `microrregiao` pode ser `null`: a divisão em microrregiões está congelada desde 2017 e não existe para municípios criados depois. A divisão usada pela simulação é a **região geográfica imediata**, que cobre todos.
+- O perfil guarda as contagens inteiras do Censo 2022; percentuais são calculados no Core. Faixas etárias: 0–15, 16–17, 18–24, 25–34, 35–44, 45–59, 60–69 e 70+ (16–17 e 70+ são as faixas de voto facultativo).
+- Município sem dado do Censo (criado depois de 2022) usa o perfil da UF, com `perfil_fonte: "uf"`, e a lacuna fica registrada em `_fontes.json`.
+- Distrito Federal e Fernando de Noronha (distrito estadual de PE) têm `eleicoes_municipais: false`: não elegem prefeito nem vereadores.
 
 ### 12.4 Regras derivadas automaticamente
-- **Vagas de vereador** pelas faixas populacionais da Constituição (art. 29, IV), de 9 a 55.
+- **Vagas de vereador**: o número real de cada Câmara, fixado pela lei orgânica, vem da consulta de vagas do TSE da última eleição municipal (`vagas_fonte: "tse_2024"`). O teto da Constituição (art. 29, IV, de 9 a 55, pela população estimada) fica em `vagas_vereador_max` e é só um limite; município sem registro no TSE usa o teto (`vagas_fonte: "teto_constitucional"`).
 - **2º turno para prefeito** só onde o eleitorado passa de 200 mil.
-- **Porte** (define o tipo de campanha):
+- **Porte** (define o tipo de campanha), calculado sobre a população estimada, com os limites em `data/portes.json`:
 | Porte | Critério aproximado | Características |
 |---|---|---|
 | Pequeno | até 20 mil hab. | Corpo a corpo decisivo, todo mundo se conhece, poucas candidaturas, pouco dinheiro, sem TV local |
@@ -629,12 +641,12 @@ Créditos das fontes em assets/CREDITS.md.
 | Nível | Onde se aplica | O que é simulado |
 |---|---|---|
 | Detalhado | Município onde o jogador está fazendo campanha ou governando | Todos os segmentos, candidatos NPC individuais, mídia local, eventos locais |
-| Regional | Demais municípios do estado em eleições estaduais/federais | Agregado por microrregião, com força do partido e reconhecimento do jogador |
+| Regional | Demais municípios do estado em eleições estaduais/federais | Agregado por região geográfica imediata (IBGE), com força do partido e reconhecimento do jogador |
 | Nacional | Outros estados em eleição presidencial | Agregado por UF |
 - Candidatos e políticos NPC de um município só são gerados quando o município entra em foco, e depois persistem no save.
 - Meta de desempenho: avançar uma semana em menos de 200 ms mesmo em eleição presidencial.
 
 ### 12.6 Interface
 - Seleção de município: busca com autocompletar por nome, filtro por UF/região, mini-mapa e ficha (população, eleitorado, vagas, porte, dificuldade).
-- Mapa: Brasil por UF → UF por microrregião/município (contornos simplificados), colorido por intenção de voto ou resultado.
+- Mapa: Brasil por UF → UF por região imediata/município (contornos simplificados), colorido por intenção de voto ou resultado.
 - Eventos podem usar dados do município: `{municipio.nome}`, `{municipio.uf}`, `{municipio.porte}`, filtros por região e porte.

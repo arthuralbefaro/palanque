@@ -53,8 +53,8 @@
 - [ ] Deputados, senador, governador
 - [ ] Mídia, fake news, escândalos e justiça
 - [ ] Envelhecimento e Espelho
-- [ ] Simulação por nível de detalhe: regional (demais municípios do estado, agregados por microrregião) e nacional (outros estados, agregados por UF)
-- [ ] Mapa: Brasil por UF → UF por microrregião/município (malhas simplificadas do IBGE), colorido por intenção de voto ou resultado
+- [ ] Simulação por nível de detalhe: regional (demais municípios do estado, agregados por região geográfica imediata) e nacional (outros estados, agregados por UF)
+- [ ] Mapa: Brasil por UF → UF por região imediata/município (malhas simplificadas do IBGE), colorido por intenção de voto ou resultado
 - [ ] Desempenho: avançar uma semana em menos de 200 ms, mesmo em eleição presidencial
 
 ## Fase 7 — Presidência
