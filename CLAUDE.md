@@ -65,7 +65,8 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando, dados invá
 - Partidos, políticos, empresas, institutos e veículos de mídia são fictícios. Nunca use nomes reais de políticos, partidos ou marcas.
 - Municípios, estados e dados demográficos são reais; prefeitos, vereadores e personalidades locais são fictícios.
 - Nenhuma ideologia é favorecida; toda posição tem custos e benefícios. O espectro democrático completo é coberto por famílias ideológicas fictícias (GDD 14), todas com caminho viável até a Presidência.
-- Nomes e siglas de partidos, gerados ou digitados pelo jogador, são validados contra data/parties/blocklist.json para nunca coincidir com partidos reais.
+- Nomes e siglas de partidos, gerados ou digitados pelo jogador, são validados contra data/parties/blocklist.json para nunca coincidir com partidos reais: sigla igual ou com as mesmas letras em outra ordem, ou nome que contenha o nome inteiro de um partido real.
+- Ícones de logotipo são genéricos (estrela, punho, rosa, pomba, foice e martelo etc. são permitidos), mas nenhum logotipo gerado pode reproduzir o desenho de um logotipo real: formato do símbolo, disposição da sigla e paleta copiados.
 - Cenários espelhados do real (GDD 16.4): a correspondência partido real → fictício existe só no pipeline de dados em tools/ e nunca vai para data/ nem para o jogo; os arquivos finais têm só IDs fictícios e números, e um teste garante que nenhum nome ou sigla real aparece neles.
 - O jogo nunca julga moralmente: só simula consequências plausíveis (eleitorais, judiciais, midiáticas, pessoais).
 - Aparência do personagem nunca altera votos ou atributos.
