@@ -16,3 +16,50 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Alternativas:** deixar esses partidos sem classificação.
 - **Como reverter:** remover as derivações da tabela do pipeline.
 - **Pendente:** o Missão (registrado em 2025) não consta de nenhuma fonte publicada encontrada; a decisão foi levada ao autor (parada prevista no CLAUDE.md, item 2).
+
+## D-003 — Missão sem classificação publicada
+- **Data:** 2026-11-15 · **Fase:** 1D · **Decidido pelo autor.**
+- **Pergunta:** como tratar o partido fictício que espelha o Missão, ausente de qualquer fonte publicada?
+- **Decisão:** entra com as cadeiras e os votos reais, mas família e posição são sorteadas como num partido gerado; o arquivo marca `classified: false`.
+- **Alternativas:** excluir do cenário; esperar fonte.
+- **Como reverter:** incluir o escore no pipeline quando houver fonte e regenerar o cenário.
+
+## D-004 — Regra de família dos partidos espelhados
+- **Data:** 2026-11-15 · **Fase:** 1D · **Decidido pelo autor.**
+- **Decisão:** eixo econômico = (escore − 5) × 20, exatamente o publicado (arredondado ao inteiro; o escore original fica no arquivo). Eixo de costumes = o mesmo valor mais uma variação sorteada pelo Rng de até ±N, com N em data/parties/generator.json, marcada no arquivo como "variação sorteada, não derivada da fonte". A família é a que contém o ponto final, entre as famílias gerais (esquerda socialista, esquerda, centro-esquerda, centro, centro-direita, direita liberal, direita conservadora, liberal-conservador); se nenhuma contiver, a de retângulo mais próximo; empate, o centro mais próximo. Famílias específicas (verde, trabalhista, cristã, agrária, pragmática, libertária, nacional-populista, regionalista) nunca são atribuídas a partidos reais.
+- **Alternativas:** só o eixo econômico; tabela fixa por categoria.
+- **Como reverter:** mudar a regra em tools/ e regenerar.
+
+## D-005 — Amapá sem resultado oficial das proporcionais de 2026
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Pergunta:** no consulta_cand_2026 do TSE todas as candidaturas a deputado federal e estadual do Amapá estão com situação "#NULO" (8 + 24 vagas sem eleitos). Como compor Câmara e Assembleia?
+- **Decisão:** usar, só para o Amapá, a composição eleita em 2022 (consulta_cand_2022, TSE), com os partidos mapeados pela mesma linhagem; o arquivo do cenário marca `fonte_ano: 2022` e a substituição fica registrada nas fontes.
+- **Alternativas:** deixar as vagas sem dono; recalcular pelo quociente com os votos parciais (só 11.730 votos válidos registrados).
+- **Como reverter:** quando o TSE publicar o resultado, rodar o importador de novo (a regra só se aplica a UF sem eleitos).
+
+## D-006 — Base governista e oposição no início
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Decisão:** base = partidos da coligação ou federação do presidente eleito em 2026; oposição = partidos da coligação do 2º colocado; demais, independentes. Fonte: consulta_coligacao_2026 e consulta_cand_2026 (TSE).
+- **Alternativas:** votações nominais na Câmara (não há legislatura nova ainda).
+- **Como reverter:** trocar a regra em tools/ e regenerar.
+
+## D-007 — Prefeito reeleito em 2024
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Decisão:** o layout atual do consulta_cand não tem ST_REELEICAO; o prefeito eleito em 2024 é considerado reeleito (inelegível para prefeito em 2028) se o mesmo título de eleitor foi eleito prefeito no mesmo município em 2020 (ordinária ou suplementar), pelo consulta_cand_2020.
+- **Alternativas:** ignorar a regra.
+- **Como reverter:** trocar o critério no pipeline.
+
+## D-008 — Números dos partidos espelhados
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Decisão:** os números fictícios são sorteados entre 10 e 99 evitando todos os números reais em uso em 2026, para nenhum partido fictício carregar o número de um real.
+- **Como reverter:** remover o filtro no pipeline.
+
+## D-009 — Edição do cenário Brasil 2026 na tela Novo Mundo
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Decisão:** o cenário pode ser editado campo a campo (nome, sigla, cores, tamanho etc.), mas não aceita adicionar, remover ou duplicar partidos, porque os arquivos estaduais e municipais referenciam os ids. Restaurar recarrega do arquivo.
+- **Como reverter:** permitir e converter o mundo em Personalizado sem dados locais.
+
+## D-010 — Fundo eleitoral e tempo de TV
+- **Data:** 2026-11-15 · **Fase:** 1D
+- **Decisão:** o cenário guarda só as entradas (cadeiras e votos para a Câmara); a divisão é calculada no Core por objeto de configuração com o padrão da lei (Lei 9.504/1997, art. 16-D: 2% igual, 35% votos para a Câmara entre partidos com deputado, 48% cadeiras na Câmara, 15% cadeiras no Senado; art. 47, §2º: 90% proporcional à bancada na Câmara, 10% igual).
+- **Como reverter:** mudar os padrões no objeto de configuração.
