@@ -1,0 +1,87 @@
+{
+  "actions": [
+    {
+      "id": "comicio",
+      "name": "Comício",
+      "description": "Grande ganho de reconhecimento na cidade; custo alto. Toca o jingle da campanha.",
+      "phases": ["campanha"],
+      "energy": 40,
+      "money": 6000,
+      "effects": { "recognition": 6, "image": 0.02 },
+      "risks": [
+        { "chance": 0.12, "text": "Comício esvaziado: as fotos de cadeiras vazias circulam.", "effects": { "image": -0.05, "recognition": -2 } }
+      ]
+    },
+    {
+      "id": "corpo_a_corpo",
+      "name": "Corpo a corpo",
+      "description": "Alcance pequeno, forte afinidade com eleitores de renda baixa.",
+      "phases": ["pre_campanha", "campanha"],
+      "energy": 25,
+      "money": 300,
+      "effects": { "recognition": 2.5, "support": { "baixa": 0.06 } },
+      "risks": []
+    },
+    {
+      "id": "visita",
+      "name": "Visita a igreja, sindicato ou associação",
+      "description": "Apoio de um grupo específico.",
+      "phases": ["pre_campanha", "campanha"],
+      "energy": 20,
+      "money": 500,
+      "effects": { "recognition": 1.5 },
+      "targets": [
+        { "id": "igreja_catolica", "name": "Paróquia", "group": "catolica", "support": 0.08 },
+        { "id": "igreja_evangelica", "name": "Igreja evangélica", "group": "evangelica", "support": 0.08 },
+        { "id": "terreiro_centro", "name": "Centro espírita ou terreiro", "group": "outras", "support": 0.08 },
+        { "id": "sindicato", "name": "Sindicato", "group": "media", "support": 0.07 },
+        { "id": "associacao_bairro", "name": "Associação de moradores", "group": "baixa", "support": 0.07 },
+        { "id": "associacao_rural", "name": "Associação rural", "group": "rural", "support": 0.09 },
+        { "id": "universidade", "name": "Universidade", "group": "medio_superior", "support": 0.07 },
+        { "id": "clube_idosos", "name": "Clube da terceira idade", "group": "idade_60_69", "support": 0.08 }
+      ],
+      "risks": []
+    },
+    {
+      "id": "redes_sociais",
+      "name": "Redes sociais",
+      "description": "Alcance entre os mais jovens; risco de viral negativo.",
+      "phases": ["pre_campanha", "campanha"],
+      "energy": 15,
+      "money": 1000,
+      "effects": { "recognition": 3, "support": { "idade_16_17": 0.04, "idade_18_34": 0.04 } },
+      "risks": [
+        { "chance": 0.08, "text": "Um vídeo seu viralizou pelo motivo errado.", "effects": { "image": -0.08 } },
+        { "chance": 0.10, "text": "Um vídeo seu viralizou e trouxe novos seguidores.", "effects": { "recognition": 5 } }
+      ]
+    },
+    {
+      "id": "entrevista",
+      "name": "Entrevista em rádio, TV ou podcast",
+      "description": "Teste de Oratória: boa entrevista melhora a imagem; tropeço piora.",
+      "phases": ["pre_campanha", "campanha"],
+      "energy": 20,
+      "money": 0,
+      "effects": { "recognition": 3 },
+      "test": {
+        "attribute": "oratoria",
+        "success_text": "A entrevista repercutiu bem.",
+        "success": { "image": 0.06 },
+        "failure_text": "Você tropeçou numa pergunta e o trecho circulou.",
+        "failure": { "image": -0.05 }
+      },
+      "risks": []
+    },
+    {
+      "id": "arrecadacao",
+      "name": "Arrecadação",
+      "description": "Jantar e conversas com apoiadores para levantar recursos. O valor cresce com o Carisma.",
+      "phases": ["pre_campanha", "campanha"],
+      "energy": 25,
+      "money": -2000,
+      "money_per_attribute": { "attribute": "carisma", "amount": 80 },
+      "effects": {},
+      "risks": []
+    }
+  ]
+}

@@ -48,6 +48,8 @@ public static class DataValidation
         var people = PeopleContent.Load(dataDirectory, out _);
         reports.AddRange(people.Where(r => !reports.Any(x => x.File == r.File)));
         reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
+        reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out _));
+        reports.AddRange(Events.EventContent.Load(dataDirectory, out _));
         return reports;
     }
 

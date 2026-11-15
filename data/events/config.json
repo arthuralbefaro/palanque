@@ -1,0 +1,5 @@
+{
+  "rarity_weights": { "comum": 1.0, "incomum": 0.5, "raro": 0.2, "lendario": 0.05 },
+  "events_per_week": { "baixa": 0.3, "normal": 0.6, "alta": 1.0, "caotica": 1.6 },
+  "max_per_week": 3
+}

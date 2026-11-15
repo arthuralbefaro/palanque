@@ -82,5 +82,8 @@ public sealed class GameState
     /// <summary>NPCs gerados quando o município entra em foco, persistidos no save (GDD 12.5).</summary>
     public List<Character> Npcs { get; init; } = [];
 
+    /// <summary>Campanha em curso; null fora de campanha.</summary>
+    public Campaign.CampaignState? Campaign { get; set; }
+
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }

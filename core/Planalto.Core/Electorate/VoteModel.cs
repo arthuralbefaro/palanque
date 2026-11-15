@@ -23,6 +23,12 @@ public sealed class VoteCandidate
 
     /// <summary>Apoio de líderes, igrejas, sindicatos etc., por grupo de segmento (0 a 1).</summary>
     public IReadOnlyDictionary<string, double> Support { get; init; } = new Dictionary<string, double>();
+
+    /// <summary>
+    /// Quantos candidatos semelhantes esta opção representa (1 para uma pessoa). No softmax a fatia é multiplicada
+    /// por esse número: é a agregação de vários candidatos com a mesma utilidade.
+    /// </summary>
+    public double Multiplicity { get; init; } = 1;
 }
 
 /// <summary>Intenção de um segmento: fração de cada candidato entre os votos válidos, brancos e nulos e comparecimento.</summary>
@@ -72,6 +78,7 @@ public static class VoteModel
         // Um ruído por candidato: o "humor" da rodada, comum a todos os segmentos.
         var noise = candidates.ToDictionary(c => c.Id, _ => rng is null ? 0 : ElectorateBuilder.Gaussian(rng) * config.NoiseSd, StringComparer.Ordinal);
         var themePositions = candidates.ToDictionary(c => c.Id, c => ThemePositions(c, themes, config), StringComparer.Ordinal);
+        var multiplicity = candidates.ToDictionary(c => c.Id, c => Math.Max(1, c.Multiplicity), StringComparer.Ordinal);
 
         var intentions = new List<SegmentIntention>();
         var votes = candidates.ToDictionary(c => c.Id, _ => 0.0, StringComparer.Ordinal);
@@ -87,7 +94,7 @@ public static class VoteModel
                 StringComparer.Ordinal);
 
             double best = utilities.Values.Max();
-            var exp = utilities.ToDictionary(u => u.Key, u => Math.Exp((u.Value - best) / config.Temperature), StringComparer.Ordinal);
+            var exp = utilities.ToDictionary(u => u.Key, u => Math.Exp((u.Value - best) / config.Temperature) * multiplicity[u.Key], StringComparer.Ordinal);
             double sum = exp.Values.Sum();
             var shares = exp.ToDictionary(e => e.Key, e => e.Value / sum, StringComparer.Ordinal);
 
