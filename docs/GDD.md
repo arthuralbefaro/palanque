@@ -104,7 +104,7 @@ Cada peça tem cor primária e secundária; a cor do partido pode ser aplicada c
 |---|---|
 | Número de urna | Definido pelo partido (prefixo) + escolha dos dígitos finais |
 | Slogan | Livre ou sugestões geradas |
-| Logotipo | Ícone (mão, casa, árvore, coração, engrenagem, livro etc., do catálogo data/parties/logo_icons.json, sem símbolos ligados a partidos reais, como estrela, tucano ou foice e martelo), fonte (6), cores |
+| Logotipo | Ícone (estrela, mão, casa, árvore, coração, engrenagem, livro etc.), fonte (6), cores |
 | Jingle | Escolha de estilo musical (forró, sertanejo, pagode, funk, marchinha, rock) — muda a faixa tocada em comícios e no horário eleitoral |
 | Foto oficial | Pose (3), expressão, fundo (bandeira do estado, gabinete, cidade, cor sólida) |
 
@@ -630,7 +630,8 @@ Cada partido pertence a uma família, que define a faixa nos dois eixos (Econôm
 | Regionalista | variável | variável | Interesses de um estado ou região |
 
 - O mundo do jogo começa com os partidos fictícios da predefinição escolhida (seção 16.1), sorteados para cobrir todas as famílias, com tamanhos diferentes (de nanicos a grandes), gerados em data/parties/ ou por geração procedural a cada nova carreira (opção no início).
-- Nomes gerados por combinação de termos típicos ("Movimento", "Partido", "Aliança", "Frente", "União" + "Democrático", "Trabalhista", "Liberal", "Popular", "Nacional", "Renovador", "Social" etc.), com siglas derivadas e verificação para não coincidir com siglas ou nomes de partidos reais (lista de bloqueio em data/parties/blocklist.json).
+- Nomes gerados por combinação de termos típicos ("Movimento", "Partido", "Aliança", "Frente", "União" + "Democrático", "Trabalhista", "Liberal", "Popular", "Nacional", "Renovador", "Social" etc.), com siglas derivadas e verificação para não coincidir com siglas de partidos reais (nem com as mesmas letras em outra ordem) nem conter, como sequência de palavras, o nome inteiro de um partido real (lista de bloqueio em data/parties/blocklist.json).
+- Logotipos usam ícones genéricos do catálogo data/parties/logo_icons.json (estrela, punho, rosa, pomba, sol, árvore, foice e martelo etc. são permitidos), mas nenhum logotipo gerado pode reproduzir o desenho de um logotipo real: formato do símbolo, disposição da sigla e paleta copiados.
 - Partidos evoluem: fusões, federações, cisões, mudança de nome após escândalos, crescimento e declínio, novos partidos surgindo ao longo das décadas.
 
 ### 14.2 Criação de partido pelo jogador
