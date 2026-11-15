@@ -46,6 +46,12 @@ public sealed class WorldSetup
 
     private WorldPreset GenerationSource => Content.Presets.GenerationSourceOf(Preset);
 
+    /// <summary>
+    /// Mundo espelhado do real (GDD 16.4): a lista vem do cenário e não aceita adicionar, remover ou
+    /// duplicar partidos, porque os dados estaduais e municipais referenciam os ids (DECISOES D-009).
+    /// </summary>
+    public bool IsScenario => Preset.Scenario is not null;
+
     private FamilyCatalog Families => Content.Parties.Families;
 
     public static WorldSetupCreation Create(WorldContent content, string presetId, Rng rng)
@@ -56,7 +62,7 @@ public sealed class WorldSetup
             return new WorldSetupCreation(null, Report(new WorldIssue(WorldIssueCode.PresetDesconhecida, WorldIssueSeverity.Error, Detail: presetId)));
         }
 
-        if (!preset.Available)
+        if (!preset.Available || (preset.Scenario is not null && content.ScenarioFor(preset) is null))
         {
             return new WorldSetupCreation(null, Report(new WorldIssue(WorldIssueCode.PresetIndisponivel, WorldIssueSeverity.Error, Detail: preset.UnavailableReason)));
         }
@@ -75,6 +81,13 @@ public sealed class WorldSetup
     /// <summary>Descarta a lista (inclusive travas) e gera de novo a da predefinição atual.</summary>
     public void RestorePreset(Rng rng)
     {
+        if (Content.ScenarioFor(Preset) is { } scenario)
+        {
+            _parties.Clear();
+            _parties.AddRange(scenario.Parties.Select(FromScenario));
+            return;
+        }
+
         WorldPreset source = GenerationSource;
         int count = rng.NextInt(source.MinParties!.Value, source.MaxParties!.Value + 1);
         _parties.Clear();
@@ -174,7 +187,7 @@ public sealed class WorldSetup
     /// <summary>Adiciona um partido sorteado; null se o mundo já estiver no limite geral.</summary>
     public PartyDraft? AddParty(Rng rng)
     {
-        if (_parties.Count >= MaxParties)
+        if (IsScenario || _parties.Count >= MaxParties)
         {
             return null;
         }
@@ -189,7 +202,7 @@ public sealed class WorldSetup
     public bool RemoveParty(string partyId)
     {
         PartyDraft? party = Find(partyId);
-        if (party is null || _parties.Count <= MinParties)
+        if (IsScenario || party is null || _parties.Count <= MinParties)
         {
             return false;
         }
@@ -206,7 +219,7 @@ public sealed class WorldSetup
     public PartyDraft? DuplicateParty(string partyId, Rng rng)
     {
         PartyDraft? original = Find(partyId);
-        if (original is null || _parties.Count >= MaxParties)
+        if (IsScenario || original is null || _parties.Count >= MaxParties)
         {
             return null;
         }
@@ -227,6 +240,20 @@ public sealed class WorldSetup
     public WorldValidationReport Validate() => WorldSetupValidator.Validate(this);
 
     private static WorldValidationReport Report(params WorldIssue[] issues) => new(issues);
+
+    private static PartyDraft FromScenario(Scenarios.ScenarioParty party) => new()
+    {
+        Id = party.Id,
+        Name = party.Name,
+        Sigla = party.Sigla,
+        Number = party.Number,
+        FamilyId = party.FamilyId,
+        Position = party.Position,
+        Size = party.Size,
+        Colors = party.Colors,
+        LogoIcon = party.LogoIcon,
+        Leadership = party.Leadership,
+    };
 
     private PartyDraft NewPlaceholder() => new()
     {

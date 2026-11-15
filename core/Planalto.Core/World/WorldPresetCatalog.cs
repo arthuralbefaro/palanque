@@ -27,6 +27,9 @@ public sealed class WorldPreset
     /// <summary>Predefinição cuja geração esta usa como ponto de partida (lista inicial, pesos e tamanhos).</summary>
     public string? StartsFrom { get; init; }
 
+    /// <summary>Cenário espelhado do real que fornece a lista de partidos (GDD 16.4); null nos sorteados.</summary>
+    public string? Scenario { get; init; }
+
     /// <summary>Multiplicador do peso de sorteio de cada família; as ausentes usam 1.</summary>
     public Dictionary<string, double> FamilyWeightMultipliers { get; init; } = [];
 
@@ -123,7 +126,7 @@ public sealed class WorldPresetCatalog : IValidatable
 
     private IEnumerable<string> ValidatePreset(WorldPreset preset, string where)
     {
-        if (!preset.Available)
+        if (!preset.Available || preset.Scenario is not null)
         {
             if (string.IsNullOrWhiteSpace(preset.UnavailableReason))
             {
@@ -135,10 +138,20 @@ public sealed class WorldPresetCatalog : IValidatable
                 yield return $"{where}: a predefinição livre não pode ficar indisponível.";
             }
 
-            yield break;
+            if (!preset.Available)
+            {
+                yield break;
+            }
         }
 
-        if (preset.MinParties is not int min || preset.MaxParties is not int max || min < 2 || max < min)
+        if (preset.Scenario is not null)
+        {
+            if (preset.Custom || preset.MinParties is not null || preset.MaxParties is not null || preset.StartsFrom is null)
+            {
+                yield return $"{where}: predefinição de cenário não é livre, não tem faixa de partidos e precisa de 'starts_from' para os sorteios.";
+            }
+        }
+        else if (preset.MinParties is not int min || preset.MaxParties is not int max || min < 2 || max < min)
         {
             yield return $"{where}: 'min_parties' e 'max_parties' obrigatórios, com mínimo de 2 e 'min' até 'max'.";
         }

@@ -78,14 +78,33 @@ public class WorldSetupTests
     }
 
     [Fact]
-    public void Brasil2026_EstaRegistradaMasIndisponivel()
+    public void Brasil2026_CarregaOsPartidosDoCenarioEValida()
     {
-        WorldPreset preset = Content.Presets.Find("brasil_2026")!;
         WorldSetupCreation creation = WorldSetup.Create(Content, "brasil_2026", new Rng(1));
+        WorldSetup setup = creation.Setup!;
 
-        Assert.False(preset.Available);
-        Assert.Null(creation.Setup);
-        Assert.True(creation.Report.Has(WorldIssueCode.PresetIndisponivel));
+        Assert.True(creation.Report.IsValid, string.Join(", ", creation.Report.Errors.Select(e => $"{e.Code} {e.PartyId} {e.Detail}")));
+        Assert.True(setup.IsScenario);
+        Assert.Equal(Content.Brasil2026!.Parties.Select(p => p.Id), setup.Parties.Select(p => p.Id));
+        Assert.Equal(Content.Brasil2026.Parties.Select(p => p.Name), setup.Parties.Select(p => p.Name));
+    }
+
+    [Fact]
+    public void Brasil2026_EditaCamposMasNaoAdicionaNemRemovePartidos()
+    {
+        WorldSetup setup = WorldSetup.Create(Content, "brasil_2026", new Rng(2)).Setup!;
+        var rng = new Rng(3);
+        string first = setup.Parties[0].Id;
+
+        Assert.Null(setup.AddParty(rng));
+        Assert.False(setup.RemoveParty(first));
+        Assert.Null(setup.DuplicateParty(first, rng));
+        Assert.True(setup.RandomizeField(first, PartyField.Name, rng));
+
+        setup.Parties[0].Name = "";
+        setup.RestorePreset(rng);
+        Assert.Equal(Content.Brasil2026!.Parties[0].Name, setup.Parties[0].Name);
+        Assert.Equal("brasil_2026", setup.PresetId);
     }
 
     [Fact]

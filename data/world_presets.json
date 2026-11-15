@@ -59,8 +59,10 @@
       "id": "brasil_2026",
       "name": "Brasil 2026",
       "description": "Estrutura política real após as eleições de 2026, com nomes fictícios.",
-      "available": false,
-      "unavailable_reason": "Depende dos dados do cenário Brasil 2026 (etapa 1D do roadmap)."
+      "available": true,
+      "scenario": "brasil_2026",
+      "starts_from": "brasil_realista",
+      "unavailable_reason": "Os arquivos de data/parties/scenarios/brasil_2026/ não foram encontrados."
     }
   ]
 }
