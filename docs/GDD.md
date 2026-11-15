@@ -650,3 +650,51 @@ Créditos das fontes em assets/CREDITS.md.
 - Seleção de município: busca com autocompletar por nome, filtro por UF/região, mini-mapa e ficha (população, eleitorado, vagas, porte, dificuldade).
 - Mapa: Brasil por UF → UF por região imediata/município (contornos simplificados), colorido por intenção de voto ou resultado.
 - Eventos podem usar dados do município: `{municipio.nome}`, `{municipio.uf}`, `{municipio.porte}`, filtros por região e porte.
+
+## 13. ELEMENTOS 2.5D E 3D
+
+O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimônias de posse. Ambos rodam em SubViewport 3D embutido na interface 2D.
+
+### 13.1 Mapa 2.5D
+- **Construção:** polígonos da Malha Municipal 2025 do IBGE, simplificados no DataImporter, extrudados em malhas 3D (uma por município, agrupadas por UF). Malhas geradas em tempo de execução a partir de data/geo/ ou pré-geradas como recursos, o que for mais rápido de carregar.
+- **Níveis de detalhe:**
+  - Brasil: 27 estados extrudados.
+  - Estado: regiões imediatas ou municípios.
+  - Município em foco: destaque com contorno brilhante.
+- **Câmera:** perspectiva levemente inclinada (30–40°), zoom e arraste com o mouse, transição animada entre níveis.
+- **Visualizações:**
+  - Altura do relevo = força do jogador (ou do candidato escolhido) na região.
+  - Cor = candidato ou partido líder, com intensidade pela margem.
+  - Modo apuração: municípios "sobem" à medida que as urnas são apuradas, em ordem por região e porte, com partículas no momento da virada.
+- **Interação:** passar o mouse mostra tooltip com resultado e dados do município; clicar abre a ficha.
+- **Meta de desempenho:** 60 FPS na visão de um estado com todos os municípios; visão nacional com estados apenas.
+- **Acessibilidade:** alternância para mapa 2D plano nas Opções.
+
+### 13.2 Cerimônias de posse em 3D
+- **Quando:** a cada posse de cargo eletivo. Duração de 15 a 40 segundos, sempre pulável com qualquer tecla.
+- **Escala crescente de grandeza:**
+
+| Cargo | Cenário | Momentos |
+|---|---|---|
+| Vereador | Câmara municipal pequena | Juramento em grupo, assinatura do termo |
+| Prefeito | Prefeitura, praça com público | Discurso na sacada, entrega da chave da cidade |
+| Deputado estadual/federal | Plenário em semicírculo | Diplomação, juramento |
+| Senador | Plenário do Senado (estilizado) | Juramento, cumprimentos |
+| Governador | Palácio estadual (genérico) | Transmissão de cargo, discurso |
+| Presidente | Rampa e palácio estilizados, carro aberto, multidão | Desfile, subida da rampa, faixa presidencial, discurso |
+
+- **Arquitetura:** estilizada e inspirada na arquitetura brasileira, sem réplicas de edifícios reais, coerente com o universo fictício do jogo.
+- **Estilo visual:** low-poly com cores chapadas e iluminação suave (estilo "diorama"), para combinar com a arte vetorial 2D e ser viável de produzir.
+- **Personagem 3D:** boneco estilizado parametrizado a partir de Appearance:
+  - Tom de pele, cor de cabelo/barba, grisalho, cores da roupa e cor do partido aplicados por material.
+  - 8–12 formatos de cabelo e 4–6 de barba em 3D, mapeados a partir dos estilos 2D (cada estilo 2D aponta para o formato 3D mais próximo em data/appearance/parts.json).
+  - Corpo pelo tipo escolhido na criação; roupa institucional do guarda-roupa.
+  - Planos sempre abertos ou médios; no clímax, corte para o **retrato oficial 2D** em moldura, que é salvo na linha do tempo da carreira.
+- **NPCs:** família, aliados e multidão com o mesmo sistema de bonecos, em variações aleatórias.
+- **Elementos dinâmicos:** tamanho da multidão proporcional à votação; bandeiras e cores do partido; vice e família presentes quando existirem; clima e hora do dia.
+- **Técnica:** cenas em .tscn com AnimationPlayer para caminhos de câmera e personagens; modelos em glTF; tudo carregado sob demanda e descarregado ao fim.
+
+### 13.3 Assets 3D
+- Base: pacotes CC0 low-poly (Kenney, Quaternius) para pessoas, carros, árvores e mobiliário, adaptados.
+- Cenários de posse e bonecos parametrizáveis: modelagem própria ou por um modelador 3D seguindo docs/ART_GUIDE.md (seção 3D: escala, número de polígonos, nomes de materiais tingíveis).
+- A montagem das cenas, materiais, animações de câmera e a lógica de parametrização é feita no código do projeto; a modelagem de qualidade fica com assets ou com um artista.

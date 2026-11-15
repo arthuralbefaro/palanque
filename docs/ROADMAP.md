@@ -1,6 +1,6 @@
 # PLANALTO — Roadmap
 
-> Derivado de docs/GDD.md (seções 9 e 12). Um item por vez; marque o checkbox ao concluir.
+> Derivado de docs/GDD.md (seções 9, 12 e 13). Um item por vez; marque o checkbox ao concluir.
 
 ## Fase 0 — Fundação
 - [x] Git + .gitignore Godot/.NET
@@ -11,15 +11,28 @@
 - [x] Build e testes passando
 
 ## Fase 1 — Núcleo de simulação
+
+### 1A — Lógica pura
 - [x] Rng, Calendar, GameState
 - [x] Character, atributos, traços, recursos
-- [ ] Eleitorado, modelo de voto, pesquisas
-- [x] ElectionRules (proporcional e majoritário) com testes
+- [x] ElectionRules (proporcional e majoritário) com testes, incluindo sobras obtidas e não preenchidas no divisor e ProportionalRulesConfig
 - [x] Carregamento e validação de JSON + DataValidator
-- [ ] Planalto.DataImporter: baixa IBGE (Localidades, Censo 2022/SIDRA, coordenadas) e TSE (perfil do eleitorado), cruza pelo código IBGE e gera data/municipios/{UF}.json (27 arquivos), com brutos em cache fora do Git e créditos das fontes em assets/CREDITS.md
-- [ ] Testes do importador: contagem total de municípios igual à lista oficial, nenhum código duplicado, soma de população por UF igual ao total oficial, todo município com eleitorado > 0
-- [ ] Regras derivadas por município: vagas de vereador (CF art. 29, IV, de 9 a 55), 2º turno para prefeito acima de 200 mil eleitores, porte (pequeno, médio, grande, metrópole) e regras próprias do Distrito Federal *(vagas de vereador e 2º turno feitos na 1A; faltam porte e Distrito Federal)*
-- [ ] Segmentos de eleitores gerados do perfil real do município (idade, renda, religião, escolaridade, urbano/rural)
+
+### 1B — Municípios
+- [ ] Planalto.DataImporter: IBGE (Localidades, estimativa de população 2026, Censo 2022/SIDRA) e TSE (perfil do eleitorado ATUAL, de-para TSE↔IBGE, vagas 2024), cruzados pelo código IBGE, gerando data/municipios/{UF}.json (27 arquivos) e data/municipios/_fontes.json, com brutos em cache fora do Git e créditos em assets/CREDITS.md
+- [ ] Coordenadas e área de todos os municípios pela Malha Municipal 2025 do IBGE (centroide, ou ponto interior quando o centroide cai fora do polígono), com NetTopologySuite só no DataImporter
+- [ ] Divisão regional: microrregiao (pode ser null) e regiao_imediata
+- [ ] Perfil do Censo em contagens inteiras, gravado como publicado; Boa Esperança do Norte com perfil do MT (perfil_fonte: "uf")
+- [ ] Vagas de vereador reais do TSE 2024 (vagas_vereador) + teto constitucional (vagas_vereador_max), com a lista dos municípios acima do teto em _fontes.json
+- [ ] Porte por data/portes.json, lido por função do Core, sobre a estimativa de 2026
+- [ ] Distrito Federal e Fernando de Noronha sem eleições municipais (eleicoes_municipais: false)
+- [ ] Testes do importador: contagem igual à lista oficial do IBGE, nenhum código duplicado, soma de população por UF igual ao total oficial, eleitorado > 0 (exceto casos especiais), soma de vagas igual ao total do TSE 2024, todos os municípios com lat/lon dentro do próprio polígono
+- [ ] DataValidator validando data/municipios
+
+### 1C — Eleitorado e pesquisas
+- [ ] Segmentos de eleitores gerados do perfil real do município (idade, renda, religião, escolaridade, urbano/rural), com categorias normalizadas pela soma delas
+- [ ] Modelo de voto (utilidade por segmento, softmax, brancos/nulos/abstenção, comparecimento considerando voto facultativo de 16–17 e 70+)
+- [ ] Pesquisas com margem de erro, institutos fictícios com viés e pesquisa interna
 
 ## Fase 2 — Criação de personagem
 - [ ] Modelo Appearance no Core + randomização com pesos + serialização
@@ -38,6 +51,7 @@
 - [ ] Save/Load
 - [ ] Simulação detalhada do município em foco: todos os segmentos, candidatos NPC individuais, mídia local e eventos locais
 - [ ] Candidatos e políticos NPC do município gerados só quando ele entra em foco e persistidos no save
+- [ ] Protótipo do mapa 2.5D com os municípios de um estado (validar desempenho e visual antes da Fase 6)
 - **Marco:** campanha de vereador jogável do início ao fim e divertida
 
 ## Fase 4 — Mandato legislativo
@@ -49,13 +63,15 @@
 - [ ] Minigame de debate
 
 ## Fase 6 — Esfera estadual e federal
-- [ ] 27 estados, mapa do Brasil
+- [ ] 27 estados
 - [ ] Deputados, senador, governador
 - [ ] Mídia, fake news, escândalos e justiça
 - [ ] Envelhecimento e Espelho
 - [ ] Simulação por nível de detalhe: regional (demais municípios do estado, agregados por região geográfica imediata) e nacional (outros estados, agregados por UF)
-- [ ] Mapa: Brasil por UF → UF por região imediata/município (malhas simplificadas do IBGE), colorido por intenção de voto ou resultado
-- [ ] Desempenho: avançar uma semana em menos de 200 ms, mesmo em eleição presidencial
+- [ ] Evolução da população dos municípios e regra de vagas a cada eleição municipal: mínimo entre as vagas atuais e o teto calculado com a população do ano
+- [ ] Contornos simplificados a partir da Malha Municipal 2025 (mesma fonte das coordenadas)
+- [ ] Mapa 2.5D (seção 13.1): extrusão, níveis de detalhe (Brasil → UF → região imediata/município), câmera inclinada, modo apuração, tooltips e alternativa 2D plana
+- [ ] Desempenho: avançar uma semana em menos de 200 ms, mesmo em eleição presidencial; mapa a 60 FPS na visão de um estado
 
 ## Fase 7 — Presidência
 - [ ] Economia nacional, ministérios, Congresso, MPs, vetos
@@ -71,6 +87,8 @@
 
 ## Fase 9 — Polimento
 - [ ] Arte final de retratos (ilustrador ou pipeline próprio)
+- [ ] Bonecos 3D parametrizados a partir de Appearance (seção 13.2): materiais tingíveis, formatos 3D de cabelo e barba mapeados dos estilos 2D
+- [ ] Cerimônias de posse em 3D (seção 13.2), começando pela presidencial e pela de vereador, depois os demais cargos; sempre puláveis
 - [ ] Animações, áudio, jingles, música
 - [ ] Tutorial na primeira campanha
 - [ ] Opções e acessibilidade
