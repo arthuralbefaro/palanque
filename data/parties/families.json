@@ -1,0 +1,217 @@
+{
+  "families": [
+    {
+      "id": "esquerda_socialista",
+      "name": "Esquerda socialista",
+      "economic": { "min": -100, "max": -70 },
+      "social": { "min": -100, "max": -50 },
+      "typical_themes": "Estatização, reforma agrária, direitos trabalhistas",
+      "themes": [
+        { "theme": "privatizacoes", "position": -2 },
+        { "theme": "agronegocio", "position": -2 },
+        { "theme": "programas_sociais", "position": -2 },
+        { "theme": "impostos", "position": -2 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "esquerda",
+      "name": "Esquerda",
+      "economic": { "min": -70, "max": -40 },
+      "social": { "min": -70, "max": -30 },
+      "typical_themes": "Programas sociais, serviços públicos, direitos de minorias",
+      "themes": [
+        { "theme": "programas_sociais", "position": -2 },
+        { "theme": "saude", "position": -2 },
+        { "theme": "educacao", "position": -2 },
+        { "theme": "seguranca", "position": -1 }
+      ],
+      "weight": 3
+    },
+    {
+      "id": "trabalhista",
+      "name": "Trabalhista",
+      "economic": { "min": -60, "max": -30 },
+      "social": { "min": -30, "max": 10 },
+      "typical_themes": "Emprego, salário mínimo, sindicatos, previdência",
+      "themes": [
+        { "theme": "programas_sociais", "position": -1 },
+        { "theme": "privatizacoes", "position": -1 },
+        { "theme": "impostos", "position": -1 },
+        { "theme": "saude", "position": -1 }
+      ],
+      "weight": 3
+    },
+    {
+      "id": "centro_esquerda",
+      "name": "Centro-esquerda / social-democracia",
+      "economic": { "min": -40, "max": -10 },
+      "social": { "min": -50, "max": -10 },
+      "typical_themes": "Estado de bem-estar, educação, saúde pública",
+      "themes": [
+        { "theme": "educacao", "position": -2 },
+        { "theme": "saude", "position": -2 },
+        { "theme": "programas_sociais", "position": -1 }
+      ],
+      "weight": 3
+    },
+    {
+      "id": "ambientalista",
+      "name": "Ambientalista (verde)",
+      "economic": { "min": -40, "max": 0 },
+      "social": { "min": -60, "max": -20 },
+      "typical_themes": "Meio ambiente, clima, transição energética",
+      "themes": [
+        { "theme": "meio_ambiente", "position": -2 },
+        { "theme": "agronegocio", "position": -1 },
+        { "theme": "transparencia", "position": 1 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "centro",
+      "name": "Centro",
+      "economic": { "min": -15, "max": 15 },
+      "social": { "min": -15, "max": 15 },
+      "typical_themes": "Estabilidade, gestão, consenso",
+      "themes": [
+        { "theme": "transparencia", "position": 1 },
+        { "theme": "saude", "position": 0 },
+        { "theme": "educacao", "position": 0 }
+      ],
+      "weight": 3
+    },
+    {
+      "id": "centro_pragmatico",
+      "name": "Centro pragmático (\"fisiológico\")",
+      "economic": { "min": -10, "max": 20 },
+      "social": { "min": -10, "max": 30 },
+      "typical_themes": "Cargos, emendas, apoio a qualquer governo",
+      "themes": [
+        { "theme": "seguranca", "position": 1 },
+        { "theme": "agronegocio", "position": 1 },
+        { "theme": "programas_sociais", "position": 0 }
+      ],
+      "weight": 4
+    },
+    {
+      "id": "democracia_crista",
+      "name": "Democracia cristã",
+      "economic": { "min": -10, "max": 30 },
+      "social": { "min": 30, "max": 70 },
+      "typical_themes": "Família, assistência social, valores religiosos",
+      "themes": [
+        { "theme": "programas_sociais", "position": -1 },
+        { "theme": "seguranca", "position": 1 },
+        { "theme": "armas", "position": -1 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "centro_direita",
+      "name": "Centro-direita",
+      "economic": { "min": 10, "max": 40 },
+      "social": { "min": 0, "max": 40 },
+      "typical_themes": "Responsabilidade fiscal, reformas, segurança",
+      "themes": [
+        { "theme": "impostos", "position": 1 },
+        { "theme": "privatizacoes", "position": 1 },
+        { "theme": "seguranca", "position": 1 },
+        { "theme": "transparencia", "position": 1 }
+      ],
+      "weight": 3
+    },
+    {
+      "id": "direita_liberal",
+      "name": "Direita liberal",
+      "economic": { "min": 40, "max": 80 },
+      "social": { "min": -30, "max": 20 },
+      "typical_themes": "Privatizações, menos impostos, livre mercado",
+      "themes": [
+        { "theme": "privatizacoes", "position": 2 },
+        { "theme": "impostos", "position": 2 },
+        { "theme": "programas_sociais", "position": 1 },
+        { "theme": "educacao", "position": 1 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "libertario",
+      "name": "Libertário",
+      "economic": { "min": 70, "max": 100 },
+      "social": { "min": -60, "max": 0 },
+      "typical_themes": "Estado mínimo, liberdades individuais",
+      "themes": [
+        { "theme": "impostos", "position": 2 },
+        { "theme": "privatizacoes", "position": 2 },
+        { "theme": "armas", "position": 2 },
+        { "theme": "programas_sociais", "position": 2 }
+      ],
+      "weight": 1
+    },
+    {
+      "id": "direita_conservadora",
+      "name": "Direita conservadora",
+      "economic": { "min": 30, "max": 70 },
+      "social": { "min": 50, "max": 90 },
+      "typical_themes": "Segurança, família, valores tradicionais",
+      "themes": [
+        { "theme": "seguranca", "position": 2 },
+        { "theme": "armas", "position": 2 },
+        { "theme": "educacao", "position": 1 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "liberal_conservador",
+      "name": "Liberal-conservador",
+      "economic": { "min": 50, "max": 90 },
+      "social": { "min": 40, "max": 80 },
+      "typical_themes": "Mercado e costumes tradicionais",
+      "themes": [
+        { "theme": "privatizacoes", "position": 2 },
+        { "theme": "impostos", "position": 2 },
+        { "theme": "seguranca", "position": 2 },
+        { "theme": "armas", "position": 1 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "nacional_populista",
+      "name": "Nacional-populista de direita",
+      "economic": { "min": -10, "max": 50 },
+      "social": { "min": 60, "max": 100 },
+      "typical_themes": "Nacionalismo, ordem, antissistema",
+      "themes": [
+        { "theme": "seguranca", "position": 2 },
+        { "theme": "armas", "position": 2 },
+        { "theme": "privatizacoes", "position": -1 },
+        { "theme": "programas_sociais", "position": -1 }
+      ],
+      "weight": 1
+    },
+    {
+      "id": "agrario",
+      "name": "Agrário / ruralista",
+      "economic": { "min": 20, "max": 60 },
+      "social": { "min": 20, "max": 60 },
+      "typical_themes": "Agronegócio, propriedade rural, infraestrutura",
+      "themes": [
+        { "theme": "agronegocio", "position": 2 },
+        { "theme": "meio_ambiente", "position": 2 },
+        { "theme": "armas", "position": 1 },
+        { "theme": "impostos", "position": 1 }
+      ],
+      "weight": 2
+    },
+    {
+      "id": "regionalista",
+      "name": "Regionalista",
+      "economic": null,
+      "social": null,
+      "typical_themes": "Interesses de um estado ou região",
+      "themes": [],
+      "weight": 1
+    }
+  ]
+}
