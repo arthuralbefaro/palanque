@@ -1,0 +1,22 @@
+# Godot
+.godot/
+/android/
+
+# .NET
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+*.binlog
+.vs/
+.idea/
+mono_crash.*.json
+
+# Sistema operacional
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Importador de dados: arquivos brutos baixados do IBGE/TSE (a saída em data/municipios/ é versionada)
+tools/Planalto.DataImporter/cache/

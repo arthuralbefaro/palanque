@@ -1,0 +1,11 @@
+#!/bin/sh
+# Remove qualquer atribuição a IA da mensagem de commit
+sed -i -E \
+  -e '/^[Cc]o-[Aa]uthored-[Bb]y:/d' \
+  -e '/[Gg]enerated (with|by).*[Cc]laude/d' \
+  -e '/^Claude-Session:/d' \
+  -e '/claude\.(ai|com)/d' \
+  -e '/anthropic\.com/d' \
+  "$1"
+# Remove linhas em branco sobrando no final
+sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$1"

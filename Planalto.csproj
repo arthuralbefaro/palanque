@@ -1,0 +1,12 @@
+<Project Sdk="Godot.NET.Sdk/4.7.2">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>Planalto</RootNamespace>
+    <!-- core/ e tools/ têm projetos próprios; sem isso o glob padrão compilaria os .cs deles aqui. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);core/**;tools/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="core/Planalto.Core/Planalto.Core.csproj" />
+  </ItemGroup>
+</Project>
