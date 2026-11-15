@@ -29,10 +29,7 @@
 - [x] Testes do importador: contagem igual à lista oficial do IBGE, nenhum código duplicado, soma de população por UF igual ao total oficial, eleitorado > 0 (exceto casos especiais), soma de vagas igual ao total do TSE 2024, todos os municípios com lat/lon dentro do próprio polígono
 - [x] DataValidator validando data/municipios
 
-### 1C — Eleitorado e pesquisas
-- [ ] Segmentos de eleitores gerados do perfil real do município (idade, renda, religião, escolaridade, urbano/rural), com categorias normalizadas pela soma delas
-- [ ] Modelo de voto (utilidade por segmento, softmax, brancos/nulos/abstenção, comparecimento considerando voto facultativo de 16–17 e 70+)
-- [ ] Pesquisas com margem de erro, institutos fictícios com viés e pesquisa interna
+### 1C — Mundo e partidos
 - [ ] Famílias ideológicas em data/parties/families.json (seção 14.1)
 - [ ] Gerador de partidos fictícios (nomes, siglas, números, cores) com lista de bloqueio em data/parties/blocklist.json
 - [ ] WorldSetup no Core: predefinições, sorteio por campo, travas e validações da tela "Novo Mundo" (seção 16.1)
@@ -40,6 +37,11 @@
 
 ### 1D — Cenário "Brasil 2026"
 - [ ] Cenário "Brasil 2026" (seção 16.4), em três partes: nacional (partidos, federações, Congresso, fundo eleitoral), estadual (governadores, senadores, Assembleias de 2026) e municipal (prefeitos, vices, inelegibilidade por reeleição, Câmaras, força local e alianças de 2024 para todos os municípios)
+
+### 1E — Eleitorado e pesquisas
+- [ ] Segmentos de eleitores gerados do perfil real do município (idade, renda, religião, escolaridade, urbano/rural), com categorias normalizadas pela soma delas; afinidade partidária inicial pela força local da 1D no cenário "Brasil 2026" e, nos demais cenários, por distribuição gerada a partir das famílias e dos tamanhos dos partidos
+- [ ] Modelo de voto (utilidade por segmento, softmax, brancos/nulos/abstenção, comparecimento considerando voto facultativo de 16–17 e 70+)
+- [ ] Pesquisas com margem de erro, institutos fictícios com viés e pesquisa interna
 
 ## Fase 2 — Criação de personagem
 - [ ] Modelo Appearance no Core + randomização com pesos + serialização
