@@ -21,14 +21,19 @@
     { "id": "triangulo", "name": "Triângulo" },
     { "id": "hexagono", "name": "Hexágono" },
     { "id": "seta", "name": "Seta" },
-    { "id": "raio", "name": "Raio" }
+    { "id": "raio", "name": "Raio" },
+    { "id": "estrela", "name": "Estrela" },
+    { "id": "tucano", "name": "Tucano" },
+    { "id": "punho_cerrado", "name": "Punho cerrado" },
+    { "id": "rosa", "name": "Rosa" },
+    { "id": "pomba", "name": "Pomba" },
+    { "id": "foice_e_martelo", "name": "Foice e martelo" },
+    { "id": "girassol", "name": "Girassol" },
+    { "id": "chama", "name": "Chama" },
+    { "id": "ramo_de_oliveira", "name": "Ramo de oliveira" },
+    { "id": "maos_dadas", "name": "Mãos dadas" }
   ],
   "excluded": [
-    { "id": "estrela", "reason": "Símbolo ligado a partido real." },
-    { "id": "tucano", "reason": "Símbolo ligado a partido real." },
-    { "id": "foice_e_martelo", "reason": "Símbolo ligado a partidos reais." },
-    { "id": "punho_cerrado", "reason": "Símbolo ligado a partidos e movimentos reais." },
-    { "id": "rosa", "reason": "Símbolo ligado a partidos reais." },
     { "id": "brasao", "reason": "Símbolo oficial; o jogo não reproduz brasões." },
     { "id": "bandeira_nacional", "reason": "Símbolo oficial." }
   ]

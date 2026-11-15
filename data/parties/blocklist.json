@@ -4,19 +4,19 @@
       "id": "tse_registrados",
       "url": "https://www.tse.jus.br/partidos/partidos-registrados-no-tse",
       "consulted_on": "2026-11-15",
-      "result": "Página oficial dos partidos registrados. Acesso automatizado recusado (HTTP 403) e cópia salva não encontrada em tools/Planalto.DataImporter/cache/tse_partidos/; nenhum item conferido nela ainda."
+      "result": "Página oficial dos partidos registrados. Acesso automatizado recusado (HTTP 403) e cópia salva não encontrada em tools/Planalto.DataImporter/cache/tse_partidos/; nenhum item conferido nela ainda. Pode ser conferida depois: se as páginas forem salvas em tools/Planalto.DataImporter/cache/tse_partidos/, cada item é conferido e passa a 'confirmed': true."
     },
     {
       "id": "tse_historico",
       "url": "https://www.tse.jus.br/partidos/partidos-registrados-no-tse/historico",
       "consulted_on": "2026-11-15",
-      "result": "Histórico oficial (registros de 1945 a 1979, fusões, incorporações e mudanças de nome ou sigla). Acesso automatizado recusado (HTTP 403) e cópia salva não encontrada; nenhum item conferido nela ainda."
+      "result": "Histórico oficial (registros de 1945 a 1979, fusões, incorporações e mudanças de nome ou sigla). Acesso automatizado recusado (HTTP 403) e cópia salva não encontrada; nenhum item conferido nela ainda. Pode ser conferida depois: se as páginas forem salvas em tools/Planalto.DataImporter/cache/tse_partidos/, cada item é conferido e passa a 'confirmed': true."
     },
     {
       "id": "tse_federacoes",
       "url": "https://www.tse.jus.br/partidos/federacoes-registradas-no-tse",
       "consulted_on": "2026-11-15",
-      "result": "Página oficial das federações registradas. Acesso automatizado recusado (HTTP 403) e cópia salva não encontrada; nenhum item conferido nela ainda."
+      "result": "Página oficial das federações registradas. Acesso automatizado recusado (HTTP 403) e cópia salva não encontrada; nenhum item conferido nela ainda. Pode ser conferida depois: se as páginas forem salvas em tools/Planalto.DataImporter/cache/tse_partidos/, cada item é conferido e passa a 'confirmed': true."
     },
     {
       "id": "tse_busca_indexada",
@@ -27,7 +27,7 @@
     {
       "id": "conhecimento_geral",
       "consulted_on": "2026-11-15",
-      "result": "fonte: conhecimento geral, não confirmado. Itens mantidos até a conferência nas páginas oficiais."
+      "result": "fonte: conhecimento geral, não confirmado. Como a lista é um filtro, itens não confirmados também bloqueiam."
     }
   ],
   "ignored_words": ["a", "o", "as", "os", "de", "da", "do", "das", "dos", "e", "em", "na", "no", "nas", "nos", "para", "pela", "pelo", "pelas", "pelos"],
@@ -100,14 +100,30 @@
     { "sigla": "PMR", "name": "Partido Municipalista Renovador", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
     { "sigla": "PAN", "name": "Partido dos Aposentados da Nação", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
     { "sigla": "PGT", "name": "Partido Geral dos Trabalhadores", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PH", "name": "Partido Humanista", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PMB", "name": "Partido Municipalista Brasileiro", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PLP", "name": "Partido Liberal Progressista", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PASART", "name": "Partido Socialista Agrário e Renovador Trabalhista", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PNTB", "name": "Partido Nacionalista dos Trabalhadores Brasileiros", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PCN", "name": "Partido Comunitário Nacional", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PDI", "name": "Partido Democrático Independente", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PRS", "name": "Partido Reformador Social", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PMC", "name": "Partido Municipalista Comunitário", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "name": "Partido Brasileiro de Mulheres", "group": "historico", "sources": ["conhecimento_geral", "tse_busca_indexada"], "confirmed": false },
+    { "sigla": "PEB", "name": "Partido Ecológico Brasileiro", "group": "historico", "sources": ["conhecimento_geral"], "confirmed": false },
 
     { "sigla": "UDN", "name": "União Democrática Nacional", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
-    { "sigla": "PSP", "name": "Partido Social Progressista", "group": "quarta_republica", "sources": ["conhecimento_geral", "tse_busca_indexada"], "confirmed": false },
+    { "sigla": "PSP", "name": "Partido Social Progressista", "group": "quarta_republica", "sources": ["conhecimento_geral", "tse_busca_indexada"], "confirmed": false, "note": "Também a legenda de mesmo nome e sigla dos anos 1980." },
     { "sigla": "PR", "name": "Partido Republicano", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
     { "sigla": "PL", "name": "Partido Libertador", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
     { "sigla": "PRP", "name": "Partido de Representação Popular", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
     { "name": "Partido Trabalhista Republicano", "group": "quarta_republica", "sources": ["tse_busca_indexada"], "confirmed": false },
     { "name": "Partido Republicano Trabalhista", "group": "quarta_republica", "sources": ["tse_busca_indexada"], "confirmed": false },
+    { "sigla": "MTR", "name": "Movimento Trabalhista Renovador", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PRT", "name": "Partido Rural Trabalhista", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PAN", "name": "Partido Agrário Nacional", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "POT", "name": "Partido Orientador Trabalhista", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
+    { "sigla": "PPS", "name": "Partido Popular Sindicalista", "group": "quarta_republica", "sources": ["conhecimento_geral"], "confirmed": false },
 
     { "name": "Brasil da Esperança", "group": "federacao", "sources": ["tse_busca_indexada"], "confirmed": false },
     { "name": "PSDB Cidadania", "group": "federacao", "sources": ["tse_busca_indexada"], "confirmed": false },
