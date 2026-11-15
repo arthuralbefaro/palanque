@@ -31,7 +31,7 @@
 
 ### 1C — Mundo e partidos
 - [x] Famílias ideológicas em data/parties/families.json (seção 14.1)
-- [x] Gerador de partidos fictícios (nomes, siglas, números, cores) com lista de bloqueio em data/parties/blocklist.json (pendente: conferir a lista nas páginas oficiais do TSE)
+- [x] Gerador de partidos fictícios (nomes, siglas, números, cores) com lista de bloqueio em data/parties/blocklist.json (itens não confirmados também bloqueiam; conferência nas páginas do TSE possível depois, se salvas no cache)
 - [x] WorldSetup no Core: predefinições, sorteio por campo, travas e validações da tela "Novo Mundo" (seção 16.1)
 - [x] Números de candidato por cargo (seção 16.2) com testes
 
