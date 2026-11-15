@@ -17,7 +17,10 @@ public class PartyBlocklistTests
     [Fact]
     public void Arquivo_TemOsTrintaPartidosRegistradosEAsFederacoes()
     {
-        Assert.Equal(30, Blocklist.File.Entries.Count(e => e.Group == BlocklistGroup.Registrado));
+        Assert.Equal(30, Blocklist.File.Entries.Count(e => e.Group == BlocklistGroup.Registrado && e.Sigla is not null));
+        Assert.All(Blocklist.File.Entries.Where(e => e.Group == BlocklistGroup.Registrado), e => Assert.True(e.Confirmed));
+        Assert.NotNull(Blocklist.CheckName("Democrata"));
+        Assert.NotNull(Blocklist.CheckName("Mobilização Nacional"));
         Assert.Equal(5, Blocklist.File.Entries.Count(e => e.Group == BlocklistGroup.Federacao));
         Assert.All(Blocklist.File.Sources, s => Assert.False(string.IsNullOrWhiteSpace(s.Result)));
     }
