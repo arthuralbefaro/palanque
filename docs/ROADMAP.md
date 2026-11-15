@@ -44,15 +44,15 @@
 - [x] Pesquisas com margem de erro, institutos fictícios com viés e pesquisa interna
 
 ## Fase 2 — Criação de personagem
-- [ ] Modelo Appearance no Core + randomização com pesos + serialização
-- [ ] Arte placeholder gerada por código para todas as categorias
-- [ ] PortraitRenderer com shader de tingimento, camadas trás/frente, expressões e cache
-- [ ] Tela de criação com 4 abas, aleatório, desfazer, presets
-- [ ] Santinho, outdoor e compositor de logotipo
-- [ ] Geração de NPCs usando o mesmo sistema
-- [ ] Seleção de município (qualquer município do Brasil como cidade natal e palco da primeira campanha): busca com autocompletar, filtro por UF/região, mini-mapa e ficha (população, eleitorado, vagas, porte, dificuldade sugerida)
-- [ ] Tela "Novo Mundo" (seção 16.1): predefinições, lista de partidos editável, sorteio, travas, cenários salvos
-- [ ] Aba "Partido" na criação de personagem (seção 14.2 A): filiar-se a um partido existente ou criar o seu
+- [x] Modelo Appearance no Core + randomização com pesos + serialização
+- [x] Arte placeholder gerada por código para todas as categorias
+- [x] PortraitRenderer com shader de tingimento, camadas trás/frente, expressões e cache
+- [x] Tela de criação com 4 abas, aleatório, desfazer, presets
+- [x] Santinho, outdoor e compositor de logotipo
+- [x] Geração de NPCs usando o mesmo sistema
+- [x] Seleção de município (qualquer município do Brasil como cidade natal e palco da primeira campanha): busca com autocompletar, filtro por UF/região, mini-mapa e ficha (população, eleitorado, vagas, porte, dificuldade sugerida)
+- [x] Tela "Novo Mundo" (seção 16.1): predefinições, lista de partidos editável, sorteio, travas, cenários salvos
+- [x] Aba "Partido" na criação de personagem (seção 14.2 A): filiar-se a um partido existente ou criar o seu
 
 ## Fase 3 — Fatia vertical: Vereador
 - [ ] 1 cidade, 6 partidos, ~10 rivais
