@@ -71,7 +71,7 @@ public class GameStateSerializerTests
     {
         string json = GameStateSerializer.Serialize(CreateState());
 
-        Assert.Contains("\"format_version\": 1", json);
+        Assert.Contains($"\"format_version\": {GameState.CurrentFormatVersion}", json);
     }
 
     [Theory]
