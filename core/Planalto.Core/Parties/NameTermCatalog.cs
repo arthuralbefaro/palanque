@@ -21,6 +21,9 @@ public sealed class NameQualifier
 
     public required List<string> Families { get; init; }
 
+    /// <summary>Primeiras palavras com que o termo soa redundante ("União Unida").</summary>
+    public List<string> ExcludedHeads { get; init; } = [];
+
     public bool IsGeneric => Families.Count == 0;
 
     public string For(GrammaticalGender gender) => gender == GrammaticalGender.Masculine ? Masculine : Feminine;
@@ -92,6 +95,11 @@ public sealed class NameTermCatalog : IValidatable
                     .Concat(DataChecks.Text(qualifier.Feminine, "feminine", $"qualifiers[{i}]")))
                 {
                     yield return error;
+                }
+
+                foreach (string head in (qualifier.ExcludedHeads ?? []).Where(h => Heads is not null && !Heads.Any(x => x?.Text == h)))
+                {
+                    yield return $"qualifiers[{i}] '{qualifier.Masculine}': 'excluded_heads' cita '{head}', que não está em 'heads'.";
                 }
 
                 if (qualifier.Families is null)

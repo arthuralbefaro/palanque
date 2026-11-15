@@ -79,12 +79,13 @@ public sealed class PartyGenerator(PartyContent content)
         for (int attempt = 0; attempt < Config.Names.MaxAttempts; attempt++)
         {
             NameHead head = rng.PickWeighted(terms.Heads, h => h.Weight);
-            NameQualifier first = rng.PickWeighted(pool, q => QualifierWeight(q, family));
+            var headPool = pool.Where(q => !q.ExcludedHeads.Contains(head.Text)).ToList();
+            NameQualifier first = rng.PickWeighted(headPool, q => QualifierWeight(q, family));
             var words = new List<string> { head.Text, first.For(head.Gender) };
 
-            if (pool.Count > 1 && rng.Chance(Config.Names.SecondQualifierChance))
+            if (headPool.Count > 1 && rng.Chance(Config.Names.SecondQualifierChance))
             {
-                var rest = pool.Where(q => q != first).ToList();
+                var rest = headPool.Where(q => q != first).ToList();
                 words.Add(rng.PickWeighted(rest, q => QualifierWeight(q, family)).For(head.Gender));
             }
 

@@ -119,6 +119,19 @@ public class PartyGeneratorTests
     }
 
     [Fact]
+    public void Nome_EvitaTermosRedundantesComAPrimeiraPalavra()
+    {
+        var rng = new Rng(13);
+        FamilyDefinition centro = Content.Families.Get("centro_pragmatico");
+
+        for (int i = 0; i < 1000; i++)
+        {
+            GeneratedName name = Generator.GenerateName(rng, centro, new TakenIdentities(Content.Blocklist))!;
+            Assert.False(name.Name.StartsWith("União Unida", StringComparison.Ordinal), name.Name);
+        }
+    }
+
+    [Fact]
     public void Nome_UsaSoTermosGenericosOuDaFamilia()
     {
         var rng = new Rng(10);

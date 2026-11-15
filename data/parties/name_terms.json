@@ -50,7 +50,7 @@
     { "masculine": "Federalista", "feminine": "Federalista", "families": ["regionalista", "centro_pragmatico"] },
     { "masculine": "Municipalista", "feminine": "Municipalista", "families": ["centro_pragmatico", "regionalista"] },
     { "masculine": "Regional", "feminine": "Regional", "families": ["regionalista"] },
-    { "masculine": "Unido", "feminine": "Unida", "families": ["centro_pragmatico", "centro"] },
+    { "masculine": "Unido", "feminine": "Unida", "families": ["centro_pragmatico", "centro"], "excluded_heads": ["União"] },
     { "masculine": "Integrado", "feminine": "Integrada", "families": ["centro_pragmatico", "regionalista"] }
   ],
   "suffixes": [
