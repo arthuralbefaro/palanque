@@ -20,6 +20,14 @@ public static class DataValidation
             Check<PorteCatalog>(dataDirectory, "portes.json", catalog => catalog.Portes.Count, out PorteCatalog? portes),
         };
 
+        if (portes is null)
+        {
+            reports.Add(new DataFileReport($"{MunicipiosDataSet.DirectoryName}/", 0, ["não validado: portes.json inválido."]));
+            return reports;
+        }
+
+        var (dataSet, errors) = MunicipiosDataSet.Load(dataDirectory, portes);
+        reports.Add(new DataFileReport($"{MunicipiosDataSet.DirectoryName}/", dataSet?.All.Count() ?? 0, errors));
         return reports;
     }
 

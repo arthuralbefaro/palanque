@@ -1,0 +1,5930 @@
+{
+  "uf": "MS",
+  "municipios": [
+    {
+      "codigo_ibge": 5000203,
+      "nome": "Água Clara",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50007,
+        "nome": "Três Lagoas"
+      },
+      "regiao_imediata": {
+        "id": 500002,
+        "nome": "Três Lagoas"
+      },
+      "lat": -19.96282,
+      "lon": -52.92669,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7781.558,
+      "populacao": 18143,
+      "eleitorado": 13425,
+      "urbana_pct": 82.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16741,
+        "situacao": {
+          "urbana": 13750,
+          "rural": 2991
+        },
+        "idade": {
+          "0_15": 4644,
+          "16_17": 513,
+          "18_24": 1845,
+          "25_34": 2860,
+          "35_44": 2739,
+          "45_59": 2615,
+          "60_69": 1018,
+          "70_mais": 507
+        },
+        "renda": {
+          "sem_rendimento": 77,
+          "ate_1_4_sm": 365,
+          "1_4_a_1_2_sm": 2095,
+          "1_2_a_1_sm": 6208,
+          "1_a_2_sm": 5584,
+          "2_a_3_sm": 1219,
+          "3_a_5_sm": 726,
+          "5_a_10_sm": 284,
+          "10_a_15_sm": 130,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 9
+        },
+        "religiao": {
+          "catolica": 6375,
+          "evangelica": 4509,
+          "espirita": 63,
+          "umbanda_candomble": 18,
+          "tradicoes_indigenas": 0,
+          "outras": 247,
+          "sem_religiao": 1072,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4451,
+          "fundamental_completo_medio_incompleto": 2451,
+          "medio_completo_superior_incompleto": 3614,
+          "superior_completo": 1052
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5000252,
+      "nome": "Alcinópolis",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -18.20915,
+      "lon": -53.74919,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4397.518,
+      "populacao": 4651,
+      "eleitorado": 3794,
+      "urbana_pct": 65.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4537,
+        "situacao": {
+          "urbana": 2953,
+          "rural": 1584
+        },
+        "idade": {
+          "0_15": 1059,
+          "16_17": 126,
+          "18_24": 391,
+          "25_34": 634,
+          "35_44": 715,
+          "45_59": 941,
+          "60_69": 386,
+          "70_mais": 285
+        },
+        "renda": {
+          "sem_rendimento": 125,
+          "ate_1_4_sm": 217,
+          "1_4_a_1_2_sm": 924,
+          "1_2_a_1_sm": 1592,
+          "1_a_2_sm": 1090,
+          "2_a_3_sm": 299,
+          "3_a_5_sm": 193,
+          "5_a_10_sm": 68,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 7
+        },
+        "religiao": {
+          "catolica": 2591,
+          "evangelica": 738,
+          "espirita": 21,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 52,
+          "sem_religiao": 138,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1610,
+          "fundamental_completo_medio_incompleto": 630,
+          "medio_completo_superior_incompleto": 674,
+          "superior_completo": 443
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5000609,
+      "nome": "Amambai",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500009,
+        "nome": "Amambai"
+      },
+      "lat": -23.15781,
+      "lon": -54.96817,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4193.742,
+      "populacao": 42071,
+      "eleitorado": 27074,
+      "urbana_pct": 64.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 39325,
+        "situacao": {
+          "urbana": 25429,
+          "rural": 13896
+        },
+        "idade": {
+          "0_15": 10446,
+          "16_17": 1480,
+          "18_24": 4615,
+          "25_34": 6038,
+          "35_44": 5486,
+          "45_59": 6222,
+          "60_69": 2711,
+          "70_mais": 2327
+        },
+        "renda": {
+          "sem_rendimento": 645,
+          "ate_1_4_sm": 5341,
+          "1_4_a_1_2_sm": 8798,
+          "1_2_a_1_sm": 11720,
+          "1_a_2_sm": 7538,
+          "2_a_3_sm": 2705,
+          "3_a_5_sm": 1726,
+          "5_a_10_sm": 465,
+          "10_a_15_sm": 67,
+          "15_a_20_sm": 16,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13326,
+          "evangelica": 10976,
+          "espirita": 185,
+          "umbanda_candomble": 125,
+          "tradicoes_indigenas": 668,
+          "outras": 798,
+          "sem_religiao": 3384,
+          "nao_sabe": 0,
+          "sem_declaracao": 42
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12107,
+          "fundamental_completo_medio_incompleto": 4169,
+          "medio_completo_superior_incompleto": 7452,
+          "superior_completo": 3773
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5000708,
+      "nome": "Anastácio",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50002,
+        "nome": "Aquidauana"
+      },
+      "regiao_imediata": {
+        "id": 500012,
+        "nome": "Aquidauana - Anastácio"
+      },
+      "lat": -20.69625,
+      "lon": -55.77207,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2913.108,
+      "populacao": 24820,
+      "eleitorado": 18132,
+      "urbana_pct": 86.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24114,
+        "situacao": {
+          "urbana": 20861,
+          "rural": 3253
+        },
+        "idade": {
+          "0_15": 5730,
+          "16_17": 746,
+          "18_24": 2320,
+          "25_34": 3321,
+          "35_44": 3483,
+          "45_59": 4548,
+          "60_69": 2213,
+          "70_mais": 1753
+        },
+        "renda": {
+          "sem_rendimento": 774,
+          "ate_1_4_sm": 1853,
+          "1_4_a_1_2_sm": 5561,
+          "1_2_a_1_sm": 9251,
+          "1_a_2_sm": 4604,
+          "2_a_3_sm": 1117,
+          "3_a_5_sm": 632,
+          "5_a_10_sm": 230,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 33
+        },
+        "religiao": {
+          "catolica": 8397,
+          "evangelica": 7216,
+          "espirita": 75,
+          "umbanda_candomble": 61,
+          "tradicoes_indigenas": 0,
+          "outras": 849,
+          "sem_religiao": 2186,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8019,
+          "fundamental_completo_medio_incompleto": 2866,
+          "medio_completo_superior_incompleto": 4652,
+          "superior_completo": 2047
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5000807,
+      "nome": "Anaurilândia",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50008,
+        "nome": "Nova Andradina"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -22.11146,
+      "lon": -52.80484,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3415.657,
+      "populacao": 7643,
+      "eleitorado": 6291,
+      "urbana_pct": 59.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7653,
+        "situacao": {
+          "urbana": 4537,
+          "rural": 3116
+        },
+        "idade": {
+          "0_15": 1596,
+          "16_17": 208,
+          "18_24": 718,
+          "25_34": 1032,
+          "35_44": 1098,
+          "45_59": 1669,
+          "60_69": 792,
+          "70_mais": 540
+        },
+        "renda": {
+          "sem_rendimento": 85,
+          "ate_1_4_sm": 490,
+          "1_4_a_1_2_sm": 1341,
+          "1_2_a_1_sm": 3004,
+          "1_a_2_sm": 1961,
+          "2_a_3_sm": 500,
+          "3_a_5_sm": 114,
+          "5_a_10_sm": 56,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4577,
+          "evangelica": 1291,
+          "espirita": 29,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 58,
+          "sem_religiao": 196,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2721,
+          "fundamental_completo_medio_incompleto": 967,
+          "medio_completo_superior_incompleto": 1413,
+          "superior_completo": 714
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5000856,
+      "nome": "Angélica",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -22.06244,
+      "lon": -53.8658,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1283.629,
+      "populacao": 11408,
+      "eleitorado": 8659,
+      "urbana_pct": 79.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10729,
+        "situacao": {
+          "urbana": 8497,
+          "rural": 2232
+        },
+        "idade": {
+          "0_15": 2544,
+          "16_17": 296,
+          "18_24": 961,
+          "25_34": 1642,
+          "35_44": 1680,
+          "45_59": 2020,
+          "60_69": 880,
+          "70_mais": 706
+        },
+        "renda": {
+          "sem_rendimento": 259,
+          "ate_1_4_sm": 694,
+          "1_4_a_1_2_sm": 1908,
+          "1_2_a_1_sm": 3797,
+          "1_a_2_sm": 2917,
+          "2_a_3_sm": 625,
+          "3_a_5_sm": 334,
+          "5_a_10_sm": 146,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5413,
+          "evangelica": 2297,
+          "espirita": 54,
+          "umbanda_candomble": 29,
+          "tradicoes_indigenas": 5,
+          "outras": 172,
+          "sem_religiao": 361,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3460,
+          "fundamental_completo_medio_incompleto": 1556,
+          "medio_completo_superior_incompleto": 2097,
+          "superior_completo": 738
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5000906,
+      "nome": "Antônio João",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500008,
+        "nome": "Ponta Porã"
+      },
+      "lat": -22.20891,
+      "lon": -55.96146,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1095.9,
+      "populacao": 9790,
+      "eleitorado": 7882,
+      "urbana_pct": 77.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9303,
+        "situacao": {
+          "urbana": 7184,
+          "rural": 2119
+        },
+        "idade": {
+          "0_15": 2536,
+          "16_17": 352,
+          "18_24": 1064,
+          "25_34": 1436,
+          "35_44": 1322,
+          "45_59": 1359,
+          "60_69": 667,
+          "70_mais": 567
+        },
+        "renda": {
+          "sem_rendimento": 732,
+          "ate_1_4_sm": 1474,
+          "1_4_a_1_2_sm": 2143,
+          "1_2_a_1_sm": 2857,
+          "1_a_2_sm": 1367,
+          "2_a_3_sm": 562,
+          "3_a_5_sm": 101,
+          "5_a_10_sm": 32,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 13
+        },
+        "religiao": {
+          "catolica": 3292,
+          "evangelica": 2331,
+          "espirita": 64,
+          "umbanda_candomble": 170,
+          "tradicoes_indigenas": 5,
+          "outras": 45,
+          "sem_religiao": 1005,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3085,
+          "fundamental_completo_medio_incompleto": 975,
+          "medio_completo_superior_incompleto": 1565,
+          "superior_completo": 779
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5001003,
+      "nome": "Aparecida do Taboado",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50006,
+        "nome": "Paranaíba"
+      },
+      "regiao_imediata": {
+        "id": 500003,
+        "nome": "Paranaíba - Chapadão do Sul - Cassilândia"
+      },
+      "lat": -20.07561,
+      "lon": -51.2902,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2751.485,
+      "populacao": 30189,
+      "eleitorado": 19559,
+      "urbana_pct": 90.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27674,
+        "situacao": {
+          "urbana": 24984,
+          "rural": 2690
+        },
+        "idade": {
+          "0_15": 6271,
+          "16_17": 780,
+          "18_24": 3084,
+          "25_34": 4440,
+          "35_44": 4190,
+          "45_59": 4870,
+          "60_69": 2322,
+          "70_mais": 1717
+        },
+        "renda": {
+          "sem_rendimento": 484,
+          "ate_1_4_sm": 1962,
+          "1_4_a_1_2_sm": 4864,
+          "1_2_a_1_sm": 8713,
+          "1_a_2_sm": 8103,
+          "2_a_3_sm": 1812,
+          "3_a_5_sm": 1051,
+          "5_a_10_sm": 445,
+          "10_a_15_sm": 144,
+          "15_a_20_sm": 16,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12660,
+          "evangelica": 6607,
+          "espirita": 262,
+          "umbanda_candomble": 62,
+          "tradicoes_indigenas": 0,
+          "outras": 865,
+          "sem_religiao": 1246,
+          "nao_sabe": 0,
+          "sem_declaracao": 47
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8124,
+          "fundamental_completo_medio_incompleto": 3614,
+          "medio_completo_superior_incompleto": 6031,
+          "superior_completo": 2812
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5001102,
+      "nome": "Aquidauana",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50002,
+        "nome": "Aquidauana"
+      },
+      "regiao_imediata": {
+        "id": 500012,
+        "nome": "Aquidauana - Anastácio"
+      },
+      "lat": -19.74627,
+      "lon": -55.87696,
+      "coordenada_metodo": "centroide",
+      "area_km2": 17087.976,
+      "populacao": 48810,
+      "eleitorado": 36274,
+      "urbana_pct": 78.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 46803,
+        "situacao": {
+          "urbana": 36899,
+          "rural": 9904
+        },
+        "idade": {
+          "0_15": 11363,
+          "16_17": 1550,
+          "18_24": 4905,
+          "25_34": 6316,
+          "35_44": 6532,
+          "45_59": 8230,
+          "60_69": 4377,
+          "70_mais": 3530
+        },
+        "renda": {
+          "sem_rendimento": 1324,
+          "ate_1_4_sm": 4268,
+          "1_4_a_1_2_sm": 10486,
+          "1_2_a_1_sm": 16450,
+          "1_a_2_sm": 8768,
+          "2_a_3_sm": 2197,
+          "3_a_5_sm": 2038,
+          "5_a_10_sm": 711,
+          "10_a_15_sm": 200,
+          "15_a_20_sm": 26,
+          "mais_de_20_sm": 12
+        },
+        "religiao": {
+          "catolica": 14788,
+          "evangelica": 16350,
+          "espirita": 543,
+          "umbanda_candomble": 342,
+          "tradicoes_indigenas": 5,
+          "outras": 1658,
+          "sem_religiao": 2420,
+          "nao_sabe": 24,
+          "sem_declaracao": 68
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13678,
+          "fundamental_completo_medio_incompleto": 5613,
+          "medio_completo_superior_incompleto": 9835,
+          "superior_completo": 4749
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5001243,
+      "nome": "Aral Moreira",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500008,
+        "nome": "Ponta Porã"
+      },
+      "lat": -22.90769,
+      "lon": -55.45019,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1653.86,
+      "populacao": 11163,
+      "eleitorado": 8245,
+      "urbana_pct": 55.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10748,
+        "situacao": {
+          "urbana": 5919,
+          "rural": 4829
+        },
+        "idade": {
+          "0_15": 3233,
+          "16_17": 442,
+          "18_24": 1286,
+          "25_34": 1740,
+          "35_44": 1403,
+          "45_59": 1483,
+          "60_69": 643,
+          "70_mais": 518
+        },
+        "renda": {
+          "sem_rendimento": 181,
+          "ate_1_4_sm": 1530,
+          "1_4_a_1_2_sm": 2922,
+          "1_2_a_1_sm": 3267,
+          "1_a_2_sm": 2010,
+          "2_a_3_sm": 328,
+          "3_a_5_sm": 230,
+          "5_a_10_sm": 107,
+          "10_a_15_sm": 45,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4569,
+          "evangelica": 2068,
+          "espirita": 9,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 93,
+          "sem_religiao": 963,
+          "nao_sabe": 0,
+          "sem_declaracao": 25
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3665,
+          "fundamental_completo_medio_incompleto": 1068,
+          "medio_completo_superior_incompleto": 1635,
+          "superior_completo": 707
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5001508,
+      "nome": "Bandeirantes",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -19.80589,
+      "lon": -54.30575,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3363.487,
+      "populacao": 8406,
+      "eleitorado": 6791,
+      "urbana_pct": 71,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7940,
+        "situacao": {
+          "urbana": 5641,
+          "rural": 2299
+        },
+        "idade": {
+          "0_15": 1883,
+          "16_17": 200,
+          "18_24": 789,
+          "25_34": 1172,
+          "35_44": 1172,
+          "45_59": 1474,
+          "60_69": 692,
+          "70_mais": 558
+        },
+        "renda": {
+          "sem_rendimento": 18,
+          "ate_1_4_sm": 205,
+          "1_4_a_1_2_sm": 1207,
+          "1_2_a_1_sm": 2684,
+          "1_a_2_sm": 2341,
+          "2_a_3_sm": 684,
+          "3_a_5_sm": 448,
+          "5_a_10_sm": 270,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 15,
+          "mais_de_20_sm": 6
+        },
+        "religiao": {
+          "catolica": 3575,
+          "evangelica": 1894,
+          "espirita": 63,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 0,
+          "outras": 249,
+          "sem_religiao": 354,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2693,
+          "fundamental_completo_medio_incompleto": 926,
+          "medio_completo_superior_incompleto": 1493,
+          "superior_completo": 702
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5001904,
+      "nome": "Bataguassu",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50008,
+        "nome": "Nova Andradina"
+      },
+      "regiao_imediata": {
+        "id": 500002,
+        "nome": "Três Lagoas"
+      },
+      "lat": -21.80573,
+      "lon": -52.57244,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2392.476,
+      "populacao": 24430,
+      "eleitorado": 19755,
+      "urbana_pct": 89.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23031,
+        "situacao": {
+          "urbana": 20556,
+          "rural": 2475
+        },
+        "idade": {
+          "0_15": 5327,
+          "16_17": 709,
+          "18_24": 2450,
+          "25_34": 3443,
+          "35_44": 3631,
+          "45_59": 4462,
+          "60_69": 1846,
+          "70_mais": 1163
+        },
+        "renda": {
+          "sem_rendimento": 309,
+          "ate_1_4_sm": 1453,
+          "1_4_a_1_2_sm": 3595,
+          "1_2_a_1_sm": 7938,
+          "1_a_2_sm": 6727,
+          "2_a_3_sm": 1521,
+          "3_a_5_sm": 860,
+          "5_a_10_sm": 385,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 23,
+          "mais_de_20_sm": 23
+        },
+        "religiao": {
+          "catolica": 10681,
+          "evangelica": 5527,
+          "espirita": 95,
+          "umbanda_candomble": 43,
+          "tradicoes_indigenas": 0,
+          "outras": 282,
+          "sem_religiao": 1390,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6339,
+          "fundamental_completo_medio_incompleto": 3145,
+          "medio_completo_superior_incompleto": 5527,
+          "superior_completo": 2116
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5002001,
+      "nome": "Batayporã",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50008,
+        "nome": "Nova Andradina"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -22.39082,
+      "lon": -53.1776,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1826.578,
+      "populacao": 10935,
+      "eleitorado": 8388,
+      "urbana_pct": 79.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10712,
+        "situacao": {
+          "urbana": 8495,
+          "rural": 2217
+        },
+        "idade": {
+          "0_15": 2433,
+          "16_17": 316,
+          "18_24": 1052,
+          "25_34": 1517,
+          "35_44": 1586,
+          "45_59": 2125,
+          "60_69": 918,
+          "70_mais": 765
+        },
+        "renda": {
+          "sem_rendimento": 67,
+          "ate_1_4_sm": 351,
+          "1_4_a_1_2_sm": 2036,
+          "1_2_a_1_sm": 4137,
+          "1_a_2_sm": 2975,
+          "2_a_3_sm": 655,
+          "3_a_5_sm": 329,
+          "5_a_10_sm": 100,
+          "10_a_15_sm": 37,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5664,
+          "evangelica": 2295,
+          "espirita": 40,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 197,
+          "sem_religiao": 212,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3544,
+          "fundamental_completo_medio_incompleto": 1138,
+          "medio_completo_superior_incompleto": 2417,
+          "superior_completo": 859
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5002100,
+      "nome": "Bela Vista",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.93591,
+      "lon": -56.53533,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4956.473,
+      "populacao": 21800,
+      "eleitorado": 16369,
+      "urbana_pct": 81.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21613,
+        "situacao": {
+          "urbana": 17600,
+          "rural": 4013
+        },
+        "idade": {
+          "0_15": 5278,
+          "16_17": 690,
+          "18_24": 2312,
+          "25_34": 3147,
+          "35_44": 3041,
+          "45_59": 3710,
+          "60_69": 1869,
+          "70_mais": 1566
+        },
+        "renda": {
+          "sem_rendimento": 836,
+          "ate_1_4_sm": 1583,
+          "1_4_a_1_2_sm": 4858,
+          "1_2_a_1_sm": 7850,
+          "1_a_2_sm": 4541,
+          "2_a_3_sm": 1032,
+          "3_a_5_sm": 466,
+          "5_a_10_sm": 205,
+          "10_a_15_sm": 58,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11716,
+          "evangelica": 3532,
+          "espirita": 151,
+          "umbanda_candomble": 54,
+          "tradicoes_indigenas": 19,
+          "outras": 339,
+          "sem_religiao": 830,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6272,
+          "fundamental_completo_medio_incompleto": 2626,
+          "medio_completo_superior_incompleto": 4758,
+          "superior_completo": 1929
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5002159,
+      "nome": "Bodoquena",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500012,
+        "nome": "Aquidauana - Anastácio"
+      },
+      "lat": -20.54868,
+      "lon": -56.69971,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2589.14,
+      "populacao": 8923,
+      "eleitorado": 6476,
+      "urbana_pct": 72.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8567,
+        "situacao": {
+          "urbana": 6216,
+          "rural": 2351
+        },
+        "idade": {
+          "0_15": 2122,
+          "16_17": 238,
+          "18_24": 787,
+          "25_34": 1256,
+          "35_44": 1336,
+          "45_59": 1518,
+          "60_69": 764,
+          "70_mais": 546
+        },
+        "renda": {
+          "sem_rendimento": 181,
+          "ate_1_4_sm": 699,
+          "1_4_a_1_2_sm": 1705,
+          "1_2_a_1_sm": 2904,
+          "1_a_2_sm": 2018,
+          "2_a_3_sm": 617,
+          "3_a_5_sm": 256,
+          "5_a_10_sm": 120,
+          "10_a_15_sm": 26,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3549,
+          "evangelica": 2280,
+          "espirita": 32,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 0,
+          "outras": 168,
+          "sem_religiao": 540,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2552,
+          "fundamental_completo_medio_incompleto": 859,
+          "medio_completo_superior_incompleto": 1945,
+          "superior_completo": 847
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5002209,
+      "nome": "Bonito",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.03321,
+      "lon": -56.48276,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5378.723,
+      "populacao": 25294,
+      "eleitorado": 19285,
+      "urbana_pct": 82.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23659,
+        "situacao": {
+          "urbana": 19503,
+          "rural": 4156
+        },
+        "idade": {
+          "0_15": 5841,
+          "16_17": 684,
+          "18_24": 2323,
+          "25_34": 3641,
+          "35_44": 3845,
+          "45_59": 4215,
+          "60_69": 1837,
+          "70_mais": 1273
+        },
+        "renda": {
+          "sem_rendimento": 295,
+          "ate_1_4_sm": 724,
+          "1_4_a_1_2_sm": 3381,
+          "1_2_a_1_sm": 8350,
+          "1_a_2_sm": 6769,
+          "2_a_3_sm": 2136,
+          "3_a_5_sm": 987,
+          "5_a_10_sm": 509,
+          "10_a_15_sm": 131,
+          "15_a_20_sm": 14,
+          "mais_de_20_sm": 100
+        },
+        "religiao": {
+          "catolica": 9910,
+          "evangelica": 5609,
+          "espirita": 261,
+          "umbanda_candomble": 90,
+          "tradicoes_indigenas": 0,
+          "outras": 514,
+          "sem_religiao": 1773,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7449,
+          "fundamental_completo_medio_incompleto": 3158,
+          "medio_completo_superior_incompleto": 4430,
+          "superior_completo": 2157
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5002308,
+      "nome": "Brasilândia",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50007,
+        "nome": "Três Lagoas"
+      },
+      "regiao_imediata": {
+        "id": 500002,
+        "nome": "Três Lagoas"
+      },
+      "lat": -21.07595,
+      "lon": -52.43401,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5803.542,
+      "populacao": 11826,
+      "eleitorado": 9567,
+      "urbana_pct": 70,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11579,
+        "situacao": {
+          "urbana": 8108,
+          "rural": 3471
+        },
+        "idade": {
+          "0_15": 2610,
+          "16_17": 353,
+          "18_24": 1194,
+          "25_34": 1754,
+          "35_44": 1840,
+          "45_59": 2179,
+          "60_69": 1012,
+          "70_mais": 637
+        },
+        "renda": {
+          "sem_rendimento": 159,
+          "ate_1_4_sm": 425,
+          "1_4_a_1_2_sm": 2041,
+          "1_2_a_1_sm": 4386,
+          "1_a_2_sm": 3159,
+          "2_a_3_sm": 944,
+          "3_a_5_sm": 327,
+          "5_a_10_sm": 50,
+          "10_a_15_sm": 9,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4810,
+          "evangelica": 3445,
+          "espirita": 12,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 167,
+          "sem_religiao": 679,
+          "nao_sabe": 0,
+          "sem_declaracao": 14
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3694,
+          "fundamental_completo_medio_incompleto": 1585,
+          "medio_completo_superior_incompleto": 2386,
+          "superior_completo": 955
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5002407,
+      "nome": "Caarapó",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.58831,
+      "lon": -54.80276,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2115.73,
+      "populacao": 33074,
+      "eleitorado": 22069,
+      "urbana_pct": 76.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30612,
+        "situacao": {
+          "urbana": 23455,
+          "rural": 7157
+        },
+        "idade": {
+          "0_15": 7838,
+          "16_17": 1033,
+          "18_24": 3511,
+          "25_34": 4654,
+          "35_44": 4646,
+          "45_59": 5179,
+          "60_69": 2064,
+          "70_mais": 1687
+        },
+        "renda": {
+          "sem_rendimento": 1054,
+          "ate_1_4_sm": 4108,
+          "1_4_a_1_2_sm": 5010,
+          "1_2_a_1_sm": 8849,
+          "1_a_2_sm": 8628,
+          "2_a_3_sm": 1627,
+          "3_a_5_sm": 928,
+          "5_a_10_sm": 257,
+          "10_a_15_sm": 33,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11701,
+          "evangelica": 7311,
+          "espirita": 109,
+          "umbanda_candomble": 87,
+          "tradicoes_indigenas": 1,
+          "outras": 812,
+          "sem_religiao": 3269,
+          "nao_sabe": 0,
+          "sem_declaracao": 14
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9356,
+          "fundamental_completo_medio_incompleto": 3796,
+          "medio_completo_superior_incompleto": 6146,
+          "superior_completo": 2440
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5002605,
+      "nome": "Camapuã",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -19.34193,
+      "lon": -53.86952,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6238.127,
+      "populacao": 13935,
+      "eleitorado": 10946,
+      "urbana_pct": 78.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13583,
+        "situacao": {
+          "urbana": 10626,
+          "rural": 2957
+        },
+        "idade": {
+          "0_15": 2901,
+          "16_17": 365,
+          "18_24": 1108,
+          "25_34": 1775,
+          "35_44": 2064,
+          "45_59": 2872,
+          "60_69": 1372,
+          "70_mais": 1126
+        },
+        "renda": {
+          "sem_rendimento": 222,
+          "ate_1_4_sm": 245,
+          "1_4_a_1_2_sm": 1824,
+          "1_2_a_1_sm": 4849,
+          "1_a_2_sm": 4306,
+          "2_a_3_sm": 973,
+          "3_a_5_sm": 665,
+          "5_a_10_sm": 367,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 7,
+          "mais_de_20_sm": 19
+        },
+        "religiao": {
+          "catolica": 7483,
+          "evangelica": 2694,
+          "espirita": 19,
+          "umbanda_candomble": 36,
+          "tradicoes_indigenas": 0,
+          "outras": 153,
+          "sem_religiao": 474,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4597,
+          "fundamental_completo_medio_incompleto": 1850,
+          "medio_completo_superior_incompleto": 2577,
+          "superior_completo": 1290
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5002704,
+      "nome": "Campo Grande",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -20.91362,
+      "lon": -54.24946,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8082.327,
+      "populacao": 970843,
+      "eleitorado": 638845,
+      "urbana_pct": 98.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 898100,
+        "situacao": {
+          "urbana": 886582,
+          "rural": 11518
+        },
+        "idade": {
+          "0_15": 196779,
+          "16_17": 24537,
+          "18_24": 90568,
+          "25_34": 142489,
+          "35_44": 142960,
+          "45_59": 166392,
+          "60_69": 76912,
+          "70_mais": 57463
+        },
+        "renda": {
+          "sem_rendimento": 31249,
+          "ate_1_4_sm": 42525,
+          "1_4_a_1_2_sm": 121524,
+          "1_2_a_1_sm": 243373,
+          "1_a_2_sm": 243776,
+          "2_a_3_sm": 89166,
+          "3_a_5_sm": 67448,
+          "5_a_10_sm": 39311,
+          "10_a_15_sm": 8430,
+          "15_a_20_sm": 2161,
+          "mais_de_20_sm": 1982
+        },
+        "religiao": {
+          "catolica": 330392,
+          "evangelica": 240447,
+          "espirita": 21833,
+          "umbanda_candomble": 6320,
+          "tradicoes_indigenas": 24,
+          "outras": 41506,
+          "sem_religiao": 72097,
+          "nao_sabe": 598,
+          "sem_declaracao": 911
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 165372,
+          "fundamental_completo_medio_incompleto": 108598,
+          "medio_completo_superior_incompleto": 238213,
+          "superior_completo": 165089
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 29,
+      "vagas_vereador_max": 31,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 5002803,
+      "nome": "Caracol",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.94258,
+      "lon": -57.09101,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2928.706,
+      "populacao": 5078,
+      "eleitorado": 4714,
+      "urbana_pct": 66.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5036,
+        "situacao": {
+          "urbana": 3328,
+          "rural": 1708
+        },
+        "idade": {
+          "0_15": 1236,
+          "16_17": 164,
+          "18_24": 480,
+          "25_34": 660,
+          "35_44": 740,
+          "45_59": 964,
+          "60_69": 427,
+          "70_mais": 365
+        },
+        "renda": {
+          "sem_rendimento": 26,
+          "ate_1_4_sm": 355,
+          "1_4_a_1_2_sm": 1237,
+          "1_2_a_1_sm": 1976,
+          "1_a_2_sm": 895,
+          "2_a_3_sm": 273,
+          "3_a_5_sm": 210,
+          "5_a_10_sm": 49,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2689,
+          "evangelica": 976,
+          "espirita": 10,
+          "umbanda_candomble": 7,
+          "tradicoes_indigenas": 0,
+          "outras": 36,
+          "sem_religiao": 176,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1811,
+          "fundamental_completo_medio_incompleto": 651,
+          "medio_completo_superior_incompleto": 847,
+          "superior_completo": 322
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5002902,
+      "nome": "Cassilândia",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50005,
+        "nome": "Cassilândia"
+      },
+      "regiao_imediata": {
+        "id": 500003,
+        "nome": "Paranaíba - Chapadão do Sul - Cassilândia"
+      },
+      "lat": -19.09758,
+      "lon": -52.17351,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3711.715,
+      "populacao": 21581,
+      "eleitorado": 15255,
+      "urbana_pct": 90.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20988,
+        "situacao": {
+          "urbana": 18925,
+          "rural": 2063
+        },
+        "idade": {
+          "0_15": 4216,
+          "16_17": 544,
+          "18_24": 2080,
+          "25_34": 2856,
+          "35_44": 3134,
+          "45_59": 4057,
+          "60_69": 2105,
+          "70_mais": 1996
+        },
+        "renda": {
+          "sem_rendimento": 558,
+          "ate_1_4_sm": 1056,
+          "1_4_a_1_2_sm": 3463,
+          "1_2_a_1_sm": 7354,
+          "1_a_2_sm": 5729,
+          "2_a_3_sm": 1331,
+          "3_a_5_sm": 732,
+          "5_a_10_sm": 409,
+          "10_a_15_sm": 56,
+          "15_a_20_sm": 25,
+          "mais_de_20_sm": 28
+        },
+        "religiao": {
+          "catolica": 9160,
+          "evangelica": 5199,
+          "espirita": 458,
+          "umbanda_candomble": 70,
+          "tradicoes_indigenas": 0,
+          "outras": 609,
+          "sem_religiao": 1484,
+          "nao_sabe": 9,
+          "sem_declaracao": 26
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6211,
+          "fundamental_completo_medio_incompleto": 3195,
+          "medio_completo_superior_incompleto": 4663,
+          "superior_completo": 2171
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5002951,
+      "nome": "Chapadão do Sul",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50005,
+        "nome": "Cassilândia"
+      },
+      "regiao_imediata": {
+        "id": 500003,
+        "nome": "Paranaíba - Chapadão do Sul - Cassilândia"
+      },
+      "lat": -18.99452,
+      "lon": -52.69802,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3252.327,
+      "populacao": 35384,
+      "eleitorado": 22982,
+      "urbana_pct": 92.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30993,
+        "situacao": {
+          "urbana": 28717,
+          "rural": 2276
+        },
+        "idade": {
+          "0_15": 7720,
+          "16_17": 944,
+          "18_24": 3553,
+          "25_34": 5839,
+          "35_44": 5548,
+          "45_59": 4990,
+          "60_69": 1592,
+          "70_mais": 807
+        },
+        "renda": {
+          "sem_rendimento": 125,
+          "ate_1_4_sm": 345,
+          "1_4_a_1_2_sm": 3190,
+          "1_2_a_1_sm": 8500,
+          "1_a_2_sm": 10989,
+          "2_a_3_sm": 3565,
+          "3_a_5_sm": 2611,
+          "5_a_10_sm": 1189,
+          "10_a_15_sm": 163,
+          "15_a_20_sm": 19,
+          "mais_de_20_sm": 29
+        },
+        "religiao": {
+          "catolica": 12424,
+          "evangelica": 8089,
+          "espirita": 200,
+          "umbanda_candomble": 19,
+          "tradicoes_indigenas": 0,
+          "outras": 1213,
+          "sem_religiao": 1631,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6036,
+          "fundamental_completo_medio_incompleto": 4141,
+          "medio_completo_superior_incompleto": 7451,
+          "superior_completo": 4635
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5003108,
+      "nome": "Corguinho",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -19.80757,
+      "lon": -55.0574,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2638.923,
+      "populacao": 4890,
+      "eleitorado": 4462,
+      "urbana_pct": 39.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4783,
+        "situacao": {
+          "urbana": 1871,
+          "rural": 2912
+        },
+        "idade": {
+          "0_15": 1050,
+          "16_17": 126,
+          "18_24": 362,
+          "25_34": 570,
+          "35_44": 674,
+          "45_59": 1022,
+          "60_69": 533,
+          "70_mais": 446
+        },
+        "renda": {
+          "sem_rendimento": 110,
+          "ate_1_4_sm": 380,
+          "1_4_a_1_2_sm": 1151,
+          "1_2_a_1_sm": 1639,
+          "1_a_2_sm": 1112,
+          "2_a_3_sm": 208,
+          "3_a_5_sm": 143,
+          "5_a_10_sm": 21,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 7,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2026,
+          "evangelica": 1154,
+          "espirita": 35,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 0,
+          "outras": 171,
+          "sem_religiao": 405,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1903,
+          "fundamental_completo_medio_incompleto": 623,
+          "medio_completo_superior_incompleto": 642,
+          "superior_completo": 417
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5003157,
+      "nome": "Coronel Sapucaia",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500009,
+        "nome": "Amambai"
+      },
+      "lat": -23.34773,
+      "lon": -55.38308,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1023.727,
+      "populacao": 14708,
+      "eleitorado": 12075,
+      "urbana_pct": 68.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14289,
+        "situacao": {
+          "urbana": 9793,
+          "rural": 4496
+        },
+        "idade": {
+          "0_15": 4549,
+          "16_17": 621,
+          "18_24": 1753,
+          "25_34": 2144,
+          "35_44": 1828,
+          "45_59": 1927,
+          "60_69": 837,
+          "70_mais": 630
+        },
+        "renda": {
+          "sem_rendimento": 827,
+          "ate_1_4_sm": 4128,
+          "1_4_a_1_2_sm": 3851,
+          "1_2_a_1_sm": 3591,
+          "1_a_2_sm": 1295,
+          "2_a_3_sm": 342,
+          "3_a_5_sm": 148,
+          "5_a_10_sm": 18,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3960,
+          "evangelica": 2957,
+          "espirita": 0,
+          "umbanda_candomble": 9,
+          "tradicoes_indigenas": 26,
+          "outras": 796,
+          "sem_religiao": 2239,
+          "nao_sabe": 0,
+          "sem_declaracao": 30
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5606,
+          "fundamental_completo_medio_incompleto": 998,
+          "medio_completo_superior_incompleto": 1883,
+          "superior_completo": 665
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5003207,
+      "nome": "Corumbá",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50001,
+        "nome": "Baixo Pantanal"
+      },
+      "regiao_imediata": {
+        "id": 500010,
+        "nome": "Corumbá"
+      },
+      "lat": -18.72238,
+      "lon": -56.72229,
+      "coordenada_metodo": "centroide",
+      "area_km2": 64431.145,
+      "populacao": 96334,
+      "eleitorado": 67566,
+      "urbana_pct": 92.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 96268,
+        "situacao": {
+          "urbana": 88969,
+          "rural": 7299
+        },
+        "idade": {
+          "0_15": 24365,
+          "16_17": 3037,
+          "18_24": 10607,
+          "25_34": 14217,
+          "35_44": 14235,
+          "45_59": 16771,
+          "60_69": 7439,
+          "70_mais": 5597
+        },
+        "renda": {
+          "sem_rendimento": 1810,
+          "ate_1_4_sm": 10882,
+          "1_4_a_1_2_sm": 20119,
+          "1_2_a_1_sm": 29562,
+          "1_a_2_sm": 19336,
+          "2_a_3_sm": 6276,
+          "3_a_5_sm": 4372,
+          "5_a_10_sm": 2603,
+          "10_a_15_sm": 192,
+          "15_a_20_sm": 79,
+          "mais_de_20_sm": 41
+        },
+        "religiao": {
+          "catolica": 41320,
+          "evangelica": 19678,
+          "espirita": 1742,
+          "umbanda_candomble": 1467,
+          "tradicoes_indigenas": 0,
+          "outras": 3117,
+          "sem_religiao": 5606,
+          "nao_sabe": 10,
+          "sem_declaracao": 58
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 21361,
+          "fundamental_completo_medio_incompleto": 11944,
+          "medio_completo_superior_incompleto": 24737,
+          "superior_completo": 10533
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5003256,
+      "nome": "Costa Rica",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50005,
+        "nome": "Cassilândia"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -18.51879,
+      "lon": -53.20313,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4159.384,
+      "populacao": 29292,
+      "eleitorado": 22293,
+      "urbana_pct": 90,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26037,
+        "situacao": {
+          "urbana": 23435,
+          "rural": 2602
+        },
+        "idade": {
+          "0_15": 6533,
+          "16_17": 843,
+          "18_24": 2557,
+          "25_34": 4404,
+          "35_44": 4301,
+          "45_59": 4362,
+          "60_69": 1752,
+          "70_mais": 1285
+        },
+        "renda": {
+          "sem_rendimento": 526,
+          "ate_1_4_sm": 1311,
+          "1_4_a_1_2_sm": 3899,
+          "1_2_a_1_sm": 8871,
+          "1_a_2_sm": 7814,
+          "2_a_3_sm": 1882,
+          "3_a_5_sm": 1035,
+          "5_a_10_sm": 502,
+          "10_a_15_sm": 52,
+          "15_a_20_sm": 28,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 10692,
+          "evangelica": 5911,
+          "espirita": 364,
+          "umbanda_candomble": 76,
+          "tradicoes_indigenas": 0,
+          "outras": 886,
+          "sem_religiao": 1875,
+          "nao_sabe": 15,
+          "sem_declaracao": 32
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6762,
+          "fundamental_completo_medio_incompleto": 3485,
+          "medio_completo_superior_incompleto": 5669,
+          "superior_completo": 2690
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5003306,
+      "nome": "Coxim",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -18.2809,
+      "lon": -54.67412,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6390.663,
+      "populacao": 33488,
+      "eleitorado": 26397,
+      "urbana_pct": 90.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 32151,
+        "situacao": {
+          "urbana": 29230,
+          "rural": 2921
+        },
+        "idade": {
+          "0_15": 7122,
+          "16_17": 891,
+          "18_24": 3107,
+          "25_34": 4679,
+          "35_44": 4987,
+          "45_59": 6419,
+          "60_69": 2799,
+          "70_mais": 2147
+        },
+        "renda": {
+          "sem_rendimento": 203,
+          "ate_1_4_sm": 1900,
+          "1_4_a_1_2_sm": 5400,
+          "1_2_a_1_sm": 11412,
+          "1_a_2_sm": 8745,
+          "2_a_3_sm": 2158,
+          "3_a_5_sm": 1463,
+          "5_a_10_sm": 610,
+          "10_a_15_sm": 44,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 15412,
+          "evangelica": 7484,
+          "espirita": 293,
+          "umbanda_candomble": 70,
+          "tradicoes_indigenas": 10,
+          "outras": 614,
+          "sem_religiao": 1539,
+          "nao_sabe": 8,
+          "sem_declaracao": 25
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9999,
+          "fundamental_completo_medio_incompleto": 4268,
+          "medio_completo_superior_incompleto": 6389,
+          "superior_completo": 3459
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5003454,
+      "nome": "Deodápolis",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.15608,
+      "lon": -54.15207,
+      "coordenada_metodo": "centroide",
+      "area_km2": 828.45,
+      "populacao": 14419,
+      "eleitorado": 10657,
+      "urbana_pct": 88.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13663,
+        "situacao": {
+          "urbana": 12060,
+          "rural": 1603
+        },
+        "idade": {
+          "0_15": 3045,
+          "16_17": 354,
+          "18_24": 1267,
+          "25_34": 2064,
+          "35_44": 2063,
+          "45_59": 2663,
+          "60_69": 1259,
+          "70_mais": 948
+        },
+        "renda": {
+          "sem_rendimento": 161,
+          "ate_1_4_sm": 522,
+          "1_4_a_1_2_sm": 2602,
+          "1_2_a_1_sm": 5510,
+          "1_a_2_sm": 3562,
+          "2_a_3_sm": 682,
+          "3_a_5_sm": 394,
+          "5_a_10_sm": 184,
+          "10_a_15_sm": 25,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6978,
+          "evangelica": 3183,
+          "espirita": 14,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 224,
+          "sem_religiao": 337,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3747,
+          "fundamental_completo_medio_incompleto": 1732,
+          "medio_completo_superior_incompleto": 3379,
+          "superior_completo": 1375
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5003488,
+      "nome": "Dois Irmãos do Buriti",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50002,
+        "nome": "Aquidauana"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -20.6005,
+      "lon": -55.36235,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2430.3,
+      "populacao": 11570,
+      "eleitorado": 8572,
+      "urbana_pct": 50.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11100,
+        "situacao": {
+          "urbana": 5615,
+          "rural": 5485
+        },
+        "idade": {
+          "0_15": 2764,
+          "16_17": 318,
+          "18_24": 1170,
+          "25_34": 1709,
+          "35_44": 1520,
+          "45_59": 1986,
+          "60_69": 961,
+          "70_mais": 672
+        },
+        "renda": {
+          "sem_rendimento": 93,
+          "ate_1_4_sm": 1061,
+          "1_4_a_1_2_sm": 2692,
+          "1_2_a_1_sm": 3911,
+          "1_a_2_sm": 2085,
+          "2_a_3_sm": 392,
+          "3_a_5_sm": 242,
+          "5_a_10_sm": 112,
+          "10_a_15_sm": 16,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 32
+        },
+        "religiao": {
+          "catolica": 5020,
+          "evangelica": 2678,
+          "espirita": 14,
+          "umbanda_candomble": 26,
+          "tradicoes_indigenas": 0,
+          "outras": 268,
+          "sem_religiao": 468,
+          "nao_sabe": 0,
+          "sem_declaracao": 26
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3695,
+          "fundamental_completo_medio_incompleto": 1161,
+          "medio_completo_superior_incompleto": 2265,
+          "superior_completo": 875
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5003504,
+      "nome": "Douradina",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.0139,
+      "lon": -54.58769,
+      "coordenada_metodo": "centroide",
+      "area_km2": 280.235,
+      "populacao": 5785,
+      "eleitorado": 4903,
+      "urbana_pct": 65.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5578,
+        "situacao": {
+          "urbana": 3635,
+          "rural": 1943
+        },
+        "idade": {
+          "0_15": 1313,
+          "16_17": 173,
+          "18_24": 544,
+          "25_34": 733,
+          "35_44": 812,
+          "45_59": 1075,
+          "60_69": 536,
+          "70_mais": 392
+        },
+        "renda": {
+          "sem_rendimento": 147,
+          "ate_1_4_sm": 495,
+          "1_4_a_1_2_sm": 1151,
+          "1_2_a_1_sm": 2151,
+          "1_a_2_sm": 1122,
+          "2_a_3_sm": 308,
+          "3_a_5_sm": 137,
+          "5_a_10_sm": 59,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2376,
+          "evangelica": 1446,
+          "espirita": 23,
+          "umbanda_candomble": 7,
+          "tradicoes_indigenas": 111,
+          "outras": 266,
+          "sem_religiao": 109,
+          "nao_sabe": 3,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1811,
+          "fundamental_completo_medio_incompleto": 679,
+          "medio_completo_superior_incompleto": 1112,
+          "superior_completo": 466
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5003702,
+      "nome": "Dourados",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.16028,
+      "lon": -54.53468,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 4062.889,
+      "populacao": 266950,
+      "eleitorado": 165608,
+      "urbana_pct": 93.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 243367,
+        "situacao": {
+          "urbana": 228516,
+          "rural": 14851
+        },
+        "idade": {
+          "0_15": 56072,
+          "16_17": 6855,
+          "18_24": 27837,
+          "25_34": 40513,
+          "35_44": 37743,
+          "45_59": 42376,
+          "60_69": 18625,
+          "70_mais": 13346
+        },
+        "renda": {
+          "sem_rendimento": 2798,
+          "ate_1_4_sm": 9395,
+          "1_4_a_1_2_sm": 30179,
+          "1_2_a_1_sm": 73081,
+          "1_a_2_sm": 71492,
+          "2_a_3_sm": 24676,
+          "3_a_5_sm": 17649,
+          "5_a_10_sm": 8836,
+          "10_a_15_sm": 2149,
+          "15_a_20_sm": 432,
+          "mais_de_20_sm": 368
+        },
+        "religiao": {
+          "catolica": 97869,
+          "evangelica": 60397,
+          "espirita": 3120,
+          "umbanda_candomble": 990,
+          "tradicoes_indigenas": 178,
+          "outras": 7531,
+          "sem_religiao": 20025,
+          "nao_sabe": 133,
+          "sem_declaracao": 305
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 51877,
+          "fundamental_completo_medio_incompleto": 27695,
+          "medio_completo_superior_incompleto": 61684,
+          "superior_completo": 39224
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 5003751,
+      "nome": "Eldorado",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500006,
+        "nome": "Naviraí - Mundo Novo"
+      },
+      "lat": -23.73824,
+      "lon": -54.22509,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1012.796,
+      "populacao": 11612,
+      "eleitorado": 8969,
+      "urbana_pct": 84.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11386,
+        "situacao": {
+          "urbana": 9583,
+          "rural": 1803
+        },
+        "idade": {
+          "0_15": 2699,
+          "16_17": 335,
+          "18_24": 1146,
+          "25_34": 1710,
+          "35_44": 1635,
+          "45_59": 2195,
+          "60_69": 917,
+          "70_mais": 749
+        },
+        "renda": {
+          "sem_rendimento": 81,
+          "ate_1_4_sm": 720,
+          "1_4_a_1_2_sm": 2180,
+          "1_2_a_1_sm": 4718,
+          "1_a_2_sm": 2554,
+          "2_a_3_sm": 642,
+          "3_a_5_sm": 285,
+          "5_a_10_sm": 135,
+          "10_a_15_sm": 15,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6117,
+          "evangelica": 2120,
+          "espirita": 20,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 16,
+          "outras": 143,
+          "sem_religiao": 411,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3885,
+          "fundamental_completo_medio_incompleto": 1410,
+          "medio_completo_superior_incompleto": 2033,
+          "superior_completo": 999
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5003801,
+      "nome": "Fátima do Sul",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.34679,
+      "lon": -54.37148,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 325.631,
+      "populacao": 21615,
+      "eleitorado": 16858,
+      "urbana_pct": 93.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20609,
+        "situacao": {
+          "urbana": 19230,
+          "rural": 1379
+        },
+        "idade": {
+          "0_15": 4046,
+          "16_17": 513,
+          "18_24": 1842,
+          "25_34": 2966,
+          "35_44": 2848,
+          "45_59": 4267,
+          "60_69": 2232,
+          "70_mais": 1895
+        },
+        "renda": {
+          "sem_rendimento": 409,
+          "ate_1_4_sm": 912,
+          "1_4_a_1_2_sm": 3139,
+          "1_2_a_1_sm": 7957,
+          "1_a_2_sm": 5391,
+          "2_a_3_sm": 1266,
+          "3_a_5_sm": 1138,
+          "5_a_10_sm": 268,
+          "10_a_15_sm": 49,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 17
+        },
+        "religiao": {
+          "catolica": 10724,
+          "evangelica": 4491,
+          "espirita": 117,
+          "umbanda_candomble": 91,
+          "tradicoes_indigenas": 0,
+          "outras": 373,
+          "sem_religiao": 1029,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6536,
+          "fundamental_completo_medio_incompleto": 2171,
+          "medio_completo_superior_incompleto": 4623,
+          "superior_completo": 2778
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5003900,
+      "nome": "Figueirão",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -18.74444,
+      "lon": -53.86244,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4880.736,
+      "populacao": 3790,
+      "eleitorado": 2803,
+      "urbana_pct": 53.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3539,
+        "situacao": {
+          "urbana": 1886,
+          "rural": 1653
+        },
+        "idade": {
+          "0_15": 865,
+          "16_17": 75,
+          "18_24": 276,
+          "25_34": 487,
+          "35_44": 588,
+          "45_59": 733,
+          "60_69": 288,
+          "70_mais": 227
+        },
+        "renda": {
+          "sem_rendimento": 40,
+          "ate_1_4_sm": 65,
+          "1_4_a_1_2_sm": 484,
+          "1_2_a_1_sm": 1272,
+          "1_a_2_sm": 1028,
+          "2_a_3_sm": 361,
+          "3_a_5_sm": 159,
+          "5_a_10_sm": 94,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 6
+        },
+        "religiao": {
+          "catolica": 1932,
+          "evangelica": 604,
+          "espirita": 36,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 56,
+          "sem_religiao": 94,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1264,
+          "fundamental_completo_medio_incompleto": 466,
+          "medio_completo_superior_incompleto": 622,
+          "superior_completo": 246
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5004007,
+      "nome": "Glória de Dourados",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.42729,
+      "lon": -54.19241,
+      "coordenada_metodo": "centroide",
+      "area_km2": 493.105,
+      "populacao": 10856,
+      "eleitorado": 8106,
+      "urbana_pct": 80.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10444,
+        "situacao": {
+          "urbana": 8450,
+          "rural": 1994
+        },
+        "idade": {
+          "0_15": 2052,
+          "16_17": 243,
+          "18_24": 865,
+          "25_34": 1413,
+          "35_44": 1618,
+          "45_59": 2185,
+          "60_69": 1165,
+          "70_mais": 903
+        },
+        "renda": {
+          "sem_rendimento": 45,
+          "ate_1_4_sm": 634,
+          "1_4_a_1_2_sm": 1724,
+          "1_2_a_1_sm": 3354,
+          "1_a_2_sm": 3132,
+          "2_a_3_sm": 803,
+          "3_a_5_sm": 515,
+          "5_a_10_sm": 160,
+          "10_a_15_sm": 46,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5971,
+          "evangelica": 1939,
+          "espirita": 60,
+          "umbanda_candomble": 56,
+          "tradicoes_indigenas": 0,
+          "outras": 269,
+          "sem_religiao": 238,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3581,
+          "fundamental_completo_medio_incompleto": 1148,
+          "medio_completo_superior_incompleto": 2203,
+          "superior_completo": 1200
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5004106,
+      "nome": "Guia Lopes da Laguna",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.54164,
+      "lon": -55.99614,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1225.426,
+      "populacao": 10097,
+      "eleitorado": 7943,
+      "urbana_pct": 86.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9940,
+        "situacao": {
+          "urbana": 8620,
+          "rural": 1320
+        },
+        "idade": {
+          "0_15": 2253,
+          "16_17": 325,
+          "18_24": 935,
+          "25_34": 1361,
+          "35_44": 1353,
+          "45_59": 1901,
+          "60_69": 966,
+          "70_mais": 846
+        },
+        "renda": {
+          "sem_rendimento": 287,
+          "ate_1_4_sm": 689,
+          "1_4_a_1_2_sm": 2351,
+          "1_2_a_1_sm": 3734,
+          "1_a_2_sm": 2016,
+          "2_a_3_sm": 470,
+          "3_a_5_sm": 298,
+          "5_a_10_sm": 71,
+          "10_a_15_sm": 15,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4844,
+          "evangelica": 2452,
+          "espirita": 66,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 202,
+          "sem_religiao": 266,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3520,
+          "fundamental_completo_medio_incompleto": 1086,
+          "medio_completo_superior_incompleto": 1964,
+          "superior_completo": 740
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5004304,
+      "nome": "Iguatemi",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500006,
+        "nome": "Naviraí - Mundo Novo"
+      },
+      "lat": -23.4342,
+      "lon": -54.5383,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2957.41,
+      "populacao": 13906,
+      "eleitorado": 10692,
+      "urbana_pct": 75.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13808,
+        "situacao": {
+          "urbana": 10419,
+          "rural": 3389
+        },
+        "idade": {
+          "0_15": 3280,
+          "16_17": 430,
+          "18_24": 1458,
+          "25_34": 1994,
+          "35_44": 1937,
+          "45_59": 2638,
+          "60_69": 1144,
+          "70_mais": 927
+        },
+        "renda": {
+          "sem_rendimento": 31,
+          "ate_1_4_sm": 702,
+          "1_4_a_1_2_sm": 2434,
+          "1_2_a_1_sm": 5364,
+          "1_a_2_sm": 3803,
+          "2_a_3_sm": 722,
+          "3_a_5_sm": 321,
+          "5_a_10_sm": 282,
+          "10_a_15_sm": 61,
+          "15_a_20_sm": 41,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6841,
+          "evangelica": 2979,
+          "espirita": 12,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 9,
+          "outras": 142,
+          "sem_religiao": 731,
+          "nao_sabe": 3,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4553,
+          "fundamental_completo_medio_incompleto": 1893,
+          "medio_completo_superior_incompleto": 2524,
+          "superior_completo": 1131
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5004403,
+      "nome": "Inocência",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50006,
+        "nome": "Paranaíba"
+      },
+      "regiao_imediata": {
+        "id": 500003,
+        "nome": "Paranaíba - Chapadão do Sul - Cassilândia"
+      },
+      "lat": -19.6576,
+      "lon": -52.02182,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5761.186,
+      "populacao": 8814,
+      "eleitorado": 7231,
+      "urbana_pct": 68.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8404,
+        "situacao": {
+          "urbana": 5739,
+          "rural": 2665
+        },
+        "idade": {
+          "0_15": 1854,
+          "16_17": 232,
+          "18_24": 894,
+          "25_34": 1273,
+          "35_44": 1321,
+          "45_59": 1584,
+          "60_69": 719,
+          "70_mais": 527
+        },
+        "renda": {
+          "sem_rendimento": 46,
+          "ate_1_4_sm": 143,
+          "1_4_a_1_2_sm": 988,
+          "1_2_a_1_sm": 3009,
+          "1_a_2_sm": 2912,
+          "2_a_3_sm": 686,
+          "3_a_5_sm": 335,
+          "5_a_10_sm": 166,
+          "10_a_15_sm": 30,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 4577,
+          "evangelica": 1645,
+          "espirita": 54,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 137,
+          "sem_religiao": 244,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2899,
+          "fundamental_completo_medio_incompleto": 967,
+          "medio_completo_superior_incompleto": 1638,
+          "superior_completo": 805
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5004502,
+      "nome": "Itaporã",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.00533,
+      "lon": -54.87348,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1342.389,
+      "populacao": 25732,
+      "eleitorado": 14143,
+      "urbana_pct": 63.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24137,
+        "situacao": {
+          "urbana": 15375,
+          "rural": 8762
+        },
+        "idade": {
+          "0_15": 6182,
+          "16_17": 801,
+          "18_24": 2841,
+          "25_34": 3593,
+          "35_44": 3201,
+          "45_59": 4065,
+          "60_69": 1961,
+          "70_mais": 1493
+        },
+        "renda": {
+          "sem_rendimento": 791,
+          "ate_1_4_sm": 2617,
+          "1_4_a_1_2_sm": 4734,
+          "1_2_a_1_sm": 7586,
+          "1_a_2_sm": 6112,
+          "2_a_3_sm": 1245,
+          "3_a_5_sm": 818,
+          "5_a_10_sm": 127,
+          "10_a_15_sm": 29,
+          "15_a_20_sm": 52,
+          "mais_de_20_sm": 16
+        },
+        "religiao": {
+          "catolica": 11140,
+          "evangelica": 4901,
+          "espirita": 94,
+          "umbanda_candomble": 18,
+          "tradicoes_indigenas": 49,
+          "outras": 359,
+          "sem_religiao": 1681,
+          "nao_sabe": 0,
+          "sem_declaracao": 74
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7778,
+          "fundamental_completo_medio_incompleto": 2879,
+          "medio_completo_superior_incompleto": 4402,
+          "superior_completo": 2165
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5004601,
+      "nome": "Itaquiraí",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500006,
+        "nome": "Naviraí - Mundo Novo"
+      },
+      "lat": -23.34157,
+      "lon": -54.11917,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2063.717,
+      "populacao": 20122,
+      "eleitorado": 14577,
+      "urbana_pct": 52.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19423,
+        "situacao": {
+          "urbana": 10246,
+          "rural": 9177
+        },
+        "idade": {
+          "0_15": 4709,
+          "16_17": 614,
+          "18_24": 1939,
+          "25_34": 2841,
+          "35_44": 2817,
+          "45_59": 3870,
+          "60_69": 1572,
+          "70_mais": 1061
+        },
+        "renda": {
+          "sem_rendimento": 673,
+          "ate_1_4_sm": 1765,
+          "1_4_a_1_2_sm": 3164,
+          "1_2_a_1_sm": 7530,
+          "1_a_2_sm": 4352,
+          "2_a_3_sm": 1105,
+          "3_a_5_sm": 503,
+          "5_a_10_sm": 215,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 22
+        },
+        "religiao": {
+          "catolica": 9734,
+          "evangelica": 4317,
+          "espirita": 10,
+          "umbanda_candomble": 20,
+          "tradicoes_indigenas": 0,
+          "outras": 203,
+          "sem_religiao": 709,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7510,
+          "fundamental_completo_medio_incompleto": 1879,
+          "medio_completo_superior_incompleto": 3285,
+          "superior_completo": 1513
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5004700,
+      "nome": "Ivinhema",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -22.37148,
+      "lon": -53.79914,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2003.43,
+      "populacao": 30371,
+      "eleitorado": 21150,
+      "urbana_pct": 84.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27821,
+        "situacao": {
+          "urbana": 23589,
+          "rural": 4232
+        },
+        "idade": {
+          "0_15": 6095,
+          "16_17": 736,
+          "18_24": 2616,
+          "25_34": 4473,
+          "35_44": 4236,
+          "45_59": 5381,
+          "60_69": 2353,
+          "70_mais": 1931
+        },
+        "renda": {
+          "sem_rendimento": 371,
+          "ate_1_4_sm": 1969,
+          "1_4_a_1_2_sm": 4382,
+          "1_2_a_1_sm": 9511,
+          "1_a_2_sm": 7994,
+          "2_a_3_sm": 2045,
+          "3_a_5_sm": 977,
+          "5_a_10_sm": 432,
+          "10_a_15_sm": 24,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 17
+        },
+        "religiao": {
+          "catolica": 16358,
+          "evangelica": 4767,
+          "espirita": 47,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 278,
+          "sem_religiao": 618,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8685,
+          "fundamental_completo_medio_incompleto": 2972,
+          "medio_completo_superior_incompleto": 6298,
+          "superior_completo": 3038
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5004809,
+      "nome": "Japorã",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500006,
+        "nome": "Naviraí - Mundo Novo"
+      },
+      "lat": -23.81077,
+      "lon": -54.53807,
+      "coordenada_metodo": "centroide",
+      "area_km2": 416.605,
+      "populacao": 8472,
+      "eleitorado": 6571,
+      "urbana_pct": 23.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8148,
+        "situacao": {
+          "urbana": 1920,
+          "rural": 6228
+        },
+        "idade": {
+          "0_15": 2761,
+          "16_17": 365,
+          "18_24": 1055,
+          "25_34": 1119,
+          "35_44": 948,
+          "45_59": 1096,
+          "60_69": 430,
+          "70_mais": 374
+        },
+        "renda": {
+          "sem_rendimento": 138,
+          "ate_1_4_sm": 2239,
+          "1_4_a_1_2_sm": 2409,
+          "1_2_a_1_sm": 2125,
+          "1_a_2_sm": 924,
+          "2_a_3_sm": 174,
+          "3_a_5_sm": 117,
+          "5_a_10_sm": 19,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3481,
+          "evangelica": 1493,
+          "espirita": 2,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 123,
+          "outras": 81,
+          "sem_religiao": 382,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2919,
+          "fundamental_completo_medio_incompleto": 750,
+          "medio_completo_superior_incompleto": 936,
+          "superior_completo": 429
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5004908,
+      "nome": "Jaraguari",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -20.22729,
+      "lon": -54.3483,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2913.558,
+      "populacao": 7533,
+      "eleitorado": 6036,
+      "urbana_pct": 35.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7139,
+        "situacao": {
+          "urbana": 2532,
+          "rural": 4607
+        },
+        "idade": {
+          "0_15": 1550,
+          "16_17": 194,
+          "18_24": 508,
+          "25_34": 821,
+          "35_44": 936,
+          "45_59": 1552,
+          "60_69": 934,
+          "70_mais": 644
+        },
+        "renda": {
+          "sem_rendimento": 91,
+          "ate_1_4_sm": 325,
+          "1_4_a_1_2_sm": 1482,
+          "1_2_a_1_sm": 2602,
+          "1_a_2_sm": 1814,
+          "2_a_3_sm": 425,
+          "3_a_5_sm": 267,
+          "5_a_10_sm": 76,
+          "10_a_15_sm": 24,
+          "15_a_20_sm": 8,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3344,
+          "evangelica": 1693,
+          "espirita": 64,
+          "umbanda_candomble": 13,
+          "tradicoes_indigenas": 0,
+          "outras": 261,
+          "sem_religiao": 321,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2612,
+          "fundamental_completo_medio_incompleto": 925,
+          "medio_completo_superior_incompleto": 1325,
+          "superior_completo": 535
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5005004,
+      "nome": "Jardim",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.58214,
+      "lon": -56.35353,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2130.068,
+      "populacao": 24499,
+      "eleitorado": 18594,
+      "urbana_pct": 93.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23981,
+        "situacao": {
+          "urbana": 22517,
+          "rural": 1464
+        },
+        "idade": {
+          "0_15": 5671,
+          "16_17": 771,
+          "18_24": 2385,
+          "25_34": 3310,
+          "35_44": 3597,
+          "45_59": 4289,
+          "60_69": 2132,
+          "70_mais": 1826
+        },
+        "renda": {
+          "sem_rendimento": 655,
+          "ate_1_4_sm": 2002,
+          "1_4_a_1_2_sm": 4119,
+          "1_2_a_1_sm": 7922,
+          "1_a_2_sm": 5516,
+          "2_a_3_sm": 1698,
+          "3_a_5_sm": 1054,
+          "5_a_10_sm": 646,
+          "10_a_15_sm": 111,
+          "15_a_20_sm": 49,
+          "mais_de_20_sm": 13
+        },
+        "religiao": {
+          "catolica": 10194,
+          "evangelica": 6226,
+          "espirita": 204,
+          "umbanda_candomble": 98,
+          "tradicoes_indigenas": 20,
+          "outras": 742,
+          "sem_religiao": 1197,
+          "nao_sabe": 15,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7328,
+          "fundamental_completo_medio_incompleto": 3215,
+          "medio_completo_superior_incompleto": 4406,
+          "superior_completo": 2613
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5005103,
+      "nome": "Jateí",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.70673,
+      "lon": -53.95731,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1933.316,
+      "populacao": 3573,
+      "eleitorado": 4341,
+      "urbana_pct": 54.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3586,
+        "situacao": {
+          "urbana": 1969,
+          "rural": 1617
+        },
+        "idade": {
+          "0_15": 830,
+          "16_17": 102,
+          "18_24": 322,
+          "25_34": 484,
+          "35_44": 533,
+          "45_59": 745,
+          "60_69": 319,
+          "70_mais": 251
+        },
+        "renda": {
+          "sem_rendimento": 53,
+          "ate_1_4_sm": 109,
+          "1_4_a_1_2_sm": 507,
+          "1_2_a_1_sm": 1486,
+          "1_a_2_sm": 932,
+          "2_a_3_sm": 280,
+          "3_a_5_sm": 187,
+          "5_a_10_sm": 13,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1872,
+          "evangelica": 776,
+          "espirita": 6,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 27,
+          "sem_religiao": 130,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1117,
+          "fundamental_completo_medio_incompleto": 410,
+          "medio_completo_superior_incompleto": 671,
+          "superior_completo": 470
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5005152,
+      "nome": "Juti",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.77628,
+      "lon": -54.48889,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1569.176,
+      "populacao": 7122,
+      "eleitorado": 5970,
+      "urbana_pct": 73.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6729,
+        "situacao": {
+          "urbana": 4919,
+          "rural": 1810
+        },
+        "idade": {
+          "0_15": 1819,
+          "16_17": 185,
+          "18_24": 637,
+          "25_34": 988,
+          "35_44": 945,
+          "45_59": 1184,
+          "60_69": 526,
+          "70_mais": 445
+        },
+        "renda": {
+          "sem_rendimento": 48,
+          "ate_1_4_sm": 613,
+          "1_4_a_1_2_sm": 1371,
+          "1_2_a_1_sm": 2577,
+          "1_a_2_sm": 1577,
+          "2_a_3_sm": 305,
+          "3_a_5_sm": 148,
+          "5_a_10_sm": 57,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2643,
+          "evangelica": 1879,
+          "espirita": 14,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 10,
+          "outras": 77,
+          "sem_religiao": 367,
+          "nao_sabe": 14,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2467,
+          "fundamental_completo_medio_incompleto": 648,
+          "medio_completo_superior_incompleto": 1161,
+          "superior_completo": 444
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5005202,
+      "nome": "Ladário",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50001,
+        "nome": "Baixo Pantanal"
+      },
+      "regiao_imediata": {
+        "id": 500010,
+        "nome": "Corumbá"
+      },
+      "lat": -19.10306,
+      "lon": -57.56881,
+      "coordenada_metodo": "centroide",
+      "area_km2": 354.255,
+      "populacao": 24631,
+      "eleitorado": 13608,
+      "urbana_pct": 97.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21522,
+        "situacao": {
+          "urbana": 20929,
+          "rural": 593
+        },
+        "idade": {
+          "0_15": 6046,
+          "16_17": 728,
+          "18_24": 2539,
+          "25_34": 3281,
+          "35_44": 3167,
+          "45_59": 3375,
+          "60_69": 1405,
+          "70_mais": 981
+        },
+        "renda": {
+          "sem_rendimento": 531,
+          "ate_1_4_sm": 2358,
+          "1_4_a_1_2_sm": 5725,
+          "1_2_a_1_sm": 6185,
+          "1_a_2_sm": 4124,
+          "2_a_3_sm": 1464,
+          "3_a_5_sm": 951,
+          "5_a_10_sm": 162,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8922,
+          "evangelica": 4544,
+          "espirita": 272,
+          "umbanda_candomble": 217,
+          "tradicoes_indigenas": 0,
+          "outras": 670,
+          "sem_religiao": 1213,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5718,
+          "fundamental_completo_medio_incompleto": 3336,
+          "medio_completo_superior_incompleto": 4064,
+          "superior_completo": 1747
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5005251,
+      "nome": "Laguna Carapã",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.67752,
+      "lon": -55.1321,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1725.78,
+      "populacao": 7060,
+      "eleitorado": 5461,
+      "urbana_pct": 49.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6799,
+        "situacao": {
+          "urbana": 3388,
+          "rural": 3411
+        },
+        "idade": {
+          "0_15": 1893,
+          "16_17": 197,
+          "18_24": 732,
+          "25_34": 1048,
+          "35_44": 978,
+          "45_59": 1076,
+          "60_69": 461,
+          "70_mais": 414
+        },
+        "renda": {
+          "sem_rendimento": 56,
+          "ate_1_4_sm": 648,
+          "1_4_a_1_2_sm": 1462,
+          "1_2_a_1_sm": 2402,
+          "1_a_2_sm": 1371,
+          "2_a_3_sm": 550,
+          "3_a_5_sm": 227,
+          "5_a_10_sm": 58,
+          "10_a_15_sm": 14,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2785,
+          "evangelica": 1393,
+          "espirita": 17,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 5,
+          "outras": 80,
+          "sem_religiao": 720,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2201,
+          "fundamental_completo_medio_incompleto": 912,
+          "medio_completo_superior_incompleto": 1118,
+          "superior_completo": 488
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5005400,
+      "nome": "Maracaju",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -21.54335,
+      "lon": -55.39683,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5396.905,
+      "populacao": 48564,
+      "eleitorado": 29755,
+      "urbana_pct": 91.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 45047,
+        "situacao": {
+          "urbana": 41041,
+          "rural": 4006
+        },
+        "idade": {
+          "0_15": 10684,
+          "16_17": 1221,
+          "18_24": 4608,
+          "25_34": 7921,
+          "35_44": 8612,
+          "45_59": 7251,
+          "60_69": 2866,
+          "70_mais": 1884
+        },
+        "renda": {
+          "sem_rendimento": 947,
+          "ate_1_4_sm": 1816,
+          "1_4_a_1_2_sm": 6111,
+          "1_2_a_1_sm": 12974,
+          "1_a_2_sm": 13952,
+          "2_a_3_sm": 5125,
+          "3_a_5_sm": 2578,
+          "5_a_10_sm": 1092,
+          "10_a_15_sm": 107,
+          "15_a_20_sm": 46,
+          "mais_de_20_sm": 76
+        },
+        "religiao": {
+          "catolica": 19122,
+          "evangelica": 9166,
+          "espirita": 247,
+          "umbanda_candomble": 128,
+          "tradicoes_indigenas": 72,
+          "outras": 3366,
+          "sem_religiao": 2777,
+          "nao_sabe": 53,
+          "sem_declaracao": 19
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13011,
+          "fundamental_completo_medio_incompleto": 5776,
+          "medio_completo_superior_incompleto": 10146,
+          "superior_completo": 4284
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5005608,
+      "nome": "Miranda",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50002,
+        "nome": "Aquidauana"
+      },
+      "regiao_imediata": {
+        "id": 500012,
+        "nome": "Aquidauana - Anastácio"
+      },
+      "lat": -20.12118,
+      "lon": -56.59625,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5470.975,
+      "populacao": 26535,
+      "eleitorado": 20018,
+      "urbana_pct": 56.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 25536,
+        "situacao": {
+          "urbana": 14461,
+          "rural": 11075
+        },
+        "idade": {
+          "0_15": 7070,
+          "16_17": 825,
+          "18_24": 2705,
+          "25_34": 3544,
+          "35_44": 3710,
+          "45_59": 4373,
+          "60_69": 1847,
+          "70_mais": 1462
+        },
+        "renda": {
+          "sem_rendimento": 2136,
+          "ate_1_4_sm": 4036,
+          "1_4_a_1_2_sm": 6276,
+          "1_2_a_1_sm": 7756,
+          "1_a_2_sm": 3535,
+          "2_a_3_sm": 941,
+          "3_a_5_sm": 406,
+          "5_a_10_sm": 148,
+          "10_a_15_sm": 42,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 33
+        },
+        "religiao": {
+          "catolica": 8440,
+          "evangelica": 7035,
+          "espirita": 162,
+          "umbanda_candomble": 118,
+          "tradicoes_indigenas": 2,
+          "outras": 520,
+          "sem_religiao": 2590,
+          "nao_sabe": 28,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9170,
+          "fundamental_completo_medio_incompleto": 4086,
+          "medio_completo_superior_incompleto": 3356,
+          "superior_completo": 1159
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5005681,
+      "nome": "Mundo Novo",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500006,
+        "nome": "Naviraí - Mundo Novo"
+      },
+      "lat": -23.9427,
+      "lon": -54.27418,
+      "coordenada_metodo": "centroide",
+      "area_km2": 478.38,
+      "populacao": 20229,
+      "eleitorado": 14951,
+      "urbana_pct": 88,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19193,
+        "situacao": {
+          "urbana": 16893,
+          "rural": 2300
+        },
+        "idade": {
+          "0_15": 4375,
+          "16_17": 572,
+          "18_24": 1775,
+          "25_34": 2876,
+          "35_44": 2805,
+          "45_59": 3624,
+          "60_69": 1757,
+          "70_mais": 1409
+        },
+        "renda": {
+          "sem_rendimento": 114,
+          "ate_1_4_sm": 805,
+          "1_4_a_1_2_sm": 2950,
+          "1_2_a_1_sm": 7062,
+          "1_a_2_sm": 5187,
+          "2_a_3_sm": 1390,
+          "3_a_5_sm": 861,
+          "5_a_10_sm": 386,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 14,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 8571,
+          "evangelica": 5040,
+          "espirita": 35,
+          "umbanda_candomble": 11,
+          "tradicoes_indigenas": 0,
+          "outras": 253,
+          "sem_religiao": 1164,
+          "nao_sabe": 3,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6194,
+          "fundamental_completo_medio_incompleto": 1889,
+          "medio_completo_superior_incompleto": 3878,
+          "superior_completo": 2188
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5005707,
+      "nome": "Naviraí",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500006,
+        "nome": "Naviraí - Mundo Novo"
+      },
+      "lat": -23.02254,
+      "lon": -54.02567,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3189.667,
+      "populacao": 53307,
+      "eleitorado": 37449,
+      "urbana_pct": 94,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 50457,
+        "situacao": {
+          "urbana": 47442,
+          "rural": 3015
+        },
+        "idade": {
+          "0_15": 11762,
+          "16_17": 1468,
+          "18_24": 4905,
+          "25_34": 7945,
+          "35_44": 8105,
+          "45_59": 9650,
+          "60_69": 3994,
+          "70_mais": 2628
+        },
+        "renda": {
+          "sem_rendimento": 534,
+          "ate_1_4_sm": 2421,
+          "1_4_a_1_2_sm": 6995,
+          "1_2_a_1_sm": 16315,
+          "1_a_2_sm": 14612,
+          "2_a_3_sm": 4407,
+          "3_a_5_sm": 2927,
+          "5_a_10_sm": 1270,
+          "10_a_15_sm": 344,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 47
+        },
+        "religiao": {
+          "catolica": 23435,
+          "evangelica": 11852,
+          "espirita": 173,
+          "umbanda_candomble": 20,
+          "tradicoes_indigenas": 120,
+          "outras": 917,
+          "sem_religiao": 2854,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14184,
+          "fundamental_completo_medio_incompleto": 5396,
+          "medio_completo_superior_incompleto": 11133,
+          "superior_completo": 6615
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5005806,
+      "nome": "Nioaque",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50009,
+        "nome": "Bodoquena"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.10082,
+      "lon": -55.90148,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3909.738,
+      "populacao": 13298,
+      "eleitorado": 10345,
+      "urbana_pct": 54.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13220,
+        "situacao": {
+          "urbana": 7244,
+          "rural": 5976
+        },
+        "idade": {
+          "0_15": 3219,
+          "16_17": 419,
+          "18_24": 1308,
+          "25_34": 1805,
+          "35_44": 1844,
+          "45_59": 2547,
+          "60_69": 1228,
+          "70_mais": 850
+        },
+        "renda": {
+          "sem_rendimento": 115,
+          "ate_1_4_sm": 875,
+          "1_4_a_1_2_sm": 2868,
+          "1_2_a_1_sm": 4805,
+          "1_a_2_sm": 3295,
+          "2_a_3_sm": 720,
+          "3_a_5_sm": 432,
+          "5_a_10_sm": 90,
+          "10_a_15_sm": 8,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 14
+        },
+        "religiao": {
+          "catolica": 5528,
+          "evangelica": 3789,
+          "espirita": 56,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 127,
+          "sem_religiao": 606,
+          "nao_sabe": 1,
+          "sem_declaracao": 82
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4774,
+          "fundamental_completo_medio_incompleto": 1514,
+          "medio_completo_superior_incompleto": 2302,
+          "superior_completo": 971
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5006002,
+      "nome": "Nova Alvorada do Sul",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -21.49116,
+      "lon": -54.21611,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4027.647,
+      "populacao": 23747,
+      "eleitorado": 16195,
+      "urbana_pct": 84.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21822,
+        "situacao": {
+          "urbana": 18355,
+          "rural": 3467
+        },
+        "idade": {
+          "0_15": 5918,
+          "16_17": 684,
+          "18_24": 2120,
+          "25_34": 3492,
+          "35_44": 3606,
+          "45_59": 3764,
+          "60_69": 1463,
+          "70_mais": 775
+        },
+        "renda": {
+          "sem_rendimento": 1048,
+          "ate_1_4_sm": 935,
+          "1_4_a_1_2_sm": 4643,
+          "1_2_a_1_sm": 6838,
+          "1_a_2_sm": 6555,
+          "2_a_3_sm": 1170,
+          "3_a_5_sm": 429,
+          "5_a_10_sm": 89,
+          "10_a_15_sm": 59,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 32
+        },
+        "religiao": {
+          "catolica": 9739,
+          "evangelica": 5177,
+          "espirita": 52,
+          "umbanda_candomble": 58,
+          "tradicoes_indigenas": 0,
+          "outras": 199,
+          "sem_religiao": 953,
+          "nao_sabe": 0,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6498,
+          "fundamental_completo_medio_incompleto": 3903,
+          "medio_completo_superior_incompleto": 3577,
+          "superior_completo": 1258
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5006200,
+      "nome": "Nova Andradina",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50008,
+        "nome": "Nova Andradina"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -21.92569,
+      "lon": -53.42181,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4768.118,
+      "populacao": 51081,
+      "eleitorado": 35545,
+      "urbana_pct": 87.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 48563,
+        "situacao": {
+          "urbana": 42501,
+          "rural": 6062
+        },
+        "idade": {
+          "0_15": 11167,
+          "16_17": 1513,
+          "18_24": 4771,
+          "25_34": 7020,
+          "35_44": 7712,
+          "45_59": 9484,
+          "60_69": 4059,
+          "70_mais": 2837
+        },
+        "renda": {
+          "sem_rendimento": 1157,
+          "ate_1_4_sm": 2090,
+          "1_4_a_1_2_sm": 6873,
+          "1_2_a_1_sm": 15848,
+          "1_a_2_sm": 13923,
+          "2_a_3_sm": 4646,
+          "3_a_5_sm": 2137,
+          "5_a_10_sm": 1223,
+          "10_a_15_sm": 246,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 40
+        },
+        "religiao": {
+          "catolica": 24006,
+          "evangelica": 10969,
+          "espirita": 276,
+          "umbanda_candomble": 33,
+          "tradicoes_indigenas": 0,
+          "outras": 941,
+          "sem_religiao": 1883,
+          "nao_sabe": 0,
+          "sem_declaracao": 47
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12354,
+          "fundamental_completo_medio_incompleto": 5635,
+          "medio_completo_superior_incompleto": 11413,
+          "superior_completo": 6466
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5006259,
+      "nome": "Novo Horizonte do Sul",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -22.60303,
+      "lon": -53.78187,
+      "coordenada_metodo": "centroide",
+      "area_km2": 849.19,
+      "populacao": 4791,
+      "eleitorado": 3594,
+      "urbana_pct": 67.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4721,
+        "situacao": {
+          "urbana": 3175,
+          "rural": 1546
+        },
+        "idade": {
+          "0_15": 1105,
+          "16_17": 145,
+          "18_24": 423,
+          "25_34": 710,
+          "35_44": 652,
+          "45_59": 912,
+          "60_69": 463,
+          "70_mais": 311
+        },
+        "renda": {
+          "sem_rendimento": 207,
+          "ate_1_4_sm": 126,
+          "1_4_a_1_2_sm": 816,
+          "1_2_a_1_sm": 1711,
+          "1_a_2_sm": 1328,
+          "2_a_3_sm": 313,
+          "3_a_5_sm": 174,
+          "5_a_10_sm": 32,
+          "10_a_15_sm": 8,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2341,
+          "evangelica": 1110,
+          "espirita": 1,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 3,
+          "sem_religiao": 219,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1765,
+          "fundamental_completo_medio_incompleto": 451,
+          "medio_completo_superior_incompleto": 827,
+          "superior_completo": 423
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5006275,
+      "nome": "Paraíso das Águas",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50005,
+        "nome": "Cassilândia"
+      },
+      "regiao_imediata": {
+        "id": 500003,
+        "nome": "Paranaíba - Chapadão do Sul - Cassilândia"
+      },
+      "lat": -19.22819,
+      "lon": -53.13034,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5061.433,
+      "populacao": 5904,
+      "eleitorado": 4317,
+      "urbana_pct": 54.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5510,
+        "situacao": {
+          "urbana": 2993,
+          "rural": 2517
+        },
+        "idade": {
+          "0_15": 1428,
+          "16_17": 146,
+          "18_24": 481,
+          "25_34": 841,
+          "35_44": 917,
+          "45_59": 1010,
+          "60_69": 431,
+          "70_mais": 256
+        },
+        "renda": {
+          "sem_rendimento": 84,
+          "ate_1_4_sm": 94,
+          "1_4_a_1_2_sm": 557,
+          "1_2_a_1_sm": 1879,
+          "1_a_2_sm": 2074,
+          "2_a_3_sm": 484,
+          "3_a_5_sm": 180,
+          "5_a_10_sm": 81,
+          "10_a_15_sm": 35,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2860,
+          "evangelica": 1074,
+          "espirita": 41,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 30,
+          "sem_religiao": 150,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1811,
+          "fundamental_completo_medio_incompleto": 687,
+          "medio_completo_superior_incompleto": 994,
+          "superior_completo": 448
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5006309,
+      "nome": "Paranaíba",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50006,
+        "nome": "Paranaíba"
+      },
+      "regiao_imediata": {
+        "id": 500003,
+        "nome": "Paranaíba - Chapadão do Sul - Cassilândia"
+      },
+      "lat": -19.5302,
+      "lon": -51.39276,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5352.02,
+      "populacao": 42728,
+      "eleitorado": 31328,
+      "urbana_pct": 90.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 40957,
+        "situacao": {
+          "urbana": 37101,
+          "rural": 3856
+        },
+        "idade": {
+          "0_15": 8244,
+          "16_17": 1039,
+          "18_24": 3922,
+          "25_34": 5971,
+          "35_44": 6181,
+          "45_59": 8164,
+          "60_69": 4125,
+          "70_mais": 3311
+        },
+        "renda": {
+          "sem_rendimento": 241,
+          "ate_1_4_sm": 1270,
+          "1_4_a_1_2_sm": 5537,
+          "1_2_a_1_sm": 14375,
+          "1_a_2_sm": 12395,
+          "2_a_3_sm": 3826,
+          "3_a_5_sm": 1682,
+          "5_a_10_sm": 822,
+          "10_a_15_sm": 281,
+          "15_a_20_sm": 24,
+          "mais_de_20_sm": 28
+        },
+        "religiao": {
+          "catolica": 17945,
+          "evangelica": 10072,
+          "espirita": 708,
+          "umbanda_candomble": 209,
+          "tradicoes_indigenas": 0,
+          "outras": 1271,
+          "sem_religiao": 2940,
+          "nao_sabe": 0,
+          "sem_declaracao": 58
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12820,
+          "fundamental_completo_medio_incompleto": 5057,
+          "medio_completo_superior_incompleto": 8580,
+          "superior_completo": 5161
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5006358,
+      "nome": "Paranhos",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500009,
+        "nome": "Amambai"
+      },
+      "lat": -23.71122,
+      "lon": -55.35596,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1307.092,
+      "populacao": 13412,
+      "eleitorado": 9414,
+      "urbana_pct": 47.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12921,
+        "situacao": {
+          "urbana": 6148,
+          "rural": 6773
+        },
+        "idade": {
+          "0_15": 4594,
+          "16_17": 576,
+          "18_24": 1663,
+          "25_34": 1894,
+          "35_44": 1458,
+          "45_59": 1562,
+          "60_69": 615,
+          "70_mais": 559
+        },
+        "renda": {
+          "sem_rendimento": 341,
+          "ate_1_4_sm": 4450,
+          "1_4_a_1_2_sm": 3492,
+          "1_2_a_1_sm": 2510,
+          "1_a_2_sm": 1384,
+          "2_a_3_sm": 335,
+          "3_a_5_sm": 135,
+          "5_a_10_sm": 83,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 16,
+          "mais_de_20_sm": 7
+        },
+        "religiao": {
+          "catolica": 3816,
+          "evangelica": 2517,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 28,
+          "outras": 84,
+          "sem_religiao": 2147,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4612,
+          "fundamental_completo_medio_incompleto": 1249,
+          "medio_completo_superior_incompleto": 1262,
+          "superior_completo": 619
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5006408,
+      "nome": "Pedro Gomes",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -17.91431,
+      "lon": -54.33915,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3553.782,
+      "populacao": 6850,
+      "eleitorado": 6022,
+      "urbana_pct": 77.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6941,
+        "situacao": {
+          "urbana": 5363,
+          "rural": 1578
+        },
+        "idade": {
+          "0_15": 1492,
+          "16_17": 204,
+          "18_24": 583,
+          "25_34": 912,
+          "35_44": 998,
+          "45_59": 1446,
+          "60_69": 731,
+          "70_mais": 575
+        },
+        "renda": {
+          "sem_rendimento": 33,
+          "ate_1_4_sm": 595,
+          "1_4_a_1_2_sm": 1401,
+          "1_2_a_1_sm": 2899,
+          "1_a_2_sm": 1286,
+          "2_a_3_sm": 387,
+          "3_a_5_sm": 184,
+          "5_a_10_sm": 67,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 3
+        },
+        "religiao": {
+          "catolica": 4147,
+          "evangelica": 1198,
+          "espirita": 18,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 25,
+          "sem_religiao": 154,
+          "nao_sabe": 6,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2709,
+          "fundamental_completo_medio_incompleto": 730,
+          "medio_completo_superior_incompleto": 1176,
+          "superior_completo": 639
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5006606,
+      "nome": "Ponta Porã",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500008,
+        "nome": "Ponta Porã"
+      },
+      "lat": -22.2023,
+      "lon": -55.58355,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5359.274,
+      "populacao": 99572,
+      "eleitorado": 69878,
+      "urbana_pct": 86.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 92017,
+        "situacao": {
+          "urbana": 79687,
+          "rural": 12330
+        },
+        "idade": {
+          "0_15": 23322,
+          "16_17": 2953,
+          "18_24": 10850,
+          "25_34": 15295,
+          "35_44": 13699,
+          "45_59": 14678,
+          "60_69": 6573,
+          "70_mais": 4647
+        },
+        "renda": {
+          "sem_rendimento": 1765,
+          "ate_1_4_sm": 8632,
+          "1_4_a_1_2_sm": 19846,
+          "1_2_a_1_sm": 30061,
+          "1_a_2_sm": 17622,
+          "2_a_3_sm": 6408,
+          "3_a_5_sm": 4422,
+          "5_a_10_sm": 2024,
+          "10_a_15_sm": 488,
+          "15_a_20_sm": 135,
+          "mais_de_20_sm": 47
+        },
+        "religiao": {
+          "catolica": 41991,
+          "evangelica": 20387,
+          "espirita": 425,
+          "umbanda_candomble": 651,
+          "tradicoes_indigenas": 52,
+          "outras": 2233,
+          "sem_religiao": 4204,
+          "nao_sabe": 38,
+          "sem_declaracao": 85
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 22322,
+          "fundamental_completo_medio_incompleto": 12015,
+          "medio_completo_superior_incompleto": 20009,
+          "superior_completo": 11581
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5006903,
+      "nome": "Porto Murtinho",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50001,
+        "nome": "Baixo Pantanal"
+      },
+      "regiao_imediata": {
+        "id": 500011,
+        "nome": "Jardim"
+      },
+      "lat": -21.22593,
+      "lon": -57.38416,
+      "coordenada_metodo": "centroide",
+      "area_km2": 17502.994,
+      "populacao": 12584,
+      "eleitorado": 8664,
+      "urbana_pct": 65.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12859,
+        "situacao": {
+          "urbana": 8455,
+          "rural": 4404
+        },
+        "idade": {
+          "0_15": 3658,
+          "16_17": 436,
+          "18_24": 1315,
+          "25_34": 1961,
+          "35_44": 1833,
+          "45_59": 2130,
+          "60_69": 886,
+          "70_mais": 640
+        },
+        "renda": {
+          "sem_rendimento": 427,
+          "ate_1_4_sm": 1233,
+          "1_4_a_1_2_sm": 2751,
+          "1_2_a_1_sm": 4624,
+          "1_a_2_sm": 2654,
+          "2_a_3_sm": 572,
+          "3_a_5_sm": 313,
+          "5_a_10_sm": 181,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5922,
+          "evangelica": 2457,
+          "espirita": 21,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 185,
+          "sem_religiao": 839,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4050,
+          "fundamental_completo_medio_incompleto": 2100,
+          "medio_completo_superior_incompleto": 1719,
+          "superior_completo": 870
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007109,
+      "nome": "Ribas do Rio Pardo",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50007,
+        "nome": "Três Lagoas"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -20.59663,
+      "lon": -53.54419,
+      "coordenada_metodo": "centroide",
+      "area_km2": 17315.212,
+      "populacao": 24300,
+      "eleitorado": 16325,
+      "urbana_pct": 78.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23150,
+        "situacao": {
+          "urbana": 18146,
+          "rural": 5004
+        },
+        "idade": {
+          "0_15": 5952,
+          "16_17": 725,
+          "18_24": 2414,
+          "25_34": 3896,
+          "35_44": 3677,
+          "45_59": 4048,
+          "60_69": 1569,
+          "70_mais": 869
+        },
+        "renda": {
+          "sem_rendimento": 165,
+          "ate_1_4_sm": 839,
+          "1_4_a_1_2_sm": 3288,
+          "1_2_a_1_sm": 8103,
+          "1_a_2_sm": 7091,
+          "2_a_3_sm": 1901,
+          "3_a_5_sm": 1041,
+          "5_a_10_sm": 426,
+          "10_a_15_sm": 123,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8880,
+          "evangelica": 6242,
+          "espirita": 78,
+          "umbanda_candomble": 150,
+          "tradicoes_indigenas": 0,
+          "outras": 860,
+          "sem_religiao": 1327,
+          "nao_sabe": 9,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7475,
+          "fundamental_completo_medio_incompleto": 2566,
+          "medio_completo_superior_incompleto": 4423,
+          "superior_completo": 2053
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5007208,
+      "nome": "Rio Brilhante",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -21.69614,
+      "lon": -54.55781,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3983.507,
+      "populacao": 40880,
+      "eleitorado": 26161,
+      "urbana_pct": 89.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 37601,
+        "situacao": {
+          "urbana": 33552,
+          "rural": 4049
+        },
+        "idade": {
+          "0_15": 9771,
+          "16_17": 1186,
+          "18_24": 3979,
+          "25_34": 5943,
+          "35_44": 6178,
+          "45_59": 6315,
+          "60_69": 2642,
+          "70_mais": 1587
+        },
+        "renda": {
+          "sem_rendimento": 393,
+          "ate_1_4_sm": 1789,
+          "1_4_a_1_2_sm": 6720,
+          "1_2_a_1_sm": 13084,
+          "1_a_2_sm": 9370,
+          "2_a_3_sm": 3279,
+          "3_a_5_sm": 1773,
+          "5_a_10_sm": 578,
+          "10_a_15_sm": 135,
+          "15_a_20_sm": 12,
+          "mais_de_20_sm": 32
+        },
+        "religiao": {
+          "catolica": 14747,
+          "evangelica": 10542,
+          "espirita": 78,
+          "umbanda_candomble": 48,
+          "tradicoes_indigenas": 88,
+          "outras": 600,
+          "sem_religiao": 2238,
+          "nao_sabe": 18,
+          "sem_declaracao": 23
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10550,
+          "fundamental_completo_medio_incompleto": 4860,
+          "medio_completo_superior_incompleto": 7789,
+          "superior_completo": 3492
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5007307,
+      "nome": "Rio Negro",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -19.4469,
+      "lon": -54.96296,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1828.8,
+      "populacao": 4911,
+      "eleitorado": 4175,
+      "urbana_pct": 72.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4841,
+        "situacao": {
+          "urbana": 3527,
+          "rural": 1314
+        },
+        "idade": {
+          "0_15": 1068,
+          "16_17": 154,
+          "18_24": 411,
+          "25_34": 547,
+          "35_44": 650,
+          "45_59": 1067,
+          "60_69": 503,
+          "70_mais": 441
+        },
+        "renda": {
+          "sem_rendimento": 24,
+          "ate_1_4_sm": 205,
+          "1_4_a_1_2_sm": 651,
+          "1_2_a_1_sm": 1733,
+          "1_a_2_sm": 1568,
+          "2_a_3_sm": 364,
+          "3_a_5_sm": 207,
+          "5_a_10_sm": 65,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2356,
+          "evangelica": 1062,
+          "espirita": 48,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 95,
+          "sem_religiao": 252,
+          "nao_sabe": 4,
+          "sem_declaracao": 18
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1627,
+          "fundamental_completo_medio_incompleto": 511,
+          "medio_completo_superior_incompleto": 901,
+          "superior_completo": 561
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007406,
+      "nome": "Rio Verde de Mato Grosso",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -18.8136,
+      "lon": -55.04282,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8174.784,
+      "populacao": 20513,
+      "eleitorado": 13912,
+      "urbana_pct": 85.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19818,
+        "situacao": {
+          "urbana": 16878,
+          "rural": 2940
+        },
+        "idade": {
+          "0_15": 4654,
+          "16_17": 604,
+          "18_24": 1840,
+          "25_34": 2685,
+          "35_44": 2843,
+          "45_59": 3835,
+          "60_69": 1869,
+          "70_mais": 1488
+        },
+        "renda": {
+          "sem_rendimento": 277,
+          "ate_1_4_sm": 978,
+          "1_4_a_1_2_sm": 3431,
+          "1_2_a_1_sm": 6432,
+          "1_a_2_sm": 5853,
+          "2_a_3_sm": 1503,
+          "3_a_5_sm": 627,
+          "5_a_10_sm": 450,
+          "10_a_15_sm": 100,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 37
+        },
+        "religiao": {
+          "catolica": 8354,
+          "evangelica": 5451,
+          "espirita": 181,
+          "umbanda_candomble": 43,
+          "tradicoes_indigenas": 0,
+          "outras": 243,
+          "sem_religiao": 1098,
+          "nao_sabe": 0,
+          "sem_declaracao": 71
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6906,
+          "fundamental_completo_medio_incompleto": 1930,
+          "medio_completo_superior_incompleto": 3616,
+          "superior_completo": 2053
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5007505,
+      "nome": "Rochedo",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -19.97864,
+      "lon": -54.73676,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1304.755,
+      "populacao": 5494,
+      "eleitorado": 4971,
+      "urbana_pct": 69.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5199,
+        "situacao": {
+          "urbana": 3590,
+          "rural": 1609
+        },
+        "idade": {
+          "0_15": 1216,
+          "16_17": 138,
+          "18_24": 505,
+          "25_34": 717,
+          "35_44": 741,
+          "45_59": 1020,
+          "60_69": 498,
+          "70_mais": 364
+        },
+        "renda": {
+          "sem_rendimento": 252,
+          "ate_1_4_sm": 457,
+          "1_4_a_1_2_sm": 890,
+          "1_2_a_1_sm": 1885,
+          "1_a_2_sm": 1153,
+          "2_a_3_sm": 336,
+          "3_a_5_sm": 166,
+          "5_a_10_sm": 22,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 2
+        },
+        "religiao": {
+          "catolica": 2164,
+          "evangelica": 1097,
+          "espirita": 38,
+          "umbanda_candomble": 13,
+          "tradicoes_indigenas": 7,
+          "outras": 112,
+          "sem_religiao": 637,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1903,
+          "fundamental_completo_medio_incompleto": 789,
+          "medio_completo_superior_incompleto": 805,
+          "superior_completo": 376
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007554,
+      "nome": "Santa Rita do Pardo",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50007,
+        "nome": "Três Lagoas"
+      },
+      "regiao_imediata": {
+        "id": 500002,
+        "nome": "Três Lagoas"
+      },
+      "lat": -21.31905,
+      "lon": -52.77451,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6142.001,
+      "populacao": 7156,
+      "eleitorado": 5521,
+      "urbana_pct": 51.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7027,
+        "situacao": {
+          "urbana": 3638,
+          "rural": 3389
+        },
+        "idade": {
+          "0_15": 1681,
+          "16_17": 200,
+          "18_24": 638,
+          "25_34": 1043,
+          "35_44": 1050,
+          "45_59": 1468,
+          "60_69": 557,
+          "70_mais": 390
+        },
+        "renda": {
+          "sem_rendimento": 38,
+          "ate_1_4_sm": 399,
+          "1_4_a_1_2_sm": 1462,
+          "1_2_a_1_sm": 2901,
+          "1_a_2_sm": 1628,
+          "2_a_3_sm": 339,
+          "3_a_5_sm": 162,
+          "5_a_10_sm": 37,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 5
+        },
+        "religiao": {
+          "catolica": 3399,
+          "evangelica": 1728,
+          "espirita": 12,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 82,
+          "sem_religiao": 224,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2630,
+          "fundamental_completo_medio_incompleto": 949,
+          "medio_completo_superior_incompleto": 1139,
+          "superior_completo": 431
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007695,
+      "nome": "São Gabriel do Oeste",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -19.16905,
+      "lon": -54.48271,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3850.674,
+      "populacao": 32696,
+      "eleitorado": 23066,
+      "urbana_pct": 91.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 29579,
+        "situacao": {
+          "urbana": 27078,
+          "rural": 2501
+        },
+        "idade": {
+          "0_15": 7335,
+          "16_17": 859,
+          "18_24": 2965,
+          "25_34": 4966,
+          "35_44": 4837,
+          "45_59": 5104,
+          "60_69": 2142,
+          "70_mais": 1371
+        },
+        "renda": {
+          "sem_rendimento": 286,
+          "ate_1_4_sm": 670,
+          "1_4_a_1_2_sm": 4013,
+          "1_2_a_1_sm": 8265,
+          "1_a_2_sm": 9439,
+          "2_a_3_sm": 3514,
+          "3_a_5_sm": 1800,
+          "5_a_10_sm": 1080,
+          "10_a_15_sm": 272,
+          "15_a_20_sm": 101,
+          "mais_de_20_sm": 41
+        },
+        "religiao": {
+          "catolica": 14609,
+          "evangelica": 5930,
+          "espirita": 244,
+          "umbanda_candomble": 36,
+          "tradicoes_indigenas": 0,
+          "outras": 372,
+          "sem_religiao": 1495,
+          "nao_sabe": 11,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7581,
+          "fundamental_completo_medio_incompleto": 3726,
+          "medio_completo_superior_incompleto": 6707,
+          "superior_completo": 3548
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5007703,
+      "nome": "Sete Quedas",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500009,
+        "nome": "Amambai"
+      },
+      "lat": -23.88058,
+      "lon": -55.02792,
+      "coordenada_metodo": "centroide",
+      "area_km2": 839.117,
+      "populacao": 11343,
+      "eleitorado": 7735,
+      "urbana_pct": 80.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10994,
+        "situacao": {
+          "urbana": 8852,
+          "rural": 2142
+        },
+        "idade": {
+          "0_15": 2523,
+          "16_17": 314,
+          "18_24": 1098,
+          "25_34": 1729,
+          "35_44": 1476,
+          "45_59": 2107,
+          "60_69": 1002,
+          "70_mais": 745
+        },
+        "renda": {
+          "sem_rendimento": 240,
+          "ate_1_4_sm": 1035,
+          "1_4_a_1_2_sm": 2284,
+          "1_2_a_1_sm": 3878,
+          "1_a_2_sm": 2181,
+          "2_a_3_sm": 738,
+          "3_a_5_sm": 374,
+          "5_a_10_sm": 170,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5789,
+          "evangelica": 2192,
+          "espirita": 20,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 61,
+          "outras": 114,
+          "sem_religiao": 419,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4353,
+          "fundamental_completo_medio_incompleto": 1357,
+          "medio_completo_superior_incompleto": 1596,
+          "superior_completo": 874
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007802,
+      "nome": "Selvíria",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50006,
+        "nome": "Paranaíba"
+      },
+      "regiao_imediata": {
+        "id": 500002,
+        "nome": "Três Lagoas"
+      },
+      "lat": -20.28206,
+      "lon": -51.75819,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3254.917,
+      "populacao": 8834,
+      "eleitorado": 7224,
+      "urbana_pct": 76.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8142,
+        "situacao": {
+          "urbana": 6238,
+          "rural": 1904
+        },
+        "idade": {
+          "0_15": 1763,
+          "16_17": 234,
+          "18_24": 794,
+          "25_34": 1181,
+          "35_44": 1216,
+          "45_59": 1664,
+          "60_69": 758,
+          "70_mais": 532
+        },
+        "renda": {
+          "sem_rendimento": 58,
+          "ate_1_4_sm": 415,
+          "1_4_a_1_2_sm": 1457,
+          "1_2_a_1_sm": 3402,
+          "1_a_2_sm": 2032,
+          "2_a_3_sm": 443,
+          "3_a_5_sm": 165,
+          "5_a_10_sm": 39,
+          "10_a_15_sm": 21,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3165,
+          "evangelica": 2454,
+          "espirita": 30,
+          "umbanda_candomble": 7,
+          "tradicoes_indigenas": 0,
+          "outras": 276,
+          "sem_religiao": 554,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2884,
+          "fundamental_completo_medio_incompleto": 969,
+          "medio_completo_superior_incompleto": 1701,
+          "superior_completo": 568
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007901,
+      "nome": "Sidrolândia",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -21.09387,
+      "lon": -54.94211,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5265.695,
+      "populacao": 50079,
+      "eleitorado": 35119,
+      "urbana_pct": 68.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 47118,
+        "situacao": {
+          "urbana": 32436,
+          "rural": 14682
+        },
+        "idade": {
+          "0_15": 11646,
+          "16_17": 1466,
+          "18_24": 4813,
+          "25_34": 7057,
+          "35_44": 7094,
+          "45_59": 8522,
+          "60_69": 3943,
+          "70_mais": 2577
+        },
+        "renda": {
+          "sem_rendimento": 1745,
+          "ate_1_4_sm": 3779,
+          "1_4_a_1_2_sm": 8645,
+          "1_2_a_1_sm": 17817,
+          "1_a_2_sm": 10372,
+          "2_a_3_sm": 2506,
+          "3_a_5_sm": 1594,
+          "5_a_10_sm": 501,
+          "10_a_15_sm": 85,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 17927,
+          "evangelica": 13580,
+          "espirita": 330,
+          "umbanda_candomble": 146,
+          "tradicoes_indigenas": 2,
+          "outras": 1362,
+          "sem_religiao": 2776,
+          "nao_sabe": 0,
+          "sem_declaracao": 45
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 15255,
+          "fundamental_completo_medio_incompleto": 5949,
+          "medio_completo_superior_incompleto": 9099,
+          "superior_completo": 3631
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 5007935,
+      "nome": "Sonora",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50003,
+        "nome": "Alto Taquari"
+      },
+      "regiao_imediata": {
+        "id": 500004,
+        "nome": "Coxim"
+      },
+      "lat": -17.64864,
+      "lon": -54.43239,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4185.542,
+      "populacao": 14804,
+      "eleitorado": 11252,
+      "urbana_pct": 91.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14516,
+        "situacao": {
+          "urbana": 13277,
+          "rural": 1239
+        },
+        "idade": {
+          "0_15": 3541,
+          "16_17": 476,
+          "18_24": 1607,
+          "25_34": 2300,
+          "35_44": 2494,
+          "45_59": 2618,
+          "60_69": 943,
+          "70_mais": 537
+        },
+        "renda": {
+          "sem_rendimento": 224,
+          "ate_1_4_sm": 641,
+          "1_4_a_1_2_sm": 2307,
+          "1_2_a_1_sm": 4777,
+          "1_a_2_sm": 4290,
+          "2_a_3_sm": 1324,
+          "3_a_5_sm": 720,
+          "5_a_10_sm": 133,
+          "10_a_15_sm": 22,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5923,
+          "evangelica": 4268,
+          "espirita": 91,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 0,
+          "outras": 175,
+          "sem_religiao": 617,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4319,
+          "fundamental_completo_medio_incompleto": 1731,
+          "medio_completo_superior_incompleto": 3217,
+          "superior_completo": 1204
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007950,
+      "nome": "Tacuru",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50011,
+        "nome": "Iguatemi"
+      },
+      "regiao_imediata": {
+        "id": 500009,
+        "nome": "Amambai"
+      },
+      "lat": -23.64933,
+      "lon": -54.9904,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1784.207,
+      "populacao": 11248,
+      "eleitorado": 6972,
+      "urbana_pct": 35.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10808,
+        "situacao": {
+          "urbana": 3828,
+          "rural": 6980
+        },
+        "idade": {
+          "0_15": 3304,
+          "16_17": 460,
+          "18_24": 1212,
+          "25_34": 1612,
+          "35_44": 1451,
+          "45_59": 1561,
+          "60_69": 641,
+          "70_mais": 567
+        },
+        "renda": {
+          "sem_rendimento": 158,
+          "ate_1_4_sm": 3599,
+          "1_4_a_1_2_sm": 2645,
+          "1_2_a_1_sm": 2762,
+          "1_a_2_sm": 1171,
+          "2_a_3_sm": 281,
+          "3_a_5_sm": 156,
+          "5_a_10_sm": 18,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4358,
+          "evangelica": 2339,
+          "espirita": 9,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 3,
+          "outras": 166,
+          "sem_religiao": 829,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5135,
+          "fundamental_completo_medio_incompleto": 588,
+          "medio_completo_superior_incompleto": 895,
+          "superior_completo": 451
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5007976,
+      "nome": "Taquarussu",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50008,
+        "nome": "Nova Andradina"
+      },
+      "regiao_imediata": {
+        "id": 500007,
+        "nome": "Nova Andradina"
+      },
+      "lat": -22.66783,
+      "lon": -53.43106,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1052.232,
+      "populacao": 3748,
+      "eleitorado": 3932,
+      "urbana_pct": 75.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3625,
+        "situacao": {
+          "urbana": 2739,
+          "rural": 886
+        },
+        "idade": {
+          "0_15": 759,
+          "16_17": 120,
+          "18_24": 304,
+          "25_34": 435,
+          "35_44": 573,
+          "45_59": 774,
+          "60_69": 364,
+          "70_mais": 296
+        },
+        "renda": {
+          "sem_rendimento": 17,
+          "ate_1_4_sm": 71,
+          "1_4_a_1_2_sm": 682,
+          "1_2_a_1_sm": 1402,
+          "1_a_2_sm": 1134,
+          "2_a_3_sm": 200,
+          "3_a_5_sm": 80,
+          "5_a_10_sm": 29,
+          "10_a_15_sm": 3,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2230,
+          "evangelica": 618,
+          "espirita": 0,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 19,
+          "sem_religiao": 50,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1331,
+          "fundamental_completo_medio_incompleto": 409,
+          "medio_completo_superior_incompleto": 667,
+          "superior_completo": 341
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5008008,
+      "nome": "Terenos",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50004,
+        "nome": "Campo Grande"
+      },
+      "regiao_imediata": {
+        "id": 500001,
+        "nome": "Campo Grande"
+      },
+      "lat": -20.4474,
+      "lon": -55.0241,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2845.653,
+      "populacao": 18223,
+      "eleitorado": 13822,
+      "urbana_pct": 55.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17652,
+        "situacao": {
+          "urbana": 9779,
+          "rural": 7873
+        },
+        "idade": {
+          "0_15": 3948,
+          "16_17": 498,
+          "18_24": 1586,
+          "25_34": 2177,
+          "35_44": 2587,
+          "45_59": 3615,
+          "60_69": 1915,
+          "70_mais": 1326
+        },
+        "renda": {
+          "sem_rendimento": 609,
+          "ate_1_4_sm": 1051,
+          "1_4_a_1_2_sm": 3648,
+          "1_2_a_1_sm": 5883,
+          "1_a_2_sm": 4465,
+          "2_a_3_sm": 933,
+          "3_a_5_sm": 693,
+          "5_a_10_sm": 229,
+          "10_a_15_sm": 31,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 7327,
+          "evangelica": 5036,
+          "espirita": 150,
+          "umbanda_candomble": 35,
+          "tradicoes_indigenas": 0,
+          "outras": 356,
+          "sem_religiao": 986,
+          "nao_sabe": 10,
+          "sem_declaracao": 51
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6416,
+          "fundamental_completo_medio_incompleto": 2236,
+          "medio_completo_superior_incompleto": 3307,
+          "superior_completo": 1238
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 5008305,
+      "nome": "Três Lagoas",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50007,
+        "nome": "Três Lagoas"
+      },
+      "regiao_imediata": {
+        "id": 500002,
+        "nome": "Três Lagoas"
+      },
+      "lat": -20.43886,
+      "lon": -52.21122,
+      "coordenada_metodo": "centroide",
+      "area_km2": 10217.071,
+      "populacao": 145514,
+      "eleitorado": 88431,
+      "urbana_pct": 96.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 132152,
+        "situacao": {
+          "urbana": 127333,
+          "rural": 4819
+        },
+        "idade": {
+          "0_15": 30255,
+          "16_17": 3833,
+          "18_24": 13563,
+          "25_34": 21985,
+          "35_44": 22263,
+          "45_59": 23195,
+          "60_69": 10136,
+          "70_mais": 6922
+        },
+        "renda": {
+          "sem_rendimento": 2814,
+          "ate_1_4_sm": 6375,
+          "1_4_a_1_2_sm": 17932,
+          "1_2_a_1_sm": 41036,
+          "1_a_2_sm": 39462,
+          "2_a_3_sm": 11646,
+          "3_a_5_sm": 8504,
+          "5_a_10_sm": 2822,
+          "10_a_15_sm": 400,
+          "15_a_20_sm": 67,
+          "mais_de_20_sm": 113
+        },
+        "religiao": {
+          "catolica": 49463,
+          "evangelica": 36267,
+          "espirita": 2543,
+          "umbanda_candomble": 742,
+          "tradicoes_indigenas": 43,
+          "outras": 4766,
+          "sem_religiao": 9628,
+          "nao_sabe": 84,
+          "sem_declaracao": 125
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 27190,
+          "fundamental_completo_medio_incompleto": 16387,
+          "medio_completo_superior_incompleto": 36742,
+          "superior_completo": 17745
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 5008404,
+      "nome": "Vicentina",
+      "uf": "MS",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 50010,
+        "nome": "Dourados"
+      },
+      "regiao_imediata": {
+        "id": 500005,
+        "nome": "Dourados"
+      },
+      "lat": -22.46933,
+      "lon": -54.42303,
+      "coordenada_metodo": "centroide",
+      "area_km2": 302.542,
+      "populacao": 6534,
+      "eleitorado": 5999,
+      "urbana_pct": 77.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6336,
+        "situacao": {
+          "urbana": 4921,
+          "rural": 1415
+        },
+        "idade": {
+          "0_15": 1226,
+          "16_17": 182,
+          "18_24": 566,
+          "25_34": 768,
+          "35_44": 852,
+          "45_59": 1370,
+          "60_69": 759,
+          "70_mais": 613
+        },
+        "renda": {
+          "sem_rendimento": 39,
+          "ate_1_4_sm": 213,
+          "1_4_a_1_2_sm": 1085,
+          "1_2_a_1_sm": 2389,
+          "1_a_2_sm": 1903,
+          "2_a_3_sm": 362,
+          "3_a_5_sm": 209,
+          "5_a_10_sm": 88,
+          "10_a_15_sm": 8,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3879,
+          "evangelica": 1087,
+          "espirita": 11,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 36,
+          "sem_religiao": 186,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2117,
+          "fundamental_completo_medio_incompleto": 651,
+          "medio_completo_superior_incompleto": 1528,
+          "superior_completo": 630
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    }
+  ]
+}

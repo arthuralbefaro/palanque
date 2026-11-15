@@ -1,0 +1,4655 @@
+{
+  "uf": "AM",
+  "municipios": [
+    {
+      "codigo_ibge": 1300029,
+      "nome": "Alvarães",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13005,
+        "nome": "Tefé"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -3.69641,
+      "lon": -65.32976,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5964.611,
+      "populacao": 16938,
+      "eleitorado": 12520,
+      "urbana_pct": 55,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15866,
+        "situacao": {
+          "urbana": 8730,
+          "rural": 7136
+        },
+        "idade": {
+          "0_15": 5860,
+          "16_17": 757,
+          "18_24": 2331,
+          "25_34": 2452,
+          "35_44": 1785,
+          "45_59": 1623,
+          "60_69": 588,
+          "70_mais": 470
+        },
+        "renda": {
+          "sem_rendimento": 118,
+          "ate_1_4_sm": 6537,
+          "1_4_a_1_2_sm": 5325,
+          "1_2_a_1_sm": 3017,
+          "1_a_2_sm": 669,
+          "2_a_3_sm": 72,
+          "3_a_5_sm": 86,
+          "5_a_10_sm": 5,
+          "10_a_15_sm": 1,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5744,
+          "evangelica": 4165,
+          "espirita": 5,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 76,
+          "sem_religiao": 319,
+          "nao_sabe": 19,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3950,
+          "fundamental_completo_medio_incompleto": 1883,
+          "medio_completo_superior_incompleto": 2828,
+          "superior_completo": 558
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300060,
+      "nome": "Amaturá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -3.41712,
+      "lon": -68.27805,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4658.391,
+      "populacao": 11633,
+      "eleitorado": 7577,
+      "urbana_pct": 71.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10819,
+        "situacao": {
+          "urbana": 7771,
+          "rural": 3048
+        },
+        "idade": {
+          "0_15": 4251,
+          "16_17": 445,
+          "18_24": 1401,
+          "25_34": 1569,
+          "35_44": 1239,
+          "45_59": 1167,
+          "60_69": 417,
+          "70_mais": 330
+        },
+        "renda": {
+          "sem_rendimento": 96,
+          "ate_1_4_sm": 4981,
+          "1_4_a_1_2_sm": 2953,
+          "1_2_a_1_sm": 1941,
+          "1_a_2_sm": 580,
+          "2_a_3_sm": 145,
+          "3_a_5_sm": 45,
+          "5_a_10_sm": 13,
+          "10_a_15_sm": 41,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2863,
+          "evangelica": 2727,
+          "espirita": 0,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 26,
+          "outras": 1082,
+          "sem_religiao": 67,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2464,
+          "fundamental_completo_medio_incompleto": 942,
+          "medio_completo_superior_incompleto": 2371,
+          "superior_completo": 349
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300086,
+      "nome": "Anamã",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13006,
+        "nome": "Coari"
+      },
+      "regiao_imediata": {
+        "id": 130004,
+        "nome": "Manacapuru"
+      },
+      "lat": -3.49972,
+      "lon": -61.73117,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2382.521,
+      "populacao": 9981,
+      "eleitorado": 9277,
+      "urbana_pct": 48.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9962,
+        "situacao": {
+          "urbana": 4811,
+          "rural": 5151
+        },
+        "idade": {
+          "0_15": 3321,
+          "16_17": 465,
+          "18_24": 1407,
+          "25_34": 1554,
+          "35_44": 1301,
+          "45_59": 1239,
+          "60_69": 409,
+          "70_mais": 266
+        },
+        "renda": {
+          "sem_rendimento": 100,
+          "ate_1_4_sm": 3618,
+          "1_4_a_1_2_sm": 3561,
+          "1_2_a_1_sm": 2009,
+          "1_a_2_sm": 385,
+          "2_a_3_sm": 212,
+          "3_a_5_sm": 50,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3926,
+          "evangelica": 2650,
+          "espirita": 0,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 0,
+          "outras": 71,
+          "sem_religiao": 222,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2225,
+          "fundamental_completo_medio_incompleto": 949,
+          "medio_completo_superior_incompleto": 2509,
+          "superior_completo": 521
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300102,
+      "nome": "Anori",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13006,
+        "nome": "Coari"
+      },
+      "regiao_imediata": {
+        "id": 130003,
+        "nome": "Coari"
+      },
+      "lat": -4.20039,
+      "lon": -62.09581,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6084.881,
+      "populacao": 18135,
+      "eleitorado": 11145,
+      "urbana_pct": 63.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17194,
+        "situacao": {
+          "urbana": 10850,
+          "rural": 6344
+        },
+        "idade": {
+          "0_15": 5585,
+          "16_17": 744,
+          "18_24": 2279,
+          "25_34": 2602,
+          "35_44": 2382,
+          "45_59": 2235,
+          "60_69": 842,
+          "70_mais": 525
+        },
+        "renda": {
+          "sem_rendimento": 160,
+          "ate_1_4_sm": 6000,
+          "1_4_a_1_2_sm": 5206,
+          "1_2_a_1_sm": 4207,
+          "1_a_2_sm": 1116,
+          "2_a_3_sm": 266,
+          "3_a_5_sm": 138,
+          "5_a_10_sm": 8,
+          "10_a_15_sm": 15,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5811,
+          "evangelica": 5750,
+          "espirita": 28,
+          "umbanda_candomble": 1,
+          "tradicoes_indigenas": 0,
+          "outras": 101,
+          "sem_religiao": 278,
+          "nao_sabe": 0,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4851,
+          "fundamental_completo_medio_incompleto": 1799,
+          "medio_completo_superior_incompleto": 3671,
+          "superior_completo": 483
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300144,
+      "nome": "Apuí",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13013,
+        "nome": "Madeira"
+      },
+      "regiao_imediata": {
+        "id": 130009,
+        "nome": "Manicoré"
+      },
+      "lat": -7.77104,
+      "lon": -59.42707,
+      "coordenada_metodo": "centroide",
+      "area_km2": 53617.189,
+      "populacao": 21971,
+      "eleitorado": 11550,
+      "urbana_pct": 53,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20647,
+        "situacao": {
+          "urbana": 10940,
+          "rural": 9707
+        },
+        "idade": {
+          "0_15": 5729,
+          "16_17": 738,
+          "18_24": 2394,
+          "25_34": 3493,
+          "35_44": 3278,
+          "45_59": 3054,
+          "60_69": 1278,
+          "70_mais": 683
+        },
+        "renda": {
+          "sem_rendimento": 356,
+          "ate_1_4_sm": 3445,
+          "1_4_a_1_2_sm": 5257,
+          "1_2_a_1_sm": 6541,
+          "1_a_2_sm": 3442,
+          "2_a_3_sm": 665,
+          "3_a_5_sm": 701,
+          "5_a_10_sm": 99,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7809,
+          "evangelica": 5711,
+          "espirita": 6,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 347,
+          "sem_religiao": 1393,
+          "nao_sabe": 16,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7259,
+          "fundamental_completo_medio_incompleto": 2066,
+          "medio_completo_superior_incompleto": 3648,
+          "superior_completo": 1162
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300201,
+      "nome": "Atalaia do Norte",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -5.71078,
+      "lon": -71.74678,
+      "coordenada_metodo": "centroide",
+      "area_km2": 76313.455,
+      "populacao": 15920,
+      "eleitorado": 9642,
+      "urbana_pct": 51.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15314,
+        "situacao": {
+          "urbana": 7933,
+          "rural": 7381
+        },
+        "idade": {
+          "0_15": 6215,
+          "16_17": 711,
+          "18_24": 2025,
+          "25_34": 2321,
+          "35_44": 1643,
+          "45_59": 1444,
+          "60_69": 542,
+          "70_mais": 413
+        },
+        "renda": {
+          "sem_rendimento": 1169,
+          "ate_1_4_sm": 6641,
+          "1_4_a_1_2_sm": 3468,
+          "1_2_a_1_sm": 2491,
+          "1_a_2_sm": 1027,
+          "2_a_3_sm": 247,
+          "3_a_5_sm": 98,
+          "5_a_10_sm": 10,
+          "10_a_15_sm": 44,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2578,
+          "evangelica": 2196,
+          "espirita": 10,
+          "umbanda_candomble": 11,
+          "tradicoes_indigenas": 1719,
+          "outras": 428,
+          "sem_religiao": 2393,
+          "nao_sabe": 0,
+          "sem_declaracao": 106
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4510,
+          "fundamental_completo_medio_incompleto": 1375,
+          "medio_completo_superior_incompleto": 1959,
+          "superior_completo": 567
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300300,
+      "nome": "Autazes",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -3.78409,
+      "lon": -59.52319,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7564.727,
+      "populacao": 46641,
+      "eleitorado": 32419,
+      "urbana_pct": 44.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41564,
+        "situacao": {
+          "urbana": 18585,
+          "rural": 22979
+        },
+        "idade": {
+          "0_15": 14191,
+          "16_17": 1728,
+          "18_24": 5287,
+          "25_34": 6026,
+          "35_44": 5195,
+          "45_59": 5439,
+          "60_69": 2166,
+          "70_mais": 1532
+        },
+        "renda": {
+          "sem_rendimento": 372,
+          "ate_1_4_sm": 13283,
+          "1_4_a_1_2_sm": 13005,
+          "1_2_a_1_sm": 10671,
+          "1_a_2_sm": 3312,
+          "2_a_3_sm": 505,
+          "3_a_5_sm": 227,
+          "5_a_10_sm": 142,
+          "10_a_15_sm": 1,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 20
+        },
+        "religiao": {
+          "catolica": 10878,
+          "evangelica": 13583,
+          "espirita": 32,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 10,
+          "outras": 881,
+          "sem_religiao": 2693,
+          "nao_sabe": 9,
+          "sem_declaracao": 120
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10741,
+          "fundamental_completo_medio_incompleto": 5245,
+          "medio_completo_superior_incompleto": 8127,
+          "superior_completo": 1361
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300409,
+      "nome": "Barcelos",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13001,
+        "nome": "Rio Negro"
+      },
+      "regiao_imediata": {
+        "id": 130002,
+        "nome": "São Gabriel da Cachoeira"
+      },
+      "lat": -0.46572,
+      "lon": -63.43453,
+      "coordenada_metodo": "centroide",
+      "area_km2": 122453.454,
+      "populacao": 17805,
+      "eleitorado": 12720,
+      "urbana_pct": 55.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18834,
+        "situacao": {
+          "urbana": 10460,
+          "rural": 8374
+        },
+        "idade": {
+          "0_15": 6964,
+          "16_17": 743,
+          "18_24": 2434,
+          "25_34": 2698,
+          "35_44": 2237,
+          "45_59": 2250,
+          "60_69": 899,
+          "70_mais": 609
+        },
+        "renda": {
+          "sem_rendimento": 2148,
+          "ate_1_4_sm": 5786,
+          "1_4_a_1_2_sm": 4935,
+          "1_2_a_1_sm": 3882,
+          "1_a_2_sm": 1380,
+          "2_a_3_sm": 407,
+          "3_a_5_sm": 147,
+          "5_a_10_sm": 14,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 1,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 6306,
+          "evangelica": 3165,
+          "espirita": 7,
+          "umbanda_candomble": 13,
+          "tradicoes_indigenas": 2344,
+          "outras": 147,
+          "sem_religiao": 174,
+          "nao_sabe": 0,
+          "sem_declaracao": 57
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5274,
+          "fundamental_completo_medio_incompleto": 1463,
+          "medio_completo_superior_incompleto": 3626,
+          "superior_completo": 833
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300508,
+      "nome": "Barreirinha",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130010,
+        "nome": "Parintins"
+      },
+      "lat": -3.12827,
+      "lon": -57.17438,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5658.561,
+      "populacao": 34025,
+      "eleitorado": 22841,
+      "urbana_pct": 54.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 31051,
+        "situacao": {
+          "urbana": 16978,
+          "rural": 14073
+        },
+        "idade": {
+          "0_15": 11216,
+          "16_17": 1494,
+          "18_24": 4240,
+          "25_34": 4471,
+          "35_44": 3569,
+          "45_59": 3530,
+          "60_69": 1403,
+          "70_mais": 1128
+        },
+        "renda": {
+          "sem_rendimento": 721,
+          "ate_1_4_sm": 12086,
+          "1_4_a_1_2_sm": 10423,
+          "1_2_a_1_sm": 5571,
+          "1_a_2_sm": 1651,
+          "2_a_3_sm": 197,
+          "3_a_5_sm": 206,
+          "5_a_10_sm": 44,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14980,
+          "evangelica": 4907,
+          "espirita": 8,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 349,
+          "sem_religiao": 276,
+          "nao_sabe": 0,
+          "sem_declaracao": 32
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6718,
+          "fundamental_completo_medio_incompleto": 3751,
+          "medio_completo_superior_incompleto": 6421,
+          "superior_completo": 1317
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300607,
+      "nome": "Benjamin Constant",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -5.42709,
+      "lon": -70.27278,
+      "coordenada_metodo": "centroide",
+      "area_km2": 9100.432,
+      "populacao": 41261,
+      "eleitorado": 24336,
+      "urbana_pct": 76.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 37648,
+        "situacao": {
+          "urbana": 28794,
+          "rural": 8854
+        },
+        "idade": {
+          "0_15": 14500,
+          "16_17": 1664,
+          "18_24": 4879,
+          "25_34": 5579,
+          "35_44": 4386,
+          "45_59": 3917,
+          "60_69": 1489,
+          "70_mais": 1234
+        },
+        "renda": {
+          "sem_rendimento": 1151,
+          "ate_1_4_sm": 16848,
+          "1_4_a_1_2_sm": 10447,
+          "1_2_a_1_sm": 5568,
+          "1_a_2_sm": 2307,
+          "2_a_3_sm": 640,
+          "3_a_5_sm": 365,
+          "5_a_10_sm": 204,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11524,
+          "evangelica": 8718,
+          "espirita": 28,
+          "umbanda_candomble": 26,
+          "tradicoes_indigenas": 106,
+          "outras": 2810,
+          "sem_religiao": 748,
+          "nao_sabe": 2,
+          "sem_declaracao": 58
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7745,
+          "fundamental_completo_medio_incompleto": 3593,
+          "medio_completo_superior_incompleto": 8334,
+          "superior_completo": 1885
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300631,
+      "nome": "Beruri",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13006,
+        "nome": "Coari"
+      },
+      "regiao_imediata": {
+        "id": 130003,
+        "nome": "Coari"
+      },
+      "lat": -4.60481,
+      "lon": -61.80461,
+      "coordenada_metodo": "centroide",
+      "area_km2": 17415.813,
+      "populacao": 22842,
+      "eleitorado": 15153,
+      "urbana_pct": 58.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20718,
+        "situacao": {
+          "urbana": 12080,
+          "rural": 8638
+        },
+        "idade": {
+          "0_15": 7848,
+          "16_17": 1007,
+          "18_24": 2993,
+          "25_34": 2946,
+          "35_44": 2397,
+          "45_59": 2121,
+          "60_69": 819,
+          "70_mais": 587
+        },
+        "renda": {
+          "sem_rendimento": 357,
+          "ate_1_4_sm": 9118,
+          "1_4_a_1_2_sm": 5685,
+          "1_2_a_1_sm": 3659,
+          "1_a_2_sm": 1595,
+          "2_a_3_sm": 143,
+          "3_a_5_sm": 39,
+          "5_a_10_sm": 48,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 43
+        },
+        "religiao": {
+          "catolica": 5602,
+          "evangelica": 6876,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 20,
+          "outras": 373,
+          "sem_religiao": 495,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5766,
+          "fundamental_completo_medio_incompleto": 2240,
+          "medio_completo_superior_incompleto": 3299,
+          "superior_completo": 532
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300680,
+      "nome": "Boa Vista do Ramos",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130010,
+        "nome": "Parintins"
+      },
+      "lat": -3.16195,
+      "lon": -57.90049,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 2613.997,
+      "populacao": 27052,
+      "eleitorado": 13819,
+      "urbana_pct": 49.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23785,
+        "situacao": {
+          "urbana": 11873,
+          "rural": 11912
+        },
+        "idade": {
+          "0_15": 7872,
+          "16_17": 993,
+          "18_24": 3278,
+          "25_34": 3721,
+          "35_44": 3055,
+          "45_59": 2647,
+          "60_69": 1073,
+          "70_mais": 1146
+        },
+        "renda": {
+          "sem_rendimento": 490,
+          "ate_1_4_sm": 9074,
+          "1_4_a_1_2_sm": 8833,
+          "1_2_a_1_sm": 3960,
+          "1_a_2_sm": 1140,
+          "2_a_3_sm": 216,
+          "3_a_5_sm": 27,
+          "5_a_10_sm": 5,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12224,
+          "evangelica": 3704,
+          "espirita": 20,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 0,
+          "outras": 159,
+          "sem_religiao": 261,
+          "nao_sabe": 6,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5414,
+          "fundamental_completo_medio_incompleto": 2737,
+          "medio_completo_superior_incompleto": 6057,
+          "superior_completo": 679
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300706,
+      "nome": "Boca do Acre",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13011,
+        "nome": "Boca do Acre"
+      },
+      "regiao_imediata": {
+        "id": 130008,
+        "nome": "Lábrea"
+      },
+      "lat": -8.77301,
+      "lon": -68.04742,
+      "coordenada_metodo": "centroide",
+      "area_km2": 21949.686,
+      "populacao": 39176,
+      "eleitorado": 23228,
+      "urbana_pct": 62.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35447,
+        "situacao": {
+          "urbana": 22125,
+          "rural": 13322
+        },
+        "idade": {
+          "0_15": 10357,
+          "16_17": 1450,
+          "18_24": 4648,
+          "25_34": 5626,
+          "35_44": 4882,
+          "45_59": 5032,
+          "60_69": 1997,
+          "70_mais": 1455
+        },
+        "renda": {
+          "sem_rendimento": 719,
+          "ate_1_4_sm": 12689,
+          "1_4_a_1_2_sm": 9312,
+          "1_2_a_1_sm": 8437,
+          "1_a_2_sm": 2987,
+          "2_a_3_sm": 671,
+          "3_a_5_sm": 283,
+          "5_a_10_sm": 169,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 10882,
+          "evangelica": 11249,
+          "espirita": 38,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 46,
+          "outras": 966,
+          "sem_religiao": 2648,
+          "nao_sabe": 0,
+          "sem_declaracao": 36
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12131,
+          "fundamental_completo_medio_incompleto": 3869,
+          "medio_completo_superior_incompleto": 6239,
+          "superior_completo": 1338
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300805,
+      "nome": "Borba",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13013,
+        "nome": "Madeira"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -4.96813,
+      "lon": -59.53489,
+      "coordenada_metodo": "centroide",
+      "area_km2": 44644.015,
+      "populacao": 34836,
+      "eleitorado": 24548,
+      "urbana_pct": 61.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 33080,
+        "situacao": {
+          "urbana": 20416,
+          "rural": 12664
+        },
+        "idade": {
+          "0_15": 11204,
+          "16_17": 1565,
+          "18_24": 4393,
+          "25_34": 4965,
+          "35_44": 4242,
+          "45_59": 3835,
+          "60_69": 1602,
+          "70_mais": 1274
+        },
+        "renda": {
+          "sem_rendimento": 733,
+          "ate_1_4_sm": 13312,
+          "1_4_a_1_2_sm": 9450,
+          "1_2_a_1_sm": 6587,
+          "1_a_2_sm": 2151,
+          "2_a_3_sm": 508,
+          "3_a_5_sm": 193,
+          "5_a_10_sm": 66,
+          "10_a_15_sm": 22,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13146,
+          "evangelica": 8451,
+          "espirita": 0,
+          "umbanda_candomble": 18,
+          "tradicoes_indigenas": 1,
+          "outras": 382,
+          "sem_religiao": 568,
+          "nao_sabe": 25,
+          "sem_declaracao": 13
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9166,
+          "fundamental_completo_medio_incompleto": 3624,
+          "medio_completo_superior_incompleto": 6114,
+          "superior_completo": 1387
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1300839,
+      "nome": "Caapiranga",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13006,
+        "nome": "Coari"
+      },
+      "regiao_imediata": {
+        "id": 130004,
+        "nome": "Manacapuru"
+      },
+      "lat": -3.07379,
+      "lon": -61.87349,
+      "coordenada_metodo": "centroide",
+      "area_km2": 9743.918,
+      "populacao": 14980,
+      "eleitorado": 9546,
+      "urbana_pct": 51.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13469,
+        "situacao": {
+          "urbana": 6965,
+          "rural": 6504
+        },
+        "idade": {
+          "0_15": 4306,
+          "16_17": 635,
+          "18_24": 1957,
+          "25_34": 2179,
+          "35_44": 1672,
+          "45_59": 1675,
+          "60_69": 640,
+          "70_mais": 405
+        },
+        "renda": {
+          "sem_rendimento": 253,
+          "ate_1_4_sm": 6345,
+          "1_4_a_1_2_sm": 3570,
+          "1_2_a_1_sm": 2343,
+          "1_a_2_sm": 662,
+          "2_a_3_sm": 105,
+          "3_a_5_sm": 66,
+          "5_a_10_sm": 6,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3811,
+          "evangelica": 4523,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 234,
+          "sem_religiao": 896,
+          "nao_sabe": 3,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3030,
+          "fundamental_completo_medio_incompleto": 1360,
+          "medio_completo_superior_incompleto": 3896,
+          "superior_completo": 287
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1300904,
+      "nome": "Canutama",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13012,
+        "nome": "Purus"
+      },
+      "regiao_imediata": {
+        "id": 130008,
+        "nome": "Lábrea"
+      },
+      "lat": -7.29881,
+      "lon": -64.0629,
+      "coordenada_metodo": "centroide",
+      "area_km2": 33671.791,
+      "populacao": 18327,
+      "eleitorado": 10779,
+      "urbana_pct": 59.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16869,
+        "situacao": {
+          "urbana": 10088,
+          "rural": 6781
+        },
+        "idade": {
+          "0_15": 4837,
+          "16_17": 670,
+          "18_24": 2173,
+          "25_34": 2618,
+          "35_44": 2294,
+          "45_59": 2682,
+          "60_69": 1018,
+          "70_mais": 577
+        },
+        "renda": {
+          "sem_rendimento": 201,
+          "ate_1_4_sm": 6057,
+          "1_4_a_1_2_sm": 5119,
+          "1_2_a_1_sm": 4010,
+          "1_a_2_sm": 1128,
+          "2_a_3_sm": 229,
+          "3_a_5_sm": 100,
+          "5_a_10_sm": 16,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6969,
+          "evangelica": 4725,
+          "espirita": 3,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 9,
+          "outras": 66,
+          "sem_religiao": 445,
+          "nao_sabe": 89,
+          "sem_declaracao": 17
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6370,
+          "fundamental_completo_medio_incompleto": 1555,
+          "medio_completo_superior_incompleto": 2738,
+          "superior_completo": 563
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1301001,
+      "nome": "Carauari",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -5.1122,
+      "lon": -67.33243,
+      "coordenada_metodo": "centroide",
+      "area_km2": 25771.943,
+      "populacao": 31383,
+      "eleitorado": 21080,
+      "urbana_pct": 78.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 28742,
+        "situacao": {
+          "urbana": 22681,
+          "rural": 6061
+        },
+        "idade": {
+          "0_15": 9640,
+          "16_17": 1267,
+          "18_24": 4073,
+          "25_34": 4582,
+          "35_44": 3701,
+          "45_59": 3314,
+          "60_69": 1214,
+          "70_mais": 951
+        },
+        "renda": {
+          "sem_rendimento": 352,
+          "ate_1_4_sm": 11850,
+          "1_4_a_1_2_sm": 8073,
+          "1_2_a_1_sm": 6081,
+          "1_a_2_sm": 1894,
+          "2_a_3_sm": 115,
+          "3_a_5_sm": 158,
+          "5_a_10_sm": 151,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 1
+        },
+        "religiao": {
+          "catolica": 9177,
+          "evangelica": 9098,
+          "espirita": 9,
+          "umbanda_candomble": 1,
+          "tradicoes_indigenas": 84,
+          "outras": 107,
+          "sem_religiao": 1252,
+          "nao_sabe": 13,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7986,
+          "fundamental_completo_medio_incompleto": 2900,
+          "medio_completo_superior_incompleto": 5944,
+          "superior_completo": 980
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301100,
+      "nome": "Careiro",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -3.77271,
+      "lon": -60.18518,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6100.302,
+      "populacao": 32289,
+      "eleitorado": 27512,
+      "urbana_pct": 42,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30792,
+        "situacao": {
+          "urbana": 12940,
+          "rural": 17852
+        },
+        "idade": {
+          "0_15": 9510,
+          "16_17": 1246,
+          "18_24": 3310,
+          "25_34": 4063,
+          "35_44": 4117,
+          "45_59": 4769,
+          "60_69": 2343,
+          "70_mais": 1434
+        },
+        "renda": {
+          "sem_rendimento": 966,
+          "ate_1_4_sm": 9835,
+          "1_4_a_1_2_sm": 7705,
+          "1_2_a_1_sm": 8338,
+          "1_a_2_sm": 2926,
+          "2_a_3_sm": 584,
+          "3_a_5_sm": 286,
+          "5_a_10_sm": 66,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8511,
+          "evangelica": 10992,
+          "espirita": 29,
+          "umbanda_candomble": 79,
+          "tradicoes_indigenas": 0,
+          "outras": 539,
+          "sem_religiao": 1736,
+          "nao_sabe": 0,
+          "sem_declaracao": 40
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9271,
+          "fundamental_completo_medio_incompleto": 3025,
+          "medio_completo_superior_incompleto": 6366,
+          "superior_completo": 1349
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301159,
+      "nome": "Careiro da Várzea",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -3.28749,
+      "lon": -59.6026,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2655.729,
+      "populacao": 20081,
+      "eleitorado": 18434,
+      "urbana_pct": 15.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19637,
+        "situacao": {
+          "urbana": 2960,
+          "rural": 16677
+        },
+        "idade": {
+          "0_15": 5706,
+          "16_17": 752,
+          "18_24": 2220,
+          "25_34": 2671,
+          "35_44": 2608,
+          "45_59": 3404,
+          "60_69": 1349,
+          "70_mais": 927
+        },
+        "renda": {
+          "sem_rendimento": 567,
+          "ate_1_4_sm": 6622,
+          "1_4_a_1_2_sm": 5751,
+          "1_2_a_1_sm": 4498,
+          "1_a_2_sm": 1582,
+          "2_a_3_sm": 408,
+          "3_a_5_sm": 118,
+          "5_a_10_sm": 25,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7149,
+          "evangelica": 6112,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 69,
+          "sem_religiao": 941,
+          "nao_sabe": 6,
+          "sem_declaracao": 34
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6699,
+          "fundamental_completo_medio_incompleto": 2019,
+          "medio_completo_superior_incompleto": 3619,
+          "superior_completo": 829
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301209,
+      "nome": "Coari",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13006,
+        "nome": "Coari"
+      },
+      "regiao_imediata": {
+        "id": 130003,
+        "nome": "Coari"
+      },
+      "lat": -4.44184,
+      "lon": -64.12792,
+      "coordenada_metodo": "centroide",
+      "area_km2": 57894.132,
+      "populacao": 73403,
+      "eleitorado": 51968,
+      "urbana_pct": 74.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 70616,
+        "situacao": {
+          "urbana": 52896,
+          "rural": 17720
+        },
+        "idade": {
+          "0_15": 23503,
+          "16_17": 3156,
+          "18_24": 9824,
+          "25_34": 10514,
+          "35_44": 9477,
+          "45_59": 8541,
+          "60_69": 3262,
+          "70_mais": 2339
+        },
+        "renda": {
+          "sem_rendimento": 1908,
+          "ate_1_4_sm": 28098,
+          "1_4_a_1_2_sm": 20638,
+          "1_2_a_1_sm": 13773,
+          "1_a_2_sm": 4356,
+          "2_a_3_sm": 1003,
+          "3_a_5_sm": 504,
+          "5_a_10_sm": 196,
+          "10_a_15_sm": 7,
+          "15_a_20_sm": 41,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 25028,
+          "evangelica": 20913,
+          "espirita": 52,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 25,
+          "outras": 678,
+          "sem_religiao": 1907,
+          "nao_sabe": 7,
+          "sem_declaracao": 26
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 17852,
+          "fundamental_completo_medio_incompleto": 7387,
+          "medio_completo_superior_incompleto": 15382,
+          "superior_completo": 3354
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301308,
+      "nome": "Codajás",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13006,
+        "nome": "Coari"
+      },
+      "regiao_imediata": {
+        "id": 130003,
+        "nome": "Coari"
+      },
+      "lat": -3.27964,
+      "lon": -62.98534,
+      "coordenada_metodo": "centroide",
+      "area_km2": 19038.052,
+      "populacao": 24627,
+      "eleitorado": 17223,
+      "urbana_pct": 75.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23549,
+        "situacao": {
+          "urbana": 17837,
+          "rural": 5712
+        },
+        "idade": {
+          "0_15": 7804,
+          "16_17": 1096,
+          "18_24": 3189,
+          "25_34": 3550,
+          "35_44": 3140,
+          "45_59": 2837,
+          "60_69": 1137,
+          "70_mais": 796
+        },
+        "renda": {
+          "sem_rendimento": 560,
+          "ate_1_4_sm": 8616,
+          "1_4_a_1_2_sm": 7391,
+          "1_2_a_1_sm": 4678,
+          "1_a_2_sm": 1552,
+          "2_a_3_sm": 355,
+          "3_a_5_sm": 307,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 3,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8049,
+          "evangelica": 7620,
+          "espirita": 10,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 81,
+          "sem_religiao": 475,
+          "nao_sabe": 0,
+          "sem_declaracao": 26
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6833,
+          "fundamental_completo_medio_incompleto": 2326,
+          "medio_completo_superior_incompleto": 4447,
+          "superior_completo": 999
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301407,
+      "nome": "Eirunepé",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130007,
+        "nome": "Eirunepé"
+      },
+      "lat": -7.0171,
+      "lon": -70.21313,
+      "coordenada_metodo": "centroide",
+      "area_km2": 15189.428,
+      "populacao": 36027,
+      "eleitorado": 22985,
+      "urbana_pct": 78.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 33170,
+        "situacao": {
+          "urbana": 25892,
+          "rural": 7278
+        },
+        "idade": {
+          "0_15": 11649,
+          "16_17": 1629,
+          "18_24": 4434,
+          "25_34": 4928,
+          "35_44": 4292,
+          "45_59": 3723,
+          "60_69": 1405,
+          "70_mais": 1110
+        },
+        "renda": {
+          "sem_rendimento": 623,
+          "ate_1_4_sm": 13613,
+          "1_4_a_1_2_sm": 9110,
+          "1_2_a_1_sm": 6670,
+          "1_a_2_sm": 2241,
+          "2_a_3_sm": 508,
+          "3_a_5_sm": 138,
+          "5_a_10_sm": 166,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13873,
+          "evangelica": 6903,
+          "espirita": 13,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 335,
+          "outras": 233,
+          "sem_religiao": 894,
+          "nao_sabe": 15,
+          "sem_declaracao": 28
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10241,
+          "fundamental_completo_medio_incompleto": 2139,
+          "medio_completo_superior_incompleto": 6455,
+          "superior_completo": 1112
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301506,
+      "nome": "Envira",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130007,
+        "nome": "Eirunepé"
+      },
+      "lat": -7.57563,
+      "lon": -70.05876,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7419.658,
+      "populacao": 18062,
+      "eleitorado": 10913,
+      "urbana_pct": 74.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17186,
+        "situacao": {
+          "urbana": 12797,
+          "rural": 4389
+        },
+        "idade": {
+          "0_15": 5999,
+          "16_17": 813,
+          "18_24": 2412,
+          "25_34": 2669,
+          "35_44": 2267,
+          "45_59": 1918,
+          "60_69": 628,
+          "70_mais": 480
+        },
+        "renda": {
+          "sem_rendimento": 771,
+          "ate_1_4_sm": 5853,
+          "1_4_a_1_2_sm": 5411,
+          "1_2_a_1_sm": 3876,
+          "1_a_2_sm": 861,
+          "2_a_3_sm": 243,
+          "3_a_5_sm": 69,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 3,
+          "15_a_20_sm": 29,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6776,
+          "evangelica": 3715,
+          "espirita": 95,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 120,
+          "outras": 251,
+          "sem_religiao": 594,
+          "nao_sabe": 17,
+          "sem_declaracao": 20
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5614,
+          "fundamental_completo_medio_incompleto": 1229,
+          "medio_completo_superior_incompleto": 2874,
+          "superior_completo": 686
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1301605,
+      "nome": "Fonte Boa",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -2.49348,
+      "lon": -66.36809,
+      "coordenada_metodo": "centroide",
+      "area_km2": 12163.987,
+      "populacao": 28491,
+      "eleitorado": 17412,
+      "urbana_pct": 69.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 25871,
+        "situacao": {
+          "urbana": 18064,
+          "rural": 7807
+        },
+        "idade": {
+          "0_15": 9083,
+          "16_17": 1148,
+          "18_24": 3687,
+          "25_34": 3968,
+          "35_44": 3222,
+          "45_59": 2914,
+          "60_69": 1042,
+          "70_mais": 807
+        },
+        "renda": {
+          "sem_rendimento": 214,
+          "ate_1_4_sm": 8324,
+          "1_4_a_1_2_sm": 7707,
+          "1_2_a_1_sm": 6792,
+          "1_a_2_sm": 2294,
+          "2_a_3_sm": 233,
+          "3_a_5_sm": 117,
+          "5_a_10_sm": 29,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 15
+        },
+        "religiao": {
+          "catolica": 10566,
+          "evangelica": 6262,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 29,
+          "outras": 98,
+          "sem_religiao": 434,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7172,
+          "fundamental_completo_medio_incompleto": 2694,
+          "medio_completo_superior_incompleto": 4773,
+          "superior_completo": 1025
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301654,
+      "nome": "Guajará",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130007,
+        "nome": "Eirunepé"
+      },
+      "lat": -7.23683,
+      "lon": -72.82918,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7427.071,
+      "populacao": 14356,
+      "eleitorado": 12217,
+      "urbana_pct": 67,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13815,
+        "situacao": {
+          "urbana": 9257,
+          "rural": 4558
+        },
+        "idade": {
+          "0_15": 4622,
+          "16_17": 598,
+          "18_24": 2022,
+          "25_34": 2106,
+          "35_44": 1792,
+          "45_59": 1631,
+          "60_69": 606,
+          "70_mais": 438
+        },
+        "renda": {
+          "sem_rendimento": 35,
+          "ate_1_4_sm": 4567,
+          "1_4_a_1_2_sm": 4487,
+          "1_2_a_1_sm": 3531,
+          "1_a_2_sm": 969,
+          "2_a_3_sm": 178,
+          "3_a_5_sm": 16,
+          "5_a_10_sm": 4,
+          "10_a_15_sm": 9,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5340,
+          "evangelica": 3518,
+          "espirita": 33,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 59,
+          "sem_religiao": 588,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4363,
+          "fundamental_completo_medio_incompleto": 1344,
+          "medio_completo_superior_incompleto": 2290,
+          "superior_completo": 562
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1301704,
+      "nome": "Humaitá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13013,
+        "nome": "Madeira"
+      },
+      "regiao_imediata": {
+        "id": 130009,
+        "nome": "Manicoré"
+      },
+      "lat": -7.36136,
+      "lon": -62.48678,
+      "coordenada_metodo": "centroide",
+      "area_km2": 33113.788,
+      "populacao": 64390,
+      "eleitorado": 34933,
+      "urbana_pct": 73.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 57473,
+        "situacao": {
+          "urbana": 42212,
+          "rural": 15261
+        },
+        "idade": {
+          "0_15": 17362,
+          "16_17": 2295,
+          "18_24": 7833,
+          "25_34": 9943,
+          "35_44": 7930,
+          "45_59": 7238,
+          "60_69": 2830,
+          "70_mais": 2042
+        },
+        "renda": {
+          "sem_rendimento": 1722,
+          "ate_1_4_sm": 12618,
+          "1_4_a_1_2_sm": 17452,
+          "1_2_a_1_sm": 15524,
+          "1_a_2_sm": 6638,
+          "2_a_3_sm": 1682,
+          "3_a_5_sm": 1197,
+          "5_a_10_sm": 546,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 32,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 27413,
+          "evangelica": 10529,
+          "espirita": 39,
+          "umbanda_candomble": 46,
+          "tradicoes_indigenas": 815,
+          "outras": 705,
+          "sem_religiao": 1587,
+          "nao_sabe": 28,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 15672,
+          "fundamental_completo_medio_incompleto": 5692,
+          "medio_completo_superior_incompleto": 13422,
+          "superior_completo": 3078
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301803,
+      "nome": "Ipixuna",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130007,
+        "nome": "Eirunepé"
+      },
+      "lat": -7.17242,
+      "lon": -71.41719,
+      "coordenada_metodo": "centroide",
+      "area_km2": 12437.643,
+      "populacao": 25792,
+      "eleitorado": 11615,
+      "urbana_pct": 67.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24311,
+        "situacao": {
+          "urbana": 16517,
+          "rural": 7794
+        },
+        "idade": {
+          "0_15": 8952,
+          "16_17": 1103,
+          "18_24": 3705,
+          "25_34": 3904,
+          "35_44": 3008,
+          "45_59": 2353,
+          "60_69": 799,
+          "70_mais": 487
+        },
+        "renda": {
+          "sem_rendimento": 256,
+          "ate_1_4_sm": 10718,
+          "1_4_a_1_2_sm": 6672,
+          "1_2_a_1_sm": 4691,
+          "1_a_2_sm": 1294,
+          "2_a_3_sm": 348,
+          "3_a_5_sm": 53,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11156,
+          "evangelica": 3249,
+          "espirita": 8,
+          "umbanda_candomble": 1,
+          "tradicoes_indigenas": 68,
+          "outras": 174,
+          "sem_religiao": 1178,
+          "nao_sabe": 5,
+          "sem_declaracao": 63
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7589,
+          "fundamental_completo_medio_incompleto": 1557,
+          "medio_completo_superior_incompleto": 4678,
+          "superior_completo": 463
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301852,
+      "nome": "Iranduba",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -3.09331,
+      "lon": -60.47027,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2331.676,
+      "populacao": 70248,
+      "eleitorado": 46014,
+      "urbana_pct": 76.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 61163,
+        "situacao": {
+          "urbana": 46642,
+          "rural": 14521
+        },
+        "idade": {
+          "0_15": 17941,
+          "16_17": 2289,
+          "18_24": 7374,
+          "25_34": 9046,
+          "35_44": 8887,
+          "45_59": 9358,
+          "60_69": 3952,
+          "70_mais": 2316
+        },
+        "renda": {
+          "sem_rendimento": 1084,
+          "ate_1_4_sm": 14172,
+          "1_4_a_1_2_sm": 17842,
+          "1_2_a_1_sm": 18133,
+          "1_a_2_sm": 7212,
+          "2_a_3_sm": 1561,
+          "3_a_5_sm": 614,
+          "5_a_10_sm": 143,
+          "10_a_15_sm": 99,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 16214,
+          "evangelica": 21033,
+          "espirita": 75,
+          "umbanda_candomble": 201,
+          "tradicoes_indigenas": 22,
+          "outras": 3177,
+          "sem_religiao": 3509,
+          "nao_sabe": 62,
+          "sem_declaracao": 111
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14186,
+          "fundamental_completo_medio_incompleto": 7222,
+          "medio_completo_superior_incompleto": 15879,
+          "superior_completo": 3748
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1301902,
+      "nome": "Itacoatiara",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13009,
+        "nome": "Itacoatiara"
+      },
+      "regiao_imediata": {
+        "id": 130011,
+        "nome": "Itacoatiara"
+      },
+      "lat": -3.17354,
+      "lon": -58.7756,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8882.186,
+      "populacao": 115218,
+      "eleitorado": 76243,
+      "urbana_pct": 70.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 103598,
+        "situacao": {
+          "urbana": 73023,
+          "rural": 30575
+        },
+        "idade": {
+          "0_15": 31002,
+          "16_17": 4195,
+          "18_24": 13607,
+          "25_34": 15251,
+          "35_44": 14924,
+          "45_59": 14793,
+          "60_69": 5874,
+          "70_mais": 3952
+        },
+        "renda": {
+          "sem_rendimento": 3419,
+          "ate_1_4_sm": 30954,
+          "1_4_a_1_2_sm": 28797,
+          "1_2_a_1_sm": 25697,
+          "1_a_2_sm": 9755,
+          "2_a_3_sm": 2642,
+          "3_a_5_sm": 1340,
+          "5_a_10_sm": 414,
+          "10_a_15_sm": 99,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 35766,
+          "evangelica": 30342,
+          "espirita": 82,
+          "umbanda_candomble": 87,
+          "tradicoes_indigenas": 25,
+          "outras": 1720,
+          "sem_religiao": 6626,
+          "nao_sabe": 77,
+          "sem_declaracao": 98
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 22383,
+          "fundamental_completo_medio_incompleto": 11767,
+          "medio_completo_superior_incompleto": 28194,
+          "superior_completo": 5889
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1301951,
+      "nome": "Itamarati",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130007,
+        "nome": "Eirunepé"
+      },
+      "lat": -6.68013,
+      "lon": -68.114,
+      "coordenada_metodo": "centroide",
+      "area_km2": 25509.236,
+      "populacao": 12150,
+      "eleitorado": 7458,
+      "urbana_pct": 67.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10937,
+        "situacao": {
+          "urbana": 7401,
+          "rural": 3536
+        },
+        "idade": {
+          "0_15": 4268,
+          "16_17": 539,
+          "18_24": 1579,
+          "25_34": 1644,
+          "35_44": 1266,
+          "45_59": 1025,
+          "60_69": 337,
+          "70_mais": 279
+        },
+        "renda": {
+          "sem_rendimento": 239,
+          "ate_1_4_sm": 5052,
+          "1_4_a_1_2_sm": 3087,
+          "1_2_a_1_sm": 1638,
+          "1_a_2_sm": 662,
+          "2_a_3_sm": 99,
+          "3_a_5_sm": 86,
+          "5_a_10_sm": 48,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 3
+        },
+        "religiao": {
+          "catolica": 3341,
+          "evangelica": 2699,
+          "espirita": 0,
+          "umbanda_candomble": 9,
+          "tradicoes_indigenas": 544,
+          "outras": 53,
+          "sem_religiao": 248,
+          "nao_sabe": 0,
+          "sem_declaracao": 35
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3153,
+          "fundamental_completo_medio_incompleto": 769,
+          "medio_completo_superior_incompleto": 1825,
+          "superior_completo": 348
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1302009,
+      "nome": "Itapiranga",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13009,
+        "nome": "Itacoatiara"
+      },
+      "regiao_imediata": {
+        "id": 130011,
+        "nome": "Itacoatiara"
+      },
+      "lat": -2.4968,
+      "lon": -58.61583,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4287.62,
+      "populacao": 11090,
+      "eleitorado": 9710,
+      "urbana_pct": 78.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10162,
+        "situacao": {
+          "urbana": 7953,
+          "rural": 2209
+        },
+        "idade": {
+          "0_15": 3186,
+          "16_17": 450,
+          "18_24": 1264,
+          "25_34": 1516,
+          "35_44": 1389,
+          "45_59": 1393,
+          "60_69": 567,
+          "70_mais": 397
+        },
+        "renda": {
+          "sem_rendimento": 209,
+          "ate_1_4_sm": 2831,
+          "1_4_a_1_2_sm": 3384,
+          "1_2_a_1_sm": 2546,
+          "1_a_2_sm": 825,
+          "2_a_3_sm": 193,
+          "3_a_5_sm": 65,
+          "5_a_10_sm": 44,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 6,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3136,
+          "evangelica": 3527,
+          "espirita": 0,
+          "umbanda_candomble": 7,
+          "tradicoes_indigenas": 0,
+          "outras": 48,
+          "sem_religiao": 455,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2019,
+          "fundamental_completo_medio_incompleto": 1116,
+          "medio_completo_superior_incompleto": 2906,
+          "superior_completo": 466
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1302108,
+      "nome": "Japurá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13002,
+        "nome": "Japurá"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -1.68899,
+      "lon": -68.3223,
+      "coordenada_metodo": "centroide",
+      "area_km2": 55964.231,
+      "populacao": 9527,
+      "eleitorado": 5793,
+      "urbana_pct": 56.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8858,
+        "situacao": {
+          "urbana": 4995,
+          "rural": 3863
+        },
+        "idade": {
+          "0_15": 3468,
+          "16_17": 372,
+          "18_24": 1330,
+          "25_34": 1371,
+          "35_44": 997,
+          "45_59": 869,
+          "60_69": 279,
+          "70_mais": 172
+        },
+        "renda": {
+          "sem_rendimento": 132,
+          "ate_1_4_sm": 2055,
+          "1_4_a_1_2_sm": 2854,
+          "1_2_a_1_sm": 2420,
+          "1_a_2_sm": 857,
+          "2_a_3_sm": 167,
+          "3_a_5_sm": 214,
+          "5_a_10_sm": 65,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 2
+        },
+        "religiao": {
+          "catolica": 2370,
+          "evangelica": 2501,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 8,
+          "outras": 47,
+          "sem_religiao": 622,
+          "nao_sabe": 2,
+          "sem_declaracao": 28
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1878,
+          "fundamental_completo_medio_incompleto": 969,
+          "medio_completo_superior_incompleto": 1779,
+          "superior_completo": 392
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1302207,
+      "nome": "Juruá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13004,
+        "nome": "Juruá"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -3.51812,
+      "lon": -66.30941,
+      "coordenada_metodo": "centroide",
+      "area_km2": 19300.464,
+      "populacao": 11106,
+      "eleitorado": 7727,
+      "urbana_pct": 67.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10742,
+        "situacao": {
+          "urbana": 7215,
+          "rural": 3527
+        },
+        "idade": {
+          "0_15": 3686,
+          "16_17": 525,
+          "18_24": 1632,
+          "25_34": 1713,
+          "35_44": 1334,
+          "45_59": 1154,
+          "60_69": 394,
+          "70_mais": 304
+        },
+        "renda": {
+          "sem_rendimento": 673,
+          "ate_1_4_sm": 4257,
+          "1_4_a_1_2_sm": 2633,
+          "1_2_a_1_sm": 2420,
+          "1_a_2_sm": 629,
+          "2_a_3_sm": 46,
+          "3_a_5_sm": 58,
+          "5_a_10_sm": 13,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2552,
+          "evangelica": 3547,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 192,
+          "outras": 161,
+          "sem_religiao": 864,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3268,
+          "fundamental_completo_medio_incompleto": 1240,
+          "medio_completo_superior_incompleto": 1574,
+          "superior_completo": 464
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1302306,
+      "nome": "Jutaí",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -4.70655,
+      "lon": -68.39832,
+      "coordenada_metodo": "centroide",
+      "area_km2": 68971.126,
+      "populacao": 28712,
+      "eleitorado": 16060,
+      "urbana_pct": 64.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 25172,
+        "situacao": {
+          "urbana": 16163,
+          "rural": 9009
+        },
+        "idade": {
+          "0_15": 10415,
+          "16_17": 1214,
+          "18_24": 3541,
+          "25_34": 3567,
+          "35_44": 2833,
+          "45_59": 2245,
+          "60_69": 741,
+          "70_mais": 616
+        },
+        "renda": {
+          "sem_rendimento": 446,
+          "ate_1_4_sm": 9569,
+          "1_4_a_1_2_sm": 8067,
+          "1_2_a_1_sm": 4740,
+          "1_a_2_sm": 1634,
+          "2_a_3_sm": 290,
+          "3_a_5_sm": 170,
+          "5_a_10_sm": 61,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 2
+        },
+        "religiao": {
+          "catolica": 6033,
+          "evangelica": 6631,
+          "espirita": 0,
+          "umbanda_candomble": 28,
+          "tradicoes_indigenas": 39,
+          "outras": 896,
+          "sem_religiao": 1416,
+          "nao_sabe": 99,
+          "sem_declaracao": 232
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6462,
+          "fundamental_completo_medio_incompleto": 2940,
+          "medio_completo_superior_incompleto": 3433,
+          "superior_completo": 726
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1302405,
+      "nome": "Lábrea",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13012,
+        "nome": "Purus"
+      },
+      "regiao_imediata": {
+        "id": 130008,
+        "nome": "Lábrea"
+      },
+      "lat": -8.37485,
+      "lon": -65.81172,
+      "coordenada_metodo": "centroide",
+      "area_km2": 68349.909,
+      "populacao": 50040,
+      "eleitorado": 29341,
+      "urbana_pct": 60.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 45448,
+        "situacao": {
+          "urbana": 27687,
+          "rural": 17761
+        },
+        "idade": {
+          "0_15": 14541,
+          "16_17": 1979,
+          "18_24": 6481,
+          "25_34": 7302,
+          "35_44": 6263,
+          "45_59": 5421,
+          "60_69": 2025,
+          "70_mais": 1436
+        },
+        "renda": {
+          "sem_rendimento": 806,
+          "ate_1_4_sm": 16052,
+          "1_4_a_1_2_sm": 13900,
+          "1_2_a_1_sm": 9801,
+          "1_a_2_sm": 3624,
+          "2_a_3_sm": 737,
+          "3_a_5_sm": 323,
+          "5_a_10_sm": 16,
+          "10_a_15_sm": 35,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 17611,
+          "evangelica": 10642,
+          "espirita": 12,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 45,
+          "outras": 752,
+          "sem_religiao": 2627,
+          "nao_sabe": 10,
+          "sem_declaracao": 32
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14270,
+          "fundamental_completo_medio_incompleto": 4565,
+          "medio_completo_superior_incompleto": 8076,
+          "superior_completo": 1853
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1302504,
+      "nome": "Manacapuru",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130004,
+        "nome": "Manacapuru"
+      },
+      "lat": -3.28856,
+      "lon": -60.96146,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7318.909,
+      "populacao": 113042,
+      "eleitorado": 81059,
+      "urbana_pct": 65.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 101883,
+        "situacao": {
+          "urbana": 66353,
+          "rural": 35530
+        },
+        "idade": {
+          "0_15": 31422,
+          "16_17": 4390,
+          "18_24": 13512,
+          "25_34": 15830,
+          "35_44": 13992,
+          "45_59": 13500,
+          "60_69": 5405,
+          "70_mais": 3832
+        },
+        "renda": {
+          "sem_rendimento": 1728,
+          "ate_1_4_sm": 32657,
+          "1_4_a_1_2_sm": 30190,
+          "1_2_a_1_sm": 24612,
+          "1_a_2_sm": 9458,
+          "2_a_3_sm": 1524,
+          "3_a_5_sm": 1292,
+          "5_a_10_sm": 164,
+          "10_a_15_sm": 59,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 27078,
+          "evangelica": 37255,
+          "espirita": 106,
+          "umbanda_candomble": 20,
+          "tradicoes_indigenas": 51,
+          "outras": 2630,
+          "sem_religiao": 5462,
+          "nao_sabe": 37,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 26259,
+          "fundamental_completo_medio_incompleto": 11568,
+          "medio_completo_superior_incompleto": 23432,
+          "superior_completo": 5009
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1302553,
+      "nome": "Manaquiri",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -3.77486,
+      "lon": -60.69772,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4016.877,
+      "populacao": 15902,
+      "eleitorado": 15387,
+      "urbana_pct": 38.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17107,
+        "situacao": {
+          "urbana": 6603,
+          "rural": 10504
+        },
+        "idade": {
+          "0_15": 5366,
+          "16_17": 646,
+          "18_24": 1944,
+          "25_34": 2380,
+          "35_44": 2257,
+          "45_59": 2610,
+          "60_69": 1117,
+          "70_mais": 787
+        },
+        "renda": {
+          "sem_rendimento": 457,
+          "ate_1_4_sm": 7400,
+          "1_4_a_1_2_sm": 4327,
+          "1_2_a_1_sm": 3458,
+          "1_a_2_sm": 1047,
+          "2_a_3_sm": 232,
+          "3_a_5_sm": 170,
+          "5_a_10_sm": 16,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5184,
+          "evangelica": 5788,
+          "espirita": 0,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 293,
+          "sem_religiao": 825,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5322,
+          "fundamental_completo_medio_incompleto": 1636,
+          "medio_completo_superior_incompleto": 3496,
+          "superior_completo": 596
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1302603,
+      "nome": "Manaus",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13007,
+        "nome": "Manaus"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -2.62126,
+      "lon": -60.25862,
+      "coordenada_metodo": "centroide",
+      "area_km2": 11278.893,
+      "populacao": 2327101,
+      "eleitorado": 1470578,
+      "urbana_pct": 99,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 2063689,
+        "situacao": {
+          "urbana": 2043677,
+          "rural": 20012
+        },
+        "idade": {
+          "0_15": 518585,
+          "16_17": 67254,
+          "18_24": 256637,
+          "25_34": 345096,
+          "35_44": 339381,
+          "45_59": 336598,
+          "60_69": 124292,
+          "70_mais": 75846
+        },
+        "renda": {
+          "sem_rendimento": 98728,
+          "ate_1_4_sm": 315695,
+          "1_4_a_1_2_sm": 515285,
+          "1_2_a_1_sm": 565985,
+          "1_a_2_sm": 329699,
+          "2_a_3_sm": 99817,
+          "3_a_5_sm": 76536,
+          "5_a_10_sm": 42832,
+          "10_a_15_sm": 7562,
+          "15_a_20_sm": 2989,
+          "mais_de_20_sm": 2137
+        },
+        "religiao": {
+          "catolica": 709061,
+          "evangelica": 613059,
+          "espirita": 10390,
+          "umbanda_candomble": 8494,
+          "tradicoes_indigenas": 340,
+          "outras": 93835,
+          "sem_religiao": 139517,
+          "nao_sabe": 1293,
+          "sem_declaracao": 709
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 306247,
+          "fundamental_completo_medio_incompleto": 246123,
+          "medio_completo_superior_incompleto": 665518,
+          "superior_completo": 258300
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 41,
+      "vagas_vereador_max": 41,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 1302702,
+      "nome": "Manicoré",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13013,
+        "nome": "Madeira"
+      },
+      "regiao_imediata": {
+        "id": 130009,
+        "nome": "Manicoré"
+      },
+      "lat": -6.4597,
+      "lon": -61.4448,
+      "coordenada_metodo": "centroide",
+      "area_km2": 48429.767,
+      "populacao": 58557,
+      "eleitorado": 33824,
+      "urbana_pct": 56.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 53914,
+        "situacao": {
+          "urbana": 30694,
+          "rural": 23220
+        },
+        "idade": {
+          "0_15": 17604,
+          "16_17": 2292,
+          "18_24": 7325,
+          "25_34": 8650,
+          "35_44": 7026,
+          "45_59": 6441,
+          "60_69": 2575,
+          "70_mais": 2001
+        },
+        "renda": {
+          "sem_rendimento": 488,
+          "ate_1_4_sm": 18937,
+          "1_4_a_1_2_sm": 15174,
+          "1_2_a_1_sm": 12263,
+          "1_a_2_sm": 5224,
+          "2_a_3_sm": 1193,
+          "3_a_5_sm": 361,
+          "5_a_10_sm": 128,
+          "10_a_15_sm": 79,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 14
+        },
+        "religiao": {
+          "catolica": 23801,
+          "evangelica": 11179,
+          "espirita": 62,
+          "umbanda_candomble": 23,
+          "tradicoes_indigenas": 11,
+          "outras": 355,
+          "sem_religiao": 1953,
+          "nao_sabe": 11,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14582,
+          "fundamental_completo_medio_incompleto": 6014,
+          "medio_completo_superior_incompleto": 11345,
+          "superior_completo": 1973
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1302801,
+      "nome": "Maraã",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13002,
+        "nome": "Japurá"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -2.42382,
+      "lon": -65.042,
+      "coordenada_metodo": "centroide",
+      "area_km2": 16805.602,
+      "populacao": 15716,
+      "eleitorado": 10099,
+      "urbana_pct": 51,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15529,
+        "situacao": {
+          "urbana": 7926,
+          "rural": 7603
+        },
+        "idade": {
+          "0_15": 6114,
+          "16_17": 805,
+          "18_24": 2261,
+          "25_34": 2262,
+          "35_44": 1772,
+          "45_59": 1457,
+          "60_69": 550,
+          "70_mais": 308
+        },
+        "renda": {
+          "sem_rendimento": 82,
+          "ate_1_4_sm": 7077,
+          "1_4_a_1_2_sm": 4642,
+          "1_2_a_1_sm": 2610,
+          "1_a_2_sm": 741,
+          "2_a_3_sm": 130,
+          "3_a_5_sm": 52,
+          "5_a_10_sm": 51,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4676,
+          "evangelica": 4540,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 2,
+          "outras": 29,
+          "sem_religiao": 521,
+          "nao_sabe": 7,
+          "sem_declaracao": 23
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3794,
+          "fundamental_completo_medio_incompleto": 1856,
+          "medio_completo_superior_incompleto": 2338,
+          "superior_completo": 588
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1302900,
+      "nome": "Maués",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130010,
+        "nome": "Parintins"
+      },
+      "lat": -4.98458,
+      "lon": -58.06081,
+      "coordenada_metodo": "centroide",
+      "area_km2": 39973.673,
+      "populacao": 67021,
+      "eleitorado": 38318,
+      "urbana_pct": 47.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 61204,
+        "situacao": {
+          "urbana": 29196,
+          "rural": 32008
+        },
+        "idade": {
+          "0_15": 22447,
+          "16_17": 2690,
+          "18_24": 7876,
+          "25_34": 8582,
+          "35_44": 7453,
+          "45_59": 6805,
+          "60_69": 3164,
+          "70_mais": 2187
+        },
+        "renda": {
+          "sem_rendimento": 1722,
+          "ate_1_4_sm": 27266,
+          "1_4_a_1_2_sm": 17750,
+          "1_2_a_1_sm": 10783,
+          "1_a_2_sm": 2638,
+          "2_a_3_sm": 490,
+          "3_a_5_sm": 259,
+          "5_a_10_sm": 74,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 26746,
+          "evangelica": 12152,
+          "espirita": 0,
+          "umbanda_candomble": 17,
+          "tradicoes_indigenas": 0,
+          "outras": 360,
+          "sem_religiao": 796,
+          "nao_sabe": 43,
+          "sem_declaracao": 47
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13800,
+          "fundamental_completo_medio_incompleto": 8580,
+          "medio_completo_superior_incompleto": 11328,
+          "superior_completo": 2243
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303007,
+      "nome": "Nhamundá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130010,
+        "nome": "Parintins"
+      },
+      "lat": -1.68251,
+      "lon": -57.65441,
+      "coordenada_metodo": "centroide",
+      "area_km2": 14077.252,
+      "populacao": 21394,
+      "eleitorado": 16087,
+      "urbana_pct": 37.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20136,
+        "situacao": {
+          "urbana": 7496,
+          "rural": 12640
+        },
+        "idade": {
+          "0_15": 6454,
+          "16_17": 813,
+          "18_24": 2449,
+          "25_34": 3231,
+          "35_44": 2624,
+          "45_59": 2624,
+          "60_69": 1083,
+          "70_mais": 858
+        },
+        "renda": {
+          "sem_rendimento": 805,
+          "ate_1_4_sm": 7107,
+          "1_4_a_1_2_sm": 7321,
+          "1_2_a_1_sm": 3411,
+          "1_a_2_sm": 1156,
+          "2_a_3_sm": 164,
+          "3_a_5_sm": 56,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 26,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11627,
+          "evangelica": 2380,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 57,
+          "sem_religiao": 23,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5449,
+          "fundamental_completo_medio_incompleto": 2160,
+          "medio_completo_superior_incompleto": 4881,
+          "superior_completo": 448
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303106,
+      "nome": "Nova Olinda do Norte",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13009,
+        "nome": "Itacoatiara"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -3.98899,
+      "lon": -58.59976,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5573.414,
+      "populacao": 27965,
+      "eleitorado": 20004,
+      "urbana_pct": 60.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27062,
+        "situacao": {
+          "urbana": 16463,
+          "rural": 10599
+        },
+        "idade": {
+          "0_15": 9658,
+          "16_17": 1196,
+          "18_24": 3552,
+          "25_34": 3941,
+          "35_44": 3226,
+          "45_59": 3186,
+          "60_69": 1360,
+          "70_mais": 943
+        },
+        "renda": {
+          "sem_rendimento": 443,
+          "ate_1_4_sm": 9714,
+          "1_4_a_1_2_sm": 8938,
+          "1_2_a_1_sm": 6010,
+          "1_a_2_sm": 1435,
+          "2_a_3_sm": 237,
+          "3_a_5_sm": 78,
+          "5_a_10_sm": 18,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 10152,
+          "evangelica": 7213,
+          "espirita": 0,
+          "umbanda_candomble": 26,
+          "tradicoes_indigenas": 0,
+          "outras": 285,
+          "sem_religiao": 364,
+          "nao_sabe": 20,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6384,
+          "fundamental_completo_medio_incompleto": 3376,
+          "medio_completo_superior_incompleto": 5379,
+          "superior_completo": 1061
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303205,
+      "nome": "Novo Airão",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13001,
+        "nome": "Rio Negro"
+      },
+      "regiao_imediata": {
+        "id": 130004,
+        "nome": "Manacapuru"
+      },
+      "lat": -2.03158,
+      "lon": -61.6799,
+      "coordenada_metodo": "centroide",
+      "area_km2": 37755.384,
+      "populacao": 16648,
+      "eleitorado": 13373,
+      "urbana_pct": 75.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15761,
+        "situacao": {
+          "urbana": 11836,
+          "rural": 3925
+        },
+        "idade": {
+          "0_15": 5356,
+          "16_17": 695,
+          "18_24": 1781,
+          "25_34": 2348,
+          "35_44": 2124,
+          "45_59": 2013,
+          "60_69": 835,
+          "70_mais": 609
+        },
+        "renda": {
+          "sem_rendimento": 1550,
+          "ate_1_4_sm": 4309,
+          "1_4_a_1_2_sm": 4334,
+          "1_2_a_1_sm": 3581,
+          "1_a_2_sm": 1293,
+          "2_a_3_sm": 409,
+          "3_a_5_sm": 158,
+          "5_a_10_sm": 87,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 9
+        },
+        "religiao": {
+          "catolica": 4286,
+          "evangelica": 4415,
+          "espirita": 42,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 170,
+          "outras": 412,
+          "sem_religiao": 1365,
+          "nao_sabe": 19,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3629,
+          "fundamental_completo_medio_incompleto": 1968,
+          "medio_completo_superior_incompleto": 3222,
+          "superior_completo": 891
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1303304,
+      "nome": "Novo Aripuanã",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13013,
+        "nome": "Madeira"
+      },
+      "regiao_imediata": {
+        "id": 130009,
+        "nome": "Manicoré"
+      },
+      "lat": -6.82624,
+      "lon": -60.47447,
+      "coordenada_metodo": "centroide",
+      "area_km2": 41382.864,
+      "populacao": 25506,
+      "eleitorado": 13336,
+      "urbana_pct": 75.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23818,
+        "situacao": {
+          "urbana": 17907,
+          "rural": 5911
+        },
+        "idade": {
+          "0_15": 7473,
+          "16_17": 1068,
+          "18_24": 3387,
+          "25_34": 3777,
+          "35_44": 3053,
+          "45_59": 3002,
+          "60_69": 1166,
+          "70_mais": 892
+        },
+        "renda": {
+          "sem_rendimento": 173,
+          "ate_1_4_sm": 7700,
+          "1_4_a_1_2_sm": 9122,
+          "1_2_a_1_sm": 4698,
+          "1_a_2_sm": 1437,
+          "2_a_3_sm": 296,
+          "3_a_5_sm": 95,
+          "5_a_10_sm": 157,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9642,
+          "evangelica": 5888,
+          "espirita": 0,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 0,
+          "outras": 146,
+          "sem_religiao": 1055,
+          "nao_sabe": 0,
+          "sem_declaracao": 74
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6793,
+          "fundamental_completo_medio_incompleto": 2606,
+          "medio_completo_superior_incompleto": 4727,
+          "superior_completo": 1153
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303403,
+      "nome": "Parintins",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130010,
+        "nome": "Parintins"
+      },
+      "lat": -2.69434,
+      "lon": -56.85699,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6044.053,
+      "populacao": 101754,
+      "eleitorado": 73470,
+      "urbana_pct": 82.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 96372,
+        "situacao": {
+          "urbana": 79675,
+          "rural": 16697
+        },
+        "idade": {
+          "0_15": 29115,
+          "16_17": 4147,
+          "18_24": 13398,
+          "25_34": 14523,
+          "35_44": 12909,
+          "45_59": 12784,
+          "60_69": 5402,
+          "70_mais": 4094
+        },
+        "renda": {
+          "sem_rendimento": 1002,
+          "ate_1_4_sm": 27830,
+          "1_4_a_1_2_sm": 29838,
+          "1_2_a_1_sm": 24303,
+          "1_a_2_sm": 8387,
+          "2_a_3_sm": 2218,
+          "3_a_5_sm": 1606,
+          "5_a_10_sm": 697,
+          "10_a_15_sm": 126,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 26
+        },
+        "religiao": {
+          "catolica": 51242,
+          "evangelica": 15257,
+          "espirita": 109,
+          "umbanda_candomble": 180,
+          "tradicoes_indigenas": 0,
+          "outras": 761,
+          "sem_religiao": 1770,
+          "nao_sabe": 11,
+          "sem_declaracao": 22
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 16722,
+          "fundamental_completo_medio_incompleto": 9987,
+          "medio_completo_superior_incompleto": 28573,
+          "superior_completo": 7516
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1303502,
+      "nome": "Pauini",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13011,
+        "nome": "Boca do Acre"
+      },
+      "regiao_imediata": {
+        "id": 130008,
+        "nome": "Lábrea"
+      },
+      "lat": -7.7575,
+      "lon": -68.19809,
+      "coordenada_metodo": "centroide",
+      "area_km2": 41637.294,
+      "populacao": 20330,
+      "eleitorado": 11537,
+      "urbana_pct": 61.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19373,
+        "situacao": {
+          "urbana": 11898,
+          "rural": 7475
+        },
+        "idade": {
+          "0_15": 6944,
+          "16_17": 924,
+          "18_24": 2964,
+          "25_34": 2937,
+          "35_44": 2408,
+          "45_59": 1945,
+          "60_69": 693,
+          "70_mais": 558
+        },
+        "renda": {
+          "sem_rendimento": 2392,
+          "ate_1_4_sm": 7688,
+          "1_4_a_1_2_sm": 4645,
+          "1_2_a_1_sm": 3367,
+          "1_a_2_sm": 913,
+          "2_a_3_sm": 226,
+          "3_a_5_sm": 79,
+          "5_a_10_sm": 9,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7262,
+          "evangelica": 4614,
+          "espirita": 11,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 41,
+          "outras": 481,
+          "sem_religiao": 492,
+          "nao_sabe": 0,
+          "sem_declaracao": 37
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6849,
+          "fundamental_completo_medio_incompleto": 1393,
+          "medio_completo_superior_incompleto": 2826,
+          "superior_completo": 477
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303536,
+      "nome": "Presidente Figueiredo",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13008,
+        "nome": "Rio Preto da Eva"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -1.36946,
+      "lon": -59.97641,
+      "coordenada_metodo": "centroide",
+      "area_km2": 25027.907,
+      "populacao": 33580,
+      "eleitorado": 28400,
+      "urbana_pct": 54.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30668,
+        "situacao": {
+          "urbana": 16772,
+          "rural": 13896
+        },
+        "idade": {
+          "0_15": 9207,
+          "16_17": 1151,
+          "18_24": 3653,
+          "25_34": 4379,
+          "35_44": 4327,
+          "45_59": 4886,
+          "60_69": 2000,
+          "70_mais": 1065
+        },
+        "renda": {
+          "sem_rendimento": 1090,
+          "ate_1_4_sm": 5256,
+          "1_4_a_1_2_sm": 8038,
+          "1_2_a_1_sm": 9755,
+          "1_a_2_sm": 4372,
+          "2_a_3_sm": 1256,
+          "3_a_5_sm": 589,
+          "5_a_10_sm": 244,
+          "10_a_15_sm": 35,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 8
+        },
+        "religiao": {
+          "catolica": 7797,
+          "evangelica": 10662,
+          "espirita": 54,
+          "umbanda_candomble": 37,
+          "tradicoes_indigenas": 292,
+          "outras": 1314,
+          "sem_religiao": 1897,
+          "nao_sabe": 16,
+          "sem_declaracao": 25
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6804,
+          "fundamental_completo_medio_incompleto": 3415,
+          "medio_completo_superior_incompleto": 7740,
+          "superior_completo": 2229
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303569,
+      "nome": "Rio Preto da Eva",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13008,
+        "nome": "Rio Preto da Eva"
+      },
+      "regiao_imediata": {
+        "id": 130001,
+        "nome": "Manaus"
+      },
+      "lat": -2.52943,
+      "lon": -59.63821,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5812.425,
+      "populacao": 25342,
+      "eleitorado": 23273,
+      "urbana_pct": 56.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24936,
+        "situacao": {
+          "urbana": 14145,
+          "rural": 10791
+        },
+        "idade": {
+          "0_15": 7485,
+          "16_17": 915,
+          "18_24": 2830,
+          "25_34": 3423,
+          "35_44": 3387,
+          "45_59": 4054,
+          "60_69": 1814,
+          "70_mais": 1028
+        },
+        "renda": {
+          "sem_rendimento": 347,
+          "ate_1_4_sm": 5670,
+          "1_4_a_1_2_sm": 8166,
+          "1_2_a_1_sm": 6850,
+          "1_a_2_sm": 2923,
+          "2_a_3_sm": 546,
+          "3_a_5_sm": 255,
+          "5_a_10_sm": 90,
+          "10_a_15_sm": 16,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6314,
+          "evangelica": 8944,
+          "espirita": 0,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 0,
+          "outras": 596,
+          "sem_religiao": 2053,
+          "nao_sabe": 17,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6082,
+          "fundamental_completo_medio_incompleto": 3182,
+          "medio_completo_superior_incompleto": 6048,
+          "superior_completo": 1223
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303601,
+      "nome": "Santa Isabel do Rio Negro",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13001,
+        "nome": "Rio Negro"
+      },
+      "regiao_imediata": {
+        "id": 130002,
+        "nome": "São Gabriel da Cachoeira"
+      },
+      "lat": -0.31441,
+      "lon": -65.51467,
+      "coordenada_metodo": "centroide",
+      "area_km2": 62470.219,
+      "populacao": 13724,
+      "eleitorado": 9462,
+      "urbana_pct": 48.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14164,
+        "situacao": {
+          "urbana": 6902,
+          "rural": 7262
+        },
+        "idade": {
+          "0_15": 5560,
+          "16_17": 639,
+          "18_24": 1732,
+          "25_34": 2045,
+          "35_44": 1557,
+          "45_59": 1565,
+          "60_69": 546,
+          "70_mais": 520
+        },
+        "renda": {
+          "sem_rendimento": 703,
+          "ate_1_4_sm": 6063,
+          "1_4_a_1_2_sm": 4155,
+          "1_2_a_1_sm": 2578,
+          "1_a_2_sm": 478,
+          "2_a_3_sm": 79,
+          "3_a_5_sm": 35,
+          "5_a_10_sm": 11,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6126,
+          "evangelica": 1447,
+          "espirita": 4,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 1041,
+          "outras": 50,
+          "sem_religiao": 27,
+          "nao_sabe": 0,
+          "sem_declaracao": 213
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3181,
+          "fundamental_completo_medio_incompleto": 1329,
+          "medio_completo_superior_incompleto": 3172,
+          "superior_completo": 402
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1303700,
+      "nome": "Santo Antônio do Içá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -3.04723,
+      "lon": -69.0941,
+      "coordenada_metodo": "centroide",
+      "area_km2": 12482.067,
+      "populacao": 30987,
+      "eleitorado": 18646,
+      "urbana_pct": 77.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 28211,
+        "situacao": {
+          "urbana": 21900,
+          "rural": 6311
+        },
+        "idade": {
+          "0_15": 11449,
+          "16_17": 1324,
+          "18_24": 3987,
+          "25_34": 4111,
+          "35_44": 2959,
+          "45_59": 2618,
+          "60_69": 950,
+          "70_mais": 813
+        },
+        "renda": {
+          "sem_rendimento": 880,
+          "ate_1_4_sm": 13114,
+          "1_4_a_1_2_sm": 8534,
+          "1_2_a_1_sm": 3933,
+          "1_a_2_sm": 1280,
+          "2_a_3_sm": 192,
+          "3_a_5_sm": 61,
+          "5_a_10_sm": 110,
+          "10_a_15_sm": 40,
+          "15_a_20_sm": 3,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4957,
+          "evangelica": 8832,
+          "espirita": 0,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 20,
+          "outras": 2289,
+          "sem_religiao": 1316,
+          "nao_sabe": 28,
+          "sem_declaracao": 47
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6710,
+          "fundamental_completo_medio_incompleto": 2440,
+          "medio_completo_superior_incompleto": 5498,
+          "superior_completo": 856
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303809,
+      "nome": "São Gabriel da Cachoeira",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13001,
+        "nome": "Rio Negro"
+      },
+      "regiao_imediata": {
+        "id": 130002,
+        "nome": "São Gabriel da Cachoeira"
+      },
+      "lat": 0.36703,
+      "lon": -67.99259,
+      "coordenada_metodo": "centroide",
+      "area_km2": 108700.19,
+      "populacao": 58359,
+      "eleitorado": 32499,
+      "urbana_pct": 51.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 51795,
+        "situacao": {
+          "urbana": 26600,
+          "rural": 25195
+        },
+        "idade": {
+          "0_15": 19330,
+          "16_17": 2271,
+          "18_24": 6917,
+          "25_34": 7572,
+          "35_44": 5773,
+          "45_59": 5702,
+          "60_69": 2311,
+          "70_mais": 1919
+        },
+        "renda": {
+          "sem_rendimento": 3560,
+          "ate_1_4_sm": 21021,
+          "1_4_a_1_2_sm": 12700,
+          "1_2_a_1_sm": 9419,
+          "1_a_2_sm": 3428,
+          "2_a_3_sm": 547,
+          "3_a_5_sm": 517,
+          "5_a_10_sm": 261,
+          "10_a_15_sm": 29,
+          "15_a_20_sm": 26,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 21662,
+          "evangelica": 9619,
+          "espirita": 40,
+          "umbanda_candomble": 35,
+          "tradicoes_indigenas": 24,
+          "outras": 425,
+          "sem_religiao": 716,
+          "nao_sabe": 40,
+          "sem_declaracao": 1053
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11049,
+          "fundamental_completo_medio_incompleto": 5634,
+          "medio_completo_superior_incompleto": 11111,
+          "superior_completo": 2381
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303908,
+      "nome": "São Paulo de Olivença",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -4.47665,
+      "lon": -69.42894,
+      "coordenada_metodo": "centroide",
+      "area_km2": 19615.643,
+      "populacao": 35619,
+      "eleitorado": 21560,
+      "urbana_pct": 73.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 32967,
+        "situacao": {
+          "urbana": 24118,
+          "rural": 8849
+        },
+        "idade": {
+          "0_15": 13755,
+          "16_17": 1412,
+          "18_24": 4474,
+          "25_34": 4616,
+          "35_44": 3518,
+          "45_59": 3089,
+          "60_69": 1099,
+          "70_mais": 1004
+        },
+        "renda": {
+          "sem_rendimento": 3023,
+          "ate_1_4_sm": 15339,
+          "1_4_a_1_2_sm": 8897,
+          "1_2_a_1_sm": 4140,
+          "1_a_2_sm": 1021,
+          "2_a_3_sm": 464,
+          "3_a_5_sm": 48,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7598,
+          "evangelica": 10419,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 1428,
+          "sem_religiao": 426,
+          "nao_sabe": 21,
+          "sem_declaracao": 102
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9216,
+          "fundamental_completo_medio_incompleto": 2677,
+          "medio_completo_superior_incompleto": 4733,
+          "superior_completo": 1173
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1303957,
+      "nome": "São Sebastião do Uatumã",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130011,
+        "nome": "Itacoatiara"
+      },
+      "lat": -1.94571,
+      "lon": -58.69865,
+      "coordenada_metodo": "centroide",
+      "area_km2": 10712.222,
+      "populacao": 12415,
+      "eleitorado": 7799,
+      "urbana_pct": 81.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11670,
+        "situacao": {
+          "urbana": 9527,
+          "rural": 2143
+        },
+        "idade": {
+          "0_15": 3891,
+          "16_17": 430,
+          "18_24": 1537,
+          "25_34": 1922,
+          "35_44": 1608,
+          "45_59": 1333,
+          "60_69": 557,
+          "70_mais": 392
+        },
+        "renda": {
+          "sem_rendimento": 95,
+          "ate_1_4_sm": 3844,
+          "1_4_a_1_2_sm": 3413,
+          "1_2_a_1_sm": 2609,
+          "1_a_2_sm": 1246,
+          "2_a_3_sm": 347,
+          "3_a_5_sm": 18,
+          "5_a_10_sm": 9,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3055,
+          "evangelica": 3825,
+          "espirita": 0,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 0,
+          "outras": 183,
+          "sem_religiao": 945,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2243,
+          "fundamental_completo_medio_incompleto": 1347,
+          "medio_completo_superior_incompleto": 3174,
+          "superior_completo": 556
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1304005,
+      "nome": "Silves",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13009,
+        "nome": "Itacoatiara"
+      },
+      "regiao_imediata": {
+        "id": 130011,
+        "nome": "Itacoatiara"
+      },
+      "lat": -2.82027,
+      "lon": -58.53654,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3723.18,
+      "populacao": 12827,
+      "eleitorado": 9667,
+      "urbana_pct": 44.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11559,
+        "situacao": {
+          "urbana": 5142,
+          "rural": 6417
+        },
+        "idade": {
+          "0_15": 4030,
+          "16_17": 489,
+          "18_24": 1415,
+          "25_34": 1647,
+          "35_44": 1406,
+          "45_59": 1475,
+          "60_69": 683,
+          "70_mais": 414
+        },
+        "renda": {
+          "sem_rendimento": 92,
+          "ate_1_4_sm": 4820,
+          "1_4_a_1_2_sm": 3075,
+          "1_2_a_1_sm": 2552,
+          "1_a_2_sm": 790,
+          "2_a_3_sm": 173,
+          "3_a_5_sm": 32,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 2
+        },
+        "religiao": {
+          "catolica": 4769,
+          "evangelica": 2628,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 56,
+          "sem_religiao": 283,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2405,
+          "fundamental_completo_medio_incompleto": 1076,
+          "medio_completo_superior_incompleto": 3184,
+          "superior_completo": 369
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1304062,
+      "nome": "Tabatinga",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -4.02843,
+      "lon": -69.67836,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3279.046,
+      "populacao": 74384,
+      "eleitorado": 40390,
+      "urbana_pct": 83.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 66764,
+        "situacao": {
+          "urbana": 55680,
+          "rural": 11084
+        },
+        "idade": {
+          "0_15": 24505,
+          "16_17": 2868,
+          "18_24": 9308,
+          "25_34": 10076,
+          "35_44": 7944,
+          "45_59": 7447,
+          "60_69": 2703,
+          "70_mais": 1913
+        },
+        "renda": {
+          "sem_rendimento": 1352,
+          "ate_1_4_sm": 22530,
+          "1_4_a_1_2_sm": 22037,
+          "1_2_a_1_sm": 13416,
+          "1_a_2_sm": 4807,
+          "2_a_3_sm": 938,
+          "3_a_5_sm": 605,
+          "5_a_10_sm": 620,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 39,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 17999,
+          "evangelica": 18861,
+          "espirita": 53,
+          "umbanda_candomble": 44,
+          "tradicoes_indigenas": 21,
+          "outras": 3886,
+          "sem_religiao": 2564,
+          "nao_sabe": 269,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12819,
+          "fundamental_completo_medio_incompleto": 7027,
+          "medio_completo_superior_incompleto": 15978,
+          "superior_completo": 3557
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1304104,
+      "nome": "Tapauá",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13012,
+        "nome": "Purus"
+      },
+      "regiao_imediata": {
+        "id": 130008,
+        "nome": "Lábrea"
+      },
+      "lat": -6.09193,
+      "lon": -64.9508,
+      "coordenada_metodo": "centroide",
+      "area_km2": 84697.765,
+      "populacao": 20849,
+      "eleitorado": 14725,
+      "urbana_pct": 57.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19599,
+        "situacao": {
+          "urbana": 11339,
+          "rural": 8260
+        },
+        "idade": {
+          "0_15": 6537,
+          "16_17": 855,
+          "18_24": 2731,
+          "25_34": 3116,
+          "35_44": 2754,
+          "45_59": 2130,
+          "60_69": 876,
+          "70_mais": 600
+        },
+        "renda": {
+          "sem_rendimento": 425,
+          "ate_1_4_sm": 8116,
+          "1_4_a_1_2_sm": 5748,
+          "1_2_a_1_sm": 3585,
+          "1_a_2_sm": 1302,
+          "2_a_3_sm": 238,
+          "3_a_5_sm": 4,
+          "5_a_10_sm": 61,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 5
+        },
+        "religiao": {
+          "catolica": 4206,
+          "evangelica": 8110,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 308,
+          "outras": 118,
+          "sem_religiao": 602,
+          "nao_sabe": 71,
+          "sem_declaracao": 57
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6754,
+          "fundamental_completo_medio_incompleto": 1564,
+          "medio_completo_superior_incompleto": 3303,
+          "superior_completo": 601
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1304203,
+      "nome": "Tefé",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13005,
+        "nome": "Tefé"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -4.46762,
+      "lon": -65.5293,
+      "coordenada_metodo": "centroide",
+      "area_km2": 23835.224,
+      "populacao": 81046,
+      "eleitorado": 50375,
+      "urbana_pct": 80.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 73669,
+        "situacao": {
+          "urbana": 59584,
+          "rural": 14085
+        },
+        "idade": {
+          "0_15": 25146,
+          "16_17": 3376,
+          "18_24": 10662,
+          "25_34": 11320,
+          "35_44": 9584,
+          "45_59": 8274,
+          "60_69": 2992,
+          "70_mais": 2315
+        },
+        "renda": {
+          "sem_rendimento": 907,
+          "ate_1_4_sm": 21581,
+          "1_4_a_1_2_sm": 23774,
+          "1_2_a_1_sm": 17324,
+          "1_a_2_sm": 7251,
+          "2_a_3_sm": 1416,
+          "3_a_5_sm": 802,
+          "5_a_10_sm": 371,
+          "10_a_15_sm": 61,
+          "15_a_20_sm": 66,
+          "mais_de_20_sm": 22
+        },
+        "religiao": {
+          "catolica": 21404,
+          "evangelica": 24406,
+          "espirita": 73,
+          "umbanda_candomble": 34,
+          "tradicoes_indigenas": 11,
+          "outras": 1264,
+          "sem_religiao": 2964,
+          "nao_sabe": 7,
+          "sem_declaracao": 34
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14869,
+          "fundamental_completo_medio_incompleto": 8392,
+          "medio_completo_superior_incompleto": 17132,
+          "superior_completo": 4599
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1304237,
+      "nome": "Tonantins",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13003,
+        "nome": "Alto Solimões"
+      },
+      "regiao_imediata": {
+        "id": 130006,
+        "nome": "Tabatinga"
+      },
+      "lat": -2.60005,
+      "lon": -67.49571,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 6336.62,
+      "populacao": 20417,
+      "eleitorado": 11813,
+      "urbana_pct": 59,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19247,
+        "situacao": {
+          "urbana": 11347,
+          "rural": 7900
+        },
+        "idade": {
+          "0_15": 7594,
+          "16_17": 941,
+          "18_24": 2648,
+          "25_34": 3009,
+          "35_44": 2226,
+          "45_59": 1688,
+          "60_69": 622,
+          "70_mais": 519
+        },
+        "renda": {
+          "sem_rendimento": 192,
+          "ate_1_4_sm": 9209,
+          "1_4_a_1_2_sm": 5648,
+          "1_2_a_1_sm": 3371,
+          "1_a_2_sm": 713,
+          "2_a_3_sm": 73,
+          "3_a_5_sm": 11,
+          "5_a_10_sm": 9,
+          "10_a_15_sm": 8,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7032,
+          "evangelica": 3716,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 750,
+          "sem_religiao": 93,
+          "nao_sabe": 0,
+          "sem_declaracao": 494
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4340,
+          "fundamental_completo_medio_incompleto": 1566,
+          "medio_completo_superior_incompleto": 4209,
+          "superior_completo": 550
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1304260,
+      "nome": "Uarini",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13005,
+        "nome": "Tefé"
+      },
+      "regiao_imediata": {
+        "id": 130005,
+        "nome": "Tefé"
+      },
+      "lat": -3.15907,
+      "lon": -65.41145,
+      "coordenada_metodo": "centroide",
+      "area_km2": 10323.306,
+      "populacao": 15815,
+      "eleitorado": 9886,
+      "urbana_pct": 67.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14431,
+        "situacao": {
+          "urbana": 9764,
+          "rural": 4667
+        },
+        "idade": {
+          "0_15": 5228,
+          "16_17": 781,
+          "18_24": 2109,
+          "25_34": 2213,
+          "35_44": 1781,
+          "45_59": 1469,
+          "60_69": 501,
+          "70_mais": 349
+        },
+        "renda": {
+          "sem_rendimento": 34,
+          "ate_1_4_sm": 6114,
+          "1_4_a_1_2_sm": 4405,
+          "1_2_a_1_sm": 2835,
+          "1_a_2_sm": 645,
+          "2_a_3_sm": 168,
+          "3_a_5_sm": 24,
+          "5_a_10_sm": 14,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4239,
+          "evangelica": 4361,
+          "espirita": 0,
+          "umbanda_candomble": 43,
+          "tradicoes_indigenas": 0,
+          "outras": 66,
+          "sem_religiao": 838,
+          "nao_sabe": 0,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4096,
+          "fundamental_completo_medio_incompleto": 1851,
+          "medio_completo_superior_incompleto": 2144,
+          "superior_completo": 341
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1304302,
+      "nome": "Urucará",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13010,
+        "nome": "Parintins"
+      },
+      "regiao_imediata": {
+        "id": 130011,
+        "nome": "Itacoatiara"
+      },
+      "lat": -0.89096,
+      "lon": -59.03144,
+      "coordenada_metodo": "centroide",
+      "area_km2": 27851.365,
+      "populacao": 19738,
+      "eleitorado": 12753,
+      "urbana_pct": 66.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18631,
+        "situacao": {
+          "urbana": 12336,
+          "rural": 6295
+        },
+        "idade": {
+          "0_15": 5582,
+          "16_17": 731,
+          "18_24": 2342,
+          "25_34": 2799,
+          "35_44": 2750,
+          "45_59": 2492,
+          "60_69": 1170,
+          "70_mais": 765
+        },
+        "renda": {
+          "sem_rendimento": 128,
+          "ate_1_4_sm": 4945,
+          "1_4_a_1_2_sm": 6090,
+          "1_2_a_1_sm": 5179,
+          "1_a_2_sm": 1650,
+          "2_a_3_sm": 432,
+          "3_a_5_sm": 101,
+          "5_a_10_sm": 28,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8570,
+          "evangelica": 4308,
+          "espirita": 8,
+          "umbanda_candomble": 4,
+          "tradicoes_indigenas": 0,
+          "outras": 235,
+          "sem_religiao": 315,
+          "nao_sabe": 15,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3902,
+          "fundamental_completo_medio_incompleto": 2372,
+          "medio_completo_superior_incompleto": 5343,
+          "superior_completo": 682
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1304401,
+      "nome": "Urucurituba",
+      "uf": "AM",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 13009,
+        "nome": "Itacoatiara"
+      },
+      "regiao_imediata": {
+        "id": 130011,
+        "nome": "Itacoatiara"
+      },
+      "lat": -2.81304,
+      "lon": -57.77241,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2897.547,
+      "populacao": 26373,
+      "eleitorado": 14301,
+      "urbana_pct": 65,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23945,
+        "situacao": {
+          "urbana": 15563,
+          "rural": 8382
+        },
+        "idade": {
+          "0_15": 6877,
+          "16_17": 949,
+          "18_24": 3381,
+          "25_34": 4297,
+          "35_44": 3260,
+          "45_59": 3079,
+          "60_69": 1307,
+          "70_mais": 795
+        },
+        "renda": {
+          "sem_rendimento": 390,
+          "ate_1_4_sm": 6922,
+          "1_4_a_1_2_sm": 8335,
+          "1_2_a_1_sm": 5919,
+          "1_a_2_sm": 1554,
+          "2_a_3_sm": 160,
+          "3_a_5_sm": 68,
+          "5_a_10_sm": 95,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 2
+        },
+        "religiao": {
+          "catolica": 11158,
+          "evangelica": 4726,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 96,
+          "sem_religiao": 1571,
+          "nao_sabe": 2,
+          "sem_declaracao": 30
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5385,
+          "fundamental_completo_medio_incompleto": 2286,
+          "medio_completo_superior_incompleto": 7701,
+          "superior_completo": 646
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    }
+  ]
+}

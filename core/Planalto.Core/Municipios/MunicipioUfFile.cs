@@ -87,6 +87,16 @@ public sealed class MunicipioUfFile : IValidatable
             yield return $"coordenadas fora do Brasil ({m.Lat}, {m.Lon}).";
         }
 
+        if (m.CoordenadaMetodo is not (Municipio.CoordenadaCentroide or Municipio.CoordenadaPontoInterior))
+        {
+            yield return $"coordenada_metodo inválido: '{m.CoordenadaMetodo}'.";
+        }
+
+        if (m.AreaKm2 <= 0)
+        {
+            yield return "area_km2 deve ser maior que zero.";
+        }
+
         if (m.Populacao <= 0)
         {
             yield return "população deve ser maior que zero.";
@@ -195,9 +205,11 @@ public sealed class MunicipioUfFile : IValidatable
             {
                 yield return $"soma de perfil.{name} ({sum}) diferente de populacao_censo ({perfil.PopulacaoCenso}).";
             }
-            else if (!sumsToTotal && (sum <= 0 || sum > perfil.PopulacaoCenso))
+            else if (!sumsToTotal && sum <= 0)
             {
-                yield return $"soma de perfil.{name} ({sum}) deve estar entre 1 e populacao_censo.";
+                // Blocos da amostra do Censo: arredondados por categoria, a soma pode até passar
+                // da população do universo em municípios pequenos. Só exigimos que exista dado.
+                yield return $"soma de perfil.{name} deve ser maior que zero.";
             }
         }
     }

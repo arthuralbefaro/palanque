@@ -1,0 +1,326 @@
+{
+  "gerado_em": "2026-11-15T20:43:12.8569227+00:00",
+  "campos": [
+    {
+      "campo": "codigo_ibge, nome, uf, regiao, microrregiao, regiao_imediata",
+      "fonte": "IBGE — API de Localidades",
+      "ano": 2026,
+      "url": "https://servicodados.ibge.gov.br/api/v1/localidades/municipios",
+      "baixado_em": "2026-11-15T20:31:03.7997636+00:00",
+      "observacao": null
+    },
+    {
+      "campo": "lat, lon, coordenada_metodo, area_km2",
+      "fonte": "IBGE — Malha Municipal 2025 (BR_Municipios_2025)",
+      "ano": 2025,
+      "url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2025/Brasil/BR_Municipios_2025.zip",
+      "baixado_em": "2026-11-15T20:43:12.8569227+00:00",
+      "observacao": "Centroide do polígono do município na Malha Municipal 2025 (SIRGAS 2000, graus), arredondado a 5 casas; quando o centroide arredondado cai fora do polígono, usa-se um ponto interior (InteriorPoint). Todo ponto gravado foi conferido dentro do polígono do próprio município. Área (km²) do campo AREA_KM2 da mesma malha."
+    },
+    {
+      "campo": "populacao, porte, vagas_vereador_max",
+      "fonte": "IBGE — Estimativas da População (SIDRA 6579)",
+      "ano": 2026,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/2026/variaveis/9324?localidades=N6[all]|N3[all]",
+      "baixado_em": "2026-11-15T20:31:06.4181629+00:00",
+      "observacao": null
+    },
+    {
+      "campo": "perfil.situacao, urbana_pct",
+      "fonte": "IBGE — Censo Demográfico 2022 (SIDRA 10211)",
+      "ano": 2022,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10211/periodos/2022/variaveis/93?localidades=N6[all]|N3[all]&classificacao=2661[32776]|1[6795,1,2]",
+      "baixado_em": "2026-11-15T20:31:07.9458157+00:00",
+      "observacao": null
+    },
+    {
+      "campo": "perfil.idade, perfil.populacao_censo",
+      "fonte": "IBGE — Censo Demográfico 2022 (SIDRA 9514)",
+      "ano": 2022,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/9514/periodos/2022/variaveis/93?localidades=N6[N3[11]]&classificacao=2[6794]|286[113635]|287[100362,93070,93084,93085,6572,6573,6574,6575,6576,93087,93088,93089,93090,93091,93092,93093,93094,93095,93096,93097,93098,49108,49109,60040,60041,6653]",
+      "baixado_em": "2026-11-15T20:31:08.3838491+00:00",
+      "observacao": null
+    },
+    {
+      "campo": "perfil.renda",
+      "fonte": "IBGE — Censo Demográfico 2022 (SIDRA 10296)",
+      "ano": 2022,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10296/periodos/2022/variaveis/13604?localidades=N6[all]|N3[all]&classificacao=2[6794]|86[95251]|386[9680,9681,9682,9683,9684,9685,9686,9687,9688,9689,9690,9692]",
+      "baixado_em": "2026-11-15T20:31:40.0054762+00:00",
+      "observacao": "Dado da amostra do Censo 2022: cada categoria é estimada e arredondada separadamente pelo IBGE, então a soma das categorias pode diferir do total publicado em algumas unidades. Os valores são gravados como publicados."
+    },
+    {
+      "campo": "perfil.religiao",
+      "fonte": "IBGE — Censo Demográfico 2022 (SIDRA 10198)",
+      "ano": 2022,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10198/periodos/2022/variaveis/950?localidades=N6[all]|N3[all]&classificacao=133[95278,95263,95277,2826,2827,95274,95275,2836,12890,2837]|58[95253]|59[93024]",
+      "baixado_em": "2026-11-15T20:32:42.8638538+00:00",
+      "observacao": "Dado da amostra do Censo 2022: cada categoria é estimada e arredondada separadamente pelo IBGE, então a soma das categorias pode diferir do total publicado em algumas unidades. Os valores são gravados como publicados."
+    },
+    {
+      "campo": "perfil.escolaridade",
+      "fonte": "IBGE — Censo Demográfico 2022 (SIDRA 10061)",
+      "ano": 2022,
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/10061/periodos/2022/variaveis/2667?localidades=N6[all]|N3[all]&classificacao=1568[120704,9493,9494,9495,99713]|58[95253]|2[6794]|86[95251]",
+      "baixado_em": "2026-11-15T20:32:48.4473173+00:00",
+      "observacao": "Dado da amostra do Censo 2022: cada categoria é estimada e arredondada separadamente pelo IBGE, então a soma das categorias pode diferir do total publicado em algumas unidades. Os valores são gravados como publicados."
+    },
+    {
+      "campo": "eleitorado, segundo_turno_prefeito",
+      "fonte": "TSE — Perfil do eleitorado atual (gerado em 04/11/2026)",
+      "ano": 2026,
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/perfil_eleitorado/perfil_eleitorado_ATUAL.zip",
+      "baixado_em": "2026-11-15T20:33:06.3522265+00:00",
+      "observacao": null
+    },
+    {
+      "campo": "correspondência TSE ↔ IBGE",
+      "fonte": "TSE — Códigos oficiais de UF e municípios segundo o TSE e o IBGE",
+      "ano": 2026,
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/municipio_tse_ibge/municipio_tse_ibge.zip",
+      "baixado_em": "2026-11-15T20:32:48.866998+00:00",
+      "observacao": null
+    },
+    {
+      "campo": "vagas_vereador",
+      "fonte": "TSE — Consulta de vagas, Eleições Municipais 2024 (eleição ordinária)",
+      "ano": 2024,
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_vagas/consulta_vagas_2024.zip",
+      "baixado_em": "2026-11-15T20:34:30.5623536+00:00",
+      "observacao": null
+    }
+  ],
+  "totais_oficiais": {
+    "total_municipios": 5571,
+    "populacao_por_uf": {
+      "AC": 887794,
+      "AL": 3221128,
+      "AM": 4360926,
+      "AP": 809953,
+      "BA": 14889472,
+      "CE": 9302211,
+      "DF": 3009996,
+      "ES": 4150692,
+      "GO": 7495033,
+      "MA": 7024557,
+      "MG": 21460311,
+      "MS": 2946317,
+      "MT": 3950330,
+      "PA": 8756324,
+      "PB": 4182828,
+      "PE": 9583176,
+      "PI": 3392617,
+      "PR": 11952456,
+      "RJ": 17225410,
+      "RN": 3463737,
+      "RO": 1757338,
+      "RR": 761012,
+      "RS": 11233317,
+      "SC": 8312759,
+      "SE": 2307255,
+      "SP": 46179008,
+      "TO": 1595994
+    },
+    "vagas_vereador_tse2024": 58435
+  },
+  "lacunas": [
+    {
+      "codigo_ibge": 5101837,
+      "nome": "Boa Esperança do Norte",
+      "campo": "microrregiao",
+      "descricao": "Município criado depois do congelamento das microrregiões do IBGE (2017).",
+      "alternativa": "microrregiao = null; a simulação regional usa a região geográfica imediata."
+    },
+    {
+      "codigo_ibge": 5101837,
+      "nome": "Boa Esperança do Norte",
+      "campo": "perfil",
+      "descricao": "Município sem dados no Censo 2022 (criado depois do recenseamento).",
+      "alternativa": "perfil da UF (MT) no Censo 2022, com perfil_fonte = \"uf\"."
+    }
+  ],
+  "excecoes_vagas": [
+    {
+      "codigo_ibge": 1302504,
+      "nome": "Manacapuru",
+      "uf": "AM",
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 17
+    },
+    {
+      "codigo_ibge": 1303569,
+      "nome": "Rio Preto da Eva",
+      "uf": "AM",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 1303601,
+      "nome": "Santa Isabel do Rio Negro",
+      "uf": "AM",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 1503457,
+      "nome": "Ipixuna do Pará",
+      "uf": "PA",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 1506708,
+      "nome": "Santana do Araguaia",
+      "uf": "PA",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 2100477,
+      "nome": "Alto Alegre do Pindaré",
+      "uf": "MA",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 2102077,
+      "nome": "Bom Lugar",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2102358,
+      "nome": "Buritirana",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2102408,
+      "nome": "Cajapió",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2103307,
+      "nome": "Codó",
+      "uf": "MA",
+      "vagas_vereador": 19,
+      "vagas_vereador_max": 17
+    },
+    {
+      "codigo_ibge": 2106300,
+      "nome": "Magalhães de Almeida",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2106904,
+      "nome": "Monção",
+      "uf": "MA",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 2107357,
+      "nome": "Nova Olinda do Maranhão",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2110278,
+      "nome": "Santo Amaro do Maranhão",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2111029,
+      "nome": "São João do Carú",
+      "uf": "MA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2112704,
+      "nome": "Vargem Grande",
+      "uf": "MA",
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 13
+    },
+    {
+      "codigo_ibge": 2114007,
+      "nome": "Zé Doca",
+      "uf": "MA",
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 13
+    },
+    {
+      "codigo_ibge": 2300705,
+      "nome": "Alto Santo",
+      "uf": "CE",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2801504,
+      "nome": "Carmópolis",
+      "uf": "SE",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2804201,
+      "nome": "Monte Alegre de Sergipe",
+      "uf": "SE",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 2805406,
+      "nome": "Poço Redondo",
+      "uf": "SE",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 2905156,
+      "nome": "Caetanos",
+      "uf": "BA",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 3134004,
+      "nome": "Itinga",
+      "uf": "MG",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 3145307,
+      "nome": "Novo Cruzeiro",
+      "uf": "MG",
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11
+    },
+    {
+      "codigo_ibge": 5007935,
+      "nome": "Sonora",
+      "uf": "MS",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    },
+    {
+      "codigo_ibge": 5107701,
+      "nome": "Rosário Oeste",
+      "uf": "MT",
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9
+    }
+  ]
+}

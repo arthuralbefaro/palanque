@@ -1,0 +1,6905 @@
+{
+  "uf": "RJ",
+  "municipios": [
+    {
+      "codigo_ibge": 3300100,
+      "nome": "Angra dos Reis",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33013,
+        "nome": "Baía da Ilha Grande"
+      },
+      "regiao_imediata": {
+        "id": 330002,
+        "nome": "Angra dos Reis"
+      },
+      "lat": -23.15117,
+      "lon": -44.23059,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 813.419,
+      "populacao": 179152,
+      "eleitorado": 136421,
+      "urbana_pct": 97.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 167434,
+        "situacao": {
+          "urbana": 163657,
+          "rural": 3777
+        },
+        "idade": {
+          "0_15": 36182,
+          "16_17": 4656,
+          "18_24": 16971,
+          "25_34": 24596,
+          "35_44": 27599,
+          "45_59": 31989,
+          "60_69": 15690,
+          "70_mais": 9751
+        },
+        "renda": {
+          "sem_rendimento": 4649,
+          "ate_1_4_sm": 13911,
+          "1_4_a_1_2_sm": 29562,
+          "1_2_a_1_sm": 54041,
+          "1_a_2_sm": 41684,
+          "2_a_3_sm": 12242,
+          "3_a_5_sm": 7494,
+          "5_a_10_sm": 2901,
+          "10_a_15_sm": 523,
+          "15_a_20_sm": 150,
+          "mais_de_20_sm": 93
+        },
+        "religiao": {
+          "catolica": 47855,
+          "evangelica": 50795,
+          "espirita": 1712,
+          "umbanda_candomble": 1299,
+          "tradicoes_indigenas": 225,
+          "outras": 7904,
+          "sem_religiao": 23503,
+          "nao_sabe": 83,
+          "sem_declaracao": 198
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 40116,
+          "fundamental_completo_medio_incompleto": 24006,
+          "medio_completo_superior_incompleto": 48448,
+          "superior_completo": 14023
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3300159,
+      "nome": "Aperibé",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33002,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "regiao_imediata": {
+        "id": 330012,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "lat": -21.65229,
+      "lon": -42.13467,
+      "coordenada_metodo": "centroide",
+      "area_km2": 94.542,
+      "populacao": 11429,
+      "eleitorado": 10120,
+      "urbana_pct": 91.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11034,
+        "situacao": {
+          "urbana": 10126,
+          "rural": 908
+        },
+        "idade": {
+          "0_15": 2030,
+          "16_17": 281,
+          "18_24": 994,
+          "25_34": 1477,
+          "35_44": 1680,
+          "45_59": 2338,
+          "60_69": 1237,
+          "70_mais": 997
+        },
+        "renda": {
+          "sem_rendimento": 142,
+          "ate_1_4_sm": 575,
+          "1_4_a_1_2_sm": 2075,
+          "1_2_a_1_sm": 3784,
+          "1_a_2_sm": 3245,
+          "2_a_3_sm": 709,
+          "3_a_5_sm": 355,
+          "5_a_10_sm": 115,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3842,
+          "evangelica": 3872,
+          "espirita": 112,
+          "umbanda_candomble": 27,
+          "tradicoes_indigenas": 0,
+          "outras": 120,
+          "sem_religiao": 1166,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3321,
+          "fundamental_completo_medio_incompleto": 1244,
+          "medio_completo_superior_incompleto": 3080,
+          "superior_completo": 1090
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3300209,
+      "nome": "Araruama",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330013,
+        "nome": "Cabo Frio"
+      },
+      "lat": -22.75535,
+      "lon": -42.29291,
+      "coordenada_metodo": "centroide",
+      "area_km2": 638.276,
+      "populacao": 137922,
+      "eleitorado": 110504,
+      "urbana_pct": 96,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 129671,
+        "situacao": {
+          "urbana": 124455,
+          "rural": 5216
+        },
+        "idade": {
+          "0_15": 25727,
+          "16_17": 3417,
+          "18_24": 12003,
+          "25_34": 16225,
+          "35_44": 18874,
+          "45_59": 26131,
+          "60_69": 15038,
+          "70_mais": 12256
+        },
+        "renda": {
+          "sem_rendimento": 3545,
+          "ate_1_4_sm": 13583,
+          "1_4_a_1_2_sm": 27944,
+          "1_2_a_1_sm": 41484,
+          "1_a_2_sm": 27547,
+          "2_a_3_sm": 7499,
+          "3_a_5_sm": 4799,
+          "5_a_10_sm": 2446,
+          "10_a_15_sm": 176,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 41
+        },
+        "religiao": {
+          "catolica": 35774,
+          "evangelica": 39619,
+          "espirita": 3526,
+          "umbanda_candomble": 1922,
+          "tradicoes_indigenas": 4,
+          "outras": 4836,
+          "sem_religiao": 19251,
+          "nao_sabe": 85,
+          "sem_declaracao": 144
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 33368,
+          "fundamental_completo_medio_incompleto": 16015,
+          "medio_completo_superior_incompleto": 37756,
+          "superior_completo": 12921
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3300225,
+      "nome": "Areal",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33005,
+        "nome": "Três Rios"
+      },
+      "regiao_imediata": {
+        "id": 330007,
+        "nome": "Petrópolis"
+      },
+      "lat": -22.2354,
+      "lon": -43.12154,
+      "coordenada_metodo": "centroide",
+      "area_km2": 110.724,
+      "populacao": 12213,
+      "eleitorado": 10236,
+      "urbana_pct": 92,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11828,
+        "situacao": {
+          "urbana": 10876,
+          "rural": 952
+        },
+        "idade": {
+          "0_15": 2400,
+          "16_17": 312,
+          "18_24": 1181,
+          "25_34": 1744,
+          "35_44": 1664,
+          "45_59": 2316,
+          "60_69": 1235,
+          "70_mais": 976
+        },
+        "renda": {
+          "sem_rendimento": 110,
+          "ate_1_4_sm": 704,
+          "1_4_a_1_2_sm": 2512,
+          "1_2_a_1_sm": 4568,
+          "1_a_2_sm": 2612,
+          "2_a_3_sm": 768,
+          "3_a_5_sm": 355,
+          "5_a_10_sm": 121,
+          "10_a_15_sm": 32,
+          "15_a_20_sm": 23,
+          "mais_de_20_sm": 16
+        },
+        "religiao": {
+          "catolica": 5497,
+          "evangelica": 2423,
+          "espirita": 573,
+          "umbanda_candomble": 74,
+          "tradicoes_indigenas": 0,
+          "outras": 191,
+          "sem_religiao": 812,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3364,
+          "fundamental_completo_medio_incompleto": 1437,
+          "medio_completo_superior_incompleto": 3295,
+          "superior_completo": 1050
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3300233,
+      "nome": "Armação dos Búzios",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330013,
+        "nome": "Cabo Frio"
+      },
+      "lat": -22.77621,
+      "lon": -41.94955,
+      "coordenada_metodo": "centroide",
+      "area_km2": 70.977,
+      "populacao": 44365,
+      "eleitorado": 36289,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 40006,
+        "situacao": {
+          "urbana": 40006,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 8306,
+          "16_17": 1043,
+          "18_24": 3790,
+          "25_34": 6045,
+          "35_44": 6945,
+          "45_59": 8080,
+          "60_69": 3661,
+          "70_mais": 2136
+        },
+        "renda": {
+          "sem_rendimento": 1698,
+          "ate_1_4_sm": 1623,
+          "1_4_a_1_2_sm": 5809,
+          "1_2_a_1_sm": 12717,
+          "1_a_2_sm": 11656,
+          "2_a_3_sm": 3062,
+          "3_a_5_sm": 1952,
+          "5_a_10_sm": 1048,
+          "10_a_15_sm": 204,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 27
+        },
+        "religiao": {
+          "catolica": 8411,
+          "evangelica": 10621,
+          "espirita": 617,
+          "umbanda_candomble": 297,
+          "tradicoes_indigenas": 0,
+          "outras": 5075,
+          "sem_religiao": 6976,
+          "nao_sabe": 34,
+          "sem_declaracao": 81
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7984,
+          "fundamental_completo_medio_incompleto": 4156,
+          "medio_completo_superior_incompleto": 14187,
+          "superior_completo": 4445
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3300258,
+      "nome": "Arraial do Cabo",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330013,
+        "nome": "Cabo Frio"
+      },
+      "lat": -22.925,
+      "lon": -42.16001,
+      "coordenada_metodo": "centroide",
+      "area_km2": 152.106,
+      "populacao": 32835,
+      "eleitorado": 35290,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30986,
+        "situacao": {
+          "urbana": 30986,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 5924,
+          "16_17": 815,
+          "18_24": 2940,
+          "25_34": 4204,
+          "35_44": 4507,
+          "45_59": 6323,
+          "60_69": 3737,
+          "70_mais": 2536
+        },
+        "renda": {
+          "sem_rendimento": 875,
+          "ate_1_4_sm": 2091,
+          "1_4_a_1_2_sm": 5989,
+          "1_2_a_1_sm": 9228,
+          "1_a_2_sm": 8102,
+          "2_a_3_sm": 2730,
+          "3_a_5_sm": 1331,
+          "5_a_10_sm": 534,
+          "10_a_15_sm": 85,
+          "15_a_20_sm": 13,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9317,
+          "evangelica": 8772,
+          "espirita": 519,
+          "umbanda_candomble": 414,
+          "tradicoes_indigenas": 0,
+          "outras": 1822,
+          "sem_religiao": 4516,
+          "nao_sabe": 27,
+          "sem_declaracao": 82
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5749,
+          "fundamental_completo_medio_incompleto": 4436,
+          "medio_completo_superior_incompleto": 10667,
+          "superior_completo": 3453
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3300308,
+      "nome": "Barra do Piraí",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33012,
+        "nome": "Barra do Piraí"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.42566,
+      "lon": -43.91296,
+      "coordenada_metodo": "centroide",
+      "area_km2": 584.61,
+      "populacao": 98508,
+      "eleitorado": 69183,
+      "urbana_pct": 97.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 92883,
+        "situacao": {
+          "urbana": 90389,
+          "rural": 2494
+        },
+        "idade": {
+          "0_15": 17904,
+          "16_17": 2387,
+          "18_24": 8921,
+          "25_34": 12148,
+          "35_44": 13758,
+          "45_59": 18593,
+          "60_69": 10836,
+          "70_mais": 8336
+        },
+        "renda": {
+          "sem_rendimento": 1210,
+          "ate_1_4_sm": 6787,
+          "1_4_a_1_2_sm": 17366,
+          "1_2_a_1_sm": 29969,
+          "1_a_2_sm": 25886,
+          "2_a_3_sm": 6215,
+          "3_a_5_sm": 3626,
+          "5_a_10_sm": 1391,
+          "10_a_15_sm": 215,
+          "15_a_20_sm": 55,
+          "mais_de_20_sm": 25
+        },
+        "religiao": {
+          "catolica": 34243,
+          "evangelica": 25905,
+          "espirita": 3860,
+          "umbanda_candomble": 2855,
+          "tradicoes_indigenas": 0,
+          "outras": 2701,
+          "sem_religiao": 6486,
+          "nao_sabe": 5,
+          "sem_declaracao": 145
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 20248,
+          "fundamental_completo_medio_incompleto": 11587,
+          "medio_completo_superior_incompleto": 30385,
+          "superior_completo": 10300
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3300407,
+      "nome": "Barra Mansa",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.50578,
+      "lon": -44.18831,
+      "coordenada_metodo": "centroide",
+      "area_km2": 547.133,
+      "populacao": 181675,
+      "eleitorado": 133301,
+      "urbana_pct": 98.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 169894,
+        "situacao": {
+          "urbana": 168071,
+          "rural": 1823
+        },
+        "idade": {
+          "0_15": 31393,
+          "16_17": 4318,
+          "18_24": 16067,
+          "25_34": 23195,
+          "35_44": 25704,
+          "45_59": 35289,
+          "60_69": 19496,
+          "70_mais": 14432
+        },
+        "renda": {
+          "sem_rendimento": 4884,
+          "ate_1_4_sm": 9870,
+          "1_4_a_1_2_sm": 29539,
+          "1_2_a_1_sm": 58623,
+          "1_a_2_sm": 46154,
+          "2_a_3_sm": 10981,
+          "3_a_5_sm": 6522,
+          "5_a_10_sm": 2564,
+          "10_a_15_sm": 378,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 75
+        },
+        "religiao": {
+          "catolica": 68784,
+          "evangelica": 49437,
+          "espirita": 3511,
+          "umbanda_candomble": 1377,
+          "tradicoes_indigenas": 10,
+          "outras": 5374,
+          "sem_religiao": 11660,
+          "nao_sabe": 11,
+          "sem_declaracao": 138
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 39755,
+          "fundamental_completo_medio_incompleto": 23013,
+          "medio_completo_superior_incompleto": 52572,
+          "superior_completo": 18777
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 19,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3300456,
+      "nome": "Belford Roxo",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.72873,
+      "lon": -43.37757,
+      "coordenada_metodo": "centroide",
+      "area_km2": 78.985,
+      "populacao": 518442,
+      "eleitorado": 345225,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 483087,
+        "situacao": {
+          "urbana": 483087,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 104059,
+          "16_17": 13000,
+          "18_24": 51117,
+          "25_34": 72493,
+          "35_44": 76451,
+          "45_59": 96065,
+          "60_69": 42248,
+          "70_mais": 27654
+        },
+        "renda": {
+          "sem_rendimento": 31421,
+          "ate_1_4_sm": 65643,
+          "1_4_a_1_2_sm": 116950,
+          "1_2_a_1_sm": 158657,
+          "1_a_2_sm": 87179,
+          "2_a_3_sm": 15818,
+          "3_a_5_sm": 5747,
+          "5_a_10_sm": 1259,
+          "10_a_15_sm": 122,
+          "15_a_20_sm": 79,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 103844,
+          "evangelica": 139225,
+          "espirita": 5933,
+          "umbanda_candomble": 9342,
+          "tradicoes_indigenas": 60,
+          "outras": 23010,
+          "sem_religiao": 103396,
+          "nao_sabe": 38,
+          "sem_declaracao": 792
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 120917,
+          "fundamental_completo_medio_incompleto": 82993,
+          "medio_completo_superior_incompleto": 143038,
+          "superior_completo": 19162
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 25,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3300506,
+      "nome": "Bom Jardim",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33007,
+        "nome": "Nova Friburgo"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.19975,
+      "lon": -42.37173,
+      "coordenada_metodo": "centroide",
+      "area_km2": 382.43,
+      "populacao": 29769,
+      "eleitorado": 22613,
+      "urbana_pct": 77.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 28102,
+        "situacao": {
+          "urbana": 21765,
+          "rural": 6337
+        },
+        "idade": {
+          "0_15": 5431,
+          "16_17": 747,
+          "18_24": 2723,
+          "25_34": 3984,
+          "35_44": 4284,
+          "45_59": 5746,
+          "60_69": 2867,
+          "70_mais": 2320
+        },
+        "renda": {
+          "sem_rendimento": 245,
+          "ate_1_4_sm": 1063,
+          "1_4_a_1_2_sm": 5032,
+          "1_2_a_1_sm": 11414,
+          "1_a_2_sm": 6993,
+          "2_a_3_sm": 1933,
+          "3_a_5_sm": 1016,
+          "5_a_10_sm": 266,
+          "10_a_15_sm": 104,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14249,
+          "evangelica": 6097,
+          "espirita": 230,
+          "umbanda_candomble": 101,
+          "tradicoes_indigenas": 0,
+          "outras": 488,
+          "sem_religiao": 1847,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10584,
+          "fundamental_completo_medio_incompleto": 3555,
+          "medio_completo_superior_incompleto": 5256,
+          "superior_completo": 2449
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3300605,
+      "nome": "Bom Jesus do Itabapoana",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -21.12346,
+      "lon": -41.6832,
+      "coordenada_metodo": "centroide",
+      "area_km2": 596.659,
+      "populacao": 37178,
+      "eleitorado": 28431,
+      "urbana_pct": 89.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35173,
+        "situacao": {
+          "urbana": 31368,
+          "rural": 3805
+        },
+        "idade": {
+          "0_15": 6744,
+          "16_17": 895,
+          "18_24": 3333,
+          "25_34": 4811,
+          "35_44": 4929,
+          "45_59": 7069,
+          "60_69": 3991,
+          "70_mais": 3401
+        },
+        "renda": {
+          "sem_rendimento": 606,
+          "ate_1_4_sm": 2668,
+          "1_4_a_1_2_sm": 6752,
+          "1_2_a_1_sm": 11690,
+          "1_a_2_sm": 8291,
+          "2_a_3_sm": 2324,
+          "3_a_5_sm": 1780,
+          "5_a_10_sm": 583,
+          "10_a_15_sm": 221,
+          "15_a_20_sm": 53,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 17908,
+          "evangelica": 8476,
+          "espirita": 252,
+          "umbanda_candomble": 87,
+          "tradicoes_indigenas": 0,
+          "outras": 637,
+          "sem_religiao": 1456,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9128,
+          "fundamental_completo_medio_incompleto": 3276,
+          "medio_completo_superior_incompleto": 10633,
+          "superior_completo": 4458
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3300704,
+      "nome": "Cabo Frio",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330013,
+        "nome": "Cabo Frio"
+      },
+      "lat": -22.71182,
+      "lon": -42.05697,
+      "coordenada_metodo": "centroide",
+      "area_km2": 413.449,
+      "populacao": 236772,
+      "eleitorado": 178005,
+      "urbana_pct": 99.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 222161,
+        "situacao": {
+          "urbana": 221102,
+          "rural": 1059
+        },
+        "idade": {
+          "0_15": 45926,
+          "16_17": 6011,
+          "18_24": 21305,
+          "25_34": 30487,
+          "35_44": 33540,
+          "45_59": 44255,
+          "60_69": 23798,
+          "70_mais": 16839
+        },
+        "renda": {
+          "sem_rendimento": 7582,
+          "ate_1_4_sm": 18143,
+          "1_4_a_1_2_sm": 42130,
+          "1_2_a_1_sm": 66275,
+          "1_a_2_sm": 51645,
+          "2_a_3_sm": 16735,
+          "3_a_5_sm": 12579,
+          "5_a_10_sm": 5512,
+          "10_a_15_sm": 727,
+          "15_a_20_sm": 189,
+          "mais_de_20_sm": 134
+        },
+        "religiao": {
+          "catolica": 53385,
+          "evangelica": 73663,
+          "espirita": 5006,
+          "umbanda_candomble": 2800,
+          "tradicoes_indigenas": 5,
+          "outras": 14865,
+          "sem_religiao": 28870,
+          "nao_sabe": 118,
+          "sem_declaracao": 519
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 45829,
+          "fundamental_completo_medio_incompleto": 29851,
+          "medio_completo_superior_incompleto": 67685,
+          "superior_completo": 26700
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3300803,
+      "nome": "Cachoeiras de Macacu",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33016,
+        "nome": "Macacu-Caceribu"
+      },
+      "regiao_imediata": {
+        "id": 330003,
+        "nome": "Rio Bonito"
+      },
+      "lat": -22.51612,
+      "lon": -42.72841,
+      "coordenada_metodo": "centroide",
+      "area_km2": 954.749,
+      "populacao": 59873,
+      "eleitorado": 46612,
+      "urbana_pct": 84.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 56943,
+        "situacao": {
+          "urbana": 48012,
+          "rural": 8931
+        },
+        "idade": {
+          "0_15": 11242,
+          "16_17": 1472,
+          "18_24": 5424,
+          "25_34": 8009,
+          "35_44": 8396,
+          "45_59": 11719,
+          "60_69": 6096,
+          "70_mais": 4585
+        },
+        "renda": {
+          "sem_rendimento": 2775,
+          "ate_1_4_sm": 5802,
+          "1_4_a_1_2_sm": 13168,
+          "1_2_a_1_sm": 18310,
+          "1_a_2_sm": 11198,
+          "2_a_3_sm": 3308,
+          "3_a_5_sm": 1606,
+          "5_a_10_sm": 460,
+          "10_a_15_sm": 183,
+          "15_a_20_sm": 28,
+          "mais_de_20_sm": 29
+        },
+        "religiao": {
+          "catolica": 11735,
+          "evangelica": 20768,
+          "espirita": 599,
+          "umbanda_candomble": 506,
+          "tradicoes_indigenas": 16,
+          "outras": 2140,
+          "sem_religiao": 10405,
+          "nao_sabe": 10,
+          "sem_declaracao": 57
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 16559,
+          "fundamental_completo_medio_incompleto": 6497,
+          "medio_completo_superior_incompleto": 16099,
+          "superior_completo": 4704
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3300902,
+      "nome": "Cambuci",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33002,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "regiao_imediata": {
+        "id": 330012,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "lat": -21.49692,
+      "lon": -41.91465,
+      "coordenada_metodo": "centroide",
+      "area_km2": 558.281,
+      "populacao": 15060,
+      "eleitorado": 12268,
+      "urbana_pct": 82.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14616,
+        "situacao": {
+          "urbana": 12002,
+          "rural": 2614
+        },
+        "idade": {
+          "0_15": 2449,
+          "16_17": 382,
+          "18_24": 1324,
+          "25_34": 1757,
+          "35_44": 2124,
+          "45_59": 3167,
+          "60_69": 1794,
+          "70_mais": 1619
+        },
+        "renda": {
+          "sem_rendimento": 247,
+          "ate_1_4_sm": 1042,
+          "1_4_a_1_2_sm": 2816,
+          "1_2_a_1_sm": 6000,
+          "1_a_2_sm": 3012,
+          "2_a_3_sm": 669,
+          "3_a_5_sm": 494,
+          "5_a_10_sm": 230,
+          "10_a_15_sm": 59,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6542,
+          "evangelica": 4086,
+          "espirita": 131,
+          "umbanda_candomble": 23,
+          "tradicoes_indigenas": 0,
+          "outras": 199,
+          "sem_religiao": 1331,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4756,
+          "fundamental_completo_medio_incompleto": 1422,
+          "medio_completo_superior_incompleto": 4494,
+          "superior_completo": 1118
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3300936,
+      "nome": "Carapebus",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33004,
+        "nome": "Macaé"
+      },
+      "regiao_imediata": {
+        "id": 330014,
+        "nome": "Macaé - Rio das Ostras"
+      },
+      "lat": -22.19595,
+      "lon": -41.6509,
+      "coordenada_metodo": "centroide",
+      "area_km2": 304.884,
+      "populacao": 14331,
+      "eleitorado": 13464,
+      "urbana_pct": 81.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13847,
+        "situacao": {
+          "urbana": 11323,
+          "rural": 2524
+        },
+        "idade": {
+          "0_15": 2983,
+          "16_17": 403,
+          "18_24": 1263,
+          "25_34": 1882,
+          "35_44": 2075,
+          "45_59": 2830,
+          "60_69": 1350,
+          "70_mais": 1061
+        },
+        "renda": {
+          "sem_rendimento": 879,
+          "ate_1_4_sm": 1163,
+          "1_4_a_1_2_sm": 3084,
+          "1_2_a_1_sm": 4565,
+          "1_a_2_sm": 2942,
+          "2_a_3_sm": 729,
+          "3_a_5_sm": 377,
+          "5_a_10_sm": 91,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4443,
+          "evangelica": 4543,
+          "espirita": 42,
+          "umbanda_candomble": 35,
+          "tradicoes_indigenas": 0,
+          "outras": 577,
+          "sem_religiao": 1406,
+          "nao_sabe": 0,
+          "sem_declaracao": 13
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3506,
+          "fundamental_completo_medio_incompleto": 1697,
+          "medio_completo_superior_incompleto": 4321,
+          "superior_completo": 897
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3300951,
+      "nome": "Comendador Levy Gasparian",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33005,
+        "nome": "Três Rios"
+      },
+      "regiao_imediata": {
+        "id": 330009,
+        "nome": "Três Rios - Paraíba do Sul"
+      },
+      "lat": -22.04377,
+      "lon": -43.25574,
+      "coordenada_metodo": "centroide",
+      "area_km2": 108.639,
+      "populacao": 9050,
+      "eleitorado": 8004,
+      "urbana_pct": 96.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8741,
+        "situacao": {
+          "urbana": 8469,
+          "rural": 272
+        },
+        "idade": {
+          "0_15": 1796,
+          "16_17": 264,
+          "18_24": 811,
+          "25_34": 1212,
+          "35_44": 1219,
+          "45_59": 1798,
+          "60_69": 903,
+          "70_mais": 738
+        },
+        "renda": {
+          "sem_rendimento": 121,
+          "ate_1_4_sm": 538,
+          "1_4_a_1_2_sm": 1747,
+          "1_2_a_1_sm": 3341,
+          "1_a_2_sm": 2450,
+          "2_a_3_sm": 332,
+          "3_a_5_sm": 94,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3798,
+          "evangelica": 2174,
+          "espirita": 213,
+          "umbanda_candomble": 60,
+          "tradicoes_indigenas": 3,
+          "outras": 180,
+          "sem_religiao": 625,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2568,
+          "fundamental_completo_medio_incompleto": 1280,
+          "medio_completo_superior_incompleto": 2300,
+          "superior_completo": 535
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3301009,
+      "nome": "Campos dos Goytacazes",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33003,
+        "nome": "Campos dos Goytacazes"
+      },
+      "regiao_imediata": {
+        "id": 330010,
+        "nome": "Campos dos Goytacazes"
+      },
+      "lat": -21.74766,
+      "lon": -41.40409,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4032.487,
+      "populacao": 519378,
+      "eleitorado": 369138,
+      "urbana_pct": 93.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 483540,
+        "situacao": {
+          "urbana": 452346,
+          "rural": 31194
+        },
+        "idade": {
+          "0_15": 101479,
+          "16_17": 13451,
+          "18_24": 50279,
+          "25_34": 71900,
+          "35_44": 73697,
+          "45_59": 90168,
+          "60_69": 46552,
+          "70_mais": 36014
+        },
+        "renda": {
+          "sem_rendimento": 23118,
+          "ate_1_4_sm": 61334,
+          "1_4_a_1_2_sm": 103719,
+          "1_2_a_1_sm": 137094,
+          "1_a_2_sm": 92028,
+          "2_a_3_sm": 30756,
+          "3_a_5_sm": 19948,
+          "5_a_10_sm": 10503,
+          "10_a_15_sm": 1441,
+          "15_a_20_sm": 400,
+          "mais_de_20_sm": 530
+        },
+        "religiao": {
+          "catolica": 171716,
+          "evangelica": 140253,
+          "espirita": 8076,
+          "umbanda_candomble": 2883,
+          "tradicoes_indigenas": 0,
+          "outras": 13734,
+          "sem_religiao": 52144,
+          "nao_sabe": 206,
+          "sem_declaracao": 611
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 115783,
+          "fundamental_completo_medio_incompleto": 58762,
+          "medio_completo_superior_incompleto": 144252,
+          "superior_completo": 50772
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 25,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3301108,
+      "nome": "Cantagalo",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33006,
+        "nome": "Cantagalo-Cordeiro"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -21.86835,
+      "lon": -42.33389,
+      "coordenada_metodo": "centroide",
+      "area_km2": 747.21,
+      "populacao": 20023,
+      "eleitorado": 15118,
+      "urbana_pct": 85.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19390,
+        "situacao": {
+          "urbana": 16586,
+          "rural": 2804
+        },
+        "idade": {
+          "0_15": 3821,
+          "16_17": 531,
+          "18_24": 1792,
+          "25_34": 2471,
+          "35_44": 2825,
+          "45_59": 3950,
+          "60_69": 2053,
+          "70_mais": 1947
+        },
+        "renda": {
+          "sem_rendimento": 884,
+          "ate_1_4_sm": 1841,
+          "1_4_a_1_2_sm": 4693,
+          "1_2_a_1_sm": 5977,
+          "1_a_2_sm": 3884,
+          "2_a_3_sm": 1197,
+          "3_a_5_sm": 540,
+          "5_a_10_sm": 309,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9354,
+          "evangelica": 4919,
+          "espirita": 210,
+          "umbanda_candomble": 28,
+          "tradicoes_indigenas": 0,
+          "outras": 458,
+          "sem_religiao": 860,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6060,
+          "fundamental_completo_medio_incompleto": 1873,
+          "medio_completo_superior_incompleto": 5278,
+          "superior_completo": 1827
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3301157,
+      "nome": "Cardoso Moreira",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33003,
+        "nome": "Campos dos Goytacazes"
+      },
+      "regiao_imediata": {
+        "id": 330010,
+        "nome": "Campos dos Goytacazes"
+      },
+      "lat": -21.52545,
+      "lon": -41.5003,
+      "coordenada_metodo": "centroide",
+      "area_km2": 522.596,
+      "populacao": 13418,
+      "eleitorado": 12595,
+      "urbana_pct": 71.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12958,
+        "situacao": {
+          "urbana": 9237,
+          "rural": 3721
+        },
+        "idade": {
+          "0_15": 2539,
+          "16_17": 347,
+          "18_24": 1180,
+          "25_34": 1622,
+          "35_44": 1898,
+          "45_59": 2590,
+          "60_69": 1403,
+          "70_mais": 1379
+        },
+        "renda": {
+          "sem_rendimento": 269,
+          "ate_1_4_sm": 1183,
+          "1_4_a_1_2_sm": 3274,
+          "1_2_a_1_sm": 4395,
+          "1_a_2_sm": 2847,
+          "2_a_3_sm": 585,
+          "3_a_5_sm": 343,
+          "5_a_10_sm": 49,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4001,
+          "evangelica": 4585,
+          "espirita": 94,
+          "umbanda_candomble": 17,
+          "tradicoes_indigenas": 0,
+          "outras": 221,
+          "sem_religiao": 1652,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4724,
+          "fundamental_completo_medio_incompleto": 1369,
+          "medio_completo_superior_incompleto": 3089,
+          "superior_completo": 911
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3301207,
+      "nome": "Carmo",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33006,
+        "nome": "Cantagalo-Cordeiro"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -21.89542,
+      "lon": -42.56641,
+      "coordenada_metodo": "centroide",
+      "area_km2": 305.749,
+      "populacao": 17741,
+      "eleitorado": 14249,
+      "urbana_pct": 90.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17198,
+        "situacao": {
+          "urbana": 15521,
+          "rural": 1677
+        },
+        "idade": {
+          "0_15": 3205,
+          "16_17": 479,
+          "18_24": 1612,
+          "25_34": 2153,
+          "35_44": 2623,
+          "45_59": 3535,
+          "60_69": 2004,
+          "70_mais": 1587
+        },
+        "renda": {
+          "sem_rendimento": 216,
+          "ate_1_4_sm": 1404,
+          "1_4_a_1_2_sm": 3778,
+          "1_2_a_1_sm": 5824,
+          "1_a_2_sm": 4083,
+          "2_a_3_sm": 976,
+          "3_a_5_sm": 452,
+          "5_a_10_sm": 267,
+          "10_a_15_sm": 26,
+          "15_a_20_sm": 20,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8121,
+          "evangelica": 3952,
+          "espirita": 653,
+          "umbanda_candomble": 117,
+          "tradicoes_indigenas": 11,
+          "outras": 485,
+          "sem_religiao": 838,
+          "nao_sabe": 0,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4919,
+          "fundamental_completo_medio_incompleto": 2440,
+          "medio_completo_superior_incompleto": 4383,
+          "superior_completo": 1752
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3301306,
+      "nome": "Casimiro de Abreu",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33009,
+        "nome": "Bacia de São João"
+      },
+      "regiao_imediata": {
+        "id": 330014,
+        "nome": "Macaé - Rio das Ostras"
+      },
+      "lat": -22.48186,
+      "lon": -42.14424,
+      "coordenada_metodo": "centroide",
+      "area_km2": 462.918,
+      "populacao": 48672,
+      "eleitorado": 35946,
+      "urbana_pct": 94.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 46110,
+        "situacao": {
+          "urbana": 43723,
+          "rural": 2387
+        },
+        "idade": {
+          "0_15": 10199,
+          "16_17": 1291,
+          "18_24": 4309,
+          "25_34": 6242,
+          "35_44": 7279,
+          "45_59": 9091,
+          "60_69": 4481,
+          "70_mais": 3218
+        },
+        "renda": {
+          "sem_rendimento": 1063,
+          "ate_1_4_sm": 3692,
+          "1_4_a_1_2_sm": 9218,
+          "1_2_a_1_sm": 14845,
+          "1_a_2_sm": 11513,
+          "2_a_3_sm": 2993,
+          "3_a_5_sm": 1823,
+          "5_a_10_sm": 772,
+          "10_a_15_sm": 118,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9771,
+          "evangelica": 16298,
+          "espirita": 719,
+          "umbanda_candomble": 489,
+          "tradicoes_indigenas": 67,
+          "outras": 2789,
+          "sem_religiao": 6438,
+          "nao_sabe": 0,
+          "sem_declaracao": 14
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10653,
+          "fundamental_completo_medio_incompleto": 5637,
+          "medio_completo_superior_incompleto": 13825,
+          "superior_completo": 4632
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3301405,
+      "nome": "Conceição de Macabu",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33004,
+        "nome": "Macaé"
+      },
+      "regiao_imediata": {
+        "id": 330014,
+        "nome": "Macaé - Rio das Ostras"
+      },
+      "lat": -22.13661,
+      "lon": -41.84658,
+      "coordenada_metodo": "centroide",
+      "area_km2": 338.26,
+      "populacao": 21771,
+      "eleitorado": 16654,
+      "urbana_pct": 90.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21104,
+        "situacao": {
+          "urbana": 19013,
+          "rural": 2091
+        },
+        "idade": {
+          "0_15": 4424,
+          "16_17": 628,
+          "18_24": 1917,
+          "25_34": 2920,
+          "35_44": 3073,
+          "45_59": 4255,
+          "60_69": 2158,
+          "70_mais": 1729
+        },
+        "renda": {
+          "sem_rendimento": 508,
+          "ate_1_4_sm": 2086,
+          "1_4_a_1_2_sm": 5105,
+          "1_2_a_1_sm": 6716,
+          "1_a_2_sm": 4476,
+          "2_a_3_sm": 1123,
+          "3_a_5_sm": 623,
+          "5_a_10_sm": 287,
+          "10_a_15_sm": 45,
+          "15_a_20_sm": 32,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6244,
+          "evangelica": 7772,
+          "espirita": 110,
+          "umbanda_candomble": 53,
+          "tradicoes_indigenas": 0,
+          "outras": 656,
+          "sem_religiao": 2113,
+          "nao_sabe": 0,
+          "sem_declaracao": 31
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5227,
+          "fundamental_completo_medio_incompleto": 2641,
+          "medio_completo_superior_incompleto": 6516,
+          "superior_completo": 1809
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3301504,
+      "nome": "Cordeiro",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33006,
+        "nome": "Cantagalo-Cordeiro"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.0588,
+      "lon": -42.34222,
+      "coordenada_metodo": "centroide",
+      "area_km2": 113.048,
+      "populacao": 21422,
+      "eleitorado": 16907,
+      "urbana_pct": 97.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20783,
+        "situacao": {
+          "urbana": 20238,
+          "rural": 545
+        },
+        "idade": {
+          "0_15": 3988,
+          "16_17": 540,
+          "18_24": 1907,
+          "25_34": 2789,
+          "35_44": 3151,
+          "45_59": 4184,
+          "60_69": 2235,
+          "70_mais": 1989
+        },
+        "renda": {
+          "sem_rendimento": 626,
+          "ate_1_4_sm": 1610,
+          "1_4_a_1_2_sm": 3768,
+          "1_2_a_1_sm": 6483,
+          "1_a_2_sm": 5045,
+          "2_a_3_sm": 2092,
+          "3_a_5_sm": 785,
+          "5_a_10_sm": 309,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9105,
+          "evangelica": 5269,
+          "espirita": 187,
+          "umbanda_candomble": 66,
+          "tradicoes_indigenas": 0,
+          "outras": 381,
+          "sem_religiao": 1984,
+          "nao_sabe": 50,
+          "sem_declaracao": 22
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5093,
+          "fundamental_completo_medio_incompleto": 2592,
+          "medio_completo_superior_incompleto": 6301,
+          "superior_completo": 2234
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3301603,
+      "nome": "Duas Barras",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33007,
+        "nome": "Nova Friburgo"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.05561,
+      "lon": -42.49804,
+      "coordenada_metodo": "centroide",
+      "area_km2": 379.619,
+      "populacao": 11356,
+      "eleitorado": 10313,
+      "urbana_pct": 71.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10980,
+        "situacao": {
+          "urbana": 7899,
+          "rural": 3081
+        },
+        "idade": {
+          "0_15": 2189,
+          "16_17": 297,
+          "18_24": 1066,
+          "25_34": 1457,
+          "35_44": 1661,
+          "45_59": 2241,
+          "60_69": 1143,
+          "70_mais": 926
+        },
+        "renda": {
+          "sem_rendimento": 202,
+          "ate_1_4_sm": 1038,
+          "1_4_a_1_2_sm": 2643,
+          "1_2_a_1_sm": 3880,
+          "1_a_2_sm": 2326,
+          "2_a_3_sm": 519,
+          "3_a_5_sm": 221,
+          "5_a_10_sm": 122,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5818,
+          "evangelica": 2331,
+          "espirita": 57,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 267,
+          "sem_religiao": 437,
+          "nao_sabe": 0,
+          "sem_declaracao": 15
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4036,
+          "fundamental_completo_medio_incompleto": 1240,
+          "medio_completo_superior_incompleto": 2550,
+          "superior_completo": 706
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3301702,
+      "nome": "Duque de Caxias",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.63249,
+      "lon": -43.29961,
+      "coordenada_metodo": "centroide",
+      "area_km2": 467.319,
+      "populacao": 866167,
+      "eleitorado": 633300,
+      "urbana_pct": 99.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 808161,
+        "situacao": {
+          "urbana": 806209,
+          "rural": 1952
+        },
+        "idade": {
+          "0_15": 171815,
+          "16_17": 22539,
+          "18_24": 84856,
+          "25_34": 119402,
+          "35_44": 123596,
+          "45_59": 157462,
+          "60_69": 76541,
+          "70_mais": 51950
+        },
+        "renda": {
+          "sem_rendimento": 38429,
+          "ate_1_4_sm": 94049,
+          "1_4_a_1_2_sm": 178760,
+          "1_2_a_1_sm": 262238,
+          "1_a_2_sm": 167147,
+          "2_a_3_sm": 41881,
+          "3_a_5_sm": 18647,
+          "5_a_10_sm": 5505,
+          "10_a_15_sm": 648,
+          "15_a_20_sm": 165,
+          "mais_de_20_sm": 140
+        },
+        "religiao": {
+          "catolica": 196021,
+          "evangelica": 258098,
+          "espirita": 12184,
+          "umbanda_candomble": 14618,
+          "tradicoes_indigenas": 114,
+          "outras": 41760,
+          "sem_religiao": 122487,
+          "nao_sabe": 140,
+          "sem_declaracao": 1872
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 186077,
+          "fundamental_completo_medio_incompleto": 123641,
+          "medio_completo_superior_incompleto": 249182,
+          "superior_completo": 53852
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 29,
+      "vagas_vereador_max": 29,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3301801,
+      "nome": "Engenheiro Paulo de Frontin",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33014,
+        "nome": "Vassouras"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.50829,
+      "lon": -43.6361,
+      "coordenada_metodo": "centroide",
+      "area_km2": 139.381,
+      "populacao": 12804,
+      "eleitorado": 11070,
+      "urbana_pct": 82.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12242,
+        "situacao": {
+          "urbana": 10109,
+          "rural": 2133
+        },
+        "idade": {
+          "0_15": 2077,
+          "16_17": 290,
+          "18_24": 1131,
+          "25_34": 1630,
+          "35_44": 1753,
+          "45_59": 2620,
+          "60_69": 1535,
+          "70_mais": 1206
+        },
+        "renda": {
+          "sem_rendimento": 268,
+          "ate_1_4_sm": 815,
+          "1_4_a_1_2_sm": 2645,
+          "1_2_a_1_sm": 4167,
+          "1_a_2_sm": 3062,
+          "2_a_3_sm": 656,
+          "3_a_5_sm": 442,
+          "5_a_10_sm": 136,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3846,
+          "evangelica": 4026,
+          "espirita": 385,
+          "umbanda_candomble": 252,
+          "tradicoes_indigenas": 0,
+          "outras": 398,
+          "sem_religiao": 1372,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3085,
+          "fundamental_completo_medio_incompleto": 1900,
+          "medio_completo_superior_incompleto": 3679,
+          "superior_completo": 1197
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3301850,
+      "nome": "Guapimirim",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.5835,
+      "lon": -42.96402,
+      "coordenada_metodo": "centroide",
+      "area_km2": 358.443,
+      "populacao": 54316,
+      "eleitorado": 44860,
+      "urbana_pct": 96.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 51696,
+        "situacao": {
+          "urbana": 50066,
+          "rural": 1630
+        },
+        "idade": {
+          "0_15": 11090,
+          "16_17": 1453,
+          "18_24": 5346,
+          "25_34": 7570,
+          "35_44": 8030,
+          "45_59": 9791,
+          "60_69": 4909,
+          "70_mais": 3507
+        },
+        "renda": {
+          "sem_rendimento": 3007,
+          "ate_1_4_sm": 4856,
+          "1_4_a_1_2_sm": 10986,
+          "1_2_a_1_sm": 17272,
+          "1_a_2_sm": 10578,
+          "2_a_3_sm": 2518,
+          "3_a_5_sm": 1558,
+          "5_a_10_sm": 631,
+          "10_a_15_sm": 129,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13408,
+          "evangelica": 15169,
+          "espirita": 1099,
+          "umbanda_candomble": 745,
+          "tradicoes_indigenas": 0,
+          "outras": 2209,
+          "sem_religiao": 8419,
+          "nao_sabe": 67,
+          "sem_declaracao": 231
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13338,
+          "fundamental_completo_medio_incompleto": 6560,
+          "medio_completo_superior_incompleto": 14826,
+          "superior_completo": 4385
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 10,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3301876,
+      "nome": "Iguaba Grande",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330013,
+        "nome": "Cabo Frio"
+      },
+      "lat": -22.82748,
+      "lon": -42.21801,
+      "coordenada_metodo": "centroide",
+      "area_km2": 50.977,
+      "populacao": 29681,
+      "eleitorado": 30554,
+      "urbana_pct": 99.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27920,
+        "situacao": {
+          "urbana": 27846,
+          "rural": 74
+        },
+        "idade": {
+          "0_15": 5189,
+          "16_17": 727,
+          "18_24": 2456,
+          "25_34": 3274,
+          "35_44": 3968,
+          "45_59": 5686,
+          "60_69": 3596,
+          "70_mais": 3024
+        },
+        "renda": {
+          "sem_rendimento": 1216,
+          "ate_1_4_sm": 1108,
+          "1_4_a_1_2_sm": 4657,
+          "1_2_a_1_sm": 9319,
+          "1_a_2_sm": 7070,
+          "2_a_3_sm": 2507,
+          "3_a_5_sm": 1429,
+          "5_a_10_sm": 471,
+          "10_a_15_sm": 116,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 9
+        },
+        "religiao": {
+          "catolica": 8778,
+          "evangelica": 8604,
+          "espirita": 1085,
+          "umbanda_candomble": 476,
+          "tradicoes_indigenas": 0,
+          "outras": 1689,
+          "sem_religiao": 2590,
+          "nao_sabe": 0,
+          "sem_declaracao": 70
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5432,
+          "fundamental_completo_medio_incompleto": 3600,
+          "medio_completo_superior_incompleto": 9019,
+          "superior_completo": 4035
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3301900,
+      "nome": "Itaboraí",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.75002,
+      "lon": -42.85436,
+      "coordenada_metodo": "centroide",
+      "area_km2": 429.961,
+      "populacao": 240169,
+      "eleitorado": 177364,
+      "urbana_pct": 99,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 224267,
+        "situacao": {
+          "urbana": 222002,
+          "rural": 2265
+        },
+        "idade": {
+          "0_15": 45782,
+          "16_17": 5837,
+          "18_24": 21534,
+          "25_34": 32057,
+          "35_44": 35584,
+          "45_59": 46197,
+          "60_69": 22095,
+          "70_mais": 15181
+        },
+        "renda": {
+          "sem_rendimento": 8443,
+          "ate_1_4_sm": 24172,
+          "1_4_a_1_2_sm": 50447,
+          "1_2_a_1_sm": 75453,
+          "1_a_2_sm": 48447,
+          "2_a_3_sm": 10241,
+          "3_a_5_sm": 5055,
+          "5_a_10_sm": 1500,
+          "10_a_15_sm": 59,
+          "15_a_20_sm": 53,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 49463,
+          "evangelica": 79859,
+          "espirita": 2759,
+          "umbanda_candomble": 3116,
+          "tradicoes_indigenas": 48,
+          "outras": 10475,
+          "sem_religiao": 35668,
+          "nao_sabe": 20,
+          "sem_declaracao": 145
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 60750,
+          "fundamental_completo_medio_incompleto": 30179,
+          "medio_completo_superior_incompleto": 66955,
+          "superior_completo": 14602
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302007,
+      "nome": "Itaguaí",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33017,
+        "nome": "Itaguaí"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.83467,
+      "lon": -43.81232,
+      "coordenada_metodo": "centroide",
+      "area_km2": 282.607,
+      "populacao": 124040,
+      "eleitorado": 100159,
+      "urbana_pct": 97.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 116841,
+        "situacao": {
+          "urbana": 114431,
+          "rural": 2410
+        },
+        "idade": {
+          "0_15": 26119,
+          "16_17": 3287,
+          "18_24": 12281,
+          "25_34": 16994,
+          "35_44": 18472,
+          "45_59": 21653,
+          "60_69": 10643,
+          "70_mais": 7392
+        },
+        "renda": {
+          "sem_rendimento": 6117,
+          "ate_1_4_sm": 12996,
+          "1_4_a_1_2_sm": 23448,
+          "1_2_a_1_sm": 35120,
+          "1_a_2_sm": 26948,
+          "2_a_3_sm": 6945,
+          "3_a_5_sm": 3712,
+          "5_a_10_sm": 941,
+          "10_a_15_sm": 151,
+          "15_a_20_sm": 106,
+          "mais_de_20_sm": 14
+        },
+        "religiao": {
+          "catolica": 23034,
+          "evangelica": 38515,
+          "espirita": 2138,
+          "umbanda_candomble": 1789,
+          "tradicoes_indigenas": 0,
+          "outras": 7980,
+          "sem_religiao": 18392,
+          "nao_sabe": 206,
+          "sem_declaracao": 84
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 25727,
+          "fundamental_completo_medio_incompleto": 16506,
+          "medio_completo_superior_incompleto": 36877,
+          "superior_completo": 8121
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302056,
+      "nome": "Italva",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330010,
+        "nome": "Campos dos Goytacazes"
+      },
+      "lat": -21.42391,
+      "lon": -41.65383,
+      "coordenada_metodo": "centroide",
+      "area_km2": 291.193,
+      "populacao": 14510,
+      "eleitorado": 11639,
+      "urbana_pct": 77.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14073,
+        "situacao": {
+          "urbana": 10941,
+          "rural": 3132
+        },
+        "idade": {
+          "0_15": 2465,
+          "16_17": 301,
+          "18_24": 1123,
+          "25_34": 1779,
+          "35_44": 2092,
+          "45_59": 2939,
+          "60_69": 1781,
+          "70_mais": 1593
+        },
+        "renda": {
+          "sem_rendimento": 910,
+          "ate_1_4_sm": 1126,
+          "1_4_a_1_2_sm": 2885,
+          "1_2_a_1_sm": 4569,
+          "1_a_2_sm": 3073,
+          "2_a_3_sm": 1004,
+          "3_a_5_sm": 354,
+          "5_a_10_sm": 92,
+          "10_a_15_sm": 22,
+          "15_a_20_sm": 18,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 5503,
+          "evangelica": 4384,
+          "espirita": 20,
+          "umbanda_candomble": 15,
+          "tradicoes_indigenas": 0,
+          "outras": 212,
+          "sem_religiao": 1644,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4896,
+          "fundamental_completo_medio_incompleto": 1410,
+          "medio_completo_superior_incompleto": 3868,
+          "superior_completo": 1166
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3302106,
+      "nome": "Itaocara",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33002,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "regiao_imediata": {
+        "id": 330012,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "lat": -21.72689,
+      "lon": -42.08224,
+      "coordenada_metodo": "centroide",
+      "area_km2": 433.182,
+      "populacao": 23646,
+      "eleitorado": 19068,
+      "urbana_pct": 81.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 22919,
+        "situacao": {
+          "urbana": 18673,
+          "rural": 4246
+        },
+        "idade": {
+          "0_15": 3909,
+          "16_17": 507,
+          "18_24": 1960,
+          "25_34": 2836,
+          "35_44": 3371,
+          "45_59": 4910,
+          "60_69": 2803,
+          "70_mais": 2623
+        },
+        "renda": {
+          "sem_rendimento": 410,
+          "ate_1_4_sm": 1131,
+          "1_4_a_1_2_sm": 4553,
+          "1_2_a_1_sm": 8468,
+          "1_a_2_sm": 5364,
+          "2_a_3_sm": 1610,
+          "3_a_5_sm": 737,
+          "5_a_10_sm": 500,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 10187,
+          "evangelica": 7205,
+          "espirita": 108,
+          "umbanda_candomble": 53,
+          "tradicoes_indigenas": 0,
+          "outras": 386,
+          "sem_religiao": 1377,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7077,
+          "fundamental_completo_medio_incompleto": 2395,
+          "medio_completo_superior_incompleto": 6485,
+          "superior_completo": 2571
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3302205,
+      "nome": "Itaperuna",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -21.2251,
+      "lon": -41.89402,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1106.694,
+      "populacao": 107322,
+      "eleitorado": 75885,
+      "urbana_pct": 94.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 101041,
+        "situacao": {
+          "urbana": 95235,
+          "rural": 5806
+        },
+        "idade": {
+          "0_15": 18257,
+          "16_17": 2450,
+          "18_24": 9439,
+          "25_34": 14136,
+          "35_44": 15771,
+          "45_59": 20946,
+          "60_69": 10831,
+          "70_mais": 9211
+        },
+        "renda": {
+          "sem_rendimento": 1565,
+          "ate_1_4_sm": 5882,
+          "1_4_a_1_2_sm": 17341,
+          "1_2_a_1_sm": 34110,
+          "1_a_2_sm": 27261,
+          "2_a_3_sm": 6851,
+          "3_a_5_sm": 4850,
+          "5_a_10_sm": 2071,
+          "10_a_15_sm": 270,
+          "15_a_20_sm": 13,
+          "mais_de_20_sm": 49
+        },
+        "religiao": {
+          "catolica": 43569,
+          "evangelica": 32477,
+          "espirita": 698,
+          "umbanda_candomble": 340,
+          "tradicoes_indigenas": 0,
+          "outras": 1962,
+          "sem_religiao": 4302,
+          "nao_sabe": 481,
+          "sem_declaracao": 127
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 26329,
+          "fundamental_completo_medio_incompleto": 11852,
+          "medio_completo_superior_incompleto": 29585,
+          "superior_completo": 12734
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302254,
+      "nome": "Itatiaia",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330005,
+        "nome": "Resende"
+      },
+      "lat": -22.44166,
+      "lon": -44.58784,
+      "coordenada_metodo": "centroide",
+      "area_km2": 241.035,
+      "populacao": 32721,
+      "eleitorado": 26552,
+      "urbana_pct": 98.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30908,
+        "situacao": {
+          "urbana": 30409,
+          "rural": 499
+        },
+        "idade": {
+          "0_15": 6201,
+          "16_17": 803,
+          "18_24": 3079,
+          "25_34": 4371,
+          "35_44": 4819,
+          "45_59": 6355,
+          "60_69": 3060,
+          "70_mais": 2220
+        },
+        "renda": {
+          "sem_rendimento": 418,
+          "ate_1_4_sm": 1701,
+          "1_4_a_1_2_sm": 5821,
+          "1_2_a_1_sm": 10865,
+          "1_a_2_sm": 7772,
+          "2_a_3_sm": 2008,
+          "3_a_5_sm": 1346,
+          "5_a_10_sm": 642,
+          "10_a_15_sm": 74,
+          "15_a_20_sm": 22,
+          "mais_de_20_sm": 62
+        },
+        "religiao": {
+          "catolica": 12407,
+          "evangelica": 7795,
+          "espirita": 639,
+          "umbanda_candomble": 310,
+          "tradicoes_indigenas": 0,
+          "outras": 1077,
+          "sem_religiao": 2601,
+          "nao_sabe": 6,
+          "sem_declaracao": 76
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6899,
+          "fundamental_completo_medio_incompleto": 3927,
+          "medio_completo_superior_incompleto": 9347,
+          "superior_completo": 3509
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3302270,
+      "nome": "Japeri",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.66192,
+      "lon": -43.60576,
+      "coordenada_metodo": "centroide",
+      "area_km2": 81.697,
+      "populacao": 102182,
+      "eleitorado": 76464,
+      "urbana_pct": 98.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 96289,
+        "situacao": {
+          "urbana": 95203,
+          "rural": 1086
+        },
+        "idade": {
+          "0_15": 21170,
+          "16_17": 2907,
+          "18_24": 11524,
+          "25_34": 15430,
+          "35_44": 16014,
+          "45_59": 17585,
+          "60_69": 7033,
+          "70_mais": 4626
+        },
+        "renda": {
+          "sem_rendimento": 3827,
+          "ate_1_4_sm": 17963,
+          "1_4_a_1_2_sm": 25498,
+          "1_2_a_1_sm": 29731,
+          "1_a_2_sm": 11188,
+          "2_a_3_sm": 2138,
+          "3_a_5_sm": 693,
+          "5_a_10_sm": 83,
+          "10_a_15_sm": 43,
+          "15_a_20_sm": 36,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14786,
+          "evangelica": 31666,
+          "espirita": 991,
+          "umbanda_candomble": 989,
+          "tradicoes_indigenas": 19,
+          "outras": 4280,
+          "sem_religiao": 23672,
+          "nao_sabe": 0,
+          "sem_declaracao": 115
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 30754,
+          "fundamental_completo_medio_incompleto": 13762,
+          "medio_completo_superior_incompleto": 25016,
+          "superior_completo": 2969
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302304,
+      "nome": "Laje do Muriaé",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -21.2501,
+      "lon": -42.13512,
+      "coordenada_metodo": "centroide",
+      "area_km2": 253.53,
+      "populacao": 7582,
+      "eleitorado": 6958,
+      "urbana_pct": 76.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7336,
+        "situacao": {
+          "urbana": 5640,
+          "rural": 1696
+        },
+        "idade": {
+          "0_15": 1363,
+          "16_17": 207,
+          "18_24": 738,
+          "25_34": 963,
+          "35_44": 984,
+          "45_59": 1548,
+          "60_69": 855,
+          "70_mais": 678
+        },
+        "renda": {
+          "sem_rendimento": 10,
+          "ate_1_4_sm": 469,
+          "1_4_a_1_2_sm": 2060,
+          "1_2_a_1_sm": 3000,
+          "1_a_2_sm": 1216,
+          "2_a_3_sm": 330,
+          "3_a_5_sm": 189,
+          "5_a_10_sm": 51,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 3
+        },
+        "religiao": {
+          "catolica": 4399,
+          "evangelica": 1429,
+          "espirita": 35,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 0,
+          "outras": 41,
+          "sem_religiao": 162,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2281,
+          "fundamental_completo_medio_incompleto": 770,
+          "medio_completo_superior_incompleto": 2039,
+          "superior_completo": 661
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3302403,
+      "nome": "Macaé",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33004,
+        "nome": "Macaé"
+      },
+      "regiao_imediata": {
+        "id": 330014,
+        "nome": "Macaé - Rio das Ostras"
+      },
+      "lat": -22.29581,
+      "lon": -41.97665,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1216.989,
+      "populacao": 264583,
+      "eleitorado": 185416,
+      "urbana_pct": 97.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 246391,
+        "situacao": {
+          "urbana": 239745,
+          "rural": 6646
+        },
+        "idade": {
+          "0_15": 55250,
+          "16_17": 6693,
+          "18_24": 24056,
+          "25_34": 39099,
+          "35_44": 44812,
+          "45_59": 43983,
+          "60_69": 19714,
+          "70_mais": 12784
+        },
+        "renda": {
+          "sem_rendimento": 10824,
+          "ate_1_4_sm": 17364,
+          "1_4_a_1_2_sm": 41745,
+          "1_2_a_1_sm": 66657,
+          "1_a_2_sm": 57395,
+          "2_a_3_sm": 22658,
+          "3_a_5_sm": 16415,
+          "5_a_10_sm": 10429,
+          "10_a_15_sm": 1780,
+          "15_a_20_sm": 518,
+          "mais_de_20_sm": 327
+        },
+        "religiao": {
+          "catolica": 60364,
+          "evangelica": 74197,
+          "espirita": 5137,
+          "umbanda_candomble": 3360,
+          "tradicoes_indigenas": 0,
+          "outras": 12329,
+          "sem_religiao": 38797,
+          "nao_sabe": 40,
+          "sem_declaracao": 212
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 41396,
+          "fundamental_completo_medio_incompleto": 27781,
+          "medio_completo_superior_incompleto": 82412,
+          "superior_completo": 33071
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302452,
+      "nome": "Macuco",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33006,
+        "nome": "Cantagalo-Cordeiro"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.024,
+      "lon": -42.27353,
+      "coordenada_metodo": "centroide",
+      "area_km2": 78.364,
+      "populacao": 5603,
+      "eleitorado": 7128,
+      "urbana_pct": 91,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5415,
+        "situacao": {
+          "urbana": 4929,
+          "rural": 486
+        },
+        "idade": {
+          "0_15": 1128,
+          "16_17": 159,
+          "18_24": 578,
+          "25_34": 643,
+          "35_44": 826,
+          "45_59": 1084,
+          "60_69": 501,
+          "70_mais": 496
+        },
+        "renda": {
+          "sem_rendimento": 114,
+          "ate_1_4_sm": 423,
+          "1_4_a_1_2_sm": 1272,
+          "1_2_a_1_sm": 1898,
+          "1_a_2_sm": 1097,
+          "2_a_3_sm": 322,
+          "3_a_5_sm": 196,
+          "5_a_10_sm": 83,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2668,
+          "evangelica": 1425,
+          "espirita": 17,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 48,
+          "sem_religiao": 221,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1301,
+          "fundamental_completo_medio_incompleto": 616,
+          "medio_completo_superior_incompleto": 1816,
+          "superior_completo": 400
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3302502,
+      "nome": "Magé",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.61262,
+      "lon": -43.11302,
+      "coordenada_metodo": "centroide",
+      "area_km2": 390.775,
+      "populacao": 244166,
+      "eleitorado": 192371,
+      "urbana_pct": 98.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 228127,
+        "situacao": {
+          "urbana": 225431,
+          "rural": 2696
+        },
+        "idade": {
+          "0_15": 49487,
+          "16_17": 6593,
+          "18_24": 23760,
+          "25_34": 33080,
+          "35_44": 33697,
+          "45_59": 44598,
+          "60_69": 21451,
+          "70_mais": 15461
+        },
+        "renda": {
+          "sem_rendimento": 7944,
+          "ate_1_4_sm": 28630,
+          "1_4_a_1_2_sm": 53284,
+          "1_2_a_1_sm": 76695,
+          "1_a_2_sm": 44188,
+          "2_a_3_sm": 9699,
+          "3_a_5_sm": 4238,
+          "5_a_10_sm": 1143,
+          "10_a_15_sm": 160,
+          "15_a_20_sm": 29,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 55013,
+          "evangelica": 70799,
+          "espirita": 4350,
+          "umbanda_candomble": 4256,
+          "tradicoes_indigenas": 31,
+          "outras": 11145,
+          "sem_religiao": 36023,
+          "nao_sabe": 146,
+          "sem_declaracao": 218
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 55284,
+          "fundamental_completo_medio_incompleto": 38369,
+          "medio_completo_superior_incompleto": 65788,
+          "superior_completo": 13207
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302601,
+      "nome": "Mangaratiba",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33017,
+        "nome": "Itaguaí"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.95413,
+      "lon": -44.03804,
+      "coordenada_metodo": "centroide",
+      "area_km2": 367.606,
+      "populacao": 43677,
+      "eleitorado": 46448,
+      "urbana_pct": 94.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41220,
+        "situacao": {
+          "urbana": 38984,
+          "rural": 2236
+        },
+        "idade": {
+          "0_15": 7852,
+          "16_17": 1007,
+          "18_24": 3794,
+          "25_34": 5535,
+          "35_44": 6104,
+          "45_59": 8795,
+          "60_69": 4798,
+          "70_mais": 3335
+        },
+        "renda": {
+          "sem_rendimento": 2546,
+          "ate_1_4_sm": 2862,
+          "1_4_a_1_2_sm": 7117,
+          "1_2_a_1_sm": 11985,
+          "1_a_2_sm": 10226,
+          "2_a_3_sm": 3106,
+          "3_a_5_sm": 2434,
+          "5_a_10_sm": 816,
+          "10_a_15_sm": 96,
+          "15_a_20_sm": 18,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14212,
+          "evangelica": 11200,
+          "espirita": 1162,
+          "umbanda_candomble": 808,
+          "tradicoes_indigenas": 0,
+          "outras": 2161,
+          "sem_religiao": 4184,
+          "nao_sabe": 110,
+          "sem_declaracao": 79
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8347,
+          "fundamental_completo_medio_incompleto": 5636,
+          "medio_completo_superior_incompleto": 14325,
+          "superior_completo": 4081
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3302700,
+      "nome": "Maricá",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.91532,
+      "lon": -42.81698,
+      "coordenada_metodo": "centroide",
+      "area_km2": 361.572,
+      "populacao": 212703,
+      "eleitorado": 185067,
+      "urbana_pct": 99.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 197277,
+        "situacao": {
+          "urbana": 195421,
+          "rural": 1856
+        },
+        "idade": {
+          "0_15": 37799,
+          "16_17": 5008,
+          "18_24": 17836,
+          "25_34": 25282,
+          "35_44": 31188,
+          "45_59": 42249,
+          "60_69": 22450,
+          "70_mais": 15465
+        },
+        "renda": {
+          "sem_rendimento": 5744,
+          "ate_1_4_sm": 11477,
+          "1_4_a_1_2_sm": 28696,
+          "1_2_a_1_sm": 56372,
+          "1_a_2_sm": 56257,
+          "2_a_3_sm": 18977,
+          "3_a_5_sm": 13231,
+          "5_a_10_sm": 5157,
+          "10_a_15_sm": 749,
+          "15_a_20_sm": 97,
+          "mais_de_20_sm": 62
+        },
+        "religiao": {
+          "catolica": 58395,
+          "evangelica": 51032,
+          "espirita": 7138,
+          "umbanda_candomble": 5403,
+          "tradicoes_indigenas": 24,
+          "outras": 10874,
+          "sem_religiao": 28912,
+          "nao_sabe": 107,
+          "sem_declaracao": 79
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 31580,
+          "fundamental_completo_medio_incompleto": 22072,
+          "medio_completo_superior_incompleto": 72490,
+          "superior_completo": 28264
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302809,
+      "nome": "Mendes",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33014,
+        "nome": "Vassouras"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.52153,
+      "lon": -43.73976,
+      "coordenada_metodo": "centroide",
+      "area_km2": 95.324,
+      "populacao": 18048,
+      "eleitorado": 14843,
+      "urbana_pct": 98,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17502,
+        "situacao": {
+          "urbana": 17144,
+          "rural": 358
+        },
+        "idade": {
+          "0_15": 3075,
+          "16_17": 392,
+          "18_24": 1489,
+          "25_34": 2225,
+          "35_44": 2422,
+          "45_59": 3864,
+          "60_69": 2300,
+          "70_mais": 1735
+        },
+        "renda": {
+          "sem_rendimento": 248,
+          "ate_1_4_sm": 1277,
+          "1_4_a_1_2_sm": 3197,
+          "1_2_a_1_sm": 6281,
+          "1_a_2_sm": 4288,
+          "2_a_3_sm": 1147,
+          "3_a_5_sm": 757,
+          "5_a_10_sm": 238,
+          "10_a_15_sm": 37,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6994,
+          "evangelica": 4509,
+          "espirita": 451,
+          "umbanda_candomble": 253,
+          "tradicoes_indigenas": 0,
+          "outras": 618,
+          "sem_religiao": 1633,
+          "nao_sabe": 52,
+          "sem_declaracao": 33
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4101,
+          "fundamental_completo_medio_incompleto": 2253,
+          "medio_completo_superior_incompleto": 5612,
+          "superior_completo": 2041
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3302858,
+      "nome": "Mesquita",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.79931,
+      "lon": -43.45232,
+      "coordenada_metodo": "centroide",
+      "area_km2": 41.169,
+      "populacao": 178780,
+      "eleitorado": 135926,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 167127,
+        "situacao": {
+          "urbana": 167127,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 33181,
+          "16_17": 4363,
+          "18_24": 17283,
+          "25_34": 24410,
+          "35_44": 25484,
+          "45_59": 33255,
+          "60_69": 16912,
+          "70_mais": 12239
+        },
+        "renda": {
+          "sem_rendimento": 10510,
+          "ate_1_4_sm": 19066,
+          "1_4_a_1_2_sm": 36468,
+          "1_2_a_1_sm": 50403,
+          "1_a_2_sm": 35128,
+          "2_a_3_sm": 9183,
+          "3_a_5_sm": 4832,
+          "5_a_10_sm": 1023,
+          "10_a_15_sm": 116,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 41509,
+          "evangelica": 51412,
+          "espirita": 3704,
+          "umbanda_candomble": 4948,
+          "tradicoes_indigenas": 13,
+          "outras": 8505,
+          "sem_religiao": 24662,
+          "nao_sabe": 59,
+          "sem_declaracao": 194
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 32853,
+          "fundamental_completo_medio_incompleto": 23090,
+          "medio_completo_superior_incompleto": 59058,
+          "superior_completo": 13350
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 12,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3302908,
+      "nome": "Miguel Pereira",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33014,
+        "nome": "Vassouras"
+      },
+      "regiao_imediata": {
+        "id": 330006,
+        "nome": "Valença"
+      },
+      "lat": -22.50649,
+      "lon": -43.46924,
+      "coordenada_metodo": "centroide",
+      "area_km2": 287.933,
+      "populacao": 28151,
+      "eleitorado": 24744,
+      "urbana_pct": 90.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26582,
+        "situacao": {
+          "urbana": 24027,
+          "rural": 2555
+        },
+        "idade": {
+          "0_15": 4566,
+          "16_17": 604,
+          "18_24": 2308,
+          "25_34": 3306,
+          "35_44": 3674,
+          "45_59": 5569,
+          "60_69": 3393,
+          "70_mais": 3162
+        },
+        "renda": {
+          "sem_rendimento": 597,
+          "ate_1_4_sm": 1623,
+          "1_4_a_1_2_sm": 3955,
+          "1_2_a_1_sm": 7883,
+          "1_a_2_sm": 7434,
+          "2_a_3_sm": 2196,
+          "3_a_5_sm": 1819,
+          "5_a_10_sm": 831,
+          "10_a_15_sm": 125,
+          "15_a_20_sm": 76,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 7710,
+          "evangelica": 8292,
+          "espirita": 1284,
+          "umbanda_candomble": 569,
+          "tradicoes_indigenas": 27,
+          "outras": 1254,
+          "sem_religiao": 3166,
+          "nao_sabe": 19,
+          "sem_declaracao": 15
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6071,
+          "fundamental_completo_medio_incompleto": 2573,
+          "medio_completo_superior_incompleto": 8495,
+          "superior_completo": 4266
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3303005,
+      "nome": "Miracema",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33002,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "regiao_imediata": {
+        "id": 330012,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "lat": -21.39558,
+      "lon": -42.1522,
+      "coordenada_metodo": "centroide",
+      "area_km2": 303.27,
+      "populacao": 28418,
+      "eleitorado": 21061,
+      "urbana_pct": 94,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26881,
+        "situacao": {
+          "urbana": 25264,
+          "rural": 1617
+        },
+        "idade": {
+          "0_15": 5361,
+          "16_17": 742,
+          "18_24": 2633,
+          "25_34": 3717,
+          "35_44": 3783,
+          "45_59": 5320,
+          "60_69": 2831,
+          "70_mais": 2494
+        },
+        "renda": {
+          "sem_rendimento": 314,
+          "ate_1_4_sm": 2031,
+          "1_4_a_1_2_sm": 5774,
+          "1_2_a_1_sm": 9546,
+          "1_a_2_sm": 6005,
+          "2_a_3_sm": 1571,
+          "3_a_5_sm": 941,
+          "5_a_10_sm": 502,
+          "10_a_15_sm": 60,
+          "15_a_20_sm": 65,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14709,
+          "evangelica": 5602,
+          "espirita": 158,
+          "umbanda_candomble": 146,
+          "tradicoes_indigenas": 0,
+          "outras": 367,
+          "sem_religiao": 889,
+          "nao_sabe": 29,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6696,
+          "fundamental_completo_medio_incompleto": 3337,
+          "medio_completo_superior_incompleto": 8148,
+          "superior_completo": 2478
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3303104,
+      "nome": "Natividade",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -21.04165,
+      "lon": -41.93126,
+      "coordenada_metodo": "centroide",
+      "area_km2": 387.073,
+      "populacao": 15552,
+      "eleitorado": 12427,
+      "urbana_pct": 88.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15074,
+        "situacao": {
+          "urbana": 13322,
+          "rural": 1752
+        },
+        "idade": {
+          "0_15": 2796,
+          "16_17": 394,
+          "18_24": 1434,
+          "25_34": 1942,
+          "35_44": 2175,
+          "45_59": 3019,
+          "60_69": 1738,
+          "70_mais": 1576
+        },
+        "renda": {
+          "sem_rendimento": 141,
+          "ate_1_4_sm": 1258,
+          "1_4_a_1_2_sm": 2959,
+          "1_2_a_1_sm": 5146,
+          "1_a_2_sm": 3831,
+          "2_a_3_sm": 820,
+          "3_a_5_sm": 551,
+          "5_a_10_sm": 273,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 7776,
+          "evangelica": 3760,
+          "espirita": 272,
+          "umbanda_candomble": 41,
+          "tradicoes_indigenas": 0,
+          "outras": 256,
+          "sem_religiao": 335,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4638,
+          "fundamental_completo_medio_incompleto": 1498,
+          "medio_completo_superior_incompleto": 4246,
+          "superior_completo": 1524
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3303203,
+      "nome": "Nilópolis",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.82107,
+      "lon": -43.42895,
+      "coordenada_metodo": "centroide",
+      "area_km2": 19.393,
+      "populacao": 155478,
+      "eleitorado": 128274,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 146774,
+        "situacao": {
+          "urbana": 146774,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 26168,
+          "16_17": 3559,
+          "18_24": 13660,
+          "25_34": 20626,
+          "35_44": 22968,
+          "45_59": 30251,
+          "60_69": 16698,
+          "70_mais": 12844
+        },
+        "renda": {
+          "sem_rendimento": 5894,
+          "ate_1_4_sm": 13069,
+          "1_4_a_1_2_sm": 28442,
+          "1_2_a_1_sm": 44494,
+          "1_a_2_sm": 36059,
+          "2_a_3_sm": 11413,
+          "3_a_5_sm": 5757,
+          "5_a_10_sm": 1364,
+          "10_a_15_sm": 87,
+          "15_a_20_sm": 48,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 39257,
+          "evangelica": 39245,
+          "espirita": 3784,
+          "umbanda_candomble": 4563,
+          "tradicoes_indigenas": 12,
+          "outras": 7206,
+          "sem_religiao": 26435,
+          "nao_sabe": 30,
+          "sem_declaracao": 197
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 22871,
+          "fundamental_completo_medio_incompleto": 19177,
+          "medio_completo_superior_incompleto": 58781,
+          "superior_completo": 14706
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 12,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3303302,
+      "nome": "Niterói",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.91499,
+      "lon": -43.05534,
+      "coordenada_metodo": "centroide",
+      "area_km2": 133.757,
+      "populacao": 516820,
+      "eleitorado": 410089,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 481749,
+        "situacao": {
+          "urbana": 481749,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 75177,
+          "16_17": 9807,
+          "18_24": 41551,
+          "25_34": 67029,
+          "35_44": 75540,
+          "45_59": 97824,
+          "60_69": 58880,
+          "70_mais": 55941
+        },
+        "renda": {
+          "sem_rendimento": 18016,
+          "ate_1_4_sm": 23445,
+          "1_4_a_1_2_sm": 46284,
+          "1_2_a_1_sm": 85307,
+          "1_a_2_sm": 93622,
+          "2_a_3_sm": 57468,
+          "3_a_5_sm": 71797,
+          "5_a_10_sm": 61324,
+          "10_a_15_sm": 15206,
+          "15_a_20_sm": 4663,
+          "mais_de_20_sm": 2553
+        },
+        "religiao": {
+          "catolica": 186096,
+          "evangelica": 89601,
+          "espirita": 24938,
+          "umbanda_candomble": 12777,
+          "tradicoes_indigenas": 43,
+          "outras": 27520,
+          "sem_religiao": 68851,
+          "nao_sabe": 713,
+          "sem_declaracao": 338
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 52788,
+          "fundamental_completo_medio_incompleto": 41691,
+          "medio_completo_superior_incompleto": 147204,
+          "superior_completo": 154516
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3303401,
+      "nome": "Nova Friburgo",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33007,
+        "nome": "Nova Friburgo"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.31912,
+      "lon": -42.50103,
+      "coordenada_metodo": "centroide",
+      "area_km2": 935.429,
+      "populacao": 203460,
+      "eleitorado": 154726,
+      "urbana_pct": 89.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 189939,
+        "situacao": {
+          "urbana": 170778,
+          "rural": 19161
+        },
+        "idade": {
+          "0_15": 32781,
+          "16_17": 4403,
+          "18_24": 17357,
+          "25_34": 25803,
+          "35_44": 29253,
+          "45_59": 39915,
+          "60_69": 21902,
+          "70_mais": 18525
+        },
+        "renda": {
+          "sem_rendimento": 5248,
+          "ate_1_4_sm": 7107,
+          "1_4_a_1_2_sm": 24279,
+          "1_2_a_1_sm": 60716,
+          "1_a_2_sm": 57781,
+          "2_a_3_sm": 17014,
+          "3_a_5_sm": 10355,
+          "5_a_10_sm": 5469,
+          "10_a_15_sm": 943,
+          "15_a_20_sm": 180,
+          "mais_de_20_sm": 162
+        },
+        "religiao": {
+          "catolica": 73884,
+          "evangelica": 46113,
+          "espirita": 4835,
+          "umbanda_candomble": 2687,
+          "tradicoes_indigenas": 22,
+          "outras": 8901,
+          "sem_religiao": 22713,
+          "nao_sabe": 312,
+          "sem_declaracao": 89
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 51418,
+          "fundamental_completo_medio_incompleto": 26030,
+          "medio_completo_superior_incompleto": 50500,
+          "superior_completo": 24828
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3303500,
+      "nome": "Nova Iguaçu",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.68676,
+      "lon": -43.50184,
+      "coordenada_metodo": "centroide",
+      "area_km2": 520.581,
+      "populacao": 843367,
+      "eleitorado": 613316,
+      "urbana_pct": 99.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 785867,
+        "situacao": {
+          "urbana": 782611,
+          "rural": 3256
+        },
+        "idade": {
+          "0_15": 163371,
+          "16_17": 21726,
+          "18_24": 83469,
+          "25_34": 116554,
+          "35_44": 118914,
+          "45_59": 154514,
+          "60_69": 74618,
+          "70_mais": 52701
+        },
+        "renda": {
+          "sem_rendimento": 39322,
+          "ate_1_4_sm": 103507,
+          "1_4_a_1_2_sm": 183066,
+          "1_2_a_1_sm": 242911,
+          "1_a_2_sm": 148825,
+          "2_a_3_sm": 37878,
+          "3_a_5_sm": 19916,
+          "5_a_10_sm": 7980,
+          "10_a_15_sm": 816,
+          "15_a_20_sm": 52,
+          "mais_de_20_sm": 161
+        },
+        "religiao": {
+          "catolica": 175834,
+          "evangelica": 253530,
+          "espirita": 14974,
+          "umbanda_candomble": 17392,
+          "tradicoes_indigenas": 108,
+          "outras": 47053,
+          "sem_religiao": 123283,
+          "nao_sabe": 127,
+          "sem_declaracao": 1331
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 181357,
+          "fundamental_completo_medio_incompleto": 113523,
+          "medio_completo_superior_incompleto": 250323,
+          "superior_completo": 57203
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 23,
+      "vagas_vereador_max": 29,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3303609,
+      "nome": "Paracambi",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33014,
+        "nome": "Vassouras"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.6179,
+      "lon": -43.72152,
+      "coordenada_metodo": "centroide",
+      "area_km2": 190.949,
+      "populacao": 43451,
+      "eleitorado": 33631,
+      "urbana_pct": 94.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41375,
+        "situacao": {
+          "urbana": 39268,
+          "rural": 2107
+        },
+        "idade": {
+          "0_15": 7404,
+          "16_17": 976,
+          "18_24": 3932,
+          "25_34": 6012,
+          "35_44": 6397,
+          "45_59": 8897,
+          "60_69": 4441,
+          "70_mais": 3316
+        },
+        "renda": {
+          "sem_rendimento": 869,
+          "ate_1_4_sm": 2664,
+          "1_4_a_1_2_sm": 8148,
+          "1_2_a_1_sm": 14753,
+          "1_a_2_sm": 10225,
+          "2_a_3_sm": 2409,
+          "3_a_5_sm": 1373,
+          "5_a_10_sm": 651,
+          "10_a_15_sm": 40,
+          "15_a_20_sm": 31,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9697,
+          "evangelica": 15838,
+          "espirita": 483,
+          "umbanda_candomble": 673,
+          "tradicoes_indigenas": 0,
+          "outras": 1470,
+          "sem_religiao": 6151,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8679,
+          "fundamental_completo_medio_incompleto": 4954,
+          "medio_completo_superior_incompleto": 15278,
+          "superior_completo": 3726
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3303708,
+      "nome": "Paraíba do Sul",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33005,
+        "nome": "Três Rios"
+      },
+      "regiao_imediata": {
+        "id": 330009,
+        "nome": "Três Rios - Paraíba do Sul"
+      },
+      "lat": -22.18196,
+      "lon": -43.30433,
+      "coordenada_metodo": "centroide",
+      "area_km2": 571.118,
+      "populacao": 44485,
+      "eleitorado": 34234,
+      "urbana_pct": 91.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 42063,
+        "situacao": {
+          "urbana": 38591,
+          "rural": 3472
+        },
+        "idade": {
+          "0_15": 8533,
+          "16_17": 1132,
+          "18_24": 4069,
+          "25_34": 5597,
+          "35_44": 6060,
+          "45_59": 8381,
+          "60_69": 4624,
+          "70_mais": 3667
+        },
+        "renda": {
+          "sem_rendimento": 1415,
+          "ate_1_4_sm": 5367,
+          "1_4_a_1_2_sm": 8293,
+          "1_2_a_1_sm": 13669,
+          "1_a_2_sm": 8567,
+          "2_a_3_sm": 2857,
+          "3_a_5_sm": 1269,
+          "5_a_10_sm": 433,
+          "10_a_15_sm": 48,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 23
+        },
+        "religiao": {
+          "catolica": 18232,
+          "evangelica": 10118,
+          "espirita": 944,
+          "umbanda_candomble": 482,
+          "tradicoes_indigenas": 0,
+          "outras": 1071,
+          "sem_religiao": 3087,
+          "nao_sabe": 0,
+          "sem_declaracao": 131
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11001,
+          "fundamental_completo_medio_incompleto": 6108,
+          "medio_completo_superior_incompleto": 11796,
+          "superior_completo": 3534
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3303807,
+      "nome": "Paraty",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33013,
+        "nome": "Baía da Ilha Grande"
+      },
+      "regiao_imediata": {
+        "id": 330002,
+        "nome": "Angra dos Reis"
+      },
+      "lat": -23.14831,
+      "lon": -44.70624,
+      "coordenada_metodo": "centroide",
+      "area_km2": 924.295,
+      "populacao": 47694,
+      "eleitorado": 35465,
+      "urbana_pct": 80.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 45243,
+        "situacao": {
+          "urbana": 36230,
+          "rural": 9013
+        },
+        "idade": {
+          "0_15": 9725,
+          "16_17": 1366,
+          "18_24": 4477,
+          "25_34": 6561,
+          "35_44": 7858,
+          "45_59": 8950,
+          "60_69": 3918,
+          "70_mais": 2388
+        },
+        "renda": {
+          "sem_rendimento": 1616,
+          "ate_1_4_sm": 2595,
+          "1_4_a_1_2_sm": 6992,
+          "1_2_a_1_sm": 14261,
+          "1_a_2_sm": 11444,
+          "2_a_3_sm": 4286,
+          "3_a_5_sm": 2537,
+          "5_a_10_sm": 1141,
+          "10_a_15_sm": 151,
+          "15_a_20_sm": 35,
+          "mais_de_20_sm": 22
+        },
+        "religiao": {
+          "catolica": 12456,
+          "evangelica": 12515,
+          "espirita": 556,
+          "umbanda_candomble": 586,
+          "tradicoes_indigenas": 107,
+          "outras": 2464,
+          "sem_religiao": 7346,
+          "nao_sabe": 23,
+          "sem_declaracao": 70
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12130,
+          "fundamental_completo_medio_incompleto": 5594,
+          "medio_completo_superior_incompleto": 11151,
+          "superior_completo": 5416
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3303856,
+      "nome": "Paty do Alferes",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33014,
+        "nome": "Vassouras"
+      },
+      "regiao_imediata": {
+        "id": 330006,
+        "nome": "Valença"
+      },
+      "lat": -22.36702,
+      "lon": -43.40397,
+      "coordenada_metodo": "centroide",
+      "area_km2": 314.341,
+      "populacao": 31382,
+      "eleitorado": 24230,
+      "urbana_pct": 76.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 29619,
+        "situacao": {
+          "urbana": 22775,
+          "rural": 6844
+        },
+        "idade": {
+          "0_15": 6129,
+          "16_17": 781,
+          "18_24": 2918,
+          "25_34": 4171,
+          "35_44": 4301,
+          "45_59": 5808,
+          "60_69": 3123,
+          "70_mais": 2388
+        },
+        "renda": {
+          "sem_rendimento": 843,
+          "ate_1_4_sm": 2585,
+          "1_4_a_1_2_sm": 7182,
+          "1_2_a_1_sm": 10366,
+          "1_a_2_sm": 6194,
+          "2_a_3_sm": 1183,
+          "3_a_5_sm": 629,
+          "5_a_10_sm": 462,
+          "10_a_15_sm": 58,
+          "15_a_20_sm": 40,
+          "mais_de_20_sm": 13
+        },
+        "religiao": {
+          "catolica": 6935,
+          "evangelica": 11414,
+          "espirita": 555,
+          "umbanda_candomble": 248,
+          "tradicoes_indigenas": 0,
+          "outras": 648,
+          "sem_religiao": 4004,
+          "nao_sabe": 0,
+          "sem_declaracao": 76
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10342,
+          "fundamental_completo_medio_incompleto": 3268,
+          "medio_completo_superior_incompleto": 6697,
+          "superior_completo": 2346
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3303906,
+      "nome": "Petrópolis",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33015,
+        "nome": "Serrana"
+      },
+      "regiao_imediata": {
+        "id": 330007,
+        "nome": "Petrópolis"
+      },
+      "lat": -22.39796,
+      "lon": -43.15683,
+      "coordenada_metodo": "centroide",
+      "area_km2": 791.144,
+      "populacao": 294954,
+      "eleitorado": 238546,
+      "urbana_pct": 96.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 278881,
+        "situacao": {
+          "urbana": 270361,
+          "rural": 8520
+        },
+        "idade": {
+          "0_15": 49241,
+          "16_17": 6600,
+          "18_24": 25875,
+          "25_34": 37945,
+          "35_44": 41685,
+          "45_59": 58106,
+          "60_69": 30905,
+          "70_mais": 28524
+        },
+        "renda": {
+          "sem_rendimento": 9632,
+          "ate_1_4_sm": 15227,
+          "1_4_a_1_2_sm": 40403,
+          "1_2_a_1_sm": 84454,
+          "1_a_2_sm": 76750,
+          "2_a_3_sm": 23203,
+          "3_a_5_sm": 15861,
+          "5_a_10_sm": 9024,
+          "10_a_15_sm": 2089,
+          "15_a_20_sm": 501,
+          "mais_de_20_sm": 474
+        },
+        "religiao": {
+          "catolica": 113065,
+          "evangelica": 66420,
+          "espirita": 9025,
+          "umbanda_candomble": 3486,
+          "tradicoes_indigenas": 60,
+          "outras": 10809,
+          "sem_religiao": 29328,
+          "nao_sabe": 358,
+          "sem_declaracao": 169
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 70969,
+          "fundamental_completo_medio_incompleto": 37037,
+          "medio_completo_superior_incompleto": 76227,
+          "superior_completo": 38777
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3303955,
+      "nome": "Pinheiral",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.54333,
+      "lon": -43.99755,
+      "coordenada_metodo": "centroide",
+      "area_km2": 82.254,
+      "populacao": 25102,
+      "eleitorado": 18783,
+      "urbana_pct": 94.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24298,
+        "situacao": {
+          "urbana": 22870,
+          "rural": 1428
+        },
+        "idade": {
+          "0_15": 4913,
+          "16_17": 636,
+          "18_24": 2324,
+          "25_34": 3338,
+          "35_44": 3887,
+          "45_59": 4719,
+          "60_69": 2710,
+          "70_mais": 1771
+        },
+        "renda": {
+          "sem_rendimento": 592,
+          "ate_1_4_sm": 1996,
+          "1_4_a_1_2_sm": 4940,
+          "1_2_a_1_sm": 7729,
+          "1_a_2_sm": 6165,
+          "2_a_3_sm": 1475,
+          "3_a_5_sm": 1001,
+          "5_a_10_sm": 312,
+          "10_a_15_sm": 34,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 21
+        },
+        "religiao": {
+          "catolica": 8174,
+          "evangelica": 6950,
+          "espirita": 886,
+          "umbanda_candomble": 553,
+          "tradicoes_indigenas": 0,
+          "outras": 827,
+          "sem_religiao": 2438,
+          "nao_sabe": 14,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5326,
+          "fundamental_completo_medio_incompleto": 3378,
+          "medio_completo_superior_incompleto": 7663,
+          "superior_completo": 2540
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304003,
+      "nome": "Piraí",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.63359,
+      "lon": -43.90171,
+      "coordenada_metodo": "centroide",
+      "area_km2": 490.255,
+      "populacao": 29072,
+      "eleitorado": 23663,
+      "urbana_pct": 84.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27474,
+        "situacao": {
+          "urbana": 23300,
+          "rural": 4174
+        },
+        "idade": {
+          "0_15": 5486,
+          "16_17": 680,
+          "18_24": 2605,
+          "25_34": 3840,
+          "35_44": 4135,
+          "45_59": 5510,
+          "60_69": 2938,
+          "70_mais": 2280
+        },
+        "renda": {
+          "sem_rendimento": 616,
+          "ate_1_4_sm": 1799,
+          "1_4_a_1_2_sm": 5400,
+          "1_2_a_1_sm": 8781,
+          "1_a_2_sm": 6896,
+          "2_a_3_sm": 2274,
+          "3_a_5_sm": 1156,
+          "5_a_10_sm": 463,
+          "10_a_15_sm": 68,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9735,
+          "evangelica": 7797,
+          "espirita": 633,
+          "umbanda_candomble": 497,
+          "tradicoes_indigenas": 0,
+          "outras": 929,
+          "sem_religiao": 2604,
+          "nao_sabe": 0,
+          "sem_declaracao": 127
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6456,
+          "fundamental_completo_medio_incompleto": 3196,
+          "medio_completo_superior_incompleto": 8700,
+          "superior_completo": 2848
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304102,
+      "nome": "Porciúncula",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -20.89563,
+      "lon": -41.93322,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 291.847,
+      "populacao": 17833,
+      "eleitorado": 13273,
+      "urbana_pct": 80.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17288,
+        "situacao": {
+          "urbana": 13862,
+          "rural": 3426
+        },
+        "idade": {
+          "0_15": 3509,
+          "16_17": 472,
+          "18_24": 1705,
+          "25_34": 2333,
+          "35_44": 2550,
+          "45_59": 3341,
+          "60_69": 1811,
+          "70_mais": 1567
+        },
+        "renda": {
+          "sem_rendimento": 219,
+          "ate_1_4_sm": 1921,
+          "1_4_a_1_2_sm": 3472,
+          "1_2_a_1_sm": 5678,
+          "1_a_2_sm": 3669,
+          "2_a_3_sm": 1082,
+          "3_a_5_sm": 763,
+          "5_a_10_sm": 336,
+          "10_a_15_sm": 61,
+          "15_a_20_sm": 28,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8339,
+          "evangelica": 3849,
+          "espirita": 218,
+          "umbanda_candomble": 89,
+          "tradicoes_indigenas": 0,
+          "outras": 283,
+          "sem_religiao": 1198,
+          "nao_sabe": 0,
+          "sem_declaracao": 28
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4958,
+          "fundamental_completo_medio_incompleto": 1987,
+          "medio_completo_superior_incompleto": 4803,
+          "superior_completo": 1598
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3304110,
+      "nome": "Porto Real",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330005,
+        "nome": "Resende"
+      },
+      "lat": -22.44112,
+      "lon": -44.32604,
+      "coordenada_metodo": "centroide",
+      "area_km2": 50.892,
+      "populacao": 21101,
+      "eleitorado": 17900,
+      "urbana_pct": 99.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20373,
+        "situacao": {
+          "urbana": 20228,
+          "rural": 145
+        },
+        "idade": {
+          "0_15": 4473,
+          "16_17": 551,
+          "18_24": 2116,
+          "25_34": 3038,
+          "35_44": 3326,
+          "45_59": 3930,
+          "60_69": 1808,
+          "70_mais": 1131
+        },
+        "renda": {
+          "sem_rendimento": 394,
+          "ate_1_4_sm": 1311,
+          "1_4_a_1_2_sm": 4048,
+          "1_2_a_1_sm": 8020,
+          "1_a_2_sm": 4629,
+          "2_a_3_sm": 1106,
+          "3_a_5_sm": 705,
+          "5_a_10_sm": 122,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8121,
+          "evangelica": 6151,
+          "espirita": 233,
+          "umbanda_candomble": 107,
+          "tradicoes_indigenas": 0,
+          "outras": 612,
+          "sem_religiao": 951,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4930,
+          "fundamental_completo_medio_incompleto": 2942,
+          "medio_completo_superior_incompleto": 5552,
+          "superior_completo": 1827
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304128,
+      "nome": "Quatis",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330005,
+        "nome": "Resende"
+      },
+      "lat": -22.35515,
+      "lon": -44.2371,
+      "coordenada_metodo": "centroide",
+      "area_km2": 284.826,
+      "populacao": 14168,
+      "eleitorado": 10464,
+      "urbana_pct": 93.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13682,
+        "situacao": {
+          "urbana": 12838,
+          "rural": 844
+        },
+        "idade": {
+          "0_15": 2806,
+          "16_17": 367,
+          "18_24": 1345,
+          "25_34": 1895,
+          "35_44": 2116,
+          "45_59": 2718,
+          "60_69": 1359,
+          "70_mais": 1076
+        },
+        "renda": {
+          "sem_rendimento": 422,
+          "ate_1_4_sm": 1180,
+          "1_4_a_1_2_sm": 2467,
+          "1_2_a_1_sm": 4895,
+          "1_a_2_sm": 3243,
+          "2_a_3_sm": 864,
+          "3_a_5_sm": 413,
+          "5_a_10_sm": 171,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6488,
+          "evangelica": 2996,
+          "espirita": 281,
+          "umbanda_candomble": 218,
+          "tradicoes_indigenas": 4,
+          "outras": 393,
+          "sem_religiao": 645,
+          "nao_sabe": 5,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3486,
+          "fundamental_completo_medio_incompleto": 1724,
+          "medio_completo_superior_incompleto": 3958,
+          "superior_completo": 1276
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3304144,
+      "nome": "Queimados",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.72542,
+      "lon": -43.58492,
+      "coordenada_metodo": "centroide",
+      "area_km2": 75.927,
+      "populacao": 149155,
+      "eleitorado": 104415,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 140523,
+        "situacao": {
+          "urbana": 140514,
+          "rural": 9
+        },
+        "idade": {
+          "0_15": 30917,
+          "16_17": 4136,
+          "18_24": 15115,
+          "25_34": 20929,
+          "35_44": 21756,
+          "45_59": 27072,
+          "60_69": 12389,
+          "70_mais": 8209
+        },
+        "renda": {
+          "sem_rendimento": 5166,
+          "ate_1_4_sm": 20911,
+          "1_4_a_1_2_sm": 35684,
+          "1_2_a_1_sm": 46058,
+          "1_a_2_sm": 24671,
+          "2_a_3_sm": 5139,
+          "3_a_5_sm": 2145,
+          "5_a_10_sm": 421,
+          "10_a_15_sm": 80,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 21
+        },
+        "religiao": {
+          "catolica": 26456,
+          "evangelica": 49312,
+          "espirita": 1517,
+          "umbanda_candomble": 1608,
+          "tradicoes_indigenas": 42,
+          "outras": 9106,
+          "sem_religiao": 23186,
+          "nao_sabe": 0,
+          "sem_declaracao": 149
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 32164,
+          "fundamental_completo_medio_incompleto": 20379,
+          "medio_completo_superior_incompleto": 45277,
+          "superior_completo": 7034
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3304151,
+      "nome": "Quissamã",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33004,
+        "nome": "Macaé"
+      },
+      "regiao_imediata": {
+        "id": 330014,
+        "nome": "Macaé - Rio das Ostras"
+      },
+      "lat": -22.1048,
+      "lon": -41.4444,
+      "coordenada_metodo": "centroide",
+      "area_km2": 719.643,
+      "populacao": 23149,
+      "eleitorado": 19102,
+      "urbana_pct": 81.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 22393,
+        "situacao": {
+          "urbana": 18156,
+          "rural": 4237
+        },
+        "idade": {
+          "0_15": 4954,
+          "16_17": 638,
+          "18_24": 2162,
+          "25_34": 3141,
+          "35_44": 3299,
+          "45_59": 4300,
+          "60_69": 2210,
+          "70_mais": 1689
+        },
+        "renda": {
+          "sem_rendimento": 871,
+          "ate_1_4_sm": 3400,
+          "1_4_a_1_2_sm": 4878,
+          "1_2_a_1_sm": 7126,
+          "1_a_2_sm": 4074,
+          "2_a_3_sm": 1300,
+          "3_a_5_sm": 429,
+          "5_a_10_sm": 248,
+          "10_a_15_sm": 54,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8189,
+          "evangelica": 5982,
+          "espirita": 216,
+          "umbanda_candomble": 287,
+          "tradicoes_indigenas": 0,
+          "outras": 837,
+          "sem_religiao": 2180,
+          "nao_sabe": 38,
+          "sem_declaracao": 38
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6132,
+          "fundamental_completo_medio_incompleto": 2920,
+          "medio_completo_superior_incompleto": 5866,
+          "superior_completo": 1796
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304201,
+      "nome": "Resende",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330005,
+        "nome": "Resende"
+      },
+      "lat": -22.44064,
+      "lon": -44.48526,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1099.336,
+      "populacao": 137739,
+      "eleitorado": 97991,
+      "urbana_pct": 97.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 129612,
+        "situacao": {
+          "urbana": 126005,
+          "rural": 3607
+        },
+        "idade": {
+          "0_15": 25057,
+          "16_17": 3327,
+          "18_24": 12526,
+          "25_34": 19292,
+          "35_44": 21582,
+          "45_59": 25672,
+          "60_69": 12630,
+          "70_mais": 9526
+        },
+        "renda": {
+          "sem_rendimento": 2898,
+          "ate_1_4_sm": 5404,
+          "1_4_a_1_2_sm": 19481,
+          "1_2_a_1_sm": 39366,
+          "1_a_2_sm": 35123,
+          "2_a_3_sm": 12216,
+          "3_a_5_sm": 8275,
+          "5_a_10_sm": 4943,
+          "10_a_15_sm": 741,
+          "15_a_20_sm": 225,
+          "mais_de_20_sm": 159
+        },
+        "religiao": {
+          "catolica": 59537,
+          "evangelica": 30020,
+          "espirita": 2616,
+          "umbanda_candomble": 752,
+          "tradicoes_indigenas": 11,
+          "outras": 5349,
+          "sem_religiao": 7775,
+          "nao_sabe": 59,
+          "sem_declaracao": 91
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 23945,
+          "fundamental_completo_medio_incompleto": 15277,
+          "medio_completo_superior_incompleto": 40611,
+          "superior_completo": 21505
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3304300,
+      "nome": "Rio Bonito",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33016,
+        "nome": "Macacu-Caceribu"
+      },
+      "regiao_imediata": {
+        "id": 330003,
+        "nome": "Rio Bonito"
+      },
+      "lat": -22.73502,
+      "lon": -42.58807,
+      "coordenada_metodo": "centroide",
+      "area_km2": 459.458,
+      "populacao": 59147,
+      "eleitorado": 45355,
+      "urbana_pct": 87.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 56276,
+        "situacao": {
+          "urbana": 49239,
+          "rural": 7037
+        },
+        "idade": {
+          "0_15": 10750,
+          "16_17": 1483,
+          "18_24": 5423,
+          "25_34": 7678,
+          "35_44": 8810,
+          "45_59": 11573,
+          "60_69": 5846,
+          "70_mais": 4713
+        },
+        "renda": {
+          "sem_rendimento": 1006,
+          "ate_1_4_sm": 4520,
+          "1_4_a_1_2_sm": 10586,
+          "1_2_a_1_sm": 18867,
+          "1_a_2_sm": 13926,
+          "2_a_3_sm": 3846,
+          "3_a_5_sm": 2418,
+          "5_a_10_sm": 938,
+          "10_a_15_sm": 57,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 12
+        },
+        "religiao": {
+          "catolica": 14899,
+          "evangelica": 20222,
+          "espirita": 571,
+          "umbanda_candomble": 198,
+          "tradicoes_indigenas": 0,
+          "outras": 1898,
+          "sem_religiao": 8372,
+          "nao_sabe": 11,
+          "sem_declaracao": 81
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 15214,
+          "fundamental_completo_medio_incompleto": 5903,
+          "medio_completo_superior_incompleto": 16735,
+          "superior_completo": 6032
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304409,
+      "nome": "Rio Claro",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.78048,
+      "lon": -44.07838,
+      "coordenada_metodo": "centroide",
+      "area_km2": 846.797,
+      "populacao": 17951,
+      "eleitorado": 14679,
+      "urbana_pct": 82.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17401,
+        "situacao": {
+          "urbana": 14301,
+          "rural": 3100
+        },
+        "idade": {
+          "0_15": 3316,
+          "16_17": 453,
+          "18_24": 1743,
+          "25_34": 2199,
+          "35_44": 2698,
+          "45_59": 3572,
+          "60_69": 1891,
+          "70_mais": 1529
+        },
+        "renda": {
+          "sem_rendimento": 328,
+          "ate_1_4_sm": 1370,
+          "1_4_a_1_2_sm": 3598,
+          "1_2_a_1_sm": 5822,
+          "1_a_2_sm": 4533,
+          "2_a_3_sm": 1144,
+          "3_a_5_sm": 467,
+          "5_a_10_sm": 93,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9111,
+          "evangelica": 4154,
+          "espirita": 165,
+          "umbanda_candomble": 34,
+          "tradicoes_indigenas": 0,
+          "outras": 295,
+          "sem_religiao": 520,
+          "nao_sabe": 0,
+          "sem_declaracao": 37
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5680,
+          "fundamental_completo_medio_incompleto": 2005,
+          "medio_completo_superior_incompleto": 4442,
+          "superior_completo": 1487
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3304508,
+      "nome": "Rio das Flores",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33012,
+        "nome": "Barra do Piraí"
+      },
+      "regiao_imediata": {
+        "id": 330006,
+        "nome": "Valença"
+      },
+      "lat": -22.15989,
+      "lon": -43.53866,
+      "coordenada_metodo": "centroide",
+      "area_km2": 478.783,
+      "populacao": 9269,
+      "eleitorado": 8698,
+      "urbana_pct": 82.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8954,
+        "situacao": {
+          "urbana": 7349,
+          "rural": 1605
+        },
+        "idade": {
+          "0_15": 1842,
+          "16_17": 266,
+          "18_24": 900,
+          "25_34": 1290,
+          "35_44": 1233,
+          "45_59": 1799,
+          "60_69": 850,
+          "70_mais": 774
+        },
+        "renda": {
+          "sem_rendimento": 196,
+          "ate_1_4_sm": 814,
+          "1_4_a_1_2_sm": 2017,
+          "1_2_a_1_sm": 3541,
+          "1_a_2_sm": 1586,
+          "2_a_3_sm": 458,
+          "3_a_5_sm": 190,
+          "5_a_10_sm": 116,
+          "10_a_15_sm": 24,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4529,
+          "evangelica": 1547,
+          "espirita": 149,
+          "umbanda_candomble": 118,
+          "tradicoes_indigenas": 0,
+          "outras": 443,
+          "sem_religiao": 450,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2781,
+          "fundamental_completo_medio_incompleto": 1116,
+          "medio_completo_superior_incompleto": 2143,
+          "superior_completo": 822
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3304524,
+      "nome": "Rio das Ostras",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33009,
+        "nome": "Bacia de São João"
+      },
+      "regiao_imediata": {
+        "id": 330014,
+        "nome": "Macaé - Rio das Ostras"
+      },
+      "lat": -22.45424,
+      "lon": -41.94648,
+      "coordenada_metodo": "centroide",
+      "area_km2": 228.044,
+      "populacao": 168626,
+      "eleitorado": 106934,
+      "urbana_pct": 99.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 156491,
+        "situacao": {
+          "urbana": 156045,
+          "rural": 446
+        },
+        "idade": {
+          "0_15": 33678,
+          "16_17": 4309,
+          "18_24": 14919,
+          "25_34": 22205,
+          "35_44": 27752,
+          "45_59": 30199,
+          "60_69": 14176,
+          "70_mais": 9253
+        },
+        "renda": {
+          "sem_rendimento": 3459,
+          "ate_1_4_sm": 11184,
+          "1_4_a_1_2_sm": 23281,
+          "1_2_a_1_sm": 42022,
+          "1_a_2_sm": 41593,
+          "2_a_3_sm": 16182,
+          "3_a_5_sm": 11950,
+          "5_a_10_sm": 5741,
+          "10_a_15_sm": 756,
+          "15_a_20_sm": 79,
+          "mais_de_20_sm": 89
+        },
+        "religiao": {
+          "catolica": 38355,
+          "evangelica": 49319,
+          "espirita": 4149,
+          "umbanda_candomble": 2687,
+          "tradicoes_indigenas": 0,
+          "outras": 8976,
+          "sem_religiao": 20883,
+          "nao_sabe": 41,
+          "sem_declaracao": 212
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 24162,
+          "fundamental_completo_medio_incompleto": 17117,
+          "medio_completo_superior_incompleto": 54312,
+          "superior_completo": 22680
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3304557,
+      "nome": "Rio de Janeiro",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.92319,
+      "lon": -43.45099,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1200.329,
+      "populacao": 6731133,
+      "eleitorado": 4932385,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6211223,
+        "situacao": {
+          "urbana": 6211164,
+          "rural": 59
+        },
+        "idade": {
+          "0_15": 1104052,
+          "16_17": 146956,
+          "18_24": 592884,
+          "25_34": 914876,
+          "35_44": 984008,
+          "45_59": 1215276,
+          "60_69": 665416,
+          "70_mais": 587755
+        },
+        "renda": {
+          "sem_rendimento": 316036,
+          "ate_1_4_sm": 442734,
+          "1_4_a_1_2_sm": 876554,
+          "1_2_a_1_sm": 1536397,
+          "1_a_2_sm": 1347763,
+          "2_a_3_sm": 578132,
+          "3_a_5_sm": 521252,
+          "5_a_10_sm": 389720,
+          "10_a_15_sm": 102550,
+          "15_a_20_sm": 33040,
+          "mais_de_20_sm": 26329
+        },
+        "religiao": {
+          "catolica": 2278241,
+          "evangelica": 1297366,
+          "espirita": 272399,
+          "umbanda_candomble": 186861,
+          "tradicoes_indigenas": 991,
+          "outras": 309203,
+          "sem_religiao": 820518,
+          "nao_sabe": 2677,
+          "sem_declaracao": 4885
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 988278,
+          "fundamental_completo_medio_incompleto": 761544,
+          "medio_completo_superior_incompleto": 1979292,
+          "superior_completo": 1226032
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 51,
+      "vagas_vereador_max": 51,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3304607,
+      "nome": "Santa Maria Madalena",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33008,
+        "nome": "Santa Maria Madalena"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -21.96963,
+      "lon": -41.91348,
+      "coordenada_metodo": "centroide",
+      "area_km2": 810.962,
+      "populacao": 10580,
+      "eleitorado": 8838,
+      "urbana_pct": 71.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10232,
+        "situacao": {
+          "urbana": 7309,
+          "rural": 2923
+        },
+        "idade": {
+          "0_15": 1897,
+          "16_17": 269,
+          "18_24": 879,
+          "25_34": 1221,
+          "35_44": 1424,
+          "45_59": 2178,
+          "60_69": 1258,
+          "70_mais": 1106
+        },
+        "renda": {
+          "sem_rendimento": 157,
+          "ate_1_4_sm": 793,
+          "1_4_a_1_2_sm": 2071,
+          "1_2_a_1_sm": 3870,
+          "1_a_2_sm": 2066,
+          "2_a_3_sm": 680,
+          "3_a_5_sm": 403,
+          "5_a_10_sm": 126,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 8,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5144,
+          "evangelica": 2116,
+          "espirita": 193,
+          "umbanda_candomble": 29,
+          "tradicoes_indigenas": 0,
+          "outras": 193,
+          "sem_religiao": 791,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3554,
+          "fundamental_completo_medio_incompleto": 909,
+          "medio_completo_superior_incompleto": 2626,
+          "superior_completo": 940
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3304706,
+      "nome": "Santo Antônio de Pádua",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33002,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "regiao_imediata": {
+        "id": 330012,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "lat": -21.55562,
+      "lon": -42.19288,
+      "coordenada_metodo": "centroide",
+      "area_km2": 603.633,
+      "populacao": 43703,
+      "eleitorado": 33648,
+      "urbana_pct": 91.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41325,
+        "situacao": {
+          "urbana": 37798,
+          "rural": 3527
+        },
+        "idade": {
+          "0_15": 7669,
+          "16_17": 1022,
+          "18_24": 3822,
+          "25_34": 5518,
+          "35_44": 6235,
+          "45_59": 8538,
+          "60_69": 4545,
+          "70_mais": 3976
+        },
+        "renda": {
+          "sem_rendimento": 931,
+          "ate_1_4_sm": 1844,
+          "1_4_a_1_2_sm": 9254,
+          "1_2_a_1_sm": 15727,
+          "1_a_2_sm": 9190,
+          "2_a_3_sm": 2369,
+          "3_a_5_sm": 1125,
+          "5_a_10_sm": 656,
+          "10_a_15_sm": 91,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 16804,
+          "evangelica": 12712,
+          "espirita": 222,
+          "umbanda_candomble": 90,
+          "tradicoes_indigenas": 0,
+          "outras": 682,
+          "sem_religiao": 3596,
+          "nao_sabe": 0,
+          "sem_declaracao": 52
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11714,
+          "fundamental_completo_medio_incompleto": 5216,
+          "medio_completo_superior_incompleto": 11298,
+          "superior_completo": 4330
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304755,
+      "nome": "São Francisco de Itabapoana",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33003,
+        "nome": "Campos dos Goytacazes"
+      },
+      "regiao_imediata": {
+        "id": 330010,
+        "nome": "Campos dos Goytacazes"
+      },
+      "lat": -21.41761,
+      "lon": -41.13517,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1118.037,
+      "populacao": 47411,
+      "eleitorado": 39837,
+      "urbana_pct": 61.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 45059,
+        "situacao": {
+          "urbana": 27903,
+          "rural": 17156
+        },
+        "idade": {
+          "0_15": 9790,
+          "16_17": 1268,
+          "18_24": 4376,
+          "25_34": 6119,
+          "35_44": 6572,
+          "45_59": 8827,
+          "60_69": 4576,
+          "70_mais": 3531
+        },
+        "renda": {
+          "sem_rendimento": 1106,
+          "ate_1_4_sm": 7130,
+          "1_4_a_1_2_sm": 13226,
+          "1_2_a_1_sm": 15388,
+          "1_a_2_sm": 5925,
+          "2_a_3_sm": 1237,
+          "3_a_5_sm": 740,
+          "5_a_10_sm": 260,
+          "10_a_15_sm": 46,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12631,
+          "evangelica": 15083,
+          "espirita": 55,
+          "umbanda_candomble": 68,
+          "tradicoes_indigenas": 0,
+          "outras": 1126,
+          "sem_religiao": 6886,
+          "nao_sabe": 0,
+          "sem_declaracao": 54
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 18293,
+          "fundamental_completo_medio_incompleto": 4621,
+          "medio_completo_superior_incompleto": 9206,
+          "superior_completo": 2031
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304805,
+      "nome": "São Fidélis",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33003,
+        "nome": "Campos dos Goytacazes"
+      },
+      "regiao_imediata": {
+        "id": 330010,
+        "nome": "Campos dos Goytacazes"
+      },
+      "lat": -21.6599,
+      "lon": -41.78698,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1034.833,
+      "populacao": 41220,
+      "eleitorado": 30134,
+      "urbana_pct": 82.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 38961,
+        "situacao": {
+          "urbana": 32290,
+          "rural": 6671
+        },
+        "idade": {
+          "0_15": 7471,
+          "16_17": 932,
+          "18_24": 3544,
+          "25_34": 5036,
+          "35_44": 5958,
+          "45_59": 7756,
+          "60_69": 4389,
+          "70_mais": 3875
+        },
+        "renda": {
+          "sem_rendimento": 781,
+          "ate_1_4_sm": 3801,
+          "1_4_a_1_2_sm": 8883,
+          "1_2_a_1_sm": 13117,
+          "1_a_2_sm": 8053,
+          "2_a_3_sm": 2287,
+          "3_a_5_sm": 1445,
+          "5_a_10_sm": 411,
+          "10_a_15_sm": 97,
+          "15_a_20_sm": 34,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11880,
+          "evangelica": 12145,
+          "espirita": 245,
+          "umbanda_candomble": 103,
+          "tradicoes_indigenas": 0,
+          "outras": 1091,
+          "sem_religiao": 6420,
+          "nao_sabe": 0,
+          "sem_declaracao": 92
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11267,
+          "fundamental_completo_medio_incompleto": 4560,
+          "medio_completo_superior_incompleto": 11658,
+          "superior_completo": 2997
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3304904,
+      "nome": "São Gonçalo",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.82562,
+      "lon": -42.99701,
+      "coordenada_metodo": "centroide",
+      "area_km2": 248.159,
+      "populacao": 959977,
+      "eleitorado": 651281,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 896744,
+        "situacao": {
+          "urbana": 896488,
+          "rural": 256
+        },
+        "idade": {
+          "0_15": 159649,
+          "16_17": 20992,
+          "18_24": 83452,
+          "25_34": 129603,
+          "35_44": 142647,
+          "45_59": 189238,
+          "60_69": 97707,
+          "70_mais": 73456
+        },
+        "renda": {
+          "sem_rendimento": 61965,
+          "ate_1_4_sm": 77368,
+          "1_4_a_1_2_sm": 165365,
+          "1_2_a_1_sm": 281967,
+          "1_a_2_sm": 216715,
+          "2_a_3_sm": 56054,
+          "3_a_5_sm": 27253,
+          "5_a_10_sm": 7939,
+          "10_a_15_sm": 364,
+          "15_a_20_sm": 140,
+          "mais_de_20_sm": 99
+        },
+        "religiao": {
+          "catolica": 264085,
+          "evangelica": 262708,
+          "espirita": 17723,
+          "umbanda_candomble": 21174,
+          "tradicoes_indigenas": 197,
+          "outras": 39946,
+          "sem_religiao": 134304,
+          "nao_sabe": 300,
+          "sem_declaracao": 1770
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 198456,
+          "fundamental_completo_medio_incompleto": 135237,
+          "medio_completo_superior_incompleto": 301620,
+          "superior_completo": 75606
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 27,
+      "vagas_vereador_max": 31,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3305000,
+      "nome": "São João da Barra",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33003,
+        "nome": "Campos dos Goytacazes"
+      },
+      "regiao_imediata": {
+        "id": 330010,
+        "nome": "Campos dos Goytacazes"
+      },
+      "lat": -21.78219,
+      "lon": -41.0808,
+      "coordenada_metodo": "centroide",
+      "area_km2": 452.396,
+      "populacao": 38756,
+      "eleitorado": 43089,
+      "urbana_pct": 79.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 36573,
+        "situacao": {
+          "urbana": 29176,
+          "rural": 7397
+        },
+        "idade": {
+          "0_15": 7195,
+          "16_17": 882,
+          "18_24": 3164,
+          "25_34": 4996,
+          "35_44": 5591,
+          "45_59": 7801,
+          "60_69": 3997,
+          "70_mais": 2947
+        },
+        "renda": {
+          "sem_rendimento": 2254,
+          "ate_1_4_sm": 3888,
+          "1_4_a_1_2_sm": 9836,
+          "1_2_a_1_sm": 11960,
+          "1_a_2_sm": 6336,
+          "2_a_3_sm": 1289,
+          "3_a_5_sm": 741,
+          "5_a_10_sm": 171,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 20280,
+          "evangelica": 6466,
+          "espirita": 362,
+          "umbanda_candomble": 173,
+          "tradicoes_indigenas": 0,
+          "outras": 654,
+          "sem_religiao": 1880,
+          "nao_sabe": 11,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11400,
+          "fundamental_completo_medio_incompleto": 4270,
+          "medio_completo_superior_incompleto": 10626,
+          "superior_completo": 2253
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3305109,
+      "nome": "São João de Meriti",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.78515,
+      "lon": -43.3653,
+      "coordenada_metodo": "centroide",
+      "area_km2": 35.216,
+      "populacao": 466487,
+      "eleitorado": 339511,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 440962,
+        "situacao": {
+          "urbana": 440962,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 88837,
+          "16_17": 11286,
+          "18_24": 44611,
+          "25_34": 66398,
+          "35_44": 66942,
+          "45_59": 87120,
+          "60_69": 45574,
+          "70_mais": 30194
+        },
+        "renda": {
+          "sem_rendimento": 23089,
+          "ate_1_4_sm": 39523,
+          "1_4_a_1_2_sm": 100765,
+          "1_2_a_1_sm": 151465,
+          "1_a_2_sm": 97160,
+          "2_a_3_sm": 20132,
+          "3_a_5_sm": 6981,
+          "5_a_10_sm": 1541,
+          "10_a_15_sm": 113,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 101482,
+          "evangelica": 119081,
+          "espirita": 8428,
+          "umbanda_candomble": 8330,
+          "tradicoes_indigenas": 89,
+          "outras": 29997,
+          "sem_religiao": 89085,
+          "nao_sabe": 414,
+          "sem_declaracao": 891
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 88606,
+          "fundamental_completo_medio_incompleto": 67406,
+          "medio_completo_superior_incompleto": 161623,
+          "superior_completo": 22691
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3305133,
+      "nome": "São José de Ubá",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33002,
+        "nome": "Santo Antônio de Pádua"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -21.37082,
+      "lon": -41.94926,
+      "coordenada_metodo": "centroide",
+      "area_km2": 249.688,
+      "populacao": 7328,
+      "eleitorado": 7626,
+      "urbana_pct": 48.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7070,
+        "situacao": {
+          "urbana": 3435,
+          "rural": 3635
+        },
+        "idade": {
+          "0_15": 1283,
+          "16_17": 174,
+          "18_24": 616,
+          "25_34": 903,
+          "35_44": 1077,
+          "45_59": 1515,
+          "60_69": 770,
+          "70_mais": 732
+        },
+        "renda": {
+          "sem_rendimento": 0,
+          "ate_1_4_sm": 378,
+          "1_4_a_1_2_sm": 1545,
+          "1_2_a_1_sm": 3323,
+          "1_a_2_sm": 1357,
+          "2_a_3_sm": 276,
+          "3_a_5_sm": 160,
+          "5_a_10_sm": 27,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3246,
+          "evangelica": 1954,
+          "espirita": 0,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 0,
+          "outras": 41,
+          "sem_religiao": 612,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2989,
+          "fundamental_completo_medio_incompleto": 544,
+          "medio_completo_superior_incompleto": 1479,
+          "superior_completo": 618
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3305158,
+      "nome": "São José do Vale do Rio Preto",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33015,
+        "nome": "Serrana"
+      },
+      "regiao_imediata": {
+        "id": 330007,
+        "nome": "Petrópolis"
+      },
+      "lat": -22.16973,
+      "lon": -42.93252,
+      "coordenada_metodo": "centroide",
+      "area_km2": 220.178,
+      "populacao": 22775,
+      "eleitorado": 16209,
+      "urbana_pct": 57.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 22080,
+        "situacao": {
+          "urbana": 12682,
+          "rural": 9398
+        },
+        "idade": {
+          "0_15": 4573,
+          "16_17": 567,
+          "18_24": 2314,
+          "25_34": 3417,
+          "35_44": 3201,
+          "45_59": 4465,
+          "60_69": 2052,
+          "70_mais": 1491
+        },
+        "renda": {
+          "sem_rendimento": 271,
+          "ate_1_4_sm": 1514,
+          "1_4_a_1_2_sm": 5443,
+          "1_2_a_1_sm": 8770,
+          "1_a_2_sm": 4387,
+          "2_a_3_sm": 922,
+          "3_a_5_sm": 557,
+          "5_a_10_sm": 143,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 45,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6985,
+          "evangelica": 8364,
+          "espirita": 223,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 6,
+          "outras": 607,
+          "sem_religiao": 1632,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8114,
+          "fundamental_completo_medio_incompleto": 2826,
+          "medio_completo_superior_incompleto": 4636,
+          "superior_completo": 1452
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3305208,
+      "nome": "São Pedro da Aldeia",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330013,
+        "nome": "Cabo Frio"
+      },
+      "lat": -22.78836,
+      "lon": -42.12607,
+      "coordenada_metodo": "centroide",
+      "area_km2": 332.488,
+      "populacao": 110735,
+      "eleitorado": 74876,
+      "urbana_pct": 97.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 104029,
+        "situacao": {
+          "urbana": 101149,
+          "rural": 2880
+        },
+        "idade": {
+          "0_15": 21755,
+          "16_17": 2799,
+          "18_24": 9888,
+          "25_34": 14390,
+          "35_44": 16856,
+          "45_59": 21018,
+          "60_69": 10102,
+          "70_mais": 7221
+        },
+        "renda": {
+          "sem_rendimento": 6172,
+          "ate_1_4_sm": 8041,
+          "1_4_a_1_2_sm": 18257,
+          "1_2_a_1_sm": 31265,
+          "1_a_2_sm": 23799,
+          "2_a_3_sm": 8168,
+          "3_a_5_sm": 5730,
+          "5_a_10_sm": 2072,
+          "10_a_15_sm": 271,
+          "15_a_20_sm": 21,
+          "mais_de_20_sm": 62
+        },
+        "religiao": {
+          "catolica": 24672,
+          "evangelica": 35162,
+          "espirita": 1860,
+          "umbanda_candomble": 1187,
+          "tradicoes_indigenas": 0,
+          "outras": 5254,
+          "sem_religiao": 15327,
+          "nao_sabe": 6,
+          "sem_declaracao": 173
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 23802,
+          "fundamental_completo_medio_incompleto": 12848,
+          "medio_completo_superior_incompleto": 31870,
+          "superior_completo": 11050
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 10,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3305307,
+      "nome": "São Sebastião do Alto",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33008,
+        "nome": "Santa Maria Madalena"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -21.88336,
+      "lon": -42.10224,
+      "coordenada_metodo": "centroide",
+      "area_km2": 397.214,
+      "populacao": 7990,
+      "eleitorado": 7779,
+      "urbana_pct": 57.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7750,
+        "situacao": {
+          "urbana": 4450,
+          "rural": 3300
+        },
+        "idade": {
+          "0_15": 1489,
+          "16_17": 190,
+          "18_24": 604,
+          "25_34": 977,
+          "35_44": 1091,
+          "45_59": 1689,
+          "60_69": 937,
+          "70_mais": 773
+        },
+        "renda": {
+          "sem_rendimento": 208,
+          "ate_1_4_sm": 653,
+          "1_4_a_1_2_sm": 2046,
+          "1_2_a_1_sm": 2702,
+          "1_a_2_sm": 1549,
+          "2_a_3_sm": 342,
+          "3_a_5_sm": 189,
+          "5_a_10_sm": 54,
+          "10_a_15_sm": 7,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4128,
+          "evangelica": 1860,
+          "espirita": 20,
+          "umbanda_candomble": 9,
+          "tradicoes_indigenas": 0,
+          "outras": 130,
+          "sem_religiao": 200,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2840,
+          "fundamental_completo_medio_incompleto": 761,
+          "medio_completo_superior_incompleto": 2033,
+          "superior_completo": 449
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3305406,
+      "nome": "Sapucaia",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33005,
+        "nome": "Três Rios"
+      },
+      "regiao_imediata": {
+        "id": 330009,
+        "nome": "Três Rios - Paraíba do Sul"
+      },
+      "lat": -22.02412,
+      "lon": -42.82282,
+      "coordenada_metodo": "centroide",
+      "area_km2": 540.673,
+      "populacao": 18292,
+      "eleitorado": 15750,
+      "urbana_pct": 79.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17729,
+        "situacao": {
+          "urbana": 14076,
+          "rural": 3653
+        },
+        "idade": {
+          "0_15": 3352,
+          "16_17": 489,
+          "18_24": 1693,
+          "25_34": 2341,
+          "35_44": 2555,
+          "45_59": 3678,
+          "60_69": 2068,
+          "70_mais": 1553
+        },
+        "renda": {
+          "sem_rendimento": 333,
+          "ate_1_4_sm": 1205,
+          "1_4_a_1_2_sm": 3671,
+          "1_2_a_1_sm": 6734,
+          "1_a_2_sm": 4077,
+          "2_a_3_sm": 986,
+          "3_a_5_sm": 454,
+          "5_a_10_sm": 198,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 7,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7855,
+          "evangelica": 5195,
+          "espirita": 221,
+          "umbanda_candomble": 53,
+          "tradicoes_indigenas": 0,
+          "outras": 186,
+          "sem_religiao": 1062,
+          "nao_sabe": 0,
+          "sem_declaracao": 19
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6028,
+          "fundamental_completo_medio_incompleto": 2195,
+          "medio_completo_superior_incompleto": 3938,
+          "superior_completo": 1718
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3305505,
+      "nome": "Saquarema",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33010,
+        "nome": "Lagos"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.87815,
+      "lon": -42.51884,
+      "coordenada_metodo": "centroide",
+      "area_km2": 352.129,
+      "populacao": 95355,
+      "eleitorado": 91993,
+      "urbana_pct": 97.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 89559,
+        "situacao": {
+          "urbana": 87013,
+          "rural": 2546
+        },
+        "idade": {
+          "0_15": 17254,
+          "16_17": 2290,
+          "18_24": 7856,
+          "25_34": 11533,
+          "35_44": 12821,
+          "45_59": 18110,
+          "60_69": 11302,
+          "70_mais": 8393
+        },
+        "renda": {
+          "sem_rendimento": 3121,
+          "ate_1_4_sm": 8669,
+          "1_4_a_1_2_sm": 16288,
+          "1_2_a_1_sm": 26860,
+          "1_a_2_sm": 20962,
+          "2_a_3_sm": 6354,
+          "3_a_5_sm": 4742,
+          "5_a_10_sm": 1958,
+          "10_a_15_sm": 277,
+          "15_a_20_sm": 49,
+          "mais_de_20_sm": 43
+        },
+        "religiao": {
+          "catolica": 26023,
+          "evangelica": 23847,
+          "espirita": 2889,
+          "umbanda_candomble": 2041,
+          "tradicoes_indigenas": 25,
+          "outras": 5121,
+          "sem_religiao": 13329,
+          "nao_sabe": 75,
+          "sem_declaracao": 85
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 20207,
+          "fundamental_completo_medio_incompleto": 11148,
+          "medio_completo_superior_incompleto": 28290,
+          "superior_completo": 10334
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3305554,
+      "nome": "Seropédica",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33017,
+        "nome": "Itaguaí"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.75554,
+      "lon": -43.69857,
+      "coordenada_metodo": "centroide",
+      "area_km2": 265.189,
+      "populacao": 84821,
+      "eleitorado": 60814,
+      "urbana_pct": 97.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 80596,
+        "situacao": {
+          "urbana": 78608,
+          "rural": 1988
+        },
+        "idade": {
+          "0_15": 17428,
+          "16_17": 2294,
+          "18_24": 8676,
+          "25_34": 12114,
+          "35_44": 11730,
+          "45_59": 15456,
+          "60_69": 7654,
+          "70_mais": 5244
+        },
+        "renda": {
+          "sem_rendimento": 2368,
+          "ate_1_4_sm": 9889,
+          "1_4_a_1_2_sm": 17938,
+          "1_2_a_1_sm": 26135,
+          "1_a_2_sm": 16107,
+          "2_a_3_sm": 4086,
+          "3_a_5_sm": 2159,
+          "5_a_10_sm": 1070,
+          "10_a_15_sm": 113,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 34
+        },
+        "religiao": {
+          "catolica": 12989,
+          "evangelica": 29241,
+          "espirita": 747,
+          "umbanda_candomble": 1146,
+          "tradicoes_indigenas": 0,
+          "outras": 5495,
+          "sem_religiao": 14238,
+          "nao_sabe": 21,
+          "sem_declaracao": 73
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 18481,
+          "fundamental_completo_medio_incompleto": 11128,
+          "medio_completo_superior_incompleto": 24686,
+          "superior_completo": 6214
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 10,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3305604,
+      "nome": "Silva Jardim",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33009,
+        "nome": "Bacia de São João"
+      },
+      "regiao_imediata": {
+        "id": 330003,
+        "nome": "Rio Bonito"
+      },
+      "lat": -22.56758,
+      "lon": -42.41335,
+      "coordenada_metodo": "centroide",
+      "area_km2": 937.755,
+      "populacao": 22029,
+      "eleitorado": 18646,
+      "urbana_pct": 81.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21352,
+        "situacao": {
+          "urbana": 17377,
+          "rural": 3975
+        },
+        "idade": {
+          "0_15": 4636,
+          "16_17": 596,
+          "18_24": 2205,
+          "25_34": 2879,
+          "35_44": 3210,
+          "45_59": 4059,
+          "60_69": 2156,
+          "70_mais": 1611
+        },
+        "renda": {
+          "sem_rendimento": 538,
+          "ate_1_4_sm": 2814,
+          "1_4_a_1_2_sm": 5393,
+          "1_2_a_1_sm": 7824,
+          "1_a_2_sm": 3330,
+          "2_a_3_sm": 860,
+          "3_a_5_sm": 376,
+          "5_a_10_sm": 150,
+          "10_a_15_sm": 35,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3586,
+          "evangelica": 7925,
+          "espirita": 162,
+          "umbanda_candomble": 110,
+          "tradicoes_indigenas": 0,
+          "outras": 1023,
+          "sem_religiao": 4193,
+          "nao_sabe": 0,
+          "sem_declaracao": 32
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6874,
+          "fundamental_completo_medio_incompleto": 2610,
+          "medio_completo_superior_incompleto": 4989,
+          "superior_completo": 1711
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3305703,
+      "nome": "Sumidouro",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33007,
+        "nome": "Nova Friburgo"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.10708,
+      "lon": -42.6642,
+      "coordenada_metodo": "centroide",
+      "area_km2": 413.407,
+      "populacao": 15695,
+      "eleitorado": 14184,
+      "urbana_pct": 40.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15206,
+        "situacao": {
+          "urbana": 6150,
+          "rural": 9056
+        },
+        "idade": {
+          "0_15": 3086,
+          "16_17": 382,
+          "18_24": 1446,
+          "25_34": 2277,
+          "35_44": 2467,
+          "45_59": 3082,
+          "60_69": 1477,
+          "70_mais": 989
+        },
+        "renda": {
+          "sem_rendimento": 115,
+          "ate_1_4_sm": 621,
+          "1_4_a_1_2_sm": 2961,
+          "1_2_a_1_sm": 6389,
+          "1_a_2_sm": 3910,
+          "2_a_3_sm": 833,
+          "3_a_5_sm": 304,
+          "5_a_10_sm": 66,
+          "10_a_15_sm": 8,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5281,
+          "evangelica": 5535,
+          "espirita": 47,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 180,
+          "sem_religiao": 1265,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7119,
+          "fundamental_completo_medio_incompleto": 1635,
+          "medio_completo_superior_incompleto": 2169,
+          "superior_completo": 819
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3305752,
+      "nome": "Tanguá",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33018,
+        "nome": "Rio de Janeiro"
+      },
+      "regiao_imediata": {
+        "id": 330001,
+        "nome": "Rio de Janeiro"
+      },
+      "lat": -22.78219,
+      "lon": -42.72545,
+      "coordenada_metodo": "centroide",
+      "area_km2": 143.007,
+      "populacao": 32868,
+      "eleitorado": 26425,
+      "urbana_pct": 91.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 31086,
+        "situacao": {
+          "urbana": 28377,
+          "rural": 2709
+        },
+        "idade": {
+          "0_15": 6535,
+          "16_17": 842,
+          "18_24": 3144,
+          "25_34": 4329,
+          "35_44": 4815,
+          "45_59": 6316,
+          "60_69": 2955,
+          "70_mais": 2150
+        },
+        "renda": {
+          "sem_rendimento": 852,
+          "ate_1_4_sm": 3841,
+          "1_4_a_1_2_sm": 7856,
+          "1_2_a_1_sm": 11626,
+          "1_a_2_sm": 5585,
+          "2_a_3_sm": 699,
+          "3_a_5_sm": 410,
+          "5_a_10_sm": 109,
+          "10_a_15_sm": 41,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6469,
+          "evangelica": 10888,
+          "espirita": 48,
+          "umbanda_candomble": 73,
+          "tradicoes_indigenas": 0,
+          "outras": 849,
+          "sem_religiao": 6584,
+          "nao_sabe": 9,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9732,
+          "fundamental_completo_medio_incompleto": 4103,
+          "medio_completo_superior_incompleto": 8350,
+          "superior_completo": 1511
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3305802,
+      "nome": "Teresópolis",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33015,
+        "nome": "Serrana"
+      },
+      "regiao_imediata": {
+        "id": 330007,
+        "nome": "Petrópolis"
+      },
+      "lat": -22.31407,
+      "lon": -42.87338,
+      "coordenada_metodo": "centroide",
+      "area_km2": 773.338,
+      "populacao": 176772,
+      "eleitorado": 132953,
+      "urbana_pct": 88.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 165123,
+        "situacao": {
+          "urbana": 146010,
+          "rural": 19113
+        },
+        "idade": {
+          "0_15": 31257,
+          "16_17": 4347,
+          "18_24": 16336,
+          "25_34": 23295,
+          "35_44": 24772,
+          "45_59": 33030,
+          "60_69": 17619,
+          "70_mais": 14467
+        },
+        "renda": {
+          "sem_rendimento": 4364,
+          "ate_1_4_sm": 8038,
+          "1_4_a_1_2_sm": 26911,
+          "1_2_a_1_sm": 53119,
+          "1_a_2_sm": 40835,
+          "2_a_3_sm": 13399,
+          "3_a_5_sm": 9631,
+          "5_a_10_sm": 6612,
+          "10_a_15_sm": 1187,
+          "15_a_20_sm": 363,
+          "mais_de_20_sm": 158
+        },
+        "religiao": {
+          "catolica": 53775,
+          "evangelica": 45524,
+          "espirita": 3484,
+          "umbanda_candomble": 1725,
+          "tradicoes_indigenas": 0,
+          "outras": 7155,
+          "sem_religiao": 24009,
+          "nao_sabe": 0,
+          "sem_declaracao": 263
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 41661,
+          "fundamental_completo_medio_incompleto": 20049,
+          "medio_completo_superior_incompleto": 43482,
+          "superior_completo": 24425
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3305901,
+      "nome": "Trajano de Moraes",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33008,
+        "nome": "Santa Maria Madalena"
+      },
+      "regiao_imediata": {
+        "id": 330008,
+        "nome": "Nova Friburgo"
+      },
+      "lat": -22.12975,
+      "lon": -42.15496,
+      "coordenada_metodo": "centroide",
+      "area_km2": 591.152,
+      "populacao": 10654,
+      "eleitorado": 9253,
+      "urbana_pct": 60.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10302,
+        "situacao": {
+          "urbana": 6236,
+          "rural": 4066
+        },
+        "idade": {
+          "0_15": 1963,
+          "16_17": 248,
+          "18_24": 926,
+          "25_34": 1289,
+          "35_44": 1492,
+          "45_59": 2229,
+          "60_69": 1173,
+          "70_mais": 982
+        },
+        "renda": {
+          "sem_rendimento": 110,
+          "ate_1_4_sm": 1408,
+          "1_4_a_1_2_sm": 2364,
+          "1_2_a_1_sm": 3824,
+          "1_a_2_sm": 1717,
+          "2_a_3_sm": 399,
+          "3_a_5_sm": 359,
+          "5_a_10_sm": 48,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 15,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4078,
+          "evangelica": 2720,
+          "espirita": 70,
+          "umbanda_candomble": 45,
+          "tradicoes_indigenas": 0,
+          "outras": 269,
+          "sem_religiao": 1258,
+          "nao_sabe": 0,
+          "sem_declaracao": 62
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3943,
+          "fundamental_completo_medio_incompleto": 1184,
+          "medio_completo_superior_incompleto": 2200,
+          "superior_completo": 748
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3306008,
+      "nome": "Três Rios",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33005,
+        "nome": "Três Rios"
+      },
+      "regiao_imediata": {
+        "id": 330009,
+        "nome": "Três Rios - Paraíba do Sul"
+      },
+      "lat": -22.12473,
+      "lon": -43.11215,
+      "coordenada_metodo": "centroide",
+      "area_km2": 322.843,
+      "populacao": 82329,
+      "eleitorado": 62330,
+      "urbana_pct": 97.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 78346,
+        "situacao": {
+          "urbana": 76498,
+          "rural": 1848
+        },
+        "idade": {
+          "0_15": 15768,
+          "16_17": 1990,
+          "18_24": 7536,
+          "25_34": 11245,
+          "35_44": 11540,
+          "45_59": 15369,
+          "60_69": 8302,
+          "70_mais": 6596
+        },
+        "renda": {
+          "sem_rendimento": 978,
+          "ate_1_4_sm": 6606,
+          "1_4_a_1_2_sm": 15266,
+          "1_2_a_1_sm": 27822,
+          "1_a_2_sm": 17766,
+          "2_a_3_sm": 4786,
+          "3_a_5_sm": 3100,
+          "5_a_10_sm": 1435,
+          "10_a_15_sm": 237,
+          "15_a_20_sm": 171,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 32692,
+          "evangelica": 21034,
+          "espirita": 2408,
+          "umbanda_candomble": 846,
+          "tradicoes_indigenas": 11,
+          "outras": 1929,
+          "sem_religiao": 4521,
+          "nao_sabe": 7,
+          "sem_declaracao": 157
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 17352,
+          "fundamental_completo_medio_incompleto": 10907,
+          "medio_completo_superior_incompleto": 24099,
+          "superior_completo": 8133
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3306107,
+      "nome": "Valença",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33012,
+        "nome": "Barra do Piraí"
+      },
+      "regiao_imediata": {
+        "id": 330006,
+        "nome": "Valença"
+      },
+      "lat": -22.23422,
+      "lon": -43.85753,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1300.767,
+      "populacao": 71442,
+      "eleitorado": 56762,
+      "urbana_pct": 94.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 68088,
+        "situacao": {
+          "urbana": 64237,
+          "rural": 3851
+        },
+        "idade": {
+          "0_15": 12552,
+          "16_17": 1849,
+          "18_24": 6750,
+          "25_34": 8945,
+          "35_44": 9358,
+          "45_59": 13547,
+          "60_69": 8041,
+          "70_mais": 7046
+        },
+        "renda": {
+          "sem_rendimento": 1528,
+          "ate_1_4_sm": 5687,
+          "1_4_a_1_2_sm": 12816,
+          "1_2_a_1_sm": 22829,
+          "1_a_2_sm": 16342,
+          "2_a_3_sm": 4282,
+          "3_a_5_sm": 2829,
+          "5_a_10_sm": 1258,
+          "10_a_15_sm": 224,
+          "15_a_20_sm": 40,
+          "mais_de_20_sm": 62
+        },
+        "religiao": {
+          "catolica": 33611,
+          "evangelica": 11521,
+          "espirita": 2831,
+          "umbanda_candomble": 1866,
+          "tradicoes_indigenas": 0,
+          "outras": 1968,
+          "sem_religiao": 4628,
+          "nao_sabe": 0,
+          "sem_declaracao": 19
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 16719,
+          "fundamental_completo_medio_incompleto": 8776,
+          "medio_completo_superior_incompleto": 19078,
+          "superior_completo": 9290
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 12,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3306156,
+      "nome": "Varre-Sai",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33001,
+        "nome": "Itaperuna"
+      },
+      "regiao_imediata": {
+        "id": 330011,
+        "nome": "Itaperuna"
+      },
+      "lat": -20.89293,
+      "lon": -41.82971,
+      "coordenada_metodo": "centroide",
+      "area_km2": 201.938,
+      "populacao": 10565,
+      "eleitorado": 8766,
+      "urbana_pct": 64.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10207,
+        "situacao": {
+          "urbana": 6581,
+          "rural": 3626
+        },
+        "idade": {
+          "0_15": 2286,
+          "16_17": 376,
+          "18_24": 1108,
+          "25_34": 1400,
+          "35_44": 1508,
+          "45_59": 1911,
+          "60_69": 940,
+          "70_mais": 678
+        },
+        "renda": {
+          "sem_rendimento": 101,
+          "ate_1_4_sm": 1001,
+          "1_4_a_1_2_sm": 2602,
+          "1_2_a_1_sm": 3895,
+          "1_a_2_sm": 1777,
+          "2_a_3_sm": 465,
+          "3_a_5_sm": 280,
+          "5_a_10_sm": 67,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 6
+        },
+        "religiao": {
+          "catolica": 6107,
+          "evangelica": 1622,
+          "espirita": 37,
+          "umbanda_candomble": 26,
+          "tradicoes_indigenas": 0,
+          "outras": 122,
+          "sem_religiao": 177,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3476,
+          "fundamental_completo_medio_incompleto": 1156,
+          "medio_completo_superior_incompleto": 2268,
+          "superior_completo": 635
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3306206,
+      "nome": "Vassouras",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33014,
+        "nome": "Vassouras"
+      },
+      "regiao_imediata": {
+        "id": 330006,
+        "nome": "Valença"
+      },
+      "lat": -22.35856,
+      "lon": -43.56973,
+      "coordenada_metodo": "centroide",
+      "area_km2": 536.073,
+      "populacao": 35908,
+      "eleitorado": 29230,
+      "urbana_pct": 86.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 33976,
+        "situacao": {
+          "urbana": 29519,
+          "rural": 4457
+        },
+        "idade": {
+          "0_15": 6527,
+          "16_17": 933,
+          "18_24": 3424,
+          "25_34": 4534,
+          "35_44": 5050,
+          "45_59": 6734,
+          "60_69": 3665,
+          "70_mais": 3109
+        },
+        "renda": {
+          "sem_rendimento": 708,
+          "ate_1_4_sm": 2458,
+          "1_4_a_1_2_sm": 6155,
+          "1_2_a_1_sm": 11798,
+          "1_a_2_sm": 8294,
+          "2_a_3_sm": 1861,
+          "3_a_5_sm": 1603,
+          "5_a_10_sm": 831,
+          "10_a_15_sm": 186,
+          "15_a_20_sm": 14,
+          "mais_de_20_sm": 27
+        },
+        "religiao": {
+          "catolica": 14277,
+          "evangelica": 7774,
+          "espirita": 961,
+          "umbanda_candomble": 776,
+          "tradicoes_indigenas": 2,
+          "outras": 1473,
+          "sem_religiao": 2587,
+          "nao_sabe": 0,
+          "sem_declaracao": 30
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8607,
+          "fundamental_completo_medio_incompleto": 4360,
+          "medio_completo_superior_incompleto": 9496,
+          "superior_completo": 3973
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3306305,
+      "nome": "Volta Redonda",
+      "uf": "RJ",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 33011,
+        "nome": "Vale do Paraíba Fluminense"
+      },
+      "regiao_imediata": {
+        "id": 330004,
+        "nome": "Volta Redonda - Barra Mansa"
+      },
+      "lat": -22.49092,
+      "lon": -44.08893,
+      "coordenada_metodo": "centroide",
+      "area_km2": 182.105,
+      "populacao": 280006,
+      "eleitorado": 221205,
+      "urbana_pct": 99.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 261563,
+        "situacao": {
+          "urbana": 260931,
+          "rural": 632
+        },
+        "idade": {
+          "0_15": 46555,
+          "16_17": 6384,
+          "18_24": 24207,
+          "25_34": 36643,
+          "35_44": 39990,
+          "45_59": 52404,
+          "60_69": 32077,
+          "70_mais": 23303
+        },
+        "renda": {
+          "sem_rendimento": 7750,
+          "ate_1_4_sm": 12761,
+          "1_4_a_1_2_sm": 36860,
+          "1_2_a_1_sm": 72476,
+          "1_a_2_sm": 78973,
+          "2_a_3_sm": 25148,
+          "3_a_5_sm": 18046,
+          "5_a_10_sm": 7308,
+          "10_a_15_sm": 1295,
+          "15_a_20_sm": 297,
+          "mais_de_20_sm": 55
+        },
+        "religiao": {
+          "catolica": 96159,
+          "evangelica": 74458,
+          "espirita": 9944,
+          "umbanda_candomble": 2934,
+          "tradicoes_indigenas": 15,
+          "outras": 11246,
+          "sem_religiao": 22732,
+          "nao_sabe": 535,
+          "sem_declaracao": 244
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 46874,
+          "fundamental_completo_medio_incompleto": 32382,
+          "medio_completo_superior_incompleto": 85695,
+          "superior_completo": 44038
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    }
+  ]
+}

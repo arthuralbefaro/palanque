@@ -1,0 +1,5855 @@
+{
+  "uf": "ES",
+  "municipios": [
+    {
+      "codigo_ibge": 3200102,
+      "nome": "Afonso Cláudio",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.08943,
+      "lon": -41.12651,
+      "coordenada_metodo": "centroide",
+      "area_km2": 941.188,
+      "populacao": 32479,
+      "eleitorado": 26213,
+      "urbana_pct": 54,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30684,
+        "situacao": {
+          "urbana": 16575,
+          "rural": 14109
+        },
+        "idade": {
+          "0_15": 6203,
+          "16_17": 847,
+          "18_24": 2745,
+          "25_34": 4067,
+          "35_44": 4807,
+          "45_59": 6110,
+          "60_69": 3129,
+          "70_mais": 2776
+        },
+        "renda": {
+          "sem_rendimento": 860,
+          "ate_1_4_sm": 3006,
+          "1_4_a_1_2_sm": 6557,
+          "1_2_a_1_sm": 10402,
+          "1_a_2_sm": 7276,
+          "2_a_3_sm": 1616,
+          "3_a_5_sm": 572,
+          "5_a_10_sm": 244,
+          "10_a_15_sm": 51,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13382,
+          "evangelica": 9733,
+          "espirita": 67,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 10,
+          "outras": 213,
+          "sem_religiao": 1473,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11754,
+          "fundamental_completo_medio_incompleto": 3356,
+          "medio_completo_superior_incompleto": 6082,
+          "superior_completo": 2306
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3200136,
+      "nome": "Águia Branca",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32002,
+        "nome": "Nova Venécia"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -18.97033,
+      "lon": -40.74951,
+      "coordenada_metodo": "centroide",
+      "area_km2": 454.448,
+      "populacao": 10183,
+      "eleitorado": 8882,
+      "urbana_pct": 34.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9711,
+        "situacao": {
+          "urbana": 3363,
+          "rural": 6348
+        },
+        "idade": {
+          "0_15": 1999,
+          "16_17": 252,
+          "18_24": 902,
+          "25_34": 1335,
+          "35_44": 1415,
+          "45_59": 2033,
+          "60_69": 1004,
+          "70_mais": 771
+        },
+        "renda": {
+          "sem_rendimento": 395,
+          "ate_1_4_sm": 1107,
+          "1_4_a_1_2_sm": 2010,
+          "1_2_a_1_sm": 3196,
+          "1_a_2_sm": 2172,
+          "2_a_3_sm": 385,
+          "3_a_5_sm": 319,
+          "5_a_10_sm": 63,
+          "10_a_15_sm": 54,
+          "15_a_20_sm": 6,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5941,
+          "evangelica": 1425,
+          "espirita": 0,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 0,
+          "outras": 82,
+          "sem_religiao": 368,
+          "nao_sabe": 4,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3495,
+          "fundamental_completo_medio_incompleto": 1179,
+          "medio_completo_superior_incompleto": 2050,
+          "superior_completo": 736
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3200169,
+      "nome": "Água Doce do Norte",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32001,
+        "nome": "Barra de São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 320006,
+        "nome": "Nova Venécia"
+      },
+      "lat": -18.51665,
+      "lon": -40.99676,
+      "coordenada_metodo": "centroide",
+      "area_km2": 473.728,
+      "populacao": 12610,
+      "eleitorado": 11103,
+      "urbana_pct": 61.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12042,
+        "situacao": {
+          "urbana": 7442,
+          "rural": 4600
+        },
+        "idade": {
+          "0_15": 2535,
+          "16_17": 348,
+          "18_24": 1100,
+          "25_34": 1463,
+          "35_44": 1749,
+          "45_59": 2490,
+          "60_69": 1297,
+          "70_mais": 1060
+        },
+        "renda": {
+          "sem_rendimento": 382,
+          "ate_1_4_sm": 1708,
+          "1_4_a_1_2_sm": 2970,
+          "1_2_a_1_sm": 4364,
+          "1_a_2_sm": 2117,
+          "2_a_3_sm": 285,
+          "3_a_5_sm": 149,
+          "5_a_10_sm": 53,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 7
+        },
+        "religiao": {
+          "catolica": 3840,
+          "evangelica": 4548,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 216,
+          "sem_religiao": 1061,
+          "nao_sabe": 4,
+          "sem_declaracao": 1
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4710,
+          "fundamental_completo_medio_incompleto": 1374,
+          "medio_completo_superior_incompleto": 2286,
+          "superior_completo": 765
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3200201,
+      "nome": "Alegre",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.7195,
+      "lon": -41.51494,
+      "coordenada_metodo": "centroide",
+      "area_km2": 756.86,
+      "populacao": 30693,
+      "eleitorado": 23581,
+      "urbana_pct": 76.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 29177,
+        "situacao": {
+          "urbana": 22417,
+          "rural": 6760
+        },
+        "idade": {
+          "0_15": 5453,
+          "16_17": 703,
+          "18_24": 3025,
+          "25_34": 4080,
+          "35_44": 4340,
+          "45_59": 5627,
+          "60_69": 3176,
+          "70_mais": 2773
+        },
+        "renda": {
+          "sem_rendimento": 1457,
+          "ate_1_4_sm": 3268,
+          "1_4_a_1_2_sm": 5875,
+          "1_2_a_1_sm": 9466,
+          "1_a_2_sm": 5454,
+          "2_a_3_sm": 1646,
+          "3_a_5_sm": 1311,
+          "5_a_10_sm": 564,
+          "10_a_15_sm": 67,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 13
+        },
+        "religiao": {
+          "catolica": 12249,
+          "evangelica": 7336,
+          "espirita": 1332,
+          "umbanda_candomble": 233,
+          "tradicoes_indigenas": 0,
+          "outras": 968,
+          "sem_religiao": 1938,
+          "nao_sabe": 0,
+          "sem_declaracao": 1
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7980,
+          "fundamental_completo_medio_incompleto": 3524,
+          "medio_completo_superior_incompleto": 7707,
+          "superior_completo": 3806
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3200300,
+      "nome": "Alfredo Chaves",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32010,
+        "nome": "Guarapari"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.5639,
+      "lon": -40.82706,
+      "coordenada_metodo": "centroide",
+      "area_km2": 615.677,
+      "populacao": 14376,
+      "eleitorado": 12983,
+      "urbana_pct": 50.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13836,
+        "situacao": {
+          "urbana": 6994,
+          "rural": 6842
+        },
+        "idade": {
+          "0_15": 2452,
+          "16_17": 362,
+          "18_24": 1104,
+          "25_34": 1755,
+          "35_44": 2169,
+          "45_59": 2954,
+          "60_69": 1609,
+          "70_mais": 1431
+        },
+        "renda": {
+          "sem_rendimento": 122,
+          "ate_1_4_sm": 425,
+          "1_4_a_1_2_sm": 1752,
+          "1_2_a_1_sm": 5628,
+          "1_a_2_sm": 4303,
+          "2_a_3_sm": 927,
+          "3_a_5_sm": 512,
+          "5_a_10_sm": 99,
+          "10_a_15_sm": 27,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 13
+        },
+        "religiao": {
+          "catolica": 9497,
+          "evangelica": 1794,
+          "espirita": 43,
+          "umbanda_candomble": 17,
+          "tradicoes_indigenas": 0,
+          "outras": 53,
+          "sem_religiao": 139,
+          "nao_sabe": 0,
+          "sem_declaracao": 14
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4708,
+          "fundamental_completo_medio_incompleto": 1592,
+          "medio_completo_superior_incompleto": 3227,
+          "superior_completo": 1449
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3200359,
+      "nome": "Alto Rio Novo",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.02211,
+      "lon": -40.9872,
+      "coordenada_metodo": "centroide",
+      "area_km2": 227.617,
+      "populacao": 7772,
+      "eleitorado": 6545,
+      "urbana_pct": 57.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7434,
+        "situacao": {
+          "urbana": 4277,
+          "rural": 3157
+        },
+        "idade": {
+          "0_15": 1547,
+          "16_17": 222,
+          "18_24": 657,
+          "25_34": 885,
+          "35_44": 1152,
+          "45_59": 1554,
+          "60_69": 801,
+          "70_mais": 616
+        },
+        "renda": {
+          "sem_rendimento": 166,
+          "ate_1_4_sm": 574,
+          "1_4_a_1_2_sm": 1646,
+          "1_2_a_1_sm": 2828,
+          "1_a_2_sm": 1527,
+          "2_a_3_sm": 370,
+          "3_a_5_sm": 240,
+          "5_a_10_sm": 55,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2191,
+          "evangelica": 2771,
+          "espirita": 1,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 49,
+          "sem_religiao": 951,
+          "nao_sabe": 0,
+          "sem_declaracao": 16
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2982,
+          "fundamental_completo_medio_incompleto": 865,
+          "medio_completo_superior_incompleto": 1261,
+          "superior_completo": 551
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3200409,
+      "nome": "Anchieta",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32010,
+        "nome": "Guarapari"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.71868,
+      "lon": -40.68627,
+      "coordenada_metodo": "centroide",
+      "area_km2": 409.691,
+      "populacao": 33397,
+      "eleitorado": 24763,
+      "urbana_pct": 80.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 29984,
+        "situacao": {
+          "urbana": 24069,
+          "rural": 5915
+        },
+        "idade": {
+          "0_15": 6260,
+          "16_17": 842,
+          "18_24": 2698,
+          "25_34": 4250,
+          "35_44": 5231,
+          "45_59": 5623,
+          "60_69": 2939,
+          "70_mais": 2141
+        },
+        "renda": {
+          "sem_rendimento": 799,
+          "ate_1_4_sm": 2566,
+          "1_4_a_1_2_sm": 6157,
+          "1_2_a_1_sm": 9706,
+          "1_a_2_sm": 7745,
+          "2_a_3_sm": 1712,
+          "3_a_5_sm": 859,
+          "5_a_10_sm": 366,
+          "10_a_15_sm": 12,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13666,
+          "evangelica": 6876,
+          "espirita": 192,
+          "umbanda_candomble": 68,
+          "tradicoes_indigenas": 0,
+          "outras": 739,
+          "sem_religiao": 2007,
+          "nao_sabe": 172,
+          "sem_declaracao": 126
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7311,
+          "fundamental_completo_medio_incompleto": 3822,
+          "medio_completo_superior_incompleto": 8213,
+          "superior_completo": 3296
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3200508,
+      "nome": "Apiacá",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -21.07213,
+      "lon": -41.55414,
+      "coordenada_metodo": "centroide",
+      "area_km2": 193.984,
+      "populacao": 7438,
+      "eleitorado": 6312,
+      "urbana_pct": 74.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7223,
+        "situacao": {
+          "urbana": 5361,
+          "rural": 1862
+        },
+        "idade": {
+          "0_15": 1385,
+          "16_17": 184,
+          "18_24": 651,
+          "25_34": 965,
+          "35_44": 1070,
+          "45_59": 1432,
+          "60_69": 818,
+          "70_mais": 718
+        },
+        "renda": {
+          "sem_rendimento": 113,
+          "ate_1_4_sm": 927,
+          "1_4_a_1_2_sm": 1709,
+          "1_2_a_1_sm": 2698,
+          "1_a_2_sm": 1115,
+          "2_a_3_sm": 401,
+          "3_a_5_sm": 157,
+          "5_a_10_sm": 89,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3642,
+          "evangelica": 1675,
+          "espirita": 15,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 0,
+          "outras": 162,
+          "sem_religiao": 429,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2549,
+          "fundamental_completo_medio_incompleto": 659,
+          "medio_completo_superior_incompleto": 1825,
+          "superior_completo": 618
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3200607,
+      "nome": "Aracruz",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320004,
+        "nome": "Linhares"
+      },
+      "lat": -19.76562,
+      "lon": -40.17614,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1420.286,
+      "populacao": 104304,
+      "eleitorado": 75091,
+      "urbana_pct": 86.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 94765,
+        "situacao": {
+          "urbana": 82350,
+          "rural": 12415
+        },
+        "idade": {
+          "0_15": 21837,
+          "16_17": 2886,
+          "18_24": 9603,
+          "25_34": 14449,
+          "35_44": 15815,
+          "45_59": 17128,
+          "60_69": 7887,
+          "70_mais": 5160
+        },
+        "renda": {
+          "sem_rendimento": 1875,
+          "ate_1_4_sm": 6292,
+          "1_4_a_1_2_sm": 15805,
+          "1_2_a_1_sm": 30286,
+          "1_a_2_sm": 25961,
+          "2_a_3_sm": 7871,
+          "3_a_5_sm": 4317,
+          "5_a_10_sm": 1737,
+          "10_a_15_sm": 236,
+          "15_a_20_sm": 28,
+          "mais_de_20_sm": 48
+        },
+        "religiao": {
+          "catolica": 35089,
+          "evangelica": 25868,
+          "espirita": 390,
+          "umbanda_candomble": 232,
+          "tradicoes_indigenas": 247,
+          "outras": 3212,
+          "sem_religiao": 9160,
+          "nao_sabe": 34,
+          "sem_declaracao": 195
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 21353,
+          "fundamental_completo_medio_incompleto": 11321,
+          "medio_completo_superior_incompleto": 26506,
+          "superior_completo": 10975
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3200706,
+      "nome": "Atílio Vivácqua",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.96221,
+      "lon": -41.18399,
+      "coordenada_metodo": "centroide",
+      "area_km2": 232.868,
+      "populacao": 11078,
+      "eleitorado": 9249,
+      "urbana_pct": 70,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10540,
+        "situacao": {
+          "urbana": 7376,
+          "rural": 3164
+        },
+        "idade": {
+          "0_15": 2250,
+          "16_17": 326,
+          "18_24": 966,
+          "25_34": 1494,
+          "35_44": 1666,
+          "45_59": 1995,
+          "60_69": 1044,
+          "70_mais": 799
+        },
+        "renda": {
+          "sem_rendimento": 110,
+          "ate_1_4_sm": 1076,
+          "1_4_a_1_2_sm": 2347,
+          "1_2_a_1_sm": 3786,
+          "1_a_2_sm": 2614,
+          "2_a_3_sm": 408,
+          "3_a_5_sm": 143,
+          "5_a_10_sm": 34,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 4774,
+          "evangelica": 3083,
+          "espirita": 6,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 0,
+          "outras": 51,
+          "sem_religiao": 505,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3515,
+          "fundamental_completo_medio_incompleto": 1254,
+          "medio_completo_superior_incompleto": 2414,
+          "superior_completo": 772
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3200805,
+      "nome": "Baixo Guandu",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.57239,
+      "lon": -40.98378,
+      "coordenada_metodo": "centroide",
+      "area_km2": 909.039,
+      "populacao": 32930,
+      "eleitorado": 24843,
+      "urbana_pct": 84.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30674,
+        "situacao": {
+          "urbana": 25792,
+          "rural": 4882
+        },
+        "idade": {
+          "0_15": 6381,
+          "16_17": 864,
+          "18_24": 2912,
+          "25_34": 4176,
+          "35_44": 4486,
+          "45_59": 6149,
+          "60_69": 3075,
+          "70_mais": 2631
+        },
+        "renda": {
+          "sem_rendimento": 991,
+          "ate_1_4_sm": 2408,
+          "1_4_a_1_2_sm": 6084,
+          "1_2_a_1_sm": 10955,
+          "1_a_2_sm": 7067,
+          "2_a_3_sm": 1762,
+          "3_a_5_sm": 956,
+          "5_a_10_sm": 371,
+          "10_a_15_sm": 12,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11698,
+          "evangelica": 10038,
+          "espirita": 66,
+          "umbanda_candomble": 40,
+          "tradicoes_indigenas": 0,
+          "outras": 319,
+          "sem_religiao": 2521,
+          "nao_sabe": 0,
+          "sem_declaracao": 29
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9571,
+          "fundamental_completo_medio_incompleto": 3633,
+          "medio_completo_superior_incompleto": 7366,
+          "superior_completo": 2746
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3200904,
+      "nome": "Barra de São Francisco",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32001,
+        "nome": "Barra de São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 320006,
+        "nome": "Nova Venécia"
+      },
+      "lat": -18.66611,
+      "lon": -40.83117,
+      "coordenada_metodo": "centroide",
+      "area_km2": 944.521,
+      "populacao": 45574,
+      "eleitorado": 34538,
+      "urbana_pct": 69.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 42498,
+        "situacao": {
+          "urbana": 29428,
+          "rural": 13070
+        },
+        "idade": {
+          "0_15": 9250,
+          "16_17": 1183,
+          "18_24": 4052,
+          "25_34": 5890,
+          "35_44": 6490,
+          "45_59": 8407,
+          "60_69": 3982,
+          "70_mais": 3244
+        },
+        "renda": {
+          "sem_rendimento": 256,
+          "ate_1_4_sm": 3677,
+          "1_4_a_1_2_sm": 9655,
+          "1_2_a_1_sm": 15405,
+          "1_a_2_sm": 8974,
+          "2_a_3_sm": 2434,
+          "3_a_5_sm": 1210,
+          "5_a_10_sm": 573,
+          "10_a_15_sm": 72,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12968,
+          "evangelica": 16117,
+          "espirita": 88,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 495,
+          "sem_religiao": 4064,
+          "nao_sabe": 0,
+          "sem_declaracao": 90
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14483,
+          "fundamental_completo_medio_incompleto": 5175,
+          "medio_completo_superior_incompleto": 8593,
+          "superior_completo": 3832
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3201001,
+      "nome": "Boa Esperança",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32002,
+        "nome": "Nova Venécia"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.48475,
+      "lon": -40.32913,
+      "coordenada_metodo": "centroide",
+      "area_km2": 428.717,
+      "populacao": 14029,
+      "eleitorado": 11246,
+      "urbana_pct": 76.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13608,
+        "situacao": {
+          "urbana": 10447,
+          "rural": 3161
+        },
+        "idade": {
+          "0_15": 2884,
+          "16_17": 442,
+          "18_24": 1343,
+          "25_34": 1880,
+          "35_44": 2068,
+          "45_59": 2674,
+          "60_69": 1297,
+          "70_mais": 1020
+        },
+        "renda": {
+          "sem_rendimento": 137,
+          "ate_1_4_sm": 1050,
+          "1_4_a_1_2_sm": 2774,
+          "1_2_a_1_sm": 5838,
+          "1_a_2_sm": 2658,
+          "2_a_3_sm": 753,
+          "3_a_5_sm": 220,
+          "5_a_10_sm": 99,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6857,
+          "evangelica": 3061,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 177,
+          "sem_religiao": 808,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4653,
+          "fundamental_completo_medio_incompleto": 1271,
+          "medio_completo_superior_incompleto": 3426,
+          "superior_completo": 929
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3201100,
+      "nome": "Bom Jesus do Norte",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -21.08446,
+      "lon": -41.63384,
+      "coordenada_metodo": "centroide",
+      "area_km2": 89.084,
+      "populacao": 10867,
+      "eleitorado": 8489,
+      "urbana_pct": 94.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10254,
+        "situacao": {
+          "urbana": 9680,
+          "rural": 574
+        },
+        "idade": {
+          "0_15": 2001,
+          "16_17": 265,
+          "18_24": 993,
+          "25_34": 1449,
+          "35_44": 1596,
+          "45_59": 1959,
+          "60_69": 1110,
+          "70_mais": 881
+        },
+        "renda": {
+          "sem_rendimento": 230,
+          "ate_1_4_sm": 765,
+          "1_4_a_1_2_sm": 2263,
+          "1_2_a_1_sm": 3806,
+          "1_a_2_sm": 2579,
+          "2_a_3_sm": 253,
+          "3_a_5_sm": 261,
+          "5_a_10_sm": 29,
+          "10_a_15_sm": 27,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4746,
+          "evangelica": 2599,
+          "espirita": 63,
+          "umbanda_candomble": 44,
+          "tradicoes_indigenas": 0,
+          "outras": 264,
+          "sem_religiao": 659,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2532,
+          "fundamental_completo_medio_incompleto": 1370,
+          "medio_completo_superior_incompleto": 3119,
+          "superior_completo": 964
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3201159,
+      "nome": "Brejetuba",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.12537,
+      "lon": -41.29694,
+      "coordenada_metodo": "centroide",
+      "area_km2": 354.404,
+      "populacao": 13800,
+      "eleitorado": 10975,
+      "urbana_pct": 32.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12985,
+        "situacao": {
+          "urbana": 4202,
+          "rural": 8783
+        },
+        "idade": {
+          "0_15": 3108,
+          "16_17": 396,
+          "18_24": 1448,
+          "25_34": 1872,
+          "35_44": 2214,
+          "45_59": 2310,
+          "60_69": 1004,
+          "70_mais": 633
+        },
+        "renda": {
+          "sem_rendimento": 366,
+          "ate_1_4_sm": 1206,
+          "1_4_a_1_2_sm": 3580,
+          "1_2_a_1_sm": 4563,
+          "1_a_2_sm": 2539,
+          "2_a_3_sm": 455,
+          "3_a_5_sm": 216,
+          "5_a_10_sm": 61,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4379,
+          "evangelica": 3574,
+          "espirita": 44,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 222,
+          "sem_religiao": 1864,
+          "nao_sabe": 0,
+          "sem_declaracao": 29
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4687,
+          "fundamental_completo_medio_incompleto": 1594,
+          "medio_completo_superior_incompleto": 2534,
+          "superior_completo": 614
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3201209,
+      "nome": "Cachoeiro de Itapemirim",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.76611,
+      "lon": -41.191,
+      "coordenada_metodo": "centroide",
+      "area_km2": 864.583,
+      "populacao": 198367,
+      "eleitorado": 133843,
+      "urbana_pct": 93.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 185786,
+        "situacao": {
+          "urbana": 173720,
+          "rural": 12066
+        },
+        "idade": {
+          "0_15": 36469,
+          "16_17": 4641,
+          "18_24": 17078,
+          "25_34": 28228,
+          "35_44": 29899,
+          "45_59": 36565,
+          "60_69": 18861,
+          "70_mais": 14045
+        },
+        "renda": {
+          "sem_rendimento": 4183,
+          "ate_1_4_sm": 11507,
+          "1_4_a_1_2_sm": 29920,
+          "1_2_a_1_sm": 58578,
+          "1_a_2_sm": 54774,
+          "2_a_3_sm": 14099,
+          "3_a_5_sm": 7226,
+          "5_a_10_sm": 3309,
+          "10_a_15_sm": 637,
+          "15_a_20_sm": 123,
+          "mais_de_20_sm": 88
+        },
+        "religiao": {
+          "catolica": 84736,
+          "evangelica": 50691,
+          "espirita": 1199,
+          "umbanda_candomble": 469,
+          "tradicoes_indigenas": 11,
+          "outras": 2543,
+          "sem_religiao": 11782,
+          "nao_sabe": 11,
+          "sem_declaracao": 138
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 46400,
+          "fundamental_completo_medio_incompleto": 24227,
+          "medio_completo_superior_incompleto": 51922,
+          "superior_completo": 22072
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 19,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3201308,
+      "nome": "Cariacica",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32009,
+        "nome": "Vitória"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.29069,
+      "lon": -40.44205,
+      "coordenada_metodo": "centroide",
+      "area_km2": 279.718,
+      "populacao": 376914,
+      "eleitorado": 273600,
+      "urbana_pct": 98.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 353491,
+        "situacao": {
+          "urbana": 349420,
+          "rural": 4071
+        },
+        "idade": {
+          "0_15": 78023,
+          "16_17": 9945,
+          "18_24": 35955,
+          "25_34": 51696,
+          "35_44": 57162,
+          "45_59": 66705,
+          "60_69": 32036,
+          "70_mais": 21969
+        },
+        "renda": {
+          "sem_rendimento": 8278,
+          "ate_1_4_sm": 29315,
+          "1_4_a_1_2_sm": 67729,
+          "1_2_a_1_sm": 122428,
+          "1_a_2_sm": 89986,
+          "2_a_3_sm": 21258,
+          "3_a_5_sm": 9746,
+          "5_a_10_sm": 2551,
+          "10_a_15_sm": 337,
+          "15_a_20_sm": 135,
+          "mais_de_20_sm": 101
+        },
+        "religiao": {
+          "catolica": 106413,
+          "evangelica": 114906,
+          "espirita": 972,
+          "umbanda_candomble": 1105,
+          "tradicoes_indigenas": 0,
+          "outras": 13144,
+          "sem_religiao": 43488,
+          "nao_sabe": 103,
+          "sem_declaracao": 253
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 81243,
+          "fundamental_completo_medio_incompleto": 43965,
+          "medio_completo_superior_incompleto": 112268,
+          "superior_completo": 27810
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 19,
+      "vagas_vereador_max": 23,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3201407,
+      "nome": "Castelo",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.55173,
+      "lon": -41.20397,
+      "coordenada_metodo": "centroide",
+      "area_km2": 663.515,
+      "populacao": 39747,
+      "eleitorado": 29993,
+      "urbana_pct": 72.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 36930,
+        "situacao": {
+          "urbana": 26725,
+          "rural": 10205
+        },
+        "idade": {
+          "0_15": 6628,
+          "16_17": 963,
+          "18_24": 3396,
+          "25_34": 5241,
+          "35_44": 6054,
+          "45_59": 7477,
+          "60_69": 3890,
+          "70_mais": 3281
+        },
+        "renda": {
+          "sem_rendimento": 408,
+          "ate_1_4_sm": 1330,
+          "1_4_a_1_2_sm": 5135,
+          "1_2_a_1_sm": 13306,
+          "1_a_2_sm": 11727,
+          "2_a_3_sm": 2403,
+          "3_a_5_sm": 1484,
+          "5_a_10_sm": 927,
+          "10_a_15_sm": 85,
+          "15_a_20_sm": 65,
+          "mais_de_20_sm": 27
+        },
+        "religiao": {
+          "catolica": 24642,
+          "evangelica": 4188,
+          "espirita": 322,
+          "umbanda_candomble": 192,
+          "tradicoes_indigenas": 9,
+          "outras": 151,
+          "sem_religiao": 1098,
+          "nao_sabe": 0,
+          "sem_declaracao": 82
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11474,
+          "fundamental_completo_medio_incompleto": 4447,
+          "medio_completo_superior_incompleto": 9073,
+          "superior_completo": 4455
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3201506,
+      "nome": "Colatina",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.4882,
+      "lon": -40.65679,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1398.219,
+      "populacao": 130043,
+      "eleitorado": 87047,
+      "urbana_pct": 89.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 120033,
+        "situacao": {
+          "urbana": 107205,
+          "rural": 12828
+        },
+        "idade": {
+          "0_15": 22675,
+          "16_17": 2825,
+          "18_24": 11489,
+          "25_34": 17996,
+          "35_44": 19461,
+          "45_59": 24096,
+          "60_69": 11993,
+          "70_mais": 9498
+        },
+        "renda": {
+          "sem_rendimento": 2566,
+          "ate_1_4_sm": 5665,
+          "1_4_a_1_2_sm": 17933,
+          "1_2_a_1_sm": 39047,
+          "1_a_2_sm": 35711,
+          "2_a_3_sm": 9235,
+          "3_a_5_sm": 5680,
+          "5_a_10_sm": 2317,
+          "10_a_15_sm": 429,
+          "15_a_20_sm": 116,
+          "mais_de_20_sm": 98
+        },
+        "religiao": {
+          "catolica": 63077,
+          "evangelica": 27033,
+          "espirita": 479,
+          "umbanda_candomble": 214,
+          "tradicoes_indigenas": 21,
+          "outras": 1752,
+          "sem_religiao": 5824,
+          "nao_sabe": 4,
+          "sem_declaracao": 108
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 32331,
+          "fundamental_completo_medio_incompleto": 17443,
+          "medio_completo_superior_incompleto": 30027,
+          "superior_completo": 14671
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3201605,
+      "nome": "Conceição da Barra",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32005,
+        "nome": "São Mateus"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.44514,
+      "lon": -39.83337,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1182.587,
+      "populacao": 28891,
+      "eleitorado": 25962,
+      "urbana_pct": 83.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27458,
+        "situacao": {
+          "urbana": 22975,
+          "rural": 4483
+        },
+        "idade": {
+          "0_15": 6498,
+          "16_17": 770,
+          "18_24": 2648,
+          "25_34": 3653,
+          "35_44": 4298,
+          "45_59": 5123,
+          "60_69": 2595,
+          "70_mais": 1873
+        },
+        "renda": {
+          "sem_rendimento": 871,
+          "ate_1_4_sm": 3257,
+          "1_4_a_1_2_sm": 6874,
+          "1_2_a_1_sm": 9536,
+          "1_a_2_sm": 4149,
+          "2_a_3_sm": 1444,
+          "3_a_5_sm": 817,
+          "5_a_10_sm": 150,
+          "10_a_15_sm": 26,
+          "15_a_20_sm": 53,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9293,
+          "evangelica": 7929,
+          "espirita": 86,
+          "umbanda_candomble": 63,
+          "tradicoes_indigenas": 0,
+          "outras": 959,
+          "sem_religiao": 3052,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8038,
+          "fundamental_completo_medio_incompleto": 3241,
+          "medio_completo_superior_incompleto": 6756,
+          "superior_completo": 2118
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3201704,
+      "nome": "Conceição do Castelo",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.37085,
+      "lon": -41.26591,
+      "coordenada_metodo": "centroide",
+      "area_km2": 369.778,
+      "populacao": 12475,
+      "eleitorado": 9967,
+      "urbana_pct": 56.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11937,
+        "situacao": {
+          "urbana": 6743,
+          "rural": 5194
+        },
+        "idade": {
+          "0_15": 2436,
+          "16_17": 342,
+          "18_24": 1147,
+          "25_34": 1684,
+          "35_44": 1944,
+          "45_59": 2208,
+          "60_69": 1190,
+          "70_mais": 986
+        },
+        "renda": {
+          "sem_rendimento": 84,
+          "ate_1_4_sm": 816,
+          "1_4_a_1_2_sm": 1918,
+          "1_2_a_1_sm": 4503,
+          "1_a_2_sm": 3357,
+          "2_a_3_sm": 752,
+          "3_a_5_sm": 327,
+          "5_a_10_sm": 136,
+          "10_a_15_sm": 34,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7413,
+          "evangelica": 1737,
+          "espirita": 6,
+          "umbanda_candomble": 17,
+          "tradicoes_indigenas": 0,
+          "outras": 171,
+          "sem_religiao": 307,
+          "nao_sabe": 0,
+          "sem_declaracao": 19
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4410,
+          "fundamental_completo_medio_incompleto": 1287,
+          "medio_completo_superior_incompleto": 2396,
+          "superior_completo": 1048
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3201803,
+      "nome": "Divino de São Lourenço",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.5868,
+      "lon": -41.72446,
+      "coordenada_metodo": "centroide",
+      "area_km2": 174.039,
+      "populacao": 5391,
+      "eleitorado": 4884,
+      "urbana_pct": 42.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5083,
+        "situacao": {
+          "urbana": 2157,
+          "rural": 2926
+        },
+        "idade": {
+          "0_15": 1059,
+          "16_17": 146,
+          "18_24": 521,
+          "25_34": 743,
+          "35_44": 775,
+          "45_59": 992,
+          "60_69": 507,
+          "70_mais": 340
+        },
+        "renda": {
+          "sem_rendimento": 125,
+          "ate_1_4_sm": 583,
+          "1_4_a_1_2_sm": 1315,
+          "1_2_a_1_sm": 1695,
+          "1_a_2_sm": 948,
+          "2_a_3_sm": 230,
+          "3_a_5_sm": 136,
+          "5_a_10_sm": 39,
+          "10_a_15_sm": 7,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1705,
+          "evangelica": 1538,
+          "espirita": 97,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 4,
+          "outras": 238,
+          "sem_religiao": 498,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1940,
+          "fundamental_completo_medio_incompleto": 549,
+          "medio_completo_superior_incompleto": 965,
+          "superior_completo": 407
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3201902,
+      "nome": "Domingos Martins",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.30778,
+      "lon": -40.84897,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1229.21,
+      "populacao": 38498,
+      "eleitorado": 29101,
+      "urbana_pct": 38.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35416,
+        "situacao": {
+          "urbana": 13487,
+          "rural": 21929
+        },
+        "idade": {
+          "0_15": 6711,
+          "16_17": 978,
+          "18_24": 3164,
+          "25_34": 4970,
+          "35_44": 5871,
+          "45_59": 7364,
+          "60_69": 3588,
+          "70_mais": 2770
+        },
+        "renda": {
+          "sem_rendimento": 227,
+          "ate_1_4_sm": 1246,
+          "1_4_a_1_2_sm": 5463,
+          "1_2_a_1_sm": 13917,
+          "1_a_2_sm": 9756,
+          "2_a_3_sm": 2915,
+          "3_a_5_sm": 1366,
+          "5_a_10_sm": 353,
+          "10_a_15_sm": 111,
+          "15_a_20_sm": 47,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 15499,
+          "evangelica": 11904,
+          "espirita": 72,
+          "umbanda_candomble": 53,
+          "tradicoes_indigenas": 0,
+          "outras": 332,
+          "sem_religiao": 1230,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13139,
+          "fundamental_completo_medio_incompleto": 4689,
+          "medio_completo_superior_incompleto": 6928,
+          "superior_completo": 3025
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3202009,
+      "nome": "Dores do Rio Preto",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.63501,
+      "lon": -41.81211,
+      "coordenada_metodo": "centroide",
+      "area_km2": 159.298,
+      "populacao": 6919,
+      "eleitorado": 6283,
+      "urbana_pct": 58.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6596,
+        "situacao": {
+          "urbana": 3835,
+          "rural": 2761
+        },
+        "idade": {
+          "0_15": 1340,
+          "16_17": 189,
+          "18_24": 695,
+          "25_34": 911,
+          "35_44": 1004,
+          "45_59": 1312,
+          "60_69": 645,
+          "70_mais": 500
+        },
+        "renda": {
+          "sem_rendimento": 77,
+          "ate_1_4_sm": 677,
+          "1_4_a_1_2_sm": 1509,
+          "1_2_a_1_sm": 2439,
+          "1_a_2_sm": 1353,
+          "2_a_3_sm": 272,
+          "3_a_5_sm": 205,
+          "5_a_10_sm": 49,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 6,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2986,
+          "evangelica": 1462,
+          "espirita": 209,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 117,
+          "sem_religiao": 547,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2518,
+          "fundamental_completo_medio_incompleto": 771,
+          "medio_completo_superior_incompleto": 1350,
+          "superior_completo": 434
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202108,
+      "nome": "Ecoporanga",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32001,
+        "nome": "Barra de São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 320006,
+        "nome": "Nova Venécia"
+      },
+      "lat": -18.26558,
+      "lon": -40.80769,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2285.361,
+      "populacao": 22554,
+      "eleitorado": 19042,
+      "urbana_pct": 67.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21992,
+        "situacao": {
+          "urbana": 14760,
+          "rural": 7232
+        },
+        "idade": {
+          "0_15": 4442,
+          "16_17": 615,
+          "18_24": 2009,
+          "25_34": 2685,
+          "35_44": 3419,
+          "45_59": 4548,
+          "60_69": 2385,
+          "70_mais": 1889
+        },
+        "renda": {
+          "sem_rendimento": 749,
+          "ate_1_4_sm": 3078,
+          "1_4_a_1_2_sm": 4842,
+          "1_2_a_1_sm": 7788,
+          "1_a_2_sm": 3994,
+          "2_a_3_sm": 791,
+          "3_a_5_sm": 448,
+          "5_a_10_sm": 161,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 10641,
+          "evangelica": 6060,
+          "espirita": 5,
+          "umbanda_candomble": 11,
+          "tradicoes_indigenas": 0,
+          "outras": 292,
+          "sem_religiao": 874,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8504,
+          "fundamental_completo_medio_incompleto": 2545,
+          "medio_completo_superior_incompleto": 4462,
+          "superior_completo": 1579
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3202207,
+      "nome": "Fundão",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -19.9683,
+      "lon": -40.3568,
+      "coordenada_metodo": "centroide",
+      "area_km2": 286.854,
+      "populacao": 18941,
+      "eleitorado": 14743,
+      "urbana_pct": 86.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18014,
+        "situacao": {
+          "urbana": 15550,
+          "rural": 2464
+        },
+        "idade": {
+          "0_15": 3678,
+          "16_17": 464,
+          "18_24": 1655,
+          "25_34": 2458,
+          "35_44": 2665,
+          "45_59": 3662,
+          "60_69": 1968,
+          "70_mais": 1464
+        },
+        "renda": {
+          "sem_rendimento": 627,
+          "ate_1_4_sm": 1751,
+          "1_4_a_1_2_sm": 3124,
+          "1_2_a_1_sm": 4970,
+          "1_a_2_sm": 4840,
+          "2_a_3_sm": 1534,
+          "3_a_5_sm": 902,
+          "5_a_10_sm": 172,
+          "10_a_15_sm": 40,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8571,
+          "evangelica": 4362,
+          "espirita": 70,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 10,
+          "outras": 464,
+          "sem_religiao": 1218,
+          "nao_sabe": 0,
+          "sem_declaracao": 49
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5269,
+          "fundamental_completo_medio_incompleto": 2224,
+          "medio_completo_superior_incompleto": 4684,
+          "superior_completo": 1955
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202256,
+      "nome": "Governador Lindenberg",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.20537,
+      "lon": -40.50002,
+      "coordenada_metodo": "centroide",
+      "area_km2": 360.016,
+      "populacao": 11501,
+      "eleitorado": 9106,
+      "urbana_pct": 46.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11009,
+        "situacao": {
+          "urbana": 5111,
+          "rural": 5898
+        },
+        "idade": {
+          "0_15": 2188,
+          "16_17": 312,
+          "18_24": 1047,
+          "25_34": 1527,
+          "35_44": 1733,
+          "45_59": 2215,
+          "60_69": 1126,
+          "70_mais": 861
+        },
+        "renda": {
+          "sem_rendimento": 385,
+          "ate_1_4_sm": 494,
+          "1_4_a_1_2_sm": 1858,
+          "1_2_a_1_sm": 3926,
+          "1_a_2_sm": 2975,
+          "2_a_3_sm": 795,
+          "3_a_5_sm": 428,
+          "5_a_10_sm": 120,
+          "10_a_15_sm": 28,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7687,
+          "evangelica": 1200,
+          "espirita": 9,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 30,
+          "sem_religiao": 34,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4284,
+          "fundamental_completo_medio_incompleto": 1413,
+          "medio_completo_superior_incompleto": 1930,
+          "superior_completo": 841
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202306,
+      "nome": "Guaçuí",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.76342,
+      "lon": -41.70523,
+      "coordenada_metodo": "centroide",
+      "area_km2": 468.185,
+      "populacao": 31528,
+      "eleitorado": 22319,
+      "urbana_pct": 82.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 29358,
+        "situacao": {
+          "urbana": 24261,
+          "rural": 5097
+        },
+        "idade": {
+          "0_15": 6228,
+          "16_17": 785,
+          "18_24": 2966,
+          "25_34": 4197,
+          "35_44": 4290,
+          "45_59": 5388,
+          "60_69": 3009,
+          "70_mais": 2495
+        },
+        "renda": {
+          "sem_rendimento": 369,
+          "ate_1_4_sm": 2398,
+          "1_4_a_1_2_sm": 7048,
+          "1_2_a_1_sm": 10784,
+          "1_a_2_sm": 5712,
+          "2_a_3_sm": 1366,
+          "3_a_5_sm": 1083,
+          "5_a_10_sm": 372,
+          "10_a_15_sm": 71,
+          "15_a_20_sm": 19,
+          "mais_de_20_sm": 27
+        },
+        "religiao": {
+          "catolica": 11485,
+          "evangelica": 8494,
+          "espirita": 868,
+          "umbanda_candomble": 201,
+          "tradicoes_indigenas": 0,
+          "outras": 338,
+          "sem_religiao": 2099,
+          "nao_sabe": 0,
+          "sem_declaracao": 37
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8789,
+          "fundamental_completo_medio_incompleto": 3482,
+          "medio_completo_superior_incompleto": 7446,
+          "superior_completo": 2648
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3202405,
+      "nome": "Guarapari",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32010,
+        "nome": "Guarapari"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.58511,
+      "lon": -40.54613,
+      "coordenada_metodo": "centroide",
+      "area_km2": 589.826,
+      "populacao": 137659,
+      "eleitorado": 101332,
+      "urbana_pct": 94.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 124656,
+        "situacao": {
+          "urbana": 118113,
+          "rural": 6543
+        },
+        "idade": {
+          "0_15": 25549,
+          "16_17": 3282,
+          "18_24": 11907,
+          "25_34": 17450,
+          "35_44": 20229,
+          "45_59": 24484,
+          "60_69": 12824,
+          "70_mais": 8931
+        },
+        "renda": {
+          "sem_rendimento": 3868,
+          "ate_1_4_sm": 7166,
+          "1_4_a_1_2_sm": 21820,
+          "1_2_a_1_sm": 39874,
+          "1_a_2_sm": 29068,
+          "2_a_3_sm": 10266,
+          "3_a_5_sm": 7319,
+          "5_a_10_sm": 3340,
+          "10_a_15_sm": 631,
+          "15_a_20_sm": 147,
+          "mais_de_20_sm": 43
+        },
+        "religiao": {
+          "catolica": 48036,
+          "evangelica": 33530,
+          "espirita": 1275,
+          "umbanda_candomble": 574,
+          "tradicoes_indigenas": 13,
+          "outras": 4125,
+          "sem_religiao": 13073,
+          "nao_sabe": 0,
+          "sem_declaracao": 77
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 28045,
+          "fundamental_completo_medio_incompleto": 15812,
+          "medio_completo_superior_incompleto": 36728,
+          "superior_completo": 15362
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3202454,
+      "nome": "Ibatiba",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.25073,
+      "lon": -41.55017,
+      "coordenada_metodo": "centroide",
+      "area_km2": 240.278,
+      "populacao": 27765,
+      "eleitorado": 19560,
+      "urbana_pct": 64.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 25380,
+        "situacao": {
+          "urbana": 16256,
+          "rural": 9124
+        },
+        "idade": {
+          "0_15": 5579,
+          "16_17": 762,
+          "18_24": 2736,
+          "25_34": 3810,
+          "35_44": 4059,
+          "45_59": 4582,
+          "60_69": 2121,
+          "70_mais": 1731
+        },
+        "renda": {
+          "sem_rendimento": 548,
+          "ate_1_4_sm": 2412,
+          "1_4_a_1_2_sm": 5919,
+          "1_2_a_1_sm": 9521,
+          "1_a_2_sm": 5260,
+          "2_a_3_sm": 1269,
+          "3_a_5_sm": 344,
+          "5_a_10_sm": 104,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8090,
+          "evangelica": 8161,
+          "espirita": 132,
+          "umbanda_candomble": 33,
+          "tradicoes_indigenas": 0,
+          "outras": 282,
+          "sem_religiao": 3270,
+          "nao_sabe": 0,
+          "sem_declaracao": 59
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10186,
+          "fundamental_completo_medio_incompleto": 3067,
+          "medio_completo_superior_incompleto": 4257,
+          "superior_completo": 1469
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3202504,
+      "nome": "Ibiraçu",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320004,
+        "nome": "Linhares"
+      },
+      "lat": -19.8348,
+      "lon": -40.41787,
+      "coordenada_metodo": "centroide",
+      "area_km2": 201.248,
+      "populacao": 12350,
+      "eleitorado": 9922,
+      "urbana_pct": 79.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11723,
+        "situacao": {
+          "urbana": 9363,
+          "rural": 2360
+        },
+        "idade": {
+          "0_15": 2398,
+          "16_17": 277,
+          "18_24": 1106,
+          "25_34": 1696,
+          "35_44": 1857,
+          "45_59": 2268,
+          "60_69": 1186,
+          "70_mais": 935
+        },
+        "renda": {
+          "sem_rendimento": 265,
+          "ate_1_4_sm": 510,
+          "1_4_a_1_2_sm": 2075,
+          "1_2_a_1_sm": 3970,
+          "1_a_2_sm": 3185,
+          "2_a_3_sm": 953,
+          "3_a_5_sm": 572,
+          "5_a_10_sm": 174,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 19,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5977,
+          "evangelica": 2217,
+          "espirita": 26,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 268,
+          "sem_religiao": 955,
+          "nao_sabe": 5,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3369,
+          "fundamental_completo_medio_incompleto": 1449,
+          "medio_completo_superior_incompleto": 3092,
+          "superior_completo": 1103
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202553,
+      "nome": "Ibitirama",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.48596,
+      "lon": -41.69262,
+      "coordenada_metodo": "centroide",
+      "area_km2": 330.874,
+      "populacao": 10119,
+      "eleitorado": 7460,
+      "urbana_pct": 46.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9520,
+        "situacao": {
+          "urbana": 4418,
+          "rural": 5102
+        },
+        "idade": {
+          "0_15": 2292,
+          "16_17": 279,
+          "18_24": 1057,
+          "25_34": 1335,
+          "35_44": 1464,
+          "45_59": 1693,
+          "60_69": 843,
+          "70_mais": 557
+        },
+        "renda": {
+          "sem_rendimento": 189,
+          "ate_1_4_sm": 1448,
+          "1_4_a_1_2_sm": 2800,
+          "1_2_a_1_sm": 3080,
+          "1_a_2_sm": 1498,
+          "2_a_3_sm": 366,
+          "3_a_5_sm": 77,
+          "5_a_10_sm": 62,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2890,
+          "evangelica": 3753,
+          "espirita": 124,
+          "umbanda_candomble": 25,
+          "tradicoes_indigenas": 0,
+          "outras": 216,
+          "sem_religiao": 363,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3527,
+          "fundamental_completo_medio_incompleto": 1205,
+          "medio_completo_superior_incompleto": 1559,
+          "superior_completo": 630
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202603,
+      "nome": "Iconha",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32010,
+        "nome": "Guarapari"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.75494,
+      "lon": -40.85747,
+      "coordenada_metodo": "centroide",
+      "area_km2": 203.528,
+      "populacao": 12801,
+      "eleitorado": 11347,
+      "urbana_pct": 64.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12326,
+        "situacao": {
+          "urbana": 7914,
+          "rural": 4412
+        },
+        "idade": {
+          "0_15": 2087,
+          "16_17": 278,
+          "18_24": 1023,
+          "25_34": 1669,
+          "35_44": 2107,
+          "45_59": 2602,
+          "60_69": 1464,
+          "70_mais": 1096
+        },
+        "renda": {
+          "sem_rendimento": 75,
+          "ate_1_4_sm": 465,
+          "1_4_a_1_2_sm": 1799,
+          "1_2_a_1_sm": 4880,
+          "1_a_2_sm": 3741,
+          "2_a_3_sm": 899,
+          "3_a_5_sm": 319,
+          "5_a_10_sm": 130,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8136,
+          "evangelica": 1779,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 166,
+          "sem_religiao": 283,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4450,
+          "fundamental_completo_medio_incompleto": 1335,
+          "medio_completo_superior_incompleto": 3034,
+          "superior_completo": 1159
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202652,
+      "nome": "Irupi",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.33115,
+      "lon": -41.63681,
+      "coordenada_metodo": "centroide",
+      "area_km2": 184.807,
+      "populacao": 14793,
+      "eleitorado": 11391,
+      "urbana_pct": 42.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13710,
+        "situacao": {
+          "urbana": 5820,
+          "rural": 7890
+        },
+        "idade": {
+          "0_15": 3061,
+          "16_17": 441,
+          "18_24": 1485,
+          "25_34": 1942,
+          "35_44": 2258,
+          "45_59": 2517,
+          "60_69": 1090,
+          "70_mais": 916
+        },
+        "renda": {
+          "sem_rendimento": 50,
+          "ate_1_4_sm": 784,
+          "1_4_a_1_2_sm": 3099,
+          "1_2_a_1_sm": 5061,
+          "1_a_2_sm": 3407,
+          "2_a_3_sm": 754,
+          "3_a_5_sm": 355,
+          "5_a_10_sm": 126,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4173,
+          "evangelica": 4739,
+          "espirita": 225,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 170,
+          "sem_religiao": 1515,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5570,
+          "fundamental_completo_medio_incompleto": 1490,
+          "medio_completo_superior_incompleto": 2397,
+          "superior_completo": 761
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202702,
+      "nome": "Itaguaçu",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32008,
+        "nome": "Santa Teresa"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.72856,
+      "lon": -40.86463,
+      "coordenada_metodo": "centroide",
+      "area_km2": 535.021,
+      "populacao": 14004,
+      "eleitorado": 11728,
+      "urbana_pct": 58.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13589,
+        "situacao": {
+          "urbana": 7986,
+          "rural": 5603
+        },
+        "idade": {
+          "0_15": 2341,
+          "16_17": 315,
+          "18_24": 1188,
+          "25_34": 1622,
+          "35_44": 2026,
+          "45_59": 2883,
+          "60_69": 1694,
+          "70_mais": 1520
+        },
+        "renda": {
+          "sem_rendimento": 146,
+          "ate_1_4_sm": 759,
+          "1_4_a_1_2_sm": 2605,
+          "1_2_a_1_sm": 5535,
+          "1_a_2_sm": 3339,
+          "2_a_3_sm": 753,
+          "3_a_5_sm": 346,
+          "5_a_10_sm": 87,
+          "10_a_15_sm": 12,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6608,
+          "evangelica": 4253,
+          "espirita": 4,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 0,
+          "outras": 123,
+          "sem_religiao": 398,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5053,
+          "fundamental_completo_medio_incompleto": 1697,
+          "medio_completo_superior_incompleto": 3022,
+          "superior_completo": 1176
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3202801,
+      "nome": "Itapemirim",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32013,
+        "nome": "Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.96569,
+      "lon": -40.94454,
+      "coordenada_metodo": "centroide",
+      "area_km2": 551.133,
+      "populacao": 44621,
+      "eleitorado": 36543,
+      "urbana_pct": 66.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 39832,
+        "situacao": {
+          "urbana": 26430,
+          "rural": 13402
+        },
+        "idade": {
+          "0_15": 9033,
+          "16_17": 1181,
+          "18_24": 3979,
+          "25_34": 5480,
+          "35_44": 6185,
+          "45_59": 7425,
+          "60_69": 3810,
+          "70_mais": 2739
+        },
+        "renda": {
+          "sem_rendimento": 1017,
+          "ate_1_4_sm": 5995,
+          "1_4_a_1_2_sm": 9593,
+          "1_2_a_1_sm": 12373,
+          "1_a_2_sm": 7752,
+          "2_a_3_sm": 1725,
+          "3_a_5_sm": 1058,
+          "5_a_10_sm": 208,
+          "10_a_15_sm": 87,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9507,
+          "evangelica": 16040,
+          "espirita": 385,
+          "umbanda_candomble": 55,
+          "tradicoes_indigenas": 5,
+          "outras": 801,
+          "sem_religiao": 4722,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12701,
+          "fundamental_completo_medio_incompleto": 4651,
+          "medio_completo_superior_incompleto": 9237,
+          "superior_completo": 3055
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3202900,
+      "nome": "Itarana",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32008,
+        "nome": "Santa Teresa"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -19.94997,
+      "lon": -40.88893,
+      "coordenada_metodo": "centroide",
+      "area_km2": 295.189,
+      "populacao": 10997,
+      "eleitorado": 9568,
+      "urbana_pct": 52.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10597,
+        "situacao": {
+          "urbana": 5586,
+          "rural": 5011
+        },
+        "idade": {
+          "0_15": 1787,
+          "16_17": 218,
+          "18_24": 983,
+          "25_34": 1371,
+          "35_44": 1643,
+          "45_59": 2206,
+          "60_69": 1220,
+          "70_mais": 1169
+        },
+        "renda": {
+          "sem_rendimento": 155,
+          "ate_1_4_sm": 450,
+          "1_4_a_1_2_sm": 1886,
+          "1_2_a_1_sm": 3678,
+          "1_a_2_sm": 3218,
+          "2_a_3_sm": 607,
+          "3_a_5_sm": 402,
+          "5_a_10_sm": 147,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 48,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5163,
+          "evangelica": 3388,
+          "espirita": 18,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 109,
+          "sem_religiao": 251,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4022,
+          "fundamental_completo_medio_incompleto": 1386,
+          "medio_completo_superior_incompleto": 2228,
+          "superior_completo": 947
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203007,
+      "nome": "Iúna",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.35541,
+      "lon": -41.78257,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 460.586,
+      "populacao": 30626,
+      "eleitorado": 21240,
+      "urbana_pct": 61.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 28590,
+        "situacao": {
+          "urbana": 17540,
+          "rural": 11050
+        },
+        "idade": {
+          "0_15": 6412,
+          "16_17": 825,
+          "18_24": 2969,
+          "25_34": 4196,
+          "35_44": 4557,
+          "45_59": 5214,
+          "60_69": 2532,
+          "70_mais": 1885
+        },
+        "renda": {
+          "sem_rendimento": 525,
+          "ate_1_4_sm": 2682,
+          "1_4_a_1_2_sm": 6673,
+          "1_2_a_1_sm": 10390,
+          "1_a_2_sm": 5709,
+          "2_a_3_sm": 1546,
+          "3_a_5_sm": 729,
+          "5_a_10_sm": 263,
+          "10_a_15_sm": 35,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 9191,
+          "evangelica": 8803,
+          "espirita": 390,
+          "umbanda_candomble": 47,
+          "tradicoes_indigenas": 0,
+          "outras": 345,
+          "sem_religiao": 3787,
+          "nao_sabe": 0,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11191,
+          "fundamental_completo_medio_incompleto": 3585,
+          "medio_completo_superior_incompleto": 4289,
+          "superior_completo": 2248
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3203056,
+      "nome": "Jaguaré",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32005,
+        "nome": "São Mateus"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.94965,
+      "lon": -40.0041,
+      "coordenada_metodo": "centroide",
+      "area_km2": 659.751,
+      "populacao": 31858,
+      "eleitorado": 24266,
+      "urbana_pct": 71.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 28931,
+        "situacao": {
+          "urbana": 20676,
+          "rural": 8255
+        },
+        "idade": {
+          "0_15": 7171,
+          "16_17": 852,
+          "18_24": 3075,
+          "25_34": 4408,
+          "35_44": 4698,
+          "45_59": 4993,
+          "60_69": 2188,
+          "70_mais": 1546
+        },
+        "renda": {
+          "sem_rendimento": 821,
+          "ate_1_4_sm": 2950,
+          "1_4_a_1_2_sm": 6261,
+          "1_2_a_1_sm": 8651,
+          "1_a_2_sm": 7346,
+          "2_a_3_sm": 1707,
+          "3_a_5_sm": 743,
+          "5_a_10_sm": 358,
+          "10_a_15_sm": 49,
+          "15_a_20_sm": 14,
+          "mais_de_20_sm": 23
+        },
+        "religiao": {
+          "catolica": 14396,
+          "evangelica": 5624,
+          "espirita": 3,
+          "umbanda_candomble": 64,
+          "tradicoes_indigenas": 1,
+          "outras": 192,
+          "sem_religiao": 1892,
+          "nao_sabe": 0,
+          "sem_declaracao": 56
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9123,
+          "fundamental_completo_medio_incompleto": 3654,
+          "medio_completo_superior_incompleto": 5799,
+          "superior_completo": 2336
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3203106,
+      "nome": "Jerônimo Monteiro",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.80461,
+      "lon": -41.39222,
+      "coordenada_metodo": "centroide",
+      "area_km2": 177.342,
+      "populacao": 12112,
+      "eleitorado": 10080,
+      "urbana_pct": 78.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11575,
+        "situacao": {
+          "urbana": 9085,
+          "rural": 2490
+        },
+        "idade": {
+          "0_15": 2269,
+          "16_17": 300,
+          "18_24": 1123,
+          "25_34": 1608,
+          "35_44": 1608,
+          "45_59": 2311,
+          "60_69": 1208,
+          "70_mais": 1148
+        },
+        "renda": {
+          "sem_rendimento": 158,
+          "ate_1_4_sm": 1173,
+          "1_4_a_1_2_sm": 2362,
+          "1_2_a_1_sm": 4051,
+          "1_a_2_sm": 2581,
+          "2_a_3_sm": 700,
+          "3_a_5_sm": 265,
+          "5_a_10_sm": 189,
+          "10_a_15_sm": 45,
+          "15_a_20_sm": 14,
+          "mais_de_20_sm": 4
+        },
+        "religiao": {
+          "catolica": 5051,
+          "evangelica": 2981,
+          "espirita": 224,
+          "umbanda_candomble": 51,
+          "tradicoes_indigenas": 0,
+          "outras": 130,
+          "sem_religiao": 997,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3890,
+          "fundamental_completo_medio_incompleto": 1349,
+          "medio_completo_superior_incompleto": 2520,
+          "superior_completo": 1271
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203130,
+      "nome": "João Neiva",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320004,
+        "nome": "Linhares"
+      },
+      "lat": -19.71538,
+      "lon": -40.43689,
+      "coordenada_metodo": "centroide",
+      "area_km2": 284.734,
+      "populacao": 14203,
+      "eleitorado": 12775,
+      "urbana_pct": 82.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14079,
+        "situacao": {
+          "urbana": 11612,
+          "rural": 2467
+        },
+        "idade": {
+          "0_15": 2601,
+          "16_17": 357,
+          "18_24": 1213,
+          "25_34": 1805,
+          "35_44": 2127,
+          "45_59": 2964,
+          "60_69": 1616,
+          "70_mais": 1396
+        },
+        "renda": {
+          "sem_rendimento": 404,
+          "ate_1_4_sm": 569,
+          "1_4_a_1_2_sm": 2119,
+          "1_2_a_1_sm": 4637,
+          "1_a_2_sm": 3845,
+          "2_a_3_sm": 1551,
+          "3_a_5_sm": 668,
+          "5_a_10_sm": 235,
+          "10_a_15_sm": 51,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7963,
+          "evangelica": 2823,
+          "espirita": 22,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 0,
+          "outras": 154,
+          "sem_religiao": 662,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4334,
+          "fundamental_completo_medio_incompleto": 1314,
+          "medio_completo_superior_incompleto": 3916,
+          "superior_completo": 1554
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203163,
+      "nome": "Laranja da Terra",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -19.87258,
+      "lon": -41.05773,
+      "coordenada_metodo": "centroide",
+      "area_km2": 458.37,
+      "populacao": 11622,
+      "eleitorado": 9472,
+      "urbana_pct": 34.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11094,
+        "situacao": {
+          "urbana": 3825,
+          "rural": 7269
+        },
+        "idade": {
+          "0_15": 1855,
+          "16_17": 243,
+          "18_24": 899,
+          "25_34": 1435,
+          "35_44": 1660,
+          "45_59": 2531,
+          "60_69": 1276,
+          "70_mais": 1195
+        },
+        "renda": {
+          "sem_rendimento": 67,
+          "ate_1_4_sm": 799,
+          "1_4_a_1_2_sm": 2171,
+          "1_2_a_1_sm": 4167,
+          "1_a_2_sm": 2892,
+          "2_a_3_sm": 652,
+          "3_a_5_sm": 200,
+          "5_a_10_sm": 142,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2347,
+          "evangelica": 6789,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 30,
+          "sem_religiao": 184,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4923,
+          "fundamental_completo_medio_incompleto": 1328,
+          "medio_completo_superior_incompleto": 2156,
+          "superior_completo": 566
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203205,
+      "nome": "Linhares",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320004,
+        "nome": "Linhares"
+      },
+      "lat": -19.38268,
+      "lon": -40.02937,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3496.263,
+      "populacao": 185621,
+      "eleitorado": 121972,
+      "urbana_pct": 88.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 166786,
+        "situacao": {
+          "urbana": 147814,
+          "rural": 18972
+        },
+        "idade": {
+          "0_15": 37834,
+          "16_17": 5082,
+          "18_24": 18171,
+          "25_34": 27278,
+          "35_44": 28242,
+          "45_59": 28439,
+          "60_69": 12672,
+          "70_mais": 9068
+        },
+        "renda": {
+          "sem_rendimento": 4004,
+          "ate_1_4_sm": 7940,
+          "1_4_a_1_2_sm": 28580,
+          "1_2_a_1_sm": 57217,
+          "1_a_2_sm": 44926,
+          "2_a_3_sm": 11856,
+          "3_a_5_sm": 7413,
+          "5_a_10_sm": 2394,
+          "10_a_15_sm": 401,
+          "15_a_20_sm": 67,
+          "mais_de_20_sm": 114
+        },
+        "religiao": {
+          "catolica": 67480,
+          "evangelica": 42366,
+          "espirita": 494,
+          "umbanda_candomble": 424,
+          "tradicoes_indigenas": 278,
+          "outras": 4067,
+          "sem_religiao": 16047,
+          "nao_sabe": 68,
+          "sem_declaracao": 84
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 40368,
+          "fundamental_completo_medio_incompleto": 20826,
+          "medio_completo_superior_incompleto": 43437,
+          "superior_completo": 19188
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3203304,
+      "nome": "Mantenópolis",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32001,
+        "nome": "Barra de São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -18.87642,
+      "lon": -41.07172,
+      "coordenada_metodo": "centroide",
+      "area_km2": 321.417,
+      "populacao": 13090,
+      "eleitorado": 10372,
+      "urbana_pct": 70.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12770,
+        "situacao": {
+          "urbana": 8965,
+          "rural": 3805
+        },
+        "idade": {
+          "0_15": 2686,
+          "16_17": 340,
+          "18_24": 1090,
+          "25_34": 1538,
+          "35_44": 1877,
+          "45_59": 2715,
+          "60_69": 1411,
+          "70_mais": 1113
+        },
+        "renda": {
+          "sem_rendimento": 381,
+          "ate_1_4_sm": 1475,
+          "1_4_a_1_2_sm": 3244,
+          "1_2_a_1_sm": 4375,
+          "1_a_2_sm": 2290,
+          "2_a_3_sm": 623,
+          "3_a_5_sm": 226,
+          "5_a_10_sm": 69,
+          "10_a_15_sm": 29,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4272,
+          "evangelica": 4273,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 234,
+          "sem_religiao": 1453,
+          "nao_sabe": 6,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5202,
+          "fundamental_completo_medio_incompleto": 1671,
+          "medio_completo_superior_incompleto": 1989,
+          "superior_completo": 870
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203320,
+      "nome": "Marataízes",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32013,
+        "nome": "Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -21.10005,
+      "lon": -40.89361,
+      "coordenada_metodo": "centroide",
+      "area_km2": 130.268,
+      "populacao": 46461,
+      "eleitorado": 33239,
+      "urbana_pct": 82.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41929,
+        "situacao": {
+          "urbana": 34504,
+          "rural": 7425
+        },
+        "idade": {
+          "0_15": 8924,
+          "16_17": 1153,
+          "18_24": 4183,
+          "25_34": 5747,
+          "35_44": 6427,
+          "45_59": 7884,
+          "60_69": 4397,
+          "70_mais": 3214
+        },
+        "renda": {
+          "sem_rendimento": 1191,
+          "ate_1_4_sm": 5115,
+          "1_4_a_1_2_sm": 8949,
+          "1_2_a_1_sm": 13778,
+          "1_a_2_sm": 8370,
+          "2_a_3_sm": 2443,
+          "3_a_5_sm": 1238,
+          "5_a_10_sm": 620,
+          "10_a_15_sm": 64,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 31
+        },
+        "religiao": {
+          "catolica": 9046,
+          "evangelica": 17820,
+          "espirita": 379,
+          "umbanda_candomble": 113,
+          "tradicoes_indigenas": 0,
+          "outras": 820,
+          "sem_religiao": 5399,
+          "nao_sabe": 4,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 12897,
+          "fundamental_completo_medio_incompleto": 4536,
+          "medio_completo_superior_incompleto": 9794,
+          "superior_completo": 4599
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3203346,
+      "nome": "Marechal Floriano",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.43127,
+      "lon": -40.7739,
+      "coordenada_metodo": "centroide",
+      "area_km2": 285.495,
+      "populacao": 19159,
+      "eleitorado": 14359,
+      "urbana_pct": 50.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17641,
+        "situacao": {
+          "urbana": 8903,
+          "rural": 8738
+        },
+        "idade": {
+          "0_15": 3682,
+          "16_17": 482,
+          "18_24": 1684,
+          "25_34": 2557,
+          "35_44": 2917,
+          "45_59": 3440,
+          "60_69": 1636,
+          "70_mais": 1243
+        },
+        "renda": {
+          "sem_rendimento": 223,
+          "ate_1_4_sm": 601,
+          "1_4_a_1_2_sm": 2343,
+          "1_2_a_1_sm": 7112,
+          "1_a_2_sm": 5372,
+          "2_a_3_sm": 1123,
+          "3_a_5_sm": 583,
+          "5_a_10_sm": 222,
+          "10_a_15_sm": 16,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 5
+        },
+        "religiao": {
+          "catolica": 8732,
+          "evangelica": 4348,
+          "espirita": 39,
+          "umbanda_candomble": 15,
+          "tradicoes_indigenas": 0,
+          "outras": 257,
+          "sem_religiao": 782,
+          "nao_sabe": 0,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5810,
+          "fundamental_completo_medio_incompleto": 2480,
+          "medio_completo_superior_incompleto": 3711,
+          "superior_completo": 1476
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203353,
+      "nome": "Marilândia",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.42974,
+      "lon": -40.52068,
+      "coordenada_metodo": "centroide",
+      "area_km2": 327.642,
+      "populacao": 13150,
+      "eleitorado": 10857,
+      "urbana_pct": 66.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12387,
+        "situacao": {
+          "urbana": 8270,
+          "rural": 4117
+        },
+        "idade": {
+          "0_15": 2215,
+          "16_17": 288,
+          "18_24": 1151,
+          "25_34": 1711,
+          "35_44": 1937,
+          "45_59": 2609,
+          "60_69": 1319,
+          "70_mais": 1157
+        },
+        "renda": {
+          "sem_rendimento": 111,
+          "ate_1_4_sm": 595,
+          "1_4_a_1_2_sm": 1765,
+          "1_2_a_1_sm": 4453,
+          "1_a_2_sm": 4275,
+          "2_a_3_sm": 580,
+          "3_a_5_sm": 375,
+          "5_a_10_sm": 215,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 9
+        },
+        "religiao": {
+          "catolica": 8297,
+          "evangelica": 1683,
+          "espirita": 0,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 0,
+          "outras": 31,
+          "sem_religiao": 251,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5145,
+          "fundamental_completo_medio_incompleto": 1475,
+          "medio_completo_superior_incompleto": 2207,
+          "superior_completo": 1031
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203403,
+      "nome": "Mimoso do Sul",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -21.08861,
+      "lon": -41.37677,
+      "coordenada_metodo": "centroide",
+      "area_km2": 869.439,
+      "populacao": 25011,
+      "eleitorado": 19716,
+      "urbana_pct": 62.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24475,
+        "situacao": {
+          "urbana": 15263,
+          "rural": 9212
+        },
+        "idade": {
+          "0_15": 4480,
+          "16_17": 651,
+          "18_24": 2150,
+          "25_34": 3277,
+          "35_44": 3700,
+          "45_59": 5140,
+          "60_69": 2856,
+          "70_mais": 2221
+        },
+        "renda": {
+          "sem_rendimento": 766,
+          "ate_1_4_sm": 2365,
+          "1_4_a_1_2_sm": 5789,
+          "1_2_a_1_sm": 8554,
+          "1_a_2_sm": 4879,
+          "2_a_3_sm": 1161,
+          "3_a_5_sm": 658,
+          "5_a_10_sm": 209,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14521,
+          "evangelica": 4035,
+          "espirita": 99,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 287,
+          "sem_religiao": 1342,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9480,
+          "fundamental_completo_medio_incompleto": 2712,
+          "medio_completo_superior_incompleto": 5053,
+          "superior_completo": 2055
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3203502,
+      "nome": "Montanha",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32004,
+        "nome": "Montanha"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.13887,
+      "lon": -40.27515,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1099.06,
+      "populacao": 19891,
+      "eleitorado": 15445,
+      "urbana_pct": 81.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18900,
+        "situacao": {
+          "urbana": 15394,
+          "rural": 3506
+        },
+        "idade": {
+          "0_15": 4169,
+          "16_17": 532,
+          "18_24": 1808,
+          "25_34": 2604,
+          "35_44": 2862,
+          "45_59": 3621,
+          "60_69": 1729,
+          "70_mais": 1575
+        },
+        "renda": {
+          "sem_rendimento": 162,
+          "ate_1_4_sm": 1991,
+          "1_4_a_1_2_sm": 4586,
+          "1_2_a_1_sm": 7232,
+          "1_a_2_sm": 3541,
+          "2_a_3_sm": 760,
+          "3_a_5_sm": 417,
+          "5_a_10_sm": 153,
+          "10_a_15_sm": 21,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 9283,
+          "evangelica": 4110,
+          "espirita": 5,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 0,
+          "outras": 647,
+          "sem_religiao": 945,
+          "nao_sabe": 0,
+          "sem_declaracao": 18
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6406,
+          "fundamental_completo_medio_incompleto": 1951,
+          "medio_completo_superior_incompleto": 4071,
+          "superior_completo": 1738
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203601,
+      "nome": "Mucurici",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32004,
+        "nome": "Montanha"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.0148,
+      "lon": -40.51253,
+      "coordenada_metodo": "centroide",
+      "area_km2": 540.529,
+      "populacao": 5667,
+      "eleitorado": 5144,
+      "urbana_pct": 76.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5466,
+        "situacao": {
+          "urbana": 4197,
+          "rural": 1269
+        },
+        "idade": {
+          "0_15": 1089,
+          "16_17": 144,
+          "18_24": 487,
+          "25_34": 693,
+          "35_44": 820,
+          "45_59": 1143,
+          "60_69": 591,
+          "70_mais": 499
+        },
+        "renda": {
+          "sem_rendimento": 99,
+          "ate_1_4_sm": 813,
+          "1_4_a_1_2_sm": 1470,
+          "1_2_a_1_sm": 1823,
+          "1_a_2_sm": 881,
+          "2_a_3_sm": 261,
+          "3_a_5_sm": 78,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 6,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2925,
+          "evangelica": 1034,
+          "espirita": 13,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 76,
+          "sem_religiao": 396,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1886,
+          "fundamental_completo_medio_incompleto": 547,
+          "medio_completo_superior_incompleto": 1313,
+          "superior_completo": 488
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203700,
+      "nome": "Muniz Freire",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32011,
+        "nome": "Alegre"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.42678,
+      "lon": -41.43497,
+      "coordenada_metodo": "centroide",
+      "area_km2": 678.804,
+      "populacao": 18806,
+      "eleitorado": 14735,
+      "urbana_pct": 48.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18153,
+        "situacao": {
+          "urbana": 8834,
+          "rural": 9319
+        },
+        "idade": {
+          "0_15": 3806,
+          "16_17": 516,
+          "18_24": 1728,
+          "25_34": 2521,
+          "35_44": 2736,
+          "45_59": 3537,
+          "60_69": 1809,
+          "70_mais": 1500
+        },
+        "renda": {
+          "sem_rendimento": 424,
+          "ate_1_4_sm": 2258,
+          "1_4_a_1_2_sm": 4552,
+          "1_2_a_1_sm": 6185,
+          "1_a_2_sm": 3560,
+          "2_a_3_sm": 646,
+          "3_a_5_sm": 381,
+          "5_a_10_sm": 124,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 12
+        },
+        "religiao": {
+          "catolica": 9869,
+          "evangelica": 3622,
+          "espirita": 129,
+          "umbanda_candomble": 37,
+          "tradicoes_indigenas": 0,
+          "outras": 205,
+          "sem_religiao": 720,
+          "nao_sabe": 0,
+          "sem_declaracao": 17
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7019,
+          "fundamental_completo_medio_incompleto": 1941,
+          "medio_completo_superior_incompleto": 3709,
+          "superior_completo": 1163
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203809,
+      "nome": "Muqui",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.9383,
+      "lon": -41.34392,
+      "coordenada_metodo": "centroide",
+      "area_km2": 327.268,
+      "populacao": 14160,
+      "eleitorado": 11050,
+      "urbana_pct": 69.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13745,
+        "situacao": {
+          "urbana": 9562,
+          "rural": 4183
+        },
+        "idade": {
+          "0_15": 2667,
+          "16_17": 354,
+          "18_24": 1214,
+          "25_34": 1891,
+          "35_44": 2078,
+          "45_59": 2761,
+          "60_69": 1493,
+          "70_mais": 1287
+        },
+        "renda": {
+          "sem_rendimento": 84,
+          "ate_1_4_sm": 1108,
+          "1_4_a_1_2_sm": 2359,
+          "1_2_a_1_sm": 5051,
+          "1_a_2_sm": 3780,
+          "2_a_3_sm": 658,
+          "3_a_5_sm": 452,
+          "5_a_10_sm": 179,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 16,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7900,
+          "evangelica": 2443,
+          "espirita": 68,
+          "umbanda_candomble": 17,
+          "tradicoes_indigenas": 0,
+          "outras": 233,
+          "sem_religiao": 580,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4204,
+          "fundamental_completo_medio_incompleto": 1421,
+          "medio_completo_superior_incompleto": 3691,
+          "superior_completo": 1423
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3203908,
+      "nome": "Nova Venécia",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32002,
+        "nome": "Nova Venécia"
+      },
+      "regiao_imediata": {
+        "id": 320006,
+        "nome": "Nova Venécia"
+      },
+      "lat": -18.69843,
+      "lon": -40.52243,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1439.57,
+      "populacao": 52531,
+      "eleitorado": 41111,
+      "urbana_pct": 73.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 49065,
+        "situacao": {
+          "urbana": 36160,
+          "rural": 12905
+        },
+        "idade": {
+          "0_15": 9885,
+          "16_17": 1289,
+          "18_24": 4798,
+          "25_34": 7470,
+          "35_44": 7538,
+          "45_59": 9733,
+          "60_69": 4801,
+          "70_mais": 3551
+        },
+        "renda": {
+          "sem_rendimento": 649,
+          "ate_1_4_sm": 3259,
+          "1_4_a_1_2_sm": 8705,
+          "1_2_a_1_sm": 17099,
+          "1_a_2_sm": 12995,
+          "2_a_3_sm": 3342,
+          "3_a_5_sm": 2162,
+          "5_a_10_sm": 542,
+          "10_a_15_sm": 99,
+          "15_a_20_sm": 52,
+          "mais_de_20_sm": 65
+        },
+        "religiao": {
+          "catolica": 25687,
+          "evangelica": 10602,
+          "espirita": 145,
+          "umbanda_candomble": 18,
+          "tradicoes_indigenas": 0,
+          "outras": 914,
+          "sem_religiao": 2358,
+          "nao_sabe": 28,
+          "sem_declaracao": 67
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14627,
+          "fundamental_completo_medio_incompleto": 5784,
+          "medio_completo_superior_incompleto": 12667,
+          "superior_completo": 4746
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204005,
+      "nome": "Pancas",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.14681,
+      "lon": -40.81778,
+      "coordenada_metodo": "centroide",
+      "area_km2": 837.842,
+      "populacao": 18914,
+      "eleitorado": 15845,
+      "urbana_pct": 49.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18893,
+        "situacao": {
+          "urbana": 9428,
+          "rural": 9465
+        },
+        "idade": {
+          "0_15": 3730,
+          "16_17": 534,
+          "18_24": 1714,
+          "25_34": 2477,
+          "35_44": 2830,
+          "45_59": 3921,
+          "60_69": 2023,
+          "70_mais": 1664
+        },
+        "renda": {
+          "sem_rendimento": 862,
+          "ate_1_4_sm": 1773,
+          "1_4_a_1_2_sm": 4319,
+          "1_2_a_1_sm": 6424,
+          "1_a_2_sm": 3700,
+          "2_a_3_sm": 1075,
+          "3_a_5_sm": 415,
+          "5_a_10_sm": 283,
+          "10_a_15_sm": 22,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 2
+        },
+        "religiao": {
+          "catolica": 6260,
+          "evangelica": 7533,
+          "espirita": 30,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 291,
+          "sem_religiao": 1284,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7359,
+          "fundamental_completo_medio_incompleto": 1935,
+          "medio_completo_superior_incompleto": 3893,
+          "superior_completo": 1438
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204054,
+      "nome": "Pedro Canário",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32005,
+        "nome": "São Mateus"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.18244,
+      "lon": -40.0371,
+      "coordenada_metodo": "centroide",
+      "area_km2": 433.453,
+      "populacao": 21803,
+      "eleitorado": 18912,
+      "urbana_pct": 91.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21522,
+        "situacao": {
+          "urbana": 19782,
+          "rural": 1740
+        },
+        "idade": {
+          "0_15": 5159,
+          "16_17": 713,
+          "18_24": 2107,
+          "25_34": 2959,
+          "35_44": 3346,
+          "45_59": 3985,
+          "60_69": 1864,
+          "70_mais": 1389
+        },
+        "renda": {
+          "sem_rendimento": 248,
+          "ate_1_4_sm": 2899,
+          "1_4_a_1_2_sm": 5504,
+          "1_2_a_1_sm": 7127,
+          "1_a_2_sm": 4075,
+          "2_a_3_sm": 888,
+          "3_a_5_sm": 467,
+          "5_a_10_sm": 168,
+          "10_a_15_sm": 24,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7530,
+          "evangelica": 6301,
+          "espirita": 2,
+          "umbanda_candomble": 64,
+          "tradicoes_indigenas": 0,
+          "outras": 547,
+          "sem_religiao": 2256,
+          "nao_sabe": 0,
+          "sem_declaracao": 20
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6679,
+          "fundamental_completo_medio_incompleto": 2312,
+          "medio_completo_superior_incompleto": 5379,
+          "superior_completo": 1284
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204104,
+      "nome": "Pinheiros",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32004,
+        "nome": "Montanha"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.36989,
+      "lon": -40.1982,
+      "coordenada_metodo": "centroide",
+      "area_km2": 973.136,
+      "populacao": 24861,
+      "eleitorado": 18752,
+      "urbana_pct": 79,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23915,
+        "situacao": {
+          "urbana": 18892,
+          "rural": 5023
+        },
+        "idade": {
+          "0_15": 5507,
+          "16_17": 760,
+          "18_24": 2450,
+          "25_34": 3220,
+          "35_44": 3772,
+          "45_59": 4444,
+          "60_69": 2049,
+          "70_mais": 1713
+        },
+        "renda": {
+          "sem_rendimento": 205,
+          "ate_1_4_sm": 2049,
+          "1_4_a_1_2_sm": 5759,
+          "1_2_a_1_sm": 9122,
+          "1_a_2_sm": 4819,
+          "2_a_3_sm": 919,
+          "3_a_5_sm": 634,
+          "5_a_10_sm": 233,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 2,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11166,
+          "evangelica": 5064,
+          "espirita": 10,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 797,
+          "sem_religiao": 1741,
+          "nao_sabe": 0,
+          "sem_declaracao": 16
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7783,
+          "fundamental_completo_medio_incompleto": 3010,
+          "medio_completo_superior_incompleto": 5085,
+          "superior_completo": 1830
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204203,
+      "nome": "Piúma",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32010,
+        "nome": "Guarapari"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.83756,
+      "lon": -40.77238,
+      "coordenada_metodo": "centroide",
+      "area_km2": 73.623,
+      "populacao": 24176,
+      "eleitorado": 17331,
+      "urbana_pct": 97.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 22300,
+        "situacao": {
+          "urbana": 21760,
+          "rural": 540
+        },
+        "idade": {
+          "0_15": 4713,
+          "16_17": 573,
+          "18_24": 2097,
+          "25_34": 3172,
+          "35_44": 3549,
+          "45_59": 4310,
+          "60_69": 2307,
+          "70_mais": 1579
+        },
+        "renda": {
+          "sem_rendimento": 914,
+          "ate_1_4_sm": 2061,
+          "1_4_a_1_2_sm": 4454,
+          "1_2_a_1_sm": 7546,
+          "1_a_2_sm": 4999,
+          "2_a_3_sm": 1305,
+          "3_a_5_sm": 750,
+          "5_a_10_sm": 208,
+          "10_a_15_sm": 20,
+          "15_a_20_sm": 24,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9099,
+          "evangelica": 6431,
+          "espirita": 208,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 0,
+          "outras": 376,
+          "sem_religiao": 1818,
+          "nao_sabe": 2,
+          "sem_declaracao": 23
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5571,
+          "fundamental_completo_medio_incompleto": 3047,
+          "medio_completo_superior_incompleto": 6292,
+          "superior_completo": 2138
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204252,
+      "nome": "Ponto Belo",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32004,
+        "nome": "Montanha"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.2508,
+      "lon": -40.51426,
+      "coordenada_metodo": "centroide",
+      "area_km2": 360.11,
+      "populacao": 6640,
+      "eleitorado": 6507,
+      "urbana_pct": 83.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6497,
+        "situacao": {
+          "urbana": 5429,
+          "rural": 1068
+        },
+        "idade": {
+          "0_15": 1411,
+          "16_17": 173,
+          "18_24": 587,
+          "25_34": 775,
+          "35_44": 872,
+          "45_59": 1349,
+          "60_69": 674,
+          "70_mais": 656
+        },
+        "renda": {
+          "sem_rendimento": 139,
+          "ate_1_4_sm": 1139,
+          "1_4_a_1_2_sm": 1936,
+          "1_2_a_1_sm": 1992,
+          "1_a_2_sm": 985,
+          "2_a_3_sm": 234,
+          "3_a_5_sm": 57,
+          "5_a_10_sm": 16,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3281,
+          "evangelica": 1463,
+          "espirita": 10,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 53,
+          "sem_religiao": 338,
+          "nao_sabe": 0,
+          "sem_declaracao": 15
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2280,
+          "fundamental_completo_medio_incompleto": 709,
+          "medio_completo_superior_incompleto": 1477,
+          "superior_completo": 446
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204302,
+      "nome": "Presidente Kennedy",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32013,
+        "nome": "Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -21.14073,
+      "lon": -41.07207,
+      "coordenada_metodo": "centroide",
+      "area_km2": 594.897,
+      "populacao": 15050,
+      "eleitorado": 13255,
+      "urbana_pct": 34.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13696,
+        "situacao": {
+          "urbana": 4743,
+          "rural": 8953
+        },
+        "idade": {
+          "0_15": 3184,
+          "16_17": 401,
+          "18_24": 1347,
+          "25_34": 1981,
+          "35_44": 2135,
+          "45_59": 2434,
+          "60_69": 1252,
+          "70_mais": 962
+        },
+        "renda": {
+          "sem_rendimento": 261,
+          "ate_1_4_sm": 1669,
+          "1_4_a_1_2_sm": 3420,
+          "1_2_a_1_sm": 4488,
+          "1_a_2_sm": 2880,
+          "2_a_3_sm": 642,
+          "3_a_5_sm": 183,
+          "5_a_10_sm": 64,
+          "10_a_15_sm": 61,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3247,
+          "evangelica": 4928,
+          "espirita": 21,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 0,
+          "outras": 282,
+          "sem_religiao": 2219,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4544,
+          "fundamental_completo_medio_incompleto": 1674,
+          "medio_completo_superior_incompleto": 2575,
+          "superior_completo": 1320
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204351,
+      "nome": "Rio Bananal",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320004,
+        "nome": "Linhares"
+      },
+      "lat": -19.23049,
+      "lon": -40.30822,
+      "coordenada_metodo": "centroide",
+      "area_km2": 641.929,
+      "populacao": 20467,
+      "eleitorado": 15499,
+      "urbana_pct": 44.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19274,
+        "situacao": {
+          "urbana": 8535,
+          "rural": 10739
+        },
+        "idade": {
+          "0_15": 4096,
+          "16_17": 514,
+          "18_24": 1902,
+          "25_34": 2857,
+          "35_44": 3121,
+          "45_59": 3713,
+          "60_69": 1734,
+          "70_mais": 1337
+        },
+        "renda": {
+          "sem_rendimento": 645,
+          "ate_1_4_sm": 1187,
+          "1_4_a_1_2_sm": 4267,
+          "1_2_a_1_sm": 7068,
+          "1_a_2_sm": 4165,
+          "2_a_3_sm": 1103,
+          "3_a_5_sm": 527,
+          "5_a_10_sm": 181,
+          "10_a_15_sm": 50,
+          "15_a_20_sm": 8,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12065,
+          "evangelica": 2509,
+          "espirita": 6,
+          "umbanda_candomble": 31,
+          "tradicoes_indigenas": 0,
+          "outras": 126,
+          "sem_religiao": 762,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7291,
+          "fundamental_completo_medio_incompleto": 2293,
+          "medio_completo_superior_incompleto": 3982,
+          "superior_completo": 1158
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204401,
+      "nome": "Rio Novo do Sul",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32010,
+        "nome": "Guarapari"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.81809,
+      "lon": -40.91872,
+      "coordenada_metodo": "centroide",
+      "area_km2": 204.464,
+      "populacao": 11471,
+      "eleitorado": 8759,
+      "urbana_pct": 62.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11069,
+        "situacao": {
+          "urbana": 6956,
+          "rural": 4113
+        },
+        "idade": {
+          "0_15": 2137,
+          "16_17": 282,
+          "18_24": 979,
+          "25_34": 1483,
+          "35_44": 1772,
+          "45_59": 2184,
+          "60_69": 1239,
+          "70_mais": 993
+        },
+        "renda": {
+          "sem_rendimento": 345,
+          "ate_1_4_sm": 493,
+          "1_4_a_1_2_sm": 2301,
+          "1_2_a_1_sm": 4214,
+          "1_a_2_sm": 2727,
+          "2_a_3_sm": 509,
+          "3_a_5_sm": 370,
+          "5_a_10_sm": 98,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 1,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5432,
+          "evangelica": 3074,
+          "espirita": 2,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 132,
+          "sem_religiao": 405,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4006,
+          "fundamental_completo_medio_incompleto": 1329,
+          "medio_completo_superior_incompleto": 2246,
+          "superior_completo": 1049
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204500,
+      "nome": "Santa Leopoldina",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32008,
+        "nome": "Santa Teresa"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.12316,
+      "lon": -40.53926,
+      "coordenada_metodo": "centroide",
+      "area_km2": 718.326,
+      "populacao": 13950,
+      "eleitorado": 10076,
+      "urbana_pct": 21.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13106,
+        "situacao": {
+          "urbana": 2831,
+          "rural": 10275
+        },
+        "idade": {
+          "0_15": 2529,
+          "16_17": 345,
+          "18_24": 1156,
+          "25_34": 1665,
+          "35_44": 1954,
+          "45_59": 2823,
+          "60_69": 1492,
+          "70_mais": 1142
+        },
+        "renda": {
+          "sem_rendimento": 557,
+          "ate_1_4_sm": 1220,
+          "1_4_a_1_2_sm": 2529,
+          "1_2_a_1_sm": 4570,
+          "1_a_2_sm": 3200,
+          "2_a_3_sm": 624,
+          "3_a_5_sm": 273,
+          "5_a_10_sm": 121,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6004,
+          "evangelica": 3830,
+          "espirita": 22,
+          "umbanda_candomble": 52,
+          "tradicoes_indigenas": 0,
+          "outras": 248,
+          "sem_religiao": 580,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5477,
+          "fundamental_completo_medio_incompleto": 1654,
+          "medio_completo_superior_incompleto": 2348,
+          "superior_completo": 753
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204559,
+      "nome": "Santa Maria de Jetibá",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32008,
+        "nome": "Santa Teresa"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.0851,
+      "lon": -40.80639,
+      "coordenada_metodo": "centroide",
+      "area_km2": 735.198,
+      "populacao": 45975,
+      "eleitorado": 31202,
+      "urbana_pct": 43.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41636,
+        "situacao": {
+          "urbana": 17936,
+          "rural": 23700
+        },
+        "idade": {
+          "0_15": 8846,
+          "16_17": 1151,
+          "18_24": 4574,
+          "25_34": 6942,
+          "35_44": 7176,
+          "45_59": 7395,
+          "60_69": 3227,
+          "70_mais": 2325
+        },
+        "renda": {
+          "sem_rendimento": 1138,
+          "ate_1_4_sm": 1490,
+          "1_4_a_1_2_sm": 6306,
+          "1_2_a_1_sm": 16687,
+          "1_a_2_sm": 11757,
+          "2_a_3_sm": 2417,
+          "3_a_5_sm": 1368,
+          "5_a_10_sm": 421,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 32
+        },
+        "religiao": {
+          "catolica": 7081,
+          "evangelica": 24463,
+          "espirita": 24,
+          "umbanda_candomble": 33,
+          "tradicoes_indigenas": 0,
+          "outras": 500,
+          "sem_religiao": 1210,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 16666,
+          "fundamental_completo_medio_incompleto": 5358,
+          "medio_completo_superior_incompleto": 7317,
+          "superior_completo": 2497
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204609,
+      "nome": "Santa Teresa",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32008,
+        "nome": "Santa Teresa"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -19.8792,
+      "lon": -40.63485,
+      "coordenada_metodo": "centroide",
+      "area_km2": 683.032,
+      "populacao": 23977,
+      "eleitorado": 20730,
+      "urbana_pct": 62.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 22808,
+        "situacao": {
+          "urbana": 14181,
+          "rural": 8627
+        },
+        "idade": {
+          "0_15": 4058,
+          "16_17": 559,
+          "18_24": 1960,
+          "25_34": 3125,
+          "35_44": 3629,
+          "45_59": 4710,
+          "60_69": 2506,
+          "70_mais": 2261
+        },
+        "renda": {
+          "sem_rendimento": 260,
+          "ate_1_4_sm": 854,
+          "1_4_a_1_2_sm": 2699,
+          "1_2_a_1_sm": 7524,
+          "1_a_2_sm": 7277,
+          "2_a_3_sm": 2339,
+          "3_a_5_sm": 1111,
+          "5_a_10_sm": 617,
+          "10_a_15_sm": 63,
+          "15_a_20_sm": 22,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13271,
+          "evangelica": 4026,
+          "espirita": 228,
+          "umbanda_candomble": 80,
+          "tradicoes_indigenas": 0,
+          "outras": 217,
+          "sem_religiao": 1174,
+          "nao_sabe": 0,
+          "sem_declaracao": 17
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7313,
+          "fundamental_completo_medio_incompleto": 2508,
+          "medio_completo_superior_incompleto": 5718,
+          "superior_completo": 2707
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204658,
+      "nome": "São Domingos do Norte",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32003,
+        "nome": "Colatina"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.12244,
+      "lon": -40.56668,
+      "coordenada_metodo": "centroide",
+      "area_km2": 298.58,
+      "populacao": 9089,
+      "eleitorado": 8426,
+      "urbana_pct": 45.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8589,
+        "situacao": {
+          "urbana": 3906,
+          "rural": 4683
+        },
+        "idade": {
+          "0_15": 1650,
+          "16_17": 206,
+          "18_24": 885,
+          "25_34": 1275,
+          "35_44": 1357,
+          "45_59": 1696,
+          "60_69": 878,
+          "70_mais": 642
+        },
+        "renda": {
+          "sem_rendimento": 315,
+          "ate_1_4_sm": 694,
+          "1_4_a_1_2_sm": 1462,
+          "1_2_a_1_sm": 3175,
+          "1_a_2_sm": 1911,
+          "2_a_3_sm": 522,
+          "3_a_5_sm": 186,
+          "5_a_10_sm": 63,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 6
+        },
+        "religiao": {
+          "catolica": 4579,
+          "evangelica": 1674,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 48,
+          "sem_religiao": 736,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3000,
+          "fundamental_completo_medio_incompleto": 1331,
+          "medio_completo_superior_incompleto": 1792,
+          "superior_completo": 609
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204708,
+      "nome": "São Gabriel da Palha",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32002,
+        "nome": "Nova Venécia"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -18.95272,
+      "lon": -40.50846,
+      "coordenada_metodo": "centroide",
+      "area_km2": 434.887,
+      "populacao": 34313,
+      "eleitorado": 26207,
+      "urbana_pct": 78,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 32252,
+        "situacao": {
+          "urbana": 25165,
+          "rural": 7087
+        },
+        "idade": {
+          "0_15": 6382,
+          "16_17": 837,
+          "18_24": 2946,
+          "25_34": 4812,
+          "35_44": 5574,
+          "45_59": 6245,
+          "60_69": 3097,
+          "70_mais": 2359
+        },
+        "renda": {
+          "sem_rendimento": 733,
+          "ate_1_4_sm": 1774,
+          "1_4_a_1_2_sm": 5096,
+          "1_2_a_1_sm": 12224,
+          "1_a_2_sm": 9225,
+          "2_a_3_sm": 1730,
+          "3_a_5_sm": 1001,
+          "5_a_10_sm": 383,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 14,
+          "mais_de_20_sm": 34
+        },
+        "religiao": {
+          "catolica": 17149,
+          "evangelica": 7293,
+          "espirita": 30,
+          "umbanda_candomble": 23,
+          "tradicoes_indigenas": 0,
+          "outras": 289,
+          "sem_religiao": 1476,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11077,
+          "fundamental_completo_medio_incompleto": 3628,
+          "medio_completo_superior_incompleto": 7523,
+          "superior_completo": 2683
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3204807,
+      "nome": "São José do Calçado",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320008,
+        "nome": "Alegre"
+      },
+      "lat": -20.98281,
+      "lon": -41.65567,
+      "coordenada_metodo": "centroide",
+      "area_km2": 273.489,
+      "populacao": 11451,
+      "eleitorado": 9711,
+      "urbana_pct": 84,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10878,
+        "situacao": {
+          "urbana": 9142,
+          "rural": 1736
+        },
+        "idade": {
+          "0_15": 2131,
+          "16_17": 250,
+          "18_24": 995,
+          "25_34": 1441,
+          "35_44": 1430,
+          "45_59": 2175,
+          "60_69": 1288,
+          "70_mais": 1168
+        },
+        "renda": {
+          "sem_rendimento": 231,
+          "ate_1_4_sm": 778,
+          "1_4_a_1_2_sm": 2239,
+          "1_2_a_1_sm": 4448,
+          "1_a_2_sm": 2004,
+          "2_a_3_sm": 679,
+          "3_a_5_sm": 183,
+          "5_a_10_sm": 173,
+          "10_a_15_sm": 21,
+          "15_a_20_sm": 1,
+          "mais_de_20_sm": 21
+        },
+        "religiao": {
+          "catolica": 4687,
+          "evangelica": 3277,
+          "espirita": 37,
+          "umbanda_candomble": 27,
+          "tradicoes_indigenas": 0,
+          "outras": 112,
+          "sem_religiao": 674,
+          "nao_sabe": 0,
+          "sem_declaracao": 52
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3454,
+          "fundamental_completo_medio_incompleto": 1092,
+          "medio_completo_superior_incompleto": 3001,
+          "superior_completo": 952
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3204906,
+      "nome": "São Mateus",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32005,
+        "nome": "São Mateus"
+      },
+      "regiao_imediata": {
+        "id": 320003,
+        "nome": "São Mateus"
+      },
+      "lat": -18.74958,
+      "lon": -40.0203,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2346.048,
+      "populacao": 135450,
+      "eleitorado": 92196,
+      "urbana_pct": 80.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 123752,
+        "situacao": {
+          "urbana": 100109,
+          "rural": 23643
+        },
+        "idade": {
+          "0_15": 27070,
+          "16_17": 3696,
+          "18_24": 13619,
+          "25_34": 18696,
+          "35_44": 19954,
+          "45_59": 23068,
+          "60_69": 10442,
+          "70_mais": 7207
+        },
+        "renda": {
+          "sem_rendimento": 2698,
+          "ate_1_4_sm": 9922,
+          "1_4_a_1_2_sm": 24897,
+          "1_2_a_1_sm": 41048,
+          "1_a_2_sm": 28301,
+          "2_a_3_sm": 8505,
+          "3_a_5_sm": 4834,
+          "5_a_10_sm": 1756,
+          "10_a_15_sm": 405,
+          "15_a_20_sm": 134,
+          "mais_de_20_sm": 65
+        },
+        "religiao": {
+          "catolica": 49144,
+          "evangelica": 32279,
+          "espirita": 582,
+          "umbanda_candomble": 350,
+          "tradicoes_indigenas": 0,
+          "outras": 4907,
+          "sem_religiao": 10972,
+          "nao_sabe": 93,
+          "sem_declaracao": 149
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 29700,
+          "fundamental_completo_medio_incompleto": 13530,
+          "medio_completo_superior_incompleto": 36756,
+          "superior_completo": 13179
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 3204955,
+      "nome": "São Roque do Canaã",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32008,
+        "nome": "Santa Teresa"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -19.71971,
+      "lon": -40.67949,
+      "coordenada_metodo": "centroide",
+      "area_km2": 341.944,
+      "populacao": 11222,
+      "eleitorado": 9863,
+      "urbana_pct": 56.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10886,
+        "situacao": {
+          "urbana": 6153,
+          "rural": 4733
+        },
+        "idade": {
+          "0_15": 1819,
+          "16_17": 271,
+          "18_24": 989,
+          "25_34": 1391,
+          "35_44": 1602,
+          "45_59": 2444,
+          "60_69": 1243,
+          "70_mais": 1127
+        },
+        "renda": {
+          "sem_rendimento": 197,
+          "ate_1_4_sm": 518,
+          "1_4_a_1_2_sm": 1773,
+          "1_2_a_1_sm": 4025,
+          "1_a_2_sm": 3471,
+          "2_a_3_sm": 626,
+          "3_a_5_sm": 178,
+          "5_a_10_sm": 57,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7165,
+          "evangelica": 1730,
+          "espirita": 14,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 81,
+          "sem_religiao": 163,
+          "nao_sabe": 0,
+          "sem_declaracao": 65
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3895,
+          "fundamental_completo_medio_incompleto": 1251,
+          "medio_completo_superior_incompleto": 2733,
+          "superior_completo": 924
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3205002,
+      "nome": "Serra",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32009,
+        "nome": "Vitória"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.12812,
+      "lon": -40.30162,
+      "coordenada_metodo": "centroide",
+      "area_km2": 547.631,
+      "populacao": 586901,
+      "eleitorado": 360432,
+      "urbana_pct": 99.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 520653,
+        "situacao": {
+          "urbana": 518261,
+          "rural": 2392
+        },
+        "idade": {
+          "0_15": 117068,
+          "16_17": 14582,
+          "18_24": 54402,
+          "25_34": 83558,
+          "35_44": 92627,
+          "45_59": 91935,
+          "60_69": 41431,
+          "70_mais": 25050
+        },
+        "renda": {
+          "sem_rendimento": 16368,
+          "ate_1_4_sm": 36201,
+          "1_4_a_1_2_sm": 85729,
+          "1_2_a_1_sm": 155976,
+          "1_a_2_sm": 142145,
+          "2_a_3_sm": 44998,
+          "3_a_5_sm": 25332,
+          "5_a_10_sm": 9830,
+          "10_a_15_sm": 1529,
+          "15_a_20_sm": 350,
+          "mais_de_20_sm": 333
+        },
+        "religiao": {
+          "catolica": 149439,
+          "evangelica": 162683,
+          "espirita": 3067,
+          "umbanda_candomble": 2542,
+          "tradicoes_indigenas": 82,
+          "outras": 28709,
+          "sem_religiao": 63779,
+          "nao_sabe": 224,
+          "sem_declaracao": 304
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 96891,
+          "fundamental_completo_medio_incompleto": 66168,
+          "medio_completo_superior_incompleto": 163215,
+          "superior_completo": 62823
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 23,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3205010,
+      "nome": "Sooretama",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32006,
+        "nome": "Linhares"
+      },
+      "regiao_imediata": {
+        "id": 320004,
+        "nome": "Linhares"
+      },
+      "lat": -19.07264,
+      "lon": -40.14662,
+      "coordenada_metodo": "centroide",
+      "area_km2": 587.037,
+      "populacao": 28876,
+      "eleitorado": 20826,
+      "urbana_pct": 83.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26502,
+        "situacao": {
+          "urbana": 22192,
+          "rural": 4310
+        },
+        "idade": {
+          "0_15": 6835,
+          "16_17": 884,
+          "18_24": 3091,
+          "25_34": 4070,
+          "35_44": 4157,
+          "45_59": 4368,
+          "60_69": 1831,
+          "70_mais": 1266
+        },
+        "renda": {
+          "sem_rendimento": 362,
+          "ate_1_4_sm": 1854,
+          "1_4_a_1_2_sm": 6082,
+          "1_2_a_1_sm": 10343,
+          "1_a_2_sm": 6173,
+          "2_a_3_sm": 1085,
+          "3_a_5_sm": 371,
+          "5_a_10_sm": 76,
+          "10_a_15_sm": 141,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8995,
+          "evangelica": 7076,
+          "espirita": 0,
+          "umbanda_candomble": 30,
+          "tradicoes_indigenas": 0,
+          "outras": 772,
+          "sem_religiao": 3207,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7950,
+          "fundamental_completo_medio_incompleto": 2918,
+          "medio_completo_superior_incompleto": 6209,
+          "superior_completo": 1755
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3205036,
+      "nome": "Vargem Alta",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32012,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "regiao_imediata": {
+        "id": 320007,
+        "nome": "Cachoeiro de Itapemirim"
+      },
+      "lat": -20.64712,
+      "lon": -41.00493,
+      "coordenada_metodo": "centroide",
+      "area_km2": 417.76,
+      "populacao": 20413,
+      "eleitorado": 15946,
+      "urbana_pct": 54.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19563,
+        "situacao": {
+          "urbana": 10700,
+          "rural": 8863
+        },
+        "idade": {
+          "0_15": 3989,
+          "16_17": 558,
+          "18_24": 1954,
+          "25_34": 2767,
+          "35_44": 3099,
+          "45_59": 3831,
+          "60_69": 1879,
+          "70_mais": 1486
+        },
+        "renda": {
+          "sem_rendimento": 415,
+          "ate_1_4_sm": 1380,
+          "1_4_a_1_2_sm": 3170,
+          "1_2_a_1_sm": 6914,
+          "1_a_2_sm": 5720,
+          "2_a_3_sm": 1148,
+          "3_a_5_sm": 571,
+          "5_a_10_sm": 194,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 10,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11319,
+          "evangelica": 3606,
+          "espirita": 95,
+          "umbanda_candomble": 87,
+          "tradicoes_indigenas": 0,
+          "outras": 142,
+          "sem_religiao": 464,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7533,
+          "fundamental_completo_medio_incompleto": 2071,
+          "medio_completo_superior_incompleto": 3881,
+          "superior_completo": 1504
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3205069,
+      "nome": "Venda Nova do Imigrante",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32007,
+        "nome": "Afonso Cláudio"
+      },
+      "regiao_imediata": {
+        "id": 320002,
+        "nome": "Afonso Cláudio - Venda Nova do Imigrante - Santa Maria de Jetibá"
+      },
+      "lat": -20.37043,
+      "lon": -41.14022,
+      "coordenada_metodo": "centroide",
+      "area_km2": 185.909,
+      "populacao": 25630,
+      "eleitorado": 20176,
+      "urbana_pct": 80.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23831,
+        "situacao": {
+          "urbana": 19085,
+          "rural": 4746
+        },
+        "idade": {
+          "0_15": 4582,
+          "16_17": 638,
+          "18_24": 2381,
+          "25_34": 3748,
+          "35_44": 3988,
+          "45_59": 4728,
+          "60_69": 2058,
+          "70_mais": 1708
+        },
+        "renda": {
+          "sem_rendimento": 321,
+          "ate_1_4_sm": 958,
+          "1_4_a_1_2_sm": 3511,
+          "1_2_a_1_sm": 7215,
+          "1_a_2_sm": 7672,
+          "2_a_3_sm": 2397,
+          "3_a_5_sm": 1165,
+          "5_a_10_sm": 523,
+          "10_a_15_sm": 25,
+          "15_a_20_sm": 28,
+          "mais_de_20_sm": 18
+        },
+        "religiao": {
+          "catolica": 14459,
+          "evangelica": 4084,
+          "espirita": 156,
+          "umbanda_candomble": 113,
+          "tradicoes_indigenas": 0,
+          "outras": 94,
+          "sem_religiao": 630,
+          "nao_sabe": 0,
+          "sem_declaracao": 14
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6959,
+          "fundamental_completo_medio_incompleto": 3029,
+          "medio_completo_superior_incompleto": 5157,
+          "superior_completo": 3455
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3205101,
+      "nome": "Viana",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32009,
+        "nome": "Vitória"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.40105,
+      "lon": -40.51274,
+      "coordenada_metodo": "centroide",
+      "area_km2": 312.278,
+      "populacao": 79611,
+      "eleitorado": 54347,
+      "urbana_pct": 95,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 73423,
+        "situacao": {
+          "urbana": 69782,
+          "rural": 3641
+        },
+        "idade": {
+          "0_15": 16033,
+          "16_17": 2095,
+          "18_24": 7682,
+          "25_34": 11941,
+          "35_44": 12703,
+          "45_59": 13211,
+          "60_69": 6051,
+          "70_mais": 3707
+        },
+        "renda": {
+          "sem_rendimento": 1355,
+          "ate_1_4_sm": 5482,
+          "1_4_a_1_2_sm": 14286,
+          "1_2_a_1_sm": 25474,
+          "1_a_2_sm": 18563,
+          "2_a_3_sm": 3716,
+          "3_a_5_sm": 1464,
+          "5_a_10_sm": 313,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 21986,
+          "evangelica": 23715,
+          "espirita": 204,
+          "umbanda_candomble": 139,
+          "tradicoes_indigenas": 24,
+          "outras": 1706,
+          "sem_religiao": 10583,
+          "nao_sabe": 0,
+          "sem_declaracao": 42
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 17960,
+          "fundamental_completo_medio_incompleto": 10311,
+          "medio_completo_superior_incompleto": 22223,
+          "superior_completo": 4805
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 3205150,
+      "nome": "Vila Pavão",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32002,
+        "nome": "Nova Venécia"
+      },
+      "regiao_imediata": {
+        "id": 320006,
+        "nome": "Nova Venécia"
+      },
+      "lat": -18.61424,
+      "lon": -40.62716,
+      "coordenada_metodo": "centroide",
+      "area_km2": 433.257,
+      "populacao": 9340,
+      "eleitorado": 7743,
+      "urbana_pct": 45.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8911,
+        "situacao": {
+          "urbana": 4062,
+          "rural": 4849
+        },
+        "idade": {
+          "0_15": 1804,
+          "16_17": 216,
+          "18_24": 778,
+          "25_34": 1282,
+          "35_44": 1413,
+          "45_59": 1908,
+          "60_69": 873,
+          "70_mais": 637
+        },
+        "renda": {
+          "sem_rendimento": 354,
+          "ate_1_4_sm": 1298,
+          "1_4_a_1_2_sm": 1901,
+          "1_2_a_1_sm": 3070,
+          "1_a_2_sm": 1780,
+          "2_a_3_sm": 277,
+          "3_a_5_sm": 143,
+          "5_a_10_sm": 58,
+          "10_a_15_sm": 21,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3085,
+          "evangelica": 3617,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 79,
+          "sem_religiao": 437,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3305,
+          "fundamental_completo_medio_incompleto": 1138,
+          "medio_completo_superior_incompleto": 1899,
+          "superior_completo": 563
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3205176,
+      "nome": "Vila Valério",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32002,
+        "nome": "Nova Venécia"
+      },
+      "regiao_imediata": {
+        "id": 320005,
+        "nome": "Colatina"
+      },
+      "lat": -18.96659,
+      "lon": -40.32951,
+      "coordenada_metodo": "centroide",
+      "area_km2": 470.342,
+      "populacao": 14289,
+      "eleitorado": 12906,
+      "urbana_pct": 36.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13728,
+        "situacao": {
+          "urbana": 4957,
+          "rural": 8771
+        },
+        "idade": {
+          "0_15": 2817,
+          "16_17": 367,
+          "18_24": 1345,
+          "25_34": 2078,
+          "35_44": 2265,
+          "45_59": 2696,
+          "60_69": 1225,
+          "70_mais": 935
+        },
+        "renda": {
+          "sem_rendimento": 205,
+          "ate_1_4_sm": 963,
+          "1_4_a_1_2_sm": 2522,
+          "1_2_a_1_sm": 4963,
+          "1_a_2_sm": 4010,
+          "2_a_3_sm": 748,
+          "3_a_5_sm": 153,
+          "5_a_10_sm": 84,
+          "10_a_15_sm": 20,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6717,
+          "evangelica": 3738,
+          "espirita": 5,
+          "umbanda_candomble": 15,
+          "tradicoes_indigenas": 0,
+          "outras": 64,
+          "sem_religiao": 494,
+          "nao_sabe": 0,
+          "sem_declaracao": 25
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5742,
+          "fundamental_completo_medio_incompleto": 1603,
+          "medio_completo_superior_incompleto": 2498,
+          "superior_completo": 662
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 3205200,
+      "nome": "Vila Velha",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32009,
+        "nome": "Vitória"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.43408,
+      "lon": -40.37826,
+      "coordenada_metodo": "centroide",
+      "area_km2": 210.225,
+      "populacao": 510512,
+      "eleitorado": 346599,
+      "urbana_pct": 98,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 467722,
+        "situacao": {
+          "urbana": 458164,
+          "rural": 9558
+        },
+        "idade": {
+          "0_15": 87157,
+          "16_17": 11358,
+          "18_24": 45807,
+          "25_34": 72954,
+          "35_44": 78931,
+          "45_59": 90466,
+          "60_69": 46244,
+          "70_mais": 34805
+        },
+        "renda": {
+          "sem_rendimento": 21406,
+          "ate_1_4_sm": 23887,
+          "1_4_a_1_2_sm": 55800,
+          "1_2_a_1_sm": 112115,
+          "1_a_2_sm": 120349,
+          "2_a_3_sm": 52764,
+          "3_a_5_sm": 41564,
+          "5_a_10_sm": 24182,
+          "10_a_15_sm": 4263,
+          "15_a_20_sm": 1109,
+          "mais_de_20_sm": 1185
+        },
+        "religiao": {
+          "catolica": 175358,
+          "evangelica": 138792,
+          "espirita": 5872,
+          "umbanda_candomble": 2995,
+          "tradicoes_indigenas": 220,
+          "outras": 19595,
+          "sem_religiao": 42961,
+          "nao_sabe": 257,
+          "sem_declaracao": 237
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 72314,
+          "fundamental_completo_medio_incompleto": 52240,
+          "medio_completo_superior_incompleto": 152444,
+          "superior_completo": 92322
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 3205309,
+      "nome": "Vitória",
+      "uf": "ES",
+      "regiao": "SE",
+      "microrregiao": {
+        "id": 32009,
+        "nome": "Vitória"
+      },
+      "regiao_imediata": {
+        "id": 320001,
+        "nome": "Vitória"
+      },
+      "lat": -20.27971,
+      "lon": -40.31514,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 97.124,
+      "populacao": 343935,
+      "eleitorado": 265630,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 322869,
+        "situacao": {
+          "urbana": 322869,
+          "rural": 0
+        },
+        "idade": {
+          "0_15": 56957,
+          "16_17": 7269,
+          "18_24": 30409,
+          "25_34": 47192,
+          "35_44": 53524,
+          "45_59": 62713,
+          "60_69": 35545,
+          "70_mais": 29260
+        },
+        "renda": {
+          "sem_rendimento": 7511,
+          "ate_1_4_sm": 14027,
+          "1_4_a_1_2_sm": 35170,
+          "1_2_a_1_sm": 64907,
+          "1_a_2_sm": 70276,
+          "2_a_3_sm": 39886,
+          "3_a_5_sm": 41764,
+          "5_a_10_sm": 34999,
+          "10_a_15_sm": 9325,
+          "15_a_20_sm": 1882,
+          "mais_de_20_sm": 2226
+        },
+        "religiao": {
+          "catolica": 133538,
+          "evangelica": 74368,
+          "espirita": 7135,
+          "umbanda_candomble": 2116,
+          "tradicoes_indigenas": 23,
+          "outras": 12582,
+          "sem_religiao": 39558,
+          "nao_sabe": 44,
+          "sem_declaracao": 276
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 38631,
+          "fundamental_completo_medio_incompleto": 28144,
+          "medio_completo_superior_incompleto": 93516,
+          "superior_completo": 98406
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 23,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    }
+  ]
+}

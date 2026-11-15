@@ -1,0 +1,80 @@
+{
+  "uf": "DF",
+  "municipios": [
+    {
+      "codigo_ibge": 5300108,
+      "nome": "Brasília",
+      "uf": "DF",
+      "regiao": "CO",
+      "microrregiao": {
+        "id": 53001,
+        "nome": "Brasília"
+      },
+      "regiao_imediata": {
+        "id": 530001,
+        "nome": "Distrito Federal"
+      },
+      "lat": -15.78117,
+      "lon": -47.79685,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5760.785,
+      "populacao": 3009996,
+      "eleitorado": 2248914,
+      "urbana_pct": 96.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 2817381,
+        "situacao": {
+          "urbana": 2718082,
+          "rural": 99299
+        },
+        "idade": {
+          "0_15": 573993,
+          "16_17": 82582,
+          "18_24": 314170,
+          "25_34": 447336,
+          "35_44": 492668,
+          "45_59": 541542,
+          "60_69": 206463,
+          "70_mais": 158627
+        },
+        "renda": {
+          "sem_rendimento": 80665,
+          "ate_1_4_sm": 138495,
+          "1_4_a_1_2_sm": 346342,
+          "1_2_a_1_sm": 645236,
+          "1_a_2_sm": 615724,
+          "2_a_3_sm": 294679,
+          "3_a_5_sm": 310171,
+          "5_a_10_sm": 260495,
+          "10_a_15_sm": 65561,
+          "15_a_20_sm": 19989,
+          "mais_de_20_sm": 13758
+        },
+        "religiao": {
+          "catolica": 1142562,
+          "evangelica": 656998,
+          "espirita": 76521,
+          "umbanda_candomble": 19719,
+          "tradicoes_indigenas": 519,
+          "outras": 112205,
+          "sem_religiao": 258157,
+          "nao_sabe": 15033,
+          "sem_declaracao": 2846
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 378697,
+          "fundamental_completo_medio_incompleto": 257912,
+          "medio_completo_superior_incompleto": 808005,
+          "superior_completo": 716719
+        }
+      },
+      "eleicoes_municipais": false,
+      "vagas_vereador": 0,
+      "vagas_vereador_max": 0,
+      "vagas_fonte": "sem_eleicao_municipal",
+      "segundo_turno_prefeito": false,
+      "porte": "metropole"
+    }
+  ]
+}

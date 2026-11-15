@@ -1,0 +1,1130 @@
+{
+  "uf": "RR",
+  "municipios": [
+    {
+      "codigo_ibge": 1400027,
+      "nome": "Amajari",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14001,
+        "nome": "Boa Vista"
+      },
+      "regiao_imediata": {
+        "id": 140002,
+        "nome": "Pacaraima"
+      },
+      "lat": 3.73244,
+      "lon": -62.43248,
+      "coordenada_metodo": "centroide",
+      "area_km2": 28370.592,
+      "populacao": 16647,
+      "eleitorado": 7614,
+      "urbana_pct": 15.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13927,
+        "situacao": {
+          "urbana": 2213,
+          "rural": 11714
+        },
+        "idade": {
+          "0_15": 5868,
+          "16_17": 626,
+          "18_24": 1705,
+          "25_34": 1710,
+          "35_44": 1467,
+          "45_59": 1534,
+          "60_69": 672,
+          "70_mais": 345
+        },
+        "renda": {
+          "sem_rendimento": 3862,
+          "ate_1_4_sm": 3356,
+          "1_4_a_1_2_sm": 2816,
+          "1_2_a_1_sm": 2445,
+          "1_a_2_sm": 931,
+          "2_a_3_sm": 247,
+          "3_a_5_sm": 74,
+          "5_a_10_sm": 18,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2768,
+          "evangelica": 2229,
+          "espirita": 0,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 1926,
+          "outras": 235,
+          "sem_religiao": 1177,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3894,
+          "fundamental_completo_medio_incompleto": 999,
+          "medio_completo_superior_incompleto": 1954,
+          "superior_completo": 563
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400050,
+      "nome": "Alto Alegre",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14001,
+        "nome": "Boa Vista"
+      },
+      "regiao_imediata": {
+        "id": 140001,
+        "nome": "Boa Vista"
+      },
+      "lat": 3.07163,
+      "lon": -62.74072,
+      "coordenada_metodo": "centroide",
+      "area_km2": 25424.287,
+      "populacao": 24135,
+      "eleitorado": 13384,
+      "urbana_pct": 22.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21096,
+        "situacao": {
+          "urbana": 4763,
+          "rural": 16333
+        },
+        "idade": {
+          "0_15": 8766,
+          "16_17": 835,
+          "18_24": 2654,
+          "25_34": 2530,
+          "35_44": 2286,
+          "45_59": 2416,
+          "60_69": 946,
+          "70_mais": 663
+        },
+        "renda": {
+          "sem_rendimento": 8134,
+          "ate_1_4_sm": 4615,
+          "1_4_a_1_2_sm": 3362,
+          "1_2_a_1_sm": 2831,
+          "1_a_2_sm": 1327,
+          "2_a_3_sm": 430,
+          "3_a_5_sm": 129,
+          "5_a_10_sm": 66,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 13,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3971,
+          "evangelica": 2661,
+          "espirita": 21,
+          "umbanda_candomble": 7,
+          "tradicoes_indigenas": 2888,
+          "outras": 345,
+          "sem_religiao": 2907,
+          "nao_sabe": 0,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6464,
+          "fundamental_completo_medio_incompleto": 1451,
+          "medio_completo_superior_incompleto": 2768,
+          "superior_completo": 768
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1400100,
+      "nome": "Boa Vista",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14001,
+        "nome": "Boa Vista"
+      },
+      "regiao_imediata": {
+        "id": 140001,
+        "nome": "Boa Vista"
+      },
+      "lat": 3.11791,
+      "lon": -60.71795,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5687.037,
+      "populacao": 500965,
+      "eleitorado": 240589,
+      "urbana_pct": 97.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 413486,
+        "situacao": {
+          "urbana": 402169,
+          "rural": 11317
+        },
+        "idade": {
+          "0_15": 115386,
+          "16_17": 13776,
+          "18_24": 55078,
+          "25_34": 74373,
+          "35_44": 64944,
+          "45_59": 58092,
+          "60_69": 20053,
+          "70_mais": 11784
+        },
+        "renda": {
+          "sem_rendimento": 15513,
+          "ate_1_4_sm": 57508,
+          "1_4_a_1_2_sm": 92032,
+          "1_2_a_1_sm": 105198,
+          "1_a_2_sm": 72624,
+          "2_a_3_sm": 27867,
+          "3_a_5_sm": 20680,
+          "5_a_10_sm": 8891,
+          "10_a_15_sm": 1732,
+          "15_a_20_sm": 428,
+          "mais_de_20_sm": 274
+        },
+        "religiao": {
+          "catolica": 113407,
+          "evangelica": 103020,
+          "espirita": 2775,
+          "umbanda_candomble": 1324,
+          "tradicoes_indigenas": 123,
+          "outras": 28629,
+          "sem_religiao": 54282,
+          "nao_sabe": 442,
+          "sem_declaracao": 754
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 60211,
+          "fundamental_completo_medio_incompleto": 40509,
+          "medio_completo_superior_incompleto": 127040,
+          "superior_completo": 55673
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 23,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 1400159,
+      "nome": "Bonfim",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14002,
+        "nome": "Nordeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140001,
+        "nome": "Boa Vista"
+      },
+      "lat": 2.7876,
+      "lon": -60.10062,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8079.84,
+      "populacao": 15922,
+      "eleitorado": 12334,
+      "urbana_pct": 36.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13923,
+        "situacao": {
+          "urbana": 5067,
+          "rural": 8856
+        },
+        "idade": {
+          "0_15": 5495,
+          "16_17": 602,
+          "18_24": 1669,
+          "25_34": 1832,
+          "35_44": 1484,
+          "45_59": 1678,
+          "60_69": 689,
+          "70_mais": 474
+        },
+        "renda": {
+          "sem_rendimento": 585,
+          "ate_1_4_sm": 5186,
+          "1_4_a_1_2_sm": 4087,
+          "1_2_a_1_sm": 2617,
+          "1_a_2_sm": 1016,
+          "2_a_3_sm": 239,
+          "3_a_5_sm": 71,
+          "5_a_10_sm": 42,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4490,
+          "evangelica": 2861,
+          "espirita": 11,
+          "umbanda_candomble": 44,
+          "tradicoes_indigenas": 14,
+          "outras": 955,
+          "sem_religiao": 356,
+          "nao_sabe": 4,
+          "sem_declaracao": 19
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3311,
+          "fundamental_completo_medio_incompleto": 1368,
+          "medio_completo_superior_incompleto": 2632,
+          "superior_completo": 561
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400175,
+      "nome": "Cantá",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14002,
+        "nome": "Nordeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140001,
+        "nome": "Boa Vista"
+      },
+      "lat": 2.27284,
+      "lon": -60.54228,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7664.831,
+      "populacao": 21659,
+      "eleitorado": 17602,
+      "urbana_pct": 24.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18682,
+        "situacao": {
+          "urbana": 4628,
+          "rural": 14054
+        },
+        "idade": {
+          "0_15": 6442,
+          "16_17": 705,
+          "18_24": 1905,
+          "25_34": 2439,
+          "35_44": 2333,
+          "45_59": 2804,
+          "60_69": 1309,
+          "70_mais": 745
+        },
+        "renda": {
+          "sem_rendimento": 422,
+          "ate_1_4_sm": 5455,
+          "1_4_a_1_2_sm": 5600,
+          "1_2_a_1_sm": 4527,
+          "1_a_2_sm": 1464,
+          "2_a_3_sm": 540,
+          "3_a_5_sm": 416,
+          "5_a_10_sm": 97,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6134,
+          "evangelica": 4284,
+          "espirita": 55,
+          "umbanda_candomble": 48,
+          "tradicoes_indigenas": 0,
+          "outras": 431,
+          "sem_religiao": 1636,
+          "nao_sabe": 0,
+          "sem_declaracao": 34
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4684,
+          "fundamental_completo_medio_incompleto": 2329,
+          "medio_completo_superior_incompleto": 3387,
+          "superior_completo": 1096
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1400209,
+      "nome": "Caracaraí",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14003,
+        "nome": "Caracaraí"
+      },
+      "regiao_imediata": {
+        "id": 140004,
+        "nome": "Caracaraí"
+      },
+      "lat": 0.99084,
+      "lon": -61.47137,
+      "coordenada_metodo": "centroide",
+      "area_km2": 47385.318,
+      "populacao": 23061,
+      "eleitorado": 15299,
+      "urbana_pct": 53,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20957,
+        "situacao": {
+          "urbana": 11113,
+          "rural": 9844
+        },
+        "idade": {
+          "0_15": 6889,
+          "16_17": 789,
+          "18_24": 2411,
+          "25_34": 2792,
+          "35_44": 2834,
+          "45_59": 3143,
+          "60_69": 1304,
+          "70_mais": 795
+        },
+        "renda": {
+          "sem_rendimento": 1516,
+          "ate_1_4_sm": 5599,
+          "1_4_a_1_2_sm": 5484,
+          "1_2_a_1_sm": 5201,
+          "1_a_2_sm": 2328,
+          "2_a_3_sm": 404,
+          "3_a_5_sm": 262,
+          "5_a_10_sm": 40,
+          "10_a_15_sm": 29,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6001,
+          "evangelica": 5712,
+          "espirita": 21,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 363,
+          "outras": 318,
+          "sem_religiao": 2040,
+          "nao_sabe": 0,
+          "sem_declaracao": 29
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5886,
+          "fundamental_completo_medio_incompleto": 2308,
+          "medio_completo_superior_incompleto": 3988,
+          "superior_completo": 1167
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1400233,
+      "nome": "Caroebe",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14004,
+        "nome": "Sudeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140003,
+        "nome": "Rorainópolis"
+      },
+      "lat": 0.91463,
+      "lon": -59.33817,
+      "coordenada_metodo": "centroide",
+      "area_km2": 12064.399,
+      "populacao": 12303,
+      "eleitorado": 7648,
+      "urbana_pct": 46.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10656,
+        "situacao": {
+          "urbana": 4945,
+          "rural": 5711
+        },
+        "idade": {
+          "0_15": 3381,
+          "16_17": 411,
+          "18_24": 1274,
+          "25_34": 1624,
+          "35_44": 1600,
+          "45_59": 1464,
+          "60_69": 560,
+          "70_mais": 342
+        },
+        "renda": {
+          "sem_rendimento": 160,
+          "ate_1_4_sm": 2001,
+          "1_4_a_1_2_sm": 3151,
+          "1_2_a_1_sm": 3013,
+          "1_a_2_sm": 1511,
+          "2_a_3_sm": 335,
+          "3_a_5_sm": 262,
+          "5_a_10_sm": 60,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1979,
+          "evangelica": 3600,
+          "espirita": 0,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 274,
+          "sem_religiao": 1605,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2729,
+          "fundamental_completo_medio_incompleto": 1378,
+          "medio_completo_superior_incompleto": 1996,
+          "superior_completo": 752
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400282,
+      "nome": "Iracema",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14003,
+        "nome": "Caracaraí"
+      },
+      "regiao_imediata": {
+        "id": 140004,
+        "nome": "Caracaraí"
+      },
+      "lat": 2.17501,
+      "lon": -61.66834,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 14018.766,
+      "populacao": 11098,
+      "eleitorado": 7572,
+      "urbana_pct": 42.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10023,
+        "situacao": {
+          "urbana": 4265,
+          "rural": 5758
+        },
+        "idade": {
+          "0_15": 3270,
+          "16_17": 385,
+          "18_24": 1268,
+          "25_34": 1389,
+          "35_44": 1292,
+          "45_59": 1428,
+          "60_69": 643,
+          "70_mais": 348
+        },
+        "renda": {
+          "sem_rendimento": 1206,
+          "ate_1_4_sm": 1699,
+          "1_4_a_1_2_sm": 2444,
+          "1_2_a_1_sm": 2940,
+          "1_a_2_sm": 1289,
+          "2_a_3_sm": 225,
+          "3_a_5_sm": 76,
+          "5_a_10_sm": 51,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 4
+        },
+        "religiao": {
+          "catolica": 2827,
+          "evangelica": 2296,
+          "espirita": 0,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 533,
+          "outras": 202,
+          "sem_religiao": 1041,
+          "nao_sabe": 16,
+          "sem_declaracao": 18
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3192,
+          "fundamental_completo_medio_incompleto": 942,
+          "medio_completo_superior_incompleto": 1706,
+          "superior_completo": 525
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400308,
+      "nome": "Mucajaí",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14003,
+        "nome": "Caracaraí"
+      },
+      "regiao_imediata": {
+        "id": 140001,
+        "nome": "Boa Vista"
+      },
+      "lat": 2.51097,
+      "lon": -61.99679,
+      "coordenada_metodo": "centroide",
+      "area_km2": 12337.85,
+      "populacao": 20398,
+      "eleitorado": 14395,
+      "urbana_pct": 55.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18095,
+        "situacao": {
+          "urbana": 10121,
+          "rural": 7974
+        },
+        "idade": {
+          "0_15": 5777,
+          "16_17": 668,
+          "18_24": 2079,
+          "25_34": 2510,
+          "35_44": 2440,
+          "45_59": 2758,
+          "60_69": 1094,
+          "70_mais": 769
+        },
+        "renda": {
+          "sem_rendimento": 487,
+          "ate_1_4_sm": 3392,
+          "1_4_a_1_2_sm": 5643,
+          "1_2_a_1_sm": 5757,
+          "1_a_2_sm": 1967,
+          "2_a_3_sm": 381,
+          "3_a_5_sm": 291,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5791,
+          "evangelica": 3853,
+          "espirita": 18,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 154,
+          "outras": 330,
+          "sem_religiao": 2516,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4736,
+          "fundamental_completo_medio_incompleto": 1678,
+          "medio_completo_superior_incompleto": 4211,
+          "superior_completo": 1011
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1400407,
+      "nome": "Normandia",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14002,
+        "nome": "Nordeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140002,
+        "nome": "Pacaraima"
+      },
+      "lat": 3.87889,
+      "lon": -60.06543,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6959.982,
+      "populacao": 16908,
+      "eleitorado": 9692,
+      "urbana_pct": 23.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13986,
+        "situacao": {
+          "urbana": 3234,
+          "rural": 10752
+        },
+        "idade": {
+          "0_15": 6630,
+          "16_17": 634,
+          "18_24": 1681,
+          "25_34": 1788,
+          "35_44": 1343,
+          "45_59": 1170,
+          "60_69": 423,
+          "70_mais": 317
+        },
+        "renda": {
+          "sem_rendimento": 868,
+          "ate_1_4_sm": 6336,
+          "1_4_a_1_2_sm": 3116,
+          "1_2_a_1_sm": 2591,
+          "1_a_2_sm": 774,
+          "2_a_3_sm": 127,
+          "3_a_5_sm": 62,
+          "5_a_10_sm": 24,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4082,
+          "evangelica": 2689,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 303,
+          "outras": 298,
+          "sem_religiao": 294,
+          "nao_sabe": 25,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2149,
+          "fundamental_completo_medio_incompleto": 1079,
+          "medio_completo_superior_incompleto": 2958,
+          "superior_completo": 470
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400456,
+      "nome": "Pacaraima",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14001,
+        "nome": "Boa Vista"
+      },
+      "regiao_imediata": {
+        "id": 140002,
+        "nome": "Pacaraima"
+      },
+      "lat": 4.16827,
+      "lon": -60.83906,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8019.088,
+      "populacao": 24132,
+      "eleitorado": 9750,
+      "urbana_pct": 47.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19305,
+        "situacao": {
+          "urbana": 9251,
+          "rural": 10054
+        },
+        "idade": {
+          "0_15": 7786,
+          "16_17": 750,
+          "18_24": 2437,
+          "25_34": 2884,
+          "35_44": 2265,
+          "45_59": 2061,
+          "60_69": 706,
+          "70_mais": 416
+        },
+        "renda": {
+          "sem_rendimento": 1469,
+          "ate_1_4_sm": 6786,
+          "1_4_a_1_2_sm": 4511,
+          "1_2_a_1_sm": 2827,
+          "1_a_2_sm": 1258,
+          "2_a_3_sm": 299,
+          "3_a_5_sm": 171,
+          "5_a_10_sm": 86,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4282,
+          "evangelica": 4750,
+          "espirita": 47,
+          "umbanda_candomble": 11,
+          "tradicoes_indigenas": 15,
+          "outras": 1014,
+          "sem_religiao": 1254,
+          "nao_sabe": 0,
+          "sem_declaracao": 593
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3513,
+          "fundamental_completo_medio_incompleto": 1740,
+          "medio_completo_superior_incompleto": 4230,
+          "superior_completo": 1267
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1400472,
+      "nome": "Rorainópolis",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14004,
+        "nome": "Sudeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140003,
+        "nome": "Rorainópolis"
+      },
+      "lat": 0.03805,
+      "lon": -61.01118,
+      "coordenada_metodo": "centroide",
+      "area_km2": 33579.445,
+      "populacao": 38840,
+      "eleitorado": 23787,
+      "urbana_pct": 74.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 32647,
+        "situacao": {
+          "urbana": 24295,
+          "rural": 8352
+        },
+        "idade": {
+          "0_15": 10011,
+          "16_17": 1089,
+          "18_24": 4040,
+          "25_34": 5293,
+          "35_44": 4744,
+          "45_59": 4519,
+          "60_69": 1838,
+          "70_mais": 1113
+        },
+        "renda": {
+          "sem_rendimento": 2143,
+          "ate_1_4_sm": 6860,
+          "1_4_a_1_2_sm": 8844,
+          "1_2_a_1_sm": 8933,
+          "1_a_2_sm": 3824,
+          "2_a_3_sm": 1077,
+          "3_a_5_sm": 776,
+          "5_a_10_sm": 83,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9055,
+          "evangelica": 8689,
+          "espirita": 66,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 291,
+          "outras": 492,
+          "sem_religiao": 4528,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9284,
+          "fundamental_completo_medio_incompleto": 3612,
+          "medio_completo_superior_incompleto": 6536,
+          "superior_completo": 2029
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1400506,
+      "nome": "São João da Baliza",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14004,
+        "nome": "Sudeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140003,
+        "nome": "Rorainópolis"
+      },
+      "lat": 0.63578,
+      "lon": -59.84502,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4284.503,
+      "populacao": 10215,
+      "eleitorado": 5733,
+      "urbana_pct": 71,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8858,
+        "situacao": {
+          "urbana": 6287,
+          "rural": 2571
+        },
+        "idade": {
+          "0_15": 2680,
+          "16_17": 317,
+          "18_24": 1112,
+          "25_34": 1402,
+          "35_44": 1361,
+          "45_59": 1227,
+          "60_69": 433,
+          "70_mais": 326
+        },
+        "renda": {
+          "sem_rendimento": 223,
+          "ate_1_4_sm": 1562,
+          "1_4_a_1_2_sm": 2557,
+          "1_2_a_1_sm": 2831,
+          "1_a_2_sm": 1025,
+          "2_a_3_sm": 307,
+          "3_a_5_sm": 139,
+          "5_a_10_sm": 55,
+          "10_a_15_sm": 12,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1876,
+          "evangelica": 2630,
+          "espirita": 22,
+          "umbanda_candomble": 4,
+          "tradicoes_indigenas": 0,
+          "outras": 264,
+          "sem_religiao": 1511,
+          "nao_sabe": 0,
+          "sem_declaracao": 20
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1874,
+          "fundamental_completo_medio_incompleto": 1019,
+          "medio_completo_superior_incompleto": 2343,
+          "superior_completo": 652
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400605,
+      "nome": "São Luiz do Anauá",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14004,
+        "nome": "Sudeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140003,
+        "nome": "Rorainópolis"
+      },
+      "lat": 0.88443,
+      "lon": -60.15184,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1526.9,
+      "populacao": 7920,
+      "eleitorado": 6099,
+      "urbana_pct": 59.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7315,
+        "situacao": {
+          "urbana": 4363,
+          "rural": 2952
+        },
+        "idade": {
+          "0_15": 2091,
+          "16_17": 266,
+          "18_24": 795,
+          "25_34": 1205,
+          "35_44": 1151,
+          "45_59": 1026,
+          "60_69": 472,
+          "70_mais": 309
+        },
+        "renda": {
+          "sem_rendimento": 240,
+          "ate_1_4_sm": 1590,
+          "1_4_a_1_2_sm": 2197,
+          "1_2_a_1_sm": 1970,
+          "1_a_2_sm": 748,
+          "2_a_3_sm": 262,
+          "3_a_5_sm": 81,
+          "5_a_10_sm": 24,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2402,
+          "evangelica": 1745,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 265,
+          "sem_religiao": 941,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1720,
+          "fundamental_completo_medio_incompleto": 974,
+          "medio_completo_superior_incompleto": 1932,
+          "superior_completo": 329
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1400704,
+      "nome": "Uiramutã",
+      "uf": "RR",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 14002,
+        "nome": "Nordeste de Roraima"
+      },
+      "regiao_imediata": {
+        "id": 140002,
+        "nome": "Pacaraima"
+      },
+      "lat": 4.68476,
+      "lon": -60.27862,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8102.219,
+      "populacao": 16809,
+      "eleitorado": 9116,
+      "urbana_pct": 7.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13751,
+        "situacao": {
+          "urbana": 1056,
+          "rural": 12695
+        },
+        "idade": {
+          "0_15": 7120,
+          "16_17": 625,
+          "18_24": 1616,
+          "25_34": 1660,
+          "35_44": 1179,
+          "45_59": 979,
+          "60_69": 325,
+          "70_mais": 247
+        },
+        "renda": {
+          "sem_rendimento": 1274,
+          "ate_1_4_sm": 8373,
+          "1_4_a_1_2_sm": 2623,
+          "1_2_a_1_sm": 1187,
+          "1_a_2_sm": 214,
+          "2_a_3_sm": 39,
+          "3_a_5_sm": 0,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 9,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4522,
+          "evangelica": 1468,
+          "espirita": 5,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 96,
+          "outras": 716,
+          "sem_religiao": 23,
+          "nao_sabe": 0,
+          "sem_declaracao": 14
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3498,
+          "fundamental_completo_medio_incompleto": 1345,
+          "medio_completo_superior_incompleto": 961,
+          "superior_completo": 183
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    }
+  ]
+}

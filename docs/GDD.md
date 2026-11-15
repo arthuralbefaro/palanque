@@ -587,7 +587,7 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando ou dados inv
 | Eleitorado por município (total, faixa etária, gênero, escolaridade) | TSE — Portal de Dados Abertos (perfil do eleitorado atual) |
 | Correspondência de códigos TSE ↔ IBGE | TSE — Códigos oficiais de UF e municípios |
 | Vagas de vereador | TSE — Consulta de vagas da última eleição municipal |
-| Coordenadas (centroide) e área | IBGE — API de Malhas (metadados) |
+| Coordenadas e área | IBGE — Malha Municipal 2025 (shapefile): centroide do polígono, ou ponto interior quando o centroide cai fora; área do campo AREA_KM2 |
 | Contornos (mapa) | IBGE — malhas territoriais, simplificadas |
 Créditos das fontes em assets/CREDITS.md.
 
@@ -604,7 +604,7 @@ Créditos das fontes em assets/CREDITS.md.
   "regiao": "SE",
   "microrregiao": { "id": 35061, "nome": "São Paulo" },
   "regiao_imediata": { "id": 350001, "nome": "São Paulo" },
-  "lat": -23.65, "lon": -46.65,
+  "lat": -23.65, "lon": -46.65, "coordenada_metodo": "centroide", "area_km2": 1521.2,
   "populacao": 11900000,
   "eleitorado": 9300000,
   "urbana_pct": 99.1,
@@ -620,12 +620,14 @@ Créditos das fontes em assets/CREDITS.md.
 ```
 (valores ilustrativos; os reais vêm do importador)
 - `microrregiao` pode ser `null`: a divisão em microrregiões está congelada desde 2017 e não existe para municípios criados depois. A divisão usada pela simulação é a **região geográfica imediata**, que cobre todos.
-- O perfil guarda as contagens inteiras do Censo 2022; percentuais são calculados no Core. Faixas etárias: 0–15, 16–17, 18–24, 25–34, 35–44, 45–59, 60–69 e 70+ (16–17 e 70+ são as faixas de voto facultativo).
+- O perfil guarda as contagens inteiras do Censo 2022, como publicadas; percentuais são calculados no Core, sempre normalizando cada bloco pela soma das próprias categorias, nunca pelo total publicado. Renda, religião e escolaridade vêm da amostra do Censo: o IBGE arredonda cada categoria separadamente, então a soma delas pode diferir do total em algumas unidades. Faixas etárias: 0–15, 16–17, 18–24, 25–34, 35–44, 45–59, 60–69 e 70+ (16–17 e 70+ são as faixas de voto facultativo).
 - Município sem dado do Censo (criado depois de 2022) usa o perfil da UF, com `perfil_fonte: "uf"`, e a lacuna fica registrada em `_fontes.json`.
 - Distrito Federal e Fernando de Noronha (distrito estadual de PE) têm `eleicoes_municipais: false`: não elegem prefeito nem vereadores.
 
 ### 12.4 Regras derivadas automaticamente
 - **Vagas de vereador**: o número real de cada Câmara, fixado pela lei orgânica, vem da consulta de vagas do TSE da última eleição municipal (`vagas_fonte: "tse_2024"`). O teto da Constituição (art. 29, IV, de 9 a 55, pela população estimada) fica em `vagas_vereador_max` e é só um limite; município sem registro no TSE usa o teto (`vagas_fonte: "teto_constitucional"`).
+  - Alguns municípios têm hoje vagas reais acima do teto calculado com a população atual (perderam população depois de fixar o número); as vagas reais são mantidas e a lista fica em `_fontes.json` (`excecoes_vagas`).
+  - Regra no jogo, quando houver evolução da população: a cada eleição municipal, vagas = mínimo entre as vagas atuais e o teto calculado com a população daquele ano.
 - **2º turno para prefeito** só onde o eleitorado passa de 200 mil.
 - **Porte** (define o tipo de campanha), calculado sobre a população estimada, com os limites em `data/portes.json`:
 | Porte | Critério aproximado | Características |

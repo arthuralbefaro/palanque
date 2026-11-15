@@ -1,0 +1,3905 @@
+{
+  "uf": "RO",
+  "municipios": [
+    {
+      "codigo_ibge": 1100015,
+      "nome": "Alta Floresta D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -12.47107,
+      "lon": -62.13701,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 7067.127,
+      "populacao": 22724,
+      "eleitorado": 18155,
+      "urbana_pct": 60.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21494,
+        "situacao": {
+          "urbana": 12971,
+          "rural": 8523
+        },
+        "idade": {
+          "0_15": 4974,
+          "16_17": 714,
+          "18_24": 2137,
+          "25_34": 3237,
+          "35_44": 3128,
+          "45_59": 4179,
+          "60_69": 1855,
+          "70_mais": 1270
+        },
+        "renda": {
+          "sem_rendimento": 779,
+          "ate_1_4_sm": 1427,
+          "1_4_a_1_2_sm": 4476,
+          "1_2_a_1_sm": 7911,
+          "1_a_2_sm": 4950,
+          "2_a_3_sm": 1023,
+          "3_a_5_sm": 676,
+          "5_a_10_sm": 193,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8495,
+          "evangelica": 6011,
+          "espirita": 69,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 551,
+          "sem_religiao": 1734,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8620,
+          "fundamental_completo_medio_incompleto": 2685,
+          "medio_completo_superior_incompleto": 3021,
+          "superior_completo": 1499
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 10,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100023,
+      "nome": "Ariquemes",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -9.95188,
+      "lon": -62.95724,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4426.127,
+      "populacao": 109731,
+      "eleitorado": 72729,
+      "urbana_pct": 86.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 96833,
+        "situacao": {
+          "urbana": 83952,
+          "rural": 12881
+        },
+        "idade": {
+          "0_15": 22576,
+          "16_17": 3088,
+          "18_24": 11459,
+          "25_34": 15939,
+          "35_44": 15278,
+          "45_59": 17332,
+          "60_69": 6649,
+          "70_mais": 4512
+        },
+        "renda": {
+          "sem_rendimento": 2299,
+          "ate_1_4_sm": 5311,
+          "1_4_a_1_2_sm": 17570,
+          "1_2_a_1_sm": 31724,
+          "1_a_2_sm": 25812,
+          "2_a_3_sm": 7710,
+          "3_a_5_sm": 3871,
+          "5_a_10_sm": 1563,
+          "10_a_15_sm": 147,
+          "15_a_20_sm": 68,
+          "mais_de_20_sm": 55
+        },
+        "religiao": {
+          "catolica": 26209,
+          "evangelica": 31749,
+          "espirita": 313,
+          "umbanda_candomble": 132,
+          "tradicoes_indigenas": 27,
+          "outras": 3322,
+          "sem_religiao": 13972,
+          "nao_sabe": 0,
+          "sem_declaracao": 95
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 26571,
+          "fundamental_completo_medio_incompleto": 11422,
+          "medio_completo_superior_incompleto": 23089,
+          "superior_completo": 10329
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1100031,
+      "nome": "Cabixi",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11008,
+        "nome": "Colorado do Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -13.47488,
+      "lon": -60.63981,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1314.352,
+      "populacao": 5640,
+      "eleitorado": 4946,
+      "urbana_pct": 53.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5351,
+        "situacao": {
+          "urbana": 2846,
+          "rural": 2505
+        },
+        "idade": {
+          "0_15": 1188,
+          "16_17": 184,
+          "18_24": 348,
+          "25_34": 681,
+          "35_44": 829,
+          "45_59": 1092,
+          "60_69": 602,
+          "70_mais": 427
+        },
+        "renda": {
+          "sem_rendimento": 59,
+          "ate_1_4_sm": 201,
+          "1_4_a_1_2_sm": 1022,
+          "1_2_a_1_sm": 2104,
+          "1_a_2_sm": 1469,
+          "2_a_3_sm": 262,
+          "3_a_5_sm": 163,
+          "5_a_10_sm": 42,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 4
+        },
+        "religiao": {
+          "catolica": 2415,
+          "evangelica": 1546,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 102,
+          "sem_religiao": 184,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2113,
+          "fundamental_completo_medio_incompleto": 405,
+          "medio_completo_superior_incompleto": 1021,
+          "superior_completo": 417
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100049,
+      "nome": "Cacoal",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.30129,
+      "lon": -61.32473,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3792.998,
+      "populacao": 98884,
+      "eleitorado": 70108,
+      "urbana_pct": 82.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 86887,
+        "situacao": {
+          "urbana": 71907,
+          "rural": 14980
+        },
+        "idade": {
+          "0_15": 18697,
+          "16_17": 2512,
+          "18_24": 9974,
+          "25_34": 14458,
+          "35_44": 13735,
+          "45_59": 15928,
+          "60_69": 6875,
+          "70_mais": 4708
+        },
+        "renda": {
+          "sem_rendimento": 3223,
+          "ate_1_4_sm": 4391,
+          "1_4_a_1_2_sm": 13801,
+          "1_2_a_1_sm": 27204,
+          "1_a_2_sm": 22959,
+          "2_a_3_sm": 7481,
+          "3_a_5_sm": 4783,
+          "5_a_10_sm": 2310,
+          "10_a_15_sm": 293,
+          "15_a_20_sm": 38,
+          "mais_de_20_sm": 31
+        },
+        "religiao": {
+          "catolica": 27196,
+          "evangelica": 29649,
+          "espirita": 669,
+          "umbanda_candomble": 129,
+          "tradicoes_indigenas": 11,
+          "outras": 2846,
+          "sem_religiao": 8602,
+          "nao_sabe": 28,
+          "sem_declaracao": 289
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 24315,
+          "fundamental_completo_medio_incompleto": 11025,
+          "medio_completo_superior_incompleto": 18923,
+          "superior_completo": 11587
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 12,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100056,
+      "nome": "Cerejeiras",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11008,
+        "nome": "Colorado do Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -13.20356,
+      "lon": -61.26095,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2783.297,
+      "populacao": 16957,
+      "eleitorado": 13257,
+      "urbana_pct": 88.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15890,
+        "situacao": {
+          "urbana": 14116,
+          "rural": 1774
+        },
+        "idade": {
+          "0_15": 3627,
+          "16_17": 443,
+          "18_24": 1501,
+          "25_34": 2602,
+          "35_44": 2391,
+          "45_59": 2992,
+          "60_69": 1294,
+          "70_mais": 1040
+        },
+        "renda": {
+          "sem_rendimento": 401,
+          "ate_1_4_sm": 703,
+          "1_4_a_1_2_sm": 2413,
+          "1_2_a_1_sm": 5216,
+          "1_a_2_sm": 4986,
+          "2_a_3_sm": 1174,
+          "3_a_5_sm": 660,
+          "5_a_10_sm": 189,
+          "10_a_15_sm": 26,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 32
+        },
+        "religiao": {
+          "catolica": 6293,
+          "evangelica": 4930,
+          "espirita": 22,
+          "umbanda_candomble": 9,
+          "tradicoes_indigenas": 4,
+          "outras": 200,
+          "sem_religiao": 1051,
+          "nao_sabe": 4,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4754,
+          "fundamental_completo_medio_incompleto": 1743,
+          "medio_completo_superior_incompleto": 3351,
+          "superior_completo": 1978
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100064,
+      "nome": "Colorado do Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11008,
+        "nome": "Colorado do Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -13.15915,
+      "lon": -60.55024,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1451.062,
+      "populacao": 16432,
+      "eleitorado": 13480,
+      "urbana_pct": 74.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15663,
+        "situacao": {
+          "urbana": 11709,
+          "rural": 3954
+        },
+        "idade": {
+          "0_15": 3298,
+          "16_17": 443,
+          "18_24": 1468,
+          "25_34": 2158,
+          "35_44": 2364,
+          "45_59": 3243,
+          "60_69": 1484,
+          "70_mais": 1205
+        },
+        "renda": {
+          "sem_rendimento": 223,
+          "ate_1_4_sm": 628,
+          "1_4_a_1_2_sm": 2271,
+          "1_2_a_1_sm": 5757,
+          "1_a_2_sm": 4349,
+          "2_a_3_sm": 1149,
+          "3_a_5_sm": 772,
+          "5_a_10_sm": 429,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 62,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7077,
+          "evangelica": 4465,
+          "espirita": 32,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 168,
+          "sem_religiao": 825,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4949,
+          "fundamental_completo_medio_incompleto": 1565,
+          "medio_completo_superior_incompleto": 3414,
+          "superior_completo": 1953
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100072,
+      "nome": "Corumbiara",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11008,
+        "nome": "Colorado do Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -12.92663,
+      "lon": -61.09165,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3060.321,
+      "populacao": 7938,
+      "eleitorado": 5733,
+      "urbana_pct": 37,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7519,
+        "situacao": {
+          "urbana": 2780,
+          "rural": 4739
+        },
+        "idade": {
+          "0_15": 1620,
+          "16_17": 245,
+          "18_24": 690,
+          "25_34": 1109,
+          "35_44": 1182,
+          "45_59": 1584,
+          "60_69": 672,
+          "70_mais": 417
+        },
+        "renda": {
+          "sem_rendimento": 135,
+          "ate_1_4_sm": 434,
+          "1_4_a_1_2_sm": 1477,
+          "1_2_a_1_sm": 2951,
+          "1_a_2_sm": 1800,
+          "2_a_3_sm": 476,
+          "3_a_5_sm": 194,
+          "5_a_10_sm": 26,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 6
+        },
+        "religiao": {
+          "catolica": 3469,
+          "evangelica": 2052,
+          "espirita": 0,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 6,
+          "outras": 31,
+          "sem_religiao": 427,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3069,
+          "fundamental_completo_medio_incompleto": 989,
+          "medio_completo_superior_incompleto": 1081,
+          "superior_completo": 529
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100080,
+      "nome": "Costa Marques",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11002,
+        "nome": "Guajará-Mirim"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -12.14725,
+      "lon": -64.05877,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4987.159,
+      "populacao": 13499,
+      "eleitorado": 9130,
+      "urbana_pct": 52.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12627,
+        "situacao": {
+          "urbana": 6670,
+          "rural": 5957
+        },
+        "idade": {
+          "0_15": 3439,
+          "16_17": 496,
+          "18_24": 1431,
+          "25_34": 1846,
+          "35_44": 1878,
+          "45_59": 2207,
+          "60_69": 796,
+          "70_mais": 534
+        },
+        "renda": {
+          "sem_rendimento": 194,
+          "ate_1_4_sm": 1370,
+          "1_4_a_1_2_sm": 3352,
+          "1_2_a_1_sm": 4552,
+          "1_a_2_sm": 2168,
+          "2_a_3_sm": 513,
+          "3_a_5_sm": 218,
+          "5_a_10_sm": 145,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 4614,
+          "evangelica": 3752,
+          "espirita": 17,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 129,
+          "sem_religiao": 901,
+          "nao_sabe": 17,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4202,
+          "fundamental_completo_medio_incompleto": 1724,
+          "medio_completo_superior_incompleto": 1936,
+          "superior_completo": 801
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100098,
+      "nome": "Espigão D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.35134,
+      "lon": -60.78483,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4518.039,
+      "populacao": 32960,
+      "eleitorado": 23291,
+      "urbana_pct": 72.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 29414,
+        "situacao": {
+          "urbana": 21452,
+          "rural": 7962
+        },
+        "idade": {
+          "0_15": 6796,
+          "16_17": 950,
+          "18_24": 3111,
+          "25_34": 4488,
+          "35_44": 4737,
+          "45_59": 5436,
+          "60_69": 2269,
+          "70_mais": 1627
+        },
+        "renda": {
+          "sem_rendimento": 514,
+          "ate_1_4_sm": 1775,
+          "1_4_a_1_2_sm": 5083,
+          "1_2_a_1_sm": 10212,
+          "1_a_2_sm": 8494,
+          "2_a_3_sm": 1875,
+          "3_a_5_sm": 1038,
+          "5_a_10_sm": 187,
+          "10_a_15_sm": 151,
+          "15_a_20_sm": 18,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8220,
+          "evangelica": 11204,
+          "espirita": 20,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 1,
+          "outras": 482,
+          "sem_religiao": 2806,
+          "nao_sabe": 0,
+          "sem_declaracao": 344
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10723,
+          "fundamental_completo_medio_incompleto": 3486,
+          "medio_completo_superior_incompleto": 5165,
+          "superior_completo": 2241
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100106,
+      "nome": "Guajará-Mirim",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11002,
+        "nome": "Guajará-Mirim"
+      },
+      "regiao_imediata": {
+        "id": 110001,
+        "nome": "Porto Velho"
+      },
+      "lat": -11.30564,
+      "lon": -64.53756,
+      "coordenada_metodo": "centroide",
+      "area_km2": 24856.877,
+      "populacao": 43633,
+      "eleitorado": 28994,
+      "urbana_pct": 80.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 39387,
+        "situacao": {
+          "urbana": 31737,
+          "rural": 7650
+        },
+        "idade": {
+          "0_15": 11317,
+          "16_17": 1444,
+          "18_24": 4508,
+          "25_34": 5644,
+          "35_44": 5633,
+          "45_59": 6595,
+          "60_69": 2452,
+          "70_mais": 1794
+        },
+        "renda": {
+          "sem_rendimento": 1759,
+          "ate_1_4_sm": 9063,
+          "1_4_a_1_2_sm": 10277,
+          "1_2_a_1_sm": 8240,
+          "1_a_2_sm": 5717,
+          "2_a_3_sm": 2181,
+          "3_a_5_sm": 964,
+          "5_a_10_sm": 656,
+          "10_a_15_sm": 27,
+          "15_a_20_sm": 20,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13019,
+          "evangelica": 11392,
+          "espirita": 113,
+          "umbanda_candomble": 70,
+          "tradicoes_indigenas": 0,
+          "outras": 849,
+          "sem_religiao": 3143,
+          "nao_sabe": 114,
+          "sem_declaracao": 111
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9717,
+          "fundamental_completo_medio_incompleto": 5392,
+          "medio_completo_superior_incompleto": 7837,
+          "superior_completo": 3591
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100114,
+      "nome": "Jaru",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110003,
+        "nome": "Jaru"
+      },
+      "lat": -10.59245,
+      "lon": -62.58487,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2944.126,
+      "populacao": 55774,
+      "eleitorado": 41218,
+      "urbana_pct": 78.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 50591,
+        "situacao": {
+          "urbana": 39807,
+          "rural": 10784
+        },
+        "idade": {
+          "0_15": 11298,
+          "16_17": 1515,
+          "18_24": 5605,
+          "25_34": 8048,
+          "35_44": 8191,
+          "45_59": 9156,
+          "60_69": 3773,
+          "70_mais": 3005
+        },
+        "renda": {
+          "sem_rendimento": 2421,
+          "ate_1_4_sm": 2914,
+          "1_4_a_1_2_sm": 9358,
+          "1_2_a_1_sm": 16569,
+          "1_a_2_sm": 12960,
+          "2_a_3_sm": 2979,
+          "3_a_5_sm": 2385,
+          "5_a_10_sm": 730,
+          "10_a_15_sm": 124,
+          "15_a_20_sm": 86,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 17131,
+          "evangelica": 18037,
+          "espirita": 55,
+          "umbanda_candomble": 65,
+          "tradicoes_indigenas": 17,
+          "outras": 1024,
+          "sem_religiao": 3340,
+          "nao_sabe": 0,
+          "sem_declaracao": 123
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 15639,
+          "fundamental_completo_medio_incompleto": 5727,
+          "medio_completo_superior_incompleto": 11705,
+          "superior_completo": 4567
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100122,
+      "nome": "Ji-Paraná",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -10.46222,
+      "lon": -61.75725,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6896.649,
+      "populacao": 140800,
+      "eleitorado": 98308,
+      "urbana_pct": 90.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 124333,
+        "situacao": {
+          "urbana": 112983,
+          "rural": 11350
+        },
+        "idade": {
+          "0_15": 28522,
+          "16_17": 3825,
+          "18_24": 13465,
+          "25_34": 20447,
+          "35_44": 19979,
+          "45_59": 22377,
+          "60_69": 9352,
+          "70_mais": 6366
+        },
+        "renda": {
+          "sem_rendimento": 3849,
+          "ate_1_4_sm": 8026,
+          "1_4_a_1_2_sm": 21771,
+          "1_2_a_1_sm": 39806,
+          "1_a_2_sm": 33630,
+          "2_a_3_sm": 9754,
+          "3_a_5_sm": 4714,
+          "5_a_10_sm": 1705,
+          "10_a_15_sm": 346,
+          "15_a_20_sm": 65,
+          "mais_de_20_sm": 63
+        },
+        "religiao": {
+          "catolica": 33167,
+          "evangelica": 44160,
+          "espirita": 393,
+          "umbanda_candomble": 65,
+          "tradicoes_indigenas": 208,
+          "outras": 4444,
+          "sem_religiao": 14410,
+          "nao_sabe": 372,
+          "sem_declaracao": 374
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 33284,
+          "fundamental_completo_medio_incompleto": 13603,
+          "medio_completo_superior_incompleto": 31494,
+          "superior_completo": 13573
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 19,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1100130,
+      "nome": "Machadinho D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110003,
+        "nome": "Jaru"
+      },
+      "lat": -9.2041,
+      "lon": -62.01038,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8509.166,
+      "populacao": 34229,
+      "eleitorado": 24971,
+      "urbana_pct": 54.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 30707,
+        "situacao": {
+          "urbana": 16634,
+          "rural": 14073
+        },
+        "idade": {
+          "0_15": 7776,
+          "16_17": 1057,
+          "18_24": 3033,
+          "25_34": 4639,
+          "35_44": 4951,
+          "45_59": 5473,
+          "60_69": 2364,
+          "70_mais": 1414
+        },
+        "renda": {
+          "sem_rendimento": 925,
+          "ate_1_4_sm": 3966,
+          "1_4_a_1_2_sm": 6197,
+          "1_2_a_1_sm": 11178,
+          "1_a_2_sm": 5886,
+          "2_a_3_sm": 1527,
+          "3_a_5_sm": 655,
+          "5_a_10_sm": 78,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7259,
+          "evangelica": 10998,
+          "espirita": 30,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 608,
+          "sem_religiao": 4415,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11712,
+          "fundamental_completo_medio_incompleto": 3300,
+          "medio_completo_superior_incompleto": 4768,
+          "superior_completo": 1953
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100148,
+      "nome": "Nova Brasilândia D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11005,
+        "nome": "Alvorada D'Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.64312,
+      "lon": -62.28024,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1703.008,
+      "populacao": 16251,
+      "eleitorado": 13393,
+      "urbana_pct": 46.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15679,
+        "situacao": {
+          "urbana": 7309,
+          "rural": 8370
+        },
+        "idade": {
+          "0_15": 3318,
+          "16_17": 477,
+          "18_24": 1590,
+          "25_34": 2307,
+          "35_44": 2484,
+          "45_59": 3108,
+          "60_69": 1386,
+          "70_mais": 1009
+        },
+        "renda": {
+          "sem_rendimento": 934,
+          "ate_1_4_sm": 2207,
+          "1_4_a_1_2_sm": 3741,
+          "1_2_a_1_sm": 5294,
+          "1_a_2_sm": 2507,
+          "2_a_3_sm": 575,
+          "3_a_5_sm": 342,
+          "5_a_10_sm": 79,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6149,
+          "evangelica": 4889,
+          "espirita": 0,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 0,
+          "outras": 284,
+          "sem_religiao": 1270,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6145,
+          "fundamental_completo_medio_incompleto": 2080,
+          "medio_completo_superior_incompleto": 2711,
+          "superior_completo": 1033
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100155,
+      "nome": "Ouro Preto do Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -10.51262,
+      "lon": -62.0122,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 1969.878,
+      "populacao": 38686,
+      "eleitorado": 28279,
+      "urbana_pct": 79,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35044,
+        "situacao": {
+          "urbana": 27701,
+          "rural": 7343
+        },
+        "idade": {
+          "0_15": 7485,
+          "16_17": 986,
+          "18_24": 3462,
+          "25_34": 5228,
+          "35_44": 5622,
+          "45_59": 6808,
+          "60_69": 3065,
+          "70_mais": 2388
+        },
+        "renda": {
+          "sem_rendimento": 1789,
+          "ate_1_4_sm": 1648,
+          "1_4_a_1_2_sm": 6353,
+          "1_2_a_1_sm": 12160,
+          "1_a_2_sm": 8548,
+          "2_a_3_sm": 2206,
+          "3_a_5_sm": 1439,
+          "5_a_10_sm": 605,
+          "10_a_15_sm": 70,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 11968,
+          "evangelica": 10563,
+          "espirita": 90,
+          "umbanda_candomble": 72,
+          "tradicoes_indigenas": 0,
+          "outras": 668,
+          "sem_religiao": 4659,
+          "nao_sabe": 0,
+          "sem_declaracao": 31
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11486,
+          "fundamental_completo_medio_incompleto": 4154,
+          "medio_completo_superior_incompleto": 7816,
+          "superior_completo": 2990
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100189,
+      "nome": "Pimenta Bueno",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11007,
+        "nome": "Vilhena"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.89447,
+      "lon": -60.8304,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6241.017,
+      "populacao": 39377,
+      "eleitorado": 27444,
+      "urbana_pct": 81.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35079,
+        "situacao": {
+          "urbana": 28710,
+          "rural": 6369
+        },
+        "idade": {
+          "0_15": 7991,
+          "16_17": 1064,
+          "18_24": 3962,
+          "25_34": 5534,
+          "35_44": 5517,
+          "45_59": 6454,
+          "60_69": 2796,
+          "70_mais": 1761
+        },
+        "renda": {
+          "sem_rendimento": 865,
+          "ate_1_4_sm": 2064,
+          "1_4_a_1_2_sm": 6309,
+          "1_2_a_1_sm": 11399,
+          "1_a_2_sm": 10361,
+          "2_a_3_sm": 2216,
+          "3_a_5_sm": 1025,
+          "5_a_10_sm": 391,
+          "10_a_15_sm": 97,
+          "15_a_20_sm": 44,
+          "mais_de_20_sm": 9
+        },
+        "religiao": {
+          "catolica": 12167,
+          "evangelica": 11396,
+          "espirita": 79,
+          "umbanda_candomble": 19,
+          "tradicoes_indigenas": 0,
+          "outras": 709,
+          "sem_religiao": 3185,
+          "nao_sabe": 12,
+          "sem_declaracao": 20
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10437,
+          "fundamental_completo_medio_incompleto": 3742,
+          "medio_completo_superior_incompleto": 7722,
+          "superior_completo": 3998
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 10,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100205,
+      "nome": "Porto Velho",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110001,
+        "nome": "Porto Velho"
+      },
+      "lat": -9.15361,
+      "lon": -64.30684,
+      "coordenada_metodo": "centroide",
+      "area_km2": 34090.463,
+      "populacao": 520379,
+      "eleitorado": 368305,
+      "urbana_pct": 92.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 460434,
+        "situacao": {
+          "urbana": 426299,
+          "rural": 34135
+        },
+        "idade": {
+          "0_15": 111088,
+          "16_17": 14159,
+          "18_24": 52930,
+          "25_34": 77590,
+          "35_44": 76270,
+          "45_59": 79525,
+          "60_69": 31053,
+          "70_mais": 17819
+        },
+        "renda": {
+          "sem_rendimento": 29326,
+          "ate_1_4_sm": 47382,
+          "1_4_a_1_2_sm": 88054,
+          "1_2_a_1_sm": 131302,
+          "1_a_2_sm": 93236,
+          "2_a_3_sm": 31610,
+          "3_a_5_sm": 21171,
+          "5_a_10_sm": 12464,
+          "10_a_15_sm": 1986,
+          "15_a_20_sm": 488,
+          "mais_de_20_sm": 296
+        },
+        "religiao": {
+          "catolica": 146347,
+          "evangelica": 135441,
+          "espirita": 3898,
+          "umbanda_candomble": 2522,
+          "tradicoes_indigenas": 220,
+          "outras": 20815,
+          "sem_religiao": 46515,
+          "nao_sabe": 275,
+          "sem_declaracao": 582
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 102266,
+          "fundamental_completo_medio_incompleto": 55004,
+          "medio_completo_superior_incompleto": 116646,
+          "superior_completo": 61261
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 23,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 1100254,
+      "nome": "Presidente Médici",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -11.16627,
+      "lon": -61.87795,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1758.464,
+      "populacao": 20372,
+      "eleitorado": 15684,
+      "urbana_pct": 64.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19327,
+        "situacao": {
+          "urbana": 12381,
+          "rural": 6946
+        },
+        "idade": {
+          "0_15": 4081,
+          "16_17": 566,
+          "18_24": 1708,
+          "25_34": 2571,
+          "35_44": 2905,
+          "45_59": 4000,
+          "60_69": 2029,
+          "70_mais": 1467
+        },
+        "renda": {
+          "sem_rendimento": 1674,
+          "ate_1_4_sm": 1153,
+          "1_4_a_1_2_sm": 4245,
+          "1_2_a_1_sm": 6400,
+          "1_a_2_sm": 3943,
+          "2_a_3_sm": 1140,
+          "3_a_5_sm": 514,
+          "5_a_10_sm": 168,
+          "10_a_15_sm": 31,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7940,
+          "evangelica": 6098,
+          "espirita": 16,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 480,
+          "sem_religiao": 1000,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6926,
+          "fundamental_completo_medio_incompleto": 2151,
+          "medio_completo_superior_incompleto": 3549,
+          "superior_completo": 2030
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100262,
+      "nome": "Rio Crespo",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -9.64521,
+      "lon": -62.79007,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1717.64,
+      "populacao": 3781,
+      "eleitorado": 3509,
+      "urbana_pct": 41.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3471,
+        "situacao": {
+          "urbana": 1438,
+          "rural": 2033
+        },
+        "idade": {
+          "0_15": 796,
+          "16_17": 120,
+          "18_24": 336,
+          "25_34": 471,
+          "35_44": 545,
+          "45_59": 717,
+          "60_69": 294,
+          "70_mais": 192
+        },
+        "renda": {
+          "sem_rendimento": 55,
+          "ate_1_4_sm": 222,
+          "1_4_a_1_2_sm": 705,
+          "1_2_a_1_sm": 1422,
+          "1_a_2_sm": 708,
+          "2_a_3_sm": 219,
+          "3_a_5_sm": 106,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 3
+        },
+        "religiao": {
+          "catolica": 1119,
+          "evangelica": 1191,
+          "espirita": 7,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 45,
+          "sem_religiao": 323,
+          "nao_sabe": 0,
+          "sem_declaracao": 36
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1342,
+          "fundamental_completo_medio_incompleto": 394,
+          "medio_completo_superior_incompleto": 573,
+          "superior_completo": 230
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100288,
+      "nome": "Rolim de Moura",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.73256,
+      "lon": -61.77156,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1457.811,
+      "populacao": 63336,
+      "eleitorado": 41206,
+      "urbana_pct": 83.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 56406,
+        "situacao": {
+          "urbana": 47264,
+          "rural": 9142
+        },
+        "idade": {
+          "0_15": 12535,
+          "16_17": 1623,
+          "18_24": 6238,
+          "25_34": 9405,
+          "35_44": 8803,
+          "45_59": 10364,
+          "60_69": 4375,
+          "70_mais": 3063
+        },
+        "renda": {
+          "sem_rendimento": 1318,
+          "ate_1_4_sm": 2848,
+          "1_4_a_1_2_sm": 8769,
+          "1_2_a_1_sm": 20457,
+          "1_a_2_sm": 15538,
+          "2_a_3_sm": 3743,
+          "3_a_5_sm": 2588,
+          "5_a_10_sm": 765,
+          "10_a_15_sm": 116,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 13
+        },
+        "religiao": {
+          "catolica": 16884,
+          "evangelica": 18378,
+          "espirita": 180,
+          "umbanda_candomble": 65,
+          "tradicoes_indigenas": 0,
+          "outras": 776,
+          "sem_religiao": 8197,
+          "nao_sabe": 0,
+          "sem_declaracao": 162
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 15475,
+          "fundamental_completo_medio_incompleto": 6747,
+          "medio_completo_superior_incompleto": 13293,
+          "superior_completo": 6784
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100296,
+      "nome": "Santa Luzia D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -12.02697,
+      "lon": -61.70109,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1197.796,
+      "populacao": 7798,
+      "eleitorado": 6798,
+      "urbana_pct": 43.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7419,
+        "situacao": {
+          "urbana": 3256,
+          "rural": 4163
+        },
+        "idade": {
+          "0_15": 1570,
+          "16_17": 209,
+          "18_24": 609,
+          "25_34": 982,
+          "35_44": 1105,
+          "45_59": 1645,
+          "60_69": 719,
+          "70_mais": 580
+        },
+        "renda": {
+          "sem_rendimento": 255,
+          "ate_1_4_sm": 635,
+          "1_4_a_1_2_sm": 1555,
+          "1_2_a_1_sm": 2907,
+          "1_a_2_sm": 1471,
+          "2_a_3_sm": 375,
+          "3_a_5_sm": 146,
+          "5_a_10_sm": 44,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3077,
+          "evangelica": 2206,
+          "espirita": 3,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 94,
+          "sem_religiao": 570,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2932,
+          "fundamental_completo_medio_incompleto": 632,
+          "medio_completo_superior_incompleto": 1460,
+          "superior_completo": 633
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100304,
+      "nome": "Vilhena",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11007,
+        "nome": "Vilhena"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -12.09602,
+      "lon": -60.24862,
+      "coordenada_metodo": "centroide",
+      "area_km2": 11708.569,
+      "populacao": 110708,
+      "eleitorado": 71666,
+      "urbana_pct": 94.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 95832,
+        "situacao": {
+          "urbana": 90305,
+          "rural": 5527
+        },
+        "idade": {
+          "0_15": 22315,
+          "16_17": 2970,
+          "18_24": 10732,
+          "25_34": 16187,
+          "35_44": 15704,
+          "45_59": 17103,
+          "60_69": 6575,
+          "70_mais": 4246
+        },
+        "renda": {
+          "sem_rendimento": 3398,
+          "ate_1_4_sm": 3537,
+          "1_4_a_1_2_sm": 12614,
+          "1_2_a_1_sm": 30597,
+          "1_a_2_sm": 29302,
+          "2_a_3_sm": 8439,
+          "3_a_5_sm": 4900,
+          "5_a_10_sm": 2183,
+          "10_a_15_sm": 268,
+          "15_a_20_sm": 46,
+          "mais_de_20_sm": 70
+        },
+        "religiao": {
+          "catolica": 29946,
+          "evangelica": 31044,
+          "espirita": 639,
+          "umbanda_candomble": 259,
+          "tradicoes_indigenas": 18,
+          "outras": 4845,
+          "sem_religiao": 8131,
+          "nao_sabe": 0,
+          "sem_declaracao": 146
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 23359,
+          "fundamental_completo_medio_incompleto": 11553,
+          "medio_completo_superior_incompleto": 23319,
+          "superior_completo": 12255
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1100320,
+      "nome": "São Miguel do Guaporé",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11005,
+        "nome": "Alvorada D'Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -11.62113,
+      "lon": -62.66546,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 6789.605,
+      "populacao": 22343,
+      "eleitorado": 17123,
+      "urbana_pct": 55.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21635,
+        "situacao": {
+          "urbana": 11961,
+          "rural": 9674
+        },
+        "idade": {
+          "0_15": 5101,
+          "16_17": 677,
+          "18_24": 2343,
+          "25_34": 3439,
+          "35_44": 3374,
+          "45_59": 4028,
+          "60_69": 1604,
+          "70_mais": 1069
+        },
+        "renda": {
+          "sem_rendimento": 570,
+          "ate_1_4_sm": 1262,
+          "1_4_a_1_2_sm": 4756,
+          "1_2_a_1_sm": 7352,
+          "1_a_2_sm": 5168,
+          "2_a_3_sm": 1327,
+          "3_a_5_sm": 873,
+          "5_a_10_sm": 220,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7804,
+          "evangelica": 6560,
+          "espirita": 31,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 390,
+          "sem_religiao": 2060,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8179,
+          "fundamental_completo_medio_incompleto": 2482,
+          "medio_completo_superior_incompleto": 3754,
+          "superior_completo": 1398
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100338,
+      "nome": "Nova Mamoré",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110001,
+        "nome": "Porto Velho"
+      },
+      "lat": -10.38217,
+      "lon": -64.6291,
+      "coordenada_metodo": "centroide",
+      "area_km2": 10070.515,
+      "populacao": 28894,
+      "eleitorado": 19418,
+      "urbana_pct": 57.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 25444,
+        "situacao": {
+          "urbana": 14719,
+          "rural": 10725
+        },
+        "idade": {
+          "0_15": 7045,
+          "16_17": 933,
+          "18_24": 2877,
+          "25_34": 3801,
+          "35_44": 3918,
+          "45_59": 4306,
+          "60_69": 1620,
+          "70_mais": 944
+        },
+        "renda": {
+          "sem_rendimento": 765,
+          "ate_1_4_sm": 3043,
+          "1_4_a_1_2_sm": 5584,
+          "1_2_a_1_sm": 8935,
+          "1_a_2_sm": 4704,
+          "2_a_3_sm": 1568,
+          "3_a_5_sm": 514,
+          "5_a_10_sm": 187,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 50,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7779,
+          "evangelica": 7847,
+          "espirita": 37,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 592,
+          "sem_religiao": 2460,
+          "nao_sabe": 0,
+          "sem_declaracao": 153
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9357,
+          "fundamental_completo_medio_incompleto": 3153,
+          "medio_completo_superior_incompleto": 3867,
+          "superior_completo": 1085
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100346,
+      "nome": "Alvorada D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11005,
+        "nome": "Alvorada D'Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -11.31142,
+      "lon": -62.54499,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3029.193,
+      "populacao": 13611,
+      "eleitorado": 11059,
+      "urbana_pct": 59.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13117,
+        "situacao": {
+          "urbana": 7750,
+          "rural": 5367
+        },
+        "idade": {
+          "0_15": 2795,
+          "16_17": 421,
+          "18_24": 1210,
+          "25_34": 1783,
+          "35_44": 1996,
+          "45_59": 2705,
+          "60_69": 1282,
+          "70_mais": 925
+        },
+        "renda": {
+          "sem_rendimento": 771,
+          "ate_1_4_sm": 912,
+          "1_4_a_1_2_sm": 2782,
+          "1_2_a_1_sm": 4723,
+          "1_a_2_sm": 2679,
+          "2_a_3_sm": 748,
+          "3_a_5_sm": 335,
+          "5_a_10_sm": 100,
+          "10_a_15_sm": 60,
+          "15_a_20_sm": 9,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5798,
+          "evangelica": 3717,
+          "espirita": 13,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 30,
+          "outras": 143,
+          "sem_religiao": 763,
+          "nao_sabe": 0,
+          "sem_declaracao": 41
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5190,
+          "fundamental_completo_medio_incompleto": 1612,
+          "medio_completo_superior_incompleto": 2198,
+          "superior_completo": 956
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100379,
+      "nome": "Alto Alegre dos Parecis",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -12.59374,
+      "lon": -61.88081,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3958.273,
+      "populacao": 12213,
+      "eleitorado": 8815,
+      "urbana_pct": 43.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11479,
+        "situacao": {
+          "urbana": 4986,
+          "rural": 6493
+        },
+        "idade": {
+          "0_15": 2780,
+          "16_17": 385,
+          "18_24": 1078,
+          "25_34": 1706,
+          "35_44": 1722,
+          "45_59": 2259,
+          "60_69": 912,
+          "70_mais": 637
+        },
+        "renda": {
+          "sem_rendimento": 290,
+          "ate_1_4_sm": 1219,
+          "1_4_a_1_2_sm": 2455,
+          "1_2_a_1_sm": 4262,
+          "1_a_2_sm": 2228,
+          "2_a_3_sm": 643,
+          "3_a_5_sm": 233,
+          "5_a_10_sm": 133,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 4312,
+          "evangelica": 3582,
+          "espirita": 5,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 80,
+          "sem_religiao": 881,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4923,
+          "fundamental_completo_medio_incompleto": 1075,
+          "medio_completo_superior_incompleto": 1646,
+          "superior_completo": 680
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100403,
+      "nome": "Alto Paraíso",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -9.64932,
+      "lon": -63.39433,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2652.03,
+      "populacao": 17471,
+      "eleitorado": 12039,
+      "urbana_pct": 50,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16320,
+        "situacao": {
+          "urbana": 8158,
+          "rural": 8162
+        },
+        "idade": {
+          "0_15": 3923,
+          "16_17": 557,
+          "18_24": 1787,
+          "25_34": 2332,
+          "35_44": 2452,
+          "45_59": 3109,
+          "60_69": 1253,
+          "70_mais": 907
+        },
+        "renda": {
+          "sem_rendimento": 1112,
+          "ate_1_4_sm": 1242,
+          "1_4_a_1_2_sm": 3205,
+          "1_2_a_1_sm": 5524,
+          "1_a_2_sm": 3798,
+          "2_a_3_sm": 802,
+          "3_a_5_sm": 424,
+          "5_a_10_sm": 150,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 50,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6448,
+          "evangelica": 4732,
+          "espirita": 71,
+          "umbanda_candomble": 36,
+          "tradicoes_indigenas": 0,
+          "outras": 164,
+          "sem_religiao": 1109,
+          "nao_sabe": 0,
+          "sem_declaracao": 80
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5910,
+          "fundamental_completo_medio_incompleto": 1937,
+          "medio_completo_superior_incompleto": 3025,
+          "superior_completo": 956
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100452,
+      "nome": "Buritis",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -10.05212,
+      "lon": -63.94116,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3265.811,
+      "populacao": 30573,
+      "eleitorado": 23290,
+      "urbana_pct": 69.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27992,
+        "situacao": {
+          "urbana": 19414,
+          "rural": 8578
+        },
+        "idade": {
+          "0_15": 6895,
+          "16_17": 1050,
+          "18_24": 3075,
+          "25_34": 4247,
+          "35_44": 4512,
+          "45_59": 4908,
+          "60_69": 2044,
+          "70_mais": 1261
+        },
+        "renda": {
+          "sem_rendimento": 422,
+          "ate_1_4_sm": 1897,
+          "1_4_a_1_2_sm": 6247,
+          "1_2_a_1_sm": 10125,
+          "1_a_2_sm": 6788,
+          "2_a_3_sm": 1405,
+          "3_a_5_sm": 626,
+          "5_a_10_sm": 267,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8131,
+          "evangelica": 9690,
+          "espirita": 59,
+          "umbanda_candomble": 20,
+          "tradicoes_indigenas": 0,
+          "outras": 439,
+          "sem_religiao": 3190,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10183,
+          "fundamental_completo_medio_incompleto": 3157,
+          "medio_completo_superior_incompleto": 4878,
+          "superior_completo": 1902
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100502,
+      "nome": "Novo Horizonte do Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.68109,
+      "lon": -62.0832,
+      "coordenada_metodo": "centroide",
+      "area_km2": 843.446,
+      "populacao": 7894,
+      "eleitorado": 7010,
+      "urbana_pct": 43.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7667,
+        "situacao": {
+          "urbana": 3309,
+          "rural": 4358
+        },
+        "idade": {
+          "0_15": 1614,
+          "16_17": 226,
+          "18_24": 661,
+          "25_34": 1041,
+          "35_44": 1151,
+          "45_59": 1655,
+          "60_69": 776,
+          "70_mais": 543
+        },
+        "renda": {
+          "sem_rendimento": 544,
+          "ate_1_4_sm": 825,
+          "1_4_a_1_2_sm": 1790,
+          "1_2_a_1_sm": 2481,
+          "1_a_2_sm": 1421,
+          "2_a_3_sm": 363,
+          "3_a_5_sm": 138,
+          "5_a_10_sm": 72,
+          "10_a_15_sm": 18,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3070,
+          "evangelica": 2692,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 51,
+          "sem_religiao": 342,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2978,
+          "fundamental_completo_medio_incompleto": 845,
+          "medio_completo_superior_incompleto": 1464,
+          "superior_completo": 516
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100601,
+      "nome": "Cacaulândia",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -10.33159,
+      "lon": -62.98723,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1962.032,
+      "populacao": 4242,
+      "eleitorado": 3877,
+      "urbana_pct": 46.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4150,
+        "situacao": {
+          "urbana": 1932,
+          "rural": 2218
+        },
+        "idade": {
+          "0_15": 991,
+          "16_17": 116,
+          "18_24": 380,
+          "25_34": 609,
+          "35_44": 627,
+          "45_59": 797,
+          "60_69": 350,
+          "70_mais": 280
+        },
+        "renda": {
+          "sem_rendimento": 154,
+          "ate_1_4_sm": 288,
+          "1_4_a_1_2_sm": 860,
+          "1_2_a_1_sm": 1585,
+          "1_a_2_sm": 879,
+          "2_a_3_sm": 233,
+          "3_a_5_sm": 120,
+          "5_a_10_sm": 28,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1622,
+          "evangelica": 1115,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 62,
+          "sem_religiao": 419,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1560,
+          "fundamental_completo_medio_incompleto": 458,
+          "medio_completo_superior_incompleto": 723,
+          "superior_completo": 300
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100700,
+      "nome": "Campo Novo de Rondônia",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -10.48493,
+      "lon": -63.79972,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3442.005,
+      "populacao": 8972,
+      "eleitorado": 7504,
+      "urbana_pct": 30.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8844,
+        "situacao": {
+          "urbana": 2731,
+          "rural": 6113
+        },
+        "idade": {
+          "0_15": 2216,
+          "16_17": 312,
+          "18_24": 888,
+          "25_34": 1182,
+          "35_44": 1342,
+          "45_59": 1810,
+          "60_69": 675,
+          "70_mais": 419
+        },
+        "renda": {
+          "sem_rendimento": 692,
+          "ate_1_4_sm": 934,
+          "1_4_a_1_2_sm": 2130,
+          "1_2_a_1_sm": 2766,
+          "1_a_2_sm": 1762,
+          "2_a_3_sm": 340,
+          "3_a_5_sm": 163,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 7,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2846,
+          "evangelica": 3135,
+          "espirita": 14,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 0,
+          "outras": 176,
+          "sem_religiao": 595,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3679,
+          "fundamental_completo_medio_incompleto": 891,
+          "medio_completo_superior_incompleto": 1373,
+          "superior_completo": 394
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100809,
+      "nome": "Candeias do Jamari",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110001,
+        "nome": "Porto Velho"
+      },
+      "lat": -8.887,
+      "lon": -63.32561,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6843.666,
+      "populacao": 24454,
+      "eleitorado": 20560,
+      "urbana_pct": 76.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 22310,
+        "situacao": {
+          "urbana": 17059,
+          "rural": 5251
+        },
+        "idade": {
+          "0_15": 5949,
+          "16_17": 762,
+          "18_24": 2555,
+          "25_34": 3364,
+          "35_44": 3390,
+          "45_59": 3711,
+          "60_69": 1621,
+          "70_mais": 958
+        },
+        "renda": {
+          "sem_rendimento": 935,
+          "ate_1_4_sm": 3148,
+          "1_4_a_1_2_sm": 5789,
+          "1_2_a_1_sm": 7512,
+          "1_a_2_sm": 3907,
+          "2_a_3_sm": 582,
+          "3_a_5_sm": 319,
+          "5_a_10_sm": 102,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5894,
+          "evangelica": 7448,
+          "espirita": 83,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 39,
+          "outras": 652,
+          "sem_religiao": 2549,
+          "nao_sabe": 0,
+          "sem_declaracao": 42
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7130,
+          "fundamental_completo_medio_incompleto": 3294,
+          "medio_completo_superior_incompleto": 4151,
+          "superior_completo": 982
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1100908,
+      "nome": "Castanheiras",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.4708,
+      "lon": -61.88007,
+      "coordenada_metodo": "centroide",
+      "area_km2": 892.841,
+      "populacao": 3445,
+      "eleitorado": 3386,
+      "urbana_pct": 23.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3233,
+        "situacao": {
+          "urbana": 767,
+          "rural": 2466
+        },
+        "idade": {
+          "0_15": 690,
+          "16_17": 88,
+          "18_24": 252,
+          "25_34": 451,
+          "35_44": 472,
+          "45_59": 717,
+          "60_69": 298,
+          "70_mais": 265
+        },
+        "renda": {
+          "sem_rendimento": 112,
+          "ate_1_4_sm": 230,
+          "1_4_a_1_2_sm": 694,
+          "1_2_a_1_sm": 1190,
+          "1_a_2_sm": 790,
+          "2_a_3_sm": 83,
+          "3_a_5_sm": 98,
+          "5_a_10_sm": 23,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1303,
+          "evangelica": 923,
+          "espirita": 0,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 64,
+          "sem_religiao": 283,
+          "nao_sabe": 3,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1249,
+          "fundamental_completo_medio_incompleto": 384,
+          "medio_completo_superior_incompleto": 667,
+          "superior_completo": 177
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100924,
+      "nome": "Chupinguaia",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11007,
+        "nome": "Vilhena"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -12.53724,
+      "lon": -60.89914,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5117.301,
+      "populacao": 10250,
+      "eleitorado": 7679,
+      "urbana_pct": 56.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9324,
+        "situacao": {
+          "urbana": 5302,
+          "rural": 4022
+        },
+        "idade": {
+          "0_15": 2533,
+          "16_17": 325,
+          "18_24": 983,
+          "25_34": 1518,
+          "35_44": 1514,
+          "45_59": 1564,
+          "60_69": 572,
+          "70_mais": 315
+        },
+        "renda": {
+          "sem_rendimento": 220,
+          "ate_1_4_sm": 680,
+          "1_4_a_1_2_sm": 1811,
+          "1_2_a_1_sm": 3404,
+          "1_a_2_sm": 2313,
+          "2_a_3_sm": 504,
+          "3_a_5_sm": 245,
+          "5_a_10_sm": 115,
+          "10_a_15_sm": 21,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3311,
+          "evangelica": 2530,
+          "espirita": 10,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 1,
+          "outras": 87,
+          "sem_religiao": 1013,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2916,
+          "fundamental_completo_medio_incompleto": 1337,
+          "medio_completo_superior_incompleto": 1637,
+          "superior_completo": 579
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1100940,
+      "nome": "Cujubim",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -9.17109,
+      "lon": -62.56534,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3863.948,
+      "populacao": 15872,
+      "eleitorado": 11146,
+      "urbana_pct": 65.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14863,
+        "situacao": {
+          "urbana": 9723,
+          "rural": 5140
+        },
+        "idade": {
+          "0_15": 4002,
+          "16_17": 472,
+          "18_24": 1620,
+          "25_34": 2288,
+          "35_44": 2474,
+          "45_59": 2573,
+          "60_69": 919,
+          "70_mais": 515
+        },
+        "renda": {
+          "sem_rendimento": 848,
+          "ate_1_4_sm": 1363,
+          "1_4_a_1_2_sm": 3136,
+          "1_2_a_1_sm": 4821,
+          "1_a_2_sm": 3260,
+          "2_a_3_sm": 850,
+          "3_a_5_sm": 480,
+          "5_a_10_sm": 106,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3847,
+          "evangelica": 4524,
+          "espirita": 7,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 311,
+          "sem_religiao": 2442,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5841,
+          "fundamental_completo_medio_incompleto": 1524,
+          "medio_completo_superior_incompleto": 2464,
+          "superior_completo": 522
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101005,
+      "nome": "Governador Jorge Teixeira",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110003,
+        "nome": "Jaru"
+      },
+      "lat": -10.74803,
+      "lon": -63.18401,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5067.386,
+      "populacao": 8264,
+      "eleitorado": 7178,
+      "urbana_pct": 31.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8001,
+        "situacao": {
+          "urbana": 2543,
+          "rural": 5458
+        },
+        "idade": {
+          "0_15": 1825,
+          "16_17": 275,
+          "18_24": 759,
+          "25_34": 1098,
+          "35_44": 1194,
+          "45_59": 1629,
+          "60_69": 680,
+          "70_mais": 541
+        },
+        "renda": {
+          "sem_rendimento": 960,
+          "ate_1_4_sm": 999,
+          "1_4_a_1_2_sm": 1762,
+          "1_2_a_1_sm": 2356,
+          "1_a_2_sm": 1406,
+          "2_a_3_sm": 291,
+          "3_a_5_sm": 146,
+          "5_a_10_sm": 43,
+          "10_a_15_sm": 3,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3438,
+          "evangelica": 2154,
+          "espirita": 11,
+          "umbanda_candomble": 4,
+          "tradicoes_indigenas": 68,
+          "outras": 102,
+          "sem_religiao": 482,
+          "nao_sabe": 6,
+          "sem_declaracao": 24
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3852,
+          "fundamental_completo_medio_incompleto": 653,
+          "medio_completo_superior_incompleto": 1002,
+          "superior_completo": 424
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101104,
+      "nome": "Itapuã do Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11001,
+        "nome": "Porto Velho"
+      },
+      "regiao_imediata": {
+        "id": 110001,
+        "nome": "Porto Velho"
+      },
+      "lat": -9.17021,
+      "lon": -63.04494,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4081.555,
+      "populacao": 9247,
+      "eleitorado": 7198,
+      "urbana_pct": 69.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8548,
+        "situacao": {
+          "urbana": 5916,
+          "rural": 2632
+        },
+        "idade": {
+          "0_15": 2366,
+          "16_17": 291,
+          "18_24": 904,
+          "25_34": 1228,
+          "35_44": 1273,
+          "45_59": 1439,
+          "60_69": 661,
+          "70_mais": 386
+        },
+        "renda": {
+          "sem_rendimento": 263,
+          "ate_1_4_sm": 890,
+          "1_4_a_1_2_sm": 2228,
+          "1_2_a_1_sm": 2972,
+          "1_a_2_sm": 1612,
+          "2_a_3_sm": 439,
+          "3_a_5_sm": 112,
+          "5_a_10_sm": 32,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2120,
+          "evangelica": 2532,
+          "espirita": 13,
+          "umbanda_candomble": 19,
+          "tradicoes_indigenas": 0,
+          "outras": 156,
+          "sem_religiao": 1484,
+          "nao_sabe": 0,
+          "sem_declaracao": 15
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2992,
+          "fundamental_completo_medio_incompleto": 1079,
+          "medio_completo_superior_incompleto": 1330,
+          "superior_completo": 532
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101203,
+      "nome": "Ministro Andreazza",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11006,
+        "nome": "Cacoal"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.16029,
+      "lon": -61.56897,
+      "coordenada_metodo": "centroide",
+      "area_km2": 798.083,
+      "populacao": 6389,
+      "eleitorado": 6139,
+      "urbana_pct": 45.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6466,
+        "situacao": {
+          "urbana": 2965,
+          "rural": 3501
+        },
+        "idade": {
+          "0_15": 1314,
+          "16_17": 215,
+          "18_24": 648,
+          "25_34": 797,
+          "35_44": 944,
+          "45_59": 1440,
+          "60_69": 592,
+          "70_mais": 516
+        },
+        "renda": {
+          "sem_rendimento": 275,
+          "ate_1_4_sm": 521,
+          "1_4_a_1_2_sm": 1408,
+          "1_2_a_1_sm": 2375,
+          "1_a_2_sm": 1350,
+          "2_a_3_sm": 307,
+          "3_a_5_sm": 131,
+          "5_a_10_sm": 93,
+          "10_a_15_sm": 7,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2567,
+          "evangelica": 2205,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 70,
+          "sem_religiao": 400,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2457,
+          "fundamental_completo_medio_incompleto": 887,
+          "medio_completo_superior_incompleto": 1135,
+          "superior_completo": 446
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101302,
+      "nome": "Mirante da Serra",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -11.07684,
+      "lon": -62.84798,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1191.875,
+      "populacao": 9579,
+      "eleitorado": 8317,
+      "urbana_pct": 54,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9235,
+        "situacao": {
+          "urbana": 4987,
+          "rural": 4248
+        },
+        "idade": {
+          "0_15": 1960,
+          "16_17": 268,
+          "18_24": 953,
+          "25_34": 1248,
+          "35_44": 1415,
+          "45_59": 1889,
+          "60_69": 886,
+          "70_mais": 616
+        },
+        "renda": {
+          "sem_rendimento": 106,
+          "ate_1_4_sm": 748,
+          "1_4_a_1_2_sm": 2385,
+          "1_2_a_1_sm": 3450,
+          "1_a_2_sm": 1646,
+          "2_a_3_sm": 589,
+          "3_a_5_sm": 261,
+          "5_a_10_sm": 36,
+          "10_a_15_sm": 3,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3146,
+          "evangelica": 3189,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 96,
+          "outras": 114,
+          "sem_religiao": 860,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3958,
+          "fundamental_completo_medio_incompleto": 1366,
+          "medio_completo_superior_incompleto": 1250,
+          "superior_completo": 407
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101401,
+      "nome": "Monte Negro",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110002,
+        "nome": "Ariquemes"
+      },
+      "lat": -10.21083,
+      "lon": -63.37239,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1931.404,
+      "populacao": 12100,
+      "eleitorado": 10144,
+      "urbana_pct": 45.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11548,
+        "situacao": {
+          "urbana": 5267,
+          "rural": 6281
+        },
+        "idade": {
+          "0_15": 2643,
+          "16_17": 368,
+          "18_24": 1178,
+          "25_34": 1550,
+          "35_44": 1792,
+          "45_59": 2273,
+          "60_69": 995,
+          "70_mais": 749
+        },
+        "renda": {
+          "sem_rendimento": 381,
+          "ate_1_4_sm": 948,
+          "1_4_a_1_2_sm": 2599,
+          "1_2_a_1_sm": 3823,
+          "1_a_2_sm": 2712,
+          "2_a_3_sm": 644,
+          "3_a_5_sm": 319,
+          "5_a_10_sm": 53,
+          "10_a_15_sm": 34,
+          "15_a_20_sm": 16,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3980,
+          "evangelica": 3793,
+          "espirita": 11,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 153,
+          "sem_religiao": 1169,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4330,
+          "fundamental_completo_medio_incompleto": 1293,
+          "medio_completo_superior_incompleto": 2125,
+          "superior_completo": 727
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101435,
+      "nome": "Nova União",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -10.88934,
+      "lon": -62.53235,
+      "coordenada_metodo": "centroide",
+      "area_km2": 807.17,
+      "populacao": 6506,
+      "eleitorado": 5330,
+      "urbana_pct": 27.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6200,
+        "situacao": {
+          "urbana": 1687,
+          "rural": 4513
+        },
+        "idade": {
+          "0_15": 1353,
+          "16_17": 216,
+          "18_24": 586,
+          "25_34": 832,
+          "35_44": 966,
+          "45_59": 1295,
+          "60_69": 549,
+          "70_mais": 403
+        },
+        "renda": {
+          "sem_rendimento": 406,
+          "ate_1_4_sm": 786,
+          "1_4_a_1_2_sm": 1623,
+          "1_2_a_1_sm": 2179,
+          "1_a_2_sm": 863,
+          "2_a_3_sm": 188,
+          "3_a_5_sm": 137,
+          "5_a_10_sm": 15,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2517,
+          "evangelica": 1883,
+          "espirita": 0,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 0,
+          "outras": 52,
+          "sem_religiao": 488,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2568,
+          "fundamental_completo_medio_incompleto": 699,
+          "medio_completo_superior_incompleto": 1063,
+          "superior_completo": 316
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101450,
+      "nome": "Parecis",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11007,
+        "nome": "Vilhena"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -12.26233,
+      "lon": -61.41538,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2548.683,
+      "populacao": 4356,
+      "eleitorado": 3858,
+      "urbana_pct": 35.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4125,
+        "situacao": {
+          "urbana": 1454,
+          "rural": 2671
+        },
+        "idade": {
+          "0_15": 977,
+          "16_17": 138,
+          "18_24": 409,
+          "25_34": 591,
+          "35_44": 630,
+          "45_59": 856,
+          "60_69": 304,
+          "70_mais": 220
+        },
+        "renda": {
+          "sem_rendimento": 445,
+          "ate_1_4_sm": 586,
+          "1_4_a_1_2_sm": 626,
+          "1_2_a_1_sm": 1388,
+          "1_a_2_sm": 857,
+          "2_a_3_sm": 109,
+          "3_a_5_sm": 67,
+          "5_a_10_sm": 47,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1503,
+          "evangelica": 1368,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 21,
+          "outras": 171,
+          "sem_religiao": 143,
+          "nao_sabe": 0,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1618,
+          "fundamental_completo_medio_incompleto": 443,
+          "medio_completo_superior_incompleto": 701,
+          "superior_completo": 223
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101468,
+      "nome": "Pimenteiras do Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11008,
+        "nome": "Colorado do Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110006,
+        "nome": "Vilhena"
+      },
+      "lat": -13.01046,
+      "lon": -61.73652,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 6014.733,
+      "populacao": 2308,
+      "eleitorado": 2286,
+      "urbana_pct": 56.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 2156,
+        "situacao": {
+          "urbana": 1223,
+          "rural": 933
+        },
+        "idade": {
+          "0_15": 570,
+          "16_17": 66,
+          "18_24": 194,
+          "25_34": 306,
+          "35_44": 327,
+          "45_59": 418,
+          "60_69": 172,
+          "70_mais": 103
+        },
+        "renda": {
+          "sem_rendimento": 212,
+          "ate_1_4_sm": 277,
+          "1_4_a_1_2_sm": 450,
+          "1_2_a_1_sm": 695,
+          "1_a_2_sm": 369,
+          "2_a_3_sm": 73,
+          "3_a_5_sm": 31,
+          "5_a_10_sm": 7,
+          "10_a_15_sm": 2,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 996,
+          "evangelica": 449,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 9,
+          "outras": 24,
+          "sem_religiao": 143,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 825,
+          "fundamental_completo_medio_incompleto": 194,
+          "medio_completo_superior_incompleto": 372,
+          "superior_completo": 126
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101476,
+      "nome": "Primavera de Rondônia",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11007,
+        "nome": "Vilhena"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.87869,
+      "lon": -61.31534,
+      "coordenada_metodo": "centroide",
+      "area_km2": 605.692,
+      "populacao": 3259,
+      "eleitorado": 3025,
+      "urbana_pct": 45.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3076,
+        "situacao": {
+          "urbana": 1390,
+          "rural": 1686
+        },
+        "idade": {
+          "0_15": 707,
+          "16_17": 90,
+          "18_24": 222,
+          "25_34": 383,
+          "35_44": 493,
+          "45_59": 636,
+          "60_69": 318,
+          "70_mais": 227
+        },
+        "renda": {
+          "sem_rendimento": 301,
+          "ate_1_4_sm": 378,
+          "1_4_a_1_2_sm": 672,
+          "1_2_a_1_sm": 1111,
+          "1_a_2_sm": 451,
+          "2_a_3_sm": 99,
+          "3_a_5_sm": 52,
+          "5_a_10_sm": 13,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1347,
+          "evangelica": 827,
+          "espirita": 13,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 62,
+          "sem_religiao": 164,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1231,
+          "fundamental_completo_medio_incompleto": 224,
+          "medio_completo_superior_incompleto": 595,
+          "superior_completo": 243
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101484,
+      "nome": "São Felipe D'Oeste",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11007,
+        "nome": "Vilhena"
+      },
+      "regiao_imediata": {
+        "id": 110005,
+        "nome": "Cacoal"
+      },
+      "lat": -11.90497,
+      "lon": -61.46707,
+      "coordenada_metodo": "centroide",
+      "area_km2": 541.648,
+      "populacao": 5571,
+      "eleitorado": 4509,
+      "urbana_pct": 41.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5258,
+        "situacao": {
+          "urbana": 2164,
+          "rural": 3094
+        },
+        "idade": {
+          "0_15": 1044,
+          "16_17": 141,
+          "18_24": 407,
+          "25_34": 688,
+          "35_44": 814,
+          "45_59": 1162,
+          "60_69": 567,
+          "70_mais": 435
+        },
+        "renda": {
+          "sem_rendimento": 51,
+          "ate_1_4_sm": 389,
+          "1_4_a_1_2_sm": 778,
+          "1_2_a_1_sm": 2194,
+          "1_a_2_sm": 1335,
+          "2_a_3_sm": 338,
+          "3_a_5_sm": 96,
+          "5_a_10_sm": 45,
+          "10_a_15_sm": 26,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2478,
+          "evangelica": 1446,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 31,
+          "sem_religiao": 333,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2178,
+          "fundamental_completo_medio_incompleto": 400,
+          "medio_completo_superior_incompleto": 1030,
+          "superior_completo": 462
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101492,
+      "nome": "São Francisco do Guaporé",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11002,
+        "nome": "Guajará-Mirim"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -12.36841,
+      "lon": -63.12215,
+      "coordenada_metodo": "centroide",
+      "area_km2": 10948.637,
+      "populacao": 17601,
+      "eleitorado": 12745,
+      "urbana_pct": 56.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16286,
+        "situacao": {
+          "urbana": 9260,
+          "rural": 7026
+        },
+        "idade": {
+          "0_15": 4232,
+          "16_17": 571,
+          "18_24": 1689,
+          "25_34": 2665,
+          "35_44": 2486,
+          "45_59": 2815,
+          "60_69": 1119,
+          "70_mais": 709
+        },
+        "renda": {
+          "sem_rendimento": 294,
+          "ate_1_4_sm": 1038,
+          "1_4_a_1_2_sm": 3612,
+          "1_2_a_1_sm": 6373,
+          "1_a_2_sm": 3632,
+          "2_a_3_sm": 770,
+          "3_a_5_sm": 461,
+          "5_a_10_sm": 70,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5396,
+          "evangelica": 5381,
+          "espirita": 0,
+          "umbanda_candomble": 7,
+          "tradicoes_indigenas": 11,
+          "outras": 186,
+          "sem_religiao": 1323,
+          "nao_sabe": 0,
+          "sem_declaracao": 23
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5031,
+          "fundamental_completo_medio_incompleto": 1942,
+          "medio_completo_superior_incompleto": 3236,
+          "superior_completo": 1277
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101500,
+      "nome": "Seringueiras",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11005,
+        "nome": "Alvorada D'Oeste"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -11.78251,
+      "lon": -63.18653,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4443.991,
+      "populacao": 12973,
+      "eleitorado": 9677,
+      "urbana_pct": 45.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11171,
+        "situacao": {
+          "urbana": 5086,
+          "rural": 6085
+        },
+        "idade": {
+          "0_15": 2655,
+          "16_17": 384,
+          "18_24": 1176,
+          "25_34": 1752,
+          "35_44": 1632,
+          "45_59": 2137,
+          "60_69": 893,
+          "70_mais": 542
+        },
+        "renda": {
+          "sem_rendimento": 543,
+          "ate_1_4_sm": 1457,
+          "1_4_a_1_2_sm": 2653,
+          "1_2_a_1_sm": 3842,
+          "1_a_2_sm": 1817,
+          "2_a_3_sm": 516,
+          "3_a_5_sm": 240,
+          "5_a_10_sm": 90,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4385,
+          "evangelica": 3458,
+          "espirita": 17,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 78,
+          "sem_religiao": 762,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4190,
+          "fundamental_completo_medio_incompleto": 1124,
+          "medio_completo_superior_incompleto": 2272,
+          "superior_completo": 570
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101559,
+      "nome": "Teixeirópolis",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -10.94346,
+      "lon": -62.27977,
+      "coordenada_metodo": "centroide",
+      "area_km2": 459.933,
+      "populacao": 4507,
+      "eleitorado": 3916,
+      "urbana_pct": 38.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4256,
+        "situacao": {
+          "urbana": 1641,
+          "rural": 2615
+        },
+        "idade": {
+          "0_15": 871,
+          "16_17": 140,
+          "18_24": 404,
+          "25_34": 515,
+          "35_44": 661,
+          "45_59": 902,
+          "60_69": 399,
+          "70_mais": 364
+        },
+        "renda": {
+          "sem_rendimento": 211,
+          "ate_1_4_sm": 370,
+          "1_4_a_1_2_sm": 903,
+          "1_2_a_1_sm": 1560,
+          "1_a_2_sm": 861,
+          "2_a_3_sm": 174,
+          "3_a_5_sm": 135,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 7,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1510,
+          "evangelica": 1479,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 53,
+          "sem_religiao": 378,
+          "nao_sabe": 0,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1877,
+          "fundamental_completo_medio_incompleto": 374,
+          "medio_completo_superior_incompleto": 667,
+          "superior_completo": 314
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101609,
+      "nome": "Theobroma",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110003,
+        "nome": "Jaru"
+      },
+      "lat": -10.12177,
+      "lon": -62.3425,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2197.412,
+      "populacao": 8383,
+      "eleitorado": 7559,
+      "urbana_pct": 30.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8113,
+        "situacao": {
+          "urbana": 2491,
+          "rural": 5622
+        },
+        "idade": {
+          "0_15": 1774,
+          "16_17": 259,
+          "18_24": 666,
+          "25_34": 956,
+          "35_44": 1292,
+          "45_59": 1750,
+          "60_69": 860,
+          "70_mais": 556
+        },
+        "renda": {
+          "sem_rendimento": 244,
+          "ate_1_4_sm": 957,
+          "1_4_a_1_2_sm": 2212,
+          "1_2_a_1_sm": 2621,
+          "1_a_2_sm": 1620,
+          "2_a_3_sm": 215,
+          "3_a_5_sm": 146,
+          "5_a_10_sm": 74,
+          "10_a_15_sm": 12,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 14
+        },
+        "religiao": {
+          "catolica": 2851,
+          "evangelica": 2502,
+          "espirita": 25,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 137,
+          "sem_religiao": 939,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3507,
+          "fundamental_completo_medio_incompleto": 897,
+          "medio_completo_superior_incompleto": 1201,
+          "superior_completo": 509
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101708,
+      "nome": "Urupá",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -11.10395,
+      "lon": -62.42441,
+      "coordenada_metodo": "centroide",
+      "area_km2": 831.855,
+      "populacao": 11254,
+      "eleitorado": 9193,
+      "urbana_pct": 51.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10725,
+        "situacao": {
+          "urbana": 5497,
+          "rural": 5228
+        },
+        "idade": {
+          "0_15": 2318,
+          "16_17": 326,
+          "18_24": 1065,
+          "25_34": 1520,
+          "35_44": 1623,
+          "45_59": 2072,
+          "60_69": 1015,
+          "70_mais": 786
+        },
+        "renda": {
+          "sem_rendimento": 780,
+          "ate_1_4_sm": 776,
+          "1_4_a_1_2_sm": 2515,
+          "1_2_a_1_sm": 3390,
+          "1_a_2_sm": 2413,
+          "2_a_3_sm": 521,
+          "3_a_5_sm": 270,
+          "5_a_10_sm": 43,
+          "10_a_15_sm": 17,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3930,
+          "evangelica": 3773,
+          "espirita": 12,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 209,
+          "sem_religiao": 603,
+          "nao_sabe": 0,
+          "sem_declaracao": 38
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4518,
+          "fundamental_completo_medio_incompleto": 1026,
+          "medio_completo_superior_incompleto": 1940,
+          "superior_completo": 614
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101757,
+      "nome": "Vale do Anari",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11003,
+        "nome": "Ariquemes"
+      },
+      "regiao_imediata": {
+        "id": 110003,
+        "nome": "Jaru"
+      },
+      "lat": -9.73243,
+      "lon": -61.9391,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3135.107,
+      "populacao": 8178,
+      "eleitorado": 6623,
+      "urbana_pct": 45.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7788,
+        "situacao": {
+          "urbana": 3513,
+          "rural": 4275
+        },
+        "idade": {
+          "0_15": 1834,
+          "16_17": 241,
+          "18_24": 680,
+          "25_34": 1033,
+          "35_44": 1196,
+          "45_59": 1606,
+          "60_69": 703,
+          "70_mais": 495
+        },
+        "renda": {
+          "sem_rendimento": 202,
+          "ate_1_4_sm": 687,
+          "1_4_a_1_2_sm": 1911,
+          "1_2_a_1_sm": 2855,
+          "1_a_2_sm": 1611,
+          "2_a_3_sm": 305,
+          "3_a_5_sm": 129,
+          "5_a_10_sm": 6,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 15,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2707,
+          "evangelica": 2768,
+          "espirita": 16,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 141,
+          "sem_religiao": 439,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2999,
+          "fundamental_completo_medio_incompleto": 945,
+          "medio_completo_superior_incompleto": 1414,
+          "superior_completo": 404
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1101807,
+      "nome": "Vale do Paraíso",
+      "uf": "RO",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 11004,
+        "nome": "Ji-Paraná"
+      },
+      "regiao_imediata": {
+        "id": 110004,
+        "nome": "Ji-Paraná"
+      },
+      "lat": -10.38426,
+      "lon": -62.09405,
+      "coordenada_metodo": "centroide",
+      "area_km2": 965.661,
+      "populacao": 6740,
+      "eleitorado": 5514,
+      "urbana_pct": 39.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6479,
+        "situacao": {
+          "urbana": 2550,
+          "rural": 3929
+        },
+        "idade": {
+          "0_15": 1294,
+          "16_17": 208,
+          "18_24": 590,
+          "25_34": 796,
+          "35_44": 1044,
+          "45_59": 1399,
+          "60_69": 639,
+          "70_mais": 509
+        },
+        "renda": {
+          "sem_rendimento": 85,
+          "ate_1_4_sm": 621,
+          "1_4_a_1_2_sm": 1377,
+          "1_2_a_1_sm": 2312,
+          "1_a_2_sm": 1439,
+          "2_a_3_sm": 371,
+          "3_a_5_sm": 195,
+          "5_a_10_sm": 73,
+          "10_a_15_sm": 3,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2636,
+          "evangelica": 1806,
+          "espirita": 3,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 39,
+          "sem_religiao": 791,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2872,
+          "fundamental_completo_medio_incompleto": 743,
+          "medio_completo_superior_incompleto": 994,
+          "superior_completo": 360
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    }
+  ]
+}

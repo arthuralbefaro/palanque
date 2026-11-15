@@ -1,0 +1,1655 @@
+{
+  "uf": "AC",
+  "municipios": [
+    {
+      "codigo_ibge": 1200013,
+      "nome": "Acrelândia",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -9.93393,
+      "lon": -66.95017,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1811.612,
+      "populacao": 14762,
+      "eleitorado": 10210,
+      "urbana_pct": 55.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14021,
+        "situacao": {
+          "urbana": 7765,
+          "rural": 6256
+        },
+        "idade": {
+          "0_15": 4087,
+          "16_17": 544,
+          "18_24": 1669,
+          "25_34": 2061,
+          "35_44": 2057,
+          "45_59": 2089,
+          "60_69": 903,
+          "70_mais": 611
+        },
+        "renda": {
+          "sem_rendimento": 198,
+          "ate_1_4_sm": 2483,
+          "1_4_a_1_2_sm": 4013,
+          "1_2_a_1_sm": 4650,
+          "1_a_2_sm": 1958,
+          "2_a_3_sm": 467,
+          "3_a_5_sm": 196,
+          "5_a_10_sm": 24,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3804,
+          "evangelica": 4892,
+          "espirita": 27,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 350,
+          "sem_religiao": 1080,
+          "nao_sabe": 21,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4342,
+          "fundamental_completo_medio_incompleto": 1932,
+          "medio_completo_superior_incompleto": 2431,
+          "superior_completo": 694
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200054,
+      "nome": "Assis Brasil",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12005,
+        "nome": "Brasiléia"
+      },
+      "regiao_imediata": {
+        "id": 120002,
+        "nome": "Brasiléia"
+      },
+      "lat": -10.7797,
+      "lon": -70.00452,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4968.527,
+      "populacao": 8716,
+      "eleitorado": 7261,
+      "urbana_pct": 59.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8100,
+        "situacao": {
+          "urbana": 4818,
+          "rural": 3282
+        },
+        "idade": {
+          "0_15": 2762,
+          "16_17": 334,
+          "18_24": 937,
+          "25_34": 1255,
+          "35_44": 1064,
+          "45_59": 1055,
+          "60_69": 412,
+          "70_mais": 281
+        },
+        "renda": {
+          "sem_rendimento": 226,
+          "ate_1_4_sm": 2676,
+          "1_4_a_1_2_sm": 1996,
+          "1_2_a_1_sm": 1711,
+          "1_a_2_sm": 1104,
+          "2_a_3_sm": 176,
+          "3_a_5_sm": 169,
+          "5_a_10_sm": 34,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2294,
+          "evangelica": 2291,
+          "espirita": 8,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 4,
+          "outras": 164,
+          "sem_religiao": 746,
+          "nao_sabe": 0,
+          "sem_declaracao": 3
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2420,
+          "fundamental_completo_medio_incompleto": 786,
+          "medio_completo_superior_incompleto": 1289,
+          "superior_completo": 515
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200104,
+      "nome": "Brasiléia",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12005,
+        "nome": "Brasiléia"
+      },
+      "regiao_imediata": {
+        "id": 120002,
+        "nome": "Brasiléia"
+      },
+      "lat": -10.74737,
+      "lon": -69.20749,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3928.821,
+      "populacao": 28198,
+      "eleitorado": 19936,
+      "urbana_pct": 64.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26000,
+        "situacao": {
+          "urbana": 16744,
+          "rural": 9256
+        },
+        "idade": {
+          "0_15": 7330,
+          "16_17": 863,
+          "18_24": 3310,
+          "25_34": 4171,
+          "35_44": 3782,
+          "45_59": 3987,
+          "60_69": 1459,
+          "70_mais": 1098
+        },
+        "renda": {
+          "sem_rendimento": 945,
+          "ate_1_4_sm": 4551,
+          "1_4_a_1_2_sm": 7752,
+          "1_2_a_1_sm": 7534,
+          "1_a_2_sm": 3518,
+          "2_a_3_sm": 880,
+          "3_a_5_sm": 353,
+          "5_a_10_sm": 201,
+          "10_a_15_sm": 23,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8201,
+          "evangelica": 7376,
+          "espirita": 23,
+          "umbanda_candomble": 31,
+          "tradicoes_indigenas": 10,
+          "outras": 911,
+          "sem_religiao": 2582,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7805,
+          "fundamental_completo_medio_incompleto": 2720,
+          "medio_completo_superior_incompleto": 5869,
+          "superior_completo": 1381
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200138,
+      "nome": "Bujari",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -9.61407,
+      "lon": -68.17366,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3035.547,
+      "populacao": 14076,
+      "eleitorado": 11123,
+      "urbana_pct": 46,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12917,
+        "situacao": {
+          "urbana": 5942,
+          "rural": 6975
+        },
+        "idade": {
+          "0_15": 3799,
+          "16_17": 492,
+          "18_24": 1487,
+          "25_34": 1759,
+          "35_44": 1842,
+          "45_59": 2092,
+          "60_69": 897,
+          "70_mais": 549
+        },
+        "renda": {
+          "sem_rendimento": 601,
+          "ate_1_4_sm": 3848,
+          "1_4_a_1_2_sm": 3938,
+          "1_2_a_1_sm": 2865,
+          "1_a_2_sm": 1213,
+          "2_a_3_sm": 214,
+          "3_a_5_sm": 166,
+          "5_a_10_sm": 74,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2822,
+          "evangelica": 4948,
+          "espirita": 47,
+          "umbanda_candomble": 20,
+          "tradicoes_indigenas": 0,
+          "outras": 290,
+          "sem_religiao": 1244,
+          "nao_sabe": 0,
+          "sem_declaracao": 5
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4483,
+          "fundamental_completo_medio_incompleto": 1565,
+          "medio_completo_superior_incompleto": 1919,
+          "superior_completo": 630
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200179,
+      "nome": "Capixaba",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -10.47432,
+      "lon": -67.83587,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1705.236,
+      "populacao": 11035,
+      "eleitorado": 8152,
+      "urbana_pct": 40.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10392,
+        "situacao": {
+          "urbana": 4225,
+          "rural": 6167
+        },
+        "idade": {
+          "0_15": 2959,
+          "16_17": 431,
+          "18_24": 1209,
+          "25_34": 1370,
+          "35_44": 1425,
+          "45_59": 1814,
+          "60_69": 733,
+          "70_mais": 451
+        },
+        "renda": {
+          "sem_rendimento": 63,
+          "ate_1_4_sm": 2040,
+          "1_4_a_1_2_sm": 3557,
+          "1_2_a_1_sm": 3003,
+          "1_a_2_sm": 1379,
+          "2_a_3_sm": 280,
+          "3_a_5_sm": 9,
+          "5_a_10_sm": 37,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 3
+        },
+        "religiao": {
+          "catolica": 2489,
+          "evangelica": 3477,
+          "espirita": 23,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 282,
+          "sem_religiao": 1343,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3552,
+          "fundamental_completo_medio_incompleto": 1160,
+          "medio_completo_superior_incompleto": 1852,
+          "superior_completo": 434
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200203,
+      "nome": "Cruzeiro do Sul",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12001,
+        "nome": "Cruzeiro do Sul"
+      },
+      "regiao_imediata": {
+        "id": 120004,
+        "nome": "Cruzeiro do Sul"
+      },
+      "lat": -7.97224,
+      "lon": -72.7557,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8793.341,
+      "populacao": 99404,
+      "eleitorado": 64092,
+      "urbana_pct": 74.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 91888,
+        "situacao": {
+          "urbana": 68215,
+          "rural": 23673
+        },
+        "idade": {
+          "0_15": 26648,
+          "16_17": 3756,
+          "18_24": 13292,
+          "25_34": 14759,
+          "35_44": 13650,
+          "45_59": 11942,
+          "60_69": 4244,
+          "70_mais": 3597
+        },
+        "renda": {
+          "sem_rendimento": 1931,
+          "ate_1_4_sm": 22984,
+          "1_4_a_1_2_sm": 24058,
+          "1_2_a_1_sm": 23381,
+          "1_a_2_sm": 12345,
+          "2_a_3_sm": 3661,
+          "3_a_5_sm": 2180,
+          "5_a_10_sm": 532,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 13,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 31335,
+          "evangelica": 29650,
+          "espirita": 208,
+          "umbanda_candomble": 74,
+          "tradicoes_indigenas": 405,
+          "outras": 1123,
+          "sem_religiao": 4138,
+          "nao_sabe": 0,
+          "sem_declaracao": 39
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 21095,
+          "fundamental_completo_medio_incompleto": 10032,
+          "medio_completo_superior_incompleto": 21983,
+          "superior_completo": 8260
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 14,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200252,
+      "nome": "Epitaciolândia",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12005,
+        "nome": "Brasiléia"
+      },
+      "regiao_imediata": {
+        "id": 120002,
+        "nome": "Brasiléia"
+      },
+      "lat": -10.8892,
+      "lon": -68.61823,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1652.715,
+      "populacao": 19997,
+      "eleitorado": 14574,
+      "urbana_pct": 68.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18757,
+        "situacao": {
+          "urbana": 12921,
+          "rural": 5836
+        },
+        "idade": {
+          "0_15": 5242,
+          "16_17": 633,
+          "18_24": 2303,
+          "25_34": 3106,
+          "35_44": 2708,
+          "45_59": 2881,
+          "60_69": 1126,
+          "70_mais": 758
+        },
+        "renda": {
+          "sem_rendimento": 414,
+          "ate_1_4_sm": 3104,
+          "1_4_a_1_2_sm": 5273,
+          "1_2_a_1_sm": 5788,
+          "1_a_2_sm": 2661,
+          "2_a_3_sm": 830,
+          "3_a_5_sm": 472,
+          "5_a_10_sm": 152,
+          "10_a_15_sm": 27,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 4
+        },
+        "religiao": {
+          "catolica": 6098,
+          "evangelica": 5246,
+          "espirita": 35,
+          "umbanda_candomble": 4,
+          "tradicoes_indigenas": 13,
+          "outras": 691,
+          "sem_religiao": 1717,
+          "nao_sabe": 0,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5287,
+          "fundamental_completo_medio_incompleto": 2911,
+          "medio_completo_superior_incompleto": 3318,
+          "superior_completo": 1345
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200302,
+      "nome": "Feijó",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12002,
+        "nome": "Tarauacá"
+      },
+      "regiao_imediata": {
+        "id": 120005,
+        "nome": "Tarauacá"
+      },
+      "lat": -8.92336,
+      "lon": -70.74397,
+      "coordenada_metodo": "centroide",
+      "area_km2": 27946.684,
+      "populacao": 37874,
+      "eleitorado": 24202,
+      "urbana_pct": 51.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35426,
+        "situacao": {
+          "urbana": 18113,
+          "rural": 17313
+        },
+        "idade": {
+          "0_15": 12362,
+          "16_17": 1560,
+          "18_24": 5047,
+          "25_34": 5099,
+          "35_44": 4462,
+          "45_59": 4154,
+          "60_69": 1534,
+          "70_mais": 1208
+        },
+        "renda": {
+          "sem_rendimento": 1226,
+          "ate_1_4_sm": 13709,
+          "1_4_a_1_2_sm": 9459,
+          "1_2_a_1_sm": 7340,
+          "1_a_2_sm": 2446,
+          "2_a_3_sm": 819,
+          "3_a_5_sm": 137,
+          "5_a_10_sm": 144,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11110,
+          "evangelica": 9381,
+          "espirita": 46,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 1108,
+          "outras": 512,
+          "sem_religiao": 1627,
+          "nao_sabe": 1,
+          "sem_declaracao": 82
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11295,
+          "fundamental_completo_medio_incompleto": 2822,
+          "medio_completo_superior_incompleto": 5359,
+          "superior_completo": 2010
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200328,
+      "nome": "Jordão",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12002,
+        "nome": "Tarauacá"
+      },
+      "regiao_imediata": {
+        "id": 120005,
+        "nome": "Tarauacá"
+      },
+      "lat": -9.24169,
+      "lon": -71.90547,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5346.443,
+      "populacao": 9972,
+      "eleitorado": 6001,
+      "urbana_pct": 39.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9222,
+        "situacao": {
+          "urbana": 3674,
+          "rural": 5548
+        },
+        "idade": {
+          "0_15": 4101,
+          "16_17": 433,
+          "18_24": 1350,
+          "25_34": 1274,
+          "35_44": 933,
+          "45_59": 733,
+          "60_69": 228,
+          "70_mais": 170
+        },
+        "renda": {
+          "sem_rendimento": 71,
+          "ate_1_4_sm": 4733,
+          "1_4_a_1_2_sm": 2345,
+          "1_2_a_1_sm": 1172,
+          "1_a_2_sm": 531,
+          "2_a_3_sm": 203,
+          "3_a_5_sm": 111,
+          "5_a_10_sm": 10,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3482,
+          "evangelica": 1285,
+          "espirita": 56,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 1,
+          "outras": 229,
+          "sem_religiao": 282,
+          "nao_sabe": 0,
+          "sem_declaracao": 38
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2000,
+          "fundamental_completo_medio_incompleto": 1150,
+          "medio_completo_superior_incompleto": 1139,
+          "superior_completo": 346
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200336,
+      "nome": "Mâncio Lima",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12001,
+        "nome": "Cruzeiro do Sul"
+      },
+      "regiao_imediata": {
+        "id": 120004,
+        "nome": "Cruzeiro do Sul"
+      },
+      "lat": -7.50482,
+      "lon": -73.43582,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5414.073,
+      "populacao": 20616,
+      "eleitorado": 14640,
+      "urbana_pct": 66,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19294,
+        "situacao": {
+          "urbana": 12727,
+          "rural": 6567
+        },
+        "idade": {
+          "0_15": 6159,
+          "16_17": 819,
+          "18_24": 2585,
+          "25_34": 2898,
+          "35_44": 2779,
+          "45_59": 2410,
+          "60_69": 932,
+          "70_mais": 712
+        },
+        "renda": {
+          "sem_rendimento": 327,
+          "ate_1_4_sm": 6225,
+          "1_4_a_1_2_sm": 5629,
+          "1_2_a_1_sm": 4526,
+          "1_a_2_sm": 1783,
+          "2_a_3_sm": 518,
+          "3_a_5_sm": 115,
+          "5_a_10_sm": 44,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 4
+        },
+        "religiao": {
+          "catolica": 6783,
+          "evangelica": 5910,
+          "espirita": 32,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 47,
+          "outras": 161,
+          "sem_religiao": 520,
+          "nao_sabe": 17,
+          "sem_declaracao": 61
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5061,
+          "fundamental_completo_medio_incompleto": 1868,
+          "medio_completo_superior_incompleto": 4214,
+          "superior_completo": 1170
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200344,
+      "nome": "Manoel Urbano",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12003,
+        "nome": "Sena Madureira"
+      },
+      "regiao_imediata": {
+        "id": 120003,
+        "nome": "Sena Madureira"
+      },
+      "lat": -9.37982,
+      "lon": -69.85263,
+      "coordenada_metodo": "centroide",
+      "area_km2": 10615.134,
+      "populacao": 13057,
+      "eleitorado": 8615,
+      "urbana_pct": 56.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11996,
+        "situacao": {
+          "urbana": 6725,
+          "rural": 5271
+        },
+        "idade": {
+          "0_15": 4035,
+          "16_17": 542,
+          "18_24": 1604,
+          "25_34": 1806,
+          "35_44": 1672,
+          "45_59": 1477,
+          "60_69": 527,
+          "70_mais": 333
+        },
+        "renda": {
+          "sem_rendimento": 176,
+          "ate_1_4_sm": 3959,
+          "1_4_a_1_2_sm": 3703,
+          "1_2_a_1_sm": 2762,
+          "1_a_2_sm": 1133,
+          "2_a_3_sm": 181,
+          "3_a_5_sm": 43,
+          "5_a_10_sm": 10,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2493,
+          "evangelica": 4264,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 16,
+          "outras": 90,
+          "sem_religiao": 1356,
+          "nao_sabe": 5,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4089,
+          "fundamental_completo_medio_incompleto": 1185,
+          "medio_completo_superior_incompleto": 1665,
+          "superior_completo": 487
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200351,
+      "nome": "Marechal Thaumaturgo",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12001,
+        "nome": "Cruzeiro do Sul"
+      },
+      "regiao_imediata": {
+        "id": 120004,
+        "nome": "Cruzeiro do Sul"
+      },
+      "lat": -9.09607,
+      "lon": -72.55879,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8185.635,
+      "populacao": 18154,
+      "eleitorado": 11826,
+      "urbana_pct": 34.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17093,
+        "situacao": {
+          "urbana": 5894,
+          "rural": 11199
+        },
+        "idade": {
+          "0_15": 6548,
+          "16_17": 935,
+          "18_24": 2543,
+          "25_34": 2544,
+          "35_44": 2065,
+          "45_59": 1520,
+          "60_69": 553,
+          "70_mais": 385
+        },
+        "renda": {
+          "sem_rendimento": 233,
+          "ate_1_4_sm": 7789,
+          "1_4_a_1_2_sm": 4828,
+          "1_2_a_1_sm": 3130,
+          "1_a_2_sm": 880,
+          "2_a_3_sm": 72,
+          "3_a_5_sm": 114,
+          "5_a_10_sm": 23,
+          "10_a_15_sm": 20,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6130,
+          "evangelica": 4468,
+          "espirita": 35,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 31,
+          "outras": 205,
+          "sem_religiao": 116,
+          "nao_sabe": 0,
+          "sem_declaracao": 16
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4896,
+          "fundamental_completo_medio_incompleto": 1947,
+          "medio_completo_superior_incompleto": 2165,
+          "superior_completo": 574
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200385,
+      "nome": "Plácido de Castro",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -10.24909,
+      "lon": -67.34032,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1952.531,
+      "populacao": 17088,
+      "eleitorado": 12277,
+      "urbana_pct": 64.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16560,
+        "situacao": {
+          "urbana": 10739,
+          "rural": 5821
+        },
+        "idade": {
+          "0_15": 4684,
+          "16_17": 608,
+          "18_24": 1968,
+          "25_34": 2253,
+          "35_44": 2335,
+          "45_59": 2692,
+          "60_69": 1144,
+          "70_mais": 876
+        },
+        "renda": {
+          "sem_rendimento": 166,
+          "ate_1_4_sm": 3043,
+          "1_4_a_1_2_sm": 4918,
+          "1_2_a_1_sm": 4555,
+          "1_a_2_sm": 2812,
+          "2_a_3_sm": 484,
+          "3_a_5_sm": 416,
+          "5_a_10_sm": 154,
+          "10_a_15_sm": 12,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4950,
+          "evangelica": 5522,
+          "espirita": 6,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 0,
+          "outras": 435,
+          "sem_religiao": 1265,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5477,
+          "fundamental_completo_medio_incompleto": 1730,
+          "medio_completo_superior_incompleto": 3004,
+          "superior_completo": 1168
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200393,
+      "nome": "Porto Walter",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12001,
+        "nome": "Cruzeiro do Sul"
+      },
+      "regiao_imediata": {
+        "id": 120004,
+        "nome": "Cruzeiro do Sul"
+      },
+      "lat": -8.49209,
+      "lon": -72.73408,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6452.756,
+      "populacao": 11386,
+      "eleitorado": 7997,
+      "urbana_pct": 46.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10735,
+        "situacao": {
+          "urbana": 4951,
+          "rural": 5784
+        },
+        "idade": {
+          "0_15": 4158,
+          "16_17": 533,
+          "18_24": 1663,
+          "25_34": 1472,
+          "35_44": 1263,
+          "45_59": 1053,
+          "60_69": 357,
+          "70_mais": 236
+        },
+        "renda": {
+          "sem_rendimento": 503,
+          "ate_1_4_sm": 3699,
+          "1_4_a_1_2_sm": 3337,
+          "1_2_a_1_sm": 2136,
+          "1_a_2_sm": 781,
+          "2_a_3_sm": 189,
+          "3_a_5_sm": 69,
+          "5_a_10_sm": 22,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4643,
+          "evangelica": 2156,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 2,
+          "outras": 0,
+          "sem_religiao": 88,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2924,
+          "fundamental_completo_medio_incompleto": 1225,
+          "medio_completo_superior_incompleto": 1565,
+          "superior_completo": 363
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200401,
+      "nome": "Rio Branco",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -10.06614,
+      "lon": -68.37108,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8834.832,
+      "populacao": 390058,
+      "eleitorado": 269630,
+      "urbana_pct": 93.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 364756,
+        "situacao": {
+          "urbana": 341025,
+          "rural": 23731
+        },
+        "idade": {
+          "0_15": 90744,
+          "16_17": 12288,
+          "18_24": 45680,
+          "25_34": 61141,
+          "35_44": 59141,
+          "45_59": 58352,
+          "60_69": 22223,
+          "70_mais": 15187
+        },
+        "renda": {
+          "sem_rendimento": 10046,
+          "ate_1_4_sm": 49096,
+          "1_4_a_1_2_sm": 80334,
+          "1_2_a_1_sm": 100820,
+          "1_a_2_sm": 67244,
+          "2_a_3_sm": 23492,
+          "3_a_5_sm": 19728,
+          "5_a_10_sm": 9273,
+          "10_a_15_sm": 1285,
+          "15_a_20_sm": 360,
+          "mais_de_20_sm": 126
+        },
+        "religiao": {
+          "catolica": 87191,
+          "evangelica": 130024,
+          "espirita": 2704,
+          "umbanda_candomble": 1230,
+          "tradicoes_indigenas": 21,
+          "outras": 17079,
+          "sem_religiao": 41154,
+          "nao_sabe": 39,
+          "sem_declaracao": 336
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 71189,
+          "fundamental_completo_medio_incompleto": 38999,
+          "medio_completo_superior_incompleto": 94930,
+          "superior_completo": 56012
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 23,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1200427,
+      "nome": "Rodrigues Alves",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12001,
+        "nome": "Cruzeiro do Sul"
+      },
+      "regiao_imediata": {
+        "id": 120004,
+        "nome": "Cruzeiro do Sul"
+      },
+      "lat": -7.84398,
+      "lon": -73.22426,
+      "coordenada_metodo": "centroide",
+      "area_km2": 3082.396,
+      "populacao": 15580,
+      "eleitorado": 12118,
+      "urbana_pct": 38.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14938,
+        "situacao": {
+          "urbana": 5688,
+          "rural": 9250
+        },
+        "idade": {
+          "0_15": 4951,
+          "16_17": 687,
+          "18_24": 2149,
+          "25_34": 2154,
+          "35_44": 2032,
+          "45_59": 1835,
+          "60_69": 618,
+          "70_mais": 512
+        },
+        "renda": {
+          "sem_rendimento": 198,
+          "ate_1_4_sm": 5784,
+          "1_4_a_1_2_sm": 4095,
+          "1_2_a_1_sm": 3052,
+          "1_a_2_sm": 1322,
+          "2_a_3_sm": 338,
+          "3_a_5_sm": 81,
+          "5_a_10_sm": 49,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4680,
+          "evangelica": 5040,
+          "espirita": 5,
+          "umbanda_candomble": 12,
+          "tradicoes_indigenas": 16,
+          "outras": 199,
+          "sem_religiao": 412,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3859,
+          "fundamental_completo_medio_incompleto": 1386,
+          "medio_completo_superior_incompleto": 3100,
+          "superior_completo": 959
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200435,
+      "nome": "Santa Rosa do Purus",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12003,
+        "nome": "Sena Madureira"
+      },
+      "regiao_imediata": {
+        "id": 120003,
+        "nome": "Sena Madureira"
+      },
+      "lat": -9.4097,
+      "lon": -70.39539,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6144.95,
+      "populacao": 7285,
+      "eleitorado": 3955,
+      "urbana_pct": 49,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6723,
+        "situacao": {
+          "urbana": 3291,
+          "rural": 3432
+        },
+        "idade": {
+          "0_15": 3060,
+          "16_17": 305,
+          "18_24": 855,
+          "25_34": 922,
+          "35_44": 715,
+          "45_59": 555,
+          "60_69": 151,
+          "70_mais": 160
+        },
+        "renda": {
+          "sem_rendimento": 115,
+          "ate_1_4_sm": 3759,
+          "1_4_a_1_2_sm": 1427,
+          "1_2_a_1_sm": 1023,
+          "1_a_2_sm": 313,
+          "2_a_3_sm": 43,
+          "3_a_5_sm": 15,
+          "5_a_10_sm": 6,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 3
+        },
+        "religiao": {
+          "catolica": 1222,
+          "evangelica": 1832,
+          "espirita": 6,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 264,
+          "outras": 358,
+          "sem_religiao": 156,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1611,
+          "fundamental_completo_medio_incompleto": 579,
+          "medio_completo_superior_incompleto": 976,
+          "superior_completo": 197
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200450,
+      "nome": "Senador Guiomard",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -9.99731,
+      "lon": -67.42771,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2320.956,
+      "populacao": 22447,
+      "eleitorado": 18602,
+      "urbana_pct": 62.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21454,
+        "situacao": {
+          "urbana": 13355,
+          "rural": 8099
+        },
+        "idade": {
+          "0_15": 5752,
+          "16_17": 760,
+          "18_24": 2542,
+          "25_34": 3203,
+          "35_44": 3225,
+          "45_59": 3482,
+          "60_69": 1405,
+          "70_mais": 1085
+        },
+        "renda": {
+          "sem_rendimento": 173,
+          "ate_1_4_sm": 3544,
+          "1_4_a_1_2_sm": 5712,
+          "1_2_a_1_sm": 7267,
+          "1_a_2_sm": 2913,
+          "2_a_3_sm": 810,
+          "3_a_5_sm": 423,
+          "5_a_10_sm": 150,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6231,
+          "evangelica": 7545,
+          "espirita": 23,
+          "umbanda_candomble": 88,
+          "tradicoes_indigenas": 0,
+          "outras": 618,
+          "sem_religiao": 1555,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6016,
+          "fundamental_completo_medio_incompleto": 3060,
+          "medio_completo_superior_incompleto": 4230,
+          "superior_completo": 1658
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200500,
+      "nome": "Sena Madureira",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12003,
+        "nome": "Sena Madureira"
+      },
+      "regiao_imediata": {
+        "id": 120003,
+        "nome": "Sena Madureira"
+      },
+      "lat": -9.77106,
+      "lon": -69.38121,
+      "coordenada_metodo": "centroide",
+      "area_km2": 23748.843,
+      "populacao": 44170,
+      "eleitorado": 30915,
+      "urbana_pct": 65.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41343,
+        "situacao": {
+          "urbana": 26943,
+          "rural": 14400
+        },
+        "idade": {
+          "0_15": 12139,
+          "16_17": 1737,
+          "18_24": 5689,
+          "25_34": 6659,
+          "35_44": 5998,
+          "45_59": 5420,
+          "60_69": 2052,
+          "70_mais": 1649
+        },
+        "renda": {
+          "sem_rendimento": 800,
+          "ate_1_4_sm": 12947,
+          "1_4_a_1_2_sm": 10899,
+          "1_2_a_1_sm": 10090,
+          "1_a_2_sm": 4032,
+          "2_a_3_sm": 1262,
+          "3_a_5_sm": 391,
+          "5_a_10_sm": 274,
+          "10_a_15_sm": 75,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 11
+        },
+        "religiao": {
+          "catolica": 16005,
+          "evangelica": 10983,
+          "espirita": 13,
+          "umbanda_candomble": 15,
+          "tradicoes_indigenas": 4,
+          "outras": 534,
+          "sem_religiao": 2474,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13797,
+          "fundamental_completo_medio_incompleto": 4165,
+          "medio_completo_superior_incompleto": 7616,
+          "superior_completo": 2047
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200609,
+      "nome": "Tarauacá",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12002,
+        "nome": "Tarauacá"
+      },
+      "regiao_imediata": {
+        "id": 120005,
+        "nome": "Tarauacá"
+      },
+      "lat": -8.23947,
+      "lon": -71.44499,
+      "coordenada_metodo": "centroide",
+      "area_km2": 20169.487,
+      "populacao": 47090,
+      "eleitorado": 30005,
+      "urbana_pct": 56.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 43467,
+        "situacao": {
+          "urbana": 24414,
+          "rural": 19053
+        },
+        "idade": {
+          "0_15": 15529,
+          "16_17": 2057,
+          "18_24": 6232,
+          "25_34": 6521,
+          "35_44": 5359,
+          "45_59": 4640,
+          "60_69": 1753,
+          "70_mais": 1376
+        },
+        "renda": {
+          "sem_rendimento": 1763,
+          "ate_1_4_sm": 19696,
+          "1_4_a_1_2_sm": 10179,
+          "1_2_a_1_sm": 6796,
+          "1_a_2_sm": 2904,
+          "2_a_3_sm": 642,
+          "3_a_5_sm": 452,
+          "5_a_10_sm": 206,
+          "10_a_15_sm": 78,
+          "15_a_20_sm": 25,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 15938,
+          "evangelica": 9457,
+          "espirita": 215,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 594,
+          "outras": 694,
+          "sem_religiao": 2048,
+          "nao_sabe": 0,
+          "sem_declaracao": 44
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13761,
+          "fundamental_completo_medio_incompleto": 4231,
+          "medio_completo_superior_incompleto": 5862,
+          "superior_completo": 1998
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1200708,
+      "nome": "Xapuri",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12005,
+        "nome": "Brasiléia"
+      },
+      "regiao_imediata": {
+        "id": 120002,
+        "nome": "Brasiléia"
+      },
+      "lat": -10.5756,
+      "lon": -68.50471,
+      "coordenada_metodo": "centroide",
+      "area_km2": 5350.3,
+      "populacao": 19244,
+      "eleitorado": 12753,
+      "urbana_pct": 56.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18243,
+        "situacao": {
+          "urbana": 10308,
+          "rural": 7935
+        },
+        "idade": {
+          "0_15": 5200,
+          "16_17": 728,
+          "18_24": 2224,
+          "25_34": 2928,
+          "35_44": 2522,
+          "45_59": 2715,
+          "60_69": 1116,
+          "70_mais": 810
+        },
+        "renda": {
+          "sem_rendimento": 267,
+          "ate_1_4_sm": 4158,
+          "1_4_a_1_2_sm": 4872,
+          "1_2_a_1_sm": 5668,
+          "1_a_2_sm": 2242,
+          "2_a_3_sm": 528,
+          "3_a_5_sm": 340,
+          "5_a_10_sm": 135,
+          "10_a_15_sm": 19,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6547,
+          "evangelica": 5522,
+          "espirita": 24,
+          "umbanda_candomble": 4,
+          "tradicoes_indigenas": 6,
+          "outras": 241,
+          "sem_religiao": 1056,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6380,
+          "fundamental_completo_medio_incompleto": 1813,
+          "medio_completo_superior_incompleto": 2811,
+          "superior_completo": 1336
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1200807,
+      "nome": "Porto Acre",
+      "uf": "AC",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 12004,
+        "nome": "Rio Branco"
+      },
+      "regiao_imediata": {
+        "id": 120001,
+        "nome": "Rio Branco"
+      },
+      "lat": -9.62952,
+      "lon": -67.69843,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2603.942,
+      "populacao": 17585,
+      "eleitorado": 14237,
+      "urbana_pct": 56.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16693,
+        "situacao": {
+          "urbana": 9465,
+          "rural": 7228
+        },
+        "idade": {
+          "0_15": 4805,
+          "16_17": 627,
+          "18_24": 2032,
+          "25_34": 2275,
+          "35_44": 2302,
+          "45_59": 2647,
+          "60_69": 1171,
+          "70_mais": 834
+        },
+        "renda": {
+          "sem_rendimento": 328,
+          "ate_1_4_sm": 4449,
+          "1_4_a_1_2_sm": 4976,
+          "1_2_a_1_sm": 4660,
+          "1_a_2_sm": 1783,
+          "2_a_3_sm": 327,
+          "3_a_5_sm": 111,
+          "5_a_10_sm": 33,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4470,
+          "evangelica": 6047,
+          "espirita": 52,
+          "umbanda_candomble": 23,
+          "tradicoes_indigenas": 0,
+          "outras": 277,
+          "sem_religiao": 1259,
+          "nao_sabe": 0,
+          "sem_declaracao": 104
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5890,
+          "fundamental_completo_medio_incompleto": 1979,
+          "medio_completo_superior_incompleto": 2665,
+          "superior_completo": 717
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    }
+  ]
+}

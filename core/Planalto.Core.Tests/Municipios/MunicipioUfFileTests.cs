@@ -25,6 +25,8 @@ public class MunicipioUfFileTests
         RegiaoImediata = new RegiaoRef { Id = 990001, Nome = "Teste" },
         Lat = -10,
         Lon = -40,
+        CoordenadaMetodo = Municipio.CoordenadaCentroide,
+        AreaKm2 = 350.5,
         Populacao = populacao,
         Eleitorado = eleitorado,
         UrbanaPct = 80.0,
@@ -54,6 +56,7 @@ public class MunicipioUfFileTests
         {
             CodigoIbge = distrito.CodigoIbge, Nome = distrito.Nome, Uf = distrito.Uf, Regiao = distrito.Regiao,
             Microrregiao = null, RegiaoImediata = distrito.RegiaoImediata, Lat = distrito.Lat, Lon = distrito.Lon,
+            CoordenadaMetodo = distrito.CoordenadaMetodo, AreaKm2 = distrito.AreaKm2,
             Populacao = distrito.Populacao, Eleitorado = distrito.Eleitorado, UrbanaPct = distrito.UrbanaPct,
             PerfilFonte = distrito.PerfilFonte, Perfil = distrito.Perfil, Porte = distrito.Porte,
             EleicoesMunicipais = false, VagasVereador = 0, VagasVereadorMax = 0,

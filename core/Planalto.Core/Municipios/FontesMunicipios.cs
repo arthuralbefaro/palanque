@@ -61,7 +61,7 @@ public sealed class FontesMunicipios : IValidatable
     }
 }
 
-public sealed class FonteCampo
+public sealed record FonteCampo
 {
     public required string Campo { get; init; }
 
@@ -72,6 +72,8 @@ public sealed class FonteCampo
     public required string Url { get; init; }
 
     public required DateTimeOffset BaixadoEm { get; init; }
+
+    public string? Observacao { get; init; }
 }
 
 public sealed class TotaisOficiais

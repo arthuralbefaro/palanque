@@ -1,0 +1,1205 @@
+{
+  "uf": "AP",
+  "municipios": [
+    {
+      "codigo_ibge": 1600055,
+      "nome": "Serra do Navio",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160004,
+        "nome": "Porto Grande"
+      },
+      "lat": 1.65175,
+      "lon": -52.26814,
+      "coordenada_metodo": "centroide",
+      "area_km2": 7713.046,
+      "populacao": 5019,
+      "eleitorado": 4124,
+      "urbana_pct": 58.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4673,
+        "situacao": {
+          "urbana": 2721,
+          "rural": 1952
+        },
+        "idade": {
+          "0_15": 1383,
+          "16_17": 190,
+          "18_24": 603,
+          "25_34": 791,
+          "35_44": 710,
+          "45_59": 660,
+          "60_69": 221,
+          "70_mais": 115
+        },
+        "renda": {
+          "sem_rendimento": 53,
+          "ate_1_4_sm": 548,
+          "1_4_a_1_2_sm": 1010,
+          "1_2_a_1_sm": 1714,
+          "1_a_2_sm": 1008,
+          "2_a_3_sm": 155,
+          "3_a_5_sm": 77,
+          "5_a_10_sm": 55,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1401,
+          "evangelica": 1538,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 51,
+          "sem_religiao": 382,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 855,
+          "fundamental_completo_medio_incompleto": 535,
+          "medio_completo_superior_incompleto": 1460,
+          "superior_completo": 253
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600105,
+      "nome": "Amapá",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16002,
+        "nome": "Amapá"
+      },
+      "regiao_imediata": {
+        "id": 160003,
+        "nome": "Oiapoque"
+      },
+      "lat": 1.74676,
+      "lon": -50.59258,
+      "coordenada_metodo": "centroide",
+      "area_km2": 8454.846,
+      "populacao": 8447,
+      "eleitorado": 7559,
+      "urbana_pct": 83.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7943,
+        "situacao": {
+          "urbana": 6631,
+          "rural": 1312
+        },
+        "idade": {
+          "0_15": 2546,
+          "16_17": 304,
+          "18_24": 1028,
+          "25_34": 1137,
+          "35_44": 1080,
+          "45_59": 1100,
+          "60_69": 424,
+          "70_mais": 324
+        },
+        "renda": {
+          "sem_rendimento": 87,
+          "ate_1_4_sm": 1937,
+          "1_4_a_1_2_sm": 2428,
+          "1_2_a_1_sm": 2061,
+          "1_a_2_sm": 916,
+          "2_a_3_sm": 366,
+          "3_a_5_sm": 101,
+          "5_a_10_sm": 34,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3691,
+          "evangelica": 1534,
+          "espirita": 23,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 96,
+          "sem_religiao": 192,
+          "nao_sabe": 0,
+          "sem_declaracao": 8
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2083,
+          "fundamental_completo_medio_incompleto": 972,
+          "medio_completo_superior_incompleto": 1533,
+          "superior_completo": 490
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600154,
+      "nome": "Pedra Branca do Amapari",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160004,
+        "nome": "Porto Grande"
+      },
+      "lat": 1.15761,
+      "lon": -52.51956,
+      "coordenada_metodo": "centroide",
+      "area_km2": 9622.29,
+      "populacao": 13971,
+      "eleitorado": 9952,
+      "urbana_pct": 67,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12847,
+        "situacao": {
+          "urbana": 8607,
+          "rural": 4240
+        },
+        "idade": {
+          "0_15": 4815,
+          "16_17": 496,
+          "18_24": 1643,
+          "25_34": 1924,
+          "35_44": 1775,
+          "45_59": 1452,
+          "60_69": 457,
+          "70_mais": 285
+        },
+        "renda": {
+          "sem_rendimento": 332,
+          "ate_1_4_sm": 2428,
+          "1_4_a_1_2_sm": 3436,
+          "1_2_a_1_sm": 3789,
+          "1_a_2_sm": 2171,
+          "2_a_3_sm": 376,
+          "3_a_5_sm": 124,
+          "5_a_10_sm": 67,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2974,
+          "evangelica": 3119,
+          "espirita": 5,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 652,
+          "outras": 131,
+          "sem_religiao": 1259,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2877,
+          "fundamental_completo_medio_incompleto": 1313,
+          "medio_completo_superior_incompleto": 2523,
+          "superior_completo": 735
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600204,
+      "nome": "Calçoene",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16001,
+        "nome": "Oiapoque"
+      },
+      "regiao_imediata": {
+        "id": 160003,
+        "nome": "Oiapoque"
+      },
+      "lat": 2.42384,
+      "lon": -51.40665,
+      "coordenada_metodo": "centroide",
+      "area_km2": 14117.297,
+      "populacao": 11527,
+      "eleitorado": 8926,
+      "urbana_pct": 83.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10612,
+        "situacao": {
+          "urbana": 8822,
+          "rural": 1790
+        },
+        "idade": {
+          "0_15": 3434,
+          "16_17": 425,
+          "18_24": 1293,
+          "25_34": 1599,
+          "35_44": 1412,
+          "45_59": 1553,
+          "60_69": 575,
+          "70_mais": 321
+        },
+        "renda": {
+          "sem_rendimento": 43,
+          "ate_1_4_sm": 2700,
+          "1_4_a_1_2_sm": 3007,
+          "1_2_a_1_sm": 2807,
+          "1_a_2_sm": 1363,
+          "2_a_3_sm": 380,
+          "3_a_5_sm": 122,
+          "5_a_10_sm": 23,
+          "10_a_15_sm": 15,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3744,
+          "evangelica": 2383,
+          "espirita": 4,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 0,
+          "outras": 111,
+          "sem_religiao": 1101,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2936,
+          "fundamental_completo_medio_incompleto": 1409,
+          "medio_completo_superior_incompleto": 1865,
+          "superior_completo": 560
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600212,
+      "nome": "Cutias",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160003,
+        "nome": "Oiapoque"
+      },
+      "lat": 1.03557,
+      "lon": -50.48708,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2179.114,
+      "populacao": 4722,
+      "eleitorado": 6303,
+      "urbana_pct": 63.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4461,
+        "situacao": {
+          "urbana": 2833,
+          "rural": 1628
+        },
+        "idade": {
+          "0_15": 1550,
+          "16_17": 200,
+          "18_24": 565,
+          "25_34": 679,
+          "35_44": 553,
+          "45_59": 541,
+          "60_69": 218,
+          "70_mais": 155
+        },
+        "renda": {
+          "sem_rendimento": 61,
+          "ate_1_4_sm": 1312,
+          "1_4_a_1_2_sm": 1618,
+          "1_2_a_1_sm": 1034,
+          "1_a_2_sm": 247,
+          "2_a_3_sm": 87,
+          "3_a_5_sm": 42,
+          "5_a_10_sm": 16,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1484,
+          "evangelica": 1466,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 14,
+          "sem_religiao": 33,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1142,
+          "fundamental_completo_medio_incompleto": 431,
+          "medio_completo_superior_incompleto": 864,
+          "superior_completo": 276
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600238,
+      "nome": "Ferreira Gomes",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160004,
+        "nome": "Porto Grande"
+      },
+      "lat": 0.9571,
+      "lon": -51.41735,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4973.855,
+      "populacao": 7220,
+      "eleitorado": 7888,
+      "urbana_pct": 70.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6666,
+        "situacao": {
+          "urbana": 4726,
+          "rural": 1940
+        },
+        "idade": {
+          "0_15": 2292,
+          "16_17": 270,
+          "18_24": 772,
+          "25_34": 967,
+          "35_44": 868,
+          "45_59": 940,
+          "60_69": 335,
+          "70_mais": 222
+        },
+        "renda": {
+          "sem_rendimento": 249,
+          "ate_1_4_sm": 2071,
+          "1_4_a_1_2_sm": 1699,
+          "1_2_a_1_sm": 1558,
+          "1_a_2_sm": 732,
+          "2_a_3_sm": 185,
+          "3_a_5_sm": 122,
+          "5_a_10_sm": 5,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2083,
+          "evangelica": 2079,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 162,
+          "sem_religiao": 143,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1410,
+          "fundamental_completo_medio_incompleto": 665,
+          "medio_completo_superior_incompleto": 1587,
+          "superior_completo": 435
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600253,
+      "nome": "Itaubal",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160001,
+        "nome": "Macapá"
+      },
+      "lat": 0.53839,
+      "lon": -50.64025,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1622.867,
+      "populacao": 6147,
+      "eleitorado": 8875,
+      "urbana_pct": 48.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5599,
+        "situacao": {
+          "urbana": 2710,
+          "rural": 2889
+        },
+        "idade": {
+          "0_15": 2020,
+          "16_17": 228,
+          "18_24": 699,
+          "25_34": 780,
+          "35_44": 780,
+          "45_59": 645,
+          "60_69": 277,
+          "70_mais": 170
+        },
+        "renda": {
+          "sem_rendimento": 109,
+          "ate_1_4_sm": 1922,
+          "1_4_a_1_2_sm": 1679,
+          "1_2_a_1_sm": 1331,
+          "1_a_2_sm": 466,
+          "2_a_3_sm": 40,
+          "3_a_5_sm": 25,
+          "5_a_10_sm": 27,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1834,
+          "evangelica": 1369,
+          "espirita": 3,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 244,
+          "sem_religiao": 254,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1426,
+          "fundamental_completo_medio_incompleto": 591,
+          "medio_completo_superior_incompleto": 1023,
+          "superior_completo": 282
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600279,
+      "nome": "Laranjal do Jari",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16004,
+        "nome": "Mazagão"
+      },
+      "regiao_imediata": {
+        "id": 160002,
+        "nome": "Laranjal do Jari"
+      },
+      "lat": 1.09264,
+      "lon": -53.30393,
+      "coordenada_metodo": "centroide",
+      "area_km2": 30542.284,
+      "populacao": 37781,
+      "eleitorado": 28190,
+      "urbana_pct": 91.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 35114,
+        "situacao": {
+          "urbana": 32285,
+          "rural": 2829
+        },
+        "idade": {
+          "0_15": 10402,
+          "16_17": 1414,
+          "18_24": 4616,
+          "25_34": 5312,
+          "35_44": 4861,
+          "45_59": 5338,
+          "60_69": 2019,
+          "70_mais": 1152
+        },
+        "renda": {
+          "sem_rendimento": 830,
+          "ate_1_4_sm": 8641,
+          "1_4_a_1_2_sm": 10230,
+          "1_2_a_1_sm": 9005,
+          "1_a_2_sm": 4358,
+          "2_a_3_sm": 1072,
+          "3_a_5_sm": 584,
+          "5_a_10_sm": 318,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 23,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12338,
+          "evangelica": 9218,
+          "espirita": 27,
+          "umbanda_candomble": 115,
+          "tradicoes_indigenas": 50,
+          "outras": 801,
+          "sem_religiao": 2817,
+          "nao_sabe": 0,
+          "sem_declaracao": 35
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8260,
+          "fundamental_completo_medio_incompleto": 4683,
+          "medio_completo_superior_incompleto": 8496,
+          "superior_completo": 1823
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1600303,
+      "nome": "Macapá",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160001,
+        "nome": "Macapá"
+      },
+      "lat": 0.57155,
+      "lon": -50.9531,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 6563.849,
+      "populacao": 491987,
+      "eleitorado": 321633,
+      "urbana_pct": 94.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 442933,
+        "situacao": {
+          "urbana": 418800,
+          "rural": 24133
+        },
+        "idade": {
+          "0_15": 120591,
+          "16_17": 15294,
+          "18_24": 58104,
+          "25_34": 75842,
+          "35_44": 68527,
+          "45_59": 66404,
+          "60_69": 23160,
+          "70_mais": 15011
+        },
+        "renda": {
+          "sem_rendimento": 14496,
+          "ate_1_4_sm": 71251,
+          "1_4_a_1_2_sm": 104227,
+          "1_2_a_1_sm": 113774,
+          "1_a_2_sm": 77159,
+          "2_a_3_sm": 26846,
+          "3_a_5_sm": 20815,
+          "5_a_10_sm": 9746,
+          "10_a_15_sm": 1181,
+          "15_a_20_sm": 415,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 176415,
+          "evangelica": 109193,
+          "espirita": 2524,
+          "umbanda_candomble": 2360,
+          "tradicoes_indigenas": 0,
+          "outras": 12639,
+          "sem_religiao": 23891,
+          "nao_sabe": 2572,
+          "sem_declaracao": 465
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 75574,
+          "fundamental_completo_medio_incompleto": 44433,
+          "medio_completo_superior_incompleto": 119391,
+          "superior_completo": 67646
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 23,
+      "vagas_vereador_max": 25,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1600402,
+      "nome": "Mazagão",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16004,
+        "nome": "Mazagão"
+      },
+      "regiao_imediata": {
+        "id": 160001,
+        "nome": "Macapá"
+      },
+      "lat": -0.06684,
+      "lon": -51.95119,
+      "coordenada_metodo": "centroide",
+      "area_km2": 13294.778,
+      "populacao": 23958,
+      "eleitorado": 22248,
+      "urbana_pct": 50.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21924,
+        "situacao": {
+          "urbana": 11150,
+          "rural": 10774
+        },
+        "idade": {
+          "0_15": 7526,
+          "16_17": 996,
+          "18_24": 3085,
+          "25_34": 3282,
+          "35_44": 2720,
+          "45_59": 2592,
+          "60_69": 1016,
+          "70_mais": 707
+        },
+        "renda": {
+          "sem_rendimento": 584,
+          "ate_1_4_sm": 8408,
+          "1_4_a_1_2_sm": 5608,
+          "1_2_a_1_sm": 4285,
+          "1_a_2_sm": 2132,
+          "2_a_3_sm": 409,
+          "3_a_5_sm": 226,
+          "5_a_10_sm": 109,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8736,
+          "evangelica": 5429,
+          "espirita": 0,
+          "umbanda_candomble": 41,
+          "tradicoes_indigenas": 0,
+          "outras": 302,
+          "sem_religiao": 406,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5641,
+          "fundamental_completo_medio_incompleto": 2726,
+          "medio_completo_superior_incompleto": 3743,
+          "superior_completo": 1214
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1600501,
+      "nome": "Oiapoque",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16001,
+        "nome": "Oiapoque"
+      },
+      "regiao_imediata": {
+        "id": 160003,
+        "nome": "Oiapoque"
+      },
+      "lat": 3.11059,
+      "lon": -51.90006,
+      "coordenada_metodo": "centroide",
+      "area_km2": 23058.224,
+      "populacao": 31071,
+      "eleitorado": 24242,
+      "urbana_pct": 67.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 27482,
+        "situacao": {
+          "urbana": 18658,
+          "rural": 8824
+        },
+        "idade": {
+          "0_15": 9191,
+          "16_17": 1137,
+          "18_24": 3668,
+          "25_34": 4558,
+          "35_44": 3726,
+          "45_59": 3592,
+          "60_69": 1084,
+          "70_mais": 526
+        },
+        "renda": {
+          "sem_rendimento": 758,
+          "ate_1_4_sm": 6543,
+          "1_4_a_1_2_sm": 8182,
+          "1_2_a_1_sm": 6226,
+          "1_a_2_sm": 4182,
+          "2_a_3_sm": 668,
+          "3_a_5_sm": 435,
+          "5_a_10_sm": 115,
+          "10_a_15_sm": 57,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6609,
+          "evangelica": 8510,
+          "espirita": 29,
+          "umbanda_candomble": 20,
+          "tradicoes_indigenas": 21,
+          "outras": 597,
+          "sem_religiao": 3004,
+          "nao_sabe": 94,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6549,
+          "fundamental_completo_medio_incompleto": 3682,
+          "medio_completo_superior_incompleto": 5459,
+          "superior_completo": 1368
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 1600535,
+      "nome": "Porto Grande",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160004,
+        "nome": "Porto Grande"
+      },
+      "lat": 0.58563,
+      "lon": -51.66998,
+      "coordenada_metodo": "centroide",
+      "area_km2": 4428.013,
+      "populacao": 19103,
+      "eleitorado": 15539,
+      "urbana_pct": 67.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17848,
+        "situacao": {
+          "urbana": 12081,
+          "rural": 5767
+        },
+        "idade": {
+          "0_15": 5728,
+          "16_17": 724,
+          "18_24": 2216,
+          "25_34": 2631,
+          "35_44": 2496,
+          "45_59": 2506,
+          "60_69": 949,
+          "70_mais": 598
+        },
+        "renda": {
+          "sem_rendimento": 346,
+          "ate_1_4_sm": 4471,
+          "1_4_a_1_2_sm": 4734,
+          "1_2_a_1_sm": 4579,
+          "1_a_2_sm": 2731,
+          "2_a_3_sm": 519,
+          "3_a_5_sm": 377,
+          "5_a_10_sm": 22,
+          "10_a_15_sm": 13,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5458,
+          "evangelica": 4899,
+          "espirita": 27,
+          "umbanda_candomble": 16,
+          "tradicoes_indigenas": 0,
+          "outras": 145,
+          "sem_religiao": 1869,
+          "nao_sabe": 0,
+          "sem_declaracao": 34
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4841,
+          "fundamental_completo_medio_incompleto": 1676,
+          "medio_completo_superior_incompleto": 3678,
+          "superior_completo": 1233
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600550,
+      "nome": "Pracuúba",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16002,
+        "nome": "Amapá"
+      },
+      "regiao_imediata": {
+        "id": 160003,
+        "nome": "Oiapoque"
+      },
+      "lat": 1.60672,
+      "lon": -50.73459,
+      "coordenada_metodo": "ponto_interior",
+      "area_km2": 4948.508,
+      "populacao": 4053,
+      "eleitorado": 4031,
+      "urbana_pct": 45.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3803,
+        "situacao": {
+          "urbana": 1717,
+          "rural": 2086
+        },
+        "idade": {
+          "0_15": 1416,
+          "16_17": 156,
+          "18_24": 503,
+          "25_34": 475,
+          "35_44": 504,
+          "45_59": 453,
+          "60_69": 174,
+          "70_mais": 122
+        },
+        "renda": {
+          "sem_rendimento": 33,
+          "ate_1_4_sm": 1519,
+          "1_4_a_1_2_sm": 974,
+          "1_2_a_1_sm": 956,
+          "1_a_2_sm": 198,
+          "2_a_3_sm": 65,
+          "3_a_5_sm": 33,
+          "5_a_10_sm": 15,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 927,
+          "evangelica": 1381,
+          "espirita": 0,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 15,
+          "sem_religiao": 130,
+          "nao_sabe": 13,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 977,
+          "fundamental_completo_medio_incompleto": 434,
+          "medio_completo_superior_incompleto": 679,
+          "superior_completo": 139
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600600,
+      "nome": "Santana",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16003,
+        "nome": "Macapá"
+      },
+      "regiao_imediata": {
+        "id": 160001,
+        "nome": "Macapá"
+      },
+      "lat": 0.12981,
+      "lon": -51.37837,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1541.225,
+      "populacao": 119224,
+      "eleitorado": 85850,
+      "urbana_pct": 95.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 107618,
+        "situacao": {
+          "urbana": 103232,
+          "rural": 4386
+        },
+        "idade": {
+          "0_15": 30227,
+          "16_17": 4112,
+          "18_24": 14751,
+          "25_34": 18268,
+          "35_44": 15877,
+          "45_59": 15045,
+          "60_69": 5401,
+          "70_mais": 3937
+        },
+        "renda": {
+          "sem_rendimento": 1547,
+          "ate_1_4_sm": 17270,
+          "1_4_a_1_2_sm": 29008,
+          "1_2_a_1_sm": 34006,
+          "1_a_2_sm": 17144,
+          "2_a_3_sm": 4429,
+          "3_a_5_sm": 2876,
+          "5_a_10_sm": 820,
+          "10_a_15_sm": 38,
+          "15_a_20_sm": 10,
+          "mais_de_20_sm": 24
+        },
+        "religiao": {
+          "catolica": 41761,
+          "evangelica": 31091,
+          "espirita": 222,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 0,
+          "outras": 1805,
+          "sem_religiao": 4272,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 19759,
+          "fundamental_completo_medio_incompleto": 10720,
+          "medio_completo_superior_incompleto": 31124,
+          "superior_completo": 11584
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 1600709,
+      "nome": "Tartarugalzinho",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16002,
+        "nome": "Amapá"
+      },
+      "regiao_imediata": {
+        "id": 160003,
+        "nome": "Oiapoque"
+      },
+      "lat": 1.29758,
+      "lon": -50.99262,
+      "coordenada_metodo": "centroide",
+      "area_km2": 6684.705,
+      "populacao": 13846,
+      "eleitorado": 11446,
+      "urbana_pct": 56,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12945,
+        "situacao": {
+          "urbana": 7252,
+          "rural": 5693
+        },
+        "idade": {
+          "0_15": 4758,
+          "16_17": 534,
+          "18_24": 1536,
+          "25_34": 1823,
+          "35_44": 1565,
+          "45_59": 1666,
+          "60_69": 658,
+          "70_mais": 405
+        },
+        "renda": {
+          "sem_rendimento": 764,
+          "ate_1_4_sm": 4457,
+          "1_4_a_1_2_sm": 3559,
+          "1_2_a_1_sm": 2615,
+          "1_a_2_sm": 1000,
+          "2_a_3_sm": 252,
+          "3_a_5_sm": 175,
+          "5_a_10_sm": 84,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 5,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3525,
+          "evangelica": 3852,
+          "espirita": 5,
+          "umbanda_candomble": 25,
+          "tradicoes_indigenas": 0,
+          "outras": 258,
+          "sem_religiao": 815,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3423,
+          "fundamental_completo_medio_incompleto": 1437,
+          "medio_completo_superior_incompleto": 2101,
+          "superior_completo": 626
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 1600808,
+      "nome": "Vitória do Jari",
+      "uf": "AP",
+      "regiao": "N",
+      "microrregiao": {
+        "id": 16004,
+        "nome": "Mazagão"
+      },
+      "regiao_imediata": {
+        "id": 160002,
+        "nome": "Laranjal do Jari"
+      },
+      "lat": -0.99644,
+      "lon": -52.06118,
+      "coordenada_metodo": "centroide",
+      "area_km2": 2508.979,
+      "populacao": 11877,
+      "eleitorado": 10429,
+      "urbana_pct": 80,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11291,
+        "situacao": {
+          "urbana": 9029,
+          "rural": 2262
+        },
+        "idade": {
+          "0_15": 3742,
+          "16_17": 472,
+          "18_24": 1537,
+          "25_34": 1714,
+          "35_44": 1472,
+          "45_59": 1456,
+          "60_69": 511,
+          "70_mais": 387
+        },
+        "renda": {
+          "sem_rendimento": 452,
+          "ate_1_4_sm": 3358,
+          "1_4_a_1_2_sm": 3348,
+          "1_2_a_1_sm": 2804,
+          "1_a_2_sm": 1064,
+          "2_a_3_sm": 76,
+          "3_a_5_sm": 109,
+          "5_a_10_sm": 18,
+          "10_a_15_sm": 15,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3854,
+          "evangelica": 3019,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 176,
+          "sem_religiao": 725,
+          "nao_sabe": 0,
+          "sem_declaracao": 18
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3183,
+          "fundamental_completo_medio_incompleto": 1270,
+          "medio_completo_superior_incompleto": 2140,
+          "superior_completo": 526
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    }
+  ]
+}

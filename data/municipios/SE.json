@@ -1,0 +1,5630 @@
+{
+  "uf": "SE",
+  "municipios": [
+    {
+      "codigo_ibge": 2800100,
+      "nome": "Amparo do São Francisco",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.16564,
+      "lon": -36.92147,
+      "coordenada_metodo": "centroide",
+      "area_km2": 35.683,
+      "populacao": 2199,
+      "eleitorado": 3102,
+      "urbana_pct": 78.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 2170,
+        "situacao": {
+          "urbana": 1701,
+          "rural": 469
+        },
+        "idade": {
+          "0_15": 534,
+          "16_17": 76,
+          "18_24": 223,
+          "25_34": 307,
+          "35_44": 345,
+          "45_59": 376,
+          "60_69": 171,
+          "70_mais": 138
+        },
+        "renda": {
+          "sem_rendimento": 113,
+          "ate_1_4_sm": 527,
+          "1_4_a_1_2_sm": 615,
+          "1_2_a_1_sm": 615,
+          "1_a_2_sm": 206,
+          "2_a_3_sm": 57,
+          "3_a_5_sm": 26,
+          "5_a_10_sm": 9,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1330,
+          "evangelica": 233,
+          "espirita": 5,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 15,
+          "sem_religiao": 47,
+          "nao_sabe": 0,
+          "sem_declaracao": 27
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 665,
+          "fundamental_completo_medio_incompleto": 218,
+          "medio_completo_superior_incompleto": 503,
+          "superior_completo": 171
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2800209,
+      "nome": "Aquidabã",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28003,
+        "nome": "Nossa Senhora das Dores"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.26081,
+      "lon": -37.06415,
+      "coordenada_metodo": "centroide",
+      "area_km2": 359.543,
+      "populacao": 20570,
+      "eleitorado": 17248,
+      "urbana_pct": 58.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20131,
+        "situacao": {
+          "urbana": 11847,
+          "rural": 8284
+        },
+        "idade": {
+          "0_15": 4478,
+          "16_17": 701,
+          "18_24": 2279,
+          "25_34": 2847,
+          "35_44": 2938,
+          "45_59": 3582,
+          "60_69": 1746,
+          "70_mais": 1560
+        },
+        "renda": {
+          "sem_rendimento": 267,
+          "ate_1_4_sm": 5759,
+          "1_4_a_1_2_sm": 5843,
+          "1_2_a_1_sm": 5701,
+          "1_a_2_sm": 1777,
+          "2_a_3_sm": 333,
+          "3_a_5_sm": 232,
+          "5_a_10_sm": 75,
+          "10_a_15_sm": 41,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12540,
+          "evangelica": 1891,
+          "espirita": 31,
+          "umbanda_candomble": 125,
+          "tradicoes_indigenas": 9,
+          "outras": 451,
+          "sem_religiao": 869,
+          "nao_sabe": 0,
+          "sem_declaracao": 53
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7989,
+          "fundamental_completo_medio_incompleto": 2558,
+          "medio_completo_superior_incompleto": 3329,
+          "superior_completo": 1036
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2800308,
+      "nome": "Aracaju",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28011,
+        "nome": "Aracaju"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.9942,
+      "lon": -37.09491,
+      "coordenada_metodo": "centroide",
+      "area_km2": 182.163,
+      "populacao": 623328,
+      "eleitorado": 420765,
+      "urbana_pct": 100,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 602757,
+        "situacao": {
+          "urbana": 602743,
+          "rural": 14
+        },
+        "idade": {
+          "0_15": 120443,
+          "16_17": 15987,
+          "18_24": 64370,
+          "25_34": 94882,
+          "35_44": 101479,
+          "45_59": 115462,
+          "60_69": 50171,
+          "70_mais": 39963
+        },
+        "renda": {
+          "sem_rendimento": 15002,
+          "ate_1_4_sm": 59600,
+          "1_4_a_1_2_sm": 112134,
+          "1_2_a_1_sm": 155075,
+          "1_a_2_sm": 119930,
+          "2_a_3_sm": 50378,
+          "3_a_5_sm": 46726,
+          "5_a_10_sm": 32079,
+          "10_a_15_sm": 7223,
+          "15_a_20_sm": 1388,
+          "mais_de_20_sm": 1257
+        },
+        "religiao": {
+          "catolica": 297041,
+          "evangelica": 98649,
+          "espirita": 14197,
+          "umbanda_candomble": 7097,
+          "tradicoes_indigenas": 27,
+          "outras": 20482,
+          "sem_religiao": 51376,
+          "nao_sabe": 181,
+          "sem_declaracao": 536
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 99436,
+          "fundamental_completo_medio_incompleto": 58467,
+          "medio_completo_superior_incompleto": 182659,
+          "superior_completo": 125362
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 26,
+      "vagas_vereador_max": 27,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": true,
+      "porte": "metropole"
+    },
+    {
+      "codigo_ibge": 2800407,
+      "nome": "Arauá",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.2624,
+      "lon": -37.59205,
+      "coordenada_metodo": "centroide",
+      "area_km2": 198.967,
+      "populacao": 10445,
+      "eleitorado": 9658,
+      "urbana_pct": 42.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10318,
+        "situacao": {
+          "urbana": 4375,
+          "rural": 5943
+        },
+        "idade": {
+          "0_15": 2434,
+          "16_17": 375,
+          "18_24": 1109,
+          "25_34": 1426,
+          "35_44": 1543,
+          "45_59": 1976,
+          "60_69": 801,
+          "70_mais": 654
+        },
+        "renda": {
+          "sem_rendimento": 66,
+          "ate_1_4_sm": 2944,
+          "1_4_a_1_2_sm": 3439,
+          "1_2_a_1_sm": 2821,
+          "1_a_2_sm": 641,
+          "2_a_3_sm": 180,
+          "3_a_5_sm": 174,
+          "5_a_10_sm": 38,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6072,
+          "evangelica": 1057,
+          "espirita": 21,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 345,
+          "sem_religiao": 579,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4080,
+          "fundamental_completo_medio_incompleto": 1059,
+          "medio_completo_superior_incompleto": 1870,
+          "superior_completo": 481
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2800506,
+      "nome": "Areia Branca",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.7872,
+      "lon": -37.33146,
+      "coordenada_metodo": "centroide",
+      "area_km2": 148.135,
+      "populacao": 18687,
+      "eleitorado": 15218,
+      "urbana_pct": 77.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18081,
+        "situacao": {
+          "urbana": 13994,
+          "rural": 4087
+        },
+        "idade": {
+          "0_15": 4193,
+          "16_17": 622,
+          "18_24": 2268,
+          "25_34": 2971,
+          "35_44": 2843,
+          "45_59": 3011,
+          "60_69": 1208,
+          "70_mais": 965
+        },
+        "renda": {
+          "sem_rendimento": 246,
+          "ate_1_4_sm": 3877,
+          "1_4_a_1_2_sm": 5830,
+          "1_2_a_1_sm": 5433,
+          "1_a_2_sm": 1354,
+          "2_a_3_sm": 311,
+          "3_a_5_sm": 171,
+          "5_a_10_sm": 46,
+          "10_a_15_sm": 20,
+          "15_a_20_sm": 6,
+          "mais_de_20_sm": 10
+        },
+        "religiao": {
+          "catolica": 9807,
+          "evangelica": 2065,
+          "espirita": 88,
+          "umbanda_candomble": 158,
+          "tradicoes_indigenas": 5,
+          "outras": 129,
+          "sem_religiao": 1918,
+          "nao_sabe": 4,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7278,
+          "fundamental_completo_medio_incompleto": 2111,
+          "medio_completo_superior_incompleto": 3339,
+          "superior_completo": 594
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2800605,
+      "nome": "Barra dos Coqueiros",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28011,
+        "nome": "Aracaju"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.85112,
+      "lon": -36.96941,
+      "coordenada_metodo": "centroide",
+      "area_km2": 92.268,
+      "populacao": 45916,
+      "eleitorado": 31747,
+      "urbana_pct": 99.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41511,
+        "situacao": {
+          "urbana": 41146,
+          "rural": 365
+        },
+        "idade": {
+          "0_15": 9941,
+          "16_17": 1231,
+          "18_24": 4235,
+          "25_34": 6861,
+          "35_44": 7576,
+          "45_59": 7403,
+          "60_69": 2621,
+          "70_mais": 1643
+        },
+        "renda": {
+          "sem_rendimento": 623,
+          "ate_1_4_sm": 4542,
+          "1_4_a_1_2_sm": 9238,
+          "1_2_a_1_sm": 11220,
+          "1_a_2_sm": 8991,
+          "2_a_3_sm": 3053,
+          "3_a_5_sm": 2191,
+          "5_a_10_sm": 1336,
+          "10_a_15_sm": 254,
+          "15_a_20_sm": 19,
+          "mais_de_20_sm": 20
+        },
+        "religiao": {
+          "catolica": 18916,
+          "evangelica": 7474,
+          "espirita": 822,
+          "umbanda_candomble": 599,
+          "tradicoes_indigenas": 1,
+          "outras": 1529,
+          "sem_religiao": 2806,
+          "nao_sabe": 0,
+          "sem_declaracao": 48
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7617,
+          "fundamental_completo_medio_incompleto": 4258,
+          "medio_completo_superior_incompleto": 12202,
+          "superior_completo": 6235
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2800670,
+      "nome": "Boquim",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.12035,
+      "lon": -37.59698,
+      "coordenada_metodo": "centroide",
+      "area_km2": 205.443,
+      "populacao": 24978,
+      "eleitorado": 22008,
+      "urbana_pct": 72.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24636,
+        "situacao": {
+          "urbana": 17774,
+          "rural": 6862
+        },
+        "idade": {
+          "0_15": 5393,
+          "16_17": 821,
+          "18_24": 2466,
+          "25_34": 3432,
+          "35_44": 3681,
+          "45_59": 4976,
+          "60_69": 1981,
+          "70_mais": 1886
+        },
+        "renda": {
+          "sem_rendimento": 302,
+          "ate_1_4_sm": 6236,
+          "1_4_a_1_2_sm": 6194,
+          "1_2_a_1_sm": 7794,
+          "1_a_2_sm": 2733,
+          "2_a_3_sm": 629,
+          "3_a_5_sm": 435,
+          "5_a_10_sm": 185,
+          "10_a_15_sm": 49,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14942,
+          "evangelica": 3288,
+          "espirita": 78,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 218,
+          "sem_religiao": 1099,
+          "nao_sabe": 0,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9816,
+          "fundamental_completo_medio_incompleto": 2405,
+          "medio_completo_superior_incompleto": 4536,
+          "superior_completo": 1667
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2800704,
+      "nome": "Brejo Grande",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.47728,
+      "lon": -36.47393,
+      "coordenada_metodo": "centroide",
+      "area_km2": 141.464,
+      "populacao": 8034,
+      "eleitorado": 8140,
+      "urbana_pct": 50.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7841,
+        "situacao": {
+          "urbana": 3933,
+          "rural": 3908
+        },
+        "idade": {
+          "0_15": 2294,
+          "16_17": 324,
+          "18_24": 933,
+          "25_34": 1190,
+          "35_44": 1068,
+          "45_59": 1171,
+          "60_69": 492,
+          "70_mais": 369
+        },
+        "renda": {
+          "sem_rendimento": 202,
+          "ate_1_4_sm": 3102,
+          "1_4_a_1_2_sm": 2397,
+          "1_2_a_1_sm": 1587,
+          "1_a_2_sm": 453,
+          "2_a_3_sm": 54,
+          "3_a_5_sm": 15,
+          "5_a_10_sm": 17,
+          "10_a_15_sm": 14,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4383,
+          "evangelica": 672,
+          "espirita": 1,
+          "umbanda_candomble": 39,
+          "tradicoes_indigenas": 0,
+          "outras": 36,
+          "sem_religiao": 577,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2937,
+          "fundamental_completo_medio_incompleto": 872,
+          "medio_completo_superior_incompleto": 1156,
+          "superior_completo": 272
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2801009,
+      "nome": "Campo do Brito",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.76632,
+      "lon": -37.50066,
+      "coordenada_metodo": "centroide",
+      "area_km2": 201.518,
+      "populacao": 18788,
+      "eleitorado": 15673,
+      "urbana_pct": 63.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18149,
+        "situacao": {
+          "urbana": 11579,
+          "rural": 6570
+        },
+        "idade": {
+          "0_15": 4090,
+          "16_17": 577,
+          "18_24": 2041,
+          "25_34": 2696,
+          "35_44": 2748,
+          "45_59": 3269,
+          "60_69": 1443,
+          "70_mais": 1285
+        },
+        "renda": {
+          "sem_rendimento": 241,
+          "ate_1_4_sm": 2667,
+          "1_4_a_1_2_sm": 5780,
+          "1_2_a_1_sm": 6405,
+          "1_a_2_sm": 2225,
+          "2_a_3_sm": 338,
+          "3_a_5_sm": 327,
+          "5_a_10_sm": 142,
+          "10_a_15_sm": 5,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 11178,
+          "evangelica": 1559,
+          "espirita": 90,
+          "umbanda_candomble": 162,
+          "tradicoes_indigenas": 0,
+          "outras": 215,
+          "sem_religiao": 1143,
+          "nao_sabe": 0,
+          "sem_declaracao": 6
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7326,
+          "fundamental_completo_medio_incompleto": 1772,
+          "medio_completo_superior_incompleto": 3422,
+          "superior_completo": 966
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2801108,
+      "nome": "Canhoba",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.14839,
+      "lon": -37.00074,
+      "coordenada_metodo": "centroide",
+      "area_km2": 171.581,
+      "populacao": 3845,
+      "eleitorado": 4699,
+      "urbana_pct": 41,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3791,
+        "situacao": {
+          "urbana": 1553,
+          "rural": 2238
+        },
+        "idade": {
+          "0_15": 970,
+          "16_17": 131,
+          "18_24": 426,
+          "25_34": 575,
+          "35_44": 505,
+          "45_59": 664,
+          "60_69": 260,
+          "70_mais": 260
+        },
+        "renda": {
+          "sem_rendimento": 59,
+          "ate_1_4_sm": 1273,
+          "1_4_a_1_2_sm": 954,
+          "1_2_a_1_sm": 1053,
+          "1_a_2_sm": 348,
+          "2_a_3_sm": 54,
+          "3_a_5_sm": 39,
+          "5_a_10_sm": 3,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2211,
+          "evangelica": 323,
+          "espirita": 11,
+          "umbanda_candomble": 4,
+          "tradicoes_indigenas": 0,
+          "outras": 25,
+          "sem_religiao": 310,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1474,
+          "fundamental_completo_medio_incompleto": 316,
+          "medio_completo_superior_incompleto": 762,
+          "superior_completo": 140
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2801207,
+      "nome": "Canindé de São Francisco",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -9.71295,
+      "lon": -37.89914,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1080.009,
+      "populacao": 33782,
+      "eleitorado": 24738,
+      "urbana_pct": 66.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26834,
+        "situacao": {
+          "urbana": 17902,
+          "rural": 8932
+        },
+        "idade": {
+          "0_15": 7645,
+          "16_17": 993,
+          "18_24": 3465,
+          "25_34": 4176,
+          "35_44": 3807,
+          "45_59": 4249,
+          "60_69": 1379,
+          "70_mais": 1120
+        },
+        "renda": {
+          "sem_rendimento": 355,
+          "ate_1_4_sm": 8221,
+          "1_4_a_1_2_sm": 8760,
+          "1_2_a_1_sm": 5686,
+          "1_a_2_sm": 2694,
+          "2_a_3_sm": 632,
+          "3_a_5_sm": 312,
+          "5_a_10_sm": 63,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13629,
+          "evangelica": 4222,
+          "espirita": 29,
+          "umbanda_candomble": 105,
+          "tradicoes_indigenas": 0,
+          "outras": 213,
+          "sem_religiao": 1516,
+          "nao_sabe": 0,
+          "sem_declaracao": 27
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 10191,
+          "fundamental_completo_medio_incompleto": 2908,
+          "medio_completo_superior_incompleto": 3867,
+          "superior_completo": 1151
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2801306,
+      "nome": "Capela",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28008,
+        "nome": "Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.46875,
+      "lon": -37.03634,
+      "coordenada_metodo": "centroide",
+      "area_km2": 442.21,
+      "populacao": 32847,
+      "eleitorado": 27068,
+      "urbana_pct": 69.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 31645,
+        "situacao": {
+          "urbana": 21955,
+          "rural": 9690
+        },
+        "idade": {
+          "0_15": 8086,
+          "16_17": 1088,
+          "18_24": 3710,
+          "25_34": 4586,
+          "35_44": 4730,
+          "45_59": 5272,
+          "60_69": 2223,
+          "70_mais": 1950
+        },
+        "renda": {
+          "sem_rendimento": 1411,
+          "ate_1_4_sm": 8421,
+          "1_4_a_1_2_sm": 9723,
+          "1_2_a_1_sm": 8551,
+          "1_a_2_sm": 2489,
+          "2_a_3_sm": 457,
+          "3_a_5_sm": 393,
+          "5_a_10_sm": 61,
+          "10_a_15_sm": 29,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 16788,
+          "evangelica": 3913,
+          "espirita": 50,
+          "umbanda_candomble": 246,
+          "tradicoes_indigenas": 0,
+          "outras": 403,
+          "sem_religiao": 2674,
+          "nao_sabe": 0,
+          "sem_declaracao": 60
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11207,
+          "fundamental_completo_medio_incompleto": 4045,
+          "medio_completo_superior_incompleto": 5917,
+          "superior_completo": 1272
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2801405,
+      "nome": "Carira",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28002,
+        "nome": "Carira"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.36373,
+      "lon": -37.71056,
+      "coordenada_metodo": "centroide",
+      "area_km2": 638.875,
+      "populacao": 20314,
+      "eleitorado": 17077,
+      "urbana_pct": 63.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 19939,
+        "situacao": {
+          "urbana": 12577,
+          "rural": 7362
+        },
+        "idade": {
+          "0_15": 4552,
+          "16_17": 644,
+          "18_24": 2142,
+          "25_34": 2937,
+          "35_44": 2858,
+          "45_59": 3602,
+          "60_69": 1616,
+          "70_mais": 1588
+        },
+        "renda": {
+          "sem_rendimento": 412,
+          "ate_1_4_sm": 5520,
+          "1_4_a_1_2_sm": 5837,
+          "1_2_a_1_sm": 5968,
+          "1_a_2_sm": 1630,
+          "2_a_3_sm": 253,
+          "3_a_5_sm": 119,
+          "5_a_10_sm": 84,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12747,
+          "evangelica": 2234,
+          "espirita": 9,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 0,
+          "outras": 135,
+          "sem_religiao": 577,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8857,
+          "fundamental_completo_medio_incompleto": 2057,
+          "medio_completo_superior_incompleto": 2987,
+          "superior_completo": 759
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2801504,
+      "nome": "Carmópolis",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.6646,
+      "lon": -36.96607,
+      "coordenada_metodo": "centroide",
+      "area_km2": 46.395,
+      "populacao": 14226,
+      "eleitorado": 12532,
+      "urbana_pct": 96.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13853,
+        "situacao": {
+          "urbana": 13390,
+          "rural": 463
+        },
+        "idade": {
+          "0_15": 3662,
+          "16_17": 536,
+          "18_24": 1610,
+          "25_34": 2061,
+          "35_44": 2322,
+          "45_59": 2299,
+          "60_69": 846,
+          "70_mais": 517
+        },
+        "renda": {
+          "sem_rendimento": 321,
+          "ate_1_4_sm": 2939,
+          "1_4_a_1_2_sm": 4662,
+          "1_2_a_1_sm": 3933,
+          "1_a_2_sm": 1450,
+          "2_a_3_sm": 367,
+          "3_a_5_sm": 134,
+          "5_a_10_sm": 32,
+          "10_a_15_sm": 6,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6628,
+          "evangelica": 2163,
+          "espirita": 35,
+          "umbanda_candomble": 130,
+          "tradicoes_indigenas": 0,
+          "outras": 186,
+          "sem_religiao": 1296,
+          "nao_sabe": 0,
+          "sem_declaracao": 23
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3569,
+          "fundamental_completo_medio_incompleto": 1618,
+          "medio_completo_superior_incompleto": 3872,
+          "superior_completo": 625
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2801603,
+      "nome": "Cedro de São João",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.26649,
+      "lon": -36.89918,
+      "coordenada_metodo": "centroide",
+      "area_km2": 83.71,
+      "populacao": 5467,
+      "eleitorado": 5335,
+      "urbana_pct": 86.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5391,
+        "situacao": {
+          "urbana": 4677,
+          "rural": 714
+        },
+        "idade": {
+          "0_15": 1179,
+          "16_17": 184,
+          "18_24": 545,
+          "25_34": 732,
+          "35_44": 796,
+          "45_59": 1118,
+          "60_69": 394,
+          "70_mais": 443
+        },
+        "renda": {
+          "sem_rendimento": 120,
+          "ate_1_4_sm": 1584,
+          "1_4_a_1_2_sm": 1607,
+          "1_2_a_1_sm": 1341,
+          "1_a_2_sm": 576,
+          "2_a_3_sm": 81,
+          "3_a_5_sm": 50,
+          "5_a_10_sm": 32,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3131,
+          "evangelica": 887,
+          "espirita": 9,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 44,
+          "sem_religiao": 247,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1999,
+          "fundamental_completo_medio_incompleto": 528,
+          "medio_completo_superior_incompleto": 1117,
+          "superior_completo": 372
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2801702,
+      "nome": "Cristinápolis",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.48198,
+      "lon": -37.73293,
+      "coordenada_metodo": "centroide",
+      "area_km2": 228.556,
+      "populacao": 17646,
+      "eleitorado": 14613,
+      "urbana_pct": 77.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17100,
+        "situacao": {
+          "urbana": 13283,
+          "rural": 3817
+        },
+        "idade": {
+          "0_15": 4510,
+          "16_17": 702,
+          "18_24": 2096,
+          "25_34": 2487,
+          "35_44": 2610,
+          "45_59": 2837,
+          "60_69": 1043,
+          "70_mais": 815
+        },
+        "renda": {
+          "sem_rendimento": 306,
+          "ate_1_4_sm": 5333,
+          "1_4_a_1_2_sm": 5166,
+          "1_2_a_1_sm": 4413,
+          "1_a_2_sm": 1371,
+          "2_a_3_sm": 288,
+          "3_a_5_sm": 102,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 3,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9466,
+          "evangelica": 2162,
+          "espirita": 42,
+          "umbanda_candomble": 36,
+          "tradicoes_indigenas": 0,
+          "outras": 246,
+          "sem_religiao": 926,
+          "nao_sabe": 0,
+          "sem_declaracao": 16
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6878,
+          "fundamental_completo_medio_incompleto": 1719,
+          "medio_completo_superior_incompleto": 2644,
+          "superior_completo": 702
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2801900,
+      "nome": "Cumbe",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28003,
+        "nome": "Nossa Senhora das Dores"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.35372,
+      "lon": -37.19176,
+      "coordenada_metodo": "centroide",
+      "area_km2": 121.959,
+      "populacao": 3875,
+      "eleitorado": 4496,
+      "urbana_pct": 58,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3824,
+        "situacao": {
+          "urbana": 2219,
+          "rural": 1605
+        },
+        "idade": {
+          "0_15": 823,
+          "16_17": 119,
+          "18_24": 433,
+          "25_34": 543,
+          "35_44": 563,
+          "45_59": 752,
+          "60_69": 280,
+          "70_mais": 311
+        },
+        "renda": {
+          "sem_rendimento": 106,
+          "ate_1_4_sm": 872,
+          "1_4_a_1_2_sm": 1186,
+          "1_2_a_1_sm": 1244,
+          "1_a_2_sm": 329,
+          "2_a_3_sm": 61,
+          "3_a_5_sm": 18,
+          "5_a_10_sm": 8,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1867,
+          "evangelica": 583,
+          "espirita": 9,
+          "umbanda_candomble": 18,
+          "tradicoes_indigenas": 0,
+          "outras": 89,
+          "sem_religiao": 424,
+          "nao_sabe": 0,
+          "sem_declaracao": 64
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1554,
+          "fundamental_completo_medio_incompleto": 348,
+          "medio_completo_superior_incompleto": 808,
+          "superior_completo": 186
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802007,
+      "nome": "Divina Pastora",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28008,
+        "nome": "Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.6759,
+      "lon": -37.15662,
+      "coordenada_metodo": "centroide",
+      "area_km2": 90.508,
+      "populacao": 4439,
+      "eleitorado": 4405,
+      "urbana_pct": 50,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4340,
+        "situacao": {
+          "urbana": 2170,
+          "rural": 2170
+        },
+        "idade": {
+          "0_15": 1182,
+          "16_17": 164,
+          "18_24": 466,
+          "25_34": 598,
+          "35_44": 658,
+          "45_59": 770,
+          "60_69": 280,
+          "70_mais": 222
+        },
+        "renda": {
+          "sem_rendimento": 38,
+          "ate_1_4_sm": 835,
+          "1_4_a_1_2_sm": 1347,
+          "1_2_a_1_sm": 1495,
+          "1_a_2_sm": 528,
+          "2_a_3_sm": 48,
+          "3_a_5_sm": 30,
+          "5_a_10_sm": 18,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2187,
+          "evangelica": 491,
+          "espirita": 3,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 33,
+          "sem_religiao": 521,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1288,
+          "fundamental_completo_medio_incompleto": 493,
+          "medio_completo_superior_incompleto": 1016,
+          "superior_completo": 215
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802106,
+      "nome": "Estância",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28013,
+        "nome": "Estância"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.24951,
+      "lon": -37.39794,
+      "coordenada_metodo": "centroide",
+      "area_km2": 647.344,
+      "populacao": 67136,
+      "eleitorado": 50936,
+      "urbana_pct": 87.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 65078,
+        "situacao": {
+          "urbana": 57224,
+          "rural": 7854
+        },
+        "idade": {
+          "0_15": 15485,
+          "16_17": 2109,
+          "18_24": 7049,
+          "25_34": 9744,
+          "35_44": 10261,
+          "45_59": 11599,
+          "60_69": 5020,
+          "70_mais": 3811
+        },
+        "renda": {
+          "sem_rendimento": 1161,
+          "ate_1_4_sm": 13594,
+          "1_4_a_1_2_sm": 19793,
+          "1_2_a_1_sm": 19044,
+          "1_a_2_sm": 7768,
+          "2_a_3_sm": 1496,
+          "3_a_5_sm": 1521,
+          "5_a_10_sm": 373,
+          "10_a_15_sm": 126,
+          "15_a_20_sm": 6,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 31363,
+          "evangelica": 11395,
+          "espirita": 201,
+          "umbanda_candomble": 256,
+          "tradicoes_indigenas": 0,
+          "outras": 1879,
+          "sem_religiao": 5447,
+          "nao_sabe": 14,
+          "sem_declaracao": 133
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 18868,
+          "fundamental_completo_medio_incompleto": 7756,
+          "medio_completo_superior_incompleto": 15733,
+          "superior_completo": 5025
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2802205,
+      "nome": "Feira Nova",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -10.27972,
+      "lon": -37.32779,
+      "coordenada_metodo": "centroide",
+      "area_km2": 194.187,
+      "populacao": 6389,
+      "eleitorado": 6282,
+      "urbana_pct": 66.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5975,
+        "situacao": {
+          "urbana": 3979,
+          "rural": 1996
+        },
+        "idade": {
+          "0_15": 1477,
+          "16_17": 207,
+          "18_24": 724,
+          "25_34": 898,
+          "35_44": 844,
+          "45_59": 1046,
+          "60_69": 433,
+          "70_mais": 346
+        },
+        "renda": {
+          "sem_rendimento": 103,
+          "ate_1_4_sm": 1908,
+          "1_4_a_1_2_sm": 1932,
+          "1_2_a_1_sm": 1483,
+          "1_a_2_sm": 450,
+          "2_a_3_sm": 39,
+          "3_a_5_sm": 44,
+          "5_a_10_sm": 9,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3367,
+          "evangelica": 796,
+          "espirita": 0,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 34,
+          "sem_religiao": 398,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2285,
+          "fundamental_completo_medio_incompleto": 644,
+          "medio_completo_superior_incompleto": 1171,
+          "superior_completo": 198
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802304,
+      "nome": "Frei Paulo",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28002,
+        "nome": "Carira"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.52248,
+      "lon": -37.58988,
+      "coordenada_metodo": "centroide",
+      "area_km2": 399.178,
+      "populacao": 14957,
+      "eleitorado": 13529,
+      "urbana_pct": 81.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14530,
+        "situacao": {
+          "urbana": 11837,
+          "rural": 2693
+        },
+        "idade": {
+          "0_15": 3393,
+          "16_17": 448,
+          "18_24": 1640,
+          "25_34": 2354,
+          "35_44": 2139,
+          "45_59": 2464,
+          "60_69": 1068,
+          "70_mais": 1024
+        },
+        "renda": {
+          "sem_rendimento": 173,
+          "ate_1_4_sm": 2710,
+          "1_4_a_1_2_sm": 4377,
+          "1_2_a_1_sm": 5163,
+          "1_a_2_sm": 1579,
+          "2_a_3_sm": 240,
+          "3_a_5_sm": 197,
+          "5_a_10_sm": 70,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9431,
+          "evangelica": 1381,
+          "espirita": 61,
+          "umbanda_candomble": 23,
+          "tradicoes_indigenas": 0,
+          "outras": 109,
+          "sem_religiao": 343,
+          "nao_sabe": 0,
+          "sem_declaracao": 19
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6187,
+          "fundamental_completo_medio_incompleto": 1438,
+          "medio_completo_superior_incompleto": 2323,
+          "superior_completo": 673
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802403,
+      "nome": "Gararu",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -10.0279,
+      "lon": -37.20431,
+      "coordenada_metodo": "centroide",
+      "area_km2": 661.622,
+      "populacao": 11288,
+      "eleitorado": 9594,
+      "urbana_pct": 28.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11096,
+        "situacao": {
+          "urbana": 3123,
+          "rural": 7973
+        },
+        "idade": {
+          "0_15": 2571,
+          "16_17": 399,
+          "18_24": 1204,
+          "25_34": 1500,
+          "35_44": 1673,
+          "45_59": 2108,
+          "60_69": 839,
+          "70_mais": 802
+        },
+        "renda": {
+          "sem_rendimento": 84,
+          "ate_1_4_sm": 4215,
+          "1_4_a_1_2_sm": 3070,
+          "1_2_a_1_sm": 2317,
+          "1_a_2_sm": 1023,
+          "2_a_3_sm": 163,
+          "3_a_5_sm": 159,
+          "5_a_10_sm": 28,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 4,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7615,
+          "evangelica": 748,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 53,
+          "sem_religiao": 300,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4799,
+          "fundamental_completo_medio_incompleto": 1115,
+          "medio_completo_superior_incompleto": 1794,
+          "superior_completo": 438
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802502,
+      "nome": "General Maynard",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.69303,
+      "lon": -36.97108,
+      "coordenada_metodo": "centroide",
+      "area_km2": 19.793,
+      "populacao": 3124,
+      "eleitorado": 3347,
+      "urbana_pct": 68,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3037,
+        "situacao": {
+          "urbana": 2066,
+          "rural": 971
+        },
+        "idade": {
+          "0_15": 712,
+          "16_17": 94,
+          "18_24": 311,
+          "25_34": 455,
+          "35_44": 487,
+          "45_59": 571,
+          "60_69": 223,
+          "70_mais": 184
+        },
+        "renda": {
+          "sem_rendimento": 60,
+          "ate_1_4_sm": 558,
+          "1_4_a_1_2_sm": 1106,
+          "1_2_a_1_sm": 872,
+          "1_a_2_sm": 330,
+          "2_a_3_sm": 61,
+          "3_a_5_sm": 45,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1659,
+          "evangelica": 418,
+          "espirita": 0,
+          "umbanda_candomble": 22,
+          "tradicoes_indigenas": 0,
+          "outras": 37,
+          "sem_religiao": 225,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 838,
+          "fundamental_completo_medio_incompleto": 335,
+          "medio_completo_superior_incompleto": 949,
+          "superior_completo": 113
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802601,
+      "nome": "Graccho Cardoso",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -10.22252,
+      "lon": -37.21826,
+      "coordenada_metodo": "centroide",
+      "area_km2": 240.756,
+      "populacao": 5921,
+      "eleitorado": 6438,
+      "urbana_pct": 49.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5834,
+        "situacao": {
+          "urbana": 2905,
+          "rural": 2929
+        },
+        "idade": {
+          "0_15": 1311,
+          "16_17": 180,
+          "18_24": 583,
+          "25_34": 803,
+          "35_44": 884,
+          "45_59": 1101,
+          "60_69": 514,
+          "70_mais": 458
+        },
+        "renda": {
+          "sem_rendimento": 83,
+          "ate_1_4_sm": 1807,
+          "1_4_a_1_2_sm": 1657,
+          "1_2_a_1_sm": 1768,
+          "1_a_2_sm": 367,
+          "2_a_3_sm": 124,
+          "3_a_5_sm": 22,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3715,
+          "evangelica": 531,
+          "espirita": 14,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 14,
+          "sem_religiao": 345,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2514,
+          "fundamental_completo_medio_incompleto": 569,
+          "medio_completo_superior_incompleto": 1054,
+          "superior_completo": 226
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802700,
+      "nome": "Ilha das Flores",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.45662,
+      "lon": -36.55512,
+      "coordenada_metodo": "centroide",
+      "area_km2": 52.693,
+      "populacao": 8502,
+      "eleitorado": 7754,
+      "urbana_pct": 90.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8321,
+        "situacao": {
+          "urbana": 7537,
+          "rural": 784
+        },
+        "idade": {
+          "0_15": 2303,
+          "16_17": 318,
+          "18_24": 956,
+          "25_34": 1185,
+          "35_44": 1072,
+          "45_59": 1388,
+          "60_69": 590,
+          "70_mais": 509
+        },
+        "renda": {
+          "sem_rendimento": 148,
+          "ate_1_4_sm": 3408,
+          "1_4_a_1_2_sm": 2524,
+          "1_2_a_1_sm": 1807,
+          "1_a_2_sm": 355,
+          "2_a_3_sm": 61,
+          "3_a_5_sm": 13,
+          "5_a_10_sm": 4,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4294,
+          "evangelica": 1079,
+          "espirita": 5,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 92,
+          "sem_religiao": 691,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2963,
+          "fundamental_completo_medio_incompleto": 836,
+          "medio_completo_superior_incompleto": 1594,
+          "superior_completo": 287
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802809,
+      "nome": "Indiaroba",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28013,
+        "nome": "Estância"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.47549,
+      "lon": -37.52887,
+      "coordenada_metodo": "centroide",
+      "area_km2": 316.316,
+      "populacao": 17030,
+      "eleitorado": 13661,
+      "urbana_pct": 33.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16549,
+        "situacao": {
+          "urbana": 5494,
+          "rural": 11055
+        },
+        "idade": {
+          "0_15": 4662,
+          "16_17": 681,
+          "18_24": 2001,
+          "25_34": 2180,
+          "35_44": 2375,
+          "45_59": 2700,
+          "60_69": 1087,
+          "70_mais": 863
+        },
+        "renda": {
+          "sem_rendimento": 349,
+          "ate_1_4_sm": 6404,
+          "1_4_a_1_2_sm": 4959,
+          "1_2_a_1_sm": 3371,
+          "1_a_2_sm": 1019,
+          "2_a_3_sm": 221,
+          "3_a_5_sm": 118,
+          "5_a_10_sm": 80,
+          "10_a_15_sm": 10,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8350,
+          "evangelica": 2675,
+          "espirita": 0,
+          "umbanda_candomble": 13,
+          "tradicoes_indigenas": 0,
+          "outras": 143,
+          "sem_religiao": 980,
+          "nao_sabe": 25,
+          "sem_declaracao": 20
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6130,
+          "fundamental_completo_medio_incompleto": 1645,
+          "medio_completo_superior_incompleto": 2708,
+          "superior_completo": 674
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2802908,
+      "nome": "Itabaiana",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.68559,
+      "lon": -37.42162,
+      "coordenada_metodo": "centroide",
+      "area_km2": 337.348,
+      "populacao": 110041,
+      "eleitorado": 76567,
+      "urbana_pct": 83.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 103440,
+        "situacao": {
+          "urbana": 86535,
+          "rural": 16905
+        },
+        "idade": {
+          "0_15": 22742,
+          "16_17": 3178,
+          "18_24": 11931,
+          "25_34": 17904,
+          "35_44": 16629,
+          "45_59": 18024,
+          "60_69": 7087,
+          "70_mais": 5945
+        },
+        "renda": {
+          "sem_rendimento": 958,
+          "ate_1_4_sm": 13000,
+          "1_4_a_1_2_sm": 27950,
+          "1_2_a_1_sm": 37293,
+          "1_a_2_sm": 16617,
+          "2_a_3_sm": 3907,
+          "3_a_5_sm": 2266,
+          "5_a_10_sm": 993,
+          "10_a_15_sm": 116,
+          "15_a_20_sm": 11,
+          "mais_de_20_sm": 45
+        },
+        "religiao": {
+          "catolica": 66573,
+          "evangelica": 8287,
+          "espirita": 706,
+          "umbanda_candomble": 261,
+          "tradicoes_indigenas": 0,
+          "outras": 1453,
+          "sem_religiao": 4963,
+          "nao_sabe": 10,
+          "sem_declaracao": 42
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 37417,
+          "fundamental_completo_medio_incompleto": 12971,
+          "medio_completo_superior_incompleto": 19380,
+          "superior_completo": 7869
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 2803005,
+      "nome": "Itabaianinha",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.25874,
+      "lon": -37.77919,
+      "coordenada_metodo": "centroide",
+      "area_km2": 501.794,
+      "populacao": 42339,
+      "eleitorado": 32186,
+      "urbana_pct": 59.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 40678,
+        "situacao": {
+          "urbana": 24130,
+          "rural": 16548
+        },
+        "idade": {
+          "0_15": 10137,
+          "16_17": 1439,
+          "18_24": 5023,
+          "25_34": 6152,
+          "35_44": 6225,
+          "45_59": 6589,
+          "60_69": 2708,
+          "70_mais": 2405
+        },
+        "renda": {
+          "sem_rendimento": 642,
+          "ate_1_4_sm": 11134,
+          "1_4_a_1_2_sm": 13511,
+          "1_2_a_1_sm": 11593,
+          "1_a_2_sm": 2696,
+          "2_a_3_sm": 584,
+          "3_a_5_sm": 417,
+          "5_a_10_sm": 61,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 23422,
+          "evangelica": 4878,
+          "espirita": 126,
+          "umbanda_candomble": 23,
+          "tradicoes_indigenas": 0,
+          "outras": 719,
+          "sem_religiao": 2107,
+          "nao_sabe": 0,
+          "sem_declaracao": 51
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 17171,
+          "fundamental_completo_medio_incompleto": 3850,
+          "medio_completo_superior_incompleto": 6409,
+          "superior_completo": 1604
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2803104,
+      "nome": "Itabi",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -10.10588,
+      "lon": -37.14385,
+      "coordenada_metodo": "centroide",
+      "area_km2": 183.422,
+      "populacao": 4809,
+      "eleitorado": 4732,
+      "urbana_pct": 56.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 4745,
+        "situacao": {
+          "urbana": 2691,
+          "rural": 2054
+        },
+        "idade": {
+          "0_15": 1005,
+          "16_17": 155,
+          "18_24": 465,
+          "25_34": 621,
+          "35_44": 647,
+          "45_59": 960,
+          "60_69": 484,
+          "70_mais": 408
+        },
+        "renda": {
+          "sem_rendimento": 41,
+          "ate_1_4_sm": 1070,
+          "1_4_a_1_2_sm": 1380,
+          "1_2_a_1_sm": 1571,
+          "1_a_2_sm": 537,
+          "2_a_3_sm": 113,
+          "3_a_5_sm": 32,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3066,
+          "evangelica": 346,
+          "espirita": 27,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 59,
+          "sem_religiao": 291,
+          "nao_sabe": 3,
+          "sem_declaracao": 32
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2043,
+          "fundamental_completo_medio_incompleto": 429,
+          "medio_completo_superior_incompleto": 882,
+          "superior_completo": 247
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2803203,
+      "nome": "Itaporanga d'Ajuda",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28013,
+        "nome": "Estância"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -11.0577,
+      "lon": -37.31824,
+      "coordenada_metodo": "centroide",
+      "area_km2": 739.702,
+      "populacao": 36272,
+      "eleitorado": 29723,
+      "urbana_pct": 47.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 34411,
+        "situacao": {
+          "urbana": 16459,
+          "rural": 17952
+        },
+        "idade": {
+          "0_15": 8673,
+          "16_17": 1149,
+          "18_24": 3822,
+          "25_34": 5132,
+          "35_44": 5324,
+          "45_59": 5977,
+          "60_69": 2412,
+          "70_mais": 1922
+        },
+        "renda": {
+          "sem_rendimento": 1534,
+          "ate_1_4_sm": 9030,
+          "1_4_a_1_2_sm": 11170,
+          "1_2_a_1_sm": 9053,
+          "1_a_2_sm": 2678,
+          "2_a_3_sm": 477,
+          "3_a_5_sm": 278,
+          "5_a_10_sm": 107,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 16023,
+          "evangelica": 6208,
+          "espirita": 224,
+          "umbanda_candomble": 156,
+          "tradicoes_indigenas": 0,
+          "outras": 539,
+          "sem_religiao": 3158,
+          "nao_sabe": 0,
+          "sem_declaracao": 39
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11401,
+          "fundamental_completo_medio_incompleto": 4265,
+          "medio_completo_superior_incompleto": 7351,
+          "superior_completo": 1484
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2803302,
+      "nome": "Japaratuba",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28009,
+        "nome": "Japaratuba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.55325,
+      "lon": -36.90299,
+      "coordenada_metodo": "centroide",
+      "area_km2": 365.677,
+      "populacao": 16432,
+      "eleitorado": 14916,
+      "urbana_pct": 64.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16209,
+        "situacao": {
+          "urbana": 10481,
+          "rural": 5728
+        },
+        "idade": {
+          "0_15": 3896,
+          "16_17": 531,
+          "18_24": 1795,
+          "25_34": 2299,
+          "35_44": 2472,
+          "45_59": 2891,
+          "60_69": 1266,
+          "70_mais": 1059
+        },
+        "renda": {
+          "sem_rendimento": 233,
+          "ate_1_4_sm": 3624,
+          "1_4_a_1_2_sm": 5092,
+          "1_2_a_1_sm": 4788,
+          "1_a_2_sm": 1869,
+          "2_a_3_sm": 318,
+          "3_a_5_sm": 199,
+          "5_a_10_sm": 73,
+          "10_a_15_sm": 11,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9021,
+          "evangelica": 1882,
+          "espirita": 38,
+          "umbanda_candomble": 150,
+          "tradicoes_indigenas": 5,
+          "outras": 290,
+          "sem_religiao": 1157,
+          "nao_sabe": 0,
+          "sem_declaracao": 43
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5137,
+          "fundamental_completo_medio_incompleto": 1754,
+          "medio_completo_superior_incompleto": 3946,
+          "superior_completo": 970
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2803401,
+      "nome": "Japoatã",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28009,
+        "nome": "Japaratuba"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.43608,
+      "lon": -36.78869,
+      "coordenada_metodo": "centroide",
+      "area_km2": 402.353,
+      "populacao": 13737,
+      "eleitorado": 11441,
+      "urbana_pct": 34.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13407,
+        "situacao": {
+          "urbana": 4576,
+          "rural": 8831
+        },
+        "idade": {
+          "0_15": 3429,
+          "16_17": 500,
+          "18_24": 1536,
+          "25_34": 2004,
+          "35_44": 2023,
+          "45_59": 2239,
+          "60_69": 880,
+          "70_mais": 796
+        },
+        "renda": {
+          "sem_rendimento": 288,
+          "ate_1_4_sm": 3433,
+          "1_4_a_1_2_sm": 4453,
+          "1_2_a_1_sm": 3862,
+          "1_a_2_sm": 943,
+          "2_a_3_sm": 249,
+          "3_a_5_sm": 87,
+          "5_a_10_sm": 82,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 10,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6820,
+          "evangelica": 1828,
+          "espirita": 12,
+          "umbanda_candomble": 22,
+          "tradicoes_indigenas": 0,
+          "outras": 174,
+          "sem_religiao": 1316,
+          "nao_sabe": 21,
+          "sem_declaracao": 21
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5204,
+          "fundamental_completo_medio_incompleto": 1572,
+          "medio_completo_superior_incompleto": 2098,
+          "superior_completo": 598
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2803500,
+      "nome": "Lagarto",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28006,
+        "nome": "Agreste de Lagarto"
+      },
+      "regiao_imediata": {
+        "id": 280005,
+        "nome": "Lagarto"
+      },
+      "lat": -10.9027,
+      "lon": -37.66444,
+      "coordenada_metodo": "centroide",
+      "area_km2": 968.921,
+      "populacao": 106330,
+      "eleitorado": 82288,
+      "urbana_pct": 74.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 101579,
+        "situacao": {
+          "urbana": 75444,
+          "rural": 26135
+        },
+        "idade": {
+          "0_15": 22238,
+          "16_17": 3179,
+          "18_24": 11570,
+          "25_34": 15999,
+          "35_44": 15568,
+          "45_59": 18543,
+          "60_69": 7747,
+          "70_mais": 6735
+        },
+        "renda": {
+          "sem_rendimento": 1595,
+          "ate_1_4_sm": 18855,
+          "1_4_a_1_2_sm": 28331,
+          "1_2_a_1_sm": 34330,
+          "1_a_2_sm": 12735,
+          "2_a_3_sm": 3078,
+          "3_a_5_sm": 1704,
+          "5_a_10_sm": 686,
+          "10_a_15_sm": 45,
+          "15_a_20_sm": 23,
+          "mais_de_20_sm": 21
+        },
+        "religiao": {
+          "catolica": 61462,
+          "evangelica": 12056,
+          "espirita": 325,
+          "umbanda_candomble": 219,
+          "tradicoes_indigenas": 1,
+          "outras": 1389,
+          "sem_religiao": 5310,
+          "nao_sabe": 9,
+          "sem_declaracao": 71
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 36686,
+          "fundamental_completo_medio_incompleto": 11907,
+          "medio_completo_superior_incompleto": 20139,
+          "superior_completo": 7344
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 2803609,
+      "nome": "Laranjeiras",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.80454,
+      "lon": -37.18617,
+      "coordenada_metodo": "centroide",
+      "area_km2": 162.274,
+      "populacao": 23932,
+      "eleitorado": 22081,
+      "urbana_pct": 92.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23975,
+        "situacao": {
+          "urbana": 22284,
+          "rural": 1691
+        },
+        "idade": {
+          "0_15": 6081,
+          "16_17": 881,
+          "18_24": 2755,
+          "25_34": 3530,
+          "35_44": 3864,
+          "45_59": 4191,
+          "60_69": 1628,
+          "70_mais": 1045
+        },
+        "renda": {
+          "sem_rendimento": 597,
+          "ate_1_4_sm": 5025,
+          "1_4_a_1_2_sm": 8090,
+          "1_2_a_1_sm": 6794,
+          "1_a_2_sm": 2652,
+          "2_a_3_sm": 492,
+          "3_a_5_sm": 315,
+          "5_a_10_sm": 11,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 10550,
+          "evangelica": 4478,
+          "espirita": 29,
+          "umbanda_candomble": 128,
+          "tradicoes_indigenas": 0,
+          "outras": 374,
+          "sem_religiao": 2744,
+          "nao_sabe": 0,
+          "sem_declaracao": 18
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 6523,
+          "fundamental_completo_medio_incompleto": 2906,
+          "medio_completo_superior_incompleto": 6509,
+          "superior_completo": 1038
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2803708,
+      "nome": "Macambira",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.66004,
+      "lon": -37.59686,
+      "coordenada_metodo": "centroide",
+      "area_km2": 137.496,
+      "populacao": 7070,
+      "eleitorado": 6854,
+      "urbana_pct": 54.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6838,
+        "situacao": {
+          "urbana": 3751,
+          "rural": 3087
+        },
+        "idade": {
+          "0_15": 1476,
+          "16_17": 230,
+          "18_24": 737,
+          "25_34": 1035,
+          "35_44": 1018,
+          "45_59": 1259,
+          "60_69": 553,
+          "70_mais": 530
+        },
+        "renda": {
+          "sem_rendimento": 38,
+          "ate_1_4_sm": 1094,
+          "1_4_a_1_2_sm": 1892,
+          "1_2_a_1_sm": 2599,
+          "1_a_2_sm": 955,
+          "2_a_3_sm": 140,
+          "3_a_5_sm": 75,
+          "5_a_10_sm": 3,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4547,
+          "evangelica": 436,
+          "espirita": 14,
+          "umbanda_candomble": 25,
+          "tradicoes_indigenas": 0,
+          "outras": 40,
+          "sem_religiao": 406,
+          "nao_sabe": 9,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2923,
+          "fundamental_completo_medio_incompleto": 762,
+          "medio_completo_superior_incompleto": 1052,
+          "superior_completo": 375
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2803807,
+      "nome": "Malhada dos Bois",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28003,
+        "nome": "Nossa Senhora das Dores"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.32922,
+      "lon": -36.94442,
+      "coordenada_metodo": "centroide",
+      "area_km2": 63.199,
+      "populacao": 3681,
+      "eleitorado": 4303,
+      "urbana_pct": 40.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3579,
+        "situacao": {
+          "urbana": 1434,
+          "rural": 2145
+        },
+        "idade": {
+          "0_15": 950,
+          "16_17": 118,
+          "18_24": 394,
+          "25_34": 511,
+          "35_44": 522,
+          "45_59": 654,
+          "60_69": 228,
+          "70_mais": 202
+        },
+        "renda": {
+          "sem_rendimento": 56,
+          "ate_1_4_sm": 769,
+          "1_4_a_1_2_sm": 1196,
+          "1_2_a_1_sm": 1059,
+          "1_a_2_sm": 386,
+          "2_a_3_sm": 83,
+          "3_a_5_sm": 11,
+          "5_a_10_sm": 3,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1659,
+          "evangelica": 614,
+          "espirita": 9,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 37,
+          "sem_religiao": 369,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1093,
+          "fundamental_completo_medio_incompleto": 446,
+          "medio_completo_superior_incompleto": 790,
+          "superior_completo": 163
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2803906,
+      "nome": "Malhador",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.67289,
+      "lon": -37.28779,
+      "coordenada_metodo": "centroide",
+      "area_km2": 101.888,
+      "populacao": 11697,
+      "eleitorado": 10439,
+      "urbana_pct": 52.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11533,
+        "situacao": {
+          "urbana": 6018,
+          "rural": 5515
+        },
+        "idade": {
+          "0_15": 2744,
+          "16_17": 388,
+          "18_24": 1156,
+          "25_34": 1647,
+          "35_44": 1691,
+          "45_59": 2181,
+          "60_69": 958,
+          "70_mais": 768
+        },
+        "renda": {
+          "sem_rendimento": 69,
+          "ate_1_4_sm": 2714,
+          "1_4_a_1_2_sm": 3345,
+          "1_2_a_1_sm": 3564,
+          "1_a_2_sm": 1524,
+          "2_a_3_sm": 165,
+          "3_a_5_sm": 138,
+          "5_a_10_sm": 15,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5963,
+          "evangelica": 1477,
+          "espirita": 49,
+          "umbanda_candomble": 9,
+          "tradicoes_indigenas": 0,
+          "outras": 234,
+          "sem_religiao": 1228,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4718,
+          "fundamental_completo_medio_incompleto": 1340,
+          "medio_completo_superior_incompleto": 1837,
+          "superior_completo": 479
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804003,
+      "nome": "Maruim",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.73041,
+      "lon": -37.10523,
+      "coordenada_metodo": "centroide",
+      "area_km2": 95.554,
+      "populacao": 15938,
+      "eleitorado": 13211,
+      "urbana_pct": 88.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 15719,
+        "situacao": {
+          "urbana": 13931,
+          "rural": 1788
+        },
+        "idade": {
+          "0_15": 4093,
+          "16_17": 574,
+          "18_24": 1752,
+          "25_34": 2290,
+          "35_44": 2414,
+          "45_59": 2741,
+          "60_69": 1045,
+          "70_mais": 810
+        },
+        "renda": {
+          "sem_rendimento": 566,
+          "ate_1_4_sm": 3577,
+          "1_4_a_1_2_sm": 4844,
+          "1_2_a_1_sm": 4270,
+          "1_a_2_sm": 1909,
+          "2_a_3_sm": 291,
+          "3_a_5_sm": 223,
+          "5_a_10_sm": 25,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7407,
+          "evangelica": 2523,
+          "espirita": 23,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 0,
+          "outras": 448,
+          "sem_religiao": 1386,
+          "nao_sabe": 36,
+          "sem_declaracao": 27
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4825,
+          "fundamental_completo_medio_incompleto": 1943,
+          "medio_completo_superior_incompleto": 3728,
+          "superior_completo": 525
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804102,
+      "nome": "Moita Bonita",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.59355,
+      "lon": -37.3404,
+      "coordenada_metodo": "centroide",
+      "area_km2": 95.397,
+      "populacao": 11305,
+      "eleitorado": 9820,
+      "urbana_pct": 47.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11050,
+        "situacao": {
+          "urbana": 5270,
+          "rural": 5780
+        },
+        "idade": {
+          "0_15": 2191,
+          "16_17": 325,
+          "18_24": 1165,
+          "25_34": 1650,
+          "35_44": 1738,
+          "45_59": 2089,
+          "60_69": 918,
+          "70_mais": 974
+        },
+        "renda": {
+          "sem_rendimento": 87,
+          "ate_1_4_sm": 2259,
+          "1_4_a_1_2_sm": 3561,
+          "1_2_a_1_sm": 3629,
+          "1_a_2_sm": 1167,
+          "2_a_3_sm": 159,
+          "3_a_5_sm": 134,
+          "5_a_10_sm": 33,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 8114,
+          "evangelica": 494,
+          "espirita": 18,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 99,
+          "sem_religiao": 300,
+          "nao_sabe": 5,
+          "sem_declaracao": 9
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5234,
+          "fundamental_completo_medio_incompleto": 1164,
+          "medio_completo_superior_incompleto": 1697,
+          "superior_completo": 467
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804201,
+      "nome": "Monte Alegre de Sergipe",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -10.06448,
+      "lon": -37.61627,
+      "coordenada_metodo": "centroide",
+      "area_km2": 387.352,
+      "populacao": 14829,
+      "eleitorado": 12744,
+      "urbana_pct": 64,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 14336,
+        "situacao": {
+          "urbana": 9170,
+          "rural": 5166
+        },
+        "idade": {
+          "0_15": 3754,
+          "16_17": 573,
+          "18_24": 1743,
+          "25_34": 2297,
+          "35_44": 2020,
+          "45_59": 2401,
+          "60_69": 836,
+          "70_mais": 712
+        },
+        "renda": {
+          "sem_rendimento": 169,
+          "ate_1_4_sm": 3911,
+          "1_4_a_1_2_sm": 4366,
+          "1_2_a_1_sm": 4041,
+          "1_a_2_sm": 1476,
+          "2_a_3_sm": 218,
+          "3_a_5_sm": 130,
+          "5_a_10_sm": 4,
+          "10_a_15_sm": 22,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7669,
+          "evangelica": 1997,
+          "espirita": 10,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 159,
+          "sem_religiao": 1024,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5966,
+          "fundamental_completo_medio_incompleto": 1398,
+          "medio_completo_superior_incompleto": 2050,
+          "superior_completo": 589
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804300,
+      "nome": "Muribeca",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28003,
+        "nome": "Nossa Senhora das Dores"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.38404,
+      "lon": -36.95902,
+      "coordenada_metodo": "centroide",
+      "area_km2": 74.31,
+      "populacao": 8084,
+      "eleitorado": 7478,
+      "urbana_pct": 46.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7822,
+        "situacao": {
+          "urbana": 3638,
+          "rural": 4184
+        },
+        "idade": {
+          "0_15": 1932,
+          "16_17": 251,
+          "18_24": 858,
+          "25_34": 1191,
+          "35_44": 1190,
+          "45_59": 1327,
+          "60_69": 583,
+          "70_mais": 490
+        },
+        "renda": {
+          "sem_rendimento": 103,
+          "ate_1_4_sm": 1807,
+          "1_4_a_1_2_sm": 2685,
+          "1_2_a_1_sm": 2254,
+          "1_a_2_sm": 760,
+          "2_a_3_sm": 132,
+          "3_a_5_sm": 41,
+          "5_a_10_sm": 23,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4024,
+          "evangelica": 1106,
+          "espirita": 5,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 152,
+          "sem_religiao": 722,
+          "nao_sabe": 0,
+          "sem_declaracao": 2
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2658,
+          "fundamental_completo_medio_incompleto": 775,
+          "medio_completo_superior_incompleto": 1812,
+          "superior_completo": 396
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804409,
+      "nome": "Neópolis",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.3483,
+      "lon": -36.66039,
+      "coordenada_metodo": "centroide",
+      "area_km2": 271.323,
+      "populacao": 16394,
+      "eleitorado": 14389,
+      "urbana_pct": 52.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 16426,
+        "situacao": {
+          "urbana": 8656,
+          "rural": 7770
+        },
+        "idade": {
+          "0_15": 4094,
+          "16_17": 581,
+          "18_24": 1687,
+          "25_34": 2240,
+          "35_44": 2388,
+          "45_59": 3011,
+          "60_69": 1322,
+          "70_mais": 1103
+        },
+        "renda": {
+          "sem_rendimento": 346,
+          "ate_1_4_sm": 4442,
+          "1_4_a_1_2_sm": 5139,
+          "1_2_a_1_sm": 4480,
+          "1_a_2_sm": 1317,
+          "2_a_3_sm": 363,
+          "3_a_5_sm": 252,
+          "5_a_10_sm": 83,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 9638,
+          "evangelica": 2026,
+          "espirita": 9,
+          "umbanda_candomble": 37,
+          "tradicoes_indigenas": 0,
+          "outras": 177,
+          "sem_religiao": 666,
+          "nao_sabe": 27,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5693,
+          "fundamental_completo_medio_incompleto": 1896,
+          "medio_completo_superior_incompleto": 3325,
+          "superior_completo": 870
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804458,
+      "nome": "Nossa Senhora Aparecida",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28002,
+        "nome": "Carira"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.35806,
+      "lon": -37.50492,
+      "coordenada_metodo": "centroide",
+      "area_km2": 340.855,
+      "populacao": 9570,
+      "eleitorado": 7642,
+      "urbana_pct": 50.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9232,
+        "situacao": {
+          "urbana": 4628,
+          "rural": 4604
+        },
+        "idade": {
+          "0_15": 1910,
+          "16_17": 286,
+          "18_24": 969,
+          "25_34": 1431,
+          "35_44": 1428,
+          "45_59": 1728,
+          "60_69": 739,
+          "70_mais": 741
+        },
+        "renda": {
+          "sem_rendimento": 92,
+          "ate_1_4_sm": 2427,
+          "1_4_a_1_2_sm": 2414,
+          "1_2_a_1_sm": 2830,
+          "1_a_2_sm": 1099,
+          "2_a_3_sm": 202,
+          "3_a_5_sm": 93,
+          "5_a_10_sm": 61,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6215,
+          "evangelica": 1001,
+          "espirita": 18,
+          "umbanda_candomble": 15,
+          "tradicoes_indigenas": 0,
+          "outras": 48,
+          "sem_religiao": 157,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4216,
+          "fundamental_completo_medio_incompleto": 1000,
+          "medio_completo_superior_incompleto": 1356,
+          "superior_completo": 484
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804508,
+      "nome": "Nossa Senhora da Glória",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -10.17829,
+      "lon": -37.52928,
+      "coordenada_metodo": "centroide",
+      "area_km2": 754.959,
+      "populacao": 44088,
+      "eleitorado": 30413,
+      "urbana_pct": 69.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 41212,
+        "situacao": {
+          "urbana": 28772,
+          "rural": 12440
+        },
+        "idade": {
+          "0_15": 9767,
+          "16_17": 1288,
+          "18_24": 4845,
+          "25_34": 7179,
+          "35_44": 6606,
+          "45_59": 6704,
+          "60_69": 2604,
+          "70_mais": 2219
+        },
+        "renda": {
+          "sem_rendimento": 968,
+          "ate_1_4_sm": 8783,
+          "1_4_a_1_2_sm": 12111,
+          "1_2_a_1_sm": 12325,
+          "1_a_2_sm": 4042,
+          "2_a_3_sm": 1504,
+          "3_a_5_sm": 690,
+          "5_a_10_sm": 226,
+          "10_a_15_sm": 8,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 26
+        },
+        "religiao": {
+          "catolica": 26273,
+          "evangelica": 3382,
+          "espirita": 164,
+          "umbanda_candomble": 93,
+          "tradicoes_indigenas": 0,
+          "outras": 279,
+          "sem_religiao": 1902,
+          "nao_sabe": 0,
+          "sem_declaracao": 18
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 14996,
+          "fundamental_completo_medio_incompleto": 4528,
+          "medio_completo_superior_incompleto": 7627,
+          "superior_completo": 2876
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2804607,
+      "nome": "Nossa Senhora das Dores",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28003,
+        "nome": "Nossa Senhora das Dores"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.46646,
+      "lon": -37.24041,
+      "coordenada_metodo": "centroide",
+      "area_km2": 482.785,
+      "populacao": 25600,
+      "eleitorado": 21405,
+      "urbana_pct": 76.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 24996,
+        "situacao": {
+          "urbana": 19023,
+          "rural": 5973
+        },
+        "idade": {
+          "0_15": 5622,
+          "16_17": 851,
+          "18_24": 2843,
+          "25_34": 3756,
+          "35_44": 3848,
+          "45_59": 4392,
+          "60_69": 1990,
+          "70_mais": 1694
+        },
+        "renda": {
+          "sem_rendimento": 528,
+          "ate_1_4_sm": 6456,
+          "1_4_a_1_2_sm": 7350,
+          "1_2_a_1_sm": 7473,
+          "1_a_2_sm": 2294,
+          "2_a_3_sm": 567,
+          "3_a_5_sm": 263,
+          "5_a_10_sm": 31,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 14675,
+          "evangelica": 2865,
+          "espirita": 56,
+          "umbanda_candomble": 58,
+          "tradicoes_indigenas": 0,
+          "outras": 434,
+          "sem_religiao": 1712,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9747,
+          "fundamental_completo_medio_incompleto": 3059,
+          "medio_completo_superior_incompleto": 4290,
+          "superior_completo": 1497
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2804706,
+      "nome": "Nossa Senhora de Lourdes",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.07679,
+      "lon": -37.01448,
+      "coordenada_metodo": "centroide",
+      "area_km2": 83.767,
+      "populacao": 6413,
+      "eleitorado": 6285,
+      "urbana_pct": 55.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 6268,
+        "situacao": {
+          "urbana": 3499,
+          "rural": 2769
+        },
+        "idade": {
+          "0_15": 1429,
+          "16_17": 229,
+          "18_24": 661,
+          "25_34": 865,
+          "35_44": 939,
+          "45_59": 1198,
+          "60_69": 490,
+          "70_mais": 457
+        },
+        "renda": {
+          "sem_rendimento": 165,
+          "ate_1_4_sm": 1358,
+          "1_4_a_1_2_sm": 1979,
+          "1_2_a_1_sm": 1936,
+          "1_a_2_sm": 626,
+          "2_a_3_sm": 102,
+          "3_a_5_sm": 51,
+          "5_a_10_sm": 13,
+          "10_a_15_sm": 25,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4179,
+          "evangelica": 385,
+          "espirita": 29,
+          "umbanda_candomble": 8,
+          "tradicoes_indigenas": 0,
+          "outras": 61,
+          "sem_religiao": 292,
+          "nao_sabe": 3,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2409,
+          "fundamental_completo_medio_incompleto": 628,
+          "medio_completo_superior_incompleto": 1270,
+          "superior_completo": 304
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2804805,
+      "nome": "Nossa Senhora do Socorro",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28011,
+        "nome": "Aracaju"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.86384,
+      "lon": -37.14555,
+      "coordenada_metodo": "centroide",
+      "area_km2": 155.018,
+      "populacao": 205611,
+      "eleitorado": 123581,
+      "urbana_pct": 98.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 192330,
+        "situacao": {
+          "urbana": 189586,
+          "rural": 2744
+        },
+        "idade": {
+          "0_15": 48237,
+          "16_17": 6347,
+          "18_24": 22089,
+          "25_34": 32508,
+          "35_44": 31738,
+          "45_59": 33920,
+          "60_69": 11466,
+          "70_mais": 6025
+        },
+        "renda": {
+          "sem_rendimento": 4661,
+          "ate_1_4_sm": 35353,
+          "1_4_a_1_2_sm": 56579,
+          "1_2_a_1_sm": 63926,
+          "1_a_2_sm": 24989,
+          "2_a_3_sm": 4390,
+          "3_a_5_sm": 1541,
+          "5_a_10_sm": 410,
+          "10_a_15_sm": 131,
+          "15_a_20_sm": 10,
+          "mais_de_20_sm": 12
+        },
+        "religiao": {
+          "catolica": 81825,
+          "evangelica": 39444,
+          "espirita": 877,
+          "umbanda_candomble": 1499,
+          "tradicoes_indigenas": 11,
+          "outras": 6139,
+          "sem_religiao": 17319,
+          "nao_sabe": 12,
+          "sem_declaracao": 118
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 46159,
+          "fundamental_completo_medio_incompleto": 23491,
+          "medio_completo_superior_incompleto": 58237,
+          "superior_completo": 9634
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 21,
+      "vagas_vereador_max": 21,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 2804904,
+      "nome": "Pacatuba",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28009,
+        "nome": "Japaratuba"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.51914,
+      "lon": -36.64697,
+      "coordenada_metodo": "centroide",
+      "area_km2": 381.428,
+      "populacao": 12671,
+      "eleitorado": 11834,
+      "urbana_pct": 40,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12502,
+        "situacao": {
+          "urbana": 4997,
+          "rural": 7505
+        },
+        "idade": {
+          "0_15": 3391,
+          "16_17": 444,
+          "18_24": 1409,
+          "25_34": 1757,
+          "35_44": 1914,
+          "45_59": 1963,
+          "60_69": 874,
+          "70_mais": 750
+        },
+        "renda": {
+          "sem_rendimento": 285,
+          "ate_1_4_sm": 4618,
+          "1_4_a_1_2_sm": 4055,
+          "1_2_a_1_sm": 2683,
+          "1_a_2_sm": 566,
+          "2_a_3_sm": 156,
+          "3_a_5_sm": 103,
+          "5_a_10_sm": 24,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7359,
+          "evangelica": 1356,
+          "espirita": 6,
+          "umbanda_candomble": 18,
+          "tradicoes_indigenas": 0,
+          "outras": 81,
+          "sem_religiao": 519,
+          "nao_sabe": 0,
+          "sem_declaracao": 25
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4943,
+          "fundamental_completo_medio_incompleto": 1323,
+          "medio_completo_superior_incompleto": 1870,
+          "superior_completo": 478
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2805000,
+      "nome": "Pedra Mole",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28002,
+        "nome": "Carira"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.62482,
+      "lon": -37.68012,
+      "coordenada_metodo": "centroide",
+      "area_km2": 82.184,
+      "populacao": 2804,
+      "eleitorado": 3389,
+      "urbana_pct": 45.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 2778,
+        "situacao": {
+          "urbana": 1263,
+          "rural": 1515
+        },
+        "idade": {
+          "0_15": 641,
+          "16_17": 86,
+          "18_24": 274,
+          "25_34": 431,
+          "35_44": 400,
+          "45_59": 508,
+          "60_69": 244,
+          "70_mais": 194
+        },
+        "renda": {
+          "sem_rendimento": 17,
+          "ate_1_4_sm": 928,
+          "1_4_a_1_2_sm": 926,
+          "1_2_a_1_sm": 642,
+          "1_a_2_sm": 224,
+          "2_a_3_sm": 32,
+          "3_a_5_sm": 10,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1311,
+          "evangelica": 220,
+          "espirita": 0,
+          "umbanda_candomble": 9,
+          "tradicoes_indigenas": 0,
+          "outras": 127,
+          "sem_religiao": 521,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1128,
+          "fundamental_completo_medio_incompleto": 295,
+          "medio_completo_superior_incompleto": 531,
+          "superior_completo": 91
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2805109,
+      "nome": "Pedrinhas",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.20442,
+      "lon": -37.65815,
+      "coordenada_metodo": "centroide",
+      "area_km2": 33.344,
+      "populacao": 7298,
+      "eleitorado": 7915,
+      "urbana_pct": 76.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7396,
+        "situacao": {
+          "urbana": 5672,
+          "rural": 1724
+        },
+        "idade": {
+          "0_15": 1577,
+          "16_17": 315,
+          "18_24": 831,
+          "25_34": 1009,
+          "35_44": 1099,
+          "45_59": 1435,
+          "60_69": 605,
+          "70_mais": 525
+        },
+        "renda": {
+          "sem_rendimento": 73,
+          "ate_1_4_sm": 1795,
+          "1_4_a_1_2_sm": 2376,
+          "1_2_a_1_sm": 2138,
+          "1_a_2_sm": 775,
+          "2_a_3_sm": 163,
+          "3_a_5_sm": 44,
+          "5_a_10_sm": 22,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4534,
+          "evangelica": 881,
+          "espirita": 6,
+          "umbanda_candomble": 6,
+          "tradicoes_indigenas": 0,
+          "outras": 190,
+          "sem_religiao": 318,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3029,
+          "fundamental_completo_medio_incompleto": 778,
+          "medio_completo_superior_incompleto": 1306,
+          "superior_completo": 436
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2805208,
+      "nome": "Pinhão",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28002,
+        "nome": "Carira"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.56335,
+      "lon": -37.75809,
+      "coordenada_metodo": "centroide",
+      "area_km2": 156.4,
+      "populacao": 5750,
+      "eleitorado": 5619,
+      "urbana_pct": 64.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 5677,
+        "situacao": {
+          "urbana": 3681,
+          "rural": 1996
+        },
+        "idade": {
+          "0_15": 1287,
+          "16_17": 168,
+          "18_24": 623,
+          "25_34": 803,
+          "35_44": 851,
+          "45_59": 1027,
+          "60_69": 468,
+          "70_mais": 450
+        },
+        "renda": {
+          "sem_rendimento": 48,
+          "ate_1_4_sm": 1589,
+          "1_4_a_1_2_sm": 2052,
+          "1_2_a_1_sm": 1372,
+          "1_a_2_sm": 464,
+          "2_a_3_sm": 55,
+          "3_a_5_sm": 58,
+          "5_a_10_sm": 5,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3422,
+          "evangelica": 557,
+          "espirita": 6,
+          "umbanda_candomble": 28,
+          "tradicoes_indigenas": 0,
+          "outras": 53,
+          "sem_religiao": 429,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2362,
+          "fundamental_completo_medio_incompleto": 593,
+          "medio_completo_superior_incompleto": 1030,
+          "superior_completo": 240
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2805307,
+      "nome": "Pirambu",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28009,
+        "nome": "Japaratuba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.65389,
+      "lon": -36.80504,
+      "coordenada_metodo": "centroide",
+      "area_km2": 208.681,
+      "populacao": 8006,
+      "eleitorado": 8565,
+      "urbana_pct": 58.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7913,
+        "situacao": {
+          "urbana": 4645,
+          "rural": 3268
+        },
+        "idade": {
+          "0_15": 1959,
+          "16_17": 336,
+          "18_24": 838,
+          "25_34": 1098,
+          "35_44": 1185,
+          "45_59": 1411,
+          "60_69": 620,
+          "70_mais": 466
+        },
+        "renda": {
+          "sem_rendimento": 271,
+          "ate_1_4_sm": 1710,
+          "1_4_a_1_2_sm": 2560,
+          "1_2_a_1_sm": 2384,
+          "1_a_2_sm": 719,
+          "2_a_3_sm": 136,
+          "3_a_5_sm": 72,
+          "5_a_10_sm": 40,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4584,
+          "evangelica": 980,
+          "espirita": 52,
+          "umbanda_candomble": 105,
+          "tradicoes_indigenas": 0,
+          "outras": 89,
+          "sem_religiao": 243,
+          "nao_sabe": 0,
+          "sem_declaracao": 29
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2797,
+          "fundamental_completo_medio_incompleto": 926,
+          "medio_completo_superior_incompleto": 1462,
+          "superior_completo": 414
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2805406,
+      "nome": "Poço Redondo",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -9.86542,
+      "lon": -37.69929,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1074.584,
+      "populacao": 29352,
+      "eleitorado": 22747,
+      "urbana_pct": 44.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 33439,
+        "situacao": {
+          "urbana": 14808,
+          "rural": 18631
+        },
+        "idade": {
+          "0_15": 9485,
+          "16_17": 1346,
+          "18_24": 4052,
+          "25_34": 5233,
+          "35_44": 4659,
+          "45_59": 5039,
+          "60_69": 1913,
+          "70_mais": 1712
+        },
+        "renda": {
+          "sem_rendimento": 878,
+          "ate_1_4_sm": 11698,
+          "1_4_a_1_2_sm": 10180,
+          "1_2_a_1_sm": 7241,
+          "1_a_2_sm": 2598,
+          "2_a_3_sm": 412,
+          "3_a_5_sm": 284,
+          "5_a_10_sm": 75,
+          "10_a_15_sm": 7,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 20892,
+          "evangelica": 2792,
+          "espirita": 10,
+          "umbanda_candomble": 10,
+          "tradicoes_indigenas": 0,
+          "outras": 96,
+          "sem_religiao": 774,
+          "nao_sabe": 0,
+          "sem_declaracao": 27
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 13299,
+          "fundamental_completo_medio_incompleto": 4166,
+          "medio_completo_superior_incompleto": 4254,
+          "superior_completo": 982
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2805505,
+      "nome": "Poço Verde",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28005,
+        "nome": "Tobias Barreto"
+      },
+      "regiao_imediata": {
+        "id": 280005,
+        "nome": "Lagarto"
+      },
+      "lat": -10.80071,
+      "lon": -38.12708,
+      "coordenada_metodo": "centroide",
+      "area_km2": 441.326,
+      "populacao": 22221,
+      "eleitorado": 19499,
+      "urbana_pct": 59.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 21794,
+        "situacao": {
+          "urbana": 13049,
+          "rural": 8745
+        },
+        "idade": {
+          "0_15": 4552,
+          "16_17": 738,
+          "18_24": 2416,
+          "25_34": 3082,
+          "35_44": 3232,
+          "45_59": 4173,
+          "60_69": 1758,
+          "70_mais": 1843
+        },
+        "renda": {
+          "sem_rendimento": 470,
+          "ate_1_4_sm": 5461,
+          "1_4_a_1_2_sm": 6640,
+          "1_2_a_1_sm": 6112,
+          "1_a_2_sm": 2241,
+          "2_a_3_sm": 631,
+          "3_a_5_sm": 153,
+          "5_a_10_sm": 34,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 15081,
+          "evangelica": 1397,
+          "espirita": 63,
+          "umbanda_candomble": 43,
+          "tradicoes_indigenas": 0,
+          "outras": 141,
+          "sem_religiao": 838,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 9196,
+          "fundamental_completo_medio_incompleto": 2329,
+          "medio_completo_superior_incompleto": 3881,
+          "superior_completo": 1121
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2805604,
+      "nome": "Porto da Folha",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28001,
+        "nome": "Sergipana do Sertão do São Francisco"
+      },
+      "regiao_imediata": {
+        "id": 280006,
+        "nome": "Nossa Senhora da Glória"
+      },
+      "lat": -9.91371,
+      "lon": -37.42244,
+      "coordenada_metodo": "centroide",
+      "area_km2": 878.044,
+      "populacao": 27345,
+      "eleitorado": 25081,
+      "urbana_pct": 48.2,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26576,
+        "situacao": {
+          "urbana": 12797,
+          "rural": 13779
+        },
+        "idade": {
+          "0_15": 6710,
+          "16_17": 994,
+          "18_24": 2868,
+          "25_34": 4030,
+          "35_44": 3928,
+          "45_59": 4527,
+          "60_69": 1836,
+          "70_mais": 1683
+        },
+        "renda": {
+          "sem_rendimento": 1872,
+          "ate_1_4_sm": 8482,
+          "1_4_a_1_2_sm": 7715,
+          "1_2_a_1_sm": 6277,
+          "1_a_2_sm": 1463,
+          "2_a_3_sm": 491,
+          "3_a_5_sm": 151,
+          "5_a_10_sm": 49,
+          "10_a_15_sm": 29,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 18401,
+          "evangelica": 1354,
+          "espirita": 41,
+          "umbanda_candomble": 2,
+          "tradicoes_indigenas": 28,
+          "outras": 106,
+          "sem_religiao": 290,
+          "nao_sabe": 0,
+          "sem_declaracao": 188
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 11295,
+          "fundamental_completo_medio_incompleto": 2580,
+          "medio_completo_superior_incompleto": 4049,
+          "superior_completo": 1002
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2805703,
+      "nome": "Propriá",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.24492,
+      "lon": -36.80312,
+      "coordenada_metodo": "centroide",
+      "area_km2": 96.32,
+      "populacao": 27157,
+      "eleitorado": 20208,
+      "urbana_pct": 85.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 26618,
+        "situacao": {
+          "urbana": 22640,
+          "rural": 3978
+        },
+        "idade": {
+          "0_15": 6363,
+          "16_17": 883,
+          "18_24": 2771,
+          "25_34": 3973,
+          "35_44": 3955,
+          "45_59": 4961,
+          "60_69": 2114,
+          "70_mais": 1598
+        },
+        "renda": {
+          "sem_rendimento": 802,
+          "ate_1_4_sm": 5820,
+          "1_4_a_1_2_sm": 7756,
+          "1_2_a_1_sm": 7291,
+          "1_a_2_sm": 3126,
+          "2_a_3_sm": 966,
+          "3_a_5_sm": 529,
+          "5_a_10_sm": 148,
+          "10_a_15_sm": 113,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13503,
+          "evangelica": 4106,
+          "espirita": 182,
+          "umbanda_candomble": 66,
+          "tradicoes_indigenas": 0,
+          "outras": 1148,
+          "sem_religiao": 1668,
+          "nao_sabe": 0,
+          "sem_declaracao": 20
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7808,
+          "fundamental_completo_medio_incompleto": 3186,
+          "medio_completo_superior_incompleto": 6215,
+          "superior_completo": 2172
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2805802,
+      "nome": "Riachão do Dantas",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28006,
+        "nome": "Agreste de Lagarto"
+      },
+      "regiao_imediata": {
+        "id": 280005,
+        "nome": "Lagarto"
+      },
+      "lat": -11.03398,
+      "lon": -37.80044,
+      "coordenada_metodo": "centroide",
+      "area_km2": 530.606,
+      "populacao": 18505,
+      "eleitorado": 17703,
+      "urbana_pct": 40.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 18313,
+        "situacao": {
+          "urbana": 7347,
+          "rural": 10966
+        },
+        "idade": {
+          "0_15": 4008,
+          "16_17": 648,
+          "18_24": 2159,
+          "25_34": 2622,
+          "35_44": 2722,
+          "45_59": 3421,
+          "60_69": 1290,
+          "70_mais": 1443
+        },
+        "renda": {
+          "sem_rendimento": 311,
+          "ate_1_4_sm": 5010,
+          "1_4_a_1_2_sm": 6119,
+          "1_2_a_1_sm": 4851,
+          "1_a_2_sm": 1649,
+          "2_a_3_sm": 261,
+          "3_a_5_sm": 52,
+          "5_a_10_sm": 43,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 13138,
+          "evangelica": 1069,
+          "espirita": 0,
+          "umbanda_candomble": 5,
+          "tradicoes_indigenas": 0,
+          "outras": 77,
+          "sem_religiao": 355,
+          "nao_sabe": 0,
+          "sem_declaracao": 11
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8535,
+          "fundamental_completo_medio_incompleto": 2020,
+          "medio_completo_superior_incompleto": 2288,
+          "superior_completo": 796
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2805901,
+      "nome": "Riachuelo",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.73062,
+      "lon": -37.22528,
+      "coordenada_metodo": "centroide",
+      "area_km2": 78.308,
+      "populacao": 8832,
+      "eleitorado": 8229,
+      "urbana_pct": 84.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 8748,
+        "situacao": {
+          "urbana": 7358,
+          "rural": 1390
+        },
+        "idade": {
+          "0_15": 2346,
+          "16_17": 320,
+          "18_24": 1030,
+          "25_34": 1203,
+          "35_44": 1385,
+          "45_59": 1484,
+          "60_69": 587,
+          "70_mais": 393
+        },
+        "renda": {
+          "sem_rendimento": 358,
+          "ate_1_4_sm": 2097,
+          "1_4_a_1_2_sm": 2657,
+          "1_2_a_1_sm": 2644,
+          "1_a_2_sm": 717,
+          "2_a_3_sm": 208,
+          "3_a_5_sm": 7,
+          "5_a_10_sm": 35,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 1,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4047,
+          "evangelica": 1289,
+          "espirita": 29,
+          "umbanda_candomble": 183,
+          "tradicoes_indigenas": 0,
+          "outras": 35,
+          "sem_religiao": 966,
+          "nao_sabe": 0,
+          "sem_declaracao": 26
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2500,
+          "fundamental_completo_medio_incompleto": 1329,
+          "medio_completo_superior_incompleto": 1930,
+          "superior_completo": 285
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806008,
+      "nome": "Ribeirópolis",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28002,
+        "nome": "Carira"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.504,
+      "lon": -37.42937,
+      "coordenada_metodo": "centroide",
+      "area_km2": 259.057,
+      "populacao": 17368,
+      "eleitorado": 14747,
+      "urbana_pct": 74,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 17033,
+        "situacao": {
+          "urbana": 12609,
+          "rural": 4424
+        },
+        "idade": {
+          "0_15": 3348,
+          "16_17": 484,
+          "18_24": 1871,
+          "25_34": 2504,
+          "35_44": 2712,
+          "45_59": 3251,
+          "60_69": 1434,
+          "70_mais": 1429
+        },
+        "renda": {
+          "sem_rendimento": 238,
+          "ate_1_4_sm": 3160,
+          "1_4_a_1_2_sm": 5252,
+          "1_2_a_1_sm": 5888,
+          "1_a_2_sm": 1774,
+          "2_a_3_sm": 320,
+          "3_a_5_sm": 156,
+          "5_a_10_sm": 152,
+          "10_a_15_sm": 30,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12028,
+          "evangelica": 973,
+          "espirita": 62,
+          "umbanda_candomble": 25,
+          "tradicoes_indigenas": 7,
+          "outras": 219,
+          "sem_religiao": 610,
+          "nao_sabe": 0,
+          "sem_declaracao": 15
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7143,
+          "fundamental_completo_medio_incompleto": 1937,
+          "medio_completo_superior_incompleto": 3095,
+          "superior_completo": 1048
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806107,
+      "nome": "Rosário do Catete",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.68247,
+      "lon": -37.03545,
+      "coordenada_metodo": "centroide",
+      "area_km2": 102.683,
+      "populacao": 9516,
+      "eleitorado": 8981,
+      "urbana_pct": 87.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 9295,
+        "situacao": {
+          "urbana": 8124,
+          "rural": 1171
+        },
+        "idade": {
+          "0_15": 2401,
+          "16_17": 321,
+          "18_24": 1048,
+          "25_34": 1387,
+          "35_44": 1387,
+          "45_59": 1681,
+          "60_69": 616,
+          "70_mais": 454
+        },
+        "renda": {
+          "sem_rendimento": 262,
+          "ate_1_4_sm": 2219,
+          "1_4_a_1_2_sm": 3015,
+          "1_2_a_1_sm": 2503,
+          "1_a_2_sm": 945,
+          "2_a_3_sm": 243,
+          "3_a_5_sm": 48,
+          "5_a_10_sm": 51,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4747,
+          "evangelica": 1385,
+          "espirita": 14,
+          "umbanda_candomble": 39,
+          "tradicoes_indigenas": 0,
+          "outras": 165,
+          "sem_religiao": 687,
+          "nao_sabe": 0,
+          "sem_declaracao": 15
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2538,
+          "fundamental_completo_medio_incompleto": 1119,
+          "medio_completo_superior_incompleto": 2376,
+          "superior_completo": 518
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806206,
+      "nome": "Salgado",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280005,
+        "nome": "Lagarto"
+      },
+      "lat": -11.06267,
+      "lon": -37.48056,
+      "coordenada_metodo": "centroide",
+      "area_km2": 247.579,
+      "populacao": 20874,
+      "eleitorado": 17882,
+      "urbana_pct": 49.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 20279,
+        "situacao": {
+          "urbana": 10072,
+          "rural": 10207
+        },
+        "idade": {
+          "0_15": 4616,
+          "16_17": 674,
+          "18_24": 2168,
+          "25_34": 2870,
+          "35_44": 3115,
+          "45_59": 3955,
+          "60_69": 1554,
+          "70_mais": 1327
+        },
+        "renda": {
+          "sem_rendimento": 247,
+          "ate_1_4_sm": 4280,
+          "1_4_a_1_2_sm": 6655,
+          "1_2_a_1_sm": 6714,
+          "1_a_2_sm": 1595,
+          "2_a_3_sm": 404,
+          "3_a_5_sm": 285,
+          "5_a_10_sm": 99,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12370,
+          "evangelica": 2527,
+          "espirita": 68,
+          "umbanda_candomble": 38,
+          "tradicoes_indigenas": 9,
+          "outras": 321,
+          "sem_religiao": 641,
+          "nao_sabe": 0,
+          "sem_declaracao": 10
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 7983,
+          "fundamental_completo_medio_incompleto": 2255,
+          "medio_completo_superior_incompleto": 3972,
+          "superior_completo": 835
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2806305,
+      "nome": "Santa Luzia do Itanhy",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28013,
+        "nome": "Estância"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.3618,
+      "lon": -37.50586,
+      "coordenada_metodo": "centroide",
+      "area_km2": 325.259,
+      "populacao": 14038,
+      "eleitorado": 12149,
+      "urbana_pct": 23.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 13616,
+        "situacao": {
+          "urbana": 3229,
+          "rural": 10387
+        },
+        "idade": {
+          "0_15": 3704,
+          "16_17": 521,
+          "18_24": 1617,
+          "25_34": 2037,
+          "35_44": 1915,
+          "45_59": 2162,
+          "60_69": 977,
+          "70_mais": 683
+        },
+        "renda": {
+          "sem_rendimento": 159,
+          "ate_1_4_sm": 4683,
+          "1_4_a_1_2_sm": 4633,
+          "1_2_a_1_sm": 3292,
+          "1_a_2_sm": 711,
+          "2_a_3_sm": 47,
+          "3_a_5_sm": 44,
+          "5_a_10_sm": 27,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 7006,
+          "evangelica": 1757,
+          "espirita": 8,
+          "umbanda_candomble": 42,
+          "tradicoes_indigenas": 2,
+          "outras": 206,
+          "sem_religiao": 1157,
+          "nao_sabe": 0,
+          "sem_declaracao": 62
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5470,
+          "fundamental_completo_medio_incompleto": 1578,
+          "medio_completo_superior_incompleto": 2092,
+          "superior_completo": 343
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806404,
+      "nome": "Santana do São Francisco",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.28695,
+      "lon": -36.63671,
+      "coordenada_metodo": "centroide",
+      "area_km2": 44.017,
+      "populacao": 7566,
+      "eleitorado": 6367,
+      "urbana_pct": 61.7,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7346,
+        "situacao": {
+          "urbana": 4535,
+          "rural": 2811
+        },
+        "idade": {
+          "0_15": 2048,
+          "16_17": 275,
+          "18_24": 761,
+          "25_34": 1096,
+          "35_44": 1155,
+          "45_59": 1166,
+          "60_69": 452,
+          "70_mais": 393
+        },
+        "renda": {
+          "sem_rendimento": 143,
+          "ate_1_4_sm": 1762,
+          "1_4_a_1_2_sm": 2300,
+          "1_2_a_1_sm": 2294,
+          "1_a_2_sm": 652,
+          "2_a_3_sm": 87,
+          "3_a_5_sm": 85,
+          "5_a_10_sm": 15,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 3308,
+          "evangelica": 1180,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 124,
+          "sem_religiao": 812,
+          "nao_sabe": 19,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2500,
+          "fundamental_completo_medio_incompleto": 793,
+          "medio_completo_superior_incompleto": 1466,
+          "superior_completo": 274
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806503,
+      "nome": "Santa Rosa de Lima",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28008,
+        "nome": "Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.63204,
+      "lon": -37.23608,
+      "coordenada_metodo": "centroide",
+      "area_km2": 67.672,
+      "populacao": 4059,
+      "eleitorado": 4655,
+      "urbana_pct": 56.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3937,
+        "situacao": {
+          "urbana": 2209,
+          "rural": 1728
+        },
+        "idade": {
+          "0_15": 995,
+          "16_17": 198,
+          "18_24": 450,
+          "25_34": 477,
+          "35_44": 591,
+          "45_59": 698,
+          "60_69": 276,
+          "70_mais": 252
+        },
+        "renda": {
+          "sem_rendimento": 168,
+          "ate_1_4_sm": 1172,
+          "1_4_a_1_2_sm": 1394,
+          "1_2_a_1_sm": 783,
+          "1_a_2_sm": 362,
+          "2_a_3_sm": 29,
+          "3_a_5_sm": 5,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2057,
+          "evangelica": 408,
+          "espirita": 2,
+          "umbanda_candomble": 14,
+          "tradicoes_indigenas": 0,
+          "outras": 27,
+          "sem_religiao": 494,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1309,
+          "fundamental_completo_medio_incompleto": 414,
+          "medio_completo_superior_incompleto": 875,
+          "superior_completo": 153
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806602,
+      "nome": "Santo Amaro das Brotas",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28010,
+        "nome": "Baixo Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.77365,
+      "lon": -36.98261,
+      "coordenada_metodo": "centroide",
+      "area_km2": 236.965,
+      "populacao": 11281,
+      "eleitorado": 10471,
+      "urbana_pct": 71.5,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 11092,
+        "situacao": {
+          "urbana": 7926,
+          "rural": 3166
+        },
+        "idade": {
+          "0_15": 2738,
+          "16_17": 419,
+          "18_24": 1098,
+          "25_34": 1535,
+          "35_44": 1637,
+          "45_59": 2034,
+          "60_69": 929,
+          "70_mais": 702
+        },
+        "renda": {
+          "sem_rendimento": 269,
+          "ate_1_4_sm": 2937,
+          "1_4_a_1_2_sm": 3149,
+          "1_2_a_1_sm": 3276,
+          "1_a_2_sm": 944,
+          "2_a_3_sm": 310,
+          "3_a_5_sm": 145,
+          "5_a_10_sm": 21,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 5569,
+          "evangelica": 1590,
+          "espirita": 39,
+          "umbanda_candomble": 62,
+          "tradicoes_indigenas": 0,
+          "outras": 408,
+          "sem_religiao": 858,
+          "nao_sabe": 0,
+          "sem_declaracao": 22
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 3446,
+          "fundamental_completo_medio_incompleto": 1344,
+          "medio_completo_superior_incompleto": 2769,
+          "superior_completo": 349
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806701,
+      "nome": "São Cristóvão",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28011,
+        "nome": "Aracaju"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.96222,
+      "lon": -37.22043,
+      "coordenada_metodo": "centroide",
+      "area_km2": 438.037,
+      "populacao": 111567,
+      "eleitorado": 61912,
+      "urbana_pct": 88.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 95612,
+        "situacao": {
+          "urbana": 84379,
+          "rural": 11233
+        },
+        "idade": {
+          "0_15": 22147,
+          "16_17": 2869,
+          "18_24": 11132,
+          "25_34": 16646,
+          "35_44": 16529,
+          "45_59": 16018,
+          "60_69": 6339,
+          "70_mais": 3932
+        },
+        "renda": {
+          "sem_rendimento": 2260,
+          "ate_1_4_sm": 12997,
+          "1_4_a_1_2_sm": 25028,
+          "1_2_a_1_sm": 28473,
+          "1_a_2_sm": 15940,
+          "2_a_3_sm": 4589,
+          "3_a_5_sm": 2849,
+          "5_a_10_sm": 1079,
+          "10_a_15_sm": 109,
+          "15_a_20_sm": 31,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 43665,
+          "evangelica": 18620,
+          "espirita": 865,
+          "umbanda_candomble": 946,
+          "tradicoes_indigenas": 21,
+          "outras": 2676,
+          "sem_religiao": 8006,
+          "nao_sabe": 37,
+          "sem_declaracao": 111
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 22254,
+          "fundamental_completo_medio_incompleto": 11244,
+          "medio_completo_superior_incompleto": 27872,
+          "superior_completo": 9164
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 17,
+      "vagas_vereador_max": 17,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "grande"
+    },
+    {
+      "codigo_ibge": 2806800,
+      "nome": "São Domingos",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28004,
+        "nome": "Agreste de Itabaiana"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.78238,
+      "lon": -37.57476,
+      "coordenada_metodo": "centroide",
+      "area_km2": 101.999,
+      "populacao": 10567,
+      "eleitorado": 8602,
+      "urbana_pct": 55.4,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 10327,
+        "situacao": {
+          "urbana": 5716,
+          "rural": 4611
+        },
+        "idade": {
+          "0_15": 2345,
+          "16_17": 303,
+          "18_24": 1184,
+          "25_34": 1480,
+          "35_44": 1566,
+          "45_59": 1911,
+          "60_69": 773,
+          "70_mais": 765
+        },
+        "renda": {
+          "sem_rendimento": 527,
+          "ate_1_4_sm": 2333,
+          "1_4_a_1_2_sm": 3023,
+          "1_2_a_1_sm": 3249,
+          "1_a_2_sm": 883,
+          "2_a_3_sm": 180,
+          "3_a_5_sm": 94,
+          "5_a_10_sm": 23,
+          "10_a_15_sm": 4,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6718,
+          "evangelica": 822,
+          "espirita": 4,
+          "umbanda_candomble": 37,
+          "tradicoes_indigenas": 0,
+          "outras": 77,
+          "sem_religiao": 511,
+          "nao_sabe": 0,
+          "sem_declaracao": 4
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 4627,
+          "fundamental_completo_medio_incompleto": 910,
+          "medio_completo_superior_incompleto": 1772,
+          "superior_completo": 434
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2806909,
+      "nome": "São Francisco",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28009,
+        "nome": "Japaratuba"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.33524,
+      "lon": -36.86692,
+      "coordenada_metodo": "centroide",
+      "area_km2": 83.985,
+      "populacao": 3337,
+      "eleitorado": 3801,
+      "urbana_pct": 72.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3243,
+        "situacao": {
+          "urbana": 2364,
+          "rural": 879
+        },
+        "idade": {
+          "0_15": 745,
+          "16_17": 104,
+          "18_24": 380,
+          "25_34": 453,
+          "35_44": 466,
+          "45_59": 644,
+          "60_69": 255,
+          "70_mais": 196
+        },
+        "renda": {
+          "sem_rendimento": 6,
+          "ate_1_4_sm": 702,
+          "1_4_a_1_2_sm": 1060,
+          "1_2_a_1_sm": 1058,
+          "1_a_2_sm": 324,
+          "2_a_3_sm": 44,
+          "3_a_5_sm": 50,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1630,
+          "evangelica": 564,
+          "espirita": 10,
+          "umbanda_candomble": 3,
+          "tradicoes_indigenas": 0,
+          "outras": 62,
+          "sem_religiao": 271,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1235,
+          "fundamental_completo_medio_incompleto": 285,
+          "medio_completo_superior_incompleto": 660,
+          "superior_completo": 229
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2807006,
+      "nome": "São Miguel do Aleixo",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28003,
+        "nome": "Nossa Senhora das Dores"
+      },
+      "regiao_imediata": {
+        "id": 280004,
+        "nome": "Itabaiana"
+      },
+      "lat": -10.4038,
+      "lon": -37.36233,
+      "coordenada_metodo": "centroide",
+      "area_km2": 140.041,
+      "populacao": 3462,
+      "eleitorado": 3973,
+      "urbana_pct": 54.1,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3434,
+        "situacao": {
+          "urbana": 1859,
+          "rural": 1575
+        },
+        "idade": {
+          "0_15": 731,
+          "16_17": 90,
+          "18_24": 382,
+          "25_34": 542,
+          "35_44": 494,
+          "45_59": 632,
+          "60_69": 278,
+          "70_mais": 285
+        },
+        "renda": {
+          "sem_rendimento": 32,
+          "ate_1_4_sm": 773,
+          "1_4_a_1_2_sm": 1037,
+          "1_2_a_1_sm": 1201,
+          "1_a_2_sm": 313,
+          "2_a_3_sm": 51,
+          "3_a_5_sm": 10,
+          "5_a_10_sm": 3,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 2244,
+          "evangelica": 319,
+          "espirita": 0,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 17,
+          "sem_religiao": 168,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1601,
+          "fundamental_completo_medio_incompleto": 367,
+          "medio_completo_superior_incompleto": 564,
+          "superior_completo": 98
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2807105,
+      "nome": "Simão Dias",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28005,
+        "nome": "Tobias Barreto"
+      },
+      "regiao_imediata": {
+        "id": 280005,
+        "nome": "Lagarto"
+      },
+      "lat": -10.75645,
+      "lon": -37.82832,
+      "coordenada_metodo": "centroide",
+      "area_km2": 560.199,
+      "populacao": 44708,
+      "eleitorado": 37020,
+      "urbana_pct": 54,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 42578,
+        "situacao": {
+          "urbana": 22989,
+          "rural": 19589
+        },
+        "idade": {
+          "0_15": 9302,
+          "16_17": 1326,
+          "18_24": 4943,
+          "25_34": 6655,
+          "35_44": 6301,
+          "45_59": 7782,
+          "60_69": 3104,
+          "70_mais": 3165
+        },
+        "renda": {
+          "sem_rendimento": 869,
+          "ate_1_4_sm": 9064,
+          "1_4_a_1_2_sm": 12577,
+          "1_2_a_1_sm": 13450,
+          "1_a_2_sm": 4832,
+          "2_a_3_sm": 1092,
+          "3_a_5_sm": 499,
+          "5_a_10_sm": 69,
+          "10_a_15_sm": 49,
+          "15_a_20_sm": 35,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 26993,
+          "evangelica": 4376,
+          "espirita": 115,
+          "umbanda_candomble": 77,
+          "tradicoes_indigenas": 0,
+          "outras": 586,
+          "sem_religiao": 1744,
+          "nao_sabe": 0,
+          "sem_declaracao": 51
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 17388,
+          "fundamental_completo_medio_incompleto": 4268,
+          "medio_completo_superior_incompleto": 7897,
+          "superior_completo": 2290
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 13,
+      "vagas_vereador_max": 13,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2807204,
+      "nome": "Siriri",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28008,
+        "nome": "Cotinguiba"
+      },
+      "regiao_imediata": {
+        "id": 280001,
+        "nome": "Aracaju"
+      },
+      "lat": -10.57492,
+      "lon": -37.12523,
+      "coordenada_metodo": "centroide",
+      "area_km2": 168.343,
+      "populacao": 7978,
+      "eleitorado": 6786,
+      "urbana_pct": 48.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 7834,
+        "situacao": {
+          "urbana": 3828,
+          "rural": 4006
+        },
+        "idade": {
+          "0_15": 2026,
+          "16_17": 284,
+          "18_24": 837,
+          "25_34": 1145,
+          "35_44": 1141,
+          "45_59": 1348,
+          "60_69": 539,
+          "70_mais": 514
+        },
+        "renda": {
+          "sem_rendimento": 120,
+          "ate_1_4_sm": 1841,
+          "1_4_a_1_2_sm": 2247,
+          "1_2_a_1_sm": 2542,
+          "1_a_2_sm": 764,
+          "2_a_3_sm": 272,
+          "3_a_5_sm": 44,
+          "5_a_10_sm": 5,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 4233,
+          "evangelica": 911,
+          "espirita": 7,
+          "umbanda_candomble": 22,
+          "tradicoes_indigenas": 0,
+          "outras": 71,
+          "sem_religiao": 691,
+          "nao_sabe": 0,
+          "sem_declaracao": 7
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 2527,
+          "fundamental_completo_medio_incompleto": 810,
+          "medio_completo_superior_incompleto": 1775,
+          "superior_completo": 372
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2807303,
+      "nome": "Telha",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28007,
+        "nome": "Propriá"
+      },
+      "regiao_imediata": {
+        "id": 280003,
+        "nome": "Propriá"
+      },
+      "lat": -10.19313,
+      "lon": -36.88952,
+      "coordenada_metodo": "centroide",
+      "area_km2": 47.86,
+      "populacao": 3405,
+      "eleitorado": 3646,
+      "urbana_pct": 58.9,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 3274,
+        "situacao": {
+          "urbana": 1928,
+          "rural": 1346
+        },
+        "idade": {
+          "0_15": 816,
+          "16_17": 114,
+          "18_24": 344,
+          "25_34": 506,
+          "35_44": 492,
+          "45_59": 630,
+          "60_69": 196,
+          "70_mais": 176
+        },
+        "renda": {
+          "sem_rendimento": 38,
+          "ate_1_4_sm": 846,
+          "1_4_a_1_2_sm": 1033,
+          "1_2_a_1_sm": 1019,
+          "1_a_2_sm": 251,
+          "2_a_3_sm": 63,
+          "3_a_5_sm": 23,
+          "5_a_10_sm": 0,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 1852,
+          "evangelica": 387,
+          "espirita": 7,
+          "umbanda_candomble": 0,
+          "tradicoes_indigenas": 0,
+          "outras": 140,
+          "sem_religiao": 95,
+          "nao_sabe": 0,
+          "sem_declaracao": 22
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 1169,
+          "fundamental_completo_medio_incompleto": 354,
+          "medio_completo_superior_incompleto": 640,
+          "superior_completo": 165
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2807402,
+      "nome": "Tobias Barreto",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28005,
+        "nome": "Tobias Barreto"
+      },
+      "regiao_imediata": {
+        "id": 280005,
+        "nome": "Lagarto"
+      },
+      "lat": -11.04228,
+      "lon": -38.00315,
+      "coordenada_metodo": "centroide",
+      "area_km2": 1024.645,
+      "populacao": 52943,
+      "eleitorado": 42664,
+      "urbana_pct": 74.6,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 50905,
+        "situacao": {
+          "urbana": 37955,
+          "rural": 12950
+        },
+        "idade": {
+          "0_15": 10632,
+          "16_17": 1621,
+          "18_24": 5845,
+          "25_34": 8365,
+          "35_44": 8021,
+          "45_59": 9105,
+          "60_69": 3831,
+          "70_mais": 3485
+        },
+        "renda": {
+          "sem_rendimento": 789,
+          "ate_1_4_sm": 10208,
+          "1_4_a_1_2_sm": 15168,
+          "1_2_a_1_sm": 16321,
+          "1_a_2_sm": 5190,
+          "2_a_3_sm": 1660,
+          "3_a_5_sm": 567,
+          "5_a_10_sm": 258,
+          "10_a_15_sm": 61,
+          "15_a_20_sm": 12,
+          "mais_de_20_sm": 25
+        },
+        "religiao": {
+          "catolica": 29961,
+          "evangelica": 6341,
+          "espirita": 113,
+          "umbanda_candomble": 133,
+          "tradicoes_indigenas": 0,
+          "outras": 710,
+          "sem_religiao": 3738,
+          "nao_sabe": 0,
+          "sem_declaracao": 61
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 22289,
+          "fundamental_completo_medio_incompleto": 5122,
+          "medio_completo_superior_incompleto": 8563,
+          "superior_completo": 2656
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 15,
+      "vagas_vereador_max": 15,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    },
+    {
+      "codigo_ibge": 2807501,
+      "nome": "Tomar do Geru",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.36992,
+      "lon": -37.87517,
+      "coordenada_metodo": "centroide",
+      "area_km2": 304.837,
+      "populacao": 12047,
+      "eleitorado": 10513,
+      "urbana_pct": 53.3,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 12012,
+        "situacao": {
+          "urbana": 6401,
+          "rural": 5611
+        },
+        "idade": {
+          "0_15": 2849,
+          "16_17": 441,
+          "18_24": 1289,
+          "25_34": 1616,
+          "35_44": 1946,
+          "45_59": 2202,
+          "60_69": 890,
+          "70_mais": 779
+        },
+        "renda": {
+          "sem_rendimento": 812,
+          "ate_1_4_sm": 4346,
+          "1_4_a_1_2_sm": 3222,
+          "1_2_a_1_sm": 2765,
+          "1_a_2_sm": 709,
+          "2_a_3_sm": 95,
+          "3_a_5_sm": 26,
+          "5_a_10_sm": 11,
+          "10_a_15_sm": 0,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 6286,
+          "evangelica": 1782,
+          "espirita": 6,
+          "umbanda_candomble": 67,
+          "tradicoes_indigenas": 0,
+          "outras": 212,
+          "sem_religiao": 999,
+          "nao_sabe": 0,
+          "sem_declaracao": 12
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 5685,
+          "fundamental_completo_medio_incompleto": 982,
+          "medio_completo_superior_incompleto": 1654,
+          "superior_completo": 386
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 9,
+      "vagas_vereador_max": 9,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "pequeno"
+    },
+    {
+      "codigo_ibge": 2807600,
+      "nome": "Umbaúba",
+      "uf": "SE",
+      "regiao": "NE",
+      "microrregiao": {
+        "id": 28012,
+        "nome": "Boquim"
+      },
+      "regiao_imediata": {
+        "id": 280002,
+        "nome": "Estância"
+      },
+      "lat": -11.39994,
+      "lon": -37.66244,
+      "coordenada_metodo": "centroide",
+      "area_km2": 117.514,
+      "populacao": 24693,
+      "eleitorado": 19715,
+      "urbana_pct": 81.8,
+      "perfil_fonte": "municipio",
+      "perfil": {
+        "populacao_censo": 23917,
+        "situacao": {
+          "urbana": 19568,
+          "rural": 4349
+        },
+        "idade": {
+          "0_15": 6028,
+          "16_17": 854,
+          "18_24": 2759,
+          "25_34": 3753,
+          "35_44": 3729,
+          "45_59": 3930,
+          "60_69": 1664,
+          "70_mais": 1200
+        },
+        "renda": {
+          "sem_rendimento": 283,
+          "ate_1_4_sm": 6216,
+          "1_4_a_1_2_sm": 7125,
+          "1_2_a_1_sm": 7438,
+          "1_a_2_sm": 2051,
+          "2_a_3_sm": 475,
+          "3_a_5_sm": 253,
+          "5_a_10_sm": 54,
+          "10_a_15_sm": 22,
+          "15_a_20_sm": 0,
+          "mais_de_20_sm": 0
+        },
+        "religiao": {
+          "catolica": 12434,
+          "evangelica": 3521,
+          "espirita": 17,
+          "umbanda_candomble": 135,
+          "tradicoes_indigenas": 0,
+          "outras": 718,
+          "sem_religiao": 1500,
+          "nao_sabe": 0,
+          "sem_declaracao": 0
+        },
+        "escolaridade": {
+          "sem_instrucao_fundamental_incompleto": 8847,
+          "fundamental_completo_medio_incompleto": 2757,
+          "medio_completo_superior_incompleto": 4108,
+          "superior_completo": 1274
+        }
+      },
+      "eleicoes_municipais": true,
+      "vagas_vereador": 11,
+      "vagas_vereador_max": 11,
+      "vagas_fonte": "tse_2024",
+      "segundo_turno_prefeito": false,
+      "porte": "medio"
+    }
+  ]
+}

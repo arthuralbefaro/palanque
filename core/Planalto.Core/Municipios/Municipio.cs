@@ -16,6 +16,8 @@ public sealed class Municipio
     public const string VagasFonteTse2024 = "tse_2024";
     public const string VagasFonteTeto = "teto_constitucional";
     public const string VagasFonteSemEleicao = "sem_eleicao_municipal";
+    public const string CoordenadaCentroide = "centroide";
+    public const string CoordenadaPontoInterior = "ponto_interior";
 
     public required int CodigoIbge { get; init; }
 
@@ -33,6 +35,11 @@ public sealed class Municipio
     public required double Lat { get; init; }
 
     public required double Lon { get; init; }
+
+    /// <summary>Centroide do polígono ou, se ele cair fora, um ponto interior (Malha Municipal do IBGE).</summary>
+    public required string CoordenadaMetodo { get; init; }
+
+    public required double AreaKm2 { get; init; }
 
     public required long Populacao { get; init; }
 
