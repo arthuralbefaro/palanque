@@ -36,7 +36,7 @@
 - [x] Números de candidato por cargo (seção 16.2) com testes
 
 ### 1D — Cenário "Brasil 2026"
-- [ ] Cenário "Brasil 2026" (seção 16.4), em três partes: nacional (partidos, federações, Congresso, fundo eleitoral), estadual (governadores, senadores, Assembleias de 2026) e municipal (prefeitos, vices, inelegibilidade por reeleição, Câmaras, força local e alianças de 2024 para todos os municípios)
+- [x] Cenário "Brasil 2026" (seção 16.4), em três partes: nacional (partidos, federações, Congresso, fundo eleitoral), estadual (governadores, senadores, Assembleias de 2026) e municipal (prefeitos, vices, inelegibilidade por reeleição, Câmaras, força local e alianças de 2024 para todos os municípios)
 
 ### 1E — Eleitorado e pesquisas
 - [ ] Segmentos de eleitores gerados do perfil real do município (idade, renda, religião, escolaridade, urbano/rural), com categorias normalizadas pela soma delas; afinidade partidária inicial pela força local da 1D no cenário "Brasil 2026" e, nos demais cenários, por distribuição gerada a partir das famílias e dos tamanhos dos partidos
