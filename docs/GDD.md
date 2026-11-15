@@ -148,7 +148,8 @@ O mesmo sistema gera todos os NPCs (rivais, aliados, família, jornalistas, caci
 ### 4.1 Calendário
 - 1 turno = 1 semana.
 - Eleições municipais e gerais alternam a cada 2 anos.
-- Campanha oficial de ~7 semanas antes do 1º turno; 2º turno 3 semanas depois.
+- 1º turno no primeiro domingo de outubro; 2º turno no último domingo de outubro (CF, arts. 29, II, e 77).
+- Campanha oficial a partir de 16 de agosto (Lei 9.504/1997, art. 36), cerca de 7 semanas antes do 1º turno.
 - Filiação partidária exigida 6 meses antes da eleição.
 - Desincompatibilização: ocupantes de cargos executivos precisam renunciar 6 meses antes para disputar outro cargo.
 - Janela partidária: período em que parlamentares trocam de partido sem perder o mandato.
@@ -260,7 +261,7 @@ JSON com condições, texto com variáveis (`{cidade}`, `{rival.nome}`, `{jogado
 5. Avançar semana → simulação → resultados
 
 ### 6.2 Ciclo de 2 anos
-Mandato/preparação → pré-campanha (filiação, convenção, alianças, Espelho/visual) → campanha → apuração → posse (retrato oficial salvo na linha do tempo) ou derrota com opções.
+Mandato/preparação → pré-campanha (filiação, convenção, alianças, Espelho/visual) → campanha (de 16 de agosto ao 1º turno, no primeiro domingo de outubro) → apuração (2º turno, se houver, no último domingo de outubro) → posse (retrato oficial salvo na linha do tempo) ou derrota com opções.
 
 ### 6.3 Ritmo
 Botão "avançar até o próximo evento"; foco mensal em mandato, semanal em campanha.
