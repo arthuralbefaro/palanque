@@ -43,6 +43,12 @@ public partial class Game : Node
     {
         Instance = this;
         DataDirectory = ProjectSettings.GlobalizePath("res://data");
+
+        // Fundo de todas as telas na cor do painel de fundo do tema (sem cor fixa no código).
+        if (ThemeDB.GetProjectTheme()?.GetStylebox("panel", "BackgroundPanel") is StyleBoxFlat background)
+        {
+            RenderingServer.SetDefaultClearColor(background.BgColor);
+        }
         Portes = JsonData.LoadFile<PorteCatalog>(Path.Combine(DataDirectory, "portes.json")).GetValueOrThrow();
         var (municipios, errors) = MunicipiosDataSet.Load(DataDirectory, Portes);
         if (municipios is null)
@@ -74,7 +80,19 @@ public partial class Game : Node
 
     public void StartCareer(GameState state) => State = state;
 
-    public void GoTo(string scene) => GetTree().ChangeSceneToFile(scene);
+    /// <summary>Nos testes de fumaça da UI, registra a navegação em vez de trocar de cena.</summary>
+    public bool SuppressNavigation { get; set; }
+
+    public string? LastNavigation { get; private set; }
+
+    public void GoTo(string scene)
+    {
+        LastNavigation = scene;
+        if (!SuppressNavigation)
+        {
+            GetTree().ChangeSceneToFile(scene);
+        }
+    }
 
     public static class Scenes
     {

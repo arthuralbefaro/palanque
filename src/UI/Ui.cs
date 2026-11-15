@@ -17,9 +17,10 @@ public static class Ui
         return child;
     }
 
+    /// <summary>Rótulo traduzido. Sem quebra automática: dentro de linhas horizontais ela reduziria a largura a zero.</summary>
     public static Label Label(Node parent, string text, int size = 0, Color? color = null)
     {
-        var label = parent.Add(new Label { Text = TranslationServer.Translate(text), AutowrapMode = TextServer.AutowrapMode.WordSmart });
+        var label = parent.Add(new Label { Text = TranslationServer.Translate(text) });
         if (size > 0)
         {
             label.AddThemeFontSizeOverride("font_size", size);
@@ -34,6 +35,15 @@ public static class Ui
     }
 
     /// <summary>Rótulo com texto que não deve ser traduzido (nomes, números, dados).</summary>
+    /// <summary>Texto longo com quebra de linha e largura mínima, para colunas.</summary>
+    public static Label Paragraph(Node parent, string text, int width, int size = 0)
+    {
+        Label label = Value(parent, text, size);
+        label.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+        label.CustomMinimumSize = new Vector2(width, 0);
+        return label;
+    }
+
     public static Label Value(Node parent, string text, int size = 0)
     {
         var label = parent.Add(new Label { Text = text });
@@ -127,11 +137,11 @@ public static class Ui
     /// <summary>Raiz de tela: fundo, margens e coluna principal.</summary>
     public static VBoxContainer Screen(Control root, int margin = 24)
     {
-        root.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        root.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         var background = root.Add(new Panel { ThemeTypeVariation = "BackgroundPanel" });
-        background.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        background.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         var margins = root.Add(new MarginContainer());
-        margins.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        margins.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         foreach (string side in new[] { "left", "top", "right", "bottom" })
         {
             margins.AddThemeConstantOverride($"margin_{side}", margin);
