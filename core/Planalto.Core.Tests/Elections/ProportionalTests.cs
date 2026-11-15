@@ -128,6 +128,34 @@ public class ProportionalTests
     }
 
     [Fact]
+    public void TerceiraEtapaFechada_SoPartidosComOitentaPorCentoDisputam()
+    {
+        // Mesmo caso de TerceiraEtapa_AbertaATodosOsPartidosSemPisoIndividual, com a 3ª etapa restrita.
+        // Até o fim da 2ª etapa: a1, b1 (QP); c1, a2 (sobras). Divisores: A = 3, B = 2, C = 2.
+        // 3ª etapa só com A, B e C (D, com 1400 < 1472, fica de fora):
+        //   A = 3400/3 = 1133,3; B = 2600/2 = 1300; C = 1800/2 = 900.
+        //   B tem a maior média mas não tem mais candidatos → sobra não preenchida; B = 2600/3 = 866,7.
+        //   A = 1133,3 é a maior, também sem candidatos → não preenchida; A = 3400/4 = 850.
+        //   C = 900 > 866,7 > 850 → C elege c2 (300 votos, sem piso individual).
+        var parties = new[]
+        {
+            Party("A", 0, ("a1", 3000), ("a2", 400)),
+            Party("B", 0, ("b1", 2600)),
+            Party("C", 0, ("c1", 1500), ("c2", 300)),
+            Party("D", 0, ("d1", 900), ("d2", 500)),
+        };
+        var config = ProportionalRulesConfig.Default with { FinalStageOpenToAllParties = false };
+
+        ProportionalResult result = ElectionRules.Proportional(5, parties, config);
+
+        Assert.Equal(["a1", "b1", "c1", "a2", "c2"], result.Elected.Select(e => e.CandidateId));
+        Assert.Equal(SeatStage.FinalRemainder, result.Elected.Single(e => e.CandidateId == "c2").Stage);
+        Assert.Equal(0, result.SeatsOf("D"));
+        Assert.Equal(1, result.UnfilledRemainders["A"]);
+        Assert.Equal(1, result.UnfilledRemainders["B"]);
+    }
+
+    [Fact]
     public void NenhumPartidoAtingeOQuociente_TodasAsVagasViramSobras()
     {
         // 3 vagas. Válidos = 900 + 800 + 700 + 600 = 3000. QE = 1000. 20% = 200; 80% = 800.
