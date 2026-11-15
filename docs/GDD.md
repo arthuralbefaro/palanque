@@ -208,7 +208,7 @@ Intenção de voto = softmax das utilidades + brancos/nulos/abstenção (depende
 Toda regra com testes unitários usando casos calculados à mão.
 
 ### 5.5 Partidos
-10 a 14 partidos fictícios cobrindo o espectro, com ideologia, tamanho, fundo eleitoral, caciques (NPCs), disciplina interna, reputação, cor e logotipo. Mecânicas: filiação, convenção, janela partidária, federações, cargos na direção, apoio em eleições majoritárias.
+Partidos fictícios cobrindo o espectro, na quantidade da predefinição escolhida na tela "Novo Mundo" (seção 16.1), com ideologia, tamanho, fundo eleitoral, caciques (NPCs), disciplina interna, reputação, cor e logotipo. Mecânicas: filiação, convenção, janela partidária, federações, cargos na direção, apoio em eleições majoritárias.
 
 ### 5.6 Campanha
 Agenda semanal com Energia e Dinheiro:
@@ -247,7 +247,7 @@ Atalhos antiéticos criam "esqueletos no armário" com chance semanal de vir à 
 Políticos procedurais com carreira própria, relação com o jogador (-100 a 100) e memória de favores e traições. Mentor inicial. Família com eventos (apoio, cobranças, escândalos, filhos que entram na política).
 
 ### 5.13 Eventos narrativos
-JSON com condições, texto com variáveis (`{cidade}`, `{rival.nome}`, `{jogador.pronome}`), escolhas e efeitos. Meta: 300+ eventos no lançamento.
+JSON com condições, texto com variáveis (`{cidade}`, `{rival.nome}`, `{jogador.pronome}`), escolhas e efeitos. Meta: 600+ eventos no lançamento (ver seção 15).
 
 ---
 
@@ -308,7 +308,9 @@ planalto/
 ├── tools/
 │   ├── Planalto.BalanceSim/         # console: simula N carreiras
 │   ├── Planalto.DataImporter/       # console: baixa IBGE/TSE e gera data/municipios/ (brutos em cache/, fora do Git)
-│   └── Planalto.DataValidator/      # console: valida todos os JSON
+│   ├── Planalto.DataImporter.Tests/ # testes do importador (precisa do cache preenchido)
+│   ├── Planalto.DataValidator/      # console: valida todos os JSON
+│   └── Planalto.EventLint/          # console: verifica eventos (referências, variáveis, cadeias, alcance)
 ├── src/
 │   ├── Autoload/                    # Game.cs, EventBus.cs, SaveManager.cs, AudioManager.cs, Settings.cs
 │   └── UI/
@@ -320,8 +322,10 @@ planalto/
 │       └── Theme/
 ├── data/
 │   ├── appearance/                  # parts.json (catálogo de peças por camada), palettes.json, presets/
-│   ├── offices.json  parties.json  states.json  segments.json
+│   ├── offices.json  states.json  segments.json
+│   ├── parties/                     # families.json (famílias ideológicas), blocklist.json, scenarios/ (ver 14 e 16)
 │   ├── municipios/                  # {UF}.json, 27 arquivos gerados pelo DataImporter (ver 12.3)
+│   ├── geo/                         # contornos simplificados da Malha Municipal para o mapa (ver 13.1)
 │   ├── events/  bills/  policies.json  actions.json
 │   ├── traits.json  professions.json  media_outlets.json
 │   └── names/
@@ -355,7 +359,7 @@ fundo → corpo/roupa (trás) → pescoço → cabeça (formato + pele) → orel
 - `PortraitCache` gera texturas em `SubViewport` e guarda em cache (tamanhos 512, 256, 96) para listas, manchetes e mapas sem custo.
 - Retrato oficial a cada posse é salvo como imagem no save.
 
-**Arte de placeholder:** na Fase 2 o Claude Code gera camadas vetoriais simples (SVG → PNG) por código para todas as categorias, para o sistema funcionar antes da arte final. A arte final segue `docs/ART_GUIDE.md` (dimensões, pontos de ancoragem, nomenclatura `categoria_id_variante.png`) e pode ser feita por um ilustrador.
+**Arte de placeholder:** na Fase 2, camadas vetoriais simples (SVG → PNG) são geradas por código para todas as categorias, para o sistema funcionar antes da arte final. A arte final segue `docs/ART_GUIDE.md` (dimensões, pontos de ancoragem, nomenclatura `categoria_id_variante.png`) e pode ser feita por um ilustrador.
 
 **Catálogo (`data/appearance/parts.json`):**
 ```json
@@ -429,131 +433,27 @@ Escala de UI, modo daltônico (partidos com ícone além da cor), velocidade de 
 
 ## 9. ROADMAP
 
-### Fase 0 — Fundação
-- [ ] Git + .gitignore Godot/.NET
-- [ ] Projeto Godot .NET configurado (1920x1080, canvas_items/expand)
-- [ ] Solução com Planalto (Godot), Planalto.Core, Planalto.Core.Tests
-- [ ] Autoloads vazios, tema base, menu principal
-- [ ] CLAUDE.md
-- [ ] Build e testes passando
-
-### Fase 1 — Núcleo de simulação
-- [ ] Rng, Calendar, GameState
-- [ ] Character, atributos, traços, recursos
-- [ ] Eleitorado, modelo de voto, pesquisas
-- [ ] ElectionRules (proporcional e majoritário) com testes
-- [ ] Carregamento e validação de JSON + DataValidator
-
-### Fase 2 — Criação de personagem
-- [ ] Modelo Appearance no Core + randomização com pesos + serialização
-- [ ] Arte placeholder gerada por código para todas as categorias
-- [ ] PortraitRenderer com shader de tingimento, camadas trás/frente, expressões e cache
-- [ ] Tela de criação com 4 abas, aleatório, desfazer, presets
-- [ ] Santinho, outdoor e compositor de logotipo
-- [ ] Geração de NPCs usando o mesmo sistema
-
-### Fase 3 — Fatia vertical: Vereador
-- [ ] 1 cidade, 6 partidos, ~10 rivais
-- [ ] Hub semanal, agenda de campanha, 6 ações
-- [ ] Painel de pesquisas, noite da apuração
-- [ ] 30 eventos
-- [ ] Save/Load
-- **Marco:** campanha de vereador jogável do início ao fim e divertida
-
-### Fase 4 — Mandato legislativo
-- [ ] Votações, projetos, emendas, fidelidade, relações, capital político
-- [ ] Transição para a próxima eleição
-
-### Fase 5 — Prefeito
-- [ ] Orçamento, indicadores, políticas, coalizão municipal
-- [ ] Minigame de debate
-
-### Fase 6 — Esfera estadual e federal
-- [ ] 27 estados, mapa do Brasil
-- [ ] Deputados, senador, governador
-- [ ] Mídia, fake news, escândalos e justiça
-- [ ] Envelhecimento e Espelho
-
-### Fase 7 — Presidência
-- [ ] Economia nacional, ministérios, Congresso, MPs, vetos
-- [ ] Crises nacionais, impeachment
-- [ ] Tela de fim de carreira com linha do tempo de retratos
-
-### Fase 8 — Conteúdo
-- [ ] 300+ eventos, 100+ projetos de lei, 60+ políticas
-- [ ] Conteúdo local (eventos e personalidades) para municípios de todas as regiões
-- [ ] Ampliar catálogo de aparência (meta: 30+ cabelos, 12+ barbas, 40+ roupas)
-- [ ] Conquistas
-
-### Fase 9 — Polimento
-- [ ] Arte final de retratos (ilustrador ou pipeline próprio)
-- [ ] Animações, áudio, jingles, música
-- [ ] Tutorial na primeira campanha
-- [ ] Opções e acessibilidade
-
-### Fase 10 — Balanceamento e lançamento
-- [ ] Relatórios do BalanceSim e ajustes
-- [ ] Playtests externos
-- [ ] Export Windows, Linux, macOS
-- [ ] Página na Steam e/ou itch.io
+O planejamento de fases vive em `docs/ROADMAP.md`, que é a fonte única: fases, itens, ordem e estado de cada um ficam só lá. As demais seções deste documento descrevem o que construir; o ROADMAP diz quando.
 
 ---
 
-## 10. CLAUDE CODE
+## 10. FLUXO DE DESENVOLVIMENTO
 
-### 10.1 CLAUDE.md
-```
-# Planalto — instruções para o Claude Code
+### 10.1 Regras do projeto
+As regras de código, dados, verificação, autoria e neutralidade ficam no arquivo de regras na raiz do repositório e valem para todo o trabalho: lógica de jogo só no Core, sem referência ao Godot; UI só lê o estado e envia comandos; aleatoriedade pelo Rng com semente; conteúdo e números de balanceamento em data/; e verificação obrigatória (build da solução, testes do Core, DataValidator e build headless do Godot) antes de dar qualquer tarefa por concluída.
 
-## Contexto
-Simulador de carreira política brasileira em Godot 4.7.2 .NET (C#). Leia docs/GDD.md e docs/ROADMAP.md antes de qualquer tarefa.
-
-## Regras de código
-- C# com nullable habilitado e TreatWarningsAsErrors.
-- Lógica de jogo SOMENTE em core/Planalto.Core, sem referência a Godot.
-- UI em src/UI apenas lê o estado e chama Game.Execute(...).
-- Toda aleatoriedade passa pela classe Rng do Core (com semente).
-- Conteúdo em data/*.json; nunca hardcode textos, peças de aparência ou números de balanceamento.
-- Classes que herdam de Node são partial.
-- Textos ao jogador em PT-BR via Tr(), respeitando os pronomes do personagem.
-
-## Verificação obrigatória
-- dotnet build Planalto.sln
-- dotnet test core/Planalto.Core.Tests
-- dotnet run --project tools/Planalto.DataValidator
-- godot --headless --build-solutions --quit
-Nenhuma tarefa está concluída com build quebrado, testes falhando ou dados inválidos.
-
-## Fluxo
-- Um item do ROADMAP por vez; marque o checkbox ao concluir.
-- Teste junto com toda regra de negócio nova.
-- Commit por funcionalidade.
-
-## Neutralidade e representação
-- Partidos, políticos, empresas, institutos e mídia fictícios. Nunca nomes reais.
-- Nenhuma ideologia favorecida; toda posição tem custos e benefícios.
-- Aparência do personagem nunca altera votos ou atributos.
-```
-
-### 10.2 Prompts por fase
-**Fase 0:**
-> Leia docs/GDD.md. Crie docs/ROADMAP.md a partir da seção 9 e execute a Fase 0. Crie o CLAUDE.md da seção 10.1. Verifique com todos os comandos da seção "Verificação obrigatória". Me mostre o plano antes de executar.
-
-**Fase 1:**
-> Execute a Fase 1 seguindo as seções 5.3 e 5.4. Comece pelo ElectionRules com testes cobrindo quociente eleitoral, quociente partidário, sobras por maiores médias, cláusula de 10% e 2º turno, com exemplos calculados nos testes.
-
-**Fase 2:**
-> Execute a Fase 2 seguindo a seção 3 e a 7.4. Primeiro o modelo Appearance no Core com testes de randomização e serialização. Depois gere a arte placeholder por código, o PortraitRenderer com shader de tingimento e a tela de criação. Me mostre o plano antes.
-
-**Conteúdo:**
-> Escreva 30 eventos de campanha de vereador no formato da seção 7.5, seguindo docs/CONTENT_GUIDE.md. Distribua entre pessoal, oportunidade, crise e escândalo potencial. Rode o DataValidator ao final.
+### 10.2 Roteiro por fase
+- **Fase 0:** criar docs/ROADMAP.md e executar a fundação; verificar com todos os comandos da verificação obrigatória; plano apresentado antes da execução.
+- **Fase 1:** seguir as seções 5.3, 5.4 e 12; começar pelo ElectionRules com testes cobrindo quociente eleitoral, quociente partidário, sobras por maiores médias, cláusula de 10% e 2º turno, com exemplos calculados à mão nos testes.
+- **Fase 2:** seguir as seções 3 e 7.4; primeiro o modelo Appearance no Core com testes de randomização e serialização; depois a arte placeholder gerada por código, o PortraitRenderer com shader de tingimento e a tela de criação; plano apresentado antes.
+- **Conteúdo:** escrever eventos em lotes (ex.: 30 eventos de campanha de vereador) no formato das seções 7.5 e 15.5, seguindo docs/CONTENT_GUIDE.md e distribuídos pelas categorias da 15.2; rodar o DataValidator e o EventLint ao final.
 
 ### 10.3 Boas práticas
-- Uma fase por sessão do Claude Code; sessão nova a cada fase.
-- Modo de planejamento antes de fases grandes.
-- Depois de cada fase, jogue 20–30 minutos e mande a lista de problemas como próxima tarefa.
+- Uma fase por sessão de trabalho; sessão nova a cada fase.
+- Planejamento revisado antes de fases grandes.
+- Depois de cada fase, jogar 20–30 minutos e transformar a lista de problemas na próxima tarefa.
 - Ajuste de números via relatórios do BalanceSim.
-- Arte final dos retratos é o maior investimento visual do jogo: considere um ilustrador seguindo o ART_GUIDE.md.
+- Arte final dos retratos é o maior investimento visual do jogo: considerar um ilustrador seguindo o ART_GUIDE.md.
 
 ---
 
@@ -569,7 +469,7 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando ou dados inv
 | Nomes e marcas reais | Tudo fictício, inclusive urna estilizada e institutos |
 | Repetitividade | Eventos procedurais, rivais persistentes, rotas variadas, conquistas |
 | Licenças de assets | Só CC0/OFL/CC BY, com `assets/CREDITS.md` |
-| Claude Code sem visão do editor | Cenas em texto/código, testes headless, validação visual por você a cada fase |
+| Desenvolvimento sem visão do editor | Cenas em texto/código, testes headless, validação visual pelo autor a cada fase |
 
 ## 12. MUNICÍPIOS (TODOS OS DO BRASIL)
 
@@ -671,6 +571,7 @@ O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimôni
 - **Interação:** passar o mouse mostra tooltip com resultado e dados do município; clicar abre a ficha.
 - **Meta de desempenho:** 60 FPS na visão de um estado com todos os municípios; visão nacional com estados apenas.
 - **Acessibilidade:** alternância para mapa 2D plano nas Opções.
+- **Protótipo:** na Fase 3, um protótipo com os municípios de um estado valida desempenho e visual antes do mapa completo da Fase 6.
 
 ### 13.2 Cerimônias de posse em 3D
 - **Quando:** a cada posse de cargo eletivo. Duração de 15 a 40 segundos, sempre pulável com qualquer tecla.
@@ -695,8 +596,224 @@ O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimôni
 - **NPCs:** família, aliados e multidão com o mesmo sistema de bonecos, em variações aleatórias.
 - **Elementos dinâmicos:** tamanho da multidão proporcional à votação; bandeiras e cores do partido; vice e família presentes quando existirem; clima e hora do dia.
 - **Técnica:** cenas em .tscn com AnimationPlayer para caminhos de câmera e personagens; modelos em glTF; tudo carregado sob demanda e descarregado ao fim.
+- **Ordem de produção:** primeiro a posse presidencial e a de vereador (os dois extremos da escala); depois os demais cargos.
 
 ### 13.3 Assets 3D
 - Base: pacotes CC0 low-poly (Kenney, Quaternius) para pessoas, carros, árvores e mobiliário, adaptados.
 - Cenários de posse e bonecos parametrizáveis: modelagem própria ou por um modelador 3D seguindo docs/ART_GUIDE.md (seção 3D: escala, número de polígonos, nomes de materiais tingíveis).
 - A montagem das cenas, materiais, animações de câmera e a lógica de parametrização é feita no código do projeto; a modelagem de qualidade fica com assets ou com um artista.
+
+## 14. PARTIDOS: ESPECTRO COMPLETO E CRIAÇÃO PELO JOGADOR
+
+Todos os partidos são fictícios. O jogo cobre todo o espectro político democrático, sem favorecer nenhum lado.
+
+### 14.1 Famílias ideológicas
+Cada partido pertence a uma família, que define a faixa nos dois eixos (Econômico e Costumes, -100 a +100), os temas prioritários e o comportamento da IA.
+
+| Família | Econômico | Costumes | Temas típicos |
+|---|---|---|---|
+| Esquerda socialista | -100 a -70 | -100 a -50 | Estatização, reforma agrária, direitos trabalhistas |
+| Esquerda | -70 a -40 | -70 a -30 | Programas sociais, serviços públicos, direitos de minorias |
+| Trabalhista | -60 a -30 | -30 a +10 | Emprego, salário mínimo, sindicatos, previdência |
+| Centro-esquerda / social-democracia | -40 a -10 | -50 a -10 | Estado de bem-estar, educação, saúde pública |
+| Ambientalista (verde) | -40 a 0 | -60 a -20 | Meio ambiente, clima, transição energética |
+| Centro | -15 a +15 | -15 a +15 | Estabilidade, gestão, consenso |
+| Centro pragmático ("fisiológico") | -10 a +20 | -10 a +30 | Cargos, emendas, apoio a qualquer governo |
+| Democracia cristã | -10 a +30 | +30 a +70 | Família, assistência social, valores religiosos |
+| Centro-direita | +10 a +40 | 0 a +40 | Responsabilidade fiscal, reformas, segurança |
+| Direita liberal | +40 a +80 | -30 a +20 | Privatizações, menos impostos, livre mercado |
+| Libertário | +70 a +100 | -60 a 0 | Estado mínimo, liberdades individuais |
+| Direita conservadora | +30 a +70 | +50 a +90 | Segurança, família, valores tradicionais |
+| Liberal-conservador | +50 a +90 | +40 a +80 | Mercado e costumes tradicionais |
+| Nacional-populista de direita | -10 a +50 | +60 a +100 | Nacionalismo, ordem, antissistema |
+| Agrário / ruralista | +20 a +60 | +20 a +60 | Agronegócio, propriedade rural, infraestrutura |
+| Regionalista | variável | variável | Interesses de um estado ou região |
+
+- O mundo do jogo começa com os partidos fictícios da predefinição escolhida (seção 16.1), sorteados para cobrir todas as famílias, com tamanhos diferentes (de nanicos a grandes), gerados em data/parties/ ou por geração procedural a cada nova carreira (opção no início).
+- Nomes gerados por combinação de termos típicos ("Movimento", "Partido", "Aliança", "Frente", "União" + "Democrático", "Trabalhista", "Liberal", "Popular", "Nacional", "Renovador", "Social" etc.), com siglas derivadas e verificação para não coincidir com siglas ou nomes de partidos reais (lista de bloqueio em data/parties/blocklist.json).
+- Partidos evoluem: fusões, federações, cisões, mudança de nome após escândalos, crescimento e declínio, novos partidos surgindo ao longo das décadas.
+
+### 14.2 Criação de partido pelo jogador
+Duas formas, à escolha do jogador:
+
+**A) No início (modo livre):** na criação de personagem, aba "Partido", o jogador escolhe entre filiar-se a um partido existente ou criar o seu já registrado.
+
+**B) Durante a carreira (modo realista):** fundar um partido como objetivo de carreira, seguindo o processo da Lei dos Partidos Políticos de forma simplificada:
+1. Reunir fundadores (custo de capital político e relações).
+2. Coletar apoio de eleitores não filiados distribuídos por pelo menos um terço dos estados (minigame de campanha de assinaturas ao longo de meses).
+3. Registro no TSE (evento com chance de impugnação por irregularidades).
+4. Prazo: só disputa eleição se registrado 6 meses antes.
+
+**Personalização do partido:**
+| Campo | Opções |
+|---|---|
+| Nome | Livre, ou gerador com sugestões |
+| Sigla | Livre (2 a 8 letras), validada contra a lista de bloqueio |
+| Número | Dois dígitos livres entre os não usados |
+| Família ideológica | Qualquer uma da tabela 14.1, ou "personalizada" |
+| Posição exata | Ajuste fino nos dois eixos dentro (ou fora, se personalizada) da faixa da família |
+| Bandeiras | Escolher 3 a 5 temas prioritários com posição de -2 a +2 |
+| Identidade visual | Cores primária e secundária, logotipo (ícone + fonte), slogan |
+| Estatuto | Disciplina interna (rígida, moderada, frouxa), democracia interna (convenções abertas ou cúpula decide), postura (oposição permanente, independente, adesista) |
+
+**Consequências:**
+- Partido novo começa pequeno: sem fundo partidário relevante, pouco tempo de TV, sem bancada.
+- O jogador é o "cacique": controla legendas, alianças e expulsões, mas carrega o desgaste de tudo que o partido faz.
+- Outros políticos NPC podem migrar para o partido do jogador (na janela partidária), trazendo votos e problemas.
+- Partido pode crescer até virar o maior do país, ou ser incorporado/extinto.
+
+### 14.3 Liberdade de jogo
+O Planalto é um simulador livre: o jogador pode seguir qualquer ideologia, mudar de lado, ser íntegro ou corrupto, fiel ou traidor, moderado ou radical. O jogo nunca julga moralmente; ele apenas simula consequências plausíveis (eleitorais, judiciais, midiáticas, pessoais). Toda família ideológica tem caminhos viáveis até a Presidência, com dificuldades diferentes conforme o eleitorado.
+
+---
+
+## 15. EVENTOS ALEATÓRIOS
+
+### 15.1 Objetivo
+Cada carreira deve parecer diferente. Meta de conteúdo: **600+ eventos** no lançamento, com variação de texto, encadeamentos e consequências de longo prazo.
+
+### 15.2 Categorias e metas
+| Categoria | Meta | Exemplos |
+|---|---|---|
+| Campanha | 80 | Comício esvaziado, apoio inesperado de líder local, vídeo viralizado, debate cancelado, adversário ataca sua família, pesquisa vazada |
+| Mandato legislativo | 60 | Votação polêmica, pedido de emenda, troca de favores, obstrução, CPI, pressão de bancada |
+| Mandato executivo | 70 | Greve de servidores, obra atrasada, licitação suspeita, hospital lotado, escola interditada, pedido de reajuste |
+| Crises e desastres | 50 | Enchente, seca, deslizamento, incêndio florestal, apagão, epidemia, desabamento, onda de violência |
+| Economia | 40 | Fábrica fecha, investimento chega, alta de preços, crise externa, boom de commodity, falência de empresa local |
+| Escândalos | 60 | Gravação vazada, assessor investigado, denúncia anônima, delação, uso indevido de verba, nepotismo |
+| Mídia e redes | 50 | Entrevista com pegadinha, fake news, meme, influenciador apoia ou ataca, documentário, cancelamento |
+| Vida pessoal e família | 60 | Casamento, divórcio, filho em polêmica, doença, luto, problema de saúde, conquista pessoal |
+| Bastidores e relações | 50 | Proposta de aliança, traição de aliado, mentor pede favor, rival oferece trégua, ameaça de rompimento |
+| Sociedade e cultura | 40 | Carnaval, festa junina, Copa do Mundo (fictícia), protesto estudantil, marcha religiosa, festival local |
+| Regionais | 40 | Específicos por região e porte: garimpo, conflito agrário, turismo, seca no sertão, porto, fronteira |
+| Raros e inusitados | 20 | Acontecimentos absurdos ou cômicos com baixa probabilidade (ex.: animal invade o plenário, discurso confundido com meme mundial) |
+
+### 15.3 Estrutura do motor de eventos
+- **Condições:** cargo, fase (pré-campanha, campanha, mandato), região, porte do município, família ideológica, traços, atributos, recursos, relações, ano, eventos anteriores, flags.
+- **Peso e raridade:** comum, incomum, raro, lendário; peso ajustado por condições (ex.: enchentes mais prováveis no período de chuvas da região).
+- **Cooldown:** um evento (ou categoria) não se repete por um tempo mínimo; eventos únicos acontecem uma vez por carreira.
+- **Encadeamento:** escolhas abrem eventos de continuação semanas ou anos depois (ex.: aceitar doação → investigação 2 anos depois → delação de terceiros).
+- **Memória dos NPCs:** eventos alteram relações e ficam registrados; NPCs lembram favores e traições.
+- **Variáveis de texto:** {municipio.nome}, {rival.nome}, {partido.sigla}, {jogador.pronome}, {aliado.cargo}, {ano}, valores em reais calculados.
+- **Variações de texto:** cada evento pode ter 2 a 4 versões de abertura para reduzir repetição.
+- **Escolhas:** 2 a 4 opções, algumas ocultas ou bloqueadas por requisito (ex.: "Usar seu contato na polícia" só com a relação adequada). Mostrar o requisito quando bloqueada.
+- **Efeitos:** atributos, recursos, intenção de voto por segmento, relações, flags, esqueletos no armário, eventos futuros agendados, mudança de traços.
+- **Resultados com risco:** algumas escolhas têm resultado sorteado com probabilidade influenciada por atributos (ex.: improvisar uma resposta testa Oratória).
+- **Frequência:** 0 a 3 eventos por semana, mais intensos em campanha e crises; botão para ver o histórico de eventos.
+
+### 15.4 Eventos dinâmicos (sem texto fixo)
+Além dos eventos escritos, o motor gera ocorrências a partir da simulação:
+- Rival despenca nas pesquisas → evento "oportunidade de atrair apoiadores dele".
+- Indicador de segurança em queda há meses → evento "onda de assaltos vira manchete".
+- Relação com aliado abaixo de um limite → evento "aliado ameaça romper".
+- Estresse alto por muito tempo → evento de saúde.
+
+### 15.5 Formato e produção
+- Eventos em data/events/{categoria}/*.json, no formato da seção 7.5, acrescidos de "rarity", "cooldown_weeks", "unique", "chain" e "variants".
+- docs/CONTENT_GUIDE.md com regras de escrita: tom, tamanho máximo, variáveis, neutralidade e checklist.
+- Ferramenta tools/Planalto.EventLint: verifica referências, variáveis inexistentes, cadeias quebradas, eventos inalcançáveis e distribuição por categoria.
+- BalanceSim reporta frequência real de cada evento em 1.000 carreiras, para encontrar eventos que nunca aparecem ou aparecem demais.
+- Regra de conteúdo: nenhum evento cita pessoas, partidos ou empresas reais; nenhum evento baseado em estereótipo de região, religião, raça ou gênero; tragédias tratadas com seriedade.
+
+## 16. CONFIGURAÇÃO DO MUNDO E URNA
+
+### 16.1 Tela "Novo Mundo" (antes da criação de personagem)
+O jogador configura o cenário político da carreira. Cada campo pode ser editado à mão, sorteado individualmente ou travado antes de um sorteio geral.
+
+**Predefinições:**
+| Predefinição | Partidos | Descrição |
+|---|---|---|
+| Brasil realista | 28 a 32 | Muitos partidos, centro pragmático forte, federações |
+| Multipartidário moderado | 12 a 16 | Padrão do jogo |
+| Poucos partidos | 4 a 6 | Disputas mais polarizadas |
+| Bipartidário | 2 | Experimental: dois grandes blocos |
+| Personalizado | 2 a 35 | Tudo livre |
+
+**Lista de partidos:** cada linha mostra logotipo, sigla, nome, número, família ideológica, tamanho e cores. Para cada partido:
+| Campo | Editável | Aleatório |
+|---|---|---|
+| Nome | Livre | Gerador (seção 14.1) |
+| Sigla | Livre, validada contra a lista de bloqueio | Derivada do nome |
+| Número | 10 a 99, sem repetição | Sorteado entre os livres |
+| Família ideológica | Qualquer uma da 14.1 | Sorteada respeitando a cobertura do espectro |
+| Posição nos eixos | Ajuste fino | Sorteada dentro da faixa da família |
+| Tamanho inicial | Nanico, pequeno, médio, grande, dominante | Distribuição realista |
+| Cores e logotipo | Livres | Gerados, evitando cores repetidas |
+| Personalidade da cúpula | Ideológica, pragmática, fisiológica, personalista | Sorteada |
+
+**Ações:** adicionar partido, remover partido, duplicar, sortear linha, sortear tudo (respeitando os travados), restaurar predefinição, salvar e carregar cenários (user://scenarios/).
+
+**Validações:** pelo menos um partido de cada lado do eixo econômico quando houver 4 ou mais partidos (aviso, não bloqueio); números e siglas únicos; soma de tamanhos coerente.
+
+**Opções gerais do mundo:** ano inicial (2028 por padrão), dificuldade, frequência de eventos (baixa, normal, alta, caótica), modo Ironman, nível de realismo jurídico (relaxado ou rigoroso).
+
+### 16.2 Números de candidato
+Seguem a regra real:
+| Cargo | Dígitos | Formato |
+|---|---|---|
+| Prefeito, governador, presidente | 2 | Número do partido |
+| Senador | 3 | Número do partido + 1 dígito |
+| Deputado federal | 4 | Número do partido + 2 dígitos |
+| Vereador, deputado estadual/distrital | 5 | Número do partido + 3 dígitos |
+- O jogador escolhe os dígitos finais na aba "Campanha" da criação de personagem (seção 3.4), entre os livres no partido.
+- Número próprio pode ser mantido entre eleições (bônus pequeno de reconhecimento por "número fácil de lembrar" se o jogador repetir os dígitos ao subir de cargo).
+- Ao trocar de partido, o número muda: perda pequena de reconhecimento.
+
+### 16.3 A urna (minigame do dia da eleição)
+No domingo de eleição, antes da apuração, o jogador vota como qualquer eleitor.
+
+**Cena:** fila na seção eleitoral de uma escola do município (ilustração 2D com parallax), mesário confere o documento, cabine.
+
+**Urna:** estilizada e inspirada na urna eletrônica brasileira, sem reproduzir brasões ou marcas oficiais:
+- Teclado numérico 0–9 e as teclas BRANCO, CORRIGE, CONFIRMA, clicáveis e pelo teclado do computador (Enter = confirma, Backspace = corrige).
+- Tela mostra o cargo, os campos de dígitos e, ao completar o número, o retrato, o nome de urna e a sigla do partido do candidato.
+- Número inexistente: aviso de voto nulo, como na urna real. Só o número do partido em eleição proporcional: voto de legenda.
+- Ordem dos cargos igual à real: municipal (vereador, prefeito); geral (deputado federal, deputado estadual/distrital, senador(es), governador, presidente).
+- Som de tecla e som de encerramento originais, inspirados nos da urna, e tela final "FIM".
+
+**Regras no jogo:**
+- O voto do jogador conta como um voto real na simulação daquela eleição.
+- O jogador pode votar em si mesmo, em aliados, em rivais, em branco ou nulo; o voto é secreto e não tem efeito mecânico além do próprio voto, exceto se o jogador escolher "votar diante das câmeras", que gera manchete.
+- Disponível também quando o jogador não é candidato (eleições em que ele apenas vota).
+- Pode ser pulado; nesse caso o jogador escolhe "votar em mim mesmo" ou "não votar" (com eventual manchete de abstenção).
+- Conquista: "Eleito por um voto" quando o voto do jogador decide a última vaga ou a eleição.
+
+**Acessibilidade:** modo com áudio de confirmação dos números, como o recurso de acessibilidade da urna real, e opção de fonte grande.
+
+### 16.4 Cenário "Brasil 2026" (espelho do cenário atual)
+Predefinição adicional na tela "Novo Mundo": o mundo começa com a estrutura política real do Brasil após as eleições de 2026, com **nomes fictícios**.
+
+**O que é espelhado do real:**
+- Número de partidos registrados e federações existentes (quais partidos estão federados entre si).
+- Bancadas de cada partido na Câmara dos Deputados, no Senado, nas Assembleias Legislativas, e o número de governadores e prefeitos por partido.
+- Distribuição do fundo eleitoral e do tempo de TV proporcional às bancadas.
+- Família ideológica de cada partido, com base em classificação acadêmica publicada (pesquisa com especialistas), registrada como fonte.
+- Partido do presidente e composição da base governista e da oposição no início do jogo.
+
+**O que é sempre fictício:**
+- Nomes, siglas, números, cores e logotipos dos partidos (gerados com a lista de bloqueio).
+- Todos os políticos, inclusive presidente, governadores, prefeitos e lideranças.
+- Eventos, escândalos e histórias.
+
+**Dados:** o DataImporter (ou uma ferramenta irmã) gera data/parties/scenarios/brasil_2026.json a partir de dados oficiais (TSE: partidos registrados, federações, resultados de 2026; Câmara e Senado: bancadas). A correspondência entre partido real e partido fictício existe só no pipeline de dados e nunca vai para o jogo; o arquivo final contém apenas os partidos fictícios com seus números.
+
+**Escolha do jogador:** na tela "Novo Mundo", o jogador escolhe "Brasil 2026" ou qualquer outra predefinição/aleatório; o cenário espelhado também pode ser editado depois (renomear, mudar cores, ajustar tamanhos).
+
+**Cenário municipal espelhado (todos os municípios):**
+Base: resultados oficiais das eleições municipais de 2024 (e eleições suplementares posteriores, quando houver), do TSE.
+
+Para cada município com eleição municipal:
+- **Prefeitura:** partido do prefeito e do vice em exercício; se o prefeito foi reeleito em 2024 (segundo mandato consecutivo), ele fica inelegível para prefeito em 2028, como na regra real.
+- **Câmara Municipal:** composição por partido (cadeiras de cada um), base do prefeito e oposição.
+- **Força local dos partidos:** percentual de votos de cada partido em 2024 para vereador (legenda + nominais) e para prefeito, usado como afinidade partidária inicial dos segmentos de eleitores daquele município.
+- **Federações e coligações de 2024:** quais partidos se aliaram na disputa de prefeito, usadas como tendência inicial de alianças locais.
+
+Nível estadual (eleições de 2026): partido do governador e do vice, composição de cada Assembleia Legislativa, senadores por estado.
+
+**Mesmas regras do cenário nacional:** os partidos são os fictícios do cenário "Brasil 2026" (a mesma correspondência real→fictício para todos os níveis); prefeitos, vereadores, governadores e deputados são sempre fictícios, gerados só quando o município ou estado entra em foco (seção 12.5) e respeitando os fatos estruturais acima (partido, se é reeleito, quantas cadeiras cada partido tem).
+
+**Dados:** data/parties/scenarios/brasil_2026/ com um arquivo nacional e 27 arquivos estaduais (municípios agrupados por UF), contendo apenas IDs de partidos fictícios e números. Meta de tamanho: até 5 MB no total.
+
+**Testes:** soma das cadeiras de cada Câmara igual a vagas_vereador do município; todo município com eleição tem prefeito com partido; percentuais de força local somam 100% por município; nenhum nome ou sigla real no arquivo final.
+
+**Limitação conhecida:** trocas de partido de prefeitos e vereadores depois de 2024 não são capturadas (não há base oficial consolidada); o cenário reflete a situação eleita, ajustada por eleições suplementares.
