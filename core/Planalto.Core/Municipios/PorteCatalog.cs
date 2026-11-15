@@ -11,6 +11,9 @@ public sealed class PorteDefinition
 
     /// <summary>População máxima, inclusive; null na última faixa.</summary>
     public long? MaxPopulation { get; init; }
+
+    /// <summary>Dificuldade sugerida na escolha da cidade (GDD 12.4), id de world_options.json.</summary>
+    public required string SuggestedDifficulty { get; init; }
 }
 
 /// <summary>Conteúdo de data/portes.json.</summary>
@@ -19,6 +22,8 @@ public sealed class PorteCatalog : IValidatable
     public required List<PorteDefinition> Portes { get; init; }
 
     /// <summary>Id do porte para a população informada.</summary>
+    public PorteDefinition Get(string id) => Portes.First(p => p.Id == id);
+
     public string Classify(long populacao)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(populacao);

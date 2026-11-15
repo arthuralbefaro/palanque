@@ -117,3 +117,8 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Data:** 2026-11-15 · **Fase:** 2
 - **Decisão:** a carreira começa na semana ISO 1 do ano inicial escolhido (padrão 2028, ano de eleição municipal), com o personagem já filiado ao partido escolhido na criação, antes do prazo de filiação de abril.
 - **Como reverter:** mudar a data em NewGame.
+
+## D-020 — Partido criado pelo jogador
+- **Data:** 2026-11-15 · **Fase:** 2
+- **Decisão:** na aba "Partido" (GDD 14.2 A) o jogador cria o partido já registrado; ele entra no mundo como nanico, sem bancadas nem força local, inclusive no cenário Brasil 2026 (exceção à D-009, porque não há dados locais a manter). Nome e sigla passam pela mesma validação da lista de bloqueio.
+- **Como reverter:** bloquear a criação nos cenários espelhados.

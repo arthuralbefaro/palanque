@@ -199,6 +199,41 @@ public sealed class WorldSetup
         return party;
     }
 
+    /// <summary>
+    /// Partido criado pelo jogador na criação de personagem (GDD 14.2 A). Entra mesmo num cenário espelhado,
+    /// porque não tem dados locais a manter (começa nanico, DECISOES D-020). Null no limite geral de partidos.
+    /// </summary>
+    public PartyDraft? AddPlayerParty(Rng rng)
+    {
+        if (_parties.Count >= MaxParties)
+        {
+            return null;
+        }
+
+        PartyDraft party = NewPlaceholder();
+        _parties.Add(party);
+        FillParty(party, rng, pending: null, includeFamily: true, includeSize: false);
+        party.Size = PartySize.Nanico;
+        PlayerPartyId = party.Id;
+        return party;
+    }
+
+    /// <summary>Id do partido criado pelo jogador, se houver.</summary>
+    public string? PlayerPartyId { get; private set; }
+
+    public bool RemovePlayerParty()
+    {
+        PartyDraft? party = Find(PlayerPartyId ?? "");
+        if (party is null)
+        {
+            return false;
+        }
+
+        _parties.Remove(party);
+        PlayerPartyId = null;
+        return true;
+    }
+
     public bool RemoveParty(string partyId)
     {
         PartyDraft? party = Find(partyId);

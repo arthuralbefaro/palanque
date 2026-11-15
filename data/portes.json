@@ -1,8 +1,8 @@
 {
   "portes": [
-    { "id": "pequeno", "name": "Pequeno", "max_population": 20000 },
-    { "id": "medio", "name": "Médio", "max_population": 100000 },
-    { "id": "grande", "name": "Grande", "max_population": 500000 },
-    { "id": "metropole", "name": "Metrópole" }
+    { "id": "pequeno", "suggested_difficulty": "facil", "name": "Pequeno", "max_population": 20000 },
+    { "id": "medio", "suggested_difficulty": "normal", "name": "Médio", "max_population": 100000 },
+    { "id": "grande", "suggested_difficulty": "normal", "name": "Grande", "max_population": 500000 },
+    { "id": "metropole", "suggested_difficulty": "dificil", "name": "Metrópole" }
   ]
 }

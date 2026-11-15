@@ -103,7 +103,7 @@ public class MunicipioUfFileTests
     {
         var portes = new PorteCatalog
         {
-            Portes = [new() { Id = "pequeno", Name = "P", MaxPopulation = 10_000 }, new() { Id = "medio", Name = "M" }],
+            Portes = [new() { Id = "pequeno", Name = "P", MaxPopulation = 10_000, SuggestedDifficulty = "facil" }, new() { Id = "medio", Name = "M", SuggestedDifficulty = "normal" }],
         };
 
         Assert.Single(File(Valid()).ValidatePortes(portes));

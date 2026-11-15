@@ -1,0 +1,21 @@
+{
+  "templates": [
+    {
+      "masculine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política pelo {partido}.",
+      "feminine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política pelo {partido}.",
+      "neutral": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política pelo {partido}."
+    },
+    {
+      "masculine": "Filho de {cidade} ({uf}), {nome} tem {idade} anos e é conhecido como {profissao}. Cresceu em {origem} e escolheu o {partido} para a primeira campanha.",
+      "feminine": "Filha de {cidade} ({uf}), {nome} tem {idade} anos e é conhecida como {profissao}. Cresceu em {origem} e escolheu o {partido} para a primeira campanha.",
+      "neutral": "Nascide em {cidade} ({uf}), {nome} tem {idade} anos e é conhecide como {profissao}. Cresceu em {origem} e escolheu o {partido} para a primeira campanha."
+    }
+  ],
+  "origin_phrases": {
+    "periferia": "uma família da periferia",
+    "classe_media": "uma família de classe média",
+    "familia_rica": "uma família rica",
+    "zona_rural": "uma família da zona rural",
+    "familia_politica": "uma família de políticos"
+  }
+}
