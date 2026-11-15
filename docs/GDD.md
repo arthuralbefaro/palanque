@@ -795,7 +795,7 @@ Predefinição adicional na tela "Novo Mundo": o mundo começa com a estrutura p
 - Todos os políticos, inclusive presidente, governadores, prefeitos e lideranças.
 - Eventos, escândalos e histórias.
 
-**Dados:** o DataImporter (ou uma ferramenta irmã) gera data/parties/scenarios/brasil_2026.json a partir de dados oficiais (TSE: partidos registrados, federações, resultados de 2026; Câmara e Senado: bancadas). A correspondência entre partido real e partido fictício existe só no pipeline de dados e nunca vai para o jogo; o arquivo final contém apenas os partidos fictícios com seus números.
+**Dados:** o DataImporter (ou uma ferramenta irmã) gera data/parties/scenarios/brasil_2026/ (um arquivo nacional e 27 arquivos estaduais) a partir de dados oficiais (TSE: partidos registrados, federações, resultados de 2026; Câmara e Senado: bancadas). A correspondência entre partido real e partido fictício existe só no pipeline de dados e nunca vai para o jogo; os arquivos finais contêm apenas os partidos fictícios com seus números.
 
 **Escolha do jogador:** na tela "Novo Mundo", o jogador escolhe "Brasil 2026" ou qualquer outra predefinição/aleatório; o cenário espelhado também pode ser editado depois (renomear, mudar cores, ajustar tamanhos).
 
