@@ -45,6 +45,8 @@ public static class DataValidation
         }
 
         reports.AddRange(Electorate.ElectorateContent.Load(dataDirectory, world?.Parties.Themes, dataSet, out _));
+        var people = PeopleContent.Load(dataDirectory, out _);
+        reports.AddRange(people.Where(r => !reports.Any(x => x.File == r.File)));
         reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
         return reports;
     }

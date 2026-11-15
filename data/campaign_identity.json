@@ -1,0 +1,35 @@
+{
+  "fonts": [
+    { "id": "sans_forte", "name": "Sans forte" },
+    { "id": "sans_leve", "name": "Sans leve" },
+    { "id": "condensada", "name": "Condensada" },
+    { "id": "serifada", "name": "Serifada" },
+    { "id": "arredondada", "name": "Arredondada" },
+    { "id": "manuscrita", "name": "Manuscrita" }
+  ],
+  "jingles": [
+    { "id": "forro", "name": "Forró" },
+    { "id": "sertanejo", "name": "Sertanejo" },
+    { "id": "pagode", "name": "Pagode" },
+    { "id": "funk", "name": "Funk" },
+    { "id": "marchinha", "name": "Marchinha" },
+    { "id": "rock", "name": "Rock" }
+  ],
+  "poses": [
+    { "id": "frente", "name": "De frente" },
+    { "id": "tres_quartos", "name": "Três quartos" },
+    { "id": "bracos_cruzados", "name": "Braços cruzados" }
+  ],
+  "slogans": [
+    "Trabalho que se vê.",
+    "{cidade} merece mais.",
+    "Gente como a gente.",
+    "Coragem para mudar.",
+    "Experiência e compromisso.",
+    "Com você, por {cidade}.",
+    "Do bairro para a Câmara.",
+    "Firmeza e diálogo.",
+    "O futuro começa agora.",
+    "Voz de quem trabalha."
+  ]
+}

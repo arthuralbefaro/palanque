@@ -1,0 +1,27 @@
+{
+  "excluded": ["FILHA"],
+  "accents": {
+    "ANDRE": "André", "ANDREIA": "Andréia", "ANTONIA": "Antônia", "ANTONIO": "Antônio", "CICERA": "Cícera", "CICERO": "Cícero",
+    "CLAUDIA": "Cláudia", "DEBORA": "Débora", "FABIO": "Fábio", "FATIMA": "Fátima", "JESSICA": "Jéssica", "JOAO": "João",
+    "JOSE": "José", "JULIA": "Júlia", "LETICIA": "Letícia", "LUCIA": "Lúcia", "LUIS": "Luís", "MARCIA": "Márcia",
+    "PATRICIA": "Patrícia", "QUITERIA": "Quitéria", "SEBASTIAO": "Sebastião", "SONIA": "Sônia", "VITORIA": "Vitória"
+  },
+  "surnames": {
+    "Silva": 30, "Santos": 22, "Oliveira": 16, "Souza": 15, "Rodrigues": 12, "Ferreira": 11, "Alves": 11, "Pereira": 11,
+    "Lima": 10, "Gomes": 9, "Costa": 9, "Ribeiro": 8, "Martins": 8, "Carvalho": 8, "Almeida": 7, "Lopes": 7,
+    "Soares": 7, "Fernandes": 7, "Vieira": 6, "Barbosa": 6, "Rocha": 6, "Dias": 6, "Nascimento": 6, "Andrade": 5,
+    "Moreira": 5, "Nunes": 5, "Marques": 5, "Machado": 5, "Mendes": 5, "Freitas": 5, "Cardoso": 4, "Ramos": 4,
+    "Gonçalves": 4, "Santana": 4, "Teixeira": 4, "Araújo": 4, "Cavalcante": 3, "Monteiro": 3, "Moura": 3, "Correia": 3,
+    "Pinto": 3, "Batista": 3, "Campos": 3, "Melo": 3, "Barros": 3, "Reis": 3, "Castro": 3, "Cunha": 2,
+    "Medeiros": 2, "Bezerra": 2, "Farias": 2, "Siqueira": 2, "Tavares": 2, "Brito": 2, "Pacheco": 2, "Xavier": 2
+  },
+  "titles": {
+    "medico": { "masculine": "Dr.", "feminine": "Dra.", "neutral": "Dre." },
+    "advogado": { "masculine": "Dr.", "feminine": "Dra.", "neutral": "Dre." },
+    "professor": { "masculine": "Professor", "feminine": "Professora", "neutral": "Professore" },
+    "lider_religioso": { "masculine": "Pastor", "feminine": "Pastora", "neutral": "Pastore" },
+    "policial": { "masculine": "Sargento", "feminine": "Sargento", "neutral": "Sargento" },
+    "sindicalista": { "masculine": "Companheiro", "feminine": "Companheira", "neutral": "Companheire" }
+  },
+  "ballot_patterns": ["{prenome}", "{prenome} {sobrenome}", "{prenome} {sobrenome}", "{titulo} {prenome}", "{prenome} do Povo", "{prenome} {inicial}."]
+}

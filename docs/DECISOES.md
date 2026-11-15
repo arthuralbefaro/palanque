@@ -102,3 +102,18 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Decisão:** composição por cor ou raça de cada UF do Censo 2022 (SIDRA 9605, importada por `dotnet run --project tools/Planalto.DataImporter -- aparencia` para data/appearance/cor_raca_uf.json). Cada categoria declarada tem uma faixa de pesos sobre os 24 tons da paleta (palettes.json, `skin_by_cor_raca`); o tom sorteado mistura as faixas pela composição da UF. A correspondência categoria → faixa de tom é parâmetro de jogo (cor ou raça é autodeclaração, não tom de pele), e aparência nunca altera votos nem atributos. Peças e acessórios usam pesos por gênero, sem proibir nenhuma combinação.
 - **Alternativas:** pesos uniformes.
 - **Como reverter:** editar `skin_by_cor_raca` ou passar `uf: null` ao gerador (usa o total do Brasil).
+
+## D-017 — Nomes de NPCs
+- **Data:** 2026-11-15 · **Fase:** 2
+- **Decisão:** prenomes = os 20 mais frequentes por sexo em cada UF e no Brasil, pela API de nomes do IBGE (Censo 2010), importados por `dotnet run --project tools/Planalto.DataImporter -- nomes`, sorteados pela frequência; acentos restaurados por mapa em data/names/names.json (a API devolve sem acento). Sobrenomes: lista de sobrenomes frequentes com pesos (conteúdo do jogo; o IBGE não publica ranking de sobrenomes). Pessoas não binárias sorteiam entre as duas listas. Nome de urna por padrões de names.json, com título de profissão por gênero.
+- **Como reverter:** editar names.json ou rodar o importador de novo.
+
+## D-018 — Construção das telas e textos
+- **Data:** 2026-11-15 · **Fase:** 2
+- **Decisão:** as telas são montadas em C# a partir de cenas mínimas (um nó raiz com script), usando o tema base; os textos ao jogador passam por `Tr()` com o próprio texto em PT-BR como chave, para a tradução futura entrar por CSV sem tocar no código (GDD 8.5). Textos que dependem do gênero do personagem vêm de GenderedText no Core. Os dados de data/ são lidos pelo Core a partir do caminho global de res://data (vale no editor e nas execuções de desenvolvimento; o empacotamento para exportação fica para a Fase 10).
+- **Como reverter:** converter telas para .tscn editáveis quando a arte final chegar.
+
+## D-019 — Início do jogo
+- **Data:** 2026-11-15 · **Fase:** 2
+- **Decisão:** a carreira começa na semana ISO 1 do ano inicial escolhido (padrão 2028, ano de eleição municipal), com o personagem já filiado ao partido escolhido na criação, antes do prazo de filiação de abril.
+- **Como reverter:** mudar a data em NewGame.

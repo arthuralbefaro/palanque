@@ -1,0 +1,13 @@
+{
+  "origins": [
+    { "id": "periferia", "name": { "masculine": "Periferia", "feminine": "Periferia", "neutral": "Periferia" }, "description": "Pouco dinheiro, rede comunitária forte.", "money": 3000, "political_capital": 5, "recognition": 6, "attribute_modifiers": { "carisma": 4 } },
+    { "id": "classe_media", "name": { "masculine": "Classe média", "feminine": "Classe média", "neutral": "Classe média" }, "description": "Recursos moderados e contatos profissionais.", "money": 12000, "political_capital": 5, "recognition": 3, "attribute_modifiers": { "gestao": 3 } },
+    { "id": "familia_rica", "name": { "masculine": "Família rica", "feminine": "Família rica", "neutral": "Família rica" }, "description": "Muito dinheiro, desconfiança do eleitor popular.", "money": 60000, "political_capital": 8, "recognition": 2, "attribute_modifiers": { "articulacao": 3 } },
+    { "id": "zona_rural", "name": { "masculine": "Zona rural", "feminine": "Zona rural", "neutral": "Zona rural" }, "description": "Base forte no interior, pouca presença na cidade.", "money": 6000, "political_capital": 5, "recognition": 5, "attribute_modifiers": { "integridade": 3 } },
+    { "id": "familia_politica", "name": { "masculine": "Família de políticos", "feminine": "Família de políticos", "neutral": "Família de políticos" }, "description": "Sobrenome conhecido, padrinhos e cobranças de lealdade.", "money": 25000, "political_capital": 20, "recognition": 10, "attribute_modifiers": { "articulacao": 5, "integridade": -3 } }
+  ],
+  "starting_attributes": { "base": 40, "spread": 10 },
+  "starting_age": { "min": 25, "max": 45 },
+  "starting_energy": 100,
+  "starting_health": 85
+}
