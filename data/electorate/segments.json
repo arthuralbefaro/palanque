@@ -1,0 +1,55 @@
+{
+  "dimensions": [
+    {
+      "id": "zona",
+      "profile_block": "situacao",
+      "excluded_categories": [],
+      "groups": [
+        { "id": "urbana", "name": "Urbana", "categories": ["urbana"], "ideology": { "economic": 0, "social": -5 }, "turnout": 0.01, "themes": { "seguranca": 1, "transparencia": 0.5 } },
+        { "id": "rural", "name": "Rural", "categories": ["rural"], "ideology": { "economic": 5, "social": 10 }, "turnout": -0.02, "themes": { "agronegocio": 2, "meio_ambiente": 1 } }
+      ]
+    },
+    {
+      "id": "idade",
+      "profile_block": "idade",
+      "excluded_categories": ["0_15"],
+      "groups": [
+        { "id": "idade_16_17", "name": "16 e 17 anos", "categories": ["16_17"], "facultative": true, "ideology": { "economic": -5, "social": -15 }, "turnout": 0, "themes": { "educacao": 1.5, "meio_ambiente": 1 } },
+        { "id": "idade_18_34", "name": "18 a 34 anos", "categories": ["18_24", "25_34"], "ideology": { "economic": -3, "social": -10 }, "turnout": -0.03, "themes": { "educacao": 1, "meio_ambiente": 0.5, "seguranca": 0.5 } },
+        { "id": "idade_35_59", "name": "35 a 59 anos", "categories": ["35_44", "45_59"], "ideology": { "economic": 0, "social": 0 }, "turnout": 0.02, "themes": { "impostos": 1, "seguranca": 1, "saude": 0.5 } },
+        { "id": "idade_60_69", "name": "60 a 69 anos", "categories": ["60_69"], "ideology": { "economic": 3, "social": 8 }, "turnout": 0.03, "themes": { "saude": 2, "programas_sociais": 1 } },
+        { "id": "idade_70_mais", "name": "70 anos ou mais", "categories": ["70_mais"], "facultative": true, "ideology": { "economic": 3, "social": 12 }, "turnout": 0, "themes": { "saude": 2.5, "programas_sociais": 1 } }
+      ]
+    },
+    {
+      "id": "renda",
+      "profile_block": "renda",
+      "excluded_categories": [],
+      "groups": [
+        { "id": "baixa", "name": "Até 1 salário mínimo", "categories": ["sem_rendimento", "ate_1_4_sm", "1_4_a_1_2_sm", "1_2_a_1_sm"], "ideology": { "economic": -15, "social": 5 }, "turnout": -0.03, "themes": { "programas_sociais": 2, "saude": 1.5 } },
+        { "id": "media", "name": "De 1 a 3 salários mínimos", "categories": ["1_a_2_sm", "2_a_3_sm"], "ideology": { "economic": 0, "social": 0 }, "turnout": 0, "themes": { "seguranca": 1, "impostos": 1, "educacao": 0.5 } },
+        { "id": "alta", "name": "Mais de 3 salários mínimos", "categories": ["3_a_5_sm", "5_a_10_sm", "10_a_15_sm", "15_a_20_sm", "mais_de_20_sm"], "ideology": { "economic": 20, "social": -5 }, "turnout": 0.03, "themes": { "impostos": 1.5, "privatizacoes": 1 } }
+      ]
+    },
+    {
+      "id": "religiao",
+      "profile_block": "religiao",
+      "excluded_categories": ["nao_sabe", "sem_declaracao"],
+      "groups": [
+        { "id": "catolica", "name": "Católica", "categories": ["catolica"], "ideology": { "economic": 0, "social": 5 }, "turnout": 0, "themes": { "programas_sociais": 0.5 } },
+        { "id": "evangelica", "name": "Evangélica", "categories": ["evangelica"], "ideology": { "economic": 5, "social": 25 }, "turnout": 0.01, "themes": { "seguranca": 1, "educacao": 0.5 } },
+        { "id": "outras", "name": "Outras religiões", "categories": ["espirita", "umbanda_candomble", "tradicoes_indigenas", "outras"], "ideology": { "economic": -5, "social": -10 }, "turnout": 0, "themes": { "transparencia": 0.5 } },
+        { "id": "sem_religiao", "name": "Sem religião", "categories": ["sem_religiao"], "ideology": { "economic": -5, "social": -20 }, "turnout": -0.01, "themes": { "meio_ambiente": 0.5 } }
+      ]
+    },
+    {
+      "id": "escolaridade",
+      "profile_block": "escolaridade",
+      "excluded_categories": [],
+      "groups": [
+        { "id": "fundamental", "name": "Até o fundamental", "categories": ["sem_instrucao_fundamental_incompleto", "fundamental_completo_medio_incompleto"], "ideology": { "economic": -5, "social": 8 }, "turnout": -0.02, "themes": { "saude": 1 } },
+        { "id": "medio_superior", "name": "Médio ou mais", "categories": ["medio_completo_superior_incompleto", "superior_completo"], "ideology": { "economic": 3, "social": -8 }, "turnout": 0.03, "themes": { "educacao": 1, "transparencia": 1 } }
+      ]
+    }
+  ]
+}

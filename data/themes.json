@@ -1,14 +1,14 @@
 {
   "themes": [
-    { "id": "seguranca", "name": "Segurança", "negative_pole": "Prevenção e políticas sociais", "positive_pole": "Policiamento ostensivo e penas mais duras" },
-    { "id": "saude", "name": "Saúde", "negative_pole": "Rede pública ampliada", "positive_pole": "Parcerias privadas e planos de saúde" },
-    { "id": "educacao", "name": "Educação", "negative_pole": "Rede pública ampliada", "positive_pole": "Vouchers, conveniadas e gestão privada" },
-    { "id": "meio_ambiente", "name": "Meio ambiente", "negative_pole": "Proteção ambiental mais rígida", "positive_pole": "Licenciamento mais rápido para obras e produção" },
-    { "id": "agronegocio", "name": "Agronegócio", "negative_pole": "Reforma agrária e agricultura familiar", "positive_pole": "Apoio à grande produção rural" },
-    { "id": "impostos", "name": "Impostos", "negative_pole": "Mais tributação sobre renda alta e patrimônio", "positive_pole": "Redução da carga tributária" },
-    { "id": "programas_sociais", "name": "Programas sociais", "negative_pole": "Ampliação dos programas", "positive_pole": "Redução e focalização" },
-    { "id": "armas", "name": "Armas", "negative_pole": "Mais restrição", "positive_pole": "Acesso facilitado" },
-    { "id": "privatizacoes", "name": "Privatizações", "negative_pole": "Estatização", "positive_pole": "Privatização" },
-    { "id": "transparencia", "name": "Transparência", "negative_pole": "Mais autonomia aos gestores", "positive_pole": "Mais controles e fiscalização" }
+    { "id": "seguranca", "axis": "social", "name": "Segurança", "negative_pole": "Prevenção e políticas sociais", "positive_pole": "Policiamento ostensivo e penas mais duras" },
+    { "id": "saude", "axis": "economic", "name": "Saúde", "negative_pole": "Rede pública ampliada", "positive_pole": "Parcerias privadas e planos de saúde" },
+    { "id": "educacao", "axis": "economic", "name": "Educação", "negative_pole": "Rede pública ampliada", "positive_pole": "Vouchers, conveniadas e gestão privada" },
+    { "id": "meio_ambiente", "axis": "economic", "name": "Meio ambiente", "negative_pole": "Proteção ambiental mais rígida", "positive_pole": "Licenciamento mais rápido para obras e produção" },
+    { "id": "agronegocio", "axis": "economic", "name": "Agronegócio", "negative_pole": "Reforma agrária e agricultura familiar", "positive_pole": "Apoio à grande produção rural" },
+    { "id": "impostos", "axis": "economic", "name": "Impostos", "negative_pole": "Mais tributação sobre renda alta e patrimônio", "positive_pole": "Redução da carga tributária" },
+    { "id": "programas_sociais", "axis": "economic", "name": "Programas sociais", "negative_pole": "Ampliação dos programas", "positive_pole": "Redução e focalização" },
+    { "id": "armas", "axis": "social", "name": "Armas", "negative_pole": "Mais restrição", "positive_pole": "Acesso facilitado" },
+    { "id": "privatizacoes", "axis": "economic", "name": "Privatizações", "negative_pole": "Estatização", "positive_pole": "Privatização" },
+    { "id": "transparencia", "axis": "none", "name": "Transparência", "negative_pole": "Mais autonomia aos gestores", "positive_pole": "Mais controles e fiscalização" }
   ]
 }

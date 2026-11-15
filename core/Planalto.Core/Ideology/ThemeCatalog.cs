@@ -2,6 +2,16 @@ using Planalto.Core.Data;
 
 namespace Planalto.Core.Ideology;
 
+/// <summary>Eixo ideológico a que o tema se liga, para derivar a posição preferida a partir dos eixos.</summary>
+public enum ThemeAxis
+{
+    Economic,
+    Social,
+
+    /// <summary>Tema sem lado (ex.: transparência): a preferência é a mesma em todo o espectro.</summary>
+    None,
+}
+
 /// <summary>Tema de posição (GDD 5.2). -2 é o polo negativo, +2 o positivo.</summary>
 public sealed class ThemeDefinition
 {
@@ -9,6 +19,8 @@ public sealed class ThemeDefinition
     public const int MaxPosition = 2;
 
     public required string Id { get; init; }
+
+    public required ThemeAxis Axis { get; init; }
 
     public required string Name { get; init; }
 

@@ -44,6 +44,7 @@ public static class DataValidation
             reports.Add(new DataFileReport(scenario, loaded?.States.Values.Sum(s => s.Municipios.Count) ?? 0, scenarioErrors));
         }
 
+        reports.AddRange(Electorate.ElectorateContent.Load(dataDirectory, world?.Parties.Themes, dataSet, out _));
         return reports;
     }
 

@@ -1,0 +1,21 @@
+{
+  "weights": { "ideology": 1.5, "themes": 1.5, "recognition": 2.5, "image": 1.5, "party": 2.0, "support": 1.0 },
+  "temperature": 1.3,
+  "noise_sd": 0.08,
+  "base_turnout": 0.80,
+  "facultative_turnout_factor": 0.45,
+  "blank_null_base": 0.05,
+  "blank_null_low_utility": 0.12,
+  "blank_null_max": 0.5,
+  "theme_axis_divisor": 40,
+  "affinity_proximity_scale": 60,
+  "affinity_ipf_iterations": 60,
+  "random_world_center_sd": 12,
+  "random_world_strength_noise_sd": 0.35,
+  "poll": {
+    "confidence_z": 1.96,
+    "undecided_at_campaign_start": 0.25,
+    "undecided_at_election": 0.04,
+    "campaign_weeks": 12
+  }
+}
