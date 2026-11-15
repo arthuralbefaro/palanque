@@ -75,7 +75,8 @@ public static class ElectionRules
         long validVotes = tallies.Sum(t => t.Votes);
         if (validVotes == 0)
         {
-            return new ProportionalResult(0, 0, tallies.ToDictionary(t => t.PartyId, _ => 0L), [], seats);
+            return new ProportionalResult(
+                0, 0, tallies.ToDictionary(t => t.PartyId, _ => 0L), [], seats, tallies.ToDictionary(t => t.PartyId, _ => 0));
         }
 
         long quotient = ElectoralQuotient(validVotes, seats);
@@ -86,11 +87,12 @@ public static class ElectionRules
         var partyQuotients = new Dictionary<string, long>(StringComparer.Ordinal);
         foreach (PartyTally tally in tallies.OrderByDescending(t => t.Votes).ThenBy(t => t.PartyId, StringComparer.Ordinal))
         {
-            long partyQuotient = tally.Votes / quotient;
+            // Quociente zero só ocorre com menos votos válidos que meia vaga; aí ninguém tem QP.
+            long partyQuotient = quotient == 0 ? 0 : tally.Votes / quotient;
             partyQuotients[tally.PartyId] = partyQuotient;
 
-            // Conforme a regra do TSE para o cálculo das médias, as vagas do quociente partidário
-            // contam no divisor mesmo quando não preenchidas.
+            // A média usa votos ÷ (quociente partidário + 1), mesmo quando parte das vagas do QP
+            // não pôde ser preenchida pela votação nominal mínima.
             tally.SeatsObtained = (int)Math.Min(partyQuotient, seats);
 
             for (long i = 0; i < partyQuotient && elected.Count < seats; i++)
@@ -105,40 +107,54 @@ public static class ElectionRules
             }
         }
 
-        // 2ª etapa (art. 109, I, II e §2º): maiores médias entre partidos e candidatos com a cláusula.
-        while (elected.Count < seats)
-        {
-            PartyTally? winner = BestAverage(tallies, t =>
-                MeetsPercent(t.Votes, quotient, config.PartyRemainderMinimumPercent)
-                && MeetsPercent(t.NextCandidate!.Votes, quotient, config.CandidateRemainderMinimumPercent));
+        // 2ª etapa (art. 109, I, II e §2º): disputam os partidos com a cláusula. Quem tem a maior média
+        // obtém a sobra; se não tiver candidato com a votação mínima, a sobra conta no divisor dele
+        // mesmo não preenchida e a vaga volta para a disputa.
+        List<PartyTally> remainderParties = tallies
+            .Where(t => MeetsPercent(t.Votes, quotient, config.PartyRemainderMinimumPercent))
+            .ToList();
+        bool CanFillRemainder(PartyTally t) =>
+            t.NextCandidate is { } next && MeetsPercent(next.Votes, quotient, config.CandidateRemainderMinimumPercent);
 
-            if (winner is null)
-            {
-                break;
-            }
-
-            winner.SeatsObtained++;
-            elected.Add(winner.Elect(SeatStage.Remainder));
-        }
+        DistributeRemainders(remainderParties, CanFillRemainder, SeatStage.Remainder, seats, elected);
 
         // 3ª etapa (art. 109, III, com a decisão do STF): sem piso individual; o partido ocupa a vaga
         // com o seu mais votado ainda não eleito.
-        while (elected.Count < seats)
+        List<PartyTally> finalParties = config.FinalStageOpenToAllParties ? tallies : remainderParties;
+        DistributeRemainders(finalParties, t => t.NextCandidate is not null, SeatStage.FinalRemainder, seats, elected);
+
+        return new ProportionalResult(
+            validVotes,
+            quotient,
+            partyQuotients,
+            elected,
+            seats - elected.Count,
+            tallies.ToDictionary(t => t.PartyId, t => t.UnfilledRemainders, StringComparer.Ordinal));
+    }
+
+    private static void DistributeRemainders(
+        List<PartyTally> parties,
+        Func<PartyTally, bool> canFill,
+        SeatStage stage,
+        int seats,
+        List<ElectedCandidate> elected)
+    {
+        // Só continua enquanto algum partido capaz de ocupar a vaga tem média positiva; os demais
+        // perdem média a cada sobra não preenchida, então o laço sempre termina.
+        while (elected.Count < seats && parties.Any(t => t.Votes > 0 && canFill(t)))
         {
-            PartyTally? winner = BestAverage(tallies, t =>
-                config.FinalStageOpenToAllParties
-                || MeetsPercent(t.Votes, quotient, config.PartyRemainderMinimumPercent));
-
-            if (winner is null)
-            {
-                break;
-            }
-
+            PartyTally winner = BestAverage(parties);
             winner.SeatsObtained++;
-            elected.Add(winner.Elect(SeatStage.FinalRemainder));
-        }
 
-        return new ProportionalResult(validVotes, quotient, partyQuotients, elected, seats - elected.Count);
+            if (canFill(winner))
+            {
+                elected.Add(winner.Elect(stage));
+            }
+            else
+            {
+                winner.UnfilledRemainders++;
+            }
+        }
     }
 
     /// <summary>
@@ -194,20 +210,15 @@ public static class ElectionRules
     private static bool MeetsPercent(long votes, long quotient, int percent) => votes * 100 >= quotient * percent;
 
     /// <summary>
-    /// Partido com a maior média (votos ÷ vagas obtidas + 1) entre os que ainda têm candidato e
-    /// passam no filtro. Empate de médias: maior votação do partido; depois, candidato mais idoso.
+    /// Partido com a maior média: votos ÷ (QP + sobras já obtidas, preenchidas ou não, + 1).
+    /// Empate de médias: maior votação do partido; depois, candidato mais idoso.
     /// </summary>
-    private static PartyTally? BestAverage(List<PartyTally> tallies, Func<PartyTally, bool> eligible)
+    private static PartyTally BestAverage(List<PartyTally> tallies)
     {
-        PartyTally? best = null;
-        foreach (PartyTally tally in tallies)
+        PartyTally best = tallies[0];
+        foreach (PartyTally tally in tallies.Skip(1))
         {
-            if (tally.NextCandidate is null || !eligible(tally))
-            {
-                continue;
-            }
-
-            if (best is null || Compare(tally, best) > 0)
+            if (Compare(tally, best) > 0)
             {
                 best = tally;
             }
@@ -231,8 +242,16 @@ public static class ElectionRules
             return byVotes;
         }
 
-        int byAge = b.NextCandidate!.BirthDate.CompareTo(a.NextCandidate!.BirthDate);
-        return byAge != 0 ? byAge : string.CompareOrdinal(b.PartyId, a.PartyId);
+        if (a.NextCandidate is { } nextA && b.NextCandidate is { } nextB)
+        {
+            int byAge = nextB.BirthDate.CompareTo(nextA.BirthDate);
+            if (byAge != 0)
+            {
+                return byAge;
+            }
+        }
+
+        return string.CompareOrdinal(b.PartyId, a.PartyId);
     }
 
     /// <summary>Ordem de votação nominal; empate favorece o mais idoso (Código Eleitoral, art. 110).</summary>
@@ -293,8 +312,10 @@ public static class ElectionRules
 
         public long Votes { get; } = list.TotalVotes;
 
-        /// <summary>Vagas que contam no divisor da média: quociente partidário mais sobras ganhas.</summary>
+        /// <summary>Vagas que contam no divisor da média: QP mais sobras obtidas, preenchidas ou não.</summary>
         public int SeatsObtained { get; set; }
+
+        public int UnfilledRemainders { get; set; }
 
         public CandidateVotes? NextCandidate => _nextIndex < _ranked.Count ? _ranked[_nextIndex] : null;
 

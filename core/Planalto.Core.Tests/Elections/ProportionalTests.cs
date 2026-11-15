@@ -152,6 +152,56 @@ public class ProportionalTests
     }
 
     [Fact]
+    public void SobraObtidaENaoPreenchida_ContaNoDivisorDasMediasSeguintes()
+    {
+        // 4 vagas. Válidos = 3200 + 2500 + 1400 = 7100. QE = 1775. 10% = 177,5; 20% = 355; 80% = 1420.
+        // QP: A = 3200/1775 = 1,80 → 1; B = 2500/1775 = 1,41 → 1; C = 0. 1ª etapa: a1, b1. Restam 2.
+        // 2ª etapa (C fica de fora: 1400 < 1420):
+        //   A = 3200/(1+1) = 1600; B = 2500/(1+1) = 1250 → A obtém a sobra, mas a2 tem 200 < 355:
+        //   sobra obtida e NÃO preenchida; o divisor de A passa a 1+1+1 = 3.
+        //   A = 3200/3 = 1066,7; B = 1250 → B elege b2 (700 ≥ 355).
+        //   Ninguém mais tem candidato com 20% → 3ª etapa.
+        // 3ª etapa: A = 3200/3 = 1066,7 (contando a sobra não preenchida); B = 2500/3 = 833,3; C = 1400/1 = 1400
+        //   → C elege c1. Se a sobra não preenchida não contasse, A teria 3200/2 = 1600 e elegeria a2.
+        var parties = new[]
+        {
+            Party("A", 0, ("a1", 3000), ("a2", 200)),
+            Party("B", 0, ("b1", 1800), ("b2", 700)),
+            Party("C", 0, ("c1", 1300), ("c2", 100)),
+        };
+
+        ProportionalResult result = ElectionRules.Proportional(4, parties);
+
+        Assert.Equal(1775, result.ElectoralQuotient);
+        Assert.Equal(1, result.UnfilledRemainders["A"]);
+        Assert.Equal(["a1", "b1", "b2", "c1"], result.Elected.Select(e => e.CandidateId));
+        Assert.Equal(SeatStage.FinalRemainder, result.Elected.Single(e => e.CandidateId == "c1").Stage);
+        Assert.False(result.IsElected("a2"));
+    }
+
+    [Fact]
+    public void QuocientePartidarioNaoPreenchido_ContaNoDivisor()
+    {
+        // Mesmo caso de CandidatoAbaixoDeDezPorCento: A tem QP = 2, mas só elege a1.
+        // Na 2ª etapa a média de A é 6050/(2+1) = 2016,7, e não 6050/(1+1): o QP inteiro conta.
+        // A vence as médias sem candidato com 20% e acumula sobras não preenchidas:
+        //   2016,7 > 1475 (B) → não preenchida; 6050/4 = 1512,5 > 1475 → não preenchida;
+        //   6050/5 = 1210 < 1475 → b2; 1210 > 2950/3 = 983,3 → não preenchida;
+        //   6050/6 = 1008,3 > 983,3 → não preenchida; 6050/7 = 864,3 < 983,3 → b3. Total: 4.
+        var parties = new[]
+        {
+            Party("A", 1000, ("a1", 5000), ("a2", 50)),
+            Party("B", 0, ("b1", 1500), ("b2", 900), ("b3", 550)),
+            Party("C", 0, ("c1", 900), ("c2", 100)),
+        };
+
+        ProportionalResult result = ElectionRules.Proportional(4, parties);
+
+        Assert.Equal(4, result.UnfilledRemainders["A"]);
+        Assert.Equal(["a1", "b1", "b2", "b3"], result.Elected.Select(e => e.CandidateId));
+    }
+
+    [Fact]
     public void EmpateDeMedias_FavoreceOPartidoMaisVotado()
     {
         // 2 vagas. Válidos = 2000 + 1000 = 3000. QE = 1500. 20% = 300; 80% = 1200.

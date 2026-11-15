@@ -28,7 +28,8 @@ public sealed record ProportionalResult(
     long ElectoralQuotient,
     IReadOnlyDictionary<string, long> PartyQuotients,
     IReadOnlyList<ElectedCandidate> Elected,
-    int VacantSeats)
+    int VacantSeats,
+    IReadOnlyDictionary<string, int> UnfilledRemainders)
 {
     public int SeatsOf(string partyId) => Elected.Count(e => e.PartyId == partyId);
 
