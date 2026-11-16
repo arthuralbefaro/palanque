@@ -158,6 +158,7 @@ public partial class HubScreen
         _mapMode = !gov ? "forca" : kind == GovKind.Prefeito ? "obras" : "base";
         _running = false;
         _notice = null;
+        RememberDeadlines();
         LoadZones();
     }
 

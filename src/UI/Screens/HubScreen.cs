@@ -183,7 +183,7 @@ public partial class HubScreen : Control
         _map = _mapArea.Add(new ZoneMapView());
         _map.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         _map.ZoneClicked += OnZoneClicked;
-        _map.MarkerClicked += id => OpenAreaSheet(Sheet.Rival, id);
+        _map.MarkerClicked += id => { if (!_gov) { OpenAreaSheet(Sheet.Rival, id); } };
         _map.HoverText = ZoneTooltip;
         _modes = _mapArea.Add(new HBoxContainer { Position = new Vector2(16, 16) });
         _modes.AddThemeConstantOverride("separation", 8);
@@ -221,6 +221,14 @@ public partial class HubScreen : Control
     /// <summary>Guarda os ataques e as ofertas com prazo já avisados, para a pausa valer só para os novos.</summary>
     private void RememberDeadlines()
     {
+        // Fora de campanha (mandato, prefeitura, entressafra) não há motor de campanha nem ataque ou oferta com prazo.
+        if (_gov || _engine is null)
+        {
+            _knownAttacks = [];
+            _knownOffers = [];
+            return;
+        }
+
         _knownAttacks = _engine.PendingAttacks().Select(a => a.Attack.Id).ToHashSet(StringComparer.Ordinal);
         _knownOffers = _engine.Finance.Offers.Select(o => o.Id).ToHashSet(StringComparer.Ordinal);
     }
