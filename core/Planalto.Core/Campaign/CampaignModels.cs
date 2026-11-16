@@ -188,6 +188,9 @@ public sealed class CampaignState
     /// <summary>Verba por canal: plano semanal, o que está pago e o último resultado (GDD 17.8).</summary>
     public BudgetState Budget { get; init; } = new();
 
+    /// <summary>Plataforma: posições assumidas, bandeiras e posição conhecida por tema (GDD 17.9).</summary>
+    public PlatformState Platform { get; init; } = new();
+
     public List<Headline> Headlines { get; init; } = [];
 
     public List<PollRecord> Polls { get; init; } = [];

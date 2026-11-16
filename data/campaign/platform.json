@@ -1,0 +1,29 @@
+{
+  "note": "Plataforma (GDD 17.9): posições do jogador nos temas (o padrão é a do partido), até 'bandeiras_max' bandeiras e a posição conhecida de cada tema (0 a 1), que sobe quando o jogador fala do tema num compromisso de 'falas'. O eleitor que não conhece a posição presume a do partido. Incoerência de uma mudança = tamanho do salto × posição conhecida × (1 + mudanças nas últimas 'janela_mudancas_semanas' semanas). Tudo aqui é parâmetro de jogo, ajustado pelo BalanceSim.",
+  "regras": {
+    "bandeiras_max": 3,
+    "bandeira_bonus": 1.5,
+    "bandeira_ganho_semanal": 0.01,
+    "conhecida_por_mudanca": 0.1,
+    "janela_mudancas_semanas": 52,
+    "imagem_por_incoerencia": 0.03,
+    "pontos_lideranca_por_incoerencia": -6
+  },
+  "falas": { "entrevista": 0.15, "gravacao": 0.1, "comicio": 0.12 },
+  "textos": {
+    "anuncio": "Anúncio da campanha",
+    "fala": "{compromisso}",
+    "fala_zona": "{compromisso} em {zona}",
+    "mudou_posicao": "Mudou de posição em {tema}",
+    "feed_posicao": "Você assumiu posição em {tema}: {posicao}",
+    "previsao_salto": "{tema}: de {de} para {para} (salto de {salto}). Hoje {conhecida} dos eleitores conhecem a sua posição; os demais presumem a do partido ({partido}).",
+    "previsao_incoerencia": "Incoerência {incoerencia} = salto {salto} × posição conhecida {conhecida} × (1 + {mudancas} mudança(s) nas últimas {semanas} semanas): imagem {imagem}.",
+    "previsao_sem_custo": "Quase ninguém conhece a sua posição nesse tema: mudar agora não custa imagem.",
+    "previsao_cidade": "Na cidade: de {min} a {max} ponto(s) percentual(is) dos votos válidos (de {min_pct}% a {max_pct}% dos seus votos), conforme a posição ficar conhecida.",
+    "previsao_grupo": "{sinal} entre eleitores do grupo {alvo}: {valor} ponto(s) ({pct}% dos seus votos ali).",
+    "previsao_zona": "{sinal} em {alvo}: {valor} ponto(s) ({pct}% dos seus votos ali).",
+    "previsao_liderancas": "{quantidade} liderança(s) com interesse no tema vão lembrar da mudança.",
+    "previsao_livro": "A nova posição entra no Livro de compromissos, com a data.",
+    "previsao_bandeiras": "Bandeiras: {temas}. A posição nesses temas fica conhecida mais depressa, também por quem não gosta dela."
+  }
+}

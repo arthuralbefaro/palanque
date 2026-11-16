@@ -201,6 +201,11 @@ public sealed class CampaignContent
     /// <summary>Verba por canal (GDD 17.8).</summary>
     public required ChannelCatalog Channels { get; init; }
 
+    /// <summary>Plataforma e promessas locais (GDD 17.9).</summary>
+    public required PlatformCatalog Platform { get; init; }
+
+    public required PromiseCatalog Promises { get; init; }
+
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, out CampaignContent? content)
     {
         var config = JsonData.LoadFile<CampaignConfig>(Path.Combine(dataDirectory, ConfigFile));
@@ -211,8 +216,12 @@ public sealed class CampaignContent
         var people = JsonData.LoadFile<People.PeopleConfig>(Path.Combine(dataDirectory, Planalto.Core.People.PeopleConfig.File));
         var staff = JsonData.LoadFile<StaffCatalog>(Path.Combine(dataDirectory, StaffCatalog.File));
         var channels = JsonData.LoadFile<ChannelCatalog>(Path.Combine(dataDirectory, ChannelCatalog.File));
+        var platform = JsonData.LoadFile<PlatformCatalog>(Path.Combine(dataDirectory, PlatformCatalog.File));
+        var promises = JsonData.LoadFile<PromiseCatalog>(Path.Combine(dataDirectory, PromiseCatalog.File));
         var reports = new List<DataFileReport>
         {
+            new(PlatformCatalog.File, platform.Value?.Falas.Count ?? 0, platform.Errors),
+            new(PromiseCatalog.File, promises.Value?.Promessas.Count ?? 0, promises.Errors),
             new(ChannelCatalog.File, channels.Value?.Canais.Count ?? 0, channels.Errors),
             new(StaffCatalog.File, staff.Value?.Funcoes.Count ?? 0, staff.Errors),
             new(ConfigFile, 1, config.Errors),
@@ -223,7 +232,7 @@ public sealed class CampaignContent
             new(Planalto.Core.People.PeopleConfig.File, 1, people.Errors),
         };
         content = reports.All(r => r.Errors.Count == 0)
-            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value!, Staff = staff.Value!, Channels = channels.Value! }
+            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value!, Staff = staff.Value!, Channels = channels.Value!, Platform = platform.Value!, Promises = promises.Value! }
             : null;
         return reports;
     }

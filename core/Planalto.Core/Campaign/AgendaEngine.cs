@@ -92,6 +92,12 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.ForaDoPrazo;
         }
 
+        // Tema tratado: só nos compromissos em que o candidato fala (entrevista, gravação, comício), e em pessoa.
+        if (r.Tema is not null && (r.Delegado || ThemeGainBase(r.Type, r.Tema) <= 0))
+        {
+            return ScheduleFailure.TemaInvalido;
+        }
+
         if (r.Delegado)
         {
             // Quem vai é um representante: não ocupa o turno do candidato, mas gasta uma delegação do coordenador.
@@ -340,7 +346,10 @@ public sealed partial class CampaignEngine
             relation,
             fatigueFactor,
             factors,
-            outcomes);
+            outcomes)
+        {
+            ThemeKnownGain = r.Tema is null ? 0 : ThemeGain(r.Type, r.Tema),
+        };
     }
 
     /// <summary>
@@ -525,6 +534,7 @@ public sealed partial class CampaignEngine
             text = StaffContent.Texto("viral");
         }
 
+        double themeKnown = c.Tema is null ? 0 : SpeakOf(c.Tema, type, c.ZoneId);
         decimal money = MoneyOf(type, factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1);
         Character player = State.Player;
         player.Resources.Money += money;
@@ -602,6 +612,7 @@ public sealed partial class CampaignEngine
             RelationPoints = relation,
             Factors = factors,
             Text = text,
+            ThemeKnown = themeKnown,
         };
         Agenda.Log.Add(result);
         if (Agenda.Log.Count > AgendaState.MaxLog)

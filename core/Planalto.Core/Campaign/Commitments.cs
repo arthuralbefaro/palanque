@@ -275,6 +275,9 @@ public sealed record CommitmentForecast(
     IReadOnlyList<YieldFactor> Factors,
     IReadOnlyList<ForecastOutcome> Outcomes)
 {
+    /// <summary>Quanto a posição do candidato no tema tratado ficaria mais conhecida (0 a 1).</summary>
+    public double ThemeKnownGain { get; init; }
+
     /// <summary>Produto dos fatores, sem a sorte.</summary>
     public double Yield => Factors.Aggregate(1.0, (acc, f) => acc * f.Multiplier);
 }
@@ -302,6 +305,9 @@ public sealed class CommitmentResult
 
     /// <summary>Texto do desfecho sorteado (teste de atributo), se houve.</summary>
     public string Text { get; init; } = "";
+
+    /// <summary>Quanto a posição no tema tratado ficou mais conhecida (0 a 1).</summary>
+    public double ThemeKnown { get; init; }
 }
 
 /// <summary>Evento da cidade numa data, zona e turno (GDD 17.6): só existe no dia.</summary>

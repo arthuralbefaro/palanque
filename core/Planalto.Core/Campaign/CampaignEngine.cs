@@ -167,6 +167,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         State.Player.Resources.Stress += Campaign.Phase == CampaignPhase.Campanha ? 2 : 0;
         ExpireInvites();
         StaffWeekEnd();
+        PlatformWeek();
         DateOnly next = State.Calendar.WeekStart.AddDays(7);
         LeadersWeek(next);
         State.Ledger.Expire(next);
@@ -283,7 +284,10 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         Image = c.Image,
         Support = c.Support,
         Multiplicity = c.Multiplicity,
+        Themes = c.IsPlayer ? PerceivedThemes() : NoThemes,
     };
+
+    private static readonly IReadOnlyDictionary<string, double> NoThemes = new Dictionary<string, double>();
 
     /// <summary>Projeção da cidade: a soma das projeções das zonas (GDD 17.5).</summary>
     public VoteProjection Project(Office office, Rng? noise) => ProjectByZone(office, noise).City;
