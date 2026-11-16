@@ -13,7 +13,7 @@
 ## 1. O que entregar
 
 1. **1 cabeça** adulta, em tom de pele médio. O autor envia a cor de referência; o tom vem da tintura descrita abaixo, não da textura.
-2. **3 expressões:** neutra (a malha base), sorriso (`expr_sorriso`) e preocupado (`expr_preocupado`). Entregar também `piscar`, se couber no prazo.
+2. **3 expressões:** neutra (a malha base), sorriso (`expr_sorriso`) e bravo (`expr_bravo`). Entregar também `piscar`, se couber no prazo.
 3. **1 cabelo** curto ou médio, em peça separada, encaixado na cabeça.
 
 Arquivos:
@@ -34,7 +34,8 @@ Arquivos:
 
 - **glTF 2.0 binário (`.glb`).** Y para cima, frente voltada para +Z (padrão do glTF), 1 unidade = 1 metro.
 - **Escala:** corpo de referência com 1,60 m. A cabeça mede cerca de 0,30 m do queixo ao topo do crânio, cerca de 5,3 cabeças de altura. Confira no corpo base anexo.
-- **Origem:** no nó vazio `encaixe_pescoco`, na base do pescoço, no centro. O pescoço desce 3 cm abaixo desse ponto, para a emenda ficar sob a gola.
+- **Origem:** no nó vazio `encaixe_pescoco`, sem rotação, no centro da base do pescoço, onde ele encontra os ombros. No corpo de referência de 1,60 m, esse ponto fica a 1,22 m do chão, e o queixo, a cerca de 1,30 m.
+- **Borda do pescoço:** aberta, num plano horizontal 3 cm abaixo de `encaixe_pescoco`. É um anel de 16 vértices com 5,5 cm de raio, em que o primeiro vértice fica bem na frente (+Z) e os demais seguem no sentido anti-horário visto de cima. Normais suaves, perpendiculares ao anel. O pescoço do corpo base termina num anel igual, no mesmo plano, e a gola da roupa cobre a emenda. Se o corpo base anexo tiver outras medidas, valem as dele.
 - **Pontos de troca:** nós vazios, filhos da raiz da cabeça.
   - `encaixe_cabelo`: topo do crânio; é a origem do cabelo.
   - `encaixe_oculos`: ponte do nariz.
@@ -44,7 +45,7 @@ Arquivos:
 - **Expressões por shape keys** (morph targets no glTF), na malha `cabeca`, com estes nomes exatos:
   - peso 1 equivale à expressão inteira; a neutra é a malha sem shape key;
   - se as sobrancelhas forem malha à parte, levam as mesmas shape keys com os mesmos nomes.
-- **Nomes de expressão do jogo:** `expr_sorriso`, `expr_sorriso_largo`, `expr_preocupado`, `expr_bravo`, `expr_triste`, `expr_surpreso`, `expr_cansado` e `piscar`. No teste, só `expr_sorriso` e `expr_preocupado` são obrigatórias.
+- **Nomes de expressão do jogo:** `expr_sorriso`, `expr_sorriso_largo`, `expr_preocupado`, `expr_bravo`, `expr_triste`, `expr_surpreso`, `expr_cansado` e `piscar`. No teste, só `expr_sorriso` e `expr_bravo` são obrigatórias.
 - **Ossos:** não são obrigatórios. Um osso `mandibula` é aceito, desde que os nomes acima não mudem.
 
 ## 4. Limite de polígonos e texturas
@@ -55,6 +56,8 @@ Arquivos:
 | Cabelo | 6.000 triângulos |
 | Barba (no contrato, não no teste) | 2.000 triângulos |
 | Texturas | PNG, até 2048 px (1024 recomendado); UV sem sobreposição |
+
+O artista não precisa entregar LOD. Em plano médio, o jogo reduz a malha sozinho, por isso a topologia deve aguentar redução: sem triângulos finos nem detalhe que só exista na malha. A multidão e os figurantes não usam esta cabeça.
 
 ## 5. Materiais tingíveis
 
@@ -88,8 +91,9 @@ O autor julga o estilo pelas referências da seção 2.
 
 - **Cessão total dos direitos patrimoniais** sobre tudo o que for entregue (modelos, texturas, arquivos-fonte e imagens) ao contratante, por escrito, para uso, modificação, distribuição e venda, sem limite de tempo nem de território. Isso inclui publicar os arquivos-fonte num repositório público.
 - O artista recebe crédito nominal nos créditos do jogo (`assets/CREDITS.md`) e pode mostrar o trabalho no portfólio depois do lançamento público, ou antes, com autorização.
-- **Trabalho original:**
-  - sem uso de inteligência artificial generativa;
-  - sem partes de terceiros, salvo assets CC0, listados com origem e link;
+- **Cláusula de origem:**
+  - o trabalho é original, feito pelo artista para este contrato;
+  - sem assets de terceiros com licença incompatível com a cessão acima. Só se aceitam partes CC0, listadas com origem, autor, licença e link; qualquer outra licença, inclusive CC BY, precisa de aviso prévio e aceite por escrito do contratante;
+  - uso de ferramentas generativas (inteligência artificial): [a definir pelo autor];
   - sem semelhança intencional com pessoa real.
 - O texto final da cessão é revisado por advogado antes da assinatura. Esta seção resume o que se pede, não é o contrato.

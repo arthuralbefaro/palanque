@@ -197,7 +197,13 @@ O protótipo da RV usa uma cabeça provisória, montada de base livre CC0 (DECIS
 
 - **Arquivos:** glTF 2.0 binário, um por peça: `cabeca_<id>.glb`, `cabelo_<id>.glb`, `barba_<id>.glb`.
 - **Eixos e escala:** Y para cima, frente para +Z, 1 unidade = 1 m. Corpo de referência de 1,60 m e cabeça de cerca de 0,30 m, do queixo ao topo do crânio.
-- **Origem:** no nó `encaixe_pescoco`, na base do pescoço, preso ao osso da cabeça do corpo. O pescoço desce 3 cm abaixo do encaixe.
+- **Origem:** no nó `encaixe_pescoco`, sem rotação, no centro da base do pescoço (onde ele encontra os ombros), preso ao osso da cabeça do corpo. No corpo de referência de 1,60 m: encaixe a 1,22 m do chão, queixo a cerca de 1,30 m.
+- **Borda do pescoço:** aberta, num plano horizontal 3 cm abaixo do encaixe.
+  - Anel de 16 vértices, com 5,5 cm de raio.
+  - O primeiro vértice fica na frente (+Z); os demais seguem no sentido anti-horário visto de cima.
+  - Normais suaves, perpendiculares ao anel.
+  - O corpo base termina num anel idêntico, no mesmo plano, e a gola cobre a emenda.
+  - Se o corpo base do protótipo tiver outras medidas, este guia é atualizado com as dele antes do teste do artista.
 - **Pontos de troca** (nós vazios, filhos da raiz):
   - `encaixe_cabelo`;
   - `encaixe_oculos`;
@@ -218,4 +224,10 @@ O protótipo da RV usa uma cabeça provisória, montada de base livre CC0 (DECIS
   - `iris`.
   Não tingíveis: `esclera`, `dentes` e `lingua`. Rugas e marcas ficam em `pele_detalhe`, com a intensidade dada pela idade.
 - **Orçamento:** cabeça com olhos, dentes e língua até 8.000 triângulos; cabelo até 6.000; barba até 2.000. Texturas PNG até 2048 px, UV sem sobreposição.
+- **Teste do artista:** neutra, `expr_sorriso` e `expr_bravo` (D-045, adendo). O protótipo usa as mesmas três.
+- **Multidão e LOD:**
+  - Pessoas com nome (retrato, cartão, plano próximo) usam a cabeça deste contrato. Em plano médio, o LOD automático do Godot reduz a malha; o artista não entrega LOD.
+  - A multidão e os figurantes (plateia, fila da urna, comício, posse) usam corpos e cabeças de base CC0 (KayKit, Human Base Meshes), com os mesmos nomes de material tingível, para seguirem o mesmo sorteio de tons da Appearance.
+  - Cada figurante tem até 3.000 triângulos no total, sem shape keys de rosto.
+  - Nenhum figurante usa a cabeça do artista, para o custo da multidão não depender dela.
 - **Cena de teste de cabeça** (faz parte do protótipo): carrega qualquer `cabeca_*.glb` e confere nomes, materiais, shape keys e orçamento. Aplica as 8 expressões, 6 tons de pele e 2 cores de cabelo, e grava retratos de 96 px e 512 px. Toda cabeça nova passa por ela antes de ser aceita.
