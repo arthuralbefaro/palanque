@@ -84,7 +84,7 @@ public partial class MapScreen : Control
         _subtitle = Ui.Value(top, "", 18);
         top.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill });
         _fps = Ui.Value(top, "", 16);
-        Ui.Button(top, "Voltar", () => _game.GoTo(Game.Scenes.Hub));
+        Ui.Button(top, "Voltar", _game.GoToCareer);
 
         HBoxContainer body = Ui.Row(screen, 12);
         body.SizeFlagsVertical = SizeFlags.ExpandFill;

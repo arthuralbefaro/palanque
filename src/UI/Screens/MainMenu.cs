@@ -42,7 +42,7 @@ public partial class MainMenu : Control
         {
             if (saves.Load(existing[(int)i]) is null)
             {
-                Autoload.Game.Instance.GoTo(Autoload.Game.Scenes.Hub);
+                Autoload.Game.Instance.GoToCareer();
             }
         };
         AddChild(menu);

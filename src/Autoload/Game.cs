@@ -43,8 +43,18 @@ public partial class Game : Node
 
     public Core.Events.EventContent Events { get; private set; } = null!;
 
-    /// <summary>Motor da campanha do município em foco; recriado ao começar ou carregar uma carreira.</summary>
+    /// <summary>Motor da campanha do município em foco; null fora de campanha.</summary>
     public Core.Campaign.CampaignEngine? Engine { get; private set; }
+
+    public Core.Legislature.LegislatureContent Legislature { get; private set; } = null!;
+
+    public Core.Career.FoundingConfig Founding { get; private set; } = null!;
+
+    /// <summary>Motor do mandato; null fora de mandato.</summary>
+    public Core.Legislature.LegislatureEngine? Mandate { get; private set; }
+
+    /// <summary>Motor da fundação de partido (vale em qualquer momento da carreira).</summary>
+    public Core.Career.PartyFoundingEngine? FoundingEngine { get; private set; }
 
     public override void _Ready()
     {
@@ -71,6 +81,11 @@ public partial class Game : Node
         Electorate = electorate ?? throw new DataValidationException(["data/electorate inválido."]);
         Campaign = Core.Campaign.CampaignContent.LoadOrThrow(DataDirectory);
         Events = Core.Events.EventContent.LoadOrThrow(DataDirectory);
+        Legislature = Core.Legislature.LegislatureContent.LoadOrThrow(
+            DataDirectory,
+            Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
+            World.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal));
+        Founding = JsonData.LoadFile<Core.Career.FoundingConfig>(Path.Combine(DataDirectory, Core.Career.FoundingConfig.File)).GetValueOrThrow();
     }
 
     /// <summary>Contexto da simulação detalhada do município em foco (GDD 12.5).</summary>
@@ -125,11 +140,134 @@ public partial class Game : Node
         }
     }
 
-    /// <summary>Começa (ou retoma, ao carregar) a carreira e a campanha do município em foco.</summary>
+    /// <summary>Contexto do mandato no município em foco, com o mesmo eleitorado da campanha.</summary>
+    public Core.Legislature.LegislatureContext LegislatureContextFor(GameState state)
+    {
+        Core.Campaign.CampaignContext campaign = ContextFor(state);
+        return new Core.Legislature.LegislatureContext
+        {
+            State = state,
+            Municipio = campaign.Municipio,
+            Content = Legislature,
+            People = People,
+            Electorate = campaign.Electorate,
+            RecognitionScale = Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
+        };
+    }
+
+    /// <summary>Começa uma carreira nova: a primeira campanha abre na hora (DECISOES D-019).</summary>
     public void StartCareer(GameState state)
     {
         State = state;
         Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
+        Mandate = null;
+        FoundingEngine = NewFoundingEngine(state);
+    }
+
+    /// <summary>Retoma uma carreira salva no ponto em que estava (campanha, mandato ou entressafra).</summary>
+    public void Resume(GameState state)
+    {
+        State = state;
+        Engine = state.Campaign is null ? null : Core.Campaign.CampaignEngine.Start(ContextFor(state));
+        Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
+        FoundingEngine = NewFoundingEngine(state);
+    }
+
+    private Core.Career.PartyFoundingEngine NewFoundingEngine(GameState state) =>
+        new(state, Founding, World.Parties, Municipios, World.NumberRules);
+
+    /// <summary>O que aconteceu de especial ao avançar a semana (a tela decide como avisar).</summary>
+    public enum WeekNote
+    {
+        Nenhuma,
+        CampanhaAberta,
+        SemPartidoNoPrazo,
+        MandatoEncerrado,
+    }
+
+    /// <summary>Avança uma semana da carreira e abre a campanha quando chega o prazo de filiação do ano da eleição.</summary>
+    public WeekNote AdvanceWeek()
+    {
+        GameState state = State!;
+        bool hadMandate = state.Mandate is not null;
+        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine);
+        if (state.Mandate is null)
+        {
+            Mandate = null;
+        }
+
+        WeekNote note = hadMandate && state.Mandate is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
+        if (Core.Career.CareerFlow.ShouldStartCampaign(state))
+        {
+            if (Core.Career.PartyAffiliation.CanRun(state, state.Calendar.Year))
+            {
+                Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
+                return WeekNote.CampanhaAberta;
+            }
+
+            return WeekNote.SemPartidoNoPrazo;
+        }
+
+        return note;
+    }
+
+    /// <summary>Na pré-campanha, avança até surgir evento, mudar a fase ou acontecer algo na carreira.</summary>
+    public WeekNote AdvanceUntilSomethingHappens()
+    {
+        WeekNote note;
+        do
+        {
+            note = AdvanceWeek();
+        }
+        while (note == WeekNote.Nenhuma && State!.Campaign is { Phase: Core.Campaign.CampaignPhase.PreCampanha } campaign && campaign.Events.Pending.Count == 0);
+        return note;
+    }
+
+    /// <summary>
+    /// Fora de mandato: avança semana a semana (a fundação de partido segue andando) até a abertura da
+    /// pré-campanha da próxima eleição municipal.
+    /// </summary>
+    public WeekNote SkipToNextElection()
+    {
+        WeekNote note;
+        int guard = 0;
+        do
+        {
+            note = AdvanceWeek();
+        }
+        while (note == WeekNote.Nenhuma && ++guard < 6 * 53);
+        return note;
+    }
+
+    /// <summary>Depois da apuração: posse (se eleito) ou fim do mandato, e o calendário vai a 1º de janeiro.</summary>
+    public void ConcludeElection()
+    {
+        GameState state = State!;
+        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state));
+        Engine = null;
+        Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
+    }
+
+    /// <summary>Muda o partido do jogador (troca, filiação depois de expulso ou partido fundado).</summary>
+    public void JoinParty(string partyId)
+    {
+        Core.Career.PartyAffiliation.Join(State!, partyId);
+        if (State!.Mandate is null)
+        {
+            Mandate = null;
+        }
+    }
+
+    /// <summary>Tela certa para o momento da carreira.</summary>
+    public void GoToCareer()
+    {
+        GameState state = State!;
+        GoTo(Core.Career.CareerFlow.Mode(state) switch
+        {
+            Core.Career.CareerMode.Mandato => Scenes.Mandate,
+            Core.Career.CareerMode.ForaDeMandato => Scenes.OutOfOffice,
+            _ => state.Campaign?.Outcome is not null ? Scenes.ElectionNight : Scenes.Hub,
+        });
     }
 
     /// <summary>Nos testes de fumaça da UI, registra a navegação em vez de trocar de cena.</summary>
@@ -155,5 +293,7 @@ public partial class Game : Node
         public const string Urna = "res://src/UI/Screens/UrnaScreen.tscn";
         public const string ElectionNight = "res://src/UI/Screens/ElectionNightScreen.tscn";
         public const string Map = "res://src/UI/Map/MapScreen.tscn";
+        public const string Mandate = "res://src/UI/Screens/MandateScreen.tscn";
+        public const string OutOfOffice = "res://src/UI/Screens/OutOfOfficeScreen.tscn";
     }
 }

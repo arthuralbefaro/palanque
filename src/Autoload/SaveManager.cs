@@ -63,7 +63,7 @@ public partial class SaveManager : Node
         try
         {
             GameState state = GameStateSerializer.Deserialize(FileAccess.GetFileAsString(PathOf(slot)));
-            Game.Instance.StartCareer(state);
+            Game.Instance.Resume(state);
             return null;
         }
         catch (SaveFormatException ex)

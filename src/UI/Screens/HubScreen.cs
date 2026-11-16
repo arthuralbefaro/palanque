@@ -32,9 +32,15 @@ public partial class HubScreen : Control
     public override void _Ready()
     {
         _game = Game.Instance;
-        if (_game.State is null || _game.Engine is null)
+        if (_game.State is null)
         {
             _game.GoTo(Game.Scenes.MainMenu);
+            return;
+        }
+
+        if (_game.Engine is null)
+        {
+            _game.GoToCareer();
             return;
         }
 
@@ -47,6 +53,11 @@ public partial class HubScreen : Control
     {
         Ui.Clear(_root);
         BuildTopBar();
+        if (State.Mandate is not null)
+        {
+            Ui.Label(_root, "Campanha de reeleição: durante a campanha, seu mandato vota seguindo a orientação do partido.", 16, Ui.Muted);
+        }
+
         HBoxContainer body = Ui.Row(_root, 18);
         body.SizeFlagsVertical = SizeFlags.ExpandFill;
         BuildAgenda(Ui.Column(body, 6));
@@ -283,13 +294,10 @@ public partial class HubScreen : Control
 
     private void Advance(bool untilSomething)
     {
-        if (untilSomething)
+        Game.WeekNote note = untilSomething ? _game.AdvanceUntilSomethingHappens() : _game.AdvanceWeek();
+        if (note == Game.WeekNote.MandatoEncerrado)
         {
-            _engine.AdvanceUntilSomethingHappens();
-        }
-        else
-        {
-            _engine.AdvanceWeek();
+            _log.Insert(0, Tr("Seu mandato terminou."));
         }
 
         SaveManager.Instance.Autosave();

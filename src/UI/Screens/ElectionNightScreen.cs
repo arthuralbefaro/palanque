@@ -29,7 +29,15 @@ public partial class ElectionNightScreen : Control
         _game = Game.Instance;
         if (_game.State?.Campaign?.Outcome is null)
         {
-            _game.GoTo(Game.Scenes.Hub);
+            if (_game.State is null)
+            {
+                _game.GoTo(Game.Scenes.MainMenu);
+            }
+            else
+            {
+                _game.GoToCareer();
+            }
+
             return;
         }
 
@@ -132,7 +140,13 @@ public partial class ElectionNightScreen : Control
         Label label = Ui.Value(_root, verdict, 36);
         label.AddThemeColorOverride("font_color", outcome.PlayerElected ? Ui.Ok : Ui.Warning);
         HBoxContainer actions = Ui.Row(_root, 16);
-        Ui.Button(actions, "Voltar ao hub", () => _game.GoTo(Game.Scenes.Hub));
+        Ui.Button(actions, outcome.PlayerElected ? "Tomar posse" : "Continuar a carreira", () =>
+        {
+            // Posse em 1º de janeiro (ou fim da campanha): o calendário salta e a carreira segue.
+            _game.ConcludeElection();
+            SaveManager.Instance.Autosave();
+            _game.GoToCareer();
+        });
         Ui.Button(actions, "Nova carreira", () => _game.GoTo(Game.Scenes.MainMenu));
     }
 }
