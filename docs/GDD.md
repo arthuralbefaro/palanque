@@ -108,7 +108,7 @@ Cada peça tem cor primária e secundária; a cor do partido pode ser aplicada c
 | Jingle | Escolha de estilo musical (forró, sertanejo, pagode, funk, marchinha, rock) — muda a faixa tocada em comícios e no horário eleitoral |
 | Foto oficial | Pose (3), expressão, fundo (bandeira do estado, gabinete, cidade, cor sólida) |
 
-A pré-visualização mostra o **santinho** (frente e verso) e um **outdoor**. Esses materiais aparecem depois no jogo (em telas de campanha, na apuração e na mídia).
+A pré-visualização mostra o **santinho** (frente e verso), um **adesivo**, uma **bandeira** e uma **peça para redes sociais**. Outdoor é proibido na propaganda eleitoral (Lei 9.504/1997, art. 39, § 8º) e por isso não existe no jogo (decisão do autor, 17.20, item 9; a troca na tela de criação é item da R1). Esses materiais aparecem depois no jogo (em telas de campanha, na apuração e na mídia).
 
 ### 3.5 Traços de personalidade (exemplos)
 
@@ -323,7 +323,7 @@ planalto/
 │       ├── Panels/                  # Polls, Finances, Relations, Map, News
 │       ├── Widgets/                 # Cards, Charts, Bars, Tooltips
 │       ├── Portrait/                # PortraitView.cs, PortraitRenderer.cs, PortraitCache.cs
-│       ├── CampaignMaterials/       # Santinho, Outdoor, LogoComposer
+│       ├── CampaignMaterials/       # Santinho, Adesivo, Bandeira, PecaDeRedes, LogoComposer
 │       └── Theme/
 ├── data/
 │   ├── appearance/                  # parts.json (catálogo de peças por camada), palettes.json, presets/
@@ -415,7 +415,7 @@ GameState inteiro em JSON com versão de formato e migrações; 3 slots + autosa
 
 ### 8.2 Telas
 1. Menu principal
-2. **Criação de personagem** (4 abas + pré-visualização de retrato, santinho e outdoor)
+2. **Criação de personagem** (4 abas + pré-visualização de retrato, santinho, adesivo, bandeira e peça de redes)
 3. **Espelho** (mudança de visual durante a carreira)
 4. Tela central (seção 17.3), que reúne o hub, as pesquisas, as finanças, as relações e o mapa da cidade em painéis
 5. Mapa eleitoral do estado e do país (seção 13.1)
@@ -975,11 +975,11 @@ Regra:
 
 Arquivos gerados: `data/zonas/{UF}.json` (atributos) e `data/geo/zonas/{UF}.json` (contornos). São cerca de 30 mil zonas no país (referência: os 5.570 contornos municipais ocupam 6,3 MB). **Teto: 30 MB para `data/geo/zonas/` no repositório.** O importador mede a saída e falha, sem gravar, se passar. Para caber, primeiro aumenta a tolerância de simplificação dos contornos; se não bastar, agrupa mais setores por zona (menos zonas por porte, nunca abaixo do mínimo da tabela). Tolerância e tamanho final ficam em `_fontes.json`.
 
-**O que não tem dado e vira decisão do autor** (lista em 17.20):
-- Religião e escolaridade por zona: usar a área de ponderação onde o município tem duas ou mais e o perfil municipal nos outros 2.994; ou o perfil municipal em todos.
-- Faixas de renda por zona: o setor só traz média e mediana do responsável. Proposta: deslocar a distribuição municipal pela razão entre a mediana da zona e a do município, marcada como estimativa de jogo.
-- Eleitores por zona: repartir o eleitorado do TSE pela população de 16 anos ou mais de cada zona; ou usar os locais de votação do TSE com coordenada, o que também daria a votação real de 2024 por zona no cenário Brasil 2026.
-- Termos de uso do IBGE: o FTP declara os arquivos públicos, mas a página de licença não pôde ser aberta (o site recusa acesso automatizado).
+**Onde não há dado por setor** (decidido pelo autor, 17.20):
+- Religião e escolaridade por zona: área de ponderação onde o município tem duas ou mais; perfil municipal nos outros 2.994.
+- Faixas de renda por zona: o setor só traz média e mediana do responsável. A distribuição municipal é deslocada pela razão entre a mediana da zona e a do município, marcada como estimativa de jogo.
+- Eleitores por zona: até a RD, o eleitorado do TSE é repartido pela população de 16 anos ou mais de cada zona; na RD entram os locais de votação do TSE com coordenada, que também dão a votação real de 2024 por zona no cenário Brasil 2026.
+- Termos de uso: o FTP do IBGE declara os arquivos públicos; a página de licença não pôde ser aberta. A R1 usa a Malha de Setores e os agregados citando a fonte; o autor confere os termos antes da RD.
 
 **A demanda da zona.** Cada zona mostra a maior carência medida, em unidade real: "38% dos domicílios sem rede de esgoto", "renda mediana do responsável: R$ 1.412". Ela pesa nos temas dos eleitores dali e é o assunto que lideranças e imprensa levantam.
 
@@ -1032,7 +1032,7 @@ Arquivos gerados: `data/zonas/{UF}.json` (atributos) e `data/geo/zonas/{UF}.json
 | Função | O que faz sozinha | Qualidade 1 → 5 |
 |---|---|---|
 | Coordenador(a) | Organiza a agenda, delega compromissos, comanda os cabos, dá o conselho da semana | 1 → 5 compromissos delegados por semana; com 4 ou 5, vê a agenda dos rivais na véspera |
-| Marqueteiro(a) | Tom da campanha, programa de rádio e TV, material | Rendimento de comício, material e rádio de 0,8 a 1,3; estreita a faixa das previsões |
+| Marqueteiro(a) | Tom da campanha, programa do horário eleitoral gratuito, material | Rendimento de comício, material e horário gratuito de 0,8 a 1,3; estreita a faixa das previsões |
 | Tesoureiro(a) | Registra receitas e gastos, cuida do limite | Chance de erro contábil por semana de 8% a 0,5% |
 | Advogado(a) | Responde a impugnações, pede direito de resposta | Chance de êxito de 35% a 85%; sem advogado, vale a pior opção padrão |
 | Social media | Toca o canal Redes, reage a virais | Alcance de 0,7 a 1,4; risco de viral negativo de 10% a 3% |
@@ -1054,25 +1054,26 @@ Cada candidato a uma vaga (2 a 4 por função, gerados quando o município entra
 
 ### 17.8 Verba por canal
 
-**O que é.** A verba semanal da campanha é repartida em cinco canais, cada um com alvo.
+**O que é.** A verba semanal da campanha é repartida em quatro canais pagos, cada um com alvo. Rádio e TV não são canal de verba: são presença conquistada (abaixo).
 
 | Canal | O que compra | Alvo | Rende mais | Rende menos |
 |---|---|---|---|---|
 | Rua | Carro de som, bandeiras, estrutura de comício | Zonas | Zona densa; multiplica caminhada e comício na zona | Zona rural espalhada |
-| Redes | Produção e impulsionamento | Faixa de idade | 16 a 34 anos (peso 1,0); 35 a 59 (0,5) | 60 ou mais (0,15) |
-| Rádio | Produção do programa e das inserções do horário eleitoral gratuito | Cidade inteira | 35 anos ou mais, zona rural, porte pequeno e médio | 16 a 34 (0,3); cidade sem emissora |
-| Material gráfico | Santinhos, adesivos, placas dentro do permitido | Zonas | Presença baixa e duradoura; pré-requisito dos cabos | — |
-| Cabos eleitorais | Pessoal por zona | Zonas | Converte indecisos; segura a presença | Zona onde uma liderança contrária domina |
+| Redes | Produção e impulsionamento pago, permitido com regras (Lei 9.504/1997, art. 57-C) | Faixa de idade | 16 a 34 anos (peso 1,0); 35 a 59 (0,5) | 60 ou mais (0,15) |
+| Material gráfico | Santinhos, adesivos, bandeiras e impressos dentro do permitido | Zonas | Presença baixa e duradoura; pré-requisito dos cabos | — |
+| Cabos eleitorais | Pessoal por zona, até o limite de contratação pelo eleitorado (art. 100-A), em objeto de configuração | Zonas | Converte indecisos; segura a presença | Zona onde uma liderança contrária domina |
 
 - **Retorno:** efeito = k × √(verba ÷ escala do porte) × (verba própria ÷ verba total do canal na zona)^0,5. Dobrar a verba num canal rende 41% a mais, e gritar onde todos gritam rende menos. A previsão mostra as duas contas.
 - **Pré-campanha:** só Redes sem impulsionamento e material institucional do partido; os canais abrem em 16 de agosto.
-- **Lei** (parâmetros em objetos de configuração, a confirmar com o autor, 17.20): propaganda paga em rádio e TV é proibida (Lei 9.504/1997, art. 44), por isso o canal Rádio paga a produção e o tempo vem do partido (D-010); outdoor é proibido (art. 39, § 8º); brindes são proibidos (art. 39, § 6º); há limite de contratação de pessoal (art. 100-A).
+- **Rádio e TV: presença conquistada.** Propaganda paga em rádio e TV é proibida (art. 44). O candidato chega ao rádio e à TV de duas formas, nenhuma comprada: **entrevistas** (compromisso da agenda, 17.6 e 17.13), que dependem da relação com o veículo e do interesse dele; e o **horário eleitoral gratuito**, cujo tempo vem do partido (D-010) e cujo rendimento vem do marqueteiro e do tom escolhido. Alcance: maior entre 35 anos ou mais, na zona rural e nos portes pequeno e médio; nulo em cidade sem emissora.
+- **Proibido, e por isso fora do jogo como opção:** outdoor (art. 39, § 8º) e brindes (art. 39, § 6º). Quem distribui brinde é um cabo fazendo algo irregular (evento já existente).
+- Os artigos acima estão citados de memória e são conferidos na R3 antes de virar configuração (17.20).
 
 **O que o jogador decide.** Quanto gastar por semana, em que canais, com que alvos.
 
 **A troca.** Todo real gasto conta no limite legal e sai do caixa da reta final. Cortar cabos de uma zona os manda para um rival, e eles lembram.
 
-**Interage com:** Território (alvos), Equipe (multiplicadores), Doadores e contas (caixa e limite), Rivais (disputa de canal por zona), Mídia (emissoras existentes). **Princípios:** a, e, f, g. **Dados:** `data/campaign/channels.json`.
+**Interage com:** Território (alvos), Equipe (multiplicadores), Doadores e contas (caixa e limite), Rivais (disputa de canal por zona). **Princípios:** a, e, f, g. **Dados:** `data/campaign/channels.json`.
 
 **Reaproveita:** custo por porte, multiplicador de reconhecimento por porte, tempo de TV pelo partido (D-010). **Muda:** dinheiro deixa de ser gasto só por clique de ação.
 
@@ -1127,7 +1128,7 @@ Exemplo: Seu Anselmo, presidente da associação rural, zona Rural, influência 
 | Perfil de campanha | Como joga |
 |---|---|
 | De base | Forte em 1 ou 2 zonas, com cabos e lideranças comunitárias |
-| De mídia | Redes e rádio; fino na cidade inteira |
+| De mídia | Redes, entrevistas e horário gratuito; fino na cidade inteira |
 | De máquina | Incumbente ou aliado da prefeitura; obras, emendas e lideranças |
 | De causa | Um tema e um público |
 | De estrutura | Dinheiro, material e equipe |
@@ -1162,7 +1163,7 @@ O perfil é um estilo de campanha, sorteado sem relação com ideologia ou parti
 
 Empresa não doa (STF, ADI 4650; Lei 13.165/2015): a oferta de um empresário é doação pessoal dentro do limite ou é "por fora".
 
-**Limite de gastos.** Por cargo e por município (Lei 9.504, art. 18-C; o TSE publica a tabela a cada eleição). Usar os valores reais depende de importar a tabela do TSE: decisão do autor (17.20).
+**Limite de gastos.** Por cargo e por município (Lei 9.504, art. 18-C; o TSE publica a tabela a cada eleição). Os valores reais vêm da tabela do TSE de 2024, importada e corrigida pela regra da lei (aprovado, 17.20).
 
 **Painel Contas.** Arrecadado, gasto, barra do limite e a lista de irregularidades, cada uma com o que é e quem sabe. O **risco de contas** (0 a 100) soma gasto não declarado, doação acima do limite, fonte vedada, gasto acima do limite, erro contábil e pessoal acima do permitido. Há prestação parcial em setembro e final 30 dias depois da eleição.
 
@@ -1196,7 +1197,7 @@ Cada veículo tem tipo, alcance por zona e por público, **linha editorial** (go
 
 **A troca.** Falar com o veículo amigo é seguro e convence pouco; ir ao crítico arrisca. Responder dá sobrevida ao assunto; calar deixa a versão do rival.
 
-**Interage com:** Agenda, Plataforma (posição conhecida, tema em alta), Rivais (ataques), Equipe (social media, advogado, marqueteiro), Doadores e contas (reportagem investigativa), Lideranças (donos), todos os sistemas (fatos). **Princípios:** a, b, c, e, f. **Dados:** `data/media/outlets.json` (tipos por porte, termos de nome, linhas), `data/media/templates.json` (manchetes por tipo de fato e tom), `data/media/blocklist.json` (nomes de veículos reais a evitar; decisão do autor em 17.20).
+**Interage com:** Agenda, Plataforma (posição conhecida, tema em alta), Rivais (ataques), Equipe (social media, advogado, marqueteiro), Doadores e contas (reportagem investigativa), Lideranças (donos), todos os sistemas (fatos). **Princípios:** a, b, c, e, f. **Dados:** `data/media/outlets.json` (tipos por porte, termos de nome, linhas), `data/media/templates.json` (manchetes por tipo de fato e tom), `data/media/blocklist.json` (nomes de veículos reais a evitar; aprovado, 17.20).
 
 **Reaproveita:** `Headline`, os 9 eventos de mídia, a manchete de pesquisa, o teste da ação "Entrevista".
 
@@ -1265,17 +1266,18 @@ Cada veículo tem tipo, alcance por zona e por público, **linha editorial** (go
 **O que é.** Toda Pessoa (17.2) envelhece, pode morrer, pode sair da política e é substituída por gente nova. Vale para rivais, vereadores, prefeitos, secretários, lideranças, equipe, doadores, jornalistas e, a partir da Fase 6, deputados, senadores, governadores e presidente. O personagem do jogador segue as regras de saúde e idade da seção 4.3.
 
 **Envelhecimento e mortalidade.**
-- Fonte: **IBGE, Tábuas Completas de Mortalidade para o Brasil, 2024** (a mais recente; arquivos de 1º/12/2025), em `https://ftp.ibge.gov.br/Tabuas_Completas_de_Mortalidade/Tabuas_Completas_de_Mortalidade_2024/`, em XLSX e ODS, uma planilha para homens, uma para mulheres e uma para ambos os sexos. Só Brasil; idades simples de 0 a 89 e grupo aberto de 90 anos ou mais. Coluna usada: Q(X), probabilidade de morte entre as idades X e X+1, por mil.
+- **Fonte principal, por UF** (decisão do autor, 17.20, item 13): **IBGE, Projeções da População, revisão 2024, tábuas de mortalidade** (`https://ftp.ibge.gov.br/Projecao_da_Populacao/Projecao_da_Populacao_2024/projecoes_2024_tab5_tabuas_mortalidade.xlsx`, 24 MB, também em ODS): Brasil, regiões e as 27 UFs, por sexo, anos de 2000 a 2070. São tábuas abreviadas (idades 0, 1, 5, 10, …, 85 e 90 ou mais), com nqx em proporção. O importador usa o ano de 2024, fixo, e a UF de residência da pessoa. Para chegar à idade simples, reparte a probabilidade de cada faixa pelas idades dela seguindo o perfil da tábua completa do Brasil; o método fica descrito em `_fontes.json`, e um teste confere que a probabilidade recomposta de cada faixa é igual à publicada.
+- **Reserva, Brasil: IBGE, Tábuas Completas de Mortalidade para o Brasil, 2024** (a mais recente; arquivos de 1º/12/2025), em `https://ftp.ibge.gov.br/Tabuas_Completas_de_Mortalidade/Tabuas_Completas_de_Mortalidade_2024/`, em XLSX e ODS, uma planilha para homens, uma para mulheres e uma para ambos os sexos. Só Brasil; idades simples de 0 a 89 e grupo aberto de 90 anos ou mais. Coluna usada: Q(X), probabilidade de morte entre as idades X e X+1, por mil.
 - Conferência de leitura (valores de 2024, por mil): aos 40 anos, 3,265 para homens e 1,535 para mulheres; aos 60, 12,532 e 6,888; aos 80, 62,284 e 46,531.
-- O importador grava a tábua em `data/demography/mortality.json`, com a fonte em `_fontes.json`. Personagem não binário usa a tábua de ambos os sexos.
-- Chance anual de morte = Q(sexo, idade) × fator pessoal. O fator vai de 0,6 a 2,5 conforme saúde e estresse acumulado (`data/demography/config.json`); o sorteio é mensal, pelo Rng. Para 90 anos ou mais, a tábua não dá idade simples: a curva é prolongada por um parâmetro de jogo declarado no mesmo arquivo.
-- Tábuas por UF existem nas Projeções da População 2024, mas abreviadas (faixas de 5 anos); usá-las exigiria interpolar. Proposta: só a tábua do Brasil (17.20).
+- O importador grava as tábuas (27 UFs e Brasil) em `data/demography/mortality.json`, com a fonte em `_fontes.json`. Personagem não binário usa a tábua de ambos os sexos.
+- Chance anual de morte = Q(UF, sexo, idade) × fator pessoal. O fator vai de 0,6 a 2,5 conforme saúde e estresse acumulado (`data/demography/config.json`); o sorteio é mensal, pelo Rng. Para 90 anos ou mais, a tábua não dá idade simples: a curva é prolongada por um parâmetro de jogo declarado no mesmo arquivo.
+- A tábua do Brasil é usada quando a da UF faltar ou não puder ser lida, e sempre como perfil para a idade simples. O save registra qual foi usada.
 
 **Saídas da política.** Verificadas uma vez por mês para cada pessoa; quando mais de uma ocorre, a ordem é sorteada pelo Rng.
 
 | Saída | Quando | O que deixa |
 |---|---|---|
-| Morte | Tábua do IBGE × fator pessoal | Luto; substituição pela regra (abaixo); a base fica em disputa |
+| Morte | Tábua do IBGE (da UF) × fator pessoal | Luto; substituição pela regra (abaixo); a base fica em disputa |
 | Aposentadoria | Chance crescente a partir dos 65 anos e a cada derrota; anunciada antes do prazo de registro | Um herdeiro político indicado, ou a base solta |
 | Doença | Saúde abaixo de um limite: licença (o suplente assume por mais de 120 dias) ou renúncia | Vaga temporária ou definitiva |
 | Derrota eleitoral | Na apuração: tenta de novo, desce de cargo, vira liderança ou sai | Rival persistente ou vaga |
@@ -1301,8 +1303,8 @@ A origem não determina partido nem ideologia; os pesos por origem ficam dentro 
 |---|---|---|
 | Vereador, deputado | Assume o suplente do partido ou da federação; sem suplente e faltando mais de 15 meses, nova eleição | CF, art. 56, §§ 1º e 2º (por simetria nos estados e municípios) |
 | Senador | Assume o primeiro suplente da chapa | CF, art. 46, § 3º, e art. 56 |
-| Prefeito | Assume o vice. Vagos os dois, o presidente da Câmara assume interinamente; se a causa for eleitoral (cassação de diploma ou de registro), nova eleição direta, ou indireta a menos de 6 meses do fim do mandato | Código Eleitoral, art. 224, §§ 3º e 4º, com a ADI 5525. Para morte ou renúncia dos dois, a regra é da Lei Orgânica de cada município: **decisão do autor** (17.20) |
-| Governador | Assume o vice; dupla vacância conforme a Constituição do estado | Decisão do autor (17.20) |
+| Prefeito e governador, por morte ou renúncia | Assume o vice. Vagos os dois, o presidente da Casa legislativa assume interinamente e há nova eleição: direta se a dupla vacância ocorrer na primeira metade do mandato; indireta, pela Câmara ou pela Assembleia, na segunda metade | Padrão do jogo, configurável, espelhando a CF, art. 81 (decisão do autor, 17.20, item 12). A regra de cada Lei Orgânica e de cada Constituição estadual pode diferir; a Enciclopédia diz que é simplificação |
+| Prefeito e governador, por decisão da Justiça Eleitoral | Indeferimento de registro, cassação de diploma ou perda de mandato: nova eleição, indireta só se a vacância ocorrer a menos de 6 meses do fim do mandato; direta nos demais casos | Código Eleitoral, art. 224, §§ 3º e 4º, com a ADI 5525 |
 | Presidente | Assume o vice; vagos os dois, eleição direta em 90 dias, ou indireta pelo Congresso em 30 dias se nos dois últimos anos | CF, arts. 79 a 81 |
 | Candidato que morre na campanha | O partido substitui em até 10 dias; no caso de morte, mesmo a menos de 20 dias da eleição | Lei 9.504/1997, art. 13 |
 
@@ -1360,13 +1362,13 @@ As séries do DIAP e da Mesa usam definições diferentes e não se misturam. O 
 | Educação | INEP, IDEB por município e rede | 2025 (conferido) | Município × rede | Planilhas em `download.inep.gov.br/ideb/resultados/` | Anos iniciais: 5.479 de 5.569 municípios têm nota. Sem nota: a edição anterior; sem nenhuma: média da rede na UF, marcada |
 | Mortalidade infantil | Ministério da Saúde, SIM (óbitos de menores de 1 ano) e SINASC (nascidos vivos), por município de residência | 2024 definitivo; 2025 e 2026 preliminares (conferido) | Registro, com município | FTP do DATASUS, arquivos .dbc (exigem conversão) | Não há indicador pronto confirmado: a taxa é calculada. Em município pequeno a taxa anual oscila: usar a soma de 3 anos; abaixo de um mínimo de nascimentos (parâmetro), a taxa da região imediata, marcada |
 | Leitos | Ministério da Saúde, CNES, leitos | Set/2026 (conferido) | Estabelecimento, com município | FTP do DATASUS, .dbc | Município sem hospital: zero |
-| Segurança | (a) SIM, óbitos por agressão, base do Atlas da Violência; (b) MJSP, SINESP, "Dados Nacionais de Segurança Pública" | (a) 2024; (b) 2025 completo, 2026 até setembro (conferido) | Município | (a) FTP do DATASUS; (b) XLSX no gov.br | (a) tem código IBGE e é comparável no país, mas é mais antiga; (b) é mais recente, sem código IBGE (casar por nome), é registro policial declarado pelos estados e confunde zero com não informado. **Decisão do autor** (17.20) |
+| Segurança | (a) SIM, óbitos por agressão, base do Atlas da Violência; (b) MJSP, SINESP, "Dados Nacionais de Segurança Pública" | (a) 2024; (b) 2025 completo, 2026 até setembro (conferido) | Município | (a) FTP do DATASUS; (b) XLSX no gov.br | (a) tem código IBGE e é comparável no país, mas é mais antiga; (b) é mais recente, sem código IBGE (casar por nome), é registro policial declarado pelos estados e confunde zero com não informado. **Decidido (17.20): (a), soma de 3 anos; (b) só para conferência** |
 | Saneamento | IBGE, Censo 2022, SIDRA 6803 a 6806 (rede de água, abastecimento, esgotamento) | 2022 (conferido) | Município (e setor, 17.5) | API SIDRA | Cobertura completa; sem tratamento de esgoto. O SINISA (Ministério das Cidades, referência 2023) tem tratamento, é autodeclarado e incompleto: só complemento |
-| Proteção social | **Sem fonte pesquisada** | — | — | — | Decisão do autor (17.20) |
+| Proteção social | **Sem fonte pesquisada** | — | — | — | Decidido (17.20): índice do jogo, rotulado, até haver fonte oficial |
 
 Não confirmados e fora do desenho por ora: cobertura da atenção primária (sem arquivo ou API encontrados), IDHM municipal (o último é de 2010), tabela pronta do CAGED por município. Licença: o Tesouro declara ODbL e o TSE, CC BY; IBGE, INEP, DATASUS, MJSP e MTE publicam dados abertos sem licença explícita localizada (17.20).
 
-**População.** A D-033 projeta cada município pela taxa geométrica entre o Censo 2022 e a estimativa de 2026, limitada entre −3% e +5% ao ano. Em 40 anos, taxa constante se afasta do que o IBGE projeta para a UF. Proposta: manter a taxa municipal como distribuição relativa e, a cada ano, reescalar os municípios de cada UF para que a soma acompanhe a Projeção da População 2024 daquela UF; a migração e os choques da simulação entram como desvio sobre isso (17.20).
+**População.** A D-033 projeta cada município pela taxa geométrica entre o Censo 2022 e a estimativa de 2026, limitada entre −3% e +5% ao ano. Em 40 anos, taxa constante se afasta do que o IBGE projeta para a UF. Decidido (17.20): a taxa municipal fica como distribuição relativa e, a cada ano, o jogo reescala os municípios de cada UF para que a soma acompanhe a Projeção da População 2024 daquela UF; a migração e os choques da simulação entram como desvio sobre isso.
 
 **Indicadores da prefeitura em unidade real.** Os sete indicadores de 0 a 100 da D-031 passam a ter âncora real. O jogador vê a unidade real; a escala de jogo fica por dentro.
 
@@ -1374,7 +1376,7 @@ Não confirmados e fora do desenho por ora: cobertura da atenção primária (se
 |---|---|---|
 | Educação | "IDEB anos iniciais (rede municipal): 5,4" | INEP |
 | Saúde | "Mortalidade infantil: 11,8 por mil nascidos vivos"; "Leitos: 1,9 por mil habitantes" | SIM, SINASC, CNES |
-| Segurança | "Homicídios: 21 por 100 mil habitantes" | Conforme a decisão |
+| Segurança | "Homicídios: 21 por 100 mil habitantes" | SIM (Ministério da Saúde) |
 | Infraestrutura | "Domicílios ligados à rede de esgoto: 62%"; "à rede de água: 91%" | Censo 2022 |
 | Emprego | "Empregos formais: 24 por 100 habitantes"; "Saldo no ano: +310" | RAIS, CAGED |
 | Contas públicas | "Pessoal: 49,2% da receita corrente líquida"; "Receita: R$ 212 milhões" | SICONFI |
@@ -1413,13 +1415,13 @@ Não confirmados e fora do desenho por ora: cobertura da atenção primária (se
 
 **Reaproveita:** `ExecutiveEngine` (alvo e velocidade dos indicadores, aprovação por grupo, mínimos legais), `PopulationProjection` (D-033), o padrão de importação e de `_fontes.json`. **Muda:** valor inicial, unidade mostrada, receita, velocidade por indicador.
 
-### 17.18 Pacote de nomes (decisão pendente do autor)
+### 17.18 Vagas individuais e pacote de nomes (pacote suspenso)
 
-> **Estado:** proposta do autor, **sem aprovação para distribuição**. Nada desta subseção é construído antes de o autor decidir (17.20). O que segue documenta só o formato.
+> **Estado (decisão do autor, 16/11/2026): o pacote de nomes não foi aprovado e está suspenso.** As vagas individuais fictícias seguem no plano (Fase 6). A leitura de pacote não é construída; o formato abaixo fica documentado só como registro, caso a decisão seja revista.
 
 **Vagas individuais no cenário Brasil 2026.** Cada cadeira de deputado federal (513), deputado estadual e distrital (1.059), senador (81), governador (27) e presidente passa a ser um NPC **fictício**, gerado pelo `PersonGenerator`, com o partido fictício e o cargo que o espelho já registra. Cada vaga tem um id estável, que não depende de nome: `cargo.UF.ordem`, em que a ordem é a colocação entre os eleitos daquele cargo na UF (ex.: `df.SP.017`, `de.MG.003`, `sen.BA.2`, `gov.PR`, `pres`). O id, o partido fictício e a ordem são fatos estruturais, como as cadeiras por partido que o cenário já guarda.
 
-**Pacote opcional.** Se existir um arquivo em `user://mods/nomes/`, o jogo o lê ao criar o mundo e troca, para cada id presente, nome, nome de urna, ano de nascimento e gênero do NPC da vaga. Formato:
+**Pacote opcional (suspenso; não construir).** Pela proposta, se existisse um arquivo em `user://mods/nomes/`, o jogo o leria ao criar o mundo e trocaria, para cada id presente, nome, nome de urna, ano de nascimento e gênero do NPC da vaga. Formato:
 
 ```json
 {
@@ -1438,7 +1440,7 @@ Não confirmados e fora do desenho por ora: cobertura da atenção primária (se
 
 **O que nunca acontece.** O jogo e o repositório não contêm nomes reais. O pipeline de `tools/` não gera o pacote, não o baixa e não documenta de onde obtê-lo. O DataValidator continua bloqueando nomes reais em `data/`, e o teste do cenário (16.4) continua exigindo que nenhum nome ou sigla real apareça nos arquivos finais. O jogo não distribui, não hospeda e não aponta para pacotes.
 
-**Regra de neutralidade que isto flexibiliza.** Hoje vale, sem exceção: "partidos, políticos, empresas, institutos e veículos de mídia são fictícios; nunca use nomes reais de políticos" (CLAUDE.md, Neutralidade; GDD 1, pilar 3; 16.4, "o que é sempre fictício"). Com o pacote, o jogo passa a aceitar que o usuário ponha nomes reais em NPCs que a simulação envolve em eventos fictícios de escândalo, doença, derrota e morte. Aprovar o pacote exige mudar o texto dessas três regras.
+**Regra de neutralidade que o pacote flexibilizaria.** Hoje vale, sem exceção: "partidos, políticos, empresas, institutos e veículos de mídia são fictícios; nunca use nomes reais de políticos" (CLAUDE.md, Neutralidade; GDD 1, pilar 3; 16.4, "o que é sempre fictício"). Com o pacote, o jogo passa a aceitar que o usuário ponha nomes reais em NPCs que a simulação envolve em eventos fictícios de escândalo, doença, derrota e morte. Aprovar o pacote exige mudar o texto dessas três regras.
 
 **Risco jurídico** (a avaliar com advogado antes de qualquer decisão; isto não é parecer):
 - **Código Civil, art. 17:** o nome da pessoa não pode ser empregado em publicações ou representações que a exponham ao desprezo público, ainda que sem intenção difamatória. Um evento de escândalo sorteado sobre um NPC com nome real é esse caso.
@@ -1446,7 +1448,7 @@ Não confirmados e fora do desenho por ora: cobertura da atenção primária (se
 - **Art. 20:** a divulgação de escritos e a utilização da imagem de uma pessoa podem ser proibidas, com indenização, se lhe atingirem a honra, a boa fama ou a respeitabilidade, ou se se destinarem a fins comerciais. O jogo é comercial.
 - O fato de o arquivo ser feito e instalado pelo usuário reduz, mas não afasta, o risco para quem fornece o mecanismo.
 
-**Mitigações, se o autor aprovar:** com pacote carregado, eventos das categorias escândalo, vida pessoal, doença e morte não sorteiam NPCs de vagas renomeadas (ou usam só texto institucional); capturas de divulgação nunca são feitas com pacote; o jogo não oferece nenhuma forma de compartilhar pacotes.
+**Mitigações, se a decisão for revista:** com pacote carregado, eventos das categorias escândalo, vida pessoal, doença e morte não sorteiam NPCs de vagas renomeadas (ou usam só texto institucional); capturas de divulgação nunca são feitas com pacote; o jogo não oferece nenhuma forma de compartilhar pacotes.
 
 ### 17.19 Verificação do desenho
 
@@ -1469,7 +1471,7 @@ Não confirmados e fora do desenho por ora: cobertura da atenção primária (se
 | 17.5 Território | a, b, f, g, h | Agenda, Verba, Lideranças, Rivais, Mandato, Prefeitura |
 | 17.6 Agenda | a, e, f, g | Território, Equipe, Lideranças, Mídia, Rivais, Tempo |
 | 17.7 Equipe | a, c, d, e, f | Agenda, Verba, Contas, Mídia, Rivais, Lideranças, Mandato |
-| 17.8 Verba por canal | a, e, f, g | Território, Equipe, Contas, Rivais, Mídia |
+| 17.8 Verba por canal | a, e, f, g | Território, Equipe, Contas, Rivais |
 | 17.9 Plataforma | a, d, e, f | Território, Lideranças, Rivais, Mídia, Debate, Mandato |
 | 17.10 Lideranças | a, b, c, d, e, h | Território, Agenda, Plataforma, Rivais, Equipe, Doadores, Mídia, Mandato, Renovação |
 | 17.11 Rivais | a, b, c, d, e | Território, Verba, Lideranças, Equipe, Mídia, Plataforma, Contas, Mandato |
@@ -1480,36 +1482,52 @@ Não confirmados e fora do desenho por ora: cobertura da atenção primária (se
 | 17.16 Renovação | b, c, d, h, j | Lideranças, Rivais, Equipe, Mídia, Território, Mandato, Prefeitura |
 | 17.17 Estatísticas reais | b, d, f, j | Prefeitura, Território, Mídia, Plataforma |
 
-O princípio j vale para todos os sistemas pela regra de tooltip, verbete e ficha. O Debate (5.7) continua como está e passa a gravar posições assumidas (17.9) e lembranças nos rivais (17.11). O pacote de nomes (17.18) não é sistema de jogo.
+O princípio j vale para todos os sistemas pela regra de tooltip, verbete e ficha. O Debate (5.7) continua como está e passa a gravar posições assumidas (17.9) e lembranças nos rivais (17.11). O pacote de nomes (17.18) não é sistema de jogo e está suspenso.
 
-### 17.20 Decisões que dependem do autor
+### 17.20 Decisões do autor
 
-Nada abaixo é construído antes da decisão. Cada item traz a recomendação e a parte da Fase R que depende dele.
+Decididas pelo autor em 16/11/2026 (DECISOES, D-035). A coluna "Decisão" vale como regra; onde ela difere do que as subseções anteriores propunham, as subseções já foram corrigidas.
 
-| # | Decisão | Recomendação | Usada em |
+| # | Assunto | Decisão | Usada em |
 |---|---|---|---|
-| 1 | Mapa da cidade na tela central: 2D plano (como a referência) ou 2.5D | 2D plano. O 2.5D fica para o estado, o país e a apuração | R1 |
-| 2 | Importar a Malha de Setores e os agregados do Censo 2022 e guardar em `data/` as zonas de todos os municípios | Sim. Medir o tamanho na R1; se passar de 40 MB, simplificar mais os contornos antes de pensar em outra saída | R1 |
-| 3 | Nome de zona onde não há bairro oficial (4.675 dos 5.570 municípios): nome de distrito ou nome descritivo gerado ("Centro", "Zona Norte") | Aceitar, com a Ficha da zona dizendo que o nome é do jogo | R1 |
-| 4 | Religião e escolaridade por zona: área de ponderação onde o município tem duas ou mais (2.576 municípios) e perfil municipal nos demais; ou perfil municipal em todos | Área de ponderação onde houver. É dado oficial e dá diferença entre zonas justamente nas cidades maiores | RD, R2 |
-| 5 | Faixas de renda por zona: estimativa a partir da mediana do rendimento do responsável | Aceitar como estimativa de jogo, marcada | R2 |
-| 6 | Eleitores e votação de 2024 por zona a partir dos locais de votação do TSE (93 mil locais com coordenada; 6,4% sem) | Sim, na RD. Até lá, repartir o eleitorado pela população de 16 anos ou mais | RD |
-| 7 | Termos de uso dos dados do IBGE, INEP, DATASUS, MJSP e MTE: não há licença explícita localizada (o site do IBGE recusa acesso automatizado) | O autor confere os termos antes da R1 (IBGE) e da RD (os demais). É a mesma condição dos dados já usados | R1, RD |
-| 8 | Ritmo do tempo: 4, 2 e 1 segundo por dia na campanha; 1, 0,5 e 0,25 no mandato | Começar assim e ajustar no teste da R1 | R1 |
-| 9 | Regras de campanha a confirmar no texto da lei antes de virar configuração: propaganda paga em rádio e TV proibida (art. 44), outdoor proibido (art. 39, § 8º), limite de pessoal (art. 100-A), doação de pessoa física (art. 23), recursos próprios, financiamento coletivo, inauguração no período vedado (art. 77) | Confirmar item por item na R3. Observação: a criação de personagem (3.4) mostra um "outdoor"; sugerido tratá-lo como peça de pré-visualização ou trocar por placa e adesivo | R2, R3 |
-| 10 | Limite de gastos real por município e cargo (tabela do TSE) | Importar a de 2024 e corrigir pela regra da lei. Se a fonte bloquear, parar e informar | R3 |
-| 11 | Nomes de veículos de mídia: como garantir que não coincidam com veículos reais | Gerador com termos neutros mais lista de bloqueio manual em `data/media/blocklist.json`, validada como a dos partidos | R3 |
-| 12 | Morte ou renúncia de prefeito e vice (regra de cada Lei Orgânica) e de governador e vice (Constituição do estado) | Padrão único, configurável, espelhando a CF, art. 81: eleição direta na primeira metade do mandato, indireta pela Casa legislativa na segunda. A Enciclopédia diz que é simplificação | R4, Fase 6 |
-| 13 | Mortalidade: tábua do Brasil ou tábuas por UF das Projeções (abreviadas, exigem interpolação) | Só a do Brasil | RD |
-| 14 | Renovação das Câmaras Municipais: não há série oficial encontrada (só cerca de 59% em 2024, por fonte secundária) | Critério apenas informativo, até o autor indicar uma fonte ou aprovar calcular a série dos arquivos do TSE | R4 |
-| 15 | **Pacote de nomes** (17.18) | Não aprovar agora. Ouvir um advogado sobre os arts. 17, 18 e 20 do Código Civil. As vagas individuais fictícias podem ser feitas de qualquer modo, porque não dependem do pacote | Fase 6 |
-| 16 | População: reescalar os municípios para acompanhar as Projeções da População 2024 por UF | Sim | RD |
-| 17 | Fonte de homicídios: SIM (2024, com código IBGE) ou SINESP (2025 e 2026, sem código IBGE, registro policial) | SIM, soma de 3 anos, como ponto de partida; SINESP só para conferência | RD |
-| 18 | Emprego formal: baixar os microdados da RAIS (arquivos de 140 a 770 MB) para agregar por município | Sim, com os brutos no cache. Se o FTP bloquear, parar e informar | RD |
-| 19 | Proteção social: sem fonte pesquisada | Manter como índice do jogo, rotulado, e pesquisar uma fonte oficial depois | R4 |
-| 20 | Aprovação pela variação e pela comparação com municípios semelhantes, e não pelo nível absoluto | Sim | R4 |
-| 21 | Fontes tipográficas: Inter, Oswald e Source Serif 4 (todas OFL) | Aprovar | R1 |
-| 22 | Extensão da curva de mortalidade depois dos 89 anos e o fator pessoal de 0,6 a 2,5: são parâmetros de jogo, não dado | Aceitar como parâmetro declarado em `data/demography/config.json` | RD |
+| 1 | Mapa da cidade na tela central | **Aprovado:** 2D plano. O 2.5D fica para o estado, o país e a apuração | R1 |
+| 2 | Zonas de todos os municípios pela Malha de Setores e pelos agregados do Censo 2022, guardadas em `data/` | **Aprovado, com teto de 30 MB** para `data/geo/zonas/`; o importador falha se passar (17.5) | R1 |
+| 3 | Nome de zona onde não há bairro oficial (4.675 dos 5.570 municípios) | **Aprovado:** nome de distrito ou nome descritivo gerado, com a Ficha da zona dizendo que o nome é do jogo | R1 |
+| 4 | Religião e escolaridade por zona | **Aprovado:** área de ponderação onde o município tem duas ou mais (2.576 municípios); perfil municipal nos demais | RD, R2a |
+| 5 | Faixas de renda por zona | **Aprovado:** estimativa de jogo a partir da mediana do rendimento do responsável, marcada como estimativa | R2a |
+| 6 | Eleitores e votação de 2024 por zona pelos locais de votação do TSE | **Aprovado,** na RD. Até lá, o eleitorado é repartido pela população de 16 anos ou mais | RD |
+| 7 | Termos de uso dos dados | **O autor confere os termos antes da RD.** A R1 pode usar a Malha de Setores e os agregados do Censo 2022 citando a fonte em `_fontes.json` e em `assets/CREDITS.md` | R1, RD |
+| 8 | Ritmo do tempo | **Aprovado:** 4, 2 e 1 segundo por dia na campanha; 1, 0,5 e 0,25 no mandato; ajuste no teste da R1 | R1 |
+| 9 | Regras de campanha | **Decidido com correções** (abaixo) | R1, R2b, R3 |
+| 10 | Limite de gastos real por município e cargo | **Aprovado:** importar a tabela do TSE de 2024 e corrigir pela regra da lei. Se a fonte bloquear, parar e informar | R3 |
+| 11 | Nomes de veículos de mídia | **Aprovado:** gerador com termos neutros e lista de bloqueio manual em `data/media/blocklist.json`, validada como a dos partidos | R3 |
+| 12 | Vacância de prefeito e vice, governador e vice | **Decidido com correção:** dois caminhos (abaixo e 17.16), com teste de cada um | R4, Fase 6 |
+| 13 | Tábua de mortalidade | **Alterado pelo autor:** tábua por UF (IBGE), com a do Brasil como reserva (17.16) | RD |
+| 14 | Renovação das Câmaras Municipais | **Aprovado:** critério só informativo, enquanto não houver série oficial | R4 |
+| 15 | Pacote de nomes | **Não aprovado. Suspenso.** As vagas individuais fictícias seguem no plano (17.18) | Fase 6 |
+| 16 | População | **Aprovado:** reescalar os municípios para acompanhar as Projeções da População 2024 por UF | RD |
+| 17 | Fonte de homicídios | **Aprovado:** SIM, soma de 3 anos, como ponto de partida; SINESP só para conferência | RD |
+| 18 | Microdados da RAIS | **Aprovado,** com os brutos só no cache, fora do Git. Se o FTP bloquear, parar e informar | RD |
+| 19 | Proteção social | **Aprovado:** índice do jogo, rotulado como tal, até haver fonte oficial | R4 |
+| 20 | Aprovação do governo | **Aprovado:** pela variação desde a posse e pela comparação com municípios semelhantes, não pelo nível absoluto | R4 |
+| 21 | Fontes tipográficas | **Aprovado:** Inter, Oswald e Source Serif 4 (OFL) | R1 |
+| 22 | Curva de mortalidade depois dos 89 anos e fator pessoal de 0,6 a 2,5 | **Aprovado** como parâmetro de jogo declarado em `data/demography/config.json` | RD |
+
+**Decisão 9, regras de campanha.**
+- **Rádio e TV:** propaganda paga é proibida (Lei 9.504/1997, art. 44). O canal "Rádio" sai da verba. Rádio e TV passam a ser **presença conquistada**: entrevistas (17.6, 17.13) e horário eleitoral gratuito, cujo tempo vem do partido (D-010).
+- **Outdoor:** proibido (art. 39, § 8º). O outdoor da criação de personagem dá lugar a material permitido (adesivo, bandeira, material impresso) e a uma peça para redes (3.4).
+- **Impulsionamento pago nas redes:** permitido com regras (art. 57-C). Entra como canal de verba.
+- **Cabos eleitorais:** têm limite de contratação conforme o eleitorado (art. 100-A). Entra como configuração.
+- **O resto é conferido item por item na R3,** com o artigo citado. Até lá, vale a marcação abaixo.
+
+**Artigos citados nesta seção: o que foi conferido e o que é de memória.**
+- Conferidos no texto oficial durante a pesquisa (planalto.gov.br): Lei 9.504, art. 13; Código Eleitoral, art. 224, §§ 3º e 4º; CF, arts. 46, § 3º, 56, 79, 80 e 81; LC 64/1990, art. 1º, I, e LC 219/2025.
+- Só por resumo, sem abrir o acórdão: ADI 5525.
+- **De memória, a conferir antes de virar configuração:** Lei 9.504, arts. 18-C, 22-A, § 3º, 23, §§ 1º e 2º-A, 30-A, 39, §§ 6º e 8º, 43, 44, 57-C, 77 e 100-A; a vedação de doação de empresas (ADI 4650 e Lei 13.165/2015); LC 101/2000, arts. 20, III, b, e 22; Lei 14.133/2021, art. 75, VIII. Os da Lei 9.504 e da doação são conferidos na R3; os fiscais e de licitação, na R4.
+
+**Decisão 12, vacância no Executivo.** Dois caminhos, cada um com seu objeto de configuração e seu teste:
+1. **Morte ou renúncia** de titular e vice: padrão do art. 81 da CF, configurável: nova eleição direta se a dupla vacância ocorrer na primeira metade do mandato; indireta, pela Casa legislativa, na segunda metade.
+2. **Vacância por decisão da Justiça Eleitoral** (indeferimento de registro, cassação de diploma, perda de mandato): Código Eleitoral, art. 224, §§ 3º e 4º: nova eleição, indireta só se a vacância ocorrer a menos de 6 meses do fim do mandato; direta nos demais casos.
 
 ### 17.20.1 Dados novos em `data/` (resumo)
 

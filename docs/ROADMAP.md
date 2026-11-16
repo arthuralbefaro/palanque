@@ -97,6 +97,8 @@ Conteúdo de jogo igual ao atual (6 ações, pesquisas, eventos, rivais como est
 - [ ] Enciclopédia (F1): Glossário, Como funciona, Este mundo, Sua carreira; `data/encyclopedia/`
 - [ ] Explicação de primeira vez, dispensável, guardada fora do save
 - [ ] Fontes OFL em `assets/fonts/` e ícones do trilho, com crédito
+- [ ] Criação de personagem: trocar o outdoor (proibido, Lei 9.504, art. 39, § 8º) por adesivo, bandeira e peça para redes na pré-visualização e em `CampaignMaterials` (GDD 3.4)
+- [ ] Crédito da Malha de Setores e dos agregados do Censo 2022 em `_fontes.json` e `assets/CREDITS.md` (os termos de uso são conferidos pelo autor antes da RD)
 - **Princípios que passa a cumprir:** f (para o conteúdo atual), i, j. Parcialmente b (o tempo corre e os rivais agem em dias visíveis no feed).
 - **Testes automáticos:**
   - Core: `AdvanceDay` sete vezes produz o mesmo estado que o `AdvanceWeek` atual com a mesma semente (campanha, mandato e prefeitura); uma semana sem decisão não gera pausa; cada tipo de pausa respeita a configuração.
@@ -129,7 +131,7 @@ Primeira metade da antiga R2. Termina, para e espera o autor.
 ### R2b — Equipe, verba, plataforma e objetivos
 Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e espera o autor.
 - [ ] Equipe (17.7): funções, candidatos com vínculos, qualidade em faixa, conselho da semana, eventos próprios; delegação de compromissos na agenda
-- [ ] Verba por canal (17.8): canais com alvo, retorno decrescente, disputa de canal por zona; o comício passa a depender do canal Rua
+- [ ] Verba por canal (17.8): quatro canais pagos (Rua, Redes com impulsionamento, Material gráfico, Cabos) com alvo, retorno decrescente e disputa de canal por zona; o comício passa a depender do canal Rua. Rádio e TV não são canal de verba: presença conquistada por entrevista e horário gratuito
 - [ ] Plataforma (17.9): posições, bandeiras, posição conhecida, promessas locais, custo de mudar, credibilidade
 - [ ] Gerador de objetivos (17.2, peça 6) e painel de Objetivos
 - [ ] BalanceSim ampliado: o robô passa a repartir verba, contratar e posicionar
@@ -141,7 +143,7 @@ Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e esp
   - Core: mudar e desmudar uma posição em 2 semanas custa mais que mudar uma vez; posição desconhecida vale a do partido; toda promessa e toda mudança de posição entram no Livro.
   - Core: em qualquer dia há de 1 a 3 objetivos ativos com condição, prazo e origem; 4 ou mais tipos numa campanha.
   - Lint: toda decisão tem ganho e custo de naturezas diferentes.
-  - Regras de lei dos canais em objeto de configuração, com teste.
+  - Regras de lei dos canais em objeto de configuração, com teste: limite de contratação de cabos pelo eleitorado (art. 100-A), regras do impulsionamento (art. 57-C), nenhum gasto possível com rádio, TV, outdoor ou brinde.
   - Campanha inteira jogada sozinha em 3 sementes por porte, sem erro.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R2B.md
 
@@ -150,6 +152,8 @@ Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e esp
 - [ ] Mídia local (17.13): veículos, linha editorial, feed a partir de fatos, tema em alta, entrevista, pauta, resposta a ataque com prazo, boato
 - [ ] Doadores e prestação de contas (17.12): fontes, limite, painel Contas, risco, julgamento, representação; esqueletos com "quem sabe" e chance de vir à tona
 - [ ] Eventos atuais (32) ligados a pessoas, zonas e fatos do save; eventos dinâmicos disparados por fatos (GDD 15.4)
+- [ ] Conferir, item por item e no texto oficial, os artigos de campanha citados de memória no GDD 17.20 (Lei 9.504, arts. 18-C, 22-A, 23, 30-A, 39, 43, 44, 57-C, 77 e 100-A; doação de empresas), registrar o resultado no DECISOES com o artigo e a data da consulta, e só então criar os objetos de configuração. O que não puder ser conferido fica marcado e vai ao autor
+- [ ] Rádio e TV como presença conquistada: horário eleitoral gratuito com o tempo do partido (D-010) e o rendimento do marqueteiro
 - **Princípios que passa a cumprir:** b, c (rivais, doadores, jornalistas), d (contas e esqueletos).
 - **Testes automáticos:**
   - Campanha de 40 semanas sem comando do jogador: 3 ou mais notícias por semana que não citam o jogador; liderança muda em 1 ou mais zonas; presença de rival muda em mais da metade das zonas.
@@ -165,8 +169,10 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - [ ] Importador: economia municipal, finanças municipais e estaduais, indicadores sociais e séries nacionais das fontes da tabela do GDD 17.17, com ano, endereço e data em `_fontes.json` e crédito em `assets/CREDITS.md`
 - [ ] Lacunas registradas com a regra de substituição de cada indicador (GDD 17.17)
 - [ ] Receita real por município no lugar da receita por habitante estimada da D-031
-- [ ] Tábua de mortalidade do IBGE em `data/demography/` (GDD 17.16)
-- [ ] Religião e escolaridade por área de ponderação e eleitorado por local de votação, se o autor aprovar (GDD 17.20)
+- [ ] Tábuas de mortalidade do IBGE em `data/demography/`: por UF (Projeções da População 2024), com a tábua completa do Brasil de 2024 como reserva e como perfil para a idade simples (GDD 17.16); teste: a probabilidade recomposta de cada faixa etária é igual à publicada
+- [ ] Religião e escolaridade por área de ponderação (municípios com duas ou mais) e eleitorado e votação de 2024 por zona pelos locais de votação do TSE (aprovados, GDD 17.20)
+- [ ] População: municípios reescalados para acompanhar as Projeções da População 2024 por UF
+- [ ] Antes de começar: o autor confere os termos de uso das fontes desta parte (GDD 17.20, item 7)
 - **Princípios que passa a cumprir:** dá base a b e f na R4.
 - **Testes automáticos:** todo município tem valor ou lacuna registrada para cada indicador; totais por UF iguais aos oficiais onde a fonte publica total; nenhum valor fora da faixa plausível declarada em `data/`; nenhum número escrito à mão (todo campo com fonte em `_fontes.json`); DataValidator cobrindo os arquivos novos.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_RD.md
@@ -185,6 +191,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
   - Limites de lei (folha, mínimos, inauguração no período vedado) em objetos de configuração, com teste.
   - Indicadores: valor inicial igual ao dado importado; conversão de ida e volta entre unidade real e escala de jogo sem perda; evolução dentro dos limites plausíveis em 40 anos simulados.
   - Renovação municipal em 40 anos: a Câmara nunca fica com cadeira vaga por mais tempo do que a regra permite; idade média dos vereadores estável (variação menor que 5 anos entre a 1ª e a 10ª legislatura); toda morte de titular resulta em posse de suplente ou vice, ou em eleição, conforme a regra configurada.
+  - Vacância no Executivo, um teste para cada caminho (GDD 17.20, item 12): morte ou renúncia de prefeito e vice na primeira metade do mandato leva a eleição direta e, na segunda, a indireta; vacância por decisão da Justiça Eleitoral leva a nova eleição, indireta só a menos de 6 meses do fim do mandato.
   - BalanceSim de mandato: nenhum instrumento é a melhor escolha em mais de 40% das semanas.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R4.md
 
@@ -203,7 +210,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - [ ] Desempenho: avançar uma semana em menos de 200 ms, mesmo em eleição presidencial; mapa a 60 FPS na visão de um estado
 - [ ] Renovação do mundo político nas esferas estadual e federal (GDD 17.16): deputados, senadores, governadores; suplentes e vices pela regra real
 - [ ] Vagas individuais no cenário Brasil 2026 (GDD 17.18): cada cadeira de deputado federal e estadual, senador, governador e presidente como NPC fictício com id estável
-- [ ] Leitura do pacote opcional de nomes em user://mods/ (GDD 17.18) — **só se o autor aprovar; decisão pendente**
+- Pacote de nomes (GDD 17.18): **não aprovado pelo autor; suspenso.** Não é item deste roadmap
 
 ## Fase 7 — Presidência
 - [ ] Economia nacional, ministérios, Congresso, MPs, vetos
