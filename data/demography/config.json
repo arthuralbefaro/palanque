@@ -1,0 +1,15 @@
+{
+  "note": "Parâmetros de jogo, não dados (GDD 17.16 e decisão 22 do GDD 17.20); as tábuas do IBGE estão em mortality.json. Chance anual de morte = Q(tábua da UF, sexo, idade) × fator pessoal, limitada a 1. fator_pessoal: o risco da pessoa é peso_saude × (100 − saúde) ÷ 100 + peso_estresse × estresse ÷ 100; o fator vai de minimo (risco 0) a 1 (risco_neutro) e de 1 a maximo (risco 1), em dois trechos retos. curva_apos_tabua: a tábua tem idade simples até os 89 anos; daí em diante a probabilidade anual é a dos 89 anos × (1 + crescimento_anual) a cada ano de idade a mais, até teto_anual. sorteios_por_ano: 12 é o sorteio mensal; a chance de cada sorteio é 1 − (1 − anual)^(1 ÷ sorteios_por_ano).",
+  "fator_pessoal": {
+    "minimo": 0.6,
+    "maximo": 2.5,
+    "peso_saude": 0.7,
+    "peso_estresse": 0.3,
+    "risco_neutro": 0.25
+  },
+  "curva_apos_tabua": {
+    "crescimento_anual": 0.09,
+    "teto_anual": 0.6
+  },
+  "sorteios_por_ano": 12
+}

@@ -1,0 +1,59 @@
+{
+  "gerado_em": "2026-11-16T07:26:03.5906603+00:00",
+  "fontes": [
+    {
+      "campo": "mortality.json: tabuas das UFs (faixas, grupo_aberto e, repartido, qx); faixas do Brasil",
+      "fonte": "IBGE, Projeções da População do Brasil e das Unidades da Federação, revisão 2024: tábuas de mortalidade por sexo e idade quinquenal",
+      "ano": 2024,
+      "url": "https://ftp.ibge.gov.br/Projecao_da_Populacao/Projecao_da_Populacao_2024/projecoes_2024_tab5_tabuas_mortalidade.xlsx",
+      "baixado_em": "2026-11-16T07:08:56.3253999+00:00",
+      "observacao": "Planilha \"5) TÁBUAS DE MORTALIDADE\": colunas IDADE, INTERVALO DE IDADE, SEXO, ANO, CÓD., SIGLA, LOCAL, nMx, nAx, nqx, lx, ndx, nLx, Sx, Tx, ex. Usadas as linhas de 2024 do Brasil (código 0) e das 27 UFs (códigos 11 a 53): nqx das faixas de 0 a 85 anos; nMx (taxa_central) e ex (expectativa_de_vida) do grupo de 90 anos ou mais."
+    },
+    {
+      "campo": "mortality.json: tabuas.BR.masculino (qx e grupo_aberto); perfil por idade simples das UFs (masculino)",
+      "fonte": "IBGE, Tábuas Completas de Mortalidade para o Brasil, 2024: homens",
+      "ano": 2024,
+      "url": "https://ftp.ibge.gov.br/Tabuas_Completas_de_Mortalidade/Tabuas_Completas_de_Mortalidade_2024/xlsx/homens.xlsx",
+      "baixado_em": "2026-11-16T07:08:58.0639775+00:00",
+      "observacao": "Coluna Q(X, N) por mil, N = 1, idades de 0 a 89 anos, gravada em proporção. Do grupo de 90 anos ou mais: E(X) (expectativa_de_vida) e D(X, N) ÷ L(X, N) (taxa_central)."
+    },
+    {
+      "campo": "mortality.json: tabuas.BR.feminino (qx e grupo_aberto); perfil por idade simples das UFs (feminino)",
+      "fonte": "IBGE, Tábuas Completas de Mortalidade para o Brasil, 2024: mulheres",
+      "ano": 2024,
+      "url": "https://ftp.ibge.gov.br/Tabuas_Completas_de_Mortalidade/Tabuas_Completas_de_Mortalidade_2024/xlsx/mulheres.xlsx",
+      "baixado_em": "2026-11-16T07:08:58.2890098+00:00",
+      "observacao": "Coluna Q(X, N) por mil, N = 1, idades de 0 a 89 anos, gravada em proporção. Do grupo de 90 anos ou mais: E(X) (expectativa_de_vida) e D(X, N) ÷ L(X, N) (taxa_central)."
+    },
+    {
+      "campo": "mortality.json: tabuas.BR.ambos (qx e grupo_aberto); perfil por idade simples das UFs (ambos)",
+      "fonte": "IBGE, Tábuas Completas de Mortalidade para o Brasil, 2024: ambos os sexos",
+      "ano": 2024,
+      "url": "https://ftp.ibge.gov.br/Tabuas_Completas_de_Mortalidade/Tabuas_Completas_de_Mortalidade_2024/xlsx/ambos_os_sexos.xlsx",
+      "baixado_em": "2026-11-16T07:08:57.8410228+00:00",
+      "observacao": "Coluna Q(X, N) por mil, N = 1, idades de 0 a 89 anos, gravada em proporção. Do grupo de 90 anos ou mais: E(X) (expectativa_de_vida) e D(X, N) ÷ L(X, N) (taxa_central)."
+    },
+    {
+      "campo": "projecao_uf.json: populacao",
+      "fonte": "IBGE, Projeções da População do Brasil e das Unidades da Federação, revisão 2024: indicadores implícitos",
+      "ano": 2024,
+      "url": "https://ftp.ibge.gov.br/Projecao_da_Populacao/Projecao_da_Populacao_2024/projecoes_2024_tab4_indicadores.xlsx",
+      "baixado_em": "2026-11-16T07:08:57.6082004+00:00",
+      "observacao": "Planilha \"4) INDICADORES\", coluna POP_T (população total em 1º de julho), anos de 2022 a 2070, Brasil e 27 UFs."
+    }
+  ],
+  "metodo": "A tábua do Brasil é a tábua completa publicada (idades simples de 0 a 89 anos). Para cada UF e sexo, a probabilidade de cada faixa etária publicada (nqx das faixas 0, 1 a 4, 5 a 9, …, 85 a 89) é repartida pelas idades simples da faixa seguindo o perfil da tábua completa do Brasil do mesmo sexo: qx_UF = 1 − (1 − qx_BR)^k, com k = ln(1 − nqx_UF) ÷ ln(1 − nqx_BR), em que nqx_BR é a probabilidade da mesma faixa recomposta pela tábua completa (1 − Π(1 − qx_BR)). Assim a faixa recomposta da UF, 1 − Π(1 − qx_UF), é igual à publicada. O grupo aberto de 90 anos ou mais não tem idade simples: ficam gravadas a taxa central e a expectativa de vida publicadas, e a curva além dos 89 anos é parâmetro de jogo (config.json).",
+  "conferencia": {
+    "masculino_40_anos_por_mil": 3.265,
+    "feminino_40_anos_por_mil": 1.535,
+    "masculino_60_anos_por_mil": 12.532,
+    "feminino_60_anos_por_mil": 6.888,
+    "masculino_80_anos_por_mil": 62.284,
+    "feminino_80_anos_por_mil": 46.531
+  },
+  "observacoes": [
+    "Ano das tábuas fixo em 2024 (GDD 17.16). A tábua do Brasil vale para a UF que faltar.",
+    "A tábua completa do Brasil e a tábua abreviada do Brasil nas Projeções são publicações distintas: a recomposição das faixas pela tábua completa difere da abreviada em até 0,52% (relativo). Por isso a igualdade exata entre faixa recomposta e faixa publicada vale para as 27 UFs; para o Brasil, as faixas da abreviada ficam gravadas só para conferência.",
+    "config.json não tem fonte: são parâmetros de jogo (fator pessoal, curva depois dos 89 anos, sorteio mensal), decisão 22 do GDD 17.20."
+  ]
+}

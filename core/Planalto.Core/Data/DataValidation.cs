@@ -26,6 +26,10 @@ public static class DataValidation
             Check<Career.FoundingConfig>(dataDirectory, Career.FoundingConfig.File, config => config.Intensities.Count, out _),
             Check<Debate.DebateContent>(dataDirectory, Debate.DebateContent.File, content => content.Cards.Count, out _),
             Check<PopulationProjectionConfig>(dataDirectory, PopulationProjectionConfig.File, _ => 1, out _),
+            Check<Demography.MortalityTable>(dataDirectory, Demography.MortalityTable.File, t => t.Tabuas.Count, out _),
+            Check<Demography.DemographyConfig>(dataDirectory, Demography.DemographyConfig.File, _ => 1, out _),
+            Check<Demography.ProjecaoUf>(dataDirectory, Demography.ProjecaoUf.File, p => p.Populacao.Count, out _),
+            Check<Demography.FontesDemografia>(dataDirectory, Demography.FontesDemografia.File, f => f.Fontes.Count, out _),
         };
 
         reports.AddRange(WorldContent.Load(dataDirectory, out WorldContent? world));

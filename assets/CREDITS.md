@@ -30,6 +30,12 @@ Ano, endereço e data de download de cada fonte estão em `data/municipios/_font
 ### Indicadores reais de partida
 - **Ministério da Saúde, DATASUS**: Sistema de Informações sobre Mortalidade (SIM, declarações de óbito por município de residência, 2022 a 2024), Sistema de Informações sobre Nascidos Vivos (SINASC, por município de residência, 2022 a 2024) e Cadastro Nacional de Estabelecimentos de Saúde (CNES, leitos, competência de setembro de 2026). Microdados do FTP do DATASUS, agregados por município pelo DataImporter.
 
+### Mortalidade e população projetada
+- **IBGE**, Projeções da População do Brasil e das Unidades da Federação, revisão 2024: tábuas de mortalidade por sexo e idade quinquenal (ano de 2024, Brasil e 27 UFs) e população total projetada por UF, de 2022 a 2070.
+- **IBGE**, Tábuas Completas de Mortalidade para o Brasil, 2024 (homens, mulheres e ambos os sexos): tábua do Brasil e perfil por idade simples das tábuas das UFs.
+
+Endereço, data de download e método em `data/demography/_fontes.json`.
+
 ## Código de terceiros
 - **blast** (descompressor do formato "implode" da PKWare DCL), Copyright (C) 2003, 2012, 2013 Mark Adler, de `zlib/contrib/blast`, sob a licença zlib. Portado para C# e alterado em `tools/Planalto.DataImporter/Rd/Blast.cs` (o aviso da licença está no arquivo); usado só pelo importador, para ler os arquivos .dbc do DATASUS.
 
