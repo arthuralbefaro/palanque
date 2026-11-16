@@ -1,3 +1,4 @@
+using Planalto.Core.Elections;
 using Planalto.Core.Legislature;
 using Planalto.Core.State;
 using Calendar = Planalto.Core.State.Calendar;
@@ -14,11 +15,20 @@ public static class PartyAffiliation
     /// <summary>Dias da janela partidária antes do prazo de filiação (art. 22-A, III).</summary>
     public const int WindowDays = 30;
 
-    /// <summary>Janela partidária aberta: ano de eleição municipal e até 30 dias antes do prazo de filiação.</summary>
+    /// <summary>
+    /// Janela partidária aberta para o mandato proporcional em curso: só ao término do mandato vigente (art. 22-A,
+    /// III), isto é, no ano da eleição em que ele acaba (municipal para vereador, geral para deputados), nos 30 dias
+    /// antes do prazo de filiação. Sem mandato proporcional, não há janela (a troca é livre).
+    /// </summary>
     public static bool InWindow(GameState state)
     {
+        if (state.Mandate is not { } mandate)
+        {
+            return false;
+        }
+
         int year = state.Calendar.Year;
-        if (Calendar.ElectionKindOf(year) != ElectionKind.Municipal)
+        if (year != mandate.End.Year || Calendar.ElectionKindOf(year) != ElectionKindFor(mandate.Office))
         {
             return false;
         }
@@ -26,6 +36,10 @@ public static class PartyAffiliation
         DateOnly deadline = Calendar.ElectionFor(year).PartyAffiliationDeadline;
         return state.Calendar.WeekEnd >= deadline.AddDays(-WindowDays) && state.Calendar.WeekStart <= deadline;
     }
+
+    /// <summary>Eleição que renova o cargo: municipal para vereador; geral para deputados.</summary>
+    public static ElectionKind ElectionKindFor(Office office) =>
+        office == Office.Vereador ? ElectionKind.Municipal : ElectionKind.General;
 
     /// <summary>Se a troca agora custaria o mandato.</summary>
     public static bool LosesMandate(GameState state) =>

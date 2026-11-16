@@ -140,6 +140,10 @@ public sealed class Brasil2026Scenario
         CheckSeats(national.Camara, "nacional.json: Câmara", CheckId, Error);
         CheckSeats(national.Senado, "nacional.json: Senado", CheckId, Error);
         national.CamaraVotes.Keys.ToList().ForEach(k => CheckId(k, "nacional.json: votos para a Câmara"));
+        if (national.CamaraValidVotes <= 0 || national.CamaraValidVotes != national.CamaraVotes.Values.Sum())
+        {
+            Error($"nacional.json: camara_valid_votes ({national.CamaraValidVotes}) diferente da soma dos votos por partido ({national.CamaraVotes.Values.Sum()}).");
+        }
         CheckId(national.Presidente.Party, "nacional.json: presidente");
         CheckId(national.Presidente.ViceParty, "nacional.json: vice-presidente");
         national.BaseGovernista.ForEach(p => CheckId(p, "nacional.json: base"));

@@ -231,9 +231,11 @@ public static class RaceSetup
             return CandidacyIssue.ForaDoPrazo;
         }
 
-        // Idade mínima na data da posse (1º de janeiro seguinte à eleição).
+        // Idade mínima na posse (1º de janeiro seguinte à eleição); com mínimo de 18 anos, no prazo do registro.
+        rules ??= CandidacyRulesConfig.Default;
         var posse = new DateOnly(campaign.ElectionDate.Year + 1, 1, 1);
-        return ctx.State.Player.AgeOn(posse) < (rules ?? CandidacyRulesConfig.Default).MinimumAgeFor(office) ? CandidacyIssue.IdadeMinima : null;
+        DateOnly reference = rules.AgeReferenceDate(office, campaign.ElectionDate.Year, posse);
+        return ctx.State.Player.AgeOn(reference) < rules.MinimumAgeFor(office) ? CandidacyIssue.IdadeMinima : null;
     }
 
     /// <summary>

@@ -206,7 +206,8 @@ public partial class Game : Node
     }
 
     private Core.Career.PartyFoundingEngine NewFoundingEngine(GameState state) =>
-        new(state, Founding, World.Parties, Municipios, World.NumberRules);
+        new(state, Founding, World.Parties, Municipios, World.NumberRules,
+            state.World?.ScenarioId == "brasil_2026" ? Brasil2026?.National.CamaraValidVotes : null);
 
     /// <summary>O que aconteceu de especial ao avançar a semana (a tela decide como avisar).</summary>
     public enum WeekNote

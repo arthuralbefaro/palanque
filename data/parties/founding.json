@@ -1,5 +1,5 @@
 {
-  "source": "Lei 9.096/1995, arts. 7º e 8º: 101 fundadores em ao menos 1/3 dos estados; apoio de eleitores não filiados igual a 0,5% dos votos válidos da última eleição para a Câmara, distribuídos por ao menos 1/3 dos estados, com mínimo de 0,1% dos que votaram em cada um, colhido em até 2 anos. Lei 9.504/1997, art. 4º: só disputa a eleição o partido registrado no TSE até 6 meses antes. Os votos válidos são aproximados pelo eleitorado de data/municipios/ vezes valid_vote_factor.",
+  "source": "Lei 9.096/1995, arts. 7º e 8º: 101 fundadores em ao menos 1/3 dos estados; apoio de eleitores não filiados igual a 0,5% dos votos válidos da última eleição para a Câmara, distribuídos por ao menos 1/3 dos estados, com mínimo de 0,1% dos que votaram em cada um, colhido em até 2 anos. Lei 9.504/1997, art. 4º: só disputa a eleição o partido registrado no TSE até 6 meses antes. No cenário Brasil 2026, a meta usa os votos válidos reais para a Câmara em 2026 (camara_valid_votes em parties/scenarios/brasil_2026/nacional.json); nos demais cenários, os votos válidos são aproximados pelo eleitorado de data/municipios/ vezes valid_vote_factor. O mínimo por estado usa sempre a aproximação.",
   "capital_cost": 15,
   "money_cost": 20000,
   "founders": 101,

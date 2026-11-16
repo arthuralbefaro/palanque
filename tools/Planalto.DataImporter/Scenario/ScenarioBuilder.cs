@@ -100,6 +100,7 @@ public static class ScenarioBuilder
             CamaraVotes = ids.ToDictionary(
                 p => p.Value,
                 p => input.Votes2026.Where(v => !v.Supplementary && v.Cargo == TseCargo.DeputadoFederal && v.Party == p.Key).Sum(v => v.Votes)),
+            CamaraValidVotes = input.Votes2026.Where(v => !v.Supplementary && v.Cargo == TseCargo.DeputadoFederal).Sum(v => v.Votes),
             Presidente = new ExecutiveSeat { Party = ids[winner.Party], ViceParty = ids[vice.Party] },
             BaseGovernista = CoalitionOf(input.Coalitions2026, winner, ids),
             Oposicao = runnerUp is null ? [] : CoalitionOf(input.Coalitions2026, runnerUp, ids),

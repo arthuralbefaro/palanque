@@ -53,6 +53,21 @@ public class PartyFoundingTests
     }
 
     [Fact]
+    public void Meta_do_Brasil_2026_e_meio_por_cento_dos_votos_validos_reais()
+    {
+        GameState state = OutOfOffice();
+        long valid = CampaignKit.C.Brasil2026.National.CamaraValidVotes;
+        Assert.Equal(CampaignKit.C.Brasil2026.National.CamaraVotes.Values.Sum(), valid);
+
+        var engine = new PartyFoundingEngine(state, Config(), CampaignKit.C.World.Parties, CampaignKit.C.Municipios, CandidateNumberRulesConfig.Default, valid);
+        Assert.True(engine.UsesRealVotes);
+        Assert.Equal((long)Math.Ceiling(valid * 0.005), engine.NationalRequired);
+
+        // Sem os votos reais (outros cenários), vale a aproximação pelo eleitorado.
+        Assert.False(Engine(state, Config()).UsesRealVotes);
+    }
+
+    [Fact]
     public void Proposta_e_valida_e_sigla_repetida_ou_bloqueada_e_recusada()
     {
         GameState state = OutOfOffice();

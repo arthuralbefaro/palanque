@@ -70,6 +70,27 @@ public class ExecutiveTests
     }
 
     [Fact]
+    public void Idade_de_18_anos_e_aferida_no_registro_e_as_demais_na_posse()
+    {
+        CampaignEngine campaign = CampaignKit.NewCareer(SmallTown(), 4, strongestParty: true);
+        GameState state = campaign.Context.State;
+        int year = state.Campaign!.ElectionDate.Year;
+        var birth = typeof(Planalto.Core.Characters.Character).GetProperty(nameof(Planalto.Core.Characters.Character.BirthDate))!;
+
+        // Faz 18 anos em 1º de setembro: depois do prazo do registro (15 de agosto), antes da posse.
+        birth.SetValue(state.Player, new DateOnly(year - 18, 9, 1));
+        Assert.Equal(CandidacyIssue.IdadeMinima, RaceSetup.CanRunFor(campaign.Context, Office.Vereador));
+
+        // Fazendo 18 até o dia do prazo, pode.
+        birth.SetValue(state.Player, new DateOnly(year - 18, 8, 15));
+        Assert.Null(RaceSetup.CanRunFor(campaign.Context, Office.Vereador));
+
+        // Prefeito (21) continua aferido na posse: quem faz 21 em dezembro pode disputar.
+        birth.SetValue(state.Player, new DateOnly(year - 21, 12, 1));
+        Assert.Null(RaceSetup.CanRunFor(campaign.Context, Office.Prefeito));
+    }
+
+    [Fact]
     public void Posse_de_prefeito_monta_orcamento_camara_e_coalizao()
     {
         var (state, engine) = ElectedMayor();

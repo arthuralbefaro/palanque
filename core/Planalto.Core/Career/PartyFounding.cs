@@ -143,14 +143,19 @@ public sealed class PartyFoundingEngine
     private readonly CandidateNumberRulesConfig _numbers;
     private readonly Dictionary<string, long> _ufElectorate;
 
-    public PartyFoundingEngine(GameState state, FoundingConfig config, PartyContent parties, MunicipiosDataSet municipios, CandidateNumberRulesConfig numbers)
+    /// <param name="camaraValidVotes">
+    /// Votos válidos reais para a Câmara na última eleição geral (cenário Brasil 2026); sem eles, a meta usa a
+    /// aproximação de <see cref="FoundingConfig.ValidVoteFactor"/> sobre o eleitorado.
+    /// </param>
+    public PartyFoundingEngine(GameState state, FoundingConfig config, PartyContent parties, MunicipiosDataSet municipios, CandidateNumberRulesConfig numbers, long? camaraValidVotes = null)
     {
         _state = state;
         _config = config;
         _parties = parties;
         _numbers = numbers;
         _ufElectorate = municipios.All.GroupBy(m => m.Uf).ToDictionary(g => g.Key, g => g.Sum(m => m.Eleitorado), StringComparer.Ordinal);
-        NationalRequired = (long)Math.Ceiling(_ufElectorate.Values.Sum() * config.ValidVoteFactor * config.NationalShare);
+        UsesRealVotes = camaraValidVotes is > 0;
+        NationalRequired = (long)Math.Ceiling((camaraValidVotes is > 0 ? camaraValidVotes.Value : _ufElectorate.Values.Sum() * config.ValidVoteFactor) * config.NationalShare);
     }
 
     public FoundingConfig Config => _config;
@@ -158,6 +163,9 @@ public sealed class PartyFoundingEngine
     public PartyFoundingState? Founding => _state.Founding;
 
     public long NationalRequired { get; }
+
+    /// <summary>A meta nacional veio dos votos válidos reais (e não da aproximação pelo eleitorado).</summary>
+    public bool UsesRealVotes { get; }
 
     public IReadOnlyCollection<string> States => _ufElectorate.Keys;
 

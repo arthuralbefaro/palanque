@@ -124,6 +124,12 @@ public sealed class NationalScenarioFile
     /// <summary>Votos válidos (nominais + legenda) para a Câmara na última eleição geral, por partido.</summary>
     public required Dictionary<string, long> CamaraVotes { get; init; }
 
+    /// <summary>
+    /// Total de votos válidos (nominais + legenda) para deputado federal na última eleição geral, somando todos os
+    /// partidos (TSE, votacao_partido_munzona). Base da meta de apoio para fundar partido (Lei 9.096, art. 7º, § 1º).
+    /// </summary>
+    public required long CamaraValidVotes { get; init; }
+
     public required ExecutiveSeat Presidente { get; init; }
 
     public required List<string> BaseGovernista { get; init; }
