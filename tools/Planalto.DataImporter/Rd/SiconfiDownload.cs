@@ -166,16 +166,51 @@ public static class SiconfiDownload
         return items.Count;
     }
 
+    /// <summary>Intervalo mínimo entre o início de duas chamadas: a API do Tesouro recusa (HTTP 429) acima de cerca de 1 por segundo.</summary>
+    private static readonly TimeSpan Intervalo = TimeSpan.FromSeconds(1.1);
+
+    private static readonly SemaphoreSlim Ritmo = new(1, 1);
+
+    private static DateTime _proxima = DateTime.MinValue;
+
+    private static async Task EsperarVezAsync()
+    {
+        await Ritmo.WaitAsync();
+        try
+        {
+            TimeSpan wait = _proxima - DateTime.UtcNow;
+            if (wait > TimeSpan.Zero)
+            {
+                await Task.Delay(wait);
+            }
+
+            _proxima = DateTime.UtcNow + Intervalo;
+        }
+        finally
+        {
+            Ritmo.Release();
+        }
+    }
+
     private static async Task<string> GetWithRetryAsync(HttpClient http, string url)
     {
         for (int attempt = 1; ; attempt++)
         {
+            await EsperarVezAsync();
             try
             {
                 using HttpResponseMessage response = await http.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsStringAsync();
+                }
+
+                if ((int)response.StatusCode == 429)
+                {
+                    // Limite de chamadas atingido: espera um minuto e tenta de novo, sem contar como tentativa perdida.
+                    await Task.Delay(TimeSpan.FromSeconds(60));
+                    attempt--;
+                    continue;
                 }
 
                 if (attempt >= Tentativas)
