@@ -40,6 +40,9 @@ public partial class HubScreen : Control
     private static readonly Dictionary<string, string> Hints = new(StringComparer.Ordinal)
     {
         ["campanha"] = "A campanha anda por compromissos com dia, turno do dia e zona. Marque na Agenda (terceiro ícone); o resultado de cada um aparece na coluna da direita.",
+        ["equipe"] = "Cada função tem de dois a quatro nomes. A qualidade aparece em faixa nas primeiras semanas. Clique num nome para ver o vínculo, a previsão e contratar. Toda pessoa lembra do que você fez com ela.",
+        ["verba"] = "A verba é semanal e sai do caixa toda segunda-feira. Escolha o canal, o alvo e o valor: a previsão mostra duas contas, o retorno da sua verba e a disputa com a verba dos rivais no mesmo lugar.",
+        ["plataforma"] = "Em cada tema você tem uma posição de −2 a +2. Quem não conhece a sua posição presume a do partido. Mudar o que já é conhecido custa incoerência; a previsão mostra quem gosta e quem não gosta.",
         ["pessoas"] = "Lideranças movem votos de um público numa zona. Visite para ouvir o pedido: aceitar vira promessa no Livro de compromissos; recusar fica na memória dela. Clique num nome para abrir a ficha.",
         ["agenda"] = "Cada dia tem três turnos. Clique num turno livre, escolha o compromisso e a zona e veja a previsão antes de confirmar. Repetir o mesmo compromisso na mesma zona rende cada vez menos: é o cansaço.",
         ["territorio"] = "Sua presença muda de zona para zona e cai nas zonas em que você não aparece. Clique numa zona do mapa ou da lista para abrir a ficha.",
@@ -57,7 +60,17 @@ public partial class HubScreen : Control
         Pessoa,
         Marcar,
         Compromisso,
+        Equipe,
+        Membro,
+        Verba,
+        Canal,
+        Plataforma,
+        Tema,
+        Prometer,
     }
+
+    /// <summary>Fichas que pertencem à área Campanha (o trilho continua marcando a área).</summary>
+    private static bool IsCampaignSheet(Sheet sheet) => sheet is Sheet.Equipe or Sheet.Membro or Sheet.Verba or Sheet.Canal or Sheet.Plataforma or Sheet.Tema or Sheet.Prometer;
 
     private sealed record Notice(string Text, string? Button = null, Action? Action = null, string? Tip = null);
 
@@ -71,6 +84,7 @@ public partial class HubScreen : Control
     private VBoxContainer _left = null!;
     private VBoxContainer _feed = null!;
     private VBoxContainer _poll = null!;
+    private VBoxContainer _objectives = null!;
     private Control _mapArea = null!;
     private ZoneMapView _map = null!;
     private HBoxContainer _modes = null!;
@@ -107,6 +121,12 @@ public partial class HubScreen : Control
 
     /// <summary>Nome da ficha aberta no painel da esquerda ("Nenhuma", "Zona", "Pessoa", "Marcar", "Compromisso").</summary>
     public string SheetName => _sheet.ToString();
+
+    /// <summary>Largura do painel da área (ART_GUIDE: 400 px lógicos, fixa); o teste de layout confere que nenhum conteúdo o alarga.</summary>
+    public float LeftPanelWidth => _left.GetParent<Control>().GetParent<Control>().Size.X;
+
+    /// <summary>Largura da coluna direita (ART_GUIDE: 400 px lógicos, fixa).</summary>
+    public float RightPanelWidth => _objectives.GetParent<Control>().GetParent<Control>().Size.X;
 
     /// <summary>Texto da faixa de pausa automática, se houver (testes de fumaça).</summary>
     public string? NoticeText => _notice?.Text;
@@ -169,6 +189,9 @@ public partial class HubScreen : Control
         _feed = feedScroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
         _feed.AddThemeConstantOverride("separation", 8);
         right.Add(new ColorRect { Color = Palette.Linha, CustomMinimumSize = new Vector2(0, 1), MouseFilter = MouseFilterEnum.Ignore });
+        _objectives = right.Add(new VBoxContainer { Name = "Objetivos" });
+        _objectives.AddThemeConstantOverride("separation", 6);
+        right.Add(new ColorRect { Color = Palette.Linha, CustomMinimumSize = new Vector2(0, 1), MouseFilter = MouseFilterEnum.Ignore });
         _poll = right.Add(new VBoxContainer());
         _poll.AddThemeConstantOverride("separation", 6);
 
@@ -228,6 +251,7 @@ public partial class HubScreen : Control
     public string? BlockReason() =>
         Campaign.Events.Pending.Count > 0 ? Tr("há uma decisão esperando você")
         : Agenda.PendingRequest is not null ? Tr("uma liderança fez um pedido e espera a sua resposta")
+        : _engine.Team.Pending.Count > 0 ? Tr("alguém da sua equipe espera uma decisão sua")
         : Campaign.Debate is not null ? Tr("há um debate na TV hoje")
         : Campaign.Phase == CampaignPhase.Votacao ? Tr("é dia de eleição: vá à urna")
         : Campaign.Phase == CampaignPhase.Encerrada ? Tr("a eleição terminou: veja a apuração")
@@ -304,6 +328,11 @@ public partial class HubScreen : Control
                 Stop(new Notice(item.Text + ".", person is null ? null : "Abrir a ficha", () => OpenSheet(Sheet.Pessoa, person),
                     Palette.Tip(Tr("Abre a ficha dessa pessoa."), Tr("mostra a relação, as lembranças e o pedido dela."), Tr("nada."))));
             }
+            else if (item.Kind == Clock.CaixaBaixo && Pause(Clock.CaixaBaixo))
+            {
+                Stop(new Notice(item.Text + ".", "Ver a equipe e a folha", () => OpenCampaignSheet(Sheet.Equipe, null),
+                    Palette.Tip(Tr("Abre a Equipe, com a folha da semana."), Tr("mostra quem recebe quanto e quantas semanas o caixa paga; salário atrasado derruba a lealdade de todos."), Tr("nada."))));
+            }
             else if (item.Kind == "rival_zona" && item.ZoneId is { } zone && _engine.PlayerLeadsPresence(Territory.IndexOf(zone)) && Pause(Clock.RivalEmZonaLider))
             {
                 Stop(new Notice(string.Format(Tr("{0}, zona em que você lidera a presença."), item.Text), "Ver a zona", () => { _map.CenterOn(zone); _map.Select(zone); OpenSheet(Sheet.Zona, zone); },
@@ -352,8 +381,19 @@ public partial class HubScreen : Control
         _sheet = Sheet.Nenhuma;
         _sheetId = null;
         _draft = null;
+        _confirmFire = null;
         _back.Clear();
         Refresh();
+    }
+
+    /// <summary>Abre uma tela inteira da área Campanha (Equipe, Verba, Plataforma) a partir de qualquer lugar.</summary>
+    private void OpenCampaignSheet(Sheet sheet, string? id)
+    {
+        _area = "campanha";
+        _back.Clear();
+        _sheet = Sheet.Nenhuma;
+        _draft = null;
+        OpenSheet(sheet, id);
     }
 
     private void OpenSheet(Sheet sheet, string? id)
@@ -365,6 +405,9 @@ public partial class HubScreen : Control
 
         _sheet = sheet;
         _sheetId = id;
+        _confirmFire = null;
+        _positionDraft = null;
+        _positionResult = null;
         if (sheet == Sheet.Marcar)
         {
             // Marcar pede escolhas em listas: o tempo para enquanto a marcação está aberta.
@@ -377,6 +420,9 @@ public partial class HubScreen : Control
     private void Back()
     {
         _draft = null;
+        _confirmFire = null;
+        _positionDraft = null;
+        _positionResult = null;
         (_sheet, _sheetId) = _back.Count > 0 ? _back.Pop() : (Sheet.Nenhuma, null);
         _map.Select(_sheet == Sheet.Zona ? _sheetId : null);
         Refresh();
@@ -393,6 +439,15 @@ public partial class HubScreen : Control
             }
 
             _map.Select(_draft.ZoneId);
+            Refresh();
+            return;
+        }
+
+        if (_sheet == Sheet.Canal && id is not null && _sheetId is not null && _engine.ChannelTargets(_sheetId).Any(t => t.Id == id))
+        {
+            // Com um canal de zona aberto, o clique no mapa escolhe o alvo da verba.
+            SetChannelTarget(_sheetId, id);
+            _map.Select(id);
             Refresh();
             return;
         }
@@ -431,6 +486,7 @@ public partial class HubScreen : Control
         BuildLeft();
         BuildMap();
         BuildRight();
+        BuildObjectives();
         BuildBanner();
         ShowPendingDecision();
     }
@@ -590,19 +646,22 @@ public partial class HubScreen : Control
         string zones = string.Join(", ", Enumerable.Range(0, Territory.Zones.Count)
             .OrderByDescending(z => Territory.Population[z]).Take(4)
             .Select(z => string.Format(PtBr, "{0} {1:0}", ZoneName(Territory.Zones[z]), Territory.PresenceOf(RaceSetup.PlayerId, z))));
-        Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos e pesquisas; o jantar de arrecadação traz mais."));
+        Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos, pesquisas, a folha da equipe e a verba dos canais (as duas saem toda segunda-feira); o jantar de arrecadação traz mais."));
         Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
             string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
         Stat(Tr("como te veem"), string.Format(PtBr, "{0:+0.00;−0.00;0.00}", Campaign.Player.Image), Tr("Imagem: como a cidade vê você, de −1 a +1."), Tr("pesa no voto; volta aos poucos para zero sem novidades."));
-        Stat(Tr("estresse"), string.Format(PtBr, "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
-            string.Format(Tr("sobe com cada compromisso e mais com o terceiro turno do mesmo dia; acima de {0}, você se sai pior em entrevistas e negociações. Descanso e família baixa."), _engine.Context.Campaign.Commitments.Regras.EstresseLimite));
+        AgendaRules agendaRules = _engine.Context.Campaign.Commitments.Regras;
+        bool stressed = State.Player.Resources.Stress > agendaRules.EstresseLimite;
+        Stat(Tr("estresse"), string.Format(PtBr, stressed ? "{0} ▲" : "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
+            string.Format(PtBr, Tr("sobe com cada compromisso e mais com o terceiro turno do mesmo dia; acima de {0}, a chance de se sair bem na entrevista cai {1:0} pontos. Descanso e família baixa."), agendaRules.EstresseLimite, agendaRules.EstressePenalidade * 100),
+            stressed ? Palette.Negativo : null);
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));
         IconButton(_top, "ajuda", false, () => EncyclopediaDialog.Open(GetTree().Root), Palette.Tip(Tr("Enciclopédia (F1)."), Tr("explica termos, regras eleitorais reais, quem é quem neste mundo e o seu Livro de compromissos."), Tr("nada; o jogo fica pausado.")));
     }
 
-    private void Stat(string caption, string value, string what, string does)
+    private void Stat(string caption, string value, string what, string does, Color? color = null)
     {
         var box = _top.Add(new VBoxContainer { MouseFilter = MouseFilterEnum.Stop, TooltipText = Palette.Tip(what, does, Tr("é um resultado, não um custo.")) });
         box.AddThemeConstantOverride("separation", -4);
@@ -611,8 +670,24 @@ public partial class HubScreen : Control
         top.AddThemeColorOverride("font_color", Palette.Texto3);
         top.MouseFilter = MouseFilterEnum.Pass;
         Label label = Ui.Value(box, value, 20);
-        label.AddThemeColorOverride("font_color", Palette.Texto);
+        label.AddThemeColorOverride("font_color", color ?? Palette.Texto);
         label.MouseFilter = MouseFilterEnum.Pass;
+    }
+
+    /// <summary>Aviso visível quando o estresse passa do limite: o que ele causa e como baixar.</summary>
+    private void StressWarning()
+    {
+        AgendaRules rules = _engine.Context.Campaign.Commitments.Regras;
+        int stress = State.Player.Resources.Stress;
+        if (stress <= rules.EstresseLimite)
+        {
+            return;
+        }
+
+        PanelContainer card = Card(_left, Palette.CartaoAlto, Palette.Negativo, 10);
+        card.Name = "AvisoEstresse";
+        string tested = string.Join(", ", _engine.Context.Campaign.Commitments.Tipos.Where(t => t.Teste is not null).Select(t => t.Nome));
+        Glossary.Rich(card, string.Format(PtBr, Tr("Estresse em {0} (limite: {1}). Acima do limite, a chance de você se sair bem cai {2:0} pontos nos compromissos que dependem disso ({3}). Marque Descanso e família na Agenda para baixar."), stress, rules.EstresseLimite, rules.EstressePenalidade * 100, tested), 18, Palette.Texto);
     }
 
     private void BuildTrail()
@@ -620,7 +695,7 @@ public partial class HubScreen : Control
         Ui.Clear(_trail);
         foreach (var (id, icon, name, tip) in Areas)
         {
-            var b = IconButton(_trail, icon, _area == id && _sheet == Sheet.Nenhuma, () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
+            var b = IconButton(_trail, icon, _area == id && (_sheet == Sheet.Nenhuma || (id == "campanha" && IsCampaignSheet(_sheet))), () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
             b.Name = "Area_" + id;
         }
     }
@@ -643,6 +718,27 @@ public partial class HubScreen : Control
                 return;
             case Sheet.Compromisso when _sheetId is not null && BuildCommitmentSheet(_sheetId):
                 return;
+            case Sheet.Equipe:
+                BuildTeamSheet();
+                return;
+            case Sheet.Membro when _sheetId is not null && _engine.Staff(_sheetId) is { } member:
+                BuildMemberSheet(member);
+                return;
+            case Sheet.Verba:
+                BuildBudgetSheet();
+                return;
+            case Sheet.Canal when _sheetId is not null && _engine.Context.Campaign.Channels.Find(_sheetId) is { } channel:
+                BuildChannelSheet(channel);
+                return;
+            case Sheet.Plataforma:
+                BuildPlatformSheet();
+                return;
+            case Sheet.Tema when _sheetId is not null && _engine.Context.Themes.Themes.FirstOrDefault(t => t.Id == _sheetId) is { } theme:
+                BuildThemeSheet(theme);
+                return;
+            case Sheet.Prometer:
+                BuildPromiseSheet();
+                return;
             case Sheet.Nenhuma:
                 break;
             default:
@@ -655,6 +751,7 @@ public partial class HubScreen : Control
 
         Heading(_left, Tr(Areas.First(a => a.Id == _area).Name));
         FirstTimeHint(_area);
+        StressWarning();
         switch (_area)
         {
             case "pessoas": BuildPeople(); break;
@@ -717,8 +814,12 @@ public partial class HubScreen : Control
             }
         }
 
+        BuildTeamBlock();
+        BuildBudgetBlock();
+        BuildPlatformBlock();
+
         Heading(_left, Tr("Próximos compromissos"), 20);
-        var next = Agenda.Scheduled.OrderBy(c => c.Date).ThenBy(c => c.Turno).Take(5).ToList();
+        var next = Agenda.Scheduled.OrderBy(c => c.Date).ThenBy(c => c.Turno).Take(3).ToList();
         if (next.Count == 0)
         {
             Glossary.Rich(_left, Tr("Nenhum compromisso marcado. Sem compromisso, a sua presença cai um pouco toda semana em todas as zonas."));
@@ -874,6 +975,20 @@ public partial class HubScreen : Control
                             Palette.Tip(Tr("Esconde o cartão do pedido para você consultar o mapa."), Tr("o pedido continua esperando; Decidir traz o cartão de volta."), Tr("nada; o jogo segue pausado até você responder."))));
                     }
                 }
+                else if (_engine.Team.Pending.FirstOrDefault() is { } staffDecision && Campaign.Events.Pending.Count == 0 && _engine.Staff(staffDecision.PersonId) is { } staffMember)
+                {
+                    text = string.Format(Tr("{0} espera uma decisão sua. Jogo pausado."), StaffLabel(staffMember));
+                    if (_staffHidden)
+                    {
+                        buttons.Add(("Decidir", () => { _staffHidden = false; Refresh(); },
+                            Palette.Tip(Tr("Abre o cartão da decisão."), Tr("mostra as opções, cada uma com a previsão e quem vai lembrar."), Tr("nada; o jogo segue pausado até você responder."))));
+                    }
+                    else
+                    {
+                        buttons.Add(("Ver o mapa", () => { _staffHidden = true; Refresh(); },
+                            Palette.Tip(Tr("Esconde o cartão da decisão para você consultar o mapa e a equipe."), Tr("a decisão continua esperando; Decidir traz o cartão de volta."), Tr("nada; o jogo segue pausado até você responder."))));
+                    }
+                }
                 else if (_notice is not null && !_running)
                 {
                     text = _notice.Text + " " + Tr("Jogo pausado.");
@@ -899,7 +1014,7 @@ public partial class HubScreen : Control
         }
 
         // Um destaque por vez (ART_GUIDE): com um cartão de decisão aberto, a faixa fica neutra.
-        bool cardOpen = Campaign.Events.Pending.Count > 0 || (Agenda.PendingRequest is not null && !_requestHidden);
+        bool cardOpen = Campaign.Events.Pending.Count > 0 || (Agenda.PendingRequest is not null && !_requestHidden) || (_engine.Team.Pending.Count > 0 && !_staffHidden);
         _banner = _mapArea.Add(new PanelContainer { Name = "FaixaDecisao" });
         _banner.AddThemeStyleboxOverride("panel", Palette.Box(Palette.CartaoAlto, 8, 12, cardOpen ? Palette.Linha : Palette.Atencao));
         _banner.SetAnchorsAndOffsetsPreset(LayoutPreset.CenterBottom);
@@ -912,7 +1027,12 @@ public partial class HubScreen : Control
         Glossary.Rich(row, text, 18, Palette.Texto).SizeFlagsVertical = SizeFlags.ShrinkCenter;
         foreach (var (label, action, tip) in buttons)
         {
-            Ui.Button(row, label, action, tip).SizeFlagsVertical = SizeFlags.ShrinkCenter;
+            Button b = Ui.Button(row, label, action, tip);
+            b.SizeFlagsVertical = SizeFlags.ShrinkCenter;
+            if (label == "Fechar aviso")
+            {
+                b.Name = "FecharAviso";
+            }
         }
     }
 
@@ -949,9 +1069,16 @@ public partial class HubScreen : Control
             _requestHidden = false;
         }
 
+        _staffCard = null;
+        if (_engine.Team.Pending.Count == 0 && _staffResult is null)
+        {
+            _staffHidden = false;
+        }
+
         PendingEvent? pending = Campaign.Events.Pending.FirstOrDefault();
         bool request = pending is null && (Agenda.PendingRequest is not null || _requestResult is not null) && !_requestHidden;
-        if (pending is null && !request)
+        bool staff = pending is null && !request && Agenda.PendingRequest is null && (_engine.Team.Pending.Count > 0 || _staffResult is not null) && !_staffHidden;
+        if (pending is null && !request && !staff)
         {
             return;
         }
@@ -975,9 +1102,13 @@ public partial class HubScreen : Control
                 Refresh();
             }));
         }
-        else
+        else if (request)
         {
             BuildRequestCard(center);
+        }
+        else
+        {
+            BuildStaffCard(center);
         }
 
         // A faixa de decisão fica por cima do escurecido.

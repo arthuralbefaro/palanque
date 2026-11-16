@@ -139,7 +139,21 @@ public partial class Game : Node
             Debate = Debate,
             Projection = Projection,
             Zonas = ZonasDe(m),
+            MaiorEleitoradoUf = MaiorEleitoradoDaUf(m.Uf),
         };
+    }
+
+    private readonly Dictionary<string, long> _maiorEleitorado = [];
+
+    /// <summary>Eleitorado do município com mais eleitores da UF (o teto de cabos do vereador depende dele, art. 100-A).</summary>
+    private long MaiorEleitoradoDaUf(string uf)
+    {
+        if (!_maiorEleitorado.TryGetValue(uf, out long maior))
+        {
+            _maiorEleitorado[uf] = maior = Municipios.All.Where(x => x.Uf == uf).Max(x => x.Eleitorado);
+        }
+
+        return maior;
     }
 
     private readonly Dictionary<string, Core.Territory.ZonasUf> _zonas = [];

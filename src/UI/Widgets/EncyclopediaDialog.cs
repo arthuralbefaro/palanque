@@ -89,6 +89,18 @@ public partial class EncyclopediaDialog : PanelContainer
         }
     }
 
+    /// <summary>Abre a Enciclopédia em "Como funciona", com o artigo pedido em primeiro lugar e destacado.</summary>
+    public static void OpenArticle(Node root, string articleId)
+    {
+        Open(root);
+        if (root.FindChild(NodeName, recursive: true, owned: false) is EncyclopediaDialog dialog)
+        {
+            dialog._section = "como_funciona";
+            dialog._term = articleId;
+            dialog.Build();
+        }
+    }
+
     private void ShowTerm(string? termId)
     {
         _section = "glossario";
@@ -119,9 +131,9 @@ public partial class EncyclopediaDialog : PanelContainer
         switch (_section)
         {
             case "como_funciona":
-                foreach (EncyclopediaArticle a in content.Artigos.Where(a => Matches(a.Titulo + a.Texto)))
+                foreach (EncyclopediaArticle a in content.Artigos.Where(a => Matches(a.Titulo + a.Texto)).OrderBy(a => a.Id == _term ? 0 : 1))
                 {
-                    Entry(a.Titulo, Marked(a.Texto, a.AConferir));
+                    Entry(a.Titulo, Marked(a.Texto, a.AConferir), highlight: a.Id == _term);
                 }
 
                 break;
@@ -187,6 +199,16 @@ public partial class EncyclopediaDialog : PanelContainer
                 LeaderType type = game.Campaign.Leaders.Type(leader.Type);
                 Entry($"{engine.NameOf(leader.PersonId)} ({type.Papel})",
                     string.Format(Tr("{0}. Atua em {1}, entre os eleitores do grupo {2}. Influência {3} de 5. Pessoa fictícia; a ficha completa fica na área Pessoas."), type.Nome, engine.ZoneName(leader.Zones[0]), EffectSummary.GroupName(leader.Publico), leader.Influence));
+            }
+        }
+
+        if (state.City is { } team && game.Engine is { } teamEngine)
+        {
+            foreach (StaffMember member in team.Staff.Where(s => s.Hired && Matches(teamEngine.NameOf(s.PersonId))))
+            {
+                StaffRole role = game.Campaign.Staff.Role(member.Role);
+                Entry($"{teamEngine.NameOf(member.PersonId)} ({role.Papel})",
+                    string.Format(Tr("{0}. {1} Vínculo: {2}. Pessoa fictícia; a ficha completa fica em Campanha, Equipe."), role.Nome, role.Descricao, member.BondText));
             }
         }
 
@@ -315,8 +337,10 @@ public partial class EncyclopediaDialog : PanelContainer
 
         foreach (Core.People.StatedPosition position in ledger.Positions.AsEnumerable().Reverse())
         {
-            string theme = game.World.Parties.Themes.Themes.FirstOrDefault(t => t.Id == position.Theme)?.Name ?? position.Theme;
-            Entry(Tr("Posição assumida"), string.Format(ptBr, Tr("Tema: {0}. Posição: {1:+0;−0;0}, numa escala de −2 a +2. Dita em {2}, {3}."), theme, position.Value, Date(position.Date), position.Where));
+            Core.Ideology.ThemeDefinition? definition = game.World.Parties.Themes.Themes.FirstOrDefault(t => t.Id == position.Theme);
+            string theme = definition?.Name ?? position.Theme;
+            string pole = definition is null || position.Value == 0 ? Tr("no meio") : position.Value > 0 ? definition.PositivePole : definition.NegativePole;
+            Entry(string.Format(Tr("Posição assumida · {0}"), theme), string.Format(ptBr, Tr("Tema: {0}. Posição: {1:+0;−0;0} ({2}), numa escala de −2 a +2. Dita em {3}. Onde: {4}."), theme, position.Value, pole, Date(position.Date), position.Where));
         }
 
         if (ledger.Skeletons.Count == 0)

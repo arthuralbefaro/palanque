@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -71,6 +71,30 @@ public partial class UiShot : Node
         if (target == "lideranca")
         {
             await PlayLeader(shot);
+            return;
+        }
+
+        if (target == "equipe")
+        {
+            await PlayTeam(shot);
+            return;
+        }
+
+        if (target == "verba")
+        {
+            await PlayBudget(shot);
+            return;
+        }
+
+        if (target == "plataforma")
+        {
+            await PlayPlatform(shot);
+            return;
+        }
+
+        if (target == "objetivos")
+        {
+            await PlayObjectives(shot);
             return;
         }
 
@@ -395,6 +419,35 @@ public partial class UiShot : Node
 
                 Save(shot, $"_pedido_{label}_{tag}");
                 game.State.Campaign.Agenda.PendingRequest = null;
+                hub.Refresh();
+                await Frames(2);
+
+                // Telas da R2b: os três blocos, Equipe, decisão da equipe, Verba, Plataforma e a coluna com Objetivos.
+                await VisitCampaignPanels(hub, (where, suffix) =>
+                {
+                    problems.AddRange(Overflow(hub, $"Hub {label}, {where}, {tag}"));
+                    if (hub.LeftPanelWidth > 401)
+                    {
+                        problems.Add($"Hub {label}, {where}, {tag}: o painel da área mede {hub.LeftPanelWidth:0} de largura (deveria ter 400): algum conteúdo não quebra a linha");
+                    }
+
+                    if (hub.RightPanelWidth > 401)
+                    {
+                        problems.Add($"Hub {label}, {where}, {tag}: a coluna direita mede {hub.RightPanelWidth:0} de largura (deveria ter 400): algum conteúdo não quebra a linha");
+                    }
+
+                    if (Named<Control>(hub, "CartaoEquipe") is { } staffCard && staffCard.Size.Y > 640 + 1)
+                    {
+                        problems.Add($"Hub {label}, {tag}: o cartão da decisão da equipe mede {staffCard.Size.Y:0} de altura (máximo 640)");
+                    }
+
+                    if (suffix is not null)
+                    {
+                        Save(shot, $"_{suffix}_{label}_{tag}");
+                    }
+
+                    return Task.CompletedTask;
+                });
                 RemoveChild(hub);
                 hub.QueueFree();
             }
@@ -416,7 +469,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print("Smoke layout: ok (1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa e cartão do pedido)");
+        GD.Print("Smoke layout: ok (1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido e as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos)");
         GetTree().Quit(0);
     }
 
@@ -731,6 +784,21 @@ public partial class UiShot : Node
         await Frames(2);
         Check(hub, "ficha da pessoa com lembrança");
 
+        // Telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, marcação com representante e tema,
+        // Verba e canais, Plataforma, tema, prometer e a coluna com Objetivos.
+        int panels = 0;
+        await VisitCampaignPanels(hub, (where, _) =>
+        {
+            panels++;
+            Check(hub, where);
+            return Task.CompletedTask;
+        });
+        if (panels < 20)
+        {
+            Fail($"o teste de explicação só passou por {panels} telas da R2b (esperado: 20 ou mais).");
+            return;
+        }
+
         Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
         await Frames(4);
         if (!Widgets.EncyclopediaDialog.IsOpen(GetTree().Root))
@@ -764,7 +832,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, Enciclopédia aberta com F1)");
+        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, Enciclopédia aberta com F1)");
         GetTree().Quit(0);
     }
 
