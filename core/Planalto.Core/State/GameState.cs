@@ -91,6 +91,9 @@ public sealed class GameState
     /// <summary>Mandato em curso; null fora de mandato (GDD 5.8).</summary>
     public Legislature.MandateState? Mandate { get; set; }
 
+    /// <summary>Mandato de prefeito em curso; null fora dele (GDD 5.9).</summary>
+    public Executive.ExecutiveState? Executive { get; set; }
+
     /// <summary>Câmara e prefeitura do município em foco depois da última eleição jogada.</summary>
     public Legislature.LocalPolitics? Local { get; set; }
 

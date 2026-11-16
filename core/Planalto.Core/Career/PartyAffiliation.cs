@@ -47,6 +47,16 @@ public static class PartyAffiliation
         bool losesMandate = LosesMandate(state);
         state.Player.PartyId = partyId;
         state.Player.AffiliatedOn = state.Calendar.WeekStart;
+
+        // Prefeito (cargo majoritário) não perde o mandato ao trocar de partido; as secretarias do partido dele vão junto.
+        if (state.Executive is { } executive)
+        {
+            int own = executive.Secretarias.GetValueOrDefault(executive.PartyId);
+            executive.Secretarias.Remove(executive.PartyId);
+            executive.Secretarias[partyId] = executive.Secretarias.GetValueOrDefault(partyId) + own;
+            executive.PartyId = partyId;
+        }
+
         if (state.Mandate is not { } mandate)
         {
             return;

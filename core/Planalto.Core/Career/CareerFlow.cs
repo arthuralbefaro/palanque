@@ -1,5 +1,7 @@
 using System.Globalization;
 using Planalto.Core.Campaign;
+using Planalto.Core.Elections;
+using Planalto.Core.Executive;
 using Planalto.Core.Legislature;
 using Planalto.Core.State;
 using Calendar = Planalto.Core.State.Calendar;
@@ -12,10 +14,12 @@ public enum CareerMode
     /// <summary>Campanha sem mandato (a primeira, ou depois de uma derrota).</summary>
     Campanha,
 
-    /// <summary>Campanha de reeleição: o mandato segue sozinho em segundo plano.</summary>
+    /// <summary>Campanha com um mandato em curso (vereador ou prefeito), que segue sozinho em segundo plano.</summary>
     CampanhaEmMandato,
 
     Mandato,
+
+    Prefeitura,
 
     ForaDeMandato,
 }
@@ -27,14 +31,15 @@ public enum CareerMode
 public static class CareerFlow
 {
     public static CareerMode Mode(GameState state) => state.Campaign is not null
-        ? state.Mandate is not null ? CareerMode.CampanhaEmMandato : CareerMode.Campanha
+        ? state.Mandate is not null || state.Executive is not null ? CareerMode.CampanhaEmMandato : CareerMode.Campanha
+        : state.Executive is not null ? CareerMode.Prefeitura
         : state.Mandate is not null ? CareerMode.Mandato : CareerMode.ForaDeMandato;
 
     /// <summary>
     /// Depois da apuração: grava a política local, dá posse (se eleito) em 1º de janeiro ou encerra o mandato
     /// anterior, leva o reconhecimento da campanha para os recursos do personagem e salta o calendário até a posse.
     /// </summary>
-    public static void ConcludeElection(CampaignContext campaignContext, LegislatureContext legislatureContext)
+    public static void ConcludeElection(CampaignContext campaignContext, LegislatureContext legislatureContext, ExecutiveContext? executiveContext = null)
     {
         GameState state = campaignContext.State;
         CampaignState campaign = state.Campaign ?? throw new InvalidOperationException("Sem campanha para concluir.");
@@ -44,7 +49,11 @@ public static class CareerFlow
         string constituency = campaign.Municipio.ToString(CultureInfo.InvariantCulture);
         state.Player.Resources.SetRecognition(constituency, (int)Math.Round(campaign.Player.Recognition));
 
-        state.Mandate = outcome.PlayerElected ? ChamberSetup.StartMandate(legislatureContext, campaign, state.Rng) : null;
+        bool mayor = campaign.Player.Office == Office.Prefeito;
+        state.Mandate = outcome.PlayerElected && !mayor ? ChamberSetup.StartMandate(legislatureContext, campaign, state.Rng) : null;
+        state.Executive = outcome.PlayerElected && mayor
+            ? ExecutiveEngine.Start(executiveContext ?? throw new ArgumentNullException(nameof(executiveContext), "Prefeito eleito sem contexto do Executivo."), campaign, state.Rng)
+            : null;
         state.Campaign = null;
         state.Calendar.JumpTo(new DateOnly(outcome.Date.Year + 1, 1, 1));
     }
@@ -80,7 +89,7 @@ public static class CareerFlow
     /// <summary>Fora de mandato: salta para a abertura da pré-campanha da próxima eleição municipal.</summary>
     public static void SkipToNextElection(GameState state)
     {
-        if (state.Mandate is not null || state.Campaign is not null)
+        if (state.Mandate is not null || state.Executive is not null || state.Campaign is not null)
         {
             throw new InvalidOperationException("Só dá para pular o tempo fora de mandato e de campanha.");
         }
@@ -92,7 +101,7 @@ public static class CareerFlow
     /// Uma semana da carreira: na campanha de reeleição o mandato vota sozinho (seguindo a orientação) e a
     /// campanha avança; no mandato, só ele; fora de mandato, só o calendário.
     /// </summary>
-    public static void AdvanceWeek(GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null)
+    public static void AdvanceWeek(GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null, ExecutiveEngine? executive = null)
     {
         founding?.Tick();
         if (state.Campaign is not null)
@@ -107,7 +116,24 @@ public static class CareerFlow
                 legislature.ResolveWeek(automatic: legislature.Context.Config.AutoVoteInCampaign);
             }
 
+            if (state.Executive is not null && executive is not null && !executive.Over)
+            {
+                executive.ResolveWeek(automatic: true);
+            }
+
             campaign.AdvanceWeek();
+            return;
+        }
+
+        if (state.Executive is not null)
+        {
+            ExecutiveEngine engine = executive ?? throw new InvalidOperationException("Prefeitura sem motor.");
+            engine.AdvanceWeek();
+            if (engine.Over)
+            {
+                state.Executive = null;
+            }
+
             return;
         }
 
@@ -125,5 +151,26 @@ public static class CareerFlow
         }
 
         state.Calendar.AdvanceWeek();
+    }
+
+    /// <summary>
+    /// Troca o cargo disputado na pré-campanha. Prefeito em exercício que disputa outro cargo renuncia ao mandato
+    /// (desincompatibilização, CF art. 14, § 6º); devolve true quando houve renúncia.
+    /// </summary>
+    public static (CandidacyIssue? Issue, bool Renounced) SwitchCandidacy(CampaignContext ctx, Office office)
+    {
+        GameState state = ctx.State;
+        if (RaceSetup.SwitchPlayerOffice(ctx, office, state.Rng) is { } issue)
+        {
+            return (issue, false);
+        }
+
+        bool renounce = state.Executive is not null && office != Office.Prefeito;
+        if (renounce)
+        {
+            state.Executive = null;
+        }
+
+        return (null, renounce);
     }
 }
