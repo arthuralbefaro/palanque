@@ -211,6 +211,7 @@ public sealed partial class CampaignRobot
         while (Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
         {
             ResolvePending();
+            World?.AdvanceTo(State.Calendar.WeekStart);
             _engine.AdvanceDay();
         }
 

@@ -207,7 +207,7 @@ public static class MandateSim
     }
 
     /// <summary>Conteúdo do mundo que anda sozinho: modelo dos indicadores reais e renovação do mundo político.</summary>
-    private sealed record WorldContentSet(Planalto.Core.Indicators.IndicatorContent Indicators, Planalto.Core.Renewal.RenewalContent Renewal)
+    internal sealed record WorldContentSet(Planalto.Core.Indicators.IndicatorContent Indicators, Planalto.Core.Renewal.RenewalContent Renewal)
     {
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Planalto.Core.Indicators.IndicadoresUfFile?> _uf = new();
 
@@ -216,7 +216,7 @@ public static class MandateSim
     }
 
     /// <summary>Monta o mundo do município como o jogo faz: indicadores do save a partir dos dados oficiais e a renovação com as cadeiras do cenário.</summary>
-    private static Planalto.Core.World.WorldEngine NewWorld(SimContent content, WorldContentSet linked, GameState state, Municipio m)
+    internal static Planalto.Core.World.WorldEngine NewWorld(SimContent content, WorldContentSet linked, GameState state, Municipio m)
     {
         var scenario = content.Brasil2026.Municipio(m.CodigoIbge);
         var renewal = new Planalto.Core.Renewal.RenewalEngine(new Planalto.Core.Renewal.RenewalContext
