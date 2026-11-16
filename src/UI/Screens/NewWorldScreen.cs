@@ -11,7 +11,7 @@ namespace Planalto.UI.Screens;
 /// <summary>Tela "Novo Mundo" (GDD 16.1): predefinição, lista de partidos editável com sorteio e travas, opções do mundo.</summary>
 public partial class NewWorldScreen : Control
 {
-    private const string ScenarioFolder = "user://scenarios";
+    private static string ScenarioFolder => Autoload.UserPaths.Of("scenarios");
 
     // Amostra de cor da tabela de partidos: menor que a do resto do jogo, para a linha não crescer.
     private static readonly Vector2 TableSwatch = new(40, 32);

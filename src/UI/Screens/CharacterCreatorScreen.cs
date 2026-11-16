@@ -23,7 +23,7 @@ namespace Planalto.UI.Screens;
 /// </summary>
 public partial class CharacterCreatorScreen : Control
 {
-    private const string PresetFolder = "user://presets";
+    private static string PresetFolder => Autoload.UserPaths.Of("presets");
     private static readonly string[] Religions = ["catolica", "evangelica", "outras", "sem_religiao"];
 
     private Game _game = null!;
@@ -961,7 +961,7 @@ public partial class CharacterCreatorScreen : Control
         _game.GoToCareer();
     }
 
-    // ---------- Presets de aparência (user://presets/) ----------
+    // ---------- Presets de aparência (pasta "presets" da base de UserPaths) ----------
 
     private void SavePreset()
     {
