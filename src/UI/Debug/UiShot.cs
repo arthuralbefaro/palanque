@@ -727,6 +727,14 @@ public partial class UiShot : Node
 
                 await Click(buttons[choice]);
                 var proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
+                if (proceed is null && campaign.Events.Pending.Count > 0 && IsInstanceValid(buttons[choice]) && buttons[choice].IsInsideTree())
+                {
+                    // O clique se perdeu (outra janela tirou o mouse desta entre apertar e soltar): uma segunda tentativa.
+                    await Frames(3);
+                    await Click(buttons[choice]);
+                    proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
+                }
+
                 if (proceed is null)
                 {
                     Fail($"{definition.Id}, opção {choice + 1}: sem o botão Continuar depois de escolher.");
