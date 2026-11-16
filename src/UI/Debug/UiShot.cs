@@ -300,19 +300,41 @@ public partial class UiShot : Node
     }
 
     /// <summary>
-    /// Nenhum controle cortado: em 1920x1080 e 1366x768, abre a criação de personagem (todas as abas), o Novo
-    /// Mundo e o hub, tira print e falha se algum controle visível passar dos limites da janela.
+    /// Nenhum controle cortado. Primeiro a janela real, como o jogo abre: com a moldura, dentro da área útil do
+    /// monitor (a tela menos a barra de tarefas), e com os botões do Novo Mundo e da criação dentro dela. Depois, em
+    /// 1920x1080 e 1366x768, abre a criação de personagem (todas as abas), o Novo Mundo e o hub, tira print e falha
+    /// se algum controle visível passar dos limites da janela.
     /// </summary>
     private async Task CheckLayout(string? shot)
     {
         Game game = Game.Instance;
         var problems = new List<string>();
+        await Frames(6);
+        if (UI.WindowFit.HasWindow)
+        {
+            GD.Print($"  janela ao abrir: modo {DisplayServer.WindowGetMode()}, com moldura {UI.WindowFit.Decorated}, área de desenho {DisplayServer.WindowGetSize()}, área útil do monitor {UI.WindowFit.Usable}");
+            if (UI.WindowFit.Problem() is { } misfit)
+            {
+                problems.Add($"Janela ao abrir: {misfit}");
+            }
+
+            await CheckRealWindow(problems, shot);
+        }
+
         foreach (Vector2I size in new[] { new Vector2I(1920, 1080), new Vector2I(1366, 768) })
         {
+            bool framed = UI.WindowFit.ExactForCapture(size);
             GetTree().Root.Size = size;
-            DisplayServer.WindowSetSize(size);
-            await Frames(4);
+            await Frames(6);
             string tag = $"{size.X}x{size.Y}";
+            if (framed && UI.WindowFit.Problem() is { } outside)
+            {
+                problems.Add($"Janela de {tag}: {outside}");
+            }
+            else if (!framed)
+            {
+                GD.Print($"  janela de {tag}: com a moldura não cabe na área útil deste monitor ({UI.WindowFit.Usable.Size}); conferida sem moldura, só a área de desenho");
+            }
 
             game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
             var world = GD.Load<PackedScene>(Game.Scenes.NewWorld).Instantiate<Control>();
@@ -466,8 +488,77 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print("Smoke layout: ok (1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido e as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos)");
+        GD.Print("Smoke layout: ok (janela real dentro da área útil do monitor, com os botões do Novo Mundo e da criação; 1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido e as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos)");
         GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Novo Mundo e criação (todas as abas) na janela como o jogo a abre: nada passa da área de desenho e todo botão
+    /// fora de lista rolável fica, na tela, dentro da área útil do monitor (não atrás da barra de tarefas).
+    /// </summary>
+    private async Task CheckRealWindow(List<string> problems, string? shot)
+    {
+        Game game = Game.Instance;
+        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        var world = GD.Load<PackedScene>(Game.Scenes.NewWorld).Instantiate<Control>();
+        AddChild(world);
+        await Frames(5);
+        problems.AddRange(Overflow(world, "Novo Mundo, janela real"));
+        problems.AddRange(OutsideUsable(world, "Novo Mundo, janela real"));
+        Save(shot, "_janela_real_novo_mundo");
+        RemoveChild(world);
+        world.QueueFree();
+
+        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        var creator = GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate<CharacterCreatorScreen>();
+        AddChild(creator);
+        await Frames(5);
+        var tabs = FindAll<TabContainer>(creator).First();
+        for (int tab = 0; tab < tabs.GetTabCount(); tab++)
+        {
+            tabs.CurrentTab = tab;
+            await Frames(4);
+            problems.AddRange(Overflow(creator, $"Criação, aba {tabs.GetTabTitle(tab)}, janela real"));
+            problems.AddRange(OutsideUsable(creator, $"Criação, aba {tabs.GetTabTitle(tab)}, janela real"));
+            Save(shot, $"_janela_real_criacao_{tab}");
+        }
+
+        RemoveChild(creator);
+        creator.QueueFree();
+        await Frames(2);
+    }
+
+    /// <summary>Botões visíveis (fora de lista rolável) cujo retângulo na tela sai da área útil do monitor.</summary>
+    private List<string> OutsideUsable(Node root, string where)
+    {
+        Rect2I usable = UI.WindowFit.Usable;
+        var problems = new List<string>();
+
+        // Do desenho (pontos lógicos) para a tela (pixels reais): a escala da janela e a posição da área de desenho.
+        Transform2D toWindow = GetViewport().GetFinalTransform();
+        Vector2 origin = DisplayServer.WindowGetPosition();
+        foreach (Button button in FindAll<Button>(root).Where(b => b.IsVisibleInTree() && b.Size.X > 0 && b.Size.Y > 0))
+        {
+            bool scrolls = false;
+            for (Node? up = button.GetParent(); up is not null && up != root; up = up.GetParent())
+            {
+                scrolls |= up is ScrollContainer or Window;
+            }
+
+            if (scrolls)
+            {
+                continue;
+            }
+
+            Rect2 inWindow = toWindow * button.GetGlobalRect();
+            var screen = new Rect2(inWindow.Position + origin, inWindow.Size);
+            if (screen.Position.X < usable.Position.X - 1 || screen.Position.Y < usable.Position.Y - 1 || screen.End.X > usable.End.X + 1 || screen.End.Y > usable.End.Y + 1)
+            {
+                problems.Add($"{where}: Button \"{button.Text}\" ocupa na tela {screen.Position} a {screen.End}, fora da área útil do monitor ({usable.Position} a {usable.End})");
+            }
+        }
+
+        return problems;
     }
 
     private void Save(string? shot, string suffix)
