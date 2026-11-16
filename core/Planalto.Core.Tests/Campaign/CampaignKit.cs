@@ -33,6 +33,7 @@ internal static class CampaignKit
             Campaign = CampaignContent.LoadOrThrow(dir);
             Events = EventContent.LoadOrThrow(dir);
             Brasil2026 = Brasil2026Scenario.Load(dir, Municipios, World.Parties).Scenario!;
+            Projection = PopulationProjection.Load(dir, Municipios);
             Legislature = LegislatureContent.LoadOrThrow(
                 dir,
                 Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
@@ -41,9 +42,8 @@ internal static class CampaignKit
 
         public LegislatureContent Legislature { get; }
 
-        public PopulationProjection Projection => PopulationProjection.From(
-            Municipios,
-            JsonData.LoadFile<PopulationProjectionConfig>(Path.Combine(TestContent.DataDirectory, PopulationProjectionConfig.File)).GetValueOrThrow());
+        /// <summary>Projeção como o jogo a carrega: reescalada pela projeção por UF de data/demography/.</summary>
+        public PopulationProjection Projection { get; }
 
         public Planalto.Core.Debate.DebateContent Debate { get; } = JsonData.LoadFile<Planalto.Core.Debate.DebateContent>(Path.Combine(TestContent.DataDirectory, Planalto.Core.Debate.DebateContent.File)).GetValueOrThrow();
 
