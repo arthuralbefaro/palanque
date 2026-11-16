@@ -19,6 +19,11 @@ public sealed class CampaignTrace
 
     public int Commitments { get; set; }
 
+    /// <summary>Turnos avaliados e, deles, os de escolha forçada (arrecadar sem caixa, descansar com estresse alto).</summary>
+    public int Turns { get; set; }
+
+    public int ForcedTurns { get; set; }
+
     public int Promises { get; set; }
 
     public int LeaderDecisions { get; set; }
@@ -72,6 +77,7 @@ public sealed class CampaignRobot(CampaignEngine engine)
             ResolvePending();
         }
 
+        CloseWeek();
         ElectionOutcome outcome = _engine.ResolveElection();
         Trace.Elected = outcome.PlayerElected;
         Trace.Position = 1 + outcome.Vereador.Votes.Where(v => !v.Key.StartsWith("demais_", StringComparison.Ordinal)).Count(v => v.Value > outcome.Vereador.Votes[RaceSetup.PlayerId]);
@@ -104,8 +110,32 @@ public sealed class CampaignRobot(CampaignEngine engine)
         }
     }
 
+    /// <summary>Ganho fictício das escolhas forçadas (arrecadar sem caixa, descansar com estresse alto): ficam fora da estatística da melhor escolha.</summary>
+    private const double Forced = 1e100;
+
+    private RobotOption? _weekBest;
+
+    /// <summary>Fecha a estatística da semana: o tipo e o par (tipo, lugar) da melhor opção vista nela.</summary>
+    private void CloseWeek()
+    {
+        if (_weekBest is { } best)
+        {
+            string place = best.Request.ZoneId
+                ?? (best.Request.PersonId is { } person && _engine.City.Leader(person) is { } leader ? leader.Zones[0] : "-");
+            Trace.BestTypeByWeek.Add(best.Request.Type);
+            Trace.BestPairByWeek.Add($"{best.Request.Type}|{place}");
+        }
+
+        _weekBest = null;
+    }
+
     private void PlanDay(DateOnly today, bool firstOfWeek)
     {
+        if (firstOfWeek)
+        {
+            CloseWeek();
+        }
+
         // Convites: aceita os de hoje se o turno estiver livre; os demais ficam para o dia.
         foreach (Invite invite in _engine.Agenda.Invites.Where(i => !i.Answered && i.Date == today).ToList())
         {
@@ -128,11 +158,21 @@ public sealed class CampaignRobot(CampaignEngine engine)
             }
 
             RobotOption best = options.MaxBy(o => o.VotesPerTurn)!;
-            if (firstOfWeek && slot == 0)
+            bool forced = best.VotesPerTurn >= Forced;
+            if (forced)
             {
-                Trace.BestTypeByWeek.Add(best.Request.Type);
-                Trace.BestPairByWeek.Add($"{best.Request.Type}|{best.Request.ZoneId ?? "-"}");
+                Trace.ForcedTurns++;
             }
+            else if (firstOfWeek && slot == 0)
+            {
+                _weekBest = best;
+            }
+            else if (_weekBest is null || best.VotesPerTurn > _weekBest.VotesPerTurn)
+            {
+                _weekBest = best;
+            }
+
+            Trace.Turns++;
 
             if (_engine.Schedule(best.Request).Failure is null)
             {
@@ -222,13 +262,13 @@ public sealed class CampaignRobot(CampaignEngine engine)
             var dinner = new CommitmentRequest("jantar", null, date, turno);
             if (_engine.CanSchedule(dinner) is null)
             {
-                return [new RobotOption(dinner, double.MaxValue / 4)];
+                return [new RobotOption(dinner, Forced * 2)];
             }
         }
 
         if (State.Player.Resources.Stress >= 60)
         {
-            return [new RobotOption(new CommitmentRequest(CommitmentCatalog.Descanso, null, date, turno), double.MaxValue / 8)];
+            return [new RobotOption(new CommitmentRequest(CommitmentCatalog.Descanso, null, date, turno), Forced)];
         }
 
         foreach (CommitmentType type in catalog.Tipos.Where(x => x.Id != CommitmentCatalog.Descanso && x.Arrecada is null))

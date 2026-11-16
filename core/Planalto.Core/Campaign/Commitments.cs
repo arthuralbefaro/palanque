@@ -52,6 +52,9 @@ public sealed class AgendaRules
     /// <summary>Limites do alcance relativo de uma zona (zona pequena rende mais por turno; zona grande, menos).</summary>
     public required Parties.DoubleRange Alcance { get; init; }
 
+    /// <summary>Teto do apoio que conversas (reunião, evento, gravação) juntam de um público; perto dele, cada conversa rende menos.</summary>
+    public required double ApoioTeto { get; init; }
+
     /// <summary>Presença mínima na zona para marcar reunião sem liderança conhecida ali.</summary>
     public required double ReuniaoPresencaMinima { get; init; }
 }
@@ -342,7 +345,10 @@ public sealed class AgendaState
 
     public int NextId { get; set; } = 1;
 
-    public static string FatigueKey(string type, string? zoneId, string publico) => $"{type}|{zoneId ?? "-"}|{publico}";
+    /// <summary>Chave do cansaço: tipo, lugar (a zona ou, na visita, a pessoa visitada) e público.</summary>
+    public static string FatigueKey(string type, string? zoneId, string publico, string? personId = null) => $"{type}|{zoneId ?? personId ?? "-"}|{publico}";
+
+    public static string FatigueKey(Commitment c, bool visit) => FatigueKey(c.Type, c.ZoneId, c.Publico, visit ? c.PersonId : null);
 
     public Commitment? At(DateOnly date, Turno turno) => Scheduled.FirstOrDefault(c => c.Date == date && c.Turno == turno);
 

@@ -38,7 +38,7 @@ var report = new StringBuilder();
 var culture = CultureInfo.GetCultureInfo("pt-BR");
 report.AppendLine("# BalanceSim — campanha de vereador (R2a)");
 report.AppendLine();
-report.AppendLine(string.Format(culture, "Robô que marca, em cada turno livre, o compromisso de maior ganho previsto de votos. {0} campanhas por porte, em {1} cidades sorteadas por porte (semente {2}), metade no partido mais forte da cidade e metade num partido sorteado.", campaigns, cities, seed));
+report.AppendLine(string.Format(culture, "Robô que marca, em cada turno livre, o compromisso de maior ganho previsto de votos. A melhor escolha de cada semana é a opção de maior ganho por turno vista nela. {0} campanhas por porte, em {1} cidades sorteadas por porte (semente {2}), metade no partido mais forte da cidade e metade num partido sorteado.", campaigns, cities, seed));
 report.AppendLine();
 report.AppendLine("Critério do princípio a (GDD 17.1): nenhum tipo de compromisso é a melhor escolha em mais de 40% das semanas; nenhum par (tipo, zona) em mais de 25%.");
 report.AppendLine();
@@ -112,6 +112,7 @@ foreach (string porte in portes)
         done.Select(t => t.Position).Order().ElementAt(done.Count / 2)));
     report.AppendLine(string.Format(culture, "- Por campanha, em média: {0:0} compromissos, {1:0.0} decisões de pedido de liderança, {2:0.0} promessas no Livro, {3:0.0} lideranças aliadas no fim, {4:0.0} eventos; reconhecimento final {5:0.0}%.",
         done.Average(t => t.Commitments), done.Average(t => t.LeaderDecisions), done.Average(t => t.Promises), done.Average(t => t.AlignedLeaders), done.Average(t => t.Events), done.Average(t => t.FinalRecognition)));
+    report.AppendLine(string.Format(culture, "- Turnos de escolha forçada (arrecadar sem caixa ou descansar com estresse alto), fora da estatística acima: {0:P1}.", done.Sum(t => t.ForcedTurns) / (double)Math.Max(1, done.Sum(t => t.Turns))));
     report.AppendLine($"- **{(ok ? "Dentro do critério" : "FORA do critério")}.**");
     report.AppendLine();
     Console.WriteLine($"{porte}: tipo {maxType:P1}, par {maxPair:P1}, {(ok ? "ok" : "FORA")}");

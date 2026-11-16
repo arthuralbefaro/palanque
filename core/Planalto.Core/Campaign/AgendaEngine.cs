@@ -49,9 +49,10 @@ public sealed partial class CampaignEngine
     /// <summary>Cansaço do trio na data do compromisso: o de hoje mais os iguais já marcados antes dele.</summary>
     private double FatigueAt(CommitmentRequest r)
     {
-        string key = AgendaState.FatigueKey(r.Type, r.ZoneId, r.Publico);
+        bool visit = Commitments.Get(r.Type).Visita;
+        string key = AgendaState.FatigueKey(r.Type, r.ZoneId, r.Publico, visit ? r.PersonId : null);
         double now = Agenda.Fatigue.GetValueOrDefault(key);
-        int before = Agenda.Scheduled.Count(c => AgendaState.FatigueKey(c.Type, c.ZoneId, c.Publico) == key
+        int before = Agenda.Scheduled.Count(c => AgendaState.FatigueKey(c, Commitments.Get(c.Type).Visita) == key
             && (c.Date < r.Date || (c.Date == r.Date && c.Turno < r.Turno)));
         return now + before;
     }
@@ -108,9 +109,9 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.SemLideranca;
         }
 
+        // Reunião em casa de apoiador (GDD 17.6): exige uma liderança conhecida e não hostil daquele público na zona.
         if (type.Id == CommitmentCatalog.Reuniao
-            && Territory.PresenceOf(RaceSetup.PlayerId, zone) < Rules.ReuniaoPresencaMinima
-            && !City.Leaders.Any(l => l.Known && l.Zones.Contains(r.ZoneId!) && RelationOf(l.PersonId) >= 0))
+            && !City.Leaders.Any(l => l.Known && l.Publico == r.Publico && l.Zones.Contains(r.ZoneId!) && RelationOf(l.PersonId) >= 0))
         {
             return ScheduleFailure.SemApoiadorNaZona;
         }
@@ -205,6 +206,16 @@ public sealed partial class CampaignEngine
         return type.PublicoFixo ?? (r.Publico == CommitmentType.PublicoGeral ? null : r.Publico);
     }
 
+    /// <summary>
+    /// Retorno decrescente do apoio conquistado em conversa: quanto mais apoio o jogador já tem daquele público (na
+    /// zona, ou na cidade quando o compromisso não tem zona), menos a próxima conversa acrescenta, até o teto.
+    /// </summary>
+    private double SupportHeadroom(int zone, string group)
+    {
+        double current = zone >= 0 ? Territory.MeetingSupport[zone].GetValueOrDefault(group) : Campaign.Player.Support.GetValueOrDefault(group);
+        return Math.Clamp(1 - (current / Rules.ApoioTeto), 0, 1);
+    }
+
     /// <summary>Previsão antes de marcar (princípio f): efeito esperado, faixa pela sorte e pelos desfechos, e os fatores.</summary>
     public CommitmentForecast Forecast(CommitmentRequest r)
     {
@@ -213,9 +224,10 @@ public sealed partial class CampaignEngine
         var (factors, yield) = Plan(r);
         int zone = r.ZoneId is null ? -1 : Territory.IndexOf(r.ZoneId);
         double current = zone >= 0 ? Territory.PresenceOf(RaceSetup.PlayerId, zone) : Campaign.Player.Recognition;
-        double baseAmount = (zone >= 0 ? type.Presenca : type.PresencaCidade) * RecognitionScale * (zone >= 0 ? yield : YieldWithout(factors, "alcance"));
+        double baseAmount = (zone >= 0 ? type.Presenca : type.PresencaCidade) * RecognitionScale * (zone >= 0 ? PresenceYield(factors, r) : YieldWithout(factors, "alcance"));
         double Delta(double luck) => EffectApplier.Gain(current, baseAmount * luck) - current;
-        double support = SupportGroup(type, r) is null ? 0 : type.Apoio * yield;
+        double support = SupportGroup(type, r) is { } supportGroup ? type.Apoio * yield * SupportHeadroom(zone, supportGroup) : 0;
+        _ = yield;
 
         double imageMin = type.Imagem * yield * Rules.Sorte.Min;
         double imageMax = type.Imagem * yield * Rules.Sorte.Max;
@@ -235,8 +247,8 @@ public sealed partial class CampaignEngine
         }
 
         decimal money = -CostOf(type);
-        int relation = type.Visita ? LeaderRules.PontosVisita : r.InviteId is not null ? LeaderRules.PontosConviteAceito : 0;
         double fatigueFactor = factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1;
+        int relation = type.Visita ? VisitPoints(fatigueFactor) : r.InviteId is not null ? LeaderRules.PontosConviteAceito : 0;
         return new CommitmentForecast(
             blocked,
             Delta(Rules.Sorte.Min), Delta(Rules.Sorte.Max), Delta(1),
@@ -249,6 +261,20 @@ public sealed partial class CampaignEngine
             factors,
             outcomes);
     }
+
+    /// <summary>
+    /// Rendimento que vale para a presença. O bônus do evento da cidade é "com o público dele" (GDD 17.6): num evento
+    /// de público geral ele vale para a presença na zona; num evento de um grupo, só para o apoio desse grupo.
+    /// </summary>
+    private double PresenceYield(List<YieldFactor> factors, CommitmentRequest r)
+    {
+        bool groupEvent = r.CityEventId is not null
+            && Agenda.CityEvents.FirstOrDefault(e => e.Id == r.CityEventId) is { } e && e.Publico != CommitmentType.PublicoGeral;
+        return factors.Where(f => f.Id != "sorte" && !(groupEvent && f.Id == "evento")).Aggregate(1.0, (acc, f) => acc * f.Multiplier);
+    }
+
+    /// <summary>Pontos de relação de uma visita: a visita repetida à mesma pessoa em pouco tempo rende menos (princípio g).</summary>
+    private int VisitPoints(double fatigueFactor) => (int)Math.Round(LeaderRules.PontosVisita * fatigueFactor);
 
     private static double YieldWithout(List<YieldFactor> factors, string id) =>
         factors.Where(f => f.Id != id).Aggregate(1.0, (acc, f) => acc * f.Multiplier);
@@ -345,7 +371,7 @@ public sealed partial class CampaignEngine
         if (zone >= 0 && type.Presenca > 0)
         {
             List<int> neighbors = Context.Zonas.Zonas[zone].Vizinhas.Select(Territory.IndexOf).Where(i => i >= 0).ToList();
-            foreach (var (z, delta) in Territory.Gain(RaceSetup.PlayerId, zone, type.Presenca * RecognitionScale * yield * luck, sim.Transbordo, neighbors))
+            foreach (var (z, delta) in Territory.Gain(RaceSetup.PlayerId, zone, type.Presenca * RecognitionScale * PresenceYield(factors, request) * luck, sim.Transbordo, neighbors))
             {
                 presence[Territory.Zones[z]] = delta;
             }
@@ -369,7 +395,7 @@ public sealed partial class CampaignEngine
         double support = 0;
         if (SupportGroup(type, request) is { } group)
         {
-            support = type.Apoio * yield * luck;
+            support = type.Apoio * yield * luck * SupportHeadroom(zone, group);
             if (zone >= 0)
             {
                 Dictionary<string, double> meeting = Territory.MeetingSupport[zone];
@@ -399,7 +425,8 @@ public sealed partial class CampaignEngine
         Campaign.Player.Recognition = Territory.Recognition(RaceSetup.PlayerId);
         player.Resources.SetRecognition(Campaign.Municipio.ToString(System.Globalization.CultureInfo.InvariantCulture), (int)Math.Round(Campaign.Player.Recognition));
 
-        string key = AgendaState.FatigueKey(c.Type, c.ZoneId, c.Publico);
+        double visitFatigue = factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1;
+        string key = AgendaState.FatigueKey(c, type.Visita);
         if (type.Id != CommitmentCatalog.Descanso)
         {
             Agenda.Fatigue[key] = Agenda.Fatigue.GetValueOrDefault(key) + 1;
@@ -408,7 +435,7 @@ public sealed partial class CampaignEngine
         int relation = 0;
         if (type.Visita && c.PersonId is not null && City.Leader(c.PersonId) is { } visited)
         {
-            relation = LeaderRules.PontosVisita;
+            relation = VisitPoints(visitFatigue);
             RememberLeader(visited, "visita", 1, relation);
             visited.RequestKnown = true;
             if (!visited.RequestMet)
