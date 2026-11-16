@@ -730,7 +730,7 @@ public partial class HubScreen : Control
         Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos, pesquisas, a folha da equipe e a verba dos canais (as duas saem toda segunda-feira); o jantar de arrecadação traz mais."));
         Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
             string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
-        ImageStat();
+        ImageStat(Campaign.Player.Image, Tr("pesa no voto e volta aos poucos para zero sem novidades."));
         AgendaRules agendaRules = _engine.Context.Campaign.Commitments.Regras;
         bool stressed = State.Player.Resources.Stress > agendaRules.EstresseLimite;
         Stat(Tr("estresse"), string.Format(PtBr, stressed ? "{0} ▲" : "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
@@ -757,19 +757,19 @@ public partial class HubScreen : Control
 
     /// <summary>
     /// Imagem na barra de cima: a faixa nomeada (data/campaign/config.json) e uma régua com uma casa por faixa; o
-    /// número cru fica só no tooltip, com os limites da faixa.
+    /// número cru fica só no tooltip, com os limites da faixa. Serve à campanha, ao mandato e à prefeitura;
+    /// <paramref name="effect"/> diz o que a imagem faz em cada momento.
     /// </summary>
-    private void ImageStat()
+    private void ImageStat(double image, string effect)
     {
-        CampaignConfig config = _engine.Context.Config;
-        double image = Campaign.Player.Image;
+        CampaignConfig config = _game.Campaign.Config;
         int index = config.ImageBandIndex(image);
         int side = config.ImageBandSide(index);
         var (from, to) = config.ImageBandRange(index);
         Color color = side > 0 ? Palette.Positivo : side < 0 ? Palette.Negativo : Palette.Texto;
         string tip = Palette.Tip(
             Tr("Imagem: como a cidade vê você, numa régua de −1 a +1."),
-            string.Format(Tr("hoje {0}, na faixa \"{1}\" (de {2} a {3}); pesa no voto e volta aos poucos para zero sem novidades."), Signed(image, "0.00"), config.ImageScale[index].Name, Signed(from, "0.00"), Signed(to, "0.00")),
+            string.Format(Tr("hoje {0}, na faixa \"{1}\" (de {2} a {3}); {4}"), Signed(image, "0.00"), config.ImageScale[index].Name, Signed(from, "0.00"), Signed(to, "0.00"), effect),
             Tr("é um resultado, não um custo."));
         var box = _top.Add(new VBoxContainer { Name = "Imagem", MouseFilter = MouseFilterEnum.Stop, TooltipText = tip });
         box.AddThemeConstantOverride("separation", -4);

@@ -197,6 +197,11 @@ public partial class UiShot
             }
         }
 
+        if (!GovImageBand(hub, game.State!.Mandate!.Image, "mandato"))
+        {
+            return;
+        }
+
         Save(shot, "_mandato");
         foreach (string mode in new[] { "obras", "aprovacao", "base" })
         {
@@ -340,6 +345,23 @@ public partial class UiShot
         GetTree().Quit(0);
     }
 
+    /// <summary>"Como te veem" na barra do mandato e da prefeitura: a faixa nomeada e a régua, com o número só no tooltip.</summary>
+    private bool GovImageBand(HubScreen hub, double image, string where)
+    {
+        var config = Game.Instance.Campaign.Config;
+        string expected = config.ImageBandOf(image).Name;
+        var box = Named<Control>(hub, "Imagem");
+        string shown = box is null ? "" : FindAll<Label>(box).FirstOrDefault(l => l.Name == "Faixa")?.Text ?? "";
+        int ticks = box is null ? 0 : FindAll<HBoxContainer>(box).FirstOrDefault(r => r.Name == "Regua")?.GetChildCount() ?? 0;
+        if (!shown.EndsWith(expected, StringComparison.Ordinal) || shown.Any(char.IsDigit) || ticks != config.ImageScale.Count || !ThreePartTip(box))
+        {
+            Fail($"{where}: a barra de cima deveria mostrar a imagem na faixa \"{expected}\", sem número, com a régua e o tooltip em três partes (mostra \"{shown}\", {ticks} casas).");
+            return false;
+        }
+
+        return true;
+    }
+
     // ------------------------------------------------------------------ prefeitura
 
     /// <summary>
@@ -369,6 +391,11 @@ public partial class UiShot
                 Fail($"a área {area} da prefeitura não abriu.");
                 return;
             }
+        }
+
+        if (!GovImageBand(hub, game.State!.Executive!.Image, "prefeitura"))
+        {
+            return;
         }
 
         Save(shot, "_prefeitura");

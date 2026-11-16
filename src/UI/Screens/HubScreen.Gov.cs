@@ -501,6 +501,7 @@ public partial class HubScreen
                     Tr("cada instrumento gasta turnos; eles voltam toda segunda-feira."));
                 Stat(Tr("capital"), s.Capital.ToString(PtBr), Tr("Capital político: o crédito que você tem para articular."), Tr("paga a emenda, o projeto de lei e a candidatura à Mesa; cresce com votações ganhas e acordos cumpridos."));
                 Stat(Tr("sua força"), s.CityPresence.ToString("0", PtBr), Tr("Sua presença na cidade, de 0 a 100: a média das zonas pela população."), Tr("cai um pouco toda semana nas zonas em que você não aparece; é com ela que a campanha de reeleição começa."));
+                ImageStat(State.Mandate!.Image, Tr("muda com os seus votos, as faltas e os instrumentos do mandato, e é com ela que a campanha de reeleição começa."));
                 Stat(Tr("com o partido"), State.Mandate!.Fidelity.ToString(PtBr), Tr("Fidelidade ao partido, de 0 a 100."), Tr("cai quando você vota contra a orientação; baixa demais, o partido adverte, pune e pode expulsar."));
                 Stat(Tr("governo"), string.Format(PtBr, "{0:0}%", s.Approval), Tr("Aprovação do governo da cidade, que hoje é de outro: o prefeito."), Tr("com aprovação baixa e escândalo conhecido, a Câmara abre CPI e pode cassar o prefeito."));
             }
@@ -508,6 +509,7 @@ public partial class HubScreen
             {
                 FiscalView fiscal = GovernanceQueries.Fiscal(gov);
                 Stat(Tr("aprovação"), string.Format(PtBr, "{0:0}%", s.Approval), Tr("Aprovação do seu governo na cidade."), Tr("sobe com indicadores melhores e obras entregues; cai com crises, atrasos e promessas vencidas."));
+                ImageStat(State.Executive!.Image, Tr("pesa na aprovação do governo; muda com as decisões, as crises e as votações da Câmara."));
                 Stat(Tr("energia"), string.Format(PtBr, "{0}/{1}", State.Executive!.EnergyLeft, _game.ExecutiveContent.Config.WeeklyEnergy), Tr("Energia da semana para os atos do prefeito."), Tr("gasta ao decretar, mandar projeto à Câmara e agir pelo gabinete; volta toda segunda-feira."));
                 Stat(Tr("folha"), string.Format(PtBr, "{0:0.0}%", fiscal.PayrollShare * 100), Tr("Folha de pagamento do Executivo sobre a receita corrente líquida."),
                     string.Format(PtBr, Tr("alerta em {0:0.0}%, limite prudencial em {1:0.0}% e limite máximo em {2:0.0}%; acima do prudencial, reajuste e contratação ficam vedados."), fiscal.AlertAt * 100, fiscal.PrudentialAt * 100, fiscal.LimitAt * 100),
