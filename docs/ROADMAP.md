@@ -233,6 +233,9 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
   - **Autocrítica** de até 10 linhas no relatório da RV: o que ficou bom e ruim em cada uma, qual chega mais perto das referências com retoque, e onde só um artista resolveria. Nenhuma das duas é declarada boa o bastante: quem decide é o autor.
   - **Verificação:** as duas cabeças carregam pelo mesmo código de personagem; trocar A por B não muda nada fora do nó da cabeça; o cache de retrato funciona nos três tamanhos; 60 FPS na cena do menu com os 6 personagens.
 
+**Nome do jogo para o jogador (D-046):** junto com o menu como cena, o nome visível passa a ser "Palanque", com o subtítulo "Simulador de Carreira Política": título da janela, menu, créditos, textos do jogo e página de loja. Código, solução, namespaces e pastas continuam como Planalto.
+- **Teste:** nenhum texto visível ao jogador (dados de `data/`, textos de tela, título da janela, créditos) contém "Planalto" como nome do jogo; "Palácio do Planalto" como lugar continua permitido.
+
 **Critério de aprovação do protótipo** (o autor julga sem olhar o rosto):
 - composição das telas conforme as referências;
 - câmera: enquadramentos e zoom da cidade inteira até a rua;
