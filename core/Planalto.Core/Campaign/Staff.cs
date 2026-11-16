@@ -241,7 +241,7 @@ public sealed class StaffCatalog : IValidatable
     public static readonly IReadOnlyList<string> MemoryKeys =
     [
         "contratacao", "preterido", "conselho_seguido", "conselho_ignorado", "demissao", "saiu", "salario_atrasado", "vazamento",
-        "apresentado", "visita_delegada", "objetivo_cumprido",
+        "apresentado", "visita_delegada",
     ];
 
     public static readonly IReadOnlyList<string> TextKeys =

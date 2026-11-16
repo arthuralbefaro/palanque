@@ -137,8 +137,7 @@
     "apresentado": { "peso": 1, "pontos": 6, "texto": "Você chegou por indicação de alguém de confiança" },
     "trouxe_doador": { "peso": 1, "pontos": 4, "texto": "Trouxe um doador para a campanha" },
     "ajuda_recusada": { "peso": -1, "pontos": -3, "texto": "Ofereceu ajuda e você recusou" },
-    "visita_delegada": { "peso": 1, "pontos": 1, "texto": "Você mandou um representante em vez de ir" },
-    "objetivo_cumprido": { "peso": 1, "pontos": 4, "texto": "A campanha cumpriu um objetivo" }
+    "visita_delegada": { "peso": 1, "pontos": 1, "texto": "Você mandou um representante em vez de ir" }
   },
   "textos": {
     "conselho": "{nome} ({papel}) aconselha: concentre a semana em {zona}; {evitar} está rendendo pouco para nós.",

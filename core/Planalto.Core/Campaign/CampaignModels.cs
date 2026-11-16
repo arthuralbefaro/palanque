@@ -191,6 +191,9 @@ public sealed class CampaignState
     /// <summary>Plataforma: posições assumidas, bandeiras e posição conhecida por tema (GDD 17.9).</summary>
     public PlatformState Platform { get; init; } = new();
 
+    /// <summary>Objetivos ativos e o histórico da campanha (GDD 17.2, peça 6).</summary>
+    public ObjectiveState Objectives { get; init; } = new();
+
     public List<Headline> Headlines { get; init; } = [];
 
     public List<PollRecord> Polls { get; init; } = [];

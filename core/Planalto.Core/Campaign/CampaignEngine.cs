@@ -39,6 +39,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         }
 
         engine.RefreshSupport();
+        engine.EnsureObjectives();
         return engine;
     }
 
@@ -179,6 +180,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         {
             AgendaWeek(State.Calendar.WeekStart);
             StaffWeekStart();
+            ObjectivesWeek();
         }
 
         if (Campaign.Phase == CampaignPhase.Campanha && WeeksToElection % config.PublicPollEveryWeeks == 0)
