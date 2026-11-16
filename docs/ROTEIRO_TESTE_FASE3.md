@@ -39,7 +39,7 @@ O hub mostra a semana. A barra de cima traz data, fase, semanas até a eleição
 ## 5. Apuração (1 min)
 
 1. As parciais sobem sozinhas. **Pular para o resultado** vai direto ao fim.
-2. No fim: vereadores mais votados (você em amarelo), cadeiras por partido, quociente eleitoral, prefeito eleito e o veredito.
+2. No fim: vereadores mais votados (você em amarelo), cadeiras por partido, quociente eleitoral, prefeito eleito e o veredito, com o botão **Tomar posse** ou **Continuar a carreira**.
 
 ## Dificuldade esperada (DECISOES D-026)
 
@@ -58,6 +58,6 @@ Com o partido mais forte da cidade e ações toda semana, a simulação automát
 ## Limitações conhecidas
 
 - Arte provisória (retratos e logotipos de placeholder), sem áudio e só em português.
-- Depois da apuração não há mandato: **Voltar ao hub** mostra a campanha encerrada e **Nova carreira** recomeça. O mandato é a Fase 4.
+- Depois da apuração, **Tomar posse** (se eleito) leva ao mandato de vereador (Fase 4) e **Continuar a carreira** (se não) leva à entressafra até a próxima eleição. Na pré-campanha seguinte dá para disputar a prefeitura (Fase 5). Se sobrar tempo, vale olhar essas telas, mas o foco deste roteiro é a campanha.
 - O mapa é o protótipo da Fase 3: só o estado da sua cidade, sem modo apuração nem alternativa 2D plana (Fase 6).
 - O balanceamento é o primeiro ajuste. O fino fica para o BalanceSim da Fase 10.
