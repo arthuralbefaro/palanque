@@ -23,6 +23,12 @@ public sealed class ExecutiveContext
 
     public required double RecognitionScale { get; init; }
 
+    /// <summary>
+    /// Ponto de partida oficial do município (data/indicadores_reais, GDD 17.17). Sem ele, a receita cai na estimativa
+    /// por habitante e por porte da D-031.
+    /// </summary>
+    public Indicators.IndicadoresMunicipio? Indicadores { get; init; }
+
     public ExecutiveConfig Config => Content.Config;
 }
 
@@ -68,8 +74,15 @@ public sealed class ExecutiveEngine
 
     public bool Over => Week > Executive.End;
 
-    /// <summary>Receita anual estimada (escala em reais da tela; as regras usam as parcelas).</summary>
-    public decimal AnnualRevenue => Context.Municipio.Populacao * Config.RevenuePerCapita.GetValueOrDefault(Context.Municipio.Porte, 4000m);
+    /// <summary>
+    /// Receita anual em reais (escala da tela; as regras usam as parcelas): a receita corrente do município no SICONFI
+    /// (GDD 17.17) ou, sem o dado importado, a estimativa por habitante e por porte da D-031.
+    /// </summary>
+    public decimal AnnualRevenue => Context.Indicadores?.Financas.ReceitaCorrente
+        ?? Context.Municipio.Populacao * Config.RevenuePerCapita.GetValueOrDefault(Context.Municipio.Porte, 4000m);
+
+    /// <summary>True quando a receita é a declarada pelo município ao Tesouro; false quando é estimativa (do importador ou da D-031).</summary>
+    public bool RevenueIsDeclared => Context.Indicadores is { } i && i.Financas.Fonte != Indicators.FinancasEnte.Estimativa;
 
     // ---------------------------------------------------------------- posse
 

@@ -1,6 +1,28 @@
 # Progresso
 
-## Relatório da manhã (corujão da Fase R, 2026-11-16)
+## Relatório para o autor (atualizado a cada parte)
+
+**Estado em 2026-11-16, durante a RD.** Este bloco é reescrito ao fim de cada parte.
+
+- **Tags prontas:** `fase-r1` (com pendências). A RD está em andamento; ainda sem tag.
+- **Por qual tag começar a testar:** `fase-r1`, com `docs/ROTEIRO_TESTE_R1.md`.
+- **Respostas do autor registradas (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3, com a marca "(artigo a conferir)" nos verbetes e tooltips.
+- **RD, o que já está na main:** teto de 20 MB em `data/zonas/`; leitores de .xlsx e de .dbc (DATASUS) sem pacote novo; download por FTP; tábuas de mortalidade por UF e população projetada por UF em `data/demography/`, com a projeção municipal reescalada pela UF (adendo da D-033); baixador do SICONFI.
+- **RD, em andamento (não commitado ou rodando):**
+  - download do SICONFI para o cache (um ente por chamada, 5.598 entes; `dotnet run --project tools/Planalto.DataImporter -- rd siconfi-baixar 8`, retomável);
+  - montagem de `data/indicadores_reais/` (`Rd/RdImport.cs`: PIB, RAIS, SICONFI, IDEB, saúde, saneamento) e de `data/economy/start.json`;
+  - modo `zonas-rd` (`Rd/ZonasRdImport.cs`): eleitores por zona pelos locais de votação e religião e escolaridade pelas áreas de ponderação; depende do de-para setor → zona que o modo `zonas` passou a gravar no cache (reexecução em andamento);
+  - agregação de SIM, SINASC e CNES (`Rd/SaudeImport.cs`), em outra cópia de trabalho.
+- **Pendências que precisam do autor:** ver a lista ao fim deste bloco quando a RD fechar.
+- **Decisões conservadoras tomadas sozinho, a revisar:**
+  1. Marca "a conferir" também nos verbetes "Pré-campanha" (art. 36-A) e "Horário eleitoral gratuito" (arts. 44 e 47), além dos citados na P-04.
+  2. Parâmetros de jogo de `data/demography/config.json` (pesos de saúde e estresse no fator pessoal, curva depois dos 89 anos, 12 sorteios por ano): só o intervalo de 0,6 a 2,5 veio do GDD.
+  3. Depois de 2070, a população da UF segue a taxa de 2069 para 2070 (adendo da D-033).
+  4. O Distrito Federal entra nas finanças pelo ente estadual 53 do SICONFI (não há declaração municipal de Brasília).
+  5. Votação de 2024 por zona (GDD 17.20, item 6): os arquivos por seção estão no cache (26 UFs), mas a ligação ao cenário Brasil 2026 ainda não foi feita; se não couber na RD, vira pendência.
+  6. Faixas plausíveis de `data/indicators/definitions.json` e mínimo de 300 nascidos vivos em 3 anos para a taxa de mortalidade infantil valer por município.
+
+## Relatório da manhã (corujão da Fase R, 2026-11-16) — R1
 
 **Partes concluídas:** só a **R1**, tag local `fase-r1`, **com pendências** (docs/PENDENCIAS.md). RD, R2a, R2b, R3 e R4 não começaram. Parei de propósito: preferi entregar a R1 testada, olhada em captura e corrigida em duas rodadas, a abrir a RD pela metade.
 

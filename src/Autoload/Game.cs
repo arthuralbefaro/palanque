@@ -97,7 +97,7 @@ public partial class Game : Node
         Debate = JsonData.LoadFile<Core.Debate.DebateContent>(Path.Combine(DataDirectory, Core.Debate.DebateContent.File)).GetValueOrThrow();
         Encyclopedia = JsonData.LoadFile<Core.Encyclopedia.EncyclopediaContent>(Path.Combine(DataDirectory, Core.Encyclopedia.EncyclopediaContent.File)).GetValueOrThrow();
         Time = JsonData.LoadFile<Core.State.TimeConfig>(Path.Combine(DataDirectory, Core.State.TimeConfig.File)).GetValueOrThrow();
-        Projection = PopulationProjection.From(Municipios, JsonData.LoadFile<PopulationProjectionConfig>(Path.Combine(DataDirectory, PopulationProjectionConfig.File)).GetValueOrThrow());
+        Projection = PopulationProjection.Load(DataDirectory, Municipios);
     }
 
     /// <summary>Glossário e artigos da Enciclopédia (F1 em qualquer tela).</summary>
@@ -153,7 +153,22 @@ public partial class Game : Node
             Legislature = Legislature.Config,
             Electorate = campaign.Electorate,
             RecognitionScale = Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
+            Indicadores = IndicadoresDe(campaign.Municipio),
         };
+    }
+
+    private readonly Dictionary<string, Core.Indicators.IndicadoresUfFile?> _indicadores = [];
+
+    /// <summary>Ponto de partida oficial do município (data/indicadores_reais/, GDD 17.17); null se o arquivo da UF faltar.</summary>
+    public Core.Indicators.IndicadoresMunicipio? IndicadoresDe(Municipio m)
+    {
+        if (!_indicadores.TryGetValue(m.Uf, out Core.Indicators.IndicadoresUfFile? file))
+        {
+            file = Core.Indicators.IndicadoresPaths.Load(DataDirectory, m.Uf).Value;
+            _indicadores[m.Uf] = file;
+        }
+
+        return file?.Municipios.FirstOrDefault(i => i.CodigoIbge == m.CodigoIbge);
     }
 
     /// <summary>Dados reais do município no cenário Brasil 2026; null nos mundos gerados.</summary>

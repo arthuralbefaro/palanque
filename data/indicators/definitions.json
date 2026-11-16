@@ -1,0 +1,16 @@
+{
+  "note": "Indicadores em unidade real (GDD 17.17). 'min' e 'max' são a faixa plausível declarada: o importador e os testes reprovam valor de partida fora dela (parâmetros de conferência, não dados). 'min_nascidos_mortalidade_infantil' é o mínimo de nascidos vivos, na soma dos anos lidos, para a taxa de mortalidade infantil do município valer por si; abaixo dele vale a da região geográfica imediata. A conversão para a escala de jogo e o modelo de evolução entram na R4.",
+  "min_nascidos_mortalidade_infantil": 300,
+  "indicadores": [
+    { "id": "ideb", "nome": "IDEB anos iniciais (rede municipal)", "unidade": "nota de 0 a 10", "maior_melhor": true, "min": 0, "max": 10, "fonte": "INEP" },
+    { "id": "mortalidade_infantil", "nome": "Mortalidade infantil", "unidade": "óbitos de menores de 1 ano por mil nascidos vivos", "maior_melhor": false, "min": 0, "max": 100, "fonte": "Ministério da Saúde, SIM e SINASC" },
+    { "id": "leitos", "nome": "Leitos", "unidade": "leitos por mil habitantes", "maior_melhor": true, "min": 0, "max": 60, "fonte": "Ministério da Saúde, CNES" },
+    { "id": "homicidios", "nome": "Homicídios", "unidade": "óbitos por agressão por 100 mil habitantes ao ano", "maior_melhor": false, "min": 0, "max": 250, "fonte": "Ministério da Saúde, SIM" },
+    { "id": "rede_agua", "nome": "Domicílios ligados à rede de água", "unidade": "% dos domicílios", "maior_melhor": true, "min": 0, "max": 100, "fonte": "IBGE, Censo 2022" },
+    { "id": "rede_esgoto", "nome": "Domicílios ligados à rede de esgoto", "unidade": "% dos domicílios", "maior_melhor": true, "min": 0, "max": 100, "fonte": "IBGE, Censo 2022" },
+    { "id": "emprego_formal", "nome": "Empregos formais", "unidade": "vínculos por 100 habitantes", "maior_melhor": true, "min": 0, "max": 400, "fonte": "MTE, RAIS" },
+    { "id": "pessoal_rcl", "nome": "Despesa com pessoal", "unidade": "% da receita corrente líquida", "maior_melhor": false, "min": 0, "max": 120, "fonte": "Tesouro Nacional, SICONFI" },
+    { "id": "receita_per_capita", "nome": "Receita corrente por habitante", "unidade": "R$ por habitante ao ano", "maior_melhor": true, "min": 500, "max": 150000, "fonte": "Tesouro Nacional, SICONFI" },
+    { "id": "pib_per_capita", "nome": "PIB por habitante", "unidade": "R$ por habitante ao ano", "maior_melhor": true, "min": 2000, "max": 2000000, "fonte": "IBGE, PIB dos Municípios" }
+  ]
+}
