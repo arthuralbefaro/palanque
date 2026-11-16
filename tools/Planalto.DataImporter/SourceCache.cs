@@ -38,8 +38,10 @@ public sealed class SourceCache(string directory, HttpClient http)
 
     public async Task<CachedFile> GetAsync(string fileName, string url)
     {
-        System.IO.Directory.CreateDirectory(Directory);
         string path = Path.Combine(Directory, fileName);
+
+        // O nome pode trazer subpasta ("rd/arquivo.xlsx").
+        System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         string metaPath = path + ".meta.json";
 
         if (File.Exists(path))
