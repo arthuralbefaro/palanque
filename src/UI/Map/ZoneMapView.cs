@@ -115,13 +115,7 @@ public partial class ZoneMapView : Control
 
         _world = _shapes.Count == 0 ? new Rect2(0, 0, 1, 1) : _shapes.Select(s => s.Bounds).Aggregate((a, b) => a.Merge(b));
 
-        // Em cidade com zona rural enorme, as zonas urbanas somem: o enquadramento inicial é a área urbana com folga.
-        // Núcleo urbano: a zona urbana mais populosa e as urbanas vizinhas (vilas de distrito afastadas ficam de fora).
-        Zona? core = _zonas.Values.Where(z => !z.IsRural).MaxBy(z => z.Populacao);
-        var nucleus = core is null ? [] : core.Vizinhas.Where(v => _zonas.TryGetValue(v, out Zona? n) && !n.IsRural).Append(core.Id).ToHashSet();
-        var urban = _shapes.Where(s => nucleus.Contains(s.Id)).Select(s => s.Bounds).ToList();
-        Rect2 urbanBox = urban.Count == 0 ? _world : urban.Aggregate((a, b) => a.Merge(b));
-        _view = urban.Count > 0 && urbanBox.Area < 0.25f * _world.Area ? urbanBox.Grow(Math.Max(urbanBox.Size.X, urbanBox.Size.Y) * 0.4f) : _world;
+        FrameNucleus();
         _zoom = 1;
         _pan = Vector2.Zero;
         QueueRedraw();
@@ -327,13 +321,6 @@ public partial class ZoneMapView : Control
         _zoom = 1;
         _pan = Vector2.Zero;
         QueueRedraw();
-    }
-
-    /// <summary>Mostra a cidade inteira (o enquadramento inicial pode ser só a área urbana).</summary>
-    public void ShowWhole()
-    {
-        _view = _world;
-        ResetView();
     }
 
     /// <summary>Zona sob um ponto da tela (teste de triângulos).</summary>

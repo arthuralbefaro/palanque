@@ -215,7 +215,7 @@ public partial class HubScreen
             b.ButtonPressed = _mapMode == id;
         }
 
-        Ui.Button(_modes, "Cidade inteira", _map.ShowWhole, Palette.Tip(Tr("Enquadra o município inteiro."), Tr("mostra todas as zonas; a roda do mouse aproxima, o botão direito arrasta e o duplo clique volta ao enquadramento."), Tr("nada.")));
+        AddFramingButton();
 
         Ui.Clear(_legend);
         if (_zonas is null)
