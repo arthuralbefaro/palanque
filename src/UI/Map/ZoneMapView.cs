@@ -7,7 +7,7 @@ namespace Planalto.UI.Map;
 
 /// <summary>
 /// Mapa 2D das zonas do município em foco (GDD 17.3, ART_GUIDE seção Interface): polígonos triangulados no
-/// importador, cor por zona, contorno, rótulos das maiores zonas, destaque de mouse e de seleção.
+/// importador, cor por zona, contorno, rótulos das maiores zonas (ZoneMapView.Labels.cs), destaque de mouse e de seleção.
 /// </summary>
 public partial class ZoneMapView : Control
 {
@@ -199,27 +199,8 @@ public partial class ZoneMapView : Control
             }
         }
 
-        // Rótulos: no máximo 12, das zonas mais populosas (ART_GUIDE, densidade).
         Font font = Palette.Weight(Palette.Inter, 500);
-        foreach (Zona z in _zonas.Values.OrderByDescending(z => z.Populacao).Take(12))
-        {
-            Shape? shape = _shapes.FirstOrDefault(s => s.Id == z.Id);
-            if (shape is null)
-            {
-                continue;
-            }
-
-            Vector2 at = t * new Vector2((float)(z.Lon * Math.Cos(_zonas.Values.Average(v => v.Lat) * Math.PI / 180)), -(float)z.Lat);
-            Vector2 size = font.GetStringSize(z.Nome, HorizontalAlignment.Left, -1, 18);
-            if ((shape.Bounds.Size * t.X.X).X < size.X * 0.6f)
-            {
-                continue;
-            }
-
-            DrawString(font, at - new Vector2((size.X / 2) + 1, -7), z.Nome, HorizontalAlignment.Left, -1, 18, new Color(0, 0, 0, 0.7f));
-            DrawString(font, at - new Vector2(size.X / 2, -6), z.Nome, HorizontalAlignment.Left, -1, 18, Palette.Texto);
-        }
-
+        DrawLabels(font);
         DrawMarkers(t, font);
     }
 
@@ -326,6 +307,12 @@ public partial class ZoneMapView : Control
     /// <summary>Zona sob um ponto da tela (teste de triângulos).</summary>
     public string? Hit(Vector2 screen)
     {
+        // O nome deslocado pode estar sobre outra zona: vale a zona do nome.
+        if (LabelAt(screen) is string labeled)
+        {
+            return labeled;
+        }
+
         Vector2 world = ToScreen().AffineInverse() * screen;
         foreach (Shape s in _shapes.Where(s => s.Bounds.Grow(1e-4f).HasPoint(world)))
         {

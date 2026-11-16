@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=perfil|newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|rivais|midia|contas [--perfil=nome] [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=perfil|newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|rivais|midia|contas|mapa_pequeno [--perfil=nome] [--screenshot=arquivo.png]".
 /// Os dados de usuário da rodada ficam em user://smoke/&lt;perfil&gt;/, apagado no início; sem --perfil, vale o nome do branch git.
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
@@ -141,6 +141,12 @@ public partial class UiShot : Node
         if (target == "map")
         {
             await ShowMaps(shot);
+            return;
+        }
+
+        if (target == "mapa_pequeno")
+        {
+            await PlayMapaPequeno(shot);
             return;
         }
 

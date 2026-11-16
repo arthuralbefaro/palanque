@@ -181,6 +181,7 @@ public partial class HubScreen : Control
         legendPanel.OffsetBottom = -104;
         _legend = legendPanel.Add(new VBoxContainer());
         _legend.AddThemeConstantOverride("separation", 4);
+        WireMapLabels(legendPanel);
 
         // Coluna direita: o feed rola; a intenção de voto fica fixa embaixo (ART_GUIDE, grade de painéis).
         var right = Panel(body, new Vector2(400, 0), 16).Add(new VBoxContainer());
