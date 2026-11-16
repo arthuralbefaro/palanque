@@ -960,10 +960,20 @@ Também existem, no TSE (licença CC BY declarada): eleitorado por local de vota
 3. Na sede, onde há bairros do IBGE, a zona é um grupo de bairros vizinhos e leva o nome do bairro mais populoso (`nome_fonte: "bairro_ibge"`).
 4. Onde não há bairros, os setores vizinhos são agrupados por contiguidade até equilibrar a população. O nome é o do distrito (`"distrito_ibge"`) ou descritivo, gerado pela posição em relação ao núcleo mais denso: "Centro", "Zona Norte", "Rural Leste" (`"gerado"`). Nome gerado é rótulo do jogo, não dado; a Ficha da zona diz isso.
 5. Contornos dissolvidos e simplificados pelo mesmo método da D-025; adjacência entre zonas gravada.
-6. Atributos da zona: soma dos setores. Célula suprimida não é estimada: cada bloco é normalizado pela soma das categorias publicadas (mesma regra do perfil municipal). Zona com mais de 20% da população em setores suprimidos num bloco usa a distribuição do município nesse bloco, com a lacuna em `_fontes.json`.
-7. Testes do importador: toda zona fica dentro do polígono do município; a soma da população das zonas é igual à do município no Censo, sem tolerância; nenhum setor fica sem zona; nenhuma zona mistura urbano e rural.
+6. Atributos da zona: soma dos setores, com a regra de sigilo abaixo.
+7. Testes do importador: toda zona fica dentro do polígono do município; nenhum setor fica sem zona; nenhuma zona mistura urbano e rural; a saída respeita o teto de tamanho; e os dois testes de população da regra de sigilo.
 
-Arquivos gerados: `data/zonas/{UF}.json` (atributos) e `data/geo/zonas/{UF}.json` (contornos). São cerca de 30 mil zonas no país; o tamanho será medido na R1 (referência: os 5.570 contornos municipais ocupam 6,3 MB).
+**Sigilo estatístico nos agregados por setor** (conferido nos arquivos do IBGE em 15/11/2026). O IBGE omite, com "X", células de setores muito pequenos (a regra divulgada seria menos de 5 domicílios particulares permanentes; o texto oficial não pôde ser aberto). O que os arquivos mostram:
+- o agregado **básico** (população total e domicílios) **não tem nenhuma célula suprimida**; 9.327 setores têm população zero;
+- o tema sexo e idade tem 132.519 linhas com alguma célula suprimida, de 458.772, e tem menos linhas que o básico (468.099), diferença ainda sem explicação;
+- os outros temas usados (renda do responsável, saneamento, alfabetização) também têm supressão.
+
+Regra:
+- **População total da zona** = soma do básico. Teste: igual à população do município no Censo, sem tolerância. O importador falha, listando os casos, se achar célula suprimida no básico ou município cuja soma não bata; nada é ajustado em silêncio. Os dois registros do RS sem município (áreas das lagoas, já fora do mapa pela D-025) ficam de fora.
+- **Blocos com supressão** (idade, renda, saneamento, alfabetização): célula suprimida não é estimada nem repartida. Cada bloco é normalizado pela soma das categorias publicadas na zona (mesma regra do perfil municipal). O importador grava, por zona e por bloco, a **cobertura**: população dos setores com dado publicado ÷ população da zona. Zona com cobertura abaixo de 80% num bloco usa a distribuição do município nesse bloco, com a lacuna em `_fontes.json`. Teste: a soma das categorias publicadas nunca passa da população da zona; toda zona tem cobertura gravada; nenhuma zona abaixo de 80% usa dado próprio.
+- Setor sem linha no tema (a diferença entre 468.099 e 458.772) conta como suprimido.
+
+Arquivos gerados: `data/zonas/{UF}.json` (atributos) e `data/geo/zonas/{UF}.json` (contornos). São cerca de 30 mil zonas no país (referência: os 5.570 contornos municipais ocupam 6,3 MB). **Teto: 30 MB para `data/geo/zonas/` no repositório.** O importador mede a saída e falha, sem gravar, se passar. Para caber, primeiro aumenta a tolerância de simplificação dos contornos; se não bastar, agrupa mais setores por zona (menos zonas por porte, nunca abaixo do mínimo da tabela). Tolerância e tamanho final ficam em `_fontes.json`.
 
 **O que não tem dado e vira decisão do autor** (lista em 17.20):
 - Religião e escolaridade por zona: usar a área de ponderação onde o município tem duas ou mais e o perfil municipal nos outros 2.994; ou o perfil municipal em todos.
