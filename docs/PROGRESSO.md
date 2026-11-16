@@ -33,6 +33,9 @@ Candidatura a prefeito na pré-campanha (idade mínima na posse, vaga do própri
 ## Fase 6 — itens avulsos (2026-11-15)
 Contornos simplificados da Malha Municipal (feitos na Fase 3, data/geo/) marcados no ROADMAP. População projetada e vagas de vereador por eleição (D-033): taxa anual entre o Censo 2022 e a estimativa do IBGE, teto do art. 29, IV com a população do ano anterior à eleição. 428 testes no Core.
 
+## Correções eleitorais (2026-11-15)
+Janela partidária só no ano da eleição em que o mandato acaba (vereador: municipal; deputados: geral). Idade mínima de 18 anos aferida no prazo do registro (15/8). Meta de assinaturas do Brasil 2026 com os votos válidos reais para a Câmara (566.265). CONTENT_GUIDE atualizado: só as fases pre_campanha e campanha; eventos de mandato ainda não existem. Adendos em D-028 a D-030; 433 testes no Core.
+
 ## Resumo da noite (modo corujão, 2026-11-15)
 - **Concluído:** Fase 3 (UI da campanha, urna, apuração, save/load, mapa 2.5D, balanceamento D-026, roteiro em docs/ROTEIRO_TESTE_FASE3.md), Fase 4 (mandato de vereador, transição, filiação, fundação de partido), Fase 5 (candidatura e mandato de prefeito, debate) e 2 dos 11 itens da Fase 6 (contornos; população e vagas por eleição). Decisões D-021 a D-033.
 - **Testes:** 428 no Core, 28 no importador; teste de fumaça da UI em 8 fluxos (newworld, creator, hub, picker, campaign, map, mandate, prefeitura), sem janela e com janela.
