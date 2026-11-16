@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 00:30, depois de: decisões do autor sobre o GDD 17.20 registradas e corujão da Fase R autorizado; a R1 ainda não começou.
+Atualizado em 2026-11-16 01:53, depois de: R1 concluída com pendências (tag fase-r1); corujão parado antes da RD, com o Relatório da manhã no topo do PROGRESSO.md.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -174,7 +174,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 ## 6. Estado atual
 
 - **Fases concluídas:** 0 (fundação), 1 (núcleo: regras eleitorais, municípios, partidos, cenário Brasil 2026, eleitorado e pesquisas), 2 (criação de personagem), 3 (fatia vertical de vereador), 4 (mandato de vereador e fundação de partido), 5 (prefeito e debate). Da Fase 6, dois itens: contornos dos municípios e população projetada com vagas por eleição.
-- **Testes:** cerca de 433 no Core (última contagem registrada), 28 no importador, e testes de fumaça em 10 alvos.
+- **Testes:** 455 no Core, 28 no importador, 12 alvos de fumaça com janela (inclui `creator17` e `explicacao`).
 - **Teste do autor:** jogou a fatia vertical e reprovou: "pouca coisa pra fazer, confuso, feio, muito raso", "chato e saturável", "parece o Referee Simulator da Play Store".
 - **Diagnóstico** (documento de auditoria), com as 5 causas do tédio:
   1. não há decisão, só gasto: 6 ações de efeito fixo, e repetir "Redes sociais" é sempre o melhor;
@@ -190,7 +190,13 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - **R2b:** equipe, verba, plataforma, objetivos.
   - **R3:** rivais, mídia, doadores.
   - **R4:** mandatos novos, indicadores reais, renovação no município.
-- **Tags:** nenhuma ainda.
+- **R1 feita, com pendências (tag `fase-r1`):**
+  - idade inicial de 17 anos;
+  - 28.135 zonas montadas com setores do Censo 2022 para os 5.570 municípios (20,5 MB de contornos);
+  - tela central com mapa 2D das zonas, tempo por dia, previsão antes do clique, Enciclopédia (F1), dicas e tooltips em três partes;
+  - material de campanha permitido no lugar do outdoor.
+  Faltam: mandato e prefeitura na tela central, tooltips nas outras telas, tela de Opções das pausas, ajustes do mapa em cidade pequena. Ainda não começaram: RD, R2a, R2b, R3, R4.
+- **Tags:** `fase-r1`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -231,6 +237,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-033: população projetada e vagas de vereador pelo teto constitucional a cada eleição.
 - D-034: Fase R criada a partir da auditoria; regras do Core mantidas.
 - D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
+- D-036: idade inicial de 17 a 45 anos (NPCs 25 a 45), 18 anos aferidos em 15/8 para vereador, profissões com idade mínima, Estudante, família coerente com a idade.
 
 **Decisões do GDD 17.20, com a escolha do autor:**
 1. Mapa da cidade em 2D plano: aprovado.
@@ -263,16 +270,24 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 ## 8. Pendências
 
-- **Do autor, de manhã:** jogar as partes da Fase R na ordem das tags, seguindo o roteiro de teste de cada uma.
-- **Do autor, depois:** conferir os termos de uso de IBGE, INEP, DATASUS, MJSP e MTE.
-- **Do Claude Code:** conferir no texto oficial os artigos de lei citados de memória (Lei 9.504: limites, doações, propaganda, cabos; LRF; Lei de Licitações) antes de virarem configuração (R3 e R4).
-- **Lista de bloqueios do corujão:** nenhum por enquanto.
+- **Do autor, de manhã:** jogar o roteiro da R1 (tag `fase-r1`).
+- **Do autor, com resposta:**
+  - P-04: artigos de lei citados de memória nos tooltips do material de campanha;
+  - P-05: a intenção por zona estimada (a da cidade repesada por idade e situação) basta até a R2a?;
+  - P-06: termos de uso do IBGE;
+  - P-08: 15 MB de atributos de zonas no repositório.
+- **Trabalho pendente da R1:**
+  - P-01: mandato e prefeitura ainda nas telas antigas;
+  - P-02: tooltips só na tela central;
+  - P-03: sem tela de Opções das pausas;
+  - P-09: mapa de cidade pequena (rótulos sobrepostos, uma cor só).
+- **Do Claude Code, mais à frente:** conferir no texto oficial os artigos de lei citados de memória antes de virarem configuração (R3 e R4).
 
 ## 9. Próximos passos ao abrir um chat novo
 
 1. Colar este documento e dizer em que ponto o autor está (o que jogou, o que achou).
 2. Se o Claude Code parou por limite de uso: mandar retomar o corujão (frase na seção 10).
-3. Se a noite terminou: ler o "Relatório da manhã" no topo do PROGRESSO.md (o Claude Code escreve ao parar), jogar as partes na ordem das tags com os roteiros e trazer as impressões.
+3. Ler o "Relatório da manhã" no topo do PROGRESSO.md, jogar a R1 com o roteiro e trazer as impressões. Decidir se a próxima rodada fecha as pendências da R1 (P-01, P-02, P-03, P-09) antes da RD e da R2a, ou se segue a ordem R1 → RD → R2a.
 4. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
 5. Revisar a lista de pendências e o registro de decisões; reverter o que não agradar.
 
