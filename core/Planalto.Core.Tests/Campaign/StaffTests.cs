@@ -590,7 +590,7 @@ public class StaffTests
         HireFirst(engine, StaffRole.Coordenador);
         Assert.Equal(0.35, engine.LawyerSuccessChance);
         int weeks = 0;
-        while (engine.Context.State.Campaign!.Phase == CampaignPhase.PreCampanha && weeks++ < 30)
+        while (engine.Context.State.Campaign!.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha && weeks++ < 40)
         {
             Week(engine);
         }
