@@ -55,25 +55,15 @@ public sealed class LegislatureEngine
     // ---------------------------------------------------------------- votos
 
     /// <summary>Afinidade (-1 a 1) entre uma posição e o projeto: positiva perto, negativa longe.</summary>
-    public double Alignment(Ideology.IdeologicalPosition position, BillTemplate bill) =>
-        Math.Clamp((Config.Vote.NeutralDistance - ChamberSetup.Distance(position, bill.Position)) / Config.Vote.NeutralDistance, -1, 1);
+    public double Alignment(Ideology.IdeologicalPosition position, BillTemplate bill) => ChamberVote.Alignment(Config.Vote, position, bill.Position);
 
     /// <summary>Governo (+1), oposição (-1) ou neutro (0) num projeto do Executivo; 0 nos demais.</summary>
     public int GovernmentSide(string? partyId, Bill bill) =>
         bill.AuthorKind != BillAuthorKind.Executivo || partyId is null ? 0 : Mandate.InBase(partyId) ? 1 : -1;
 
     /// <summary>Orientação da bancada (-1 não, 0 liberada, 1 sim), pela posição do partido e pelo lado no governo.</summary>
-    public int Orientation(string? partyId, Bill bill)
-    {
-        if (partyId is null || State.Party(partyId) is not { } party)
-        {
-            return 0;
-        }
-
-        double score = Alignment(party.Position, Template(bill))
-            + (GovernmentSide(partyId, bill) * Config.Vote.GovernmentWeight / Config.Vote.IdeologyWeight);
-        return Math.Abs(score) < Config.Vote.OrientationThreshold ? 0 : Math.Sign(score);
-    }
+    public int Orientation(string? partyId, Bill bill) =>
+        ChamberVote.PartyOrientation(Config, State, partyId, Template(bill).Position, GovernmentSide(partyId, bill));
 
     /// <summary>Orientação que o jogador recebe: a do partido dele, ou nenhuma se ele é o líder ou está sem partido.</summary>
     public int PlayerOrientation(Bill bill)
@@ -82,27 +72,11 @@ public sealed class LegislatureEngine
         return player.Leader || player.PartyId is null ? 0 : Orientation(player.PartyId, bill);
     }
 
-    public double Discipline(string? partyId)
-    {
-        string key = State.Party(partyId)?.Charter?.Discipline switch
-        {
-            PartyDiscipline.Rigida => "rigida",
-            PartyDiscipline.Frouxa => "frouxa",
-            _ => "moderada",
-        };
-        return Config.Discipline.GetValueOrDefault(key, 0.7);
-    }
+    public double Discipline(string? partyId) => ChamberVote.Discipline(Config, State, partyId);
 
     /// <summary>Logito do voto SIM de um vereador NPC (sem ruído).</summary>
-    public double VoteLogit(ChamberMember member, Bill bill, int orientation)
-    {
-        LegislatureVoteConfig w = Config.Vote;
-        double relation = bill.AuthorId == RaceSetup.PlayerId ? member.Relation / 100 : 0;
-        return (w.IdeologyWeight * Alignment(member.Position, Template(bill)))
-            + (w.OrientationWeight * orientation * Discipline(member.PartyId))
-            + (w.GovernmentWeight * GovernmentSide(member.PartyId, bill))
-            + (w.RelationWeight * relation);
-    }
+    public double VoteLogit(ChamberMember member, Bill bill, int orientation) =>
+        ChamberVote.Logit(Config, State, member, Template(bill).Position, orientation, GovernmentSide(member.PartyId, bill), bill.AuthorId == RaceSetup.PlayerId ? member.Relation : 0);
 
     /// <summary>Marca o voto do jogador num projeto da pauta (pode mudar até a semana avançar).</summary>
     public void CastVote(string billId, VoteChoice choice)
@@ -297,18 +271,17 @@ public sealed class LegislatureEngine
         foreach (ChamberMember m in mandate.Members.Where(m => !m.IsPlayer))
         {
             int o = player.Leader && m.PartyId == player.PartyId && player.PartyId is not null ? playerSign : Orientation(m.PartyId, bill);
-            double logit = VoteLogit(m, bill, o) + (ElectorateBuilder.Gaussian(Rng) * Config.Vote.NoiseSd);
-            if (Math.Abs(logit) < Config.Vote.AbstainBand)
+            switch (ChamberVote.Decide(Config, VoteLogit(m, bill, o), Rng))
             {
-                abstain++;
-            }
-            else if (logit > 0)
-            {
-                yes++;
-            }
-            else
-            {
-                no++;
+                case VoteChoice.Abstencao:
+                    abstain++;
+                    break;
+                case VoteChoice.Sim:
+                    yes++;
+                    break;
+                default:
+                    no++;
+                    break;
             }
         }
 

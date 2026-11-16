@@ -59,7 +59,7 @@ public static class ChamberSetup
             ChamberSeats = new Dictionary<string, int>(outcome.Vereador.SeatsByParty, StringComparer.Ordinal),
             Councillors = councillors,
             CouncillorVotes = votes,
-            MayorId = mayor.CharacterId,
+            MayorId = mayor.IsPlayer ? RaceSetup.PlayerId : mayor.CharacterId,
             MayorPartyId = mayor.PartyId,
             MayorReelected = reelected,
             PlayerImage = player.Image,
@@ -77,35 +77,7 @@ public static class ChamberSetup
         ElectionOutcome outcome = campaign.Outcome!;
         LocalPolitics local = state.Local ?? RecordLocalPolitics(ctx, campaign, rng);
         int year = outcome.Date.Year;
-
-        var members = new List<ChamberMember>();
-        foreach (string characterId in local.Councillors)
-        {
-            if (characterId == RaceSetup.PlayerId)
-            {
-                members.Add(new ChamberMember
-                {
-                    Id = RaceSetup.PlayerId,
-                    Name = state.Player.BallotName,
-                    PartyId = state.Player.PartyId,
-                    Position = state.Party(state.Player.PartyId)?.Position ?? new IdeologicalPosition(0, 0),
-                    IsPlayer = true,
-                    Votes = local.CouncillorVotes.GetValueOrDefault(RaceSetup.PlayerId),
-                });
-                continue;
-            }
-
-            Character npc = state.Npcs.First(n => n.Id == characterId);
-            Candidate? candidate = campaign.Candidates.FirstOrDefault(c => c.CharacterId == characterId);
-            members.Add(new ChamberMember
-            {
-                Id = npc.Id,
-                Name = npc.BallotName,
-                PartyId = npc.PartyId,
-                Position = candidate?.Position ?? Jitter(state.Party(npc.PartyId)?.Position ?? new IdeologicalPosition(0, 0), rng),
-                Votes = local.CouncillorVotes.GetValueOrDefault(npc.Id),
-            });
-        }
+        List<ChamberMember> members = BuildMembers(state, campaign, local, rng);
 
         Candidate mayor = campaign.Find(outcome.Prefeito.Elected[0])!;
         var baseParties = BuildBase(state, members, mayor.PartyId, config.Base);
@@ -148,6 +120,41 @@ public static class ChamberSetup
         };
         state.Player.Resources.PoliticalCapital = Math.Max(state.Player.Resources.PoliticalCapital, config.Capital.Start);
         return mandate;
+    }
+
+    /// <summary>Vereadores empossados (o jogador, se eleito, e os NPCs), com posição e votos.</summary>
+    public static List<ChamberMember> BuildMembers(GameState state, CampaignState campaign, LocalPolitics local, Rng rng)
+    {
+        var members = new List<ChamberMember>();
+        foreach (string characterId in local.Councillors)
+        {
+            if (characterId == RaceSetup.PlayerId)
+            {
+                members.Add(new ChamberMember
+                {
+                    Id = RaceSetup.PlayerId,
+                    Name = state.Player.BallotName,
+                    PartyId = state.Player.PartyId,
+                    Position = state.Party(state.Player.PartyId)?.Position ?? new IdeologicalPosition(0, 0),
+                    IsPlayer = true,
+                    Votes = local.CouncillorVotes.GetValueOrDefault(RaceSetup.PlayerId),
+                });
+                continue;
+            }
+
+            Character npc = state.Npcs.First(n => n.Id == characterId);
+            Candidate? candidate = campaign.Candidates.FirstOrDefault(c => c.CharacterId == characterId);
+            members.Add(new ChamberMember
+            {
+                Id = npc.Id,
+                Name = npc.BallotName,
+                PartyId = npc.PartyId,
+                Position = candidate?.Position ?? Jitter(state.Party(npc.PartyId)?.Position ?? new IdeologicalPosition(0, 0), rng),
+                Votes = local.CouncillorVotes.GetValueOrDefault(npc.Id),
+            });
+        }
+
+        return members;
     }
 
     /// <summary>
