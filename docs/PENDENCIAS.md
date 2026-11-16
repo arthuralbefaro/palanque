@@ -175,7 +175,8 @@ Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Si
 - **Lista de bloqueio de nomes de veículos** (`data/media/blocklist.json`, 84 nomes) foi escrita de memória e está marcada assim; o autor precisa revisar.
 - **Fora da R3:** rivais sem doadores nem contas próprias; pacto de divisão de zonas; "saída de outro rival" como gatilho de plano; a suíte de testes passou de 2 para 6 minutos.
 
-### P-28 · Bases 3D estilizadas para personagens e cenários (decisão do autor; nada foi baixado nem implementado)
+### P-28 · Bases 3D estilizadas para personagens e cenários — **fechada (D-045)**
+- **Decidido pelo autor em 16/11 (DECISOES D-045):** bases livres CC0 para cenários, animações, corpos e multidão; artista 3D só para cabeça, expressões e roupas, depois do protótipo aprovado e de um teste pago (`docs/BRIEFING_ARTISTA_3D.md`); Quaternius fora até a confirmação da licença por escrito, que o autor vai pedir. A pesquisa abaixo fica como registro.
 Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avaliação.
 - **Nenhuma base livre entrega o pedido inteiro.** Não há personagem CC0 ou CC BY no estilo de Two Point Hospital com expressões no rosto, idades de 17 a 90 anos, corpos variados, traços da população brasileira e roupa institucional.
 - **O que mais se aproxima:**

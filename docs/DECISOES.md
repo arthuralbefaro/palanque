@@ -320,3 +320,13 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
   - **Pesquisa pedida:** bases 3D estilizadas CC0 ou CC BY para personagens e cenários, com licença, qualidade e o que cada uma cobre, e onde a qualidade exigiria um artista 3D; registrada em PENDENCIAS como decisão do autor.
   - **Protótipo do fim da `fase-r-final`:** 3 personagens nesse estilo, em 3 expressões, e o menu como cena (além do mapa e da janela flutuante já pedidos).
   - **Referências de composição:** `docs/referencias/rv_tela_central.html` (salvo pelo autor) e as telas desenhadas pelo autor com o consultor, se estiverem na pasta (hoje há também `docs/referencias/tela_central.png`).
+
+## D-045 — Bases 3D e artista para a parte RV (resposta do autor à P-28)
+- **Data:** 2026-11-16 · **Fase:** RV (decidida durante a Fase R; nada de visual muda no jogo antes da RV) · Decisão do autor.
+- **Bases livres CC0** para cenários, animações, corpos e multidão: KayKit (cenários e animações), a cabeça e o corpo estilizados dos Human Base Meshes do Blender (ponto de partida) e o MPFB só como referência de expressões e de diversidade (o programa e o addon não entram no repositório).
+- **Artista 3D só para cabeça, expressões e roupas,** contratado depois de o autor aprovar o protótipo da RV. Antes do contrato, um **teste pago**: 1 cabeça, 3 expressões, 1 tom de pele e 1 cabelo, pelo briefing em `docs/BRIEFING_ARTISTA_3D.md`.
+- **Cabeça substituível:** o protótipo usa uma cabeça provisória montada de base livre, no mesmo formato que o artista entrega (materiais, pontos de troca e nomes de expressão no ART_GUIDE, seção RV), para a troca não exigir mudança de código.
+- **Quaternius fora** até haver confirmação da licença por escrito (a página de licença do site diverge da CC0 das páginas dos pacotes); o autor vai pedir. Nenhum arquivo da Quaternius entra no repositório até lá.
+- **Aprovação em duas etapas** (ROADMAP, parte RV): o protótipo é aprovado por composição, câmera, cor, menu como cena e desempenho; o rosto só é julgado depois do teste do artista.
+- **Escolhas tomadas ao escrever o briefing, a revisar:** as 3 expressões do teste são neutra, sorriso e preocupado; o orçamento é de até 8.000 triângulos para a cabeça e 6.000 para o cabelo; a cessão de direitos é total, por escrito, com crédito ao artista e sem uso de IA nem de assets de terceiros fora de CC0. O texto da cessão deve ser revisto por advogado antes de assinar.
+- **Fecha a P-28.**
