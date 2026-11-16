@@ -94,7 +94,13 @@ public static class Clock
     public const string FaseNova = "fase_nova";
     public const string NoticiaComum = "noticia_comum";
 
-    public static readonly IReadOnlyList<string> PauseIds = [DecisaoImediata, PesquisaPublicada, VotacaoNaPauta, CaixaBaixo, SemanaSemCompromisso, FaseNova, NoticiaComum];
+    /// <summary>Uma liderança que apoiava o jogador mudou de lado ou ficou neutra (GDD 17.4).</summary>
+    public const string LiderancaPerdida = "lideranca_perdida";
+
+    /// <summary>Um rival foi visto numa zona em que o jogador lidera a presença (GDD 17.4).</summary>
+    public const string RivalEmZonaLider = "rival_em_zona_lider";
+
+    public static readonly IReadOnlyList<string> PauseIds = [DecisaoImediata, PesquisaPublicada, VotacaoNaPauta, CaixaBaixo, SemanaSemCompromisso, FaseNova, NoticiaComum, LiderancaPerdida, RivalEmZonaLider];
 
     public static DateOnly Today(GameState state) => state.Calendar.WeekStart.AddDays(state.Time.Day);
 

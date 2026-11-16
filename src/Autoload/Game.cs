@@ -138,7 +138,35 @@ public partial class Game : Node
             Portes = Portes,
             Debate = Debate,
             Projection = Projection,
+            Zonas = ZonasDe(m),
         };
+    }
+
+    private readonly Dictionary<string, Core.Territory.ZonasUf> _zonas = [];
+    private readonly Dictionary<string, Core.Territory.GeoZonasUf> _geoZonas = [];
+
+    /// <summary>Zonas do município (data/zonas/, GDD 17.5); o arquivo da UF é lido uma vez.</summary>
+    public Core.Territory.ZonasMunicipio ZonasDe(Municipio m)
+    {
+        if (!_zonas.TryGetValue(m.Uf, out Core.Territory.ZonasUf? file))
+        {
+            file = Core.Territory.ZonasPaths.Load(DataDirectory, m.Uf).GetValueOrThrow();
+            _zonas[m.Uf] = file;
+        }
+
+        return file.Municipios.First(z => z.CodigoIbge == m.CodigoIbge);
+    }
+
+    /// <summary>Contornos das zonas de uma UF (data/geo/zonas/), lidos uma vez.</summary>
+    public Core.Territory.GeoZonasUf GeoZonasDe(string uf)
+    {
+        if (!_geoZonas.TryGetValue(uf, out Core.Territory.GeoZonasUf? file))
+        {
+            file = Core.Territory.ZonasPaths.LoadGeo(DataDirectory, uf).GetValueOrThrow();
+            _geoZonas[uf] = file;
+        }
+
+        return file;
     }
 
     /// <summary>Contexto da prefeitura no município em foco.</summary>
@@ -286,6 +314,32 @@ public partial class Game : Node
         }
 
         return note;
+    }
+
+    /// <summary>O que um dia de jogo trouxe: os compromissos concluídos, se a semana virou e o aviso da carreira.</summary>
+    public sealed record DayReport(IReadOnlyList<Core.Campaign.CommitmentResult> Results, bool WeekTurned, WeekNote Note, bool Stopped);
+
+    /// <summary>
+    /// Avança um dia (GDD 17.4): primeiro acontecem os compromissos de hoje; se um deles deixou uma decisão esperando
+    /// (pedido de liderança), o dia não vira. No domingo roda a semana da carreira inteira (campanha, mandato em
+    /// segundo plano, fundação de partido).
+    /// </summary>
+    public DayReport AdvanceDay()
+    {
+        GameState state = State!;
+        IReadOnlyList<Core.Campaign.CommitmentResult> results = [];
+        if (Engine is not null && state.Campaign is { Phase: Core.Campaign.CampaignPhase.PreCampanha or Core.Campaign.CampaignPhase.Campanha })
+        {
+            results = Engine.RunToday();
+            if (Engine.DecisionPending)
+            {
+                return new DayReport(results, false, WeekNote.Nenhuma, true);
+            }
+        }
+
+        WeekNote note = WeekNote.Nenhuma;
+        bool turned = Clock.AdvanceDay(state, () => note = AdvanceWeek());
+        return new DayReport(results, turned, note, false);
     }
 
     /// <summary>Na pré-campanha, avança até surgir evento, mudar a fase ou acontecer algo na carreira.</summary>

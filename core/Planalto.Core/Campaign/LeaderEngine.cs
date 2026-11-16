@@ -180,15 +180,13 @@ public sealed partial class CampaignEngine
                 if (request.Kind == LeaderRequestDefinition.Dinheiro)
                 {
                     // Pagar o evento é gasto irregular: sai do caixa sem registro e vira esqueleto que a liderança conhece.
-                    decimal cost = Math.Round(1500m * (decimal)CostScale / 100) * 100;
+                    decimal cost = RequestMoneyCost();
                     EffectApplier.Apply(Context, new Effects { Money = -cost });
                     State.Ledger.AddSkeleton("gasto_nao_declarado", LeaderText("esqueleto_dinheiro", leader), LeaderRules.GravidadeDinheiro, Today, [leader.PersonId]);
                 }
                 else
                 {
-                    DateOnly deadline = request.PrazoSemanas <= 0
-                        ? Campaign.ElectionDate
-                        : new DateOnly(Campaign.ElectionDate.Year + 1, 1, 1).AddDays(7 * request.PrazoSemanas);
+                    DateOnly deadline = PromiseDeadline(request);
                     leader.PromiseId = State.Ledger.AddPromise(Promise.ParaPessoa, leader.PersonId, request.Id, LeaderText("promessa_livro", leader), leader.Zones[0], Today, deadline).Id;
                 }
 
