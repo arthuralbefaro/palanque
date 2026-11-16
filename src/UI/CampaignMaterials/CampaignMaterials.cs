@@ -144,7 +144,7 @@ public partial class MateriaisPermitidos : HBoxContainer
         name.HorizontalAlignment = HorizontalAlignment.Center;
         name.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
         name.CustomMinimumSize = new Vector2(110, 0);
-        sticker.TooltipText = TranslationServer.Translate("Adesivo: material permitido na campanha (Lei 9.504/1997, art. 38).");
+        sticker.TooltipText = TranslationServer.Translate("Adesivo: material permitido na campanha (Lei 9.504/1997, art. 38) (artigo a conferir).");
 
         // Bandeira: retângulo com o logotipo.
         var flag = Piece(new Vector2(200, 150), secondary, 6);
@@ -154,7 +154,7 @@ public partial class MateriaisPermitidos : HBoxContainer
         logo.Set(identity, card.Character.BallotName, 26);
         Label flagNumber = Ui.Value(f, identity.BallotNumber ?? "", 22);
         flagNumber.AddThemeColorOverride("font_color", primary);
-        flag.TooltipText = TranslationServer.Translate("Bandeira: permitida nas ruas durante a campanha, sem atrapalhar o trânsito (Lei 9.504/1997, art. 37, § 6º).");
+        flag.TooltipText = TranslationServer.Translate("Bandeira: permitida nas ruas durante a campanha, sem atrapalhar o trânsito (Lei 9.504/1997, art. 37, § 6º) (artigo a conferir).");
 
         // Peça para redes: retrato, slogan e número.
         var post = Piece(new Vector2(150, 150), primary, 10);
@@ -169,7 +169,7 @@ public partial class MateriaisPermitidos : HBoxContainer
         slogan.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
         slogan.CustomMinimumSize = new Vector2(126, 0);
         Ui.Value(pc, $"{card.Office} · {card.PartySigla}", 12);
-        post.TooltipText = TranslationServer.Translate("Peça para redes sociais: pode ser impulsionada com pagamento, dentro das regras (Lei 9.504/1997, art. 57-C).");
+        post.TooltipText = TranslationServer.Translate("Peça para redes sociais: pode ser impulsionada com pagamento, dentro das regras (Lei 9.504/1997, art. 57-C) (artigo a conferir).");
     }
 
     private PanelContainer Piece(Vector2 size, Color color, int radius)

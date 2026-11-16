@@ -13,6 +13,9 @@ public sealed class GlossaryTerm
     public required List<string> Formas { get; init; }
 
     public required string Texto { get; init; }
+
+    /// <summary>O verbete cita artigo de lei ainda não conferido no texto oficial (D-037); a tela mostra a marca.</summary>
+    public bool AConferir { get; init; }
 }
 
 public sealed class EncyclopediaArticle
@@ -22,12 +25,18 @@ public sealed class EncyclopediaArticle
     public required string Titulo { get; init; }
 
     public required string Texto { get; init; }
+
+    /// <summary>O artigo cita base legal ainda não conferida no texto oficial (D-037); a tela mostra a marca.</summary>
+    public bool AConferir { get; init; }
 }
 
 /// <summary>Glossário e artigos da Enciclopédia (data/encyclopedia/glossary.json, GDD 17.1, princípio j).</summary>
 public sealed partial class EncyclopediaContent : IValidatable
 {
     public const string File = "encyclopedia/glossary.json";
+
+    /// <summary>Marca mostrada junto de todo texto que cita artigo de lei ainda não conferido no texto oficial.</summary>
+    public const string MarcaAConferir = "(artigo a conferir)";
 
     public required string Note { get; init; }
 

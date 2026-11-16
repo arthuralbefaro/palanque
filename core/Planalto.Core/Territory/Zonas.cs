@@ -212,6 +212,9 @@ public static class ZonasPaths
     /// <summary>Teto de tamanho de data/geo/zonas/ no repositório (decisão do autor, GDD 17.20, item 2).</summary>
     public const long MaxGeoBytes = 30L * 1024 * 1024;
 
+    /// <summary>Teto de tamanho de data/zonas/ (atributos e _fontes.json) no repositório (decisão do autor, D-037).</summary>
+    public const long MaxZonasBytes = 20L * 1024 * 1024;
+
     public static string File(string dataDirectory, string uf) => Path.Combine(dataDirectory, Directory, $"{uf}.json");
 
     public static string GeoDirectory(string dataDirectory) => Path.Combine(dataDirectory, GeoPaths.Directory, Directory);

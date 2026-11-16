@@ -113,7 +113,7 @@ public partial class EncyclopediaDialog : PanelContainer
             case "como_funciona":
                 foreach (EncyclopediaArticle a in content.Artigos.Where(a => Matches(a.Titulo + a.Texto)))
                 {
-                    Entry(a.Titulo, a.Texto);
+                    Entry(a.Titulo, Marked(a.Texto, a.AConferir));
                 }
 
                 break;
@@ -127,12 +127,15 @@ public partial class EncyclopediaDialog : PanelContainer
                 var terms = content.Termos.Where(t => Matches(t.Nome + t.Texto)).OrderBy(t => t.Id == _term ? 0 : 1).ThenBy(t => t.Nome, StringComparer.Create(CultureInfo.GetCultureInfo("pt-BR"), true));
                 foreach (GlossaryTerm t in terms)
                 {
-                    Entry(t.Nome, t.Texto, highlight: t.Id == _term);
+                    Entry(t.Nome, Marked(t.Texto, t.AConferir), highlight: t.Id == _term);
                 }
 
                 break;
         }
     }
+
+    private static string Marked(string text, bool pending) =>
+        pending ? $"{text} {TranslationServer.Translate(EncyclopediaContent.MarcaAConferir)}" : text;
 
     private void Entry(string title, string text, bool highlight = false)
     {

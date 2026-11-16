@@ -75,6 +75,8 @@ public class ZonasDataTests
     {
         long bytes = Directory.EnumerateFiles(ZonasPaths.GeoDirectory(TestContent.DataDirectory), "*.json").Sum(f => new FileInfo(f).Length);
         Assert.True(bytes <= ZonasPaths.MaxGeoBytes, $"{bytes} bytes em data/geo/zonas/");
+        long attributeBytes = Directory.EnumerateFiles(Path.Combine(TestContent.DataDirectory, ZonasPaths.Directory), "*.json").Sum(f => new FileInfo(f).Length);
+        Assert.True(attributeBytes <= ZonasPaths.MaxZonasBytes, $"{attributeBytes} bytes em data/zonas/");
         foreach (var (uf, (zonas, geo)) in Files.Value)
         {
             Assert.Empty(zonas.Validate());

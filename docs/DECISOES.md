@@ -220,3 +220,12 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Testes:** idade aferida em 15/8 (aniversário em 15/8 e em 16/8) e na posse para prefeito; NPCs entre 25 e 45; profissão nunca abaixo da idade mínima e Estudante aos 17; família sem incoerência em 10.000 sorteios; configuração inválida reportada; jogador de 17 anos espera a eleição de 2032 e a disputa até a apuração; teste de fumaça `creator17`.
 - **Como reverter:** `starting_age` em social_origins.json e `min_age` em professions.json.
 
+## D-037 — Respostas do autor às pendências da R1 e continuação do corujão
+- **Data:** 2026-11-16 · **Fase:** R · **Decidido pelo autor.**
+- **P-06, termos de uso do IBGE:** aceitos para uso com citação da fonte "IBGE" (em `_fontes.json` e em `assets/CREDITS.md`, como já é feito). **Conferir o ofício original antes do lançamento.** Vale para a Malha de Setores, os agregados do Censo 2022 e as demais fontes do IBGE usadas na RD.
+- **P-05, intenção por zona:** a estimativa da R1 (`ZoneProjection`: a intenção da cidade repesada por idade e situação) basta até a R2a, que passa a calcular o voto zona a zona.
+- **P-04, artigos citados de memória no material de campanha:** a conferência fica para a R3, junto dos demais artigos de campanha. Até lá, todo verbete e tooltip que cita artigo não conferido mostra a marca "(artigo a conferir)": campo `a_conferir` em `data/encyclopedia/glossary.json` (verbetes "Pré-campanha" e "Horário eleitoral gratuito" e artigo "O que a lei permite na propaganda") e os três tooltips de `CampaignMaterials`. Na R3, o que for conferido perde a marca.
+- **P-08, tamanho de `data/zonas/`:** os 15 MB estão aceitos. Teto de 20 MB para a pasta (atributos e `_fontes.json`): o importador mede a saída e falha, sem gravar, se passar (`ZonasPaths.MaxZonasBytes`); um teste do Core confere a pasta.
+- **Corujão:** o autor não testa por enquanto e autoriza seguir a Fase R inteira (RD → R2a → R2b → R3 → R4, depois o resto das pendências da R1 com a tag `fase-r-final`), sem esperar pelo teste dele. Dúvida vira escolha conservadora em PENDENCIAS; download bloqueado vira lacuna registrada; falta de janela vira parte "com pendências". Parar ao fim das pendências da R1; não começar a Fase 6.
+- **Como reverter:** o teto é uma constante; a marca é um campo por verbete.
+

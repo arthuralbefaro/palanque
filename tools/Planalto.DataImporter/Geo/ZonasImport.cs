@@ -170,20 +170,10 @@ public static class ZonasImport
             errors.Add($"data/geo/zonas/ teria {geoBytes} bytes, acima do teto de {ZonasPaths.MaxGeoBytes}: aumente a simplificação (vertices_por_zona) ou reduza as zonas por porte.");
         }
 
-        if (errors.Count > 0)
-        {
-            errors.Take(50).ToList().ForEach(e => Console.Error.WriteLine($"  ERRO {e}"));
-            throw new ImportException($"{errors.Count} erros; nada foi gravado.");
-        }
-
-        Directory.CreateDirectory(Path.Combine(dataDirectory, ZonasPaths.Directory));
-        Directory.CreateDirectory(ZonasPaths.GeoDirectory(dataDirectory));
+        // Teto de data/zonas/ (D-037): os atributos são serializados e medidos antes de qualquer gravação.
         var options = new JsonSerializerOptions(JsonData.Options) { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
-        foreach (var (uf, file) in zonasFiles)
-        {
-            await File.WriteAllTextAsync(ZonasPaths.File(dataDirectory, uf), SerializeZonas(file, options), new UTF8Encoding(false));
-            await File.WriteAllTextAsync(ZonasPaths.GeoFile(dataDirectory, uf), geoJson[uf], new UTF8Encoding(false));
-        }
+        var zonasJson = zonasFiles.ToDictionary(p => p.Key, p => SerializeZonas(p.Value, options));
+        long zonasBytes = zonasJson.Values.Sum(j => (long)Encoding.UTF8.GetByteCount(j));
 
         var fontes = new
         {
@@ -199,11 +189,35 @@ public static class ZonasImport
             Tolerancia = new { Minima = tolerancias.Min(), Mediana = tolerancias.Order().ElementAt(tolerancias.Count / 2), Maxima = tolerancias.Max() },
             ContornosBytes = geoBytes,
             TetoBytes = ZonasPaths.MaxGeoBytes,
+            AtributosBytes = zonasBytes,
+            TetoAtributosBytes = ZonasPaths.MaxZonasBytes,
             Zonas = zonasFiles.Values.Sum(f => f.Municipios.Sum(m => m.Zonas.Count)),
             RegraDeSigilo = $"População e domicílios do agregado básico (sem supressão). Idade e renda: células com \"X\" ou setor sem linha não são estimados; cada bloco soma só os setores publicados, e a zona com cobertura abaixo de {config.CoberturaMinima:P0} usa o perfil do município.",
             Lacunas = lacunas,
         };
-        await File.WriteAllTextAsync(Path.Combine(dataDirectory, ZonasPaths.Directory, "_fontes.json"), JsonSerializer.Serialize(fontes, new JsonSerializerOptions(options) { WriteIndented = true }) + "\n", new UTF8Encoding(false));
+        string fontesJson = JsonSerializer.Serialize(fontes, new JsonSerializerOptions(options) { WriteIndented = true }) + "\n";
+        long zonasDirectoryBytes = zonasBytes + Encoding.UTF8.GetByteCount(fontesJson);
+        Console.WriteLine($"Atributos: {zonasDirectoryBytes / 1024 / 1024.0:0.0} MB (teto {ZonasPaths.MaxZonasBytes / 1024 / 1024} MB)");
+        if (zonasDirectoryBytes > ZonasPaths.MaxZonasBytes)
+        {
+            errors.Add($"data/zonas/ teria {zonasDirectoryBytes} bytes, acima do teto de {ZonasPaths.MaxZonasBytes}: reduza os atributos gravados por zona.");
+        }
+
+        if (errors.Count > 0)
+        {
+            errors.Take(50).ToList().ForEach(e => Console.Error.WriteLine($"  ERRO {e}"));
+            throw new ImportException($"{errors.Count} erros; nada foi gravado.");
+        }
+
+        Directory.CreateDirectory(Path.Combine(dataDirectory, ZonasPaths.Directory));
+        Directory.CreateDirectory(ZonasPaths.GeoDirectory(dataDirectory));
+        foreach (var (uf, json) in zonasJson)
+        {
+            await File.WriteAllTextAsync(ZonasPaths.File(dataDirectory, uf), json, new UTF8Encoding(false));
+            await File.WriteAllTextAsync(ZonasPaths.GeoFile(dataDirectory, uf), geoJson[uf], new UTF8Encoding(false));
+        }
+
+        await File.WriteAllTextAsync(Path.Combine(dataDirectory, ZonasPaths.Directory, "_fontes.json"), fontesJson, new UTF8Encoding(false));
         Console.WriteLine($"Gravado: data/zonas/ e data/geo/zonas/ ({lacunas.Count} blocos de perfil substituídos pelo do município).");
         return 0;
     }
