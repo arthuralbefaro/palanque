@@ -228,6 +228,7 @@ public static class RaceSetup
 
         // A cidade com gente (lideranças) nasce quando o município entra em foco e fica no estado do jogo.
         CityBuilder.Ensure(ctx, campaignState, rng);
+        StaffBuilder.Ensure(ctx, campaignState);
 
         // Prefeito em exercício no 1º mandato: começa candidato à reeleição (pode trocar na pré-campanha).
         if (played?.MayorId == PlayerId && !played.MayorReelected)

@@ -182,6 +182,9 @@ public sealed class CampaignState
     /// <summary>Compromissos, eventos da cidade, convites, cansaço e feed (GDD 17.6).</summary>
     public AgendaState Agenda { get; init; } = new();
 
+    /// <summary>Equipe na campanha: decisões pendentes, conselho da semana, alerta da folha (GDD 17.7).</summary>
+    public TeamState Team { get; init; } = new();
+
     public List<Headline> Headlines { get; init; } = [];
 
     public List<PollRecord> Polls { get; init; } = [];

@@ -266,6 +266,9 @@ public sealed class CityState
 
     public List<Leader> Leaders { get; init; } = [];
 
+    /// <summary>Candidatos a cada função da equipe e quem está contratado (GDD 17.7).</summary>
+    public List<StaffMember> Staff { get; init; } = [];
+
     public People.Person? Person(string id) => People.FirstOrDefault(p => p.Id == id);
 
     public Leader? Leader(string personId) => Leaders.FirstOrDefault(l => l.PersonId == personId);

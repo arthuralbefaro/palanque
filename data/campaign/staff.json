@@ -1,0 +1,173 @@
+{
+  "note": "Equipe de campanha (GDD 17.7): cinco funções com pessoa nomeada e a rede de cabos (que ocupa uma vaga quando há verba no canal Cabos). 'efeitos' traz um valor por qualidade (1 a 5) e o valor 'sem' ninguém na função. Salários no porte médio, escalados pelo custo do porte. Pessoas fictícias; nenhum vínculo depende de região, religião, cor ou gênero. Tudo aqui é parâmetro de jogo, ajustado pelo BalanceSim.",
+  "regras": {
+    "vagas_por_porte": { "pequeno": 3, "medio": 4, "grande": 5, "metropole": 6 },
+    "candidatos_por_funcao": { "min": 2, "max": 4 },
+    "semanas_para_conhecer": 4,
+    "salario_por_qualidade": [250, 400, 700, 1000, 1500],
+    "salario_variacao": { "min": 0.85, "max": 1.15 },
+    "lealdade_minima_inicial": 20,
+    "lealdade_conselho": 2,
+    "conselho_compromissos_minimos": 2,
+    "lealdade_salario_atrasado": -8,
+    "semanas_de_folha_alerta": 2,
+    "lealdade_vazamento": 40,
+    "chance_vazamento": 0.6,
+    "vazamento_imagem_por_gravidade": -0.03,
+    "chance_evento_semanal": 0.22,
+    "semanas_para_pedir_aumento": 6,
+    "qualidade_assediada": 4,
+    "funcoes_que_sabem": ["coordenador", "tesoureiro"],
+    "delegacao_rendimento": 0.5,
+    "delegacao_pontos_visita": 1,
+    "viral_imagem": -0.03,
+    "gravidade_erro_contabil": 1
+  },
+  "funcoes": [
+    {
+      "id": "coordenador", "nome": "Coordenação", "papel": "coordena a sua campanha",
+      "descricao": "Organiza a agenda, manda representante a compromissos e dá o conselho da semana.",
+      "efeitos": {
+        "delegacoes": { "por_qualidade": [1, 2, 3, 4, 5], "sem": 0 },
+        "erro_conselho": { "por_qualidade": [0.9, 0.65, 0.4, 0.2, 0.08], "sem": 1 },
+        "ve_agenda_rival": { "por_qualidade": [0, 0, 0, 1, 1], "sem": 0 }
+      }
+    },
+    {
+      "id": "marqueteiro", "nome": "Marketing", "papel": "cuida do marketing da sua campanha",
+      "descricao": "Define o tom da campanha. Melhora o comício e o material e deixa as previsões mais precisas.",
+      "efeitos": {
+        "rendimento": { "por_qualidade": [0.8, 0.925, 1.05, 1.175, 1.3], "sem": 1 },
+        "faixa": { "por_qualidade": [1, 0.9, 0.8, 0.65, 0.5], "sem": 1 }
+      }
+    },
+    {
+      "id": "tesoureiro", "nome": "Tesouraria", "papel": "cuida das contas da sua campanha",
+      "descricao": "Registra receitas e gastos. Quanto melhor, menor a chance de erro nas contas a cada semana.",
+      "efeitos": {
+        "erro_contabil": { "por_qualidade": [0.08, 0.06, 0.04, 0.02, 0.005], "sem": 0.08 }
+      }
+    },
+    {
+      "id": "advogado", "nome": "Jurídico", "papel": "responde pela sua campanha na Justiça",
+      "descricao": "Responde a impugnações e pede direito de resposta. Quanto melhor, maior a chance de êxito.",
+      "efeitos": {
+        "exito": { "por_qualidade": [0.35, 0.475, 0.6, 0.725, 0.85], "sem": 0.35 }
+      }
+    },
+    {
+      "id": "social_media", "nome": "Redes sociais", "papel": "toca as suas redes sociais",
+      "descricao": "Cuida do canal Redes e das gravações. Aumenta o alcance e reduz o risco de um vídeo pegar mal.",
+      "efeitos": {
+        "alcance": { "por_qualidade": [0.7, 0.875, 1.05, 1.225, 1.4], "sem": 1 },
+        "viral": { "por_qualidade": [0.1, 0.08, 0.06, 0.045, 0.03], "sem": 0.1 }
+      }
+    }
+  ],
+  "vinculos": [
+    { "id": "nenhum", "weight": 3, "qualidade_delta": 0, "lealdade": { "min": 40, "max": 70 }, "texto": "Sem ligação conhecida com outras campanhas" },
+    { "id": "rival", "weight": 2, "qualidade_delta": 1, "lealdade": { "min": 25, "max": 50 }, "texto": "Já trabalhou em campanha de {nome}" },
+    { "id": "lideranca", "weight": 2, "qualidade_delta": 0, "lealdade": { "min": 45, "max": 75 }, "texto": "É da confiança de {nome} ({papel})" },
+    { "id": "familiar", "weight": 1.5, "qualidade_delta": -1, "lealdade": { "min": 80, "max": 95 }, "texto": "É da sua família" }
+  ],
+  "eventos": [
+    {
+      "id": "aumento", "weight": 3, "titulo": "Pedido de aumento",
+      "texto": "{nome} ({papel}) pede aumento: diz que a campanha cresceu e o trabalho também.",
+      "opcoes": [
+        { "id": "conceder", "rotulo": "Dar o aumento", "ganho": ["relacao"], "custo": ["dinheiro"], "efeitos": { "lealdade": 8, "salario_fator": 1.2, "lembranca": "aumento_concedido" }, "resultado": "{nome} passa a ganhar {salario} por semana." },
+        { "id": "prometer", "rotulo": "Prometer um cargo se ganhar", "ganho": ["relacao"], "custo": ["risco"], "efeitos": { "lealdade": 4, "promessa": true, "lembranca": "cargo_prometido" }, "resultado": "A promessa de cargo a {nome} entrou no Livro de compromissos." },
+        { "id": "negar", "rotulo": "Negar", "ganho": ["dinheiro"], "custo": ["relacao"], "efeitos": { "lealdade": -6, "lembranca": "aumento_negado" }, "resultado": "{nome} continua com o mesmo salário e não gostou." }
+      ]
+    },
+    {
+      "id": "proposta_rival", "weight": 2, "titulo": "Proposta de outra campanha",
+      "texto": "{nome} ({papel}) recebeu uma proposta da campanha de {rival} e veio contar.",
+      "opcoes": [
+        { "id": "cobrir", "rotulo": "Cobrir a proposta", "ganho": ["relacao"], "custo": ["dinheiro"], "efeitos": { "lealdade": 5, "salario_fator": 1.3, "lembranca": "proposta_coberta" }, "resultado": "{nome} fica, agora por {salario} por semana." },
+        { "id": "apelar", "rotulo": "Pedir que fique pelo projeto", "ganho": ["dinheiro"], "custo": ["risco"], "efeitos": { "fica_pela_lealdade": true, "lembranca": "apelo" }, "resultado": "Você pediu que {nome} ficasse sem mexer no salário." },
+        { "id": "liberar", "rotulo": "Deixar ir", "ganho": ["dinheiro"], "custo": ["zona"], "efeitos": { "sai_chance": 1, "reforca_rival": true, "lembranca": "liberado" }, "resultado": "{nome} foi trabalhar para {rival}, que ganha fôlego nos redutos." }
+      ]
+    },
+    {
+      "id": "briga", "weight": 3, "titulo": "Briga na equipe",
+      "texto": "{nome} ({papel}) e {outro} ({papel_outro}) brigaram por causa de um gasto sem nota. Cada um quer que você fique do seu lado.",
+      "opcoes": [
+        { "id": "lado_primeiro", "rotulo": "Ficar com {nome}", "ganho": ["relacao"], "custo": ["risco"], "efeitos": { "lealdade": 6, "lealdade_outro": -10, "outro_sai_chance": 0.15, "lembranca": "briga_a_favor", "lembranca_outro": "briga_contra" }, "resultado": "Você ficou com {nome}. {outro} não esquece." },
+        { "id": "lado_segundo", "rotulo": "Ficar com {outro}", "ganho": ["relacao"], "custo": ["risco"], "efeitos": { "lealdade": -10, "lealdade_outro": 6, "sai_chance": 0.15, "lembranca": "briga_contra", "lembranca_outro": "briga_a_favor" }, "resultado": "Você ficou com {outro}. {nome} não esquece." },
+        { "id": "nenhum_lado", "rotulo": "Não tomar partido", "ganho": ["tempo"], "custo": ["relacao"], "efeitos": { "lealdade": -4, "lealdade_outro": -4, "estresse": -1, "lembranca": "briga_sem_lado", "lembranca_outro": "briga_sem_lado" }, "resultado": "Você mandou os dois voltarem ao trabalho. Nenhum saiu satisfeito." }
+      ]
+    },
+    {
+      "id": "traz_lideranca", "weight": 2, "titulo": "Uma porta aberta",
+      "texto": "{nome} ({papel}) oferece apresentar você a {lideranca}, com quem tem ligação.",
+      "opcoes": [
+        { "id": "aceitar", "rotulo": "Aceitar a apresentação", "ganho": ["relacao"], "custo": ["risco"], "efeitos": { "lealdade": 2, "apresenta_lideranca": true, "divida": true, "lembranca": "apresentou" }, "resultado": "{lideranca} recebeu você bem. O favor a {nome} entrou no Livro de compromissos." },
+        { "id": "recusar", "rotulo": "Agradecer e recusar", "ganho": ["posicao"], "custo": ["relacao"], "efeitos": { "lealdade": -3, "lembranca": "ajuda_recusada" }, "resultado": "Você preferiu não dever o favor. {nome} estranhou." }
+      ]
+    },
+    {
+      "id": "traz_doador", "weight": 2, "titulo": "Um doador pelo caminho",
+      "texto": "{nome} ({papel}) conhece alguém disposto a doar {valor} à campanha, com recibo, e quer levar você até lá.",
+      "opcoes": [
+        { "id": "aceitar", "rotulo": "Aceitar a doação", "ganho": ["dinheiro"], "custo": ["risco"], "efeitos": { "lealdade": 2, "dinheiro": 2500, "divida": true, "lembranca": "trouxe_doador" }, "resultado": "A doação de {valor} entrou no caixa. O favor a {nome} entrou no Livro de compromissos." },
+        { "id": "recusar", "rotulo": "Agradecer e recusar", "ganho": ["posicao"], "custo": ["relacao"], "efeitos": { "lealdade": -3, "lembranca": "ajuda_recusada" }, "resultado": "Você preferiu não dever o favor. {nome} estranhou." }
+      ]
+    }
+  ],
+  "lembrancas": {
+    "contratacao": { "peso": 2, "pontos": 12, "texto": "Entrou para a sua campanha" },
+    "preterido": { "peso": -2, "pontos": -8, "texto": "Você preferiu outra pessoa para a função" },
+    "conselho_seguido": { "peso": 1, "pontos": 3, "texto": "Você seguiu o conselho da semana" },
+    "conselho_ignorado": { "peso": -1, "pontos": -3, "texto": "Você ignorou o conselho da semana" },
+    "demissao": { "peso": -3, "pontos": -25, "texto": "Perdeu o lugar na sua campanha" },
+    "saiu": { "peso": -1, "pontos": -6, "texto": "Deixou a sua campanha" },
+    "salario_atrasado": { "peso": -2, "pontos": -8, "texto": "Ficou sem receber o salário da semana" },
+    "vazamento": { "peso": -3, "pontos": -15, "texto": "Contou a um rival o que sabia da sua campanha" },
+    "aumento_concedido": { "peso": 1, "pontos": 6, "texto": "Recebeu o aumento que pediu" },
+    "aumento_negado": { "peso": -1, "pontos": -5, "texto": "Pediu aumento e ouviu não" },
+    "cargo_prometido": { "peso": 2, "pontos": 6, "texto": "Ouviu a promessa de um cargo se você ganhar" },
+    "proposta_coberta": { "peso": 1, "pontos": 4, "texto": "Você cobriu a proposta de outra campanha" },
+    "apelo": { "peso": 1, "pontos": 0, "texto": "Você pediu que ficasse pelo projeto" },
+    "liberado": { "peso": -1, "pontos": -4, "texto": "Você não fez questão de que ficasse" },
+    "briga_a_favor": { "peso": 2, "pontos": 8, "texto": "Você tomou o lado desta pessoa numa briga da equipe" },
+    "briga_contra": { "peso": -2, "pontos": -10, "texto": "Você ficou do outro lado numa briga da equipe" },
+    "briga_sem_lado": { "peso": -1, "pontos": -3, "texto": "Você não tomou partido numa briga da equipe" },
+    "apresentou": { "peso": 1, "pontos": 4, "texto": "Apresentou você a uma liderança" },
+    "apresentado": { "peso": 1, "pontos": 6, "texto": "Você chegou por indicação de alguém de confiança" },
+    "trouxe_doador": { "peso": 1, "pontos": 4, "texto": "Trouxe um doador para a campanha" },
+    "ajuda_recusada": { "peso": -1, "pontos": -3, "texto": "Ofereceu ajuda e você recusou" },
+    "visita_delegada": { "peso": 1, "pontos": 1, "texto": "Você mandou um representante em vez de ir" },
+    "objetivo_cumprido": { "peso": 1, "pontos": 4, "texto": "A campanha cumpriu um objetivo" }
+  },
+  "textos": {
+    "conselho": "{nome} ({papel}) aconselha: concentre a semana em {zona}; {evitar} está rendendo pouco para nós.",
+    "conselho_unico": "{nome} ({papel}) aconselha: concentre a semana em {zona}.",
+    "conselho_seguido": "Você seguiu o conselho de {nome}.",
+    "conselho_ignorado": "Você não seguiu o conselho de {nome}.",
+    "previsao_contratar": "{nome} assume a função {funcao}: qualidade entre {min} e {max} (você só sabe ao certo depois de {semanas} semanas de trabalho), por {salario} por semana.",
+    "previsao_folha": "A folha passa a {folha} por semana; o caixa de hoje paga {semanas_caixa} semanas.",
+    "previsao_vinculo": "Vínculo: {vinculo}.",
+    "previsao_preterido": "{nome} vai lembrar que você preferiu outra pessoa.",
+    "previsao_demitir": "{nome} deixa a função {funcao} e a folha cai para {folha} por semana. {nome} vai lembrar.",
+    "previsao_vazamento": "{nome} conhece {esqueletos} irregularidade(s) da campanha e tem lealdade baixa: pode contar a um rival.",
+    "previsao_sem_vazamento": "{nome} não sabe de nenhuma irregularidade que possa contar, ou é leal demais para isso.",
+    "contratado": "{nome} entrou na sua campanha ({funcao})",
+    "demitido": "{nome} deixou a sua campanha ({funcao})",
+    "vazou": "{nome}, que saiu da sua campanha, contou a {rival} o que sabia",
+    "erro_contabil": "Um gasto da semana ficou mal registrado nas contas da campanha",
+    "erro_contabil_livro": "Gasto de campanha mal registrado",
+    "folha_atrasada": "Faltou caixa para a folha: a equipe ficou sem receber",
+    "caixa_baixo": "O caixa paga menos de {semanas} semanas de folha",
+    "cargo_livro": "Cargo no gabinete para {nome}, prometido na campanha",
+    "divida_livro": "Favor a {nome}, da sua equipe",
+    "delegado": "Um representante foi no seu lugar",
+    "reforco_rival": "{rival} reforçou a campanha com gente que saiu da sua equipe",
+    "viral": "O vídeo pegou mal e circulou pelos motivos errados.",
+    "previsao_opcao": "{rotulo}: lealdade de {nome} {lealdade}; salário {salario} por semana.",
+    "previsao_outro": "Lealdade de {outro} {lealdade}.",
+    "previsao_saida": "Chance de {nome} deixar a campanha: {chance}.",
+    "previsao_dinheiro": "Caixa: {valor}.",
+    "previsao_livro": "Entra no Livro de compromissos."
+  }
+}

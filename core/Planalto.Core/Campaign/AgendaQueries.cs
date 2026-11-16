@@ -52,7 +52,7 @@ public sealed partial class CampaignEngine
             DateOnly date = Today.AddDays(d);
             foreach (Turno turno in Enum.GetValues<Turno>())
             {
-                if (Agenda.Scheduled.All(c => c.Date != date || !TurnsOf(Commitments.Get(c.Type), c.Turno).Contains(turno)))
+                if (Agenda.Scheduled.All(c => c.Delegado || c.Date != date || !TurnsOf(Commitments.Get(c.Type), c.Turno).Contains(turno)))
                 {
                     return (date, turno);
                 }
@@ -64,7 +64,7 @@ public sealed partial class CampaignEngine
 
     /// <summary>Compromisso marcado que ocupa o turno (o comício ocupa dois).</summary>
     public Commitment? Occupying(DateOnly date, Turno turno) =>
-        Agenda.Scheduled.FirstOrDefault(c => c.Date == date && TurnsOf(Commitments.Get(c.Type), c.Turno).Contains(turno));
+        Agenda.Scheduled.FirstOrDefault(c => !c.Delegado && c.Date == date && TurnsOf(Commitments.Get(c.Type), c.Turno).Contains(turno));
 
     /// <summary>
     /// Previsão de um compromisso já marcado, como se fosse marcado agora: ele sai da agenda só durante a conta,
@@ -80,7 +80,7 @@ public sealed partial class CampaignEngine
 
         try
         {
-            return Forecast(new CommitmentRequest(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId));
+            return Forecast(RequestOf(c));
         }
         finally
         {

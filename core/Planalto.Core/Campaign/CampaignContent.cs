@@ -195,6 +195,9 @@ public sealed class CampaignContent
 
     public required People.PeopleConfig People { get; init; }
 
+    /// <summary>Equipe (GDD 17.7).</summary>
+    public required StaffCatalog Staff { get; init; }
+
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, out CampaignContent? content)
     {
         var config = JsonData.LoadFile<CampaignConfig>(Path.Combine(dataDirectory, ConfigFile));
@@ -203,8 +206,10 @@ public sealed class CampaignContent
         var cityEvents = JsonData.LoadFile<World.CityEventCatalog>(Path.Combine(dataDirectory, World.CityEventCatalog.File));
         var territory = JsonData.LoadFile<Territory.TerritoryConfig>(Path.Combine(dataDirectory, Planalto.Core.Territory.TerritoryConfig.File));
         var people = JsonData.LoadFile<People.PeopleConfig>(Path.Combine(dataDirectory, Planalto.Core.People.PeopleConfig.File));
+        var staff = JsonData.LoadFile<StaffCatalog>(Path.Combine(dataDirectory, StaffCatalog.File));
         var reports = new List<DataFileReport>
         {
+            new(StaffCatalog.File, staff.Value?.Funcoes.Count ?? 0, staff.Errors),
             new(ConfigFile, 1, config.Errors),
             new(CommitmentCatalog.File, commitments.Value?.Tipos.Count ?? 0, commitments.Errors),
             new(LeaderCatalog.File, leaders.Value?.Tipos.Count ?? 0, leaders.Errors),
@@ -213,7 +218,7 @@ public sealed class CampaignContent
             new(Planalto.Core.People.PeopleConfig.File, 1, people.Errors),
         };
         content = reports.All(r => r.Errors.Count == 0)
-            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value! }
+            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value!, Staff = staff.Value! }
             : null;
         return reports;
     }
