@@ -137,8 +137,9 @@ public partial class MandateScreen : Control
             MandateActionFailure? failure = _engine.CanExecute(action, target);
             var button = Ui.Button(column, $"{action.Name} · {action.Energy} {Tr("energia")}{cost}{extra}", () =>
             {
+                EffectSnapshot before = Snapshot();
                 MandateActionResult result = _engine.Execute(action.Id, target);
-                _log.Insert(0, $"{action.Name}: " + (result.Text.Length > 0 ? result.Text : Tr("feito.")));
+                _log.Insert(0, EffectSummary.Line(action.Name, result.Text, EffectSummary.Describe(before, Snapshot(), NameOf)));
                 Refresh();
             }, action.Description);
             button.Alignment = HorizontalAlignment.Left;
@@ -174,6 +175,18 @@ public partial class MandateScreen : Control
             Ui.Paragraph(column, "· " + line, 450, 14);
         }
     }
+
+    /// <summary>Números do mandato que uma ação de gabinete pode mexer.</summary>
+    private EffectSnapshot Snapshot() => new(
+        Mandate.Recognition,
+        Mandate.Image,
+        State.Player.Resources.Money,
+        State.Player.Resources.PoliticalCapital,
+        new Dictionary<string, double>(Mandate.Support),
+        Mandate.Members.Where(m => !m.IsPlayer).ToDictionary(m => m.Id, m => m.Relation),
+        Mandate.MayorRelation);
+
+    private string NameOf(string id) => Mandate.Member(id)?.Name ?? EffectSummary.GroupName(id);
 
     private List<(string Id, string Text)> Targets(MandateActionDefinition action) => action.Kind switch
     {

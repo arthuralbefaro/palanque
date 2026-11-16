@@ -237,8 +237,9 @@ public partial class ExecutiveScreen : Control
             string? target = targets.Count == 0 ? null : _targets.TryGetValue(action.Id, out string? chosen) && targets.Any(t => t.Id == chosen) ? chosen : targets[0].Id;
             var button = Ui.Button(column, $"{action.Name} · {action.Energy} {Tr("energia")}", () =>
             {
+                EffectSnapshot before = Snapshot();
                 string text = _engine.Execute(action.Id, target);
-                _log.Insert(0, $"{action.Name}: " + (text.Length > 0 ? text : Tr("feito.")));
+                _log.Insert(0, EffectSummary.Line(action.Name, text, EffectSummary.Describe(before, Snapshot(), NameOf)));
                 Refresh();
             }, action.Description);
             button.Alignment = HorizontalAlignment.Left;
@@ -250,6 +251,17 @@ public partial class ExecutiveScreen : Control
             }
         }
     }
+
+    /// <summary>Números da prefeitura que uma ação de gabinete pode mexer.</summary>
+    private EffectSnapshot Snapshot() => new(
+        Executive.Recognition,
+        Executive.Image,
+        State.Player.Resources.Money,
+        State.Player.Resources.PoliticalCapital,
+        new Dictionary<string, double>(Executive.Support),
+        Executive.Chamber.ToDictionary(m => m.Id, m => m.Relation));
+
+    private string NameOf(string id) => Executive.Chamber.FirstOrDefault(m => m.Id == id)?.Name ?? EffectSummary.GroupName(id);
 
     private void BuildCoalition(VBoxContainer column)
     {

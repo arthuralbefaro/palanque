@@ -113,8 +113,9 @@ public partial class HubScreen : Control
             ActionFailure? failure = _engine.CanExecute(action, target);
             var button = Ui.Button(column, $"{action.Name} · {action.Energy} {Tr("energia")} · {money}", () =>
             {
+                EffectSnapshot before = Snapshot();
                 ActionResult result = _engine.Execute(action.Id, target);
-                _log.Insert(0, $"{action.Name}: " + (result.Text.Length > 0 ? result.Text : Tr("feito.")));
+                _log.Insert(0, EffectSummary.Line(action.Name, result.Text, EffectSummary.Describe(before, Snapshot(), EffectSummary.GroupName)));
                 Refresh();
             }, action.Description);
             button.Alignment = HorizontalAlignment.Left;
@@ -175,6 +176,15 @@ public partial class HubScreen : Control
             button.TooltipText = Tr("Você não terá a idade mínima para o cargo na data da posse.");
         }
     }
+
+    /// <summary>Números do jogador que uma ação de campanha pode mexer.</summary>
+    private EffectSnapshot Snapshot() => new(
+        Campaign.Player.Recognition,
+        Campaign.Player.Image,
+        State.Player.Resources.Money,
+        State.Player.Resources.PoliticalCapital,
+        new Dictionary<string, double>(Campaign.Player.Support),
+        new Dictionary<string, double>());
 
     private string FailureText(ActionFailure failure) => Tr(failure switch
     {
@@ -386,6 +396,9 @@ public partial class HubScreen : Control
             }));
         }
     }
+
+    /// <summary>Registro de resultados da semana, do mais recente ao mais antigo.</summary>
+    public IReadOnlyList<string> Log => _log;
 
     /// <summary>Fundo do evento aberto (testes de fumaça conferem que ele sai).</summary>
     public bool EventOpen => _eventShade is not null && IsInstanceValid(_eventShade);

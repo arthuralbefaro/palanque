@@ -97,8 +97,33 @@ public partial class UiShot : Node
 
                 RemoveChild(screen);
                 screen.QueueFree();
-                AddChild(GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate());
+                var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
+                AddChild(hub);
                 await Frames(5);
+
+                // Cada ação da agenda mostra o efeito real no registro, nunca só "feito".
+                game.State.Player.Resources.Money = 100_000;
+                foreach (var action in game.Campaign.Actions.Actions)
+                {
+                    var button = FindAll<Button>(hub).FirstOrDefault(b => b.Text.StartsWith(action.Name, StringComparison.Ordinal) && !b.Disabled);
+                    if (button is null)
+                    {
+                        continue;
+                    }
+
+                    button.EmitSignal(BaseButton.SignalName.Pressed);
+                    await Frames(2);
+                    string line = hub.Log[0];
+                    if (!line.StartsWith(action.Name, StringComparison.Ordinal) || line.Contains(Tr("feito."), StringComparison.Ordinal) || !line.Any(char.IsDigit) && !line.Contains(Tr("sem efeito"), StringComparison.Ordinal))
+                    {
+                        Fail($"resultado sem efeito mensurável: \"{line}\".");
+                        return;
+                    }
+
+                    GD.Print("  " + line);
+                }
+
+                // A tela continua inteira e no tamanho da janela depois de tudo isso.
             }
         }
 
