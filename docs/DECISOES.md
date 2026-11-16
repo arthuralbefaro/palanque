@@ -290,3 +290,18 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
   - **Base:** só pacotes CC0 ou CC BY (ex.: Kenney, Quaternius), com licença conferida e crédito em CREDITS.md; nenhum pacote de código novo.
   - A aparência continua sem efeito mecânico e com a diversidade do Censo (D-016).
   - Até lá, só se corrigem os encaixes errados de brinco e cabelo da arte 2D atual.
+
+## D-042 — Escolhas da R3 (rivais, mídia, doadores, contas) e conferência dos artigos de campanha
+- **Data:** 2026-11-16 · **Fase:** R3 · Tomadas no corujão.
+- **Conferência de lei (item do ROADMAP):** os artigos de campanha foram lidos no texto compilado do Planalto em 16/11/2026, em três leituras; o resultado, artigo por artigo, está em `docs/referencias/LEIS_CONFERIDAS.md`. Só depois nasceram os objetos `CampaignFinanceLawConfig` (arts. 11, 18, 18-C, 22-A § 3º, 23 §§ 1º e 2º-A, 28 § 4º, 29 III e IV, 30, 30-A; vedação de doação de empresa) e `PropagandaLawConfig` (arts. 36, 39 §§ 3º, 4º e 9º, 43, 44, 47, 48, 58 § 1º, 77), e o `ChannelLawConfig` passou a "conferido" (art. 100-A com o arredondamento do § 2º; art. 57-C). Fecha a P-04.
+- **Fica marcado como não conferido, para o autor:** a tabela de limites de gastos do TSE por município (site bloqueou; o limite do jogo é parâmetro por porte em `data/campaign/finance.json`, campo `lacuna`); a ADI 4650 e a Resolução TSE 23.607/2019; a fase 2 das sobras (80% e 20%) no acórdão do STF; a ADI 5.525 sobre o art. 224 do Código Eleitoral.
+- **Sobras em três fases** (como registrado na conferência): quociente partidário; maiores médias entre partidos com 80% do quociente e candidatos com 20%; vagas restantes entre todos.
+- **Ataque:** o dano é uma penalidade separada da imagem, que se apaga em linha reta (`AttackPenalty`). Responder não pausa o jogo: vencido o prazo, vale o silêncio. O prazo de 48 horas é o do GDD; os prazos do art. 58 (24, 48 e 72 horas) estão no objeto de lei, ainda sem diferenciar por tipo de veículo.
+- **Tema em alta:** só contam notícias de fatos sem autor (cidade, economia), com 2 fatos diferentes; o bônus fica travado ao marcar o compromisso.
+- **Notícia** mexe só na imagem, e pouco (`imagem_por_noticia`).
+- **Verba dos rivais** só disputa o canal com o jogador; não rende presença a eles.
+- **Recursos próprios** são o gasto além do que entrou; acima de 10% do limite viram irregularidade.
+- **Entrevista sem veículo** continua aceita até a interface adotar o veículo.
+- **Data da diplomação (18/12)** é parâmetro de jogo.
+- **Eventos:** as 85 escolhas dos 32 eventos gravam lembrança ou entrada no Livro, ou levam a marca `sem_rastro` com motivo (46 delas); ganho e custo de naturezas diferentes são cobrados nas escolhas marcadas como relevantes (5 hoje), e tudo o que vai ao Livro ou abre cadeia é obrigado a ser relevante.
+- **Como reverter:** `data/campaign/rival_profiles.json`, `attacks.json`, `finance.json`, `data/media/*.json` e os objetos de lei citados.

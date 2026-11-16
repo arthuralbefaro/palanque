@@ -149,3 +149,26 @@ Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Si
 - **Licença:** não confirmada. As listagens dizem "Todos os arquivos aqui disponíveis são públicos"; a ficha do produto só traz ressalvas de qualidade e isenção de responsabilidade; as páginas do ibge.gov.br recusaram a leitura automática. O autor confere os termos antes de qualquer uso.
 - **Não confirmado:** se há versão definitiva mais nova; a fração de faces fora da sede; a taxa de simplificação fora de Roraima.
 - **A decidir pelo autor:** (a) não usar e manter as zonas; (b) usar só nas cidades pequenas, com teto próprio de tamanho; (c) baixar por município, fora do Git. Nada muda até a decisão.
+
+## R3 — pendências
+
+### P-04 · Artigos de campanha citados de memória — **fechada (D-042)**
+- Conferidos no texto oficial em 16/11/2026 (`docs/referencias/LEIS_CONFERIDAS.md`); as marcas "a conferir" saíram dos verbetes. O que não pôde ser aberto está na P-27.
+
+### P-16 · Lint de rastro e eventos antigos — **fechada na R3**
+- O EventLint cobra rastro, troca e texto de morte; os 32 eventos foram reescritos; nenhuma escolha usa mais "energia".
+
+### P-26 · BalanceSim da R3: canal de verba fora nos quatro portes; par fora no pequeno; rivais fáceis demais
+- **Medido** (`docs/balance/r3.md`, 48 campanhas por porte): tipo de compromisso em 25,4%, 27,5%, 27,0% e 37,4% (**passa nos quatro**, o que fecha a parte de tipo da P-15 e da P-20); par (tipo, zona) em **30,2% (pequeno)**, 23,1%, 18,9% e 17,4%; canal de verba em **51,6%**, **46,6%**, **40,1%** e **46,2%**; turnos forçados entre 16% e 34% (eram até 61%: a P-18 e a P-21 melhoram com os doadores).
+- **Contas:** campanha limpa perde o mandato em 0,00% das carreiras; com mais de 30% do limite "por fora", em 36,2% (critério: 25% a 40%; passa). Na metrópole isolada, 44,4%.
+- **Dificuldade:** em partido sorteado o robô agora se elege em 6, 10, 17 e 15 de 24 campanhas (eram 1, 6, 8 e 1). Os dois extremos da D-026 continuam passando nos testes, mas os rivais precisam ser recalibrados (`npc_effort_by_porte`, `npc_action_efficiency`).
+- **O par do porte pequeno** é a entrevista no veículo de maior alcance.
+- **Ressalva:** a medição é anterior a dois ajustes pequenos (lembranças nas escolhas de evento; data da prestação parcial). De novo 48 campanhas por porte, não 200.
+- **Para fechar:** recalibrar canais e rivais e rodar de novo na integração da R4 (D-041).
+
+### P-27 · O que a R3 deixou marcado para o autor
+- **Tabela de limites de gastos do TSE por município** não importada (site bloqueou o acesso automático): o limite do jogo é parâmetro por porte. Para fechar: baixar a tabela à mão, pôr no cache e importar.
+- **Não conferidos no acórdão:** ADI 4650 e Resolução TSE 23.607/2019; fase 2 das sobras (80% e 20%); ADI 5.525 (art. 224 do Código Eleitoral).
+- **Vaga de vereador sem suplente:** o jogo usa "mais de 15 meses" (Constituição, art. 56, § 2º, por simetria); o Código Eleitoral, art. 113, fala em 9 meses. A confirmar.
+- **Lista de bloqueio de nomes de veículos** (`data/media/blocklist.json`, 84 nomes) foi escrita de memória e está marcada assim; o autor precisa revisar.
+- **Fora da R3:** rivais sem doadores nem contas próprias; pacto de divisão de zonas; "saída de outro rival" como gatilho de plano; a suíte de testes passou de 2 para 6 minutos.
