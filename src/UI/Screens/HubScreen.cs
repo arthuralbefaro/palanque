@@ -256,7 +256,20 @@ public partial class HubScreen : Control
         switch (Campaign.Phase)
         {
             case CampaignPhase.Votacao:
-                Ui.Button(bottom, "Ir para a urna", () => { SaveManager.Instance.Save(SaveManager.ElectionSlot); _game.GoTo(Game.Scenes.Urna); });
+                Ui.Button(bottom, "Ir para a urna", () =>
+                {
+                    // Save da véspera para rejogar a eleição; no Ironman, só o save único.
+                    if (State.World?.Options.Ironman == true)
+                    {
+                        SaveManager.Instance.Autosave();
+                    }
+                    else
+                    {
+                        SaveManager.Instance.Save(SaveManager.ElectionSlot);
+                    }
+
+                    _game.GoTo(Game.Scenes.Urna);
+                });
                 break;
             case CampaignPhase.Encerrada:
                 Ui.Button(bottom, "Ver a apuração", () => _game.GoTo(Game.Scenes.ElectionNight));
