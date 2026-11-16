@@ -42,6 +42,15 @@ public sealed class CampaignContext
 
     public PorteCatalog? Portes { get; init; }
 
+    /// <summary>Regras de lei dos canais pagos (limite de cabos, impulsionamento, gastos vedados).</summary>
+    public ChannelLawConfig ChannelLaw { get; init; } = ChannelLawConfig.Default;
+
+    /// <summary>
+    /// Eleitorado do município com mais eleitores da UF: o teto de cabos do vereador depende dele (art. 100-A, § 1º,
+    /// VI). Sem o número, vale só a fração do cargo.
+    /// </summary>
+    public long? MaiorEleitoradoUf { get; init; }
+
     /// <summary>Zonas do município em foco (data/zonas/, GDD 17.5).</summary>
     public required Territory.ZonasMunicipio Zonas { get; init; }
 

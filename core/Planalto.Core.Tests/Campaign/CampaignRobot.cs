@@ -238,6 +238,14 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
         {
             // Comício onde o candidato já é mais conhecido (senão esvazia).
             string best = zones.MaxBy(z => Engine.Territory.PresenceOf(RaceSetup.PlayerId, Engine.Territory.IndexOf(z)))!;
+
+            // O comício exige verba de Rua na zona (GDD 17.8): o robô a põe no plano semanal quando o canal está aberto.
+            if (Engine.Budget.PlanOf(ChannelDefinition.Rua, best) < Engine.ComicioRuaMinimum
+                && Engine.SetAllocation(ChannelDefinition.Rua, best, Engine.ComicioRuaMinimum) is not null)
+            {
+                return null;
+            }
+
             return new CommitmentRequest(typeId, best, day, turno);
         }
 

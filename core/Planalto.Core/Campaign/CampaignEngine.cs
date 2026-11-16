@@ -136,10 +136,17 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
 
         CampaignConfig config = Context.Config;
         TerritorySimulation sim = Context.Campaign.Territory.Simulacao;
+        ChannelsWeekEnd();
         NpcTurn();
         foreach (Candidate c in Campaign.Candidates)
         {
+            double[]? before = c.IsPlayer ? [.. Territory.Presence[c.Id]] : null;
             Territory.Decay(c.Id, sim.DecaimentoSemanal, c.IsBulk ? config.BulkRecognition * RecognitionScale : 0);
+            if (before is not null)
+            {
+                HoldPresenceWithCabos(before);
+            }
+
             c.Recognition = Territory.Recognition(c.Id);
             c.Image -= Math.Sign(c.Image) * Math.Min(Math.Abs(c.Image), config.ImageDecayPerWeek);
             foreach (string group in c.Support.Keys.ToList())
@@ -166,6 +173,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         State.Calendar.AdvanceWeek();
         State.Time.Day = 0;
         UpdatePhase();
+        ChannelsWeekStart();
         if (Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
         {
             AgendaWeek(State.Calendar.WeekStart);

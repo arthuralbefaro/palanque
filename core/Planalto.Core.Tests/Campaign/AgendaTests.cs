@@ -112,6 +112,7 @@ public class AgendaTests
     public void Dois_compromissos_nao_ocupam_o_mesmo_turno()
     {
         CampaignEngine engine = Fresh(3106200, 63, campaign: true);
+        CampaignKit.FundRua(engine);
         DateOnly today = engine.Today;
         string home = engine.Territory.Zones[engine.Territory.HomeZone];
         string other = OtherZone(engine);
@@ -164,7 +165,10 @@ public class AgendaTests
             Assert.Equal(ScheduleFailure.FaseNaoPermite, pre.Schedule(new CommitmentRequest("comicio", home, campaign.CampaignStart.AddDays(-1), Turno.Manha)).Failure);
         }
 
+        // E exige verba de Rua na zona (GDD 17.8).
         pre.Context.State.Player.Resources.Money = 1_000_000;
+        Assert.Equal(ScheduleFailure.SemVerbaDeRua, pre.Schedule(new CommitmentRequest("comicio", home, campaign.CampaignStart, Turno.Manha)).Failure);
+        CampaignKit.FundRua(pre);
         Assert.Null(pre.Schedule(new CommitmentRequest("comicio", home, campaign.CampaignStart, Turno.Manha)).Failure);
     }
 
@@ -172,6 +176,7 @@ public class AgendaTests
     public void Comicio_com_presenca_abaixo_de_vinte_esvazia()
     {
         CampaignEngine engine = Fresh(3106200, 65, campaign: true);
+        CampaignKit.FundRua(engine);
         AgendaRules rules = engine.Context.Campaign.Commitments.Regras;
         string zone = OtherZone(engine);
         int z = engine.Territory.IndexOf(zone);
@@ -186,6 +191,7 @@ public class AgendaTests
         engine.Agenda.Fatigue.Clear();
         presence[z] = rules.ComicioPresencaMinima;
         NextWeek(engine);
+        CampaignKit.FundRua(engine);
         engine.Agenda.Fatigue.Clear();
         engine.Context.State.Player.Resources.Money = 1_000_000;
         presence[z] = rules.ComicioPresencaMinima;

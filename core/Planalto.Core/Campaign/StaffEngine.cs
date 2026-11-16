@@ -134,7 +134,6 @@ public sealed partial class CampaignEngine
     /// <summary>Vagas da equipe no porte da cidade, contando a rede de cabos.</summary>
     public int TeamSlots => StaffRules.VagasPorPorte.GetValueOrDefault(Context.Municipio.Porte, 3);
 
-    private bool CabosNetworkActive => false;
 
     public int TeamSlotsUsed => HiredStaff.Count() + (CabosNetworkActive ? 1 : 0);
 

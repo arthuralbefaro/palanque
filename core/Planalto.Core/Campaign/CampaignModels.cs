@@ -185,6 +185,9 @@ public sealed class CampaignState
     /// <summary>Equipe na campanha: decisões pendentes, conselho da semana, alerta da folha (GDD 17.7).</summary>
     public TeamState Team { get; init; } = new();
 
+    /// <summary>Verba por canal: plano semanal, o que está pago e o último resultado (GDD 17.8).</summary>
+    public BudgetState Budget { get; init; } = new();
+
     public List<Headline> Headlines { get; init; } = [];
 
     public List<PollRecord> Polls { get; init; } = [];

@@ -151,6 +151,12 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.SemApoiadorNaZona;
         }
 
+        // O comício depende do canal Rua (GDD 17.8): sem verba de Rua na zona não há estrutura para montar o palanque.
+        if (type.Id == CommitmentCatalog.Comicio && RuaBudgetOn(r.Date, r.ZoneId!) < ComicioRuaMinimum)
+        {
+            return ScheduleFailure.SemVerbaDeRua;
+        }
+
         decimal cost = CostOf(type);
         return cost > 0 && State.Player.Resources.Money < cost ? ScheduleFailure.SemDinheiro : null;
     }
@@ -184,6 +190,20 @@ public sealed partial class CampaignEngine
         if (r.Delegado)
         {
             factors.Add(Factor("delegado", StaffContent.Texto("delegado"), StaffRules.DelegacaoRendimento));
+        }
+
+        if (zone >= 0 && ChannelRules.RuaMultiplica.Contains(type.Id))
+        {
+            decimal rua = RuaBudgetOn(r.Date, r.ZoneId!);
+            if (rua > 0)
+            {
+                factors.Add(Factor("verba_rua", Channels.Texto("fator_verba_rua"), 1 + (ChannelRules.RuaBonusAgenda * Math.Min(1, Math.Sqrt((double)(rua / ChannelScale))))));
+            }
+
+            if (type.Id == CommitmentCatalog.Comicio && rua < ComicioRuaMinimum)
+            {
+                factors.Add(Factor("sem_estrutura", Channels.Texto("sem_estrutura"), Rules.ComicioVazioFator));
+            }
         }
 
         if (type.Rua && Agenda.Rain.TryGetValue(r.Date, out double rain) && rain > 0)

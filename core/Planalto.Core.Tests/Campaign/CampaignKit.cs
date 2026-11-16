@@ -159,7 +159,26 @@ internal static class CampaignKit
         return Sort(System.Text.Json.Nodes.JsonNode.Parse(Planalto.Core.Save.GameStateSerializer.Serialize(state)))!.ToJsonString();
     }
 
-    public static CampaignContext Context(GameState state)
+    /// <summary>
+    /// Verba de Rua já paga em todas as zonas, no mínimo que o comício exige (GDD 17.8), para os testes da agenda
+    /// que não são sobre a verba.
+    /// </summary>
+    public static void FundRua(CampaignEngine engine)
+    {
+        BudgetState budget = engine.Budget;
+        budget.Plan.RemoveAll(a => a.ChannelId == ChannelDefinition.Rua);
+        budget.Active.RemoveAll(a => a.ChannelId == ChannelDefinition.Rua);
+        foreach (string zone in engine.Territory.Zones)
+        {
+            budget.Plan.Add(new ChannelAllocation { ChannelId = ChannelDefinition.Rua, TargetId = zone, Amount = engine.ComicioRuaMinimum });
+            budget.Active.Add(new ChannelAllocation { ChannelId = ChannelDefinition.Rua, TargetId = zone, Amount = engine.ComicioRuaMinimum });
+        }
+    }
+
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> LargestElectorate = new();
+
+    /// <param name="law">Regras de lei dos canais, para os testes que trocam o padrão.</param>
+    public static CampaignContext Context(GameState state, ChannelLawConfig? law = null)
     {
         Municipio m = Municipio(state.FocusMunicipio);
         MunicipalScenario? local = state.World?.ScenarioId == "brasil_2026" ? C.Brasil2026.Municipio(m.CodigoIbge) : null;
@@ -178,6 +197,8 @@ internal static class CampaignKit
             Debate = C.Debate,
             Projection = C.Projection,
             Zonas = Zonas(m),
+            ChannelLaw = law ?? ChannelLawConfig.Default,
+            MaiorEleitoradoUf = LargestElectorate.GetOrAdd(m.Uf, uf => C.Municipios.All.Where(x => x.Uf == uf).Max(x => x.Eleitorado)),
         };
     }
 }

@@ -31,6 +31,9 @@ public sealed record CommandForecast(
     IReadOnlyList<ForecastOutcome> Outcomes,
     IReadOnlyList<string> Explanation)
 {
+    /// <summary>Fatores que multiplicam o efeito (equipe, disputa, ocasião), com o texto que a tela mostra.</summary>
+    public IReadOnlyList<YieldFactor> Factors { get; init; } = [];
+
     public ForecastLine? Line(string kind, string? target = null) => Lines.FirstOrDefault(l => l.Kind == kind && l.Target == target);
 
     /// <summary>O valor cabe na faixa da linha (com folga de arredondamento); sem a linha, só o zero cabe.</summary>
