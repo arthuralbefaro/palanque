@@ -107,7 +107,7 @@ public static partial class EventEngine
     }
 
     private static IEnumerable<Candidate> Rivals(CampaignState campaign) =>
-        campaign.Candidates.Where(x => !x.IsPlayer && !x.IsBulk && x.Office == Elections.Office.Vereador);
+        campaign.Candidates.Where(x => !x.IsPlayer && !x.IsBulk && x.Office == campaign.Player.Office);
 
     private static void Fire(CampaignContext ctx, EventDefinition e, Rng rng)
     {

@@ -67,6 +67,12 @@ public sealed class CampaignContext
 /// jogador, rivais nomeados (gerados e persistidos como NPCs), candidato coletivo de cada partido e
 /// candidatos a prefeito. Determinístico pelo Rng.
 /// </summary>
+public enum CandidacyIssue
+{
+    IdadeMinima,
+    ForaDoPrazo,
+}
+
 public static class RaceSetup
 {
     public const string PlayerId = "jogador";
@@ -188,7 +194,7 @@ public static class RaceSetup
 
         candidates.AddRange(MayorCandidates(ctx, rng, ref serial, numbers, constituency, recognitionScale));
 
-        return new CampaignState
+        var campaignState = new CampaignState
         {
             Municipio = m.CodigoIbge,
             ElectionDate = election,
@@ -197,7 +203,115 @@ public static class RaceSetup
             EnergyLeft = config.WeeklyEnergy,
             Phase = state.Calendar.WeekStart >= config.DateIn(year, config.CampaignStart) ? CampaignPhase.Campanha : CampaignPhase.PreCampanha,
         };
+
+        // Prefeito em exercício no 1º mandato: começa candidato à reeleição (pode trocar na pré-campanha).
+        if (played?.MayorId == PlayerId && !played.MayorReelected)
+        {
+            SwitchOffice(ctx, campaignState, Office.Prefeito, rng, incumbent: true);
+        }
+
+        return campaignState;
     }
+
+    /// <summary>Por que o jogador não pode disputar o cargo agora, ou null.</summary>
+    public static CandidacyIssue? CanRunFor(CampaignContext ctx, Office office, CandidacyRulesConfig? rules = null)
+    {
+        CampaignState campaign = ctx.State.Campaign!;
+        if (campaign.Phase != CampaignPhase.PreCampanha)
+        {
+            return CandidacyIssue.ForaDoPrazo;
+        }
+
+        // Idade mínima na data da posse (1º de janeiro seguinte à eleição).
+        var posse = new DateOnly(campaign.ElectionDate.Year + 1, 1, 1);
+        return ctx.State.Player.AgeOn(posse) < (rules ?? CandidacyRulesConfig.Default).MinimumAgeFor(office) ? CandidacyIssue.IdadeMinima : null;
+    }
+
+    /// <summary>
+    /// Muda o cargo que o jogador disputa (vereador ou prefeito) na pré-campanha. Disputando a prefeitura, ele
+    /// ocupa a vaga de candidato do próprio partido; o NPC que estava nela passa a disputar a Câmara.
+    /// </summary>
+    public static CandidacyIssue? SwitchPlayerOffice(CampaignContext ctx, Office office, Rng rng)
+    {
+        if (ctx.State.Campaign!.Player.Office == office)
+        {
+            return null;
+        }
+
+        if (CanRunFor(ctx, office) is { } issue)
+        {
+            return issue;
+        }
+
+        SwitchOffice(ctx, ctx.State.Campaign, office, rng, incumbent: false);
+        return null;
+    }
+
+    private static void SwitchOffice(CampaignContext ctx, CampaignState campaign, Office office, Rng rng, bool incumbent)
+    {
+        Candidate player = campaign.Player;
+
+        GameParty party = ctx.State.Party(player.PartyId)!;
+        var used = campaign.Candidates.Where(c => c.Office == Office.Vereador).Select(c => c.Number).ToHashSet(StringComparer.Ordinal);
+        string VereadorNumber()
+        {
+            string number;
+            do
+            {
+                number = $"{party.Number}{rng.NextInt(1000):000}";
+            }
+            while (used.Contains(number));
+            used.Add(number);
+            return number;
+        }
+
+        if (office == Office.Prefeito)
+        {
+            if (campaign.Candidates.FirstOrDefault(c => c.Office == Office.Prefeito && c.PartyId == player.PartyId) is { } own)
+            {
+                Replace(campaign, own, Copy(own, Office.Vereador, VereadorNumber()));
+            }
+
+            Replace(campaign, player, Copy(player, Office.Prefeito, party.Number.ToString(CultureInfo.InvariantCulture), incumbent));
+        }
+        else
+        {
+            Replace(campaign, player, Copy(player, Office.Vereador, VereadorNumber(), incumbent));
+        }
+
+        // A lista de vereadores do partido mudou: o coletivo representa os que sobraram.
+        int seats = ctx.Municipio.VagasVereador;
+        foreach (Candidate bulk in campaign.Candidates.Where(c => c.IsBulk))
+        {
+            int named = campaign.Candidates.Count(c => !c.IsBulk && c.Office == Office.Vereador && c.PartyId == bulk.PartyId);
+            bulk.Multiplicity = Math.Max(1, seats + 1 - named);
+        }
+    }
+
+    private static void Replace(CampaignState campaign, Candidate old, Candidate replacement) =>
+        campaign.Candidates[campaign.Candidates.IndexOf(old)] = replacement;
+
+    private static Candidate Copy(Candidate c, Office office, string number, bool incumbent = false) => new()
+    {
+        Id = c.Id,
+        Name = c.Name,
+        PartyId = c.PartyId,
+        Office = office,
+        Position = c.Position,
+        BirthDate = c.BirthDate,
+        Gender = c.Gender,
+        Number = number,
+        Recognition = c.Recognition,
+        Image = c.Image,
+        Support = c.Support,
+        Money = c.Money,
+        IsPlayer = c.IsPlayer,
+        IsBulk = c.IsBulk,
+        Multiplicity = c.Multiplicity,
+        Incumbent = incumbent,
+        CharacterId = c.CharacterId,
+        Drive = c.Drive,
+    };
 
     /// <summary>A próxima eleição municipal no ano informado ou depois.</summary>
     public static int NextMunicipalYear(int year)
@@ -223,7 +337,7 @@ public static class RaceSetup
         // eleição jogada no município, o prefeito em exercício é o NPC eleito nela.
         Legislature.LocalPolitics? played = ctx.State.Local?.Municipio == ctx.Municipio.CodigoIbge ? ctx.State.Local : null;
         string? incumbentParty = played is not null
-            ? played.MayorReelected ? null : played.MayorPartyId
+            ? played.MayorReelected || played.MayorId == PlayerId ? null : played.MayorPartyId
             : ctx.Local is { Prefeito: not null, PrefeitoReeleito: false } local ? local.Prefeito : null;
         Character? sittingMayor = played?.MayorId is { } mayorId && !played.MayorReelected ? ctx.State.Npcs.FirstOrDefault(n => n.Id == mayorId) : null;
         if (incumbentParty is not null && !parties.Contains(incumbentParty) && ctx.State.Party(incumbentParty) is not null)

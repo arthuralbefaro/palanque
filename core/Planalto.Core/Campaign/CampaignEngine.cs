@@ -137,9 +137,11 @@ public sealed class CampaignEngine(CampaignContext ctx)
 
     private PollRecord RunPoll(PollsterDefinition pollster)
     {
-        var candidates = Campaign.ForOffice(Office.Vereador).Where(c => !c.IsBulk).Select(ToVote).ToList();
-        VoteProjection truth = Project(Office.Vereador, noise: null);
-        var byId = Campaign.ForOffice(Office.Vereador).Select(ToVote).ToDictionary(c => c.Id);
+        // A pesquisa é da disputa do jogador (vereador ou prefeito).
+        Office office = Campaign.Player.Office;
+        var candidates = Campaign.ForOffice(office).Where(c => !c.IsBulk).Select(ToVote).ToList();
+        VoteProjection truth = Project(office, noise: null);
+        var byId = Campaign.ForOffice(office).Select(ToVote).ToDictionary(c => c.Id);
         PollResult poll = Polling.Run(truth, byId, pollster, WeeksToElection, Context.ElectorateContent.VoteModel, Rng);
         var record = new PollRecord(
             State.Calendar.WeekStart,
@@ -303,7 +305,7 @@ public sealed class CampaignEngine(CampaignContext ctx)
             Date = Campaign.ElectionDate,
             Vereador = vereador,
             Prefeito = prefeito,
-            PlayerElected = vereador.Elected.Contains(RaceSetup.PlayerId),
+            PlayerElected = (Campaign.Player.Office == Office.Prefeito ? prefeito : vereador).Elected.Contains(RaceSetup.PlayerId),
             BulkVotes = bulkVotes,
         };
         Campaign.Outcome = outcome;
