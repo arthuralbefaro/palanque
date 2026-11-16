@@ -100,7 +100,8 @@ public partial class ElectionNightScreen : Control
             }
         }
 
-        if (vereador.Votes.Where(v => !_campaign.Find(v.Key)!.IsBulk).OrderByDescending(v => v.Value).Take(16).All(v => v.Key != RaceSetup.PlayerId))
+        if (vereador.Votes.ContainsKey(RaceSetup.PlayerId)
+            && vereador.Votes.Where(v => !_campaign.Find(v.Key)!.IsBulk).OrderByDescending(v => v.Value).Take(16).All(v => v.Key != RaceSetup.PlayerId))
         {
             Label me = Ui.Value(left, string.Format(PtBr, "… {0}: {1:N0} {2}", _campaign.Player.Name, vereador.Votes[RaceSetup.PlayerId], Tr("votos")), 18);
             me.AddThemeColorOverride("font_color", Ui.Warning);
@@ -113,7 +114,11 @@ public partial class ElectionNightScreen : Control
         {
             Candidate c = _campaign.Find(id)!;
             string won = final && outcome.Prefeito.Elected.Contains(id) ? " · " + (outcome.Prefeito.HadRunoff ? Tr("eleito(a) no 2º turno") : Tr("eleito(a)")) : "";
-            Ui.Value(right, string.Format(PtBr, "{0} ({1}) {2:0.0}%{3}", c.Name, Sigla(c.PartyId), totalMayor == 0 ? 0 : 100.0 * votes / totalMayor, won), 18);
+            Label mayorLine = Ui.Value(right, string.Format(PtBr, "{0} ({1}) {2:0.0}%{3}", c.Name, Sigla(c.PartyId), totalMayor == 0 ? 0 : 100.0 * votes / totalMayor, won), 18);
+            if (c.IsPlayer)
+            {
+                mayorLine.AddThemeColorOverride("font_color", Ui.Warning);
+            }
         }
 
         if (final)
@@ -133,10 +138,25 @@ public partial class ElectionNightScreen : Control
     {
         Character player = State.Player;
         string o = player.Gender switch { Gender.Masculino => "o", Gender.Feminino => "a", _ => "e" };
-        long votes = outcome.Vereador.Votes[RaceSetup.PlayerId];
-        string verdict = outcome.PlayerElected
-            ? string.Format(PtBr, Tr("Você foi eleit{0} com {1:N0} votos!"), o, votes)
-            : string.Format(PtBr, Tr("Não foi desta vez: {0:N0} votos."), votes);
+        string verdict;
+        if (_campaign.Player.Office == Office.Prefeito)
+        {
+            // Disputa de prefeito: o percentual dos votos válidos conta mais que o número.
+            long mine = outcome.Prefeito.Votes[RaceSetup.PlayerId];
+            double share = 100.0 * mine / Math.Max(1, outcome.Prefeito.Votes.Values.Sum());
+            string office = _game.People.Offices.Name(Office.Prefeito, player.Gender).ToLowerInvariant();
+            verdict = outcome.PlayerElected
+                ? string.Format(PtBr, Tr("Você foi eleit{0} {1} com {2:0.0}% dos votos válidos!"), o, office, share)
+                : string.Format(PtBr, Tr("Não foi desta vez: {0:0.0}% dos votos válidos."), share);
+        }
+        else
+        {
+            long votes = outcome.Vereador.Votes[RaceSetup.PlayerId];
+            verdict = outcome.PlayerElected
+                ? string.Format(PtBr, Tr("Você foi eleit{0} com {1:N0} votos!"), o, votes)
+                : string.Format(PtBr, Tr("Não foi desta vez: {0:N0} votos."), votes);
+        }
+
         Label label = Ui.Value(_root, verdict, 36);
         label.AddThemeColorOverride("font_color", outcome.PlayerElected ? Ui.Ok : Ui.Warning);
         HBoxContainer actions = Ui.Row(_root, 16);

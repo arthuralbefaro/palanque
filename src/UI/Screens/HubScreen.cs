@@ -102,6 +102,7 @@ public partial class HubScreen : Control
     private void BuildAgenda(VBoxContainer column)
     {
         column.CustomMinimumSize = new Vector2(470, 0);
+        BuildCandidacy(column);
         Ui.Label(column, "Agenda da semana", 24);
         foreach (CampaignActionDefinition action in _game.Campaign.Actions.Actions)
         {
@@ -141,6 +142,39 @@ public partial class HubScreen : Control
         }
     }
 
+    /// <summary>Cargo disputado: na pré-campanha dá para trocar entre vereador e prefeito.</summary>
+    private void BuildCandidacy(VBoxContainer column)
+    {
+        Office office = Campaign.Player.Office;
+        string current = _game.People.Offices.Name(office, State.Player.Gender);
+        Ui.Value(column, string.Format(Tr("Candidatura: {0} · número {1}"), current, Campaign.Player.Number), 18);
+        if (Campaign.Phase != CampaignPhase.PreCampanha)
+        {
+            return;
+        }
+
+        Office other = office == Office.Prefeito ? Office.Vereador : Office.Prefeito;
+        string otherName = _game.People.Offices.Name(other, State.Player.Gender);
+        bool renounces = State.Executive is not null && other != Office.Prefeito;
+        var button = Ui.Button(column, string.Format(Tr(renounces ? "Disputar para {0} (renuncia à prefeitura)" : "Disputar para {0}"), otherName.ToLowerInvariant()), () =>
+        {
+            var (issue, renounced) = _game.SwitchCandidacy(other);
+            _log.Insert(0, issue switch
+            {
+                CandidacyIssue.IdadeMinima => Tr("Você não terá a idade mínima para o cargo na data da posse."),
+                CandidacyIssue.ForaDoPrazo => Tr("A troca de candidatura só vale na pré-campanha."),
+                _ => renounced ? Tr("Você renunciou à prefeitura para disputar outro cargo.") : string.Format(Tr("Agora você disputa para {0}."), otherName.ToLowerInvariant()),
+            });
+            Refresh();
+        });
+        button.AddThemeFontSizeOverride("font_size", 16);
+        if (RaceSetup.CanRunFor(_engine.Context, other) == CandidacyIssue.IdadeMinima)
+        {
+            button.Disabled = true;
+            button.TooltipText = Tr("Você não terá a idade mínima para o cargo na data da posse.");
+        }
+    }
+
     private string FailureText(ActionFailure failure) => Tr(failure switch
     {
         ActionFailure.FaseNaoPermite => "Não permitido nesta fase (a propaganda começa em 16 de agosto).",
@@ -164,7 +198,8 @@ public partial class HubScreen : Control
         {
             PollsterDefinition pollster = _game.Electorate.Pollsters.Get(poll.PollsterId);
             var leader = poll.Candidates.MaxBy(c => c.Value);
-            Ui.Paragraph(column, string.Format(PtBr, Tr("{0}: {1} lidera com {2:0.0}% entre os candidatos a vereador."), pollster.Name, Campaign.Find(leader.Key)?.Name, leader.Value), 860, 16);
+            string race = Campaign.Player.Office == Office.Prefeito ? Tr("entre os candidatos a prefeito") : Tr("entre os candidatos a vereador");
+            Ui.Paragraph(column, string.Format(PtBr, Tr("{0}: {1} lidera com {2:0.0}% {3}."), pollster.Name, Campaign.Find(leader.Key)?.Name, leader.Value, race), 860, 16);
         }
 
         if (recent.Count == 0 && Campaign.Polls.Count == 0)
@@ -286,8 +321,23 @@ public partial class HubScreen : Control
                 Ui.Button(bottom, "Ver a apuração", () => _game.GoTo(Game.Scenes.ElectionNight));
                 break;
             default:
-                Ui.Button(bottom, "Avançar semana", () => Advance(untilSomething: false)).Disabled = Campaign.Events.Pending.Count > 0;
-                Ui.Button(bottom, "Avançar até algo acontecer", () => Advance(untilSomething: true)).Disabled = Campaign.Events.Pending.Count > 0;
+                if (Campaign.Debate is not null)
+                {
+                    // Debate de TV marcado: ir (ou recusar, com a cadeira vazia custando imagem).
+                    Ui.Label(bottom, "Há um debate na TV nesta semana.", 18, Ui.Warning);
+                    Ui.Button(bottom, "Ir ao debate", () => _game.GoTo(Game.Scenes.Debate));
+                    Ui.Button(bottom, "Recusar o debate", () =>
+                    {
+                        Core.Debate.DebateEngine.Decline(_engine.Context, _game.Debate);
+                        _log.Insert(0, Tr("Você faltou ao debate: a cadeira vazia virou assunto."));
+                        Refresh();
+                    });
+                    break;
+                }
+
+                bool blocked = Campaign.Events.Pending.Count > 0;
+                Ui.Button(bottom, "Avançar semana", () => Advance(untilSomething: false)).Disabled = blocked;
+                Ui.Button(bottom, "Avançar até algo acontecer", () => Advance(untilSomething: true)).Disabled = blocked;
                 break;
         }
     }
