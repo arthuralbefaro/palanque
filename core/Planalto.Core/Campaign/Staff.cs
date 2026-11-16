@@ -355,6 +355,11 @@ public sealed class StaffCatalog : IValidatable
             }
         }
 
+        foreach (string error in DecisionLint.Staff(this))
+        {
+            yield return error;
+        }
+
         foreach (string key in MemoryKeys.Where(k => !Lembrancas.ContainsKey(k)))
         {
             yield return $"lembrancas: falta '{key}'.";

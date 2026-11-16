@@ -30,6 +30,10 @@ public sealed partial class CampaignEngine
             ? Campaign.ElectionDate
             : new DateOnly(Campaign.ElectionDate.Year + 1, 1, 1).AddDays(7 * request.PrazoSemanas);
 
+    /// <summary>O que a resposta ao pedido da liderança ganha e custa, por natureza, para a tela mostrar a troca.</summary>
+    public DecisionTrade? LeaderAnswerTrade(Leader leader, LeaderAnswer answer) =>
+        LeaderContent.TradeOf(LeaderContent.Request(leader.RequestId), LeaderCatalog.AnswerKey(answer));
+
     /// <summary>Quanto sai do caixa ao aceitar um pedido de dinheiro (gasto irregular), no porte da cidade.</summary>
     public decimal RequestMoneyCost() => Math.Round(1500m * (decimal)CostScale / 100) * 100;
 

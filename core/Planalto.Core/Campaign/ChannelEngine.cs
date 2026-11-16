@@ -270,10 +270,10 @@ public sealed partial class CampaignEngine
     private double ChannelHeadroom(double current) => Math.Clamp(1 - (current / ChannelRules.ApoioTeto), 0, 1);
 
     /// <summary>
-    /// O que o canal rende com o efeito e a sorte dados: presença por zona e apoio por grupo. Com
-    /// <paramref name="apply"/>, grava no território; sem ele, só calcula (previsão).
+    /// O que o canal rende com o efeito e a sorte dados, a partir do estado de agora: presença por zona e apoio por
+    /// grupo. Só calcula; a virada da semana grava (<see cref="ChannelsWeekEnd"/>).
     /// </summary>
-    private (Dictionary<string, double> Presence, Dictionary<string, double> Support) ChannelGains(ChannelDefinition c, string targetId, double effect, double luck, bool apply)
+    private (Dictionary<string, double> Presence, Dictionary<string, double> Support) ChannelGains(ChannelDefinition c, string targetId, double effect, double luck)
     {
         var presence = new Dictionary<string, double>(StringComparer.Ordinal);
         var support = new Dictionary<string, double>(StringComparer.Ordinal);
@@ -286,10 +286,6 @@ public sealed partial class CampaignEngine
         {
             double amount = c.KPresenca * effect * luck * RecognitionScale * Reach(zone);
             presence[targetId] = EffectApplier.Gain(own[zone], amount) - own[zone];
-            if (apply)
-            {
-                t.Gain(RaceSetup.PlayerId, zone, amount, 0, []);
-            }
         }
         else if (c.KPresenca > 0 && band is not null)
         {
@@ -301,11 +297,6 @@ public sealed partial class CampaignEngine
             {
                 presence[t.Zones[z]] = EffectApplier.Gain(own[z], amount) - own[z];
             }
-
-            if (apply)
-            {
-                t.GainEverywhere(RaceSetup.PlayerId, amount);
-            }
         }
 
         if (c.KApoio > 0 && zone >= 0)
@@ -314,12 +305,7 @@ public sealed partial class CampaignEngine
             Dictionary<string, double> meeting = t.MeetingSupport[zone];
             foreach (string group in Channels.FaixasIdade.SelectMany(b => b.Grupos).Where(g => Context.ZoneElectorates[zone].VotersIn(g) > 0))
             {
-                double gain = c.KApoio * effect * luck * ChannelHeadroom(meeting.GetValueOrDefault(group));
-                support[group] = gain;
-                if (apply)
-                {
-                    meeting[group] = Math.Min(1, meeting.GetValueOrDefault(group) + gain);
-                }
+                support[group] = c.KApoio * effect * luck * ChannelHeadroom(meeting.GetValueOrDefault(group));
             }
         }
         else if (c.KApoio > 0 && band is not null)
@@ -327,12 +313,7 @@ public sealed partial class CampaignEngine
             Dictionary<string, double> city = Campaign.Player.Support;
             foreach (string group in band.Grupos)
             {
-                double gain = c.KApoio * effect * luck * ChannelHeadroom(city.GetValueOrDefault(group));
-                support[group] = gain;
-                if (apply)
-                {
-                    city[group] = Math.Clamp(city.GetValueOrDefault(group) + gain, 0, 1);
-                }
+                support[group] = c.KApoio * effect * luck * ChannelHeadroom(city.GetValueOrDefault(group));
             }
         }
 
@@ -363,9 +344,9 @@ public sealed partial class CampaignEngine
         double yield = factors.Aggregate(1.0, (acc, f) => acc * f.Multiplier);
         double effect = ret * share;
         var luck = LuckRange(ChannelRules.Sorte);
-        var low = ChannelGains(c, targetId, effect * yield, luck.Min, apply: false);
-        var high = ChannelGains(c, targetId, effect * yield, luck.Max, apply: false);
-        var mid = ChannelGains(c, targetId, effect * yield, 1, apply: false);
+        var low = ChannelGains(c, targetId, effect * yield, luck.Min);
+        var high = ChannelGains(c, targetId, effect * yield, luck.Max);
+        var mid = ChannelGains(c, targetId, effect * yield, 1);
         string target = TargetName(c, targetId);
 
         var lines = new List<ForecastLine>
@@ -427,7 +408,11 @@ public sealed partial class CampaignEngine
             weekly <= 0 ? double.PositiveInfinity : (double)(Math.Max(0, State.Player.Resources.Money) / weekly), CabosPlanned, CabosLimit);
     }
 
-    /// <summary>Fim da semana: a verba paga rende (presença e apoio), com a sorte da semana, e fica o resultado explicado.</summary>
+    /// <summary>
+    /// Fim da semana: a verba paga rende (presença e apoio), com a sorte da semana, e fica o resultado explicado.
+    /// Todos os canais são calculados sobre o estado do fim da semana e só depois gravados: o que um rende não
+    /// depende da ordem em que os outros entram, e cada resultado bate com a previsão do próprio canal.
+    /// </summary>
     private void ChannelsWeekEnd()
     {
         Budget.LastResults.Clear();
@@ -436,6 +421,7 @@ public sealed partial class CampaignEngine
             return;
         }
 
+        var definitions = new List<ChannelDefinition>();
         foreach (ChannelAllocation a in Budget.Active.Where(a => a.Amount > 0).ToList())
         {
             if (Channels.Find(a.ChannelId) is not { } c || !ValidTarget(c, a.TargetId))
@@ -447,8 +433,9 @@ public sealed partial class CampaignEngine
             var range = LuckRange(ChannelRules.Sorte);
             double luck = Rng.NextDouble(range.Min, range.Max);
             double yield = factors.Aggregate(1.0, (acc, f) => acc * f.Multiplier);
-            var (presence, support) = ChannelGains(c, a.TargetId, ret * share * yield, luck, apply: true);
+            var (presence, support) = ChannelGains(c, a.TargetId, ret * share * yield, luck);
             factors.Add(Factor("sorte", "Sorte da semana", luck));
+            definitions.Add(c);
             Budget.LastResults.Add(new ChannelResult
             {
                 Week = State.Calendar.WeekStart,
@@ -462,6 +449,30 @@ public sealed partial class CampaignEngine
                 Support = support,
                 Factors = factors,
             });
+        }
+
+        double[] own = Territory.Presence[RaceSetup.PlayerId];
+        for (int i = 0; i < Budget.LastResults.Count; i++)
+        {
+            ChannelResult result = Budget.LastResults[i];
+            int zone = definitions[i].Alvo == ChannelDefinition.AlvoZona ? Territory.IndexOf(result.TargetId) : -1;
+            foreach (var (zoneId, delta) in result.Presence)
+            {
+                int z = Territory.IndexOf(zoneId);
+                own[z] = Math.Clamp(own[z] + delta, 0, 100);
+            }
+
+            if (zone >= 0 && result.Presence.Count > 0)
+            {
+                // Material e som na rua contam como presença da semana: a zona não decai nesta virada.
+                Territory.MarkActive(RaceSetup.PlayerId, zone);
+            }
+
+            Dictionary<string, double> store = zone >= 0 ? Territory.MeetingSupport[zone] : Campaign.Player.Support;
+            foreach (var (group, gain) in result.Support)
+            {
+                store[group] = Math.Clamp(store.GetValueOrDefault(group) + gain, 0, 1);
+            }
         }
 
         if (Budget.LastResults.Count > 0)

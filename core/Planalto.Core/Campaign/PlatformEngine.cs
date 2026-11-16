@@ -171,6 +171,10 @@ public sealed partial class CampaignEngine
     public double IncoherenceOf(string theme, int value) =>
         Math.Abs(value - PositionOf(theme)) * KnownOf(theme) * (1 + RecentChanges());
 
+    /// <summary>Pontos de relação que uma mudança incoerente custa em cada liderança com interesse no tema.</summary>
+    private int PositionLeaderPoints(double incoherence) =>
+        Math.Min(-1, (int)Math.Round(incoherence * PlatformRules.PontosLiderancaPorIncoerencia));
+
     private sealed record ShareView(double City, Dictionary<string, double> ByGroup, Dictionary<string, double> ByZone);
 
     /// <summary>Fatia do jogador nos votos válidos (cidade, cada grupo, cada zona) com os temas e a imagem dados.</summary>
@@ -258,8 +262,29 @@ public sealed partial class CampaignEngine
             return PlayerShares(themes, image);
         }
 
-        ShareView expected = With(knownAfter);
-        ShareView[] scenarios = [With(known), expected, With(1)];
+        // As lideranças com interesse no tema esfriam com a incoerência, e o apoio que dão cai junto: a previsão
+        // conta isso baixando a afinidade delas só durante a conta.
+        int leaderPoints = incoherence > 0 ? PositionLeaderPoints(incoherence) : 0;
+        List<Person> cooled = leaderPoints == 0 ? [] : City.Leaders.Where(l => l.Theme == theme && l.Known).Select(l => City.Person(l.PersonId)!).ToList();
+        ShareView[] scenarios;
+        try
+        {
+            cooled.ForEach(p => p.Affinity += leaderPoints);
+            if (cooled.Count > 0)
+            {
+                RefreshSupport();
+            }
+
+            scenarios = [With(known), With(knownAfter), With(1)];
+        }
+        finally
+        {
+            cooled.ForEach(p => p.Affinity -= leaderPoints);
+            if (cooled.Count > 0)
+            {
+                RefreshSupport();
+            }
+        }
         ForecastLine Line(string kind, string? target, Func<ShareView, double> read)
         {
             double before = read(baseline);
@@ -357,7 +382,7 @@ public sealed partial class CampaignEngine
         var remembered = new List<string>();
         if (incoherence > 0)
         {
-            int points = Math.Min(-1, (int)Math.Round(incoherence * PlatformRules.PontosLiderancaPorIncoerencia));
+            int points = PositionLeaderPoints(incoherence);
             string text = Texts.Fill(PlatformContent.Texto("mudou_posicao"), ("tema", definition.Name));
             foreach (Leader leader in City.Leaders.Where(l => l.Theme == theme && l.Known))
             {

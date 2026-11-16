@@ -65,10 +65,16 @@
     { "id": "obra_creche", "kind": "obra", "text": "Prometer uma creche em {zona}", "prazo_semanas": 130 },
     { "id": "obra_estrada", "kind": "obra", "text": "Prometer a recuperação da estrada vicinal de {zona}", "prazo_semanas": 104 },
     { "id": "vaga_gabinete", "kind": "vaga", "text": "Prometer uma vaga no gabinete para uma pessoa indicada", "prazo_semanas": 8 },
-    { "id": "posicao_tema", "kind": "posicao", "text": "Defender em público a pauta dela em {tema}", "prazo_semanas": 0 },
-    { "id": "presenca_evento", "kind": "presenca", "text": "Comparecer ao próximo evento da comunidade em {zona}", "prazo_semanas": 0 },
-    { "id": "dinheiro_evento", "kind": "dinheiro", "text": "Pagar a festa da comunidade em {zona} (gasto irregular, sem registro)", "prazo_semanas": 0, "weight": 0.5 }
+    { "id": "posicao_tema", "kind": "posicao", "text": "Defender em público a pauta dela em {tema}", "prazo_semanas": 0, "aceitar": { "ganho": ["relacao", "zona"], "custo": ["posicao"] } },
+    { "id": "presenca_evento", "kind": "presenca", "text": "Comparecer ao próximo evento da comunidade em {zona}", "prazo_semanas": 0, "aceitar": { "ganho": ["relacao", "zona"], "custo": ["tempo"] } },
+    { "id": "dinheiro_evento", "kind": "dinheiro", "text": "Pagar a festa da comunidade em {zona} (gasto irregular, sem registro)", "prazo_semanas": 0, "weight": 0.5, "aceitar": { "ganho": ["relacao", "zona"], "custo": ["dinheiro", "risco"] } }
   ],
+  "respostas": {
+    "aceitar": { "ganho": ["relacao", "zona"], "custo": ["risco"] },
+    "negociar": { "ganho": ["relacao"], "custo": ["risco"] },
+    "nao_se_comprometer": { "ganho": ["posicao"], "custo": ["tempo"] },
+    "recusar": { "ganho": ["posicao"], "custo": ["relacao"] }
+  },
   "textos": {
     "visita": "Veio visitar",
     "visita_sem_compromisso": "Veio, ouviu e não se comprometeu",

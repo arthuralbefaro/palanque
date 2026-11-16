@@ -23,6 +23,9 @@ public sealed class LeaderRequestDefinition
     public required int PrazoSemanas { get; init; }
 
     public double Weight { get; init; } = 1;
+
+    /// <summary>O que aceitar este pedido ganha e custa, quando difere do padrão de <see cref="LeaderCatalog.Respostas"/>.</summary>
+    public DecisionTrade? Aceitar { get; init; }
 }
 
 /// <summary>Tipo de liderança: o papel social, não uma doutrina (GDD 17.10, neutralidade).</summary>
@@ -131,6 +134,28 @@ public sealed class LeaderCatalog : IValidatable
     /// <summary>Textos do feed e das lembranças, com {nome}, {rival}, {zona}.</summary>
     public required Dictionary<string, string> Textos { get; init; }
 
+    public const string Aceitar = "aceitar";
+    public const string Negociar = "negociar";
+    public const string NaoSeComprometer = "nao_se_comprometer";
+    public const string Recusar = "recusar";
+
+    public static readonly IReadOnlyList<string> AnswerKeys = [Aceitar, Negociar, NaoSeComprometer, Recusar];
+
+    /// <summary>O que cada resposta a um pedido ganha e custa, por natureza (GDD 17.1, princípio e).</summary>
+    public required Dictionary<string, DecisionTrade> Respostas { get; init; }
+
+    public static string AnswerKey(LeaderAnswer answer) => answer switch
+    {
+        LeaderAnswer.Aceitar => Aceitar,
+        LeaderAnswer.Negociar => Negociar,
+        LeaderAnswer.NaoSeComprometer => NaoSeComprometer,
+        _ => Recusar,
+    };
+
+    /// <summary>Ganho e custo da resposta ao pedido: o próprio do pedido (aceitar) ou o padrão da resposta.</summary>
+    public DecisionTrade? TradeOf(LeaderRequestDefinition request, string answer) =>
+        answer == Aceitar && request.Aceitar is not null ? request.Aceitar : Respostas.GetValueOrDefault(answer);
+
     public LeaderType Type(string id) => Tipos.First(t => t.Id == id);
 
     public LeaderRequestDefinition Request(string id) => Pedidos.First(p => p.Id == id);
@@ -190,6 +215,16 @@ public sealed class LeaderCatalog : IValidatable
         foreach (string key in TextKeys.Where(k => !Textos.ContainsKey(k)))
         {
             yield return $"textos: falta '{key}'.";
+        }
+
+        foreach (string key in AnswerKeys.Where(k => !Respostas.ContainsKey(k)))
+        {
+            yield return $"respostas: falta '{key}'.";
+        }
+
+        foreach (string error in DecisionLint.Leaders(this))
+        {
+            yield return error;
         }
     }
 }

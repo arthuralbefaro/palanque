@@ -94,6 +94,16 @@ public sealed class EventChoice
     public ChoiceTest? Test { get; init; }
 
     public string? Result { get; init; }
+
+    /// <summary>
+    /// Escolha relevante (GDD 17.1, princípios d e e): deixa rastro e é uma troca. O lint confere o ganho e o custo
+    /// declarados (naturezas diferentes) contra os efeitos.
+    /// </summary>
+    public bool Relevant { get; init; }
+
+    public List<string>? Gain { get; init; }
+
+    public List<string>? Cost { get; init; }
 }
 
 /// <summary>Evento escrito (GDD 7.5 e 15.5).</summary>
