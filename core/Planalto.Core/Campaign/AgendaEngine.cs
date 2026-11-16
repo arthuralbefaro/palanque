@@ -37,24 +37,38 @@ public sealed partial class CampaignEngine
     /// <summary>Texto de um fator do rendimento, para a previsão e para a explicação.</summary>
     private static YieldFactor Factor(string id, string text, double multiplier) => new(id, text, multiplier);
 
-    /// <summary>Alcance relativo da zona: zona menor que a média rende mais por turno; maior, menos (GDD 17.5, "a troca").</summary>
+    /// <summary>
+    /// Alcance da zona: quantas vezes a cidade é maior que ela, em eleitores. As bases de presença dos compromissos são
+    /// medidas em "pontos na cidade inteira"; um turno gasto numa zona que é 1/10 da cidade rende 10 vezes isso em
+    /// presença ali. Zona pequena rende mais presença por turno e vale menos votos; zona grande, o contrário
+    /// (GDD 17.5, "a troca").
+    /// </summary>
     public double Reach(int zone)
     {
         IReadOnlyList<ZoneElectorate> zones = Context.ZoneElectorates;
-        double mean = zones.Average(z => z.Voters);
+        double total = zones.Sum(z => z.Voters);
         double own = zones[zone].Voters;
-        return Math.Clamp(own <= 0 ? Rules.Alcance.Max : Math.Sqrt(mean / own), Rules.Alcance.Min, Rules.Alcance.Max);
+        return Math.Clamp(own <= 0 ? Rules.Alcance.Max : total / own, Rules.Alcance.Min, Rules.Alcance.Max);
     }
 
     /// <summary>Cansaço do trio na data do compromisso: o de hoje mais os iguais já marcados antes dele.</summary>
     private double FatigueAt(CommitmentRequest r)
     {
-        bool visit = Commitments.Get(r.Type).Visita;
-        string key = AgendaState.FatigueKey(r.Type, r.ZoneId, r.Publico, visit ? r.PersonId : null);
+        string key = KeyOf(r.Type, r.ZoneId, r.Publico, r.PersonId);
         double now = Agenda.Fatigue.GetValueOrDefault(key);
-        int before = Agenda.Scheduled.Count(c => AgendaState.FatigueKey(c, Commitments.Get(c.Type).Visita) == key
+        int before = Agenda.Scheduled.Count(c => KeyOf(c.Type, c.ZoneId, c.Publico, c.PersonId) == key
             && (c.Date < r.Date || (c.Date == r.Date && c.Turno < r.Turno)));
         return now + before;
+    }
+
+    /// <summary>
+    /// Chave do cansaço (princípio g). Ir a um evento da cidade é estar na rua naquela zona: divide o cansaço com a
+    /// caminhada ali. A visita cansa por pessoa visitada.
+    /// </summary>
+    private string KeyOf(string typeId, string? zoneId, string publico, string? personId)
+    {
+        CommitmentType type = Commitments.Get(typeId);
+        return AgendaState.FatigueKey(type.SoEvento ? "caminhada" : typeId, zoneId, type.SoEvento ? CommitmentType.PublicoGeral : publico, type.Visita ? personId : null);
     }
 
     private IEnumerable<Turno> TurnsOf(CommitmentType type, Turno start) =>
@@ -250,8 +264,8 @@ public sealed partial class CampaignEngine
             outcomes.Add(new ForecastOutcome(LeaderRules.ChanceDescoberta, "Você pode conhecer uma liderança da zona."));
         }
 
-        decimal money = -CostOf(type);
         double fatigueFactor = factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1;
+        decimal money = MoneyOf(type, fatigueFactor);
         int relation = type.Visita ? VisitPoints(fatigueFactor) : r.InviteId is not null ? LeaderRules.PontosConviteAceito : 0;
         return new CommitmentForecast(
             blocked,
@@ -274,7 +288,23 @@ public sealed partial class CampaignEngine
     {
         bool groupEvent = r.CityEventId is not null
             && Agenda.CityEvents.FirstOrDefault(e => e.Id == r.CityEventId) is { } e && e.Publico != CommitmentType.PublicoGeral;
-        return factors.Where(f => f.Id != "sorte" && !(groupEvent && f.Id == "evento")).Aggregate(1.0, (acc, f) => acc * f.Multiplier);
+        double yield = factors.Where(f => f.Id != "sorte" && !(groupEvent && f.Id == "evento")).Aggregate(1.0, (acc, f) => acc * f.Multiplier);
+        if (groupEvent && r.ZoneId is not null && Territory.IndexOf(r.ZoneId) is var z and >= 0)
+        {
+            // Quem está no evento é o público dele: a presença na zona cresce na proporção desse grupo entre os eleitores dali.
+            ZoneElectorate zone = Context.ZoneElectorates[z];
+            string publico = Agenda.CityEvents.First(e => e.Id == r.CityEventId).Publico;
+            yield *= zone.Voters <= 0 ? 0 : Math.Clamp(zone.VotersIn(publico) / zone.Voters, 0, 1);
+        }
+
+        return yield;
+    }
+
+    /// <summary>Dinheiro do compromisso: o custo sai inteiro; o que se arrecada cai com o cansaço (jantar repetido rende menos).</summary>
+    private decimal MoneyOf(CommitmentType type, double fatigueFactor)
+    {
+        decimal money = -CostOf(type);
+        return money > 0 ? Math.Round(money * (decimal)fatigueFactor) : money;
     }
 
     /// <summary>Pontos de relação de uma visita: a visita repetida à mesma pessoa em pouco tempo rende menos (princípio g).</summary>
@@ -423,7 +453,7 @@ public sealed partial class CampaignEngine
             text = passed ? test.SuccessText : test.FailureText;
         }
 
-        decimal money = -CostOf(type);
+        decimal money = MoneyOf(type, factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1);
         Character player = State.Player;
         player.Resources.Money += money;
         Campaign.Player.Money = player.Resources.Money;
@@ -433,7 +463,7 @@ public sealed partial class CampaignEngine
         player.Resources.SetRecognition(Campaign.Municipio.ToString(System.Globalization.CultureInfo.InvariantCulture), (int)Math.Round(Campaign.Player.Recognition));
 
         double visitFatigue = factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1;
-        string key = AgendaState.FatigueKey(c, type.Visita);
+        string key = KeyOf(c.Type, c.ZoneId, c.Publico, c.PersonId);
         if (type.Id != CommitmentCatalog.Descanso)
         {
             Agenda.Fatigue[key] = Agenda.Fatigue.GetValueOrDefault(key) + 1;
@@ -455,6 +485,7 @@ public sealed partial class CampaignEngine
         else if (c.PersonId is not null && City.Leader(c.PersonId) is { } companion)
         {
             City.Person(companion.PersonId)!.LastContact = Today;
+            FulfilPresence(companion);
             if (c.InviteId is not null)
             {
                 relation = LeaderRules.PontosConviteAceito;

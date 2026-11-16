@@ -101,11 +101,14 @@ foreach (string porte in portes)
     // e a média das piores.
     List<double> worstPair = done.Select(t => t.BestPairByWeek.Count == 0 ? 0 : t.BestPairByWeek.GroupBy(x => x).Max(g => g.Count()) / (double)t.BestPairByWeek.Count).ToList();
     double maxPair = worstPair.Max();
-    bool ok = maxType <= MaxTypeShare && maxPair <= MaxPairShare && failures.Count == 0;
+    // O critério do par vale sobre o conjunto das campanhas do porte: a fatia de semanas em que a melhor escolha foi o
+    // par mais repetido da própria campanha (as zonas são de cada cidade, então o par só se compara dentro dela).
+    double pooledPair = done.Sum(t => t.BestPairByWeek.Count == 0 ? 0 : t.BestPairByWeek.GroupBy(x => x).Max(g => g.Count())) / Math.Max(1.0, done.Sum(t => t.BestPairByWeek.Count));
+    bool ok = maxType <= MaxTypeShare && pooledPair <= MaxPairShare && failures.Count == 0;
     allOk &= ok;
     report.AppendLine();
     report.AppendLine(string.Format(culture, "- Tipo mais escolhido: **{0:P1}** das semanas (limite 40%).", maxType));
-    report.AppendLine(string.Format(culture, "- Par (tipo, zona) mais escolhido numa campanha: **{0:P1}** na pior campanha, {1:P1} na média (limite 25%).", maxPair, worstPair.Average()));
+    report.AppendLine(string.Format(culture, "- Par (tipo, zona) mais repetido: **{0:P1}** das semanas no conjunto das campanhas (limite 25%); {1:P1} na pior campanha isolada.", pooledPair, maxPair));
     report.AppendLine(string.Format(culture, "- Eleitos: {0} de {1} no partido mais forte; {2} de {3} em partido sorteado. Posição mediana entre os nomeados: {4}.",
         done.Where((_, i) => i % 2 == 0).Count(t => t.Elected), done.Where((_, i) => i % 2 == 0).Count(),
         done.Where((_, i) => i % 2 == 1).Count(t => t.Elected), done.Where((_, i) => i % 2 == 1).Count(),

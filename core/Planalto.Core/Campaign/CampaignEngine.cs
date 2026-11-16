@@ -244,7 +244,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
                 if (redutos is null)
                 {
                     // Campanha espalhada: um pouco em todas as zonas.
-                    t.GainEverywhere(npc.Id, basePresence * config.NpcSpreadFactor);
+                    t.GainEverywhere(npc.Id, basePresence * config.NpcSpreadFactor);  // base já é "pontos na cidade inteira"
                     continue;
                 }
 

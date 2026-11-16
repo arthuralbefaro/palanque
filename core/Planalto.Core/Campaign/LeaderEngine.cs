@@ -359,7 +359,7 @@ public sealed partial class CampaignEngine
         // Convites para a semana que entra: dia e turno fixos, que podem bater com outro compromisso.
         foreach (Leader leader in City.Leaders.Where(l => l.Known && RelationOf(l.PersonId) > -20))
         {
-            if (Agenda.Invites.Any(i => i.FromPersonId == leader.PersonId && !i.Answered) || !Rng.Chance(rules.ChanceConvite))
+            if (Agenda.Invites.Any(i => !i.Answered) || !Rng.Chance(rules.ChanceConvite))
             {
                 continue;
             }
@@ -377,6 +377,22 @@ public sealed partial class CampaignEngine
         }
 
         RefreshSupport();
+    }
+
+    /// <summary>
+    /// Promessa de comparecer ao evento da comunidade: fica cumprida quando o jogador vai à zona com a liderança
+    /// (convite aceito, ou ela como acompanhante). Fica no Livro como cumprida, e a liderança lembra.
+    /// </summary>
+    private void FulfilPresence(Leader leader)
+    {
+        if (leader.PromiseId is null || State.Ledger.Promises.FirstOrDefault(p => p.Id == leader.PromiseId) is not { State: PromiseState.Aberta } promise
+            || LeaderContent.Request(promise.Object).Kind != LeaderRequestDefinition.Presenca)
+        {
+            return;
+        }
+
+        promise.State = PromiseState.Cumprida;
+        RememberLeader(leader, "promessa_cumprida", 2, LeaderRules.PontosPromessaCumprida);
     }
 
     /// <summary>Recusa um convite; quem convidou lembra.</summary>

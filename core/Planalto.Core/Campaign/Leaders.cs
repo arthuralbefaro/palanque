@@ -80,6 +80,9 @@ public sealed class LeaderRules
 
     public required int PontosConviteAceito { get; init; }
 
+    /// <summary>Relação que rende cumprir uma promessa feita à liderança.</summary>
+    public required int PontosPromessaCumprida { get; init; }
+
     public required int PontosConviteRecusado { get; init; }
 
     /// <summary>Quanto esfria a liderança rival de quem fechou com o jogador.</summary>
@@ -137,7 +140,7 @@ public sealed class LeaderCatalog : IValidatable
     public static readonly IReadOnlyList<string> TextKeys =
     [
         "visita", "visita_sem_compromisso", "promessa", "recusa", "negociacao", "negociacao_falha", "convite_aceito", "convite_recusado",
-        "rivalidade", "assedio", "mudou_para_rival", "mudou_para_jogador", "ficou_neutra", "descoberta", "convite", "promessa_livro", "divida_livro", "esqueleto_dinheiro",
+        "rivalidade", "assedio", "promessa_cumprida", "mudou_para_rival", "mudou_para_jogador", "ficou_neutra", "descoberta", "convite", "promessa_livro", "divida_livro", "esqueleto_dinheiro",
     ];
 
     public IEnumerable<string> Validate()

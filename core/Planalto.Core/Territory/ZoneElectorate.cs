@@ -104,14 +104,15 @@ public static class ZoneElectorateBuilder
     }
 
     /// <summary>
-    /// Eleitores de cada zona, somando o eleitorado do município: os do importador (locais de votação do TSE), quando
-    /// todas as zonas os têm; senão, a repartição pela população de 16 anos ou mais.
+    /// Eleitores de cada zona, somando o eleitorado do município, repartidos pela população de 16 anos ou mais, isto é,
+    /// por onde o eleitor mora. Os eleitores por local de votação do TSE (<see cref="Zona.Eleitores"/>) dizem onde se
+    /// vota, não onde se mora: 4.344 zonas habitadas não têm local de votação e ficariam sem eleitor, e as zonas
+    /// centrais ficariam com vários múltiplos dos moradores. Por isso o dado do TSE fica como informação da zona e
+    /// não entra no modelo de voto (DECISOES D-038; a confirmar pelo autor).
     /// </summary>
     public static double[] ZoneVoters(IReadOnlyList<Zona> zonas, double total)
     {
-        double[] weights = zonas.All(z => z.Eleitores is not null)
-            ? zonas.Select(z => (double)z.Eleitores!.Value).ToArray()
-            : zonas.Select(Pop16).ToArray();
+        double[] weights = zonas.Select(Pop16).ToArray();
         double sum = weights.Sum();
         return weights.Select(x => sum <= 0 ? total / zonas.Count : x / sum * total).ToArray();
     }

@@ -121,6 +121,7 @@ public class ClockAndForecastTests
         foreach (Leader l in engine.City.Leaders)
         {
             l.Known = true;
+            engine.City.Person(l.PersonId)!.Affinity = 60;
         }
 
         DateOnly today = engine.Today;
@@ -153,7 +154,16 @@ public class ClockAndForecastTests
                 zone = zones[z];
             }
 
-            string publico = type.EscolhePublico ? groups.Where(g => engine.Context.ZoneElectorates[z].VotersIn(g) > 0).ElementAt(i % 5) : CommitmentType.PublicoGeral;
+            string publico = CommitmentType.PublicoGeral;
+            if (type.EscolhePublico)
+            {
+                // Reunião exige uma liderança conhecida daquele público na zona: usa a zona e o público de uma delas.
+                Leader host = engine.City.Leaders[i / types.Count % engine.City.Leaders.Count];
+                zone = host.Zones[0];
+                z = engine.Territory.IndexOf(zone);
+                publico = host.Publico;
+            }
+
             string? cityEvent = null;
             if (type.SoEvento)
             {

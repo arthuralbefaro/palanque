@@ -328,7 +328,10 @@ public class LeaderTests
             Assert.DoesNotContain("{", promise.Text);
             Assert.True(promise.Deadline >= state.Campaign!.ElectionDate, "O prazo não pode vencer antes da eleição.");
             Assert.True(promise.Made < promise.Deadline);
-            Assert.Equal(PromiseState.Aberta, promise.State);
+
+            // A promessa de comparecer pode já ter sido cumprida na campanha; as demais só se cumprem no mandato.
+            bool presenca = catalog.Request(leader.RequestId).Kind == LeaderRequestDefinition.Presenca;
+            Assert.True(promise.State == PromiseState.Aberta || (presenca && promise.State == PromiseState.Cumprida), $"{promise.Text}: {promise.State}");
             Assert.Contains(state.City.Person(leader.PersonId)!.Memories, m => m.Fact == "promessa" && m.Peso == 3 && m.Date == promise.Made);
         }
 
