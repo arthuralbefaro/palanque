@@ -71,6 +71,9 @@ public sealed class GameState
 
     public required Calendar Calendar { get; init; }
 
+    /// <summary>Dia da semana dentro do calendário (tempo corrente, GDD 17.4).</summary>
+    public TimeState Time { get; init; } = new();
+
     public required Rng Rng { get; init; }
 
     public required Character Player { get; init; }

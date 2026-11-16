@@ -121,6 +121,33 @@ public sealed class CampaignEngine(CampaignContext ctx)
         return new ActionResult(true, null, string.Join(" ", texts), -cost);
     }
 
+    /// <summary>
+    /// Previsão da ação antes do clique (GDD 17.1, f): mesmas etapas de <see cref="Execute"/> (custo, efeitos, alvo,
+    /// teste de atributo, riscos), com a faixa de cada efeito e a chance de cada desfecho sorteado.
+    /// </summary>
+    public Forecast Forecast(string actionId, string? targetId = null)
+    {
+        CampaignActionDefinition action = Context.Campaign.Actions.Get(actionId);
+        var stages = new List<ForecastStage>
+        {
+            Forecaster.Certain(new Effects { Money = -CostOf(action) }),
+            Forecaster.Certain(action.Effects),
+        };
+        if (action.Targets.FirstOrDefault(t => t.Id == targetId) is { } target)
+        {
+            stages.Add(Forecaster.Certain(new Effects { Support = new() { [target.Group] = target.Support } }));
+        }
+
+        if (action.Test is { } test)
+        {
+            double chance = Math.Clamp(State.Player.Attributes.Get(test.Attribute) / 100.0, 0.05, 0.95);
+            stages.Add(Forecaster.Test(chance, test.Success, test.SuccessText, test.Failure, test.FailureText));
+        }
+
+        stages.AddRange(action.Risks.Select(r => Forecaster.Risk(r.Chance, r.Effects, r.Text)));
+        return Forecaster.Run(Campaign.Player, State.Player.Resources.Money, RecognitionScale, stages);
+    }
+
     /// <summary>Encomenda uma pesquisa (pública ou interna) paga pela campanha.</summary>
     public PollRecord? CommissionPoll(string pollsterId)
     {

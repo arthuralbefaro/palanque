@@ -1,0 +1,17 @@
+{
+  "note": "Tempo corrente (GDD 17.4): segundos reais por dia de jogo em cada velocidade (1x, 2x, 4x), na campanha e no mandato, e as pausas automáticas por tipo de acontecimento. 'pausa' é o padrão; 'desligavel' diz se o jogador pode desligar nas Opções.",
+  "velocidades": [1, 2, 4],
+  "segundos_por_dia": {
+    "campanha": [4.0, 2.0, 1.0],
+    "mandato": [1.0, 0.5, 0.25]
+  },
+  "pausas": [
+    { "id": "decisao_imediata", "nome": "Decisão imediata (evento, crise, debate)", "pausa": true, "desligavel": false },
+    { "id": "pesquisa_publicada", "nome": "Pesquisa publicada", "pausa": true, "desligavel": true },
+    { "id": "votacao_na_pauta", "nome": "Votação na pauta da Câmara", "pausa": true, "desligavel": true },
+    { "id": "caixa_baixo", "nome": "Caixa abaixo do custo de uma semana de ações", "pausa": true, "desligavel": true },
+    { "id": "semana_sem_compromisso", "nome": "Semana começando sem nenhuma ação feita na anterior", "pausa": false, "desligavel": true },
+    { "id": "fase_nova", "nome": "Mudança de fase (início da campanha, eleição, posse)", "pausa": true, "desligavel": false },
+    { "id": "noticia_comum", "nome": "Notícia comum", "pausa": false, "desligavel": true }
+  ]
+}
