@@ -186,3 +186,8 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Data:** 2026-11-15 · **Fase:** 5
 - **Decisão:** debates de prefeito na TV 5 e 2 semanas antes do 1º turno, em cidades médias, grandes e metrópoles (as pequenas raramente têm debate na TV). São três rodadas com temas sorteados pelo peso que têm no eleitorado da cidade. O jogador escolhe uma de três cartas da mão: Proposta e Dado testam Gestão e rendem mais em tema importante; Ataque testa Carisma e mira um adversário; Defesa testa Articulação e reduz os ataques à metade; Emoção testa Carisma; Evasiva testa Oratória. Rivais escolhem pelo estilo (agressivo, técnico, emotivo, equilibrado; quem tem o traço esquentado é agressivo e bate mais forte). O placar vira imagem (diferença para a média × 0,012), todos ganham reconhecimento pela exposição, e há 15% de chance de um corte viral para quem atacou ou se emocionou. Recusar custa 0,04 de imagem. A semana não avança com debate marcado.
 - **Como reverter:** data/debate/debate.json.
+
+## D-033 — População projetada e vagas por eleição
+- **Data:** 2026-11-15 · **Fase:** 6
+- **Decisão:** a população de cada município cresce pela taxa anual geométrica entre o Censo 2022 e a estimativa do IBGE gravada em data/municipios/ (2026), limitada entre -3% e +5% ao ano (data/population_projection.json), projetada a partir do ano da estimativa. Em cada eleição municipal, as vagas de vereador são o mínimo entre as vagas atuais e o teto da CF, art. 29, IV, calculado com a população do ano anterior à eleição (a estimativa que o TSE usa). Assim as vagas nunca sobem sozinhas (aumentar é decisão da Câmara) e caem quando a população sai da faixa.
+- **Como reverter:** sem Projection no CampaignContext, valem as vagas de data/municipios/.

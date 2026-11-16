@@ -85,8 +85,8 @@
 - [ ] Evolução dos partidos (seção 14.1): fusões, federações, cisões, mudança de nome, crescimento e declínio
 - [ ] Urna com todos os cargos, na ordem real (seção 16.3)
 - [ ] Simulação por nível de detalhe: regional (demais municípios do estado, agregados por região geográfica imediata) e nacional (outros estados, agregados por UF)
-- [ ] Evolução da população dos municípios e regra de vagas a cada eleição municipal: mínimo entre as vagas atuais e o teto calculado com a população do ano
-- [ ] Contornos simplificados a partir da Malha Municipal 2025 (mesma fonte das coordenadas)
+- [x] Evolução da população dos municípios e regra de vagas a cada eleição municipal: mínimo entre as vagas atuais e o teto calculado com a população do ano
+- [x] Contornos simplificados a partir da Malha Municipal 2025 (mesma fonte das coordenadas)
 - [ ] Mapa 2.5D (seção 13.1): extrusão, níveis de detalhe (Brasil → UF → região imediata/município), câmera inclinada, modo apuração, tooltips e alternativa 2D plana
 - [ ] Desempenho: avançar uma semana em menos de 200 ms, mesmo em eleição presidencial; mapa a 60 FPS na visão de um estado
 

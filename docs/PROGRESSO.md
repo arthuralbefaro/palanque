@@ -30,9 +30,12 @@ Mandato de vereador no Core (ChamberSetup e LegislatureEngine: Câmara com NPCs,
 Candidatura a prefeito na pré-campanha (idade mínima na posse, vaga do próprio partido, prefeito incumbente e renúncia ao disputar outro cargo), mandato de prefeito no Core (ExecutiveEngine: orçamento por área com mínimos de saúde e educação e Tribunal de Contas, indicadores com atraso, 17 políticas por decreto ou lei votada na Câmara, coalizão por secretarias, aprovação por grupo, 7 crises) e debate de TV (DebateEngine: três rodadas, seis cartas, IA por estilo, cortes virais). Telas novas: prefeitura (com overlay de crise) e debate; o hub troca a candidatura e chama o debate; a apuração mostra o prefeito.
 425 testes no Core (prefeitura de 4 anos e reeleição jogadas sozinhas, campanha de prefeito com debates); smoke da UI em 8 fluxos.
 
+## Fase 6 — itens avulsos (2026-11-15)
+Contornos simplificados da Malha Municipal (feitos na Fase 3, data/geo/) marcados no ROADMAP. População projetada e vagas de vereador por eleição (D-033): taxa anual entre o Censo 2022 e a estimativa do IBGE, teto do art. 29, IV com a população do ano anterior à eleição. 428 testes no Core.
+
 ## Resumo da noite (modo corujão, 2026-11-15)
-- **Concluído:** Fase 3 (UI da campanha, urna, apuração, save/load, mapa 2.5D, balanceamento D-026, roteiro em docs/ROTEIRO_TESTE_FASE3.md), Fase 4 (mandato de vereador, transição, filiação, fundação de partido) e Fase 5 (candidatura e mandato de prefeito, debate). Decisões D-021 a D-032.
-- **Testes:** 425 no Core, 28 no importador; teste de fumaça da UI em 8 fluxos (newworld, creator, hub, picker, campaign, map, mandate, prefeitura), sem janela e com janela.
+- **Concluído:** Fase 3 (UI da campanha, urna, apuração, save/load, mapa 2.5D, balanceamento D-026, roteiro em docs/ROTEIRO_TESTE_FASE3.md), Fase 4 (mandato de vereador, transição, filiação, fundação de partido), Fase 5 (candidatura e mandato de prefeito, debate) e 2 dos 11 itens da Fase 6 (contornos; população e vagas por eleição). Decisões D-021 a D-033.
+- **Testes:** 428 no Core, 28 no importador; teste de fumaça da UI em 8 fluxos (newworld, creator, hub, picker, campaign, map, mandate, prefeitura), sem janela e com janela.
 - **Pendências:** nenhuma em docs/PENDENCIAS.md (nada bloqueou). Uma exceção "Handle is not initialized", vista uma vez numa rodada com janela, não se repetiu em 5 rodadas; o timer da urna ganhou proteção contra tela já liberada.
 - **Adiados de propósito (registrados nas decisões):** eventos de mandato (vereador e prefeito), eleição da Mesa, CPIs, vetos e cassação do prefeito.
-- **Por onde retomar:** jogar o roteiro da Fase 3 (dá para seguir até a posse, o mandato e, na pré-campanha seguinte, disputar a prefeitura); depois, Fase 6 (esfera estadual e federal).
+- **Por onde retomar:** jogar o roteiro da Fase 3 (dá para seguir até a posse, o mandato e, na pré-campanha seguinte, disputar a prefeitura); depois, o resto da Fase 6 (estados, deputados, senador e governador, simulação regional e nacional, mídia e justiça, Espelho, evolução dos partidos, urna completa, mapa completo).
