@@ -56,6 +56,9 @@ public sealed class PartDefinition
     /// <summary>Estágio de calvície (1 entradas, 2 parcial, 3 careca), para o envelhecimento.</summary>
     public int? BaldingStage { get; init; }
 
+    /// <summary>Âncoras de encaixe: obrigatórias nos rostos e nas orelhas.</summary>
+    public PartFit? Fit { get; init; }
+
     public double WeightFor(Gender gender) =>
         Weights.TryGetValue(GenderKey(gender), out double w) ? w : Weights.GetValueOrDefault("default", 1);
 
@@ -65,6 +68,35 @@ public sealed class PartDefinition
         Gender.Feminino => "feminino",
         _ => "nao_binario",
     };
+}
+
+/// <summary>
+/// Âncoras de encaixe de uma peça, em pontos do quadro. No rosto: a meia-largura na linha das orelhas (para onde vão
+/// orelhas e brincos) e a escala do cabelo que cobre o alto daquela cabeça. Na orelha: a altura do lóbulo, de onde
+/// o brinco pende.
+/// </summary>
+public sealed class PartFit
+{
+    public double? EarX { get; init; }
+
+    public double? HairScaleX { get; init; }
+
+    public double? HairScaleY { get; init; }
+
+    public double? LobeY { get; init; }
+}
+
+/// <summary>O rosto e a orelha para os quais orelhas, brincos e cabelo foram desenhados.</summary>
+public sealed class FitReference
+{
+    public required double EarX { get; init; }
+
+    public required double LobeY { get; init; }
+
+    public required double CenterX { get; init; }
+
+    /// <summary>Linha em torno da qual o cabelo estica na vertical (a base da touca de cabelo).</summary>
+    public required double HairPivotY { get; init; }
 }
 
 /// <summary>Conteúdo de data/appearance/parts.json.</summary>
@@ -81,6 +113,10 @@ public sealed class AppearanceCatalog : IValidatable
     public required string ArtRoot { get; init; }
 
     public required List<string> LayerOrder { get; init; }
+
+    public string? Note { get; init; }
+
+    public required FitReference FitReference { get; init; }
 
     public required List<PartDefinition> Parts { get; init; }
 
@@ -136,6 +172,16 @@ public sealed class AppearanceCatalog : IValidatable
                 yield return $"{where}: roupa sem contexto do guarda-roupa.";
             }
 
+            if (part.Category == "face" && (part.Fit is not { EarX: > 0, HairScaleX: >= 0.5 and <= 1.5, HairScaleY: >= 0.5 and <= 1.5 } || part.Fit.EarX >= Canvas / 2.0))
+            {
+                yield return $"{where}: rosto precisa de 'fit' com 'ear_x' (dentro do quadro) e 'hair_scale_x' e 'hair_scale_y' de 0,5 a 1,5.";
+            }
+
+            if (part.Category == "ears" && (part.Fit?.LobeY is not { } lobe || lobe <= 0 || lobe >= Canvas))
+            {
+                yield return $"{where}: orelha precisa de 'fit' com 'lobe_y' dentro do quadro.";
+            }
+
             foreach (PartLayer? layer in part.Layers ?? [])
             {
                 if (layer is null || !slots.Contains(layer.Slot) || !Tints.Contains(layer.Tint) || string.IsNullOrWhiteSpace(layer.File))
@@ -147,6 +193,19 @@ public sealed class AppearanceCatalog : IValidatable
                     yield return $"{where}: '{{expr}}' no arquivo só e sempre quando 'expressions' é true.";
                 }
             }
+        }
+
+        if (FitReference is not { EarX: > 0, LobeY: > 0, CenterX: > 0, HairPivotY: > 0 })
+        {
+            yield return "'fit_reference' precisa de 'ear_x', 'lobe_y', 'center_x' e 'hair_pivot_y' positivos.";
+        }
+
+        // Orelha na frente do cabelo e brinco na frente da orelha: o brinco nunca fica sobre a mecha, longe do lóbulo.
+        int Slot(string slot) => LayerOrder.IndexOf(slot);
+        if (Slot("ears") < Slot("hair_front") || Slot("ears") < Slot("head")
+            || Parts.Where(p => p?.Category == "earrings").SelectMany(p => p.Layers ?? []).Any(l => l is not null && Slot(l.Slot) < Slot("ears")))
+        {
+            yield return "'layer_order': as orelhas vêm depois do rosto e do cabelo da frente, e os brincos depois das orelhas.";
         }
 
         foreach (string category in Categories.Where(c => !Parts.Any(p => p?.Category == c)))

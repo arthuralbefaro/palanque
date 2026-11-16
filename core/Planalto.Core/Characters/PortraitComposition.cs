@@ -2,8 +2,11 @@ using Planalto.Core.Parties;
 
 namespace Planalto.Core.Characters;
 
-/// <summary>Uma camada pronta para desenhar: arquivo, cor de tingimento, opacidade e escala em torno de um pivô.</summary>
-public sealed record LayerSpec(string File, string Tint, double Alpha, int Order, double ScaleX, double ScaleY, double PivotX, double PivotY);
+/// <summary>
+/// Uma camada pronta para desenhar: arquivo, cor de tingimento, opacidade, escala em torno de um pivô e
+/// deslocamento, tudo em pontos do quadro.
+/// </summary>
+public sealed record LayerSpec(string File, string Tint, double Alpha, int Order, double ScaleX, double ScaleY, double PivotX, double PivotY, double OffsetX = 0, double OffsetY = 0);
 
 /// <summary>Opções de enquadramento do retrato que não fazem parte da aparência.</summary>
 public sealed record PortraitOptions(
@@ -47,7 +50,16 @@ public static class PortraitComposition
             _ => "#FFFFFF",
         };
 
-        void Add(string? partId, double alpha = 1, double scaleX = 1, double scaleY = 1, double pivotX = 512, double pivotY = 512)
+        // Encaixe no rosto e na orelha escolhidos: orelhas e brincos vão para a largura do rosto na linha das orelhas,
+        // o brinco desce até o lóbulo daquela orelha, e o cabelo estica para cobrir o alto daquela cabeça.
+        FitReference reference = catalog.FitReference;
+        PartFit? face = catalog.Find(a.Face)?.Fit;
+        double earScale = (face?.EarX ?? reference.EarX) / reference.EarX;
+        double lobeDrop = (catalog.Find(a.Ears)?.Fit?.LobeY ?? reference.LobeY) - reference.LobeY;
+        double hairScaleX = face?.HairScaleX ?? 1;
+        double hairScaleY = face?.HairScaleY ?? 1;
+
+        void Add(string? partId, double alpha = 1, double scaleX = 1, double scaleY = 1, double pivotX = 512, double pivotY = 512, double offsetY = 0)
         {
             PartDefinition? part = catalog.Find(partId);
             if (part is null || alpha <= 0)
@@ -65,7 +77,8 @@ public static class PortraitComposition
                     scaleX,
                     scaleY,
                     pivotX,
-                    pivotY));
+                    pivotY,
+                    OffsetY: offsetY));
             }
         }
 
@@ -73,7 +86,7 @@ public static class PortraitComposition
         Add(a.Body, scaleX: shoulders, pivotY: 1024);
         Add(outfit.PartId, scaleX: shoulders, pivotY: 1024);
         Add(a.Face);
-        Add(a.Ears);
+        Add(a.Ears, scaleX: earScale, pivotX: reference.CenterX);
         Add("marks_sardas", a.Freckles);
         Add(a.Moles ? "marks_pintas" : null);
         Add("marks_rugas", a.Wrinkles);
@@ -89,9 +102,9 @@ public static class PortraitComposition
         Add("makeup_delineado", a.EyelinerIntensity);
         Add(a.Beard);
         Add(a.Mustache);
-        Add(a.Hair);
+        Add(a.Hair, scaleX: hairScaleX, scaleY: hairScaleY, pivotX: reference.CenterX, pivotY: reference.HairPivotY);
         Add(a.Glasses);
-        Add(a.Earrings);
+        Add(a.Earrings, scaleX: earScale, pivotX: reference.CenterX, offsetY: lobeDrop);
         Add(a.Piercing);
         Add(a.Necklace);
         Add(a.PartyPin ? "pin_partido" : null);

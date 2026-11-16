@@ -27,6 +27,99 @@ public class PortraitCompositionTests
         Assert.StartsWith("res://assets/portrait/placeholder/background/", layers[0].File);
     }
 
+    /// <summary>
+    /// Em todo rosto e toda orelha: as orelhas vão para a largura do rosto na linha das orelhas, os brincos vão junto
+    /// e descem até o lóbulo daquela orelha, e ficam na frente do cabelo (nunca soltos sobre a mecha).
+    /// </summary>
+    [Fact]
+    public void Orelhas_e_brincos_se_encaixam_em_todo_rosto_e_toda_orelha()
+    {
+        AppearanceCatalog catalog = Content.Catalog;
+        FitReference reference = catalog.FitReference;
+        Appearance person = AppearanceGenerator.Random(new Rng(6), Content, Gender.Feminino, 30, "SP");
+        foreach (PartDefinition face in catalog.InCategory("face"))
+        {
+            foreach (PartDefinition ears in catalog.InCategory("ears"))
+            {
+                foreach (PartDefinition earrings in catalog.InCategory("earrings"))
+                {
+                    foreach (PartDefinition hair in catalog.InCategory("hair"))
+                    {
+                        Appearance a = person with { Face = face.Id, Ears = ears.Id, Earrings = earrings.Id, Hair = hair.Id };
+                        IReadOnlyList<LayerSpec> layers = PortraitComposition.Compose(a, new PortraitOptions(), Content);
+                        LayerSpec ear = layers.Single(l => l.File.Contains("/ears/", StringComparison.Ordinal));
+                        LayerSpec ring = layers.Single(l => l.File.Contains("/earrings/", StringComparison.Ordinal));
+                        LayerSpec head = layers.Single(l => l.File.Contains("/face/", StringComparison.Ordinal));
+
+                        // O centro da orelha (desenhado em center_x ± ear_x de referência) cai na borda deste rosto.
+                        double earCenter = reference.CenterX - (reference.EarX * ear.ScaleX);
+                        Assert.Equal(reference.CenterX - face.Fit!.EarX!.Value, earCenter, 6);
+                        Assert.Equal(reference.CenterX, ear.PivotX);
+
+                        // O brinco acompanha a orelha na horizontal e pende do lóbulo dela.
+                        Assert.Equal(ear.ScaleX, ring.ScaleX);
+                        Assert.Equal(ear.PivotX, ring.PivotX);
+                        Assert.Equal(ears.Fit!.LobeY!.Value - reference.LobeY, ring.OffsetY, 6);
+                        Assert.Equal(0, ear.OffsetY);
+
+                        // Pilha: rosto, cabelo da frente, orelha, brinco.
+                        int Index(LayerSpec layer) => layers.ToList().IndexOf(layer);
+                        Assert.True(Index(head) < Index(ear));
+                        Assert.True(Index(ear) < Index(ring));
+                        foreach (LayerSpec front in layers.Where(l => l.File.Contains("/hair/", StringComparison.Ordinal) && l.File.Contains("_front", StringComparison.Ordinal)))
+                        {
+                            Assert.True(Index(front) < Index(ear), $"{hair.Id}: o cabelo da frente cobre a orelha");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>O cabelo (frente e fundo) estica junto, com a escala do rosto, em torno do centro e da base da touca.</summary>
+    [Fact]
+    public void Cabelo_estica_para_cobrir_o_alto_de_cada_rosto()
+    {
+        AppearanceCatalog catalog = Content.Catalog;
+        Appearance person = AppearanceGenerator.Random(new Rng(6), Content, Gender.Feminino, 30, "SP");
+        foreach (PartDefinition face in catalog.InCategory("face"))
+        {
+            foreach (PartDefinition hair in catalog.InCategory("hair").Where(h => h.Layers.Count > 0))
+            {
+                var layers = PortraitComposition.Compose(person with { Face = face.Id, Hair = hair.Id }, new PortraitOptions(), Content)
+                    .Where(l => l.File.Contains("/hair/", StringComparison.Ordinal)).ToList();
+                Assert.Equal(hair.Layers.Count, layers.Count);
+                Assert.All(layers, l =>
+                {
+                    Assert.Equal(face.Fit!.HairScaleX!.Value, l.ScaleX);
+                    Assert.Equal(face.Fit.HairScaleY!.Value, l.ScaleY);
+                    Assert.Equal(catalog.FitReference.CenterX, l.PivotX);
+                    Assert.Equal(catalog.FitReference.HairPivotY, l.PivotY);
+                });
+            }
+        }
+
+        // O rosto de referência não mexe em nada.
+        PartDefinition oval = catalog.Find("face_oval")!;
+        Assert.Equal(catalog.FitReference.EarX, oval.Fit!.EarX);
+        Assert.Equal(1, oval.Fit.HairScaleX);
+        Assert.Equal(1, oval.Fit.HairScaleY);
+    }
+
+    [Fact]
+    public void Catalogo_sem_encaixe_ou_com_a_orelha_atras_do_cabelo_e_reportado()
+    {
+        string json = File.ReadAllText(Path.Combine(TestContent.DataDirectory, AppearanceContent.PartsFile));
+        AppearanceCatalog Load(string text) => System.Text.Json.JsonSerializer.Deserialize<AppearanceCatalog>(text, JsonData.Options)!;
+
+        Assert.Empty(Load(json).Validate());
+        Assert.Contains(Load(json.Replace(", \"fit\": {\"lobe_y\": 474}", "", StringComparison.Ordinal)).Validate(), e => e.Contains("ears_2", StringComparison.Ordinal) && e.Contains("lobe_y", StringComparison.Ordinal));
+        Assert.Contains(Load(json.Replace("\"ear_x\": 185, ", "", StringComparison.Ordinal)).Validate(), e => e.Contains("face_redondo", StringComparison.Ordinal) && e.Contains("ear_x", StringComparison.Ordinal));
+        Assert.Contains(
+            Load(json.Replace("\"hair_front\", \"ears\", ", "\"ears\", \"hair_front\", ", StringComparison.Ordinal)).Validate(),
+            e => e.Contains("layer_order", StringComparison.Ordinal));
+    }
+
     [Fact]
     public void Arquivos_DeTodasAsCamadasExistem()
     {
