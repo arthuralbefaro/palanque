@@ -1,0 +1,10 @@
+{
+  "note": "De onde vem quem estreia na política do município (GDD 17.16), com o peso de cada origem no sorteio. Os pesos são um só para todos os partidos e famílias ideológicas (razão de 1 para 1, dentro do limite de 2 para 1 do GDD): a origem não determina partido nem ideologia. 'lideranca': uma liderança local da cidade vira candidata. 'familia': parente de quem morreu, se aposentou ou saiu, com o sobrenome da família. 'equipe': alguém da equipe de campanha disponível na cidade. 'midia': comunicador conhecido, com a profissão indicada. 'gerado': sem origem política conhecida; também é a reserva quando a origem sorteada não tem ninguém disponível.",
+  "origens": [
+    { "id": "lideranca", "nome": "Liderança local", "peso": 3.0 },
+    { "id": "familia", "nome": "Família de político", "peso": 1.5 },
+    { "id": "equipe", "nome": "Equipe de campanha", "peso": 1.0 },
+    { "id": "midia", "nome": "Comunicador", "peso": 1.0, "profissao": "jornalista" },
+    { "id": "gerado", "nome": "Sem origem política conhecida", "peso": 5.0 }
+  ]
+}

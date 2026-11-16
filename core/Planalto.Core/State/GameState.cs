@@ -112,5 +112,8 @@ public sealed class GameState
     /// <summary>Indicadores do município em foco em unidade real, com o modelo de evolução (GDD 17.17); null em saves anteriores.</summary>
     public Indicators.MunicipalIndicatorsState? Indicators { get; set; }
 
+    /// <summary>Renovação do mundo político do município em foco: cadeiras, suplentes, prefeito e vice, saídas e entradas (GDD 17.16); null em saves anteriores.</summary>
+    public Renewal.RenewalState? Renewal { get; set; }
+
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }

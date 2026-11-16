@@ -82,6 +82,7 @@ public static class DataValidation
         }
 
         reports.AddRange(Indicators.IndicatorContent.Validate(dataDirectory));
+        reports.AddRange(Renewal.RenewalContent.Validate(dataDirectory));
 
         return reports;
     }
