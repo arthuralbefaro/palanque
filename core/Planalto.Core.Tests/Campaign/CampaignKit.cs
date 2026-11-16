@@ -68,6 +68,12 @@ internal static class CampaignKit
 
     public static Municipio Municipio(int ibge) => C.Municipios.All.Single(m => m.CodigoIbge == ibge);
 
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, Planalto.Core.Territory.ZonasMunicipio> ZonasCache = new();
+
+    /// <summary>Zonas do município (data/zonas/), lidas uma vez por município: o arquivo é o da UF inteira.</summary>
+    public static Planalto.Core.Territory.ZonasMunicipio Zonas(Municipio m) =>
+        ZonasCache.GetOrAdd(m.CodigoIbge, _ => CampaignContext.LoadZonas(TestContent.DataDirectory, m));
+
     /// <summary>Carreira nova no município, com a predefinição pedida, pronta para a campanha.</summary>
     /// <param name="strongestParty">Filia o jogador ao partido mais forte da cidade, como a aba Partido sugere.</param>
     public static CampaignEngine NewCareer(int ibge, ulong seed, string preset = "brasil_2026", bool strongestParty = false)
@@ -131,6 +137,23 @@ internal static class CampaignKit
         };
     }
 
+    /// <summary>
+    /// Save com as chaves de cada objeto em ordem: dois estados iguais dão o mesmo texto mesmo quando um dicionário
+    /// foi preenchido em outra ordem (o que acontece depois de carregar um save e seguir jogando).
+    /// </summary>
+    public static string Canonical(GameState state)
+    {
+        static System.Text.Json.Nodes.JsonNode? Sort(System.Text.Json.Nodes.JsonNode? node) => node switch
+        {
+            System.Text.Json.Nodes.JsonObject o => new System.Text.Json.Nodes.JsonObject(o.OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => KeyValuePair.Create(p.Key, Sort(p.Value)))),
+            System.Text.Json.Nodes.JsonArray a => new System.Text.Json.Nodes.JsonArray(a.Select(Sort).ToArray()),
+            null => null,
+            _ => node.DeepClone(),
+        };
+
+        return Sort(System.Text.Json.Nodes.JsonNode.Parse(Planalto.Core.Save.GameStateSerializer.Serialize(state)))!.ToJsonString();
+    }
+
     public static CampaignContext Context(GameState state)
     {
         Municipio m = Municipio(state.FocusMunicipio);
@@ -149,6 +172,7 @@ internal static class CampaignKit
             Portes = C.Portes,
             Debate = C.Debate,
             Projection = C.Projection,
+            Zonas = Zonas(m),
         };
     }
 }

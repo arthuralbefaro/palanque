@@ -129,6 +129,10 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
             throw new InvalidOperationException("Há um pedido de liderança esperando resposta.");
         }
 
+        // A virada acontece no domingo, em qualquer dia que tenha sido pedida: convites vencidos, deriva das
+        // lideranças e as datas do feed usam o dia de hoje, e sete dias seguidos têm de dar o mesmo que uma semana.
+        State.Time.Day = 6;
+
         CampaignConfig config = Context.Config;
         TerritorySimulation sim = Context.Campaign.Territory.Simulacao;
         NpcTurn();
