@@ -69,9 +69,9 @@
 - **Marco:** campanha de vereador jogável do início ao fim e divertida
 
 ## Fase 4 — Mandato legislativo
-- [ ] Votações, projetos, emendas, fidelidade, relações, capital político
-- [ ] Transição para a próxima eleição
-- [ ] Fundação de partido durante a carreira (seção 14.2 B): fundadores, apoio de eleitores, registro no TSE, prazo
+- [x] Votações, projetos, emendas, fidelidade, relações, capital político
+- [x] Transição para a próxima eleição
+- [x] Fundação de partido durante a carreira (seção 14.2 B): fundadores, apoio de eleitores, registro no TSE, prazo
 
 ## Fase 5 — Prefeito
 - [ ] Orçamento, indicadores, políticas, coalizão municipal
