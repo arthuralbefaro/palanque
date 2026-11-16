@@ -3,26 +3,16 @@ using Planalto.Core.Electorate;
 using Planalto.Core.Elections;
 using Planalto.Core.Events;
 using Planalto.Core.State;
+using Planalto.Core.Territory;
 
 namespace Planalto.Core.Campaign;
 
-public enum ActionFailure
-{
-    FaseNaoPermite,
-    SemEnergia,
-    SemDinheiro,
-    AlvoInvalido,
-    EventoPendente,
-}
-
-/// <summary>Resultado de uma ação da agenda.</summary>
-public sealed record ActionResult(bool Ok, ActionFailure? Failure, string Text, decimal MoneyDelta);
-
 /// <summary>
-/// Motor da campanha municipal (GDD 5.6 e 6.1): agenda semanal com Energia e Dinheiro, IA dos rivais,
-/// pesquisas, eventos e apuração. Toda aleatoriedade vem do Rng do estado.
+/// Motor da campanha municipal (GDD 17.4 a 17.6 e 17.10): o dia é a unidade, com compromissos marcados na agenda;
+/// na virada da semana agem os rivais e as lideranças, a presença decai, saem pesquisas e eventos. A apuração segue
+/// as regras de lei. Toda aleatoriedade vem do Rng do estado.
 /// </summary>
-public sealed class CampaignEngine(CampaignContext ctx)
+public sealed partial class CampaignEngine(CampaignContext ctx)
 {
     public CampaignContext Context { get; } = ctx;
 
@@ -42,110 +32,13 @@ public sealed class CampaignEngine(CampaignContext ctx)
         ctx.State.Campaign ??= RaceSetup.Create(ctx, ctx.State.Rng);
         var engine = new CampaignEngine(ctx);
         engine.UpdatePhase();
+        if (ctx.State.Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
+        {
+            engine.PlanWeek(ctx.State.Calendar.WeekStart);
+        }
+
+        engine.RefreshSupport();
         return engine;
-    }
-
-    public decimal CostOf(CampaignActionDefinition action)
-    {
-        decimal money = Math.Round(action.Money * (decimal)CostScale / 100) * 100;
-        if (action.MoneyPerAttribute is { } per)
-        {
-            money -= per.Amount * State.Player.Attributes.Get(per.Attribute) * (decimal)CostScale;
-        }
-
-        return money;
-    }
-
-    public ActionFailure? CanExecute(CampaignActionDefinition action, string? targetId)
-    {
-        if (Campaign.Events.Pending.Count > 0)
-        {
-            return ActionFailure.EventoPendente;
-        }
-
-        if (!action.AllowedIn(Campaign.Phase))
-        {
-            return ActionFailure.FaseNaoPermite;
-        }
-
-        if (Campaign.EnergyLeft < action.Energy)
-        {
-            return ActionFailure.SemEnergia;
-        }
-
-        decimal cost = CostOf(action);
-        if (cost > 0 && State.Player.Resources.Money < cost)
-        {
-            return ActionFailure.SemDinheiro;
-        }
-
-        return action.Targets.Count > 0 && action.Targets.All(t => t.Id != targetId) ? ActionFailure.AlvoInvalido : null;
-    }
-
-    public ActionResult Execute(string actionId, string? targetId = null)
-    {
-        CampaignActionDefinition action = Context.Campaign.Actions.Get(actionId);
-        if (CanExecute(action, targetId) is ActionFailure failure)
-        {
-            return new ActionResult(false, failure, "", 0);
-        }
-
-        Campaign.EnergyLeft -= action.Energy;
-        decimal cost = CostOf(action);
-        var texts = new List<string>();
-        EffectApplier.Apply(Context, new Effects { Money = -cost }, recognitionScale: RecognitionScale);
-        EffectApplier.Apply(Context, action.Effects, recognitionScale: RecognitionScale);
-
-        if (action.Targets.FirstOrDefault(t => t.Id == targetId) is { } target)
-        {
-            EffectApplier.Apply(Context, new Effects { Support = new() { [target.Group] = target.Support } });
-        }
-
-        if (action.Test is { } test)
-        {
-            bool passed = Rng.Chance(Math.Clamp(State.Player.Attributes.Get(test.Attribute) / 100.0, 0.05, 0.95));
-            EffectApplier.Apply(Context, passed ? test.Success : test.Failure, recognitionScale: RecognitionScale);
-            texts.Add(passed ? test.SuccessText : test.FailureText);
-        }
-
-        foreach (ActionRisk risk in action.Risks)
-        {
-            if (Rng.Chance(risk.Chance))
-            {
-                EffectApplier.Apply(Context, risk.Effects, recognitionScale: RecognitionScale);
-                texts.Add(risk.Text);
-            }
-        }
-
-        Campaign.ActionsThisWeek.Add(actionId);
-        return new ActionResult(true, null, string.Join(" ", texts), -cost);
-    }
-
-    /// <summary>
-    /// Previsão da ação antes do clique (GDD 17.1, f): mesmas etapas de <see cref="Execute"/> (custo, efeitos, alvo,
-    /// teste de atributo, riscos), com a faixa de cada efeito e a chance de cada desfecho sorteado.
-    /// </summary>
-    public Forecast Forecast(string actionId, string? targetId = null)
-    {
-        CampaignActionDefinition action = Context.Campaign.Actions.Get(actionId);
-        var stages = new List<ForecastStage>
-        {
-            Forecaster.Certain(new Effects { Money = -CostOf(action) }),
-            Forecaster.Certain(action.Effects),
-        };
-        if (action.Targets.FirstOrDefault(t => t.Id == targetId) is { } target)
-        {
-            stages.Add(Forecaster.Certain(new Effects { Support = new() { [target.Group] = target.Support } }));
-        }
-
-        if (action.Test is { } test)
-        {
-            double chance = Math.Clamp(State.Player.Attributes.Get(test.Attribute) / 100.0, 0.05, 0.95);
-            stages.Add(Forecaster.Test(chance, test.Success, test.SuccessText, test.Failure, test.FailureText));
-        }
-
-        stages.AddRange(action.Risks.Select(r => Forecaster.Risk(r.Chance, r.Effects, r.Text)));
-        return Forecaster.Run(Campaign.Player, State.Player.Resources.Money, RecognitionScale, stages);
     }
 
     /// <summary>Encomenda uma pesquisa (pública ou interna) paga pela campanha.</summary>
@@ -185,7 +78,34 @@ public sealed class CampaignEngine(CampaignContext ctx)
 
     public int WeeksToElection => Math.Max(0, (Campaign.ElectionDate.DayNumber - State.Calendar.WeekStart.DayNumber) / 7);
 
-    /// <summary>Fecha a semana: rivais agem, efeitos decaem, o calendário anda, sai pesquisa pública e novos eventos.</summary>
+    /// <summary>Há uma decisão esperando o jogador (evento, debate ou pedido de liderança): o tempo não anda.</summary>
+    public bool DecisionPending => Campaign.Events.Pending.Count > 0 || Campaign.Debate is not null || Agenda.PendingRequest is not null;
+
+    /// <summary>
+    /// Avança um dia: acontecem os compromissos de hoje e, no domingo, a virada da semana. Devolve os resultados
+    /// explicados do dia. Com decisão pendente, nada anda.
+    /// </summary>
+    public List<CommitmentResult> AdvanceDay()
+    {
+        if (DecisionPending)
+        {
+            throw new InvalidOperationException("Há uma decisão esperando o jogador.");
+        }
+
+        List<CommitmentResult> results = RunToday();
+        if (!DecisionPending)
+        {
+            Clock.AdvanceDay(State, AdvanceWeek);
+        }
+
+        return results;
+    }
+
+    /// <summary>
+    /// Fecha a semana: acontecem os compromissos que restam nela, rivais e lideranças agem, a presença decai nas
+    /// zonas sem compromisso, o calendário anda, e a semana que entra ganha chuva prevista, eventos da cidade,
+    /// convites, pesquisa pública e eventos.
+    /// </summary>
     public void AdvanceWeek()
     {
         if (Campaign.Events.Pending.Count > 0)
@@ -203,11 +123,23 @@ public sealed class CampaignEngine(CampaignContext ctx)
             throw new InvalidOperationException("A semana da eleição se resolve na votação.");
         }
 
+        RunUntil(State.Calendar.WeekEnd);
+        if (Agenda.PendingRequest is not null)
+        {
+            throw new InvalidOperationException("Há um pedido de liderança esperando resposta.");
+        }
+
+        // A virada acontece no domingo, em qualquer dia que tenha sido pedida: convites vencidos, deriva das
+        // lideranças e as datas do feed usam o dia de hoje, e sete dias seguidos têm de dar o mesmo que uma semana.
+        State.Time.Day = 6;
+
         CampaignConfig config = Context.Config;
+        TerritorySimulation sim = Context.Campaign.Territory.Simulacao;
         NpcTurn();
         foreach (Candidate c in Campaign.Candidates)
         {
-            c.Recognition = Math.Max(c.IsBulk ? config.BulkRecognition * RecognitionScale : 0, c.Recognition - config.RecognitionDecayPerWeek);
+            Territory.Decay(c.Id, sim.DecaimentoSemanal, c.IsBulk ? config.BulkRecognition * RecognitionScale : 0);
+            c.Recognition = Territory.Recognition(c.Id);
             c.Image -= Math.Sign(c.Image) * Math.Min(Math.Abs(c.Image), config.ImageDecayPerWeek);
             foreach (string group in c.Support.Keys.ToList())
             {
@@ -215,11 +147,27 @@ public sealed class CampaignEngine(CampaignContext ctx)
             }
         }
 
+        foreach (Dictionary<string, double> meeting in Territory.MeetingSupport)
+        {
+            foreach (string group in meeting.Keys.ToList())
+            {
+                meeting[group] *= 1 - config.SupportDecayPerWeek;
+            }
+        }
+
+        Territory.ActiveThisWeek.Clear();
         State.Player.Resources.Stress += Campaign.Phase == CampaignPhase.Campanha ? 2 : 0;
-        Campaign.ActionsThisWeek.Clear();
-        Campaign.EnergyLeft = config.WeeklyEnergy;
+        ExpireInvites();
+        DateOnly next = State.Calendar.WeekStart.AddDays(7);
+        LeadersWeek(next);
+        State.Ledger.Expire(next);
         State.Calendar.AdvanceWeek();
+        State.Time.Day = 0;
         UpdatePhase();
+        if (Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
+        {
+            AgendaWeek(State.Calendar.WeekStart);
+        }
 
         if (Campaign.Phase == CampaignPhase.Campanha && WeeksToElection % config.PublicPollEveryWeeks == 0)
         {
@@ -268,41 +216,50 @@ public sealed class CampaignEngine(CampaignContext ctx)
     }
 
     /// <summary>
-    /// Turno dos rivais: ações sorteadas pelo empenho, com eficiência menor que a do jogador. O candidato coletivo
-    /// de cada partido também age (só reconhecimento e imagem; os apoios ficam com os nomeados).
+    /// Turno dos rivais (até a R3 dar plano a cada um): o número de saídas da semana vem do empenho e do porte, e
+    /// cada saída rende presença numa zona. Rival nomeado a vereador vai mais aos seus redutos; candidatos a prefeito
+    /// e o candidato coletivo de cada partido se espalham pela cidade. A primeira saída de cada rival vira fato no feed.
     /// </summary>
     private void NpcTurn()
     {
         CampaignConfig config = Context.Config;
-        var actions = Context.Campaign.Actions.Actions.Where(a => a.AllowedIn(Campaign.Phase) && a.MoneyPerAttribute is null).ToList();
-        if (actions.Count == 0)
+        if (Campaign.Phase is not (CampaignPhase.PreCampanha or CampaignPhase.Campanha))
         {
             return;
         }
 
+        TerritoryState t = Territory;
+        TerritorySimulation sim = Context.Campaign.Territory.Simulacao;
+        double basePresence = Commitments.Get("caminhada").Presenca * config.NpcActionEfficiency * RecognitionScale;
         double effort = config.NpcEffortByPorte.GetValueOrDefault(Context.Municipio.Porte, 1);
+        var zones = Enumerable.Range(0, t.Zones.Count).ToList();
         foreach (Candidate npc in Campaign.Candidates.Where(c => !c.IsPlayer))
         {
-            // Arredondamento estocástico: o empenho fracionário vira uma ação a mais com a probabilidade da fração.
+            // Arredondamento estocástico: o empenho fracionário vira uma saída a mais com a probabilidade da fração.
             double expected = Rng.NextInt(config.NpcActionsPerWeek.Min, config.NpcActionsPerWeek.Max + 1) * npc.Drive * effort;
             int count = (int)Math.Floor(expected) + (Rng.NextDouble() < expected - Math.Floor(expected) ? 1 : 0);
+            List<int>? redutos = t.Redutos.GetValueOrDefault(npc.Id);
             for (int i = 0; i < count; i++)
             {
-                CampaignActionDefinition action = Rng.Pick(actions);
-                double gain = action.Effects.Recognition * config.NpcActionEfficiency * RecognitionScale;
-                npc.Recognition = EffectApplier.Gain(npc.Recognition, gain);
-                npc.Image = Math.Clamp(npc.Image + (action.Effects.Image * config.NpcActionEfficiency), -1, 1);
-                if (npc.IsBulk)
+                if (redutos is null)
                 {
+                    // Campanha espalhada: um pouco em todas as zonas.
+                    t.GainEverywhere(npc.Id, basePresence * config.NpcSpreadFactor);  // base já é "pontos na cidade inteira"
                     continue;
                 }
 
-                ActionTarget? target = action.Targets.Count > 0 ? Rng.Pick(action.Targets) : null;
-                foreach (var (group, delta) in action.Effects.Support.Concat(target is null ? [] : [new KeyValuePair<string, double>(target.Group, target.Support)]))
+                int zone = Rng.PickWeighted(zones, z => Math.Max(1, t.Population[z]) * (redutos.Contains(z) ? config.NpcRedutoWeight : 1));
+                List<int> neighbors = Context.Zonas.Zonas[zone].Vizinhas.Select(t.IndexOf).Where(z => z >= 0).ToList();
+                t.Gain(npc.Id, zone, basePresence * Reach(zone), sim.Transbordo, neighbors);
+                if (i == 0)
                 {
-                    npc.Support[group] = Math.Clamp(npc.Support.GetValueOrDefault(group) + (delta * config.NpcActionEfficiency), 0, 1);
+                    DateOnly day = State.Calendar.WeekStart.AddDays(Rng.NextInt(0, 7));
+                    Agenda.AddFeed(new FeedItem(day, "rival_zona", $"{npc.Name} fez campanha em {ZoneName(t.Zones[zone])}", t.Zones[zone], null, npc.Id));
                 }
             }
+
+            npc.Image = Math.Clamp(npc.Image + (count * config.NpcImagePerAction), -1, 1);
+            npc.Recognition = t.Recognition(npc.Id);
         }
     }
 
@@ -317,8 +274,15 @@ public sealed class CampaignEngine(CampaignContext ctx)
         Multiplicity = c.Multiplicity,
     };
 
-    public VoteProjection Project(Office office, Rng? noise) =>
-        VoteModel.Project(Context.Electorate, Campaign.ForOffice(office).Select(ToVote).ToList(), Context.ElectorateContent.VoteModel, Context.Themes, noise);
+    /// <summary>Projeção da cidade: a soma das projeções das zonas (GDD 17.5).</summary>
+    public VoteProjection Project(Office office, Rng? noise) => ProjectByZone(office, noise).City;
+
+    /// <summary>Projeção de cada zona e da cidade, com a presença e o apoio de cada candidato em cada zona.</summary>
+    public (VoteProjection City, IReadOnlyList<VoteProjection> Zones) ProjectByZone(Office office, Rng? noise) =>
+        ProjectByZone(Campaign.ForOffice(office).Select(ToVote).ToList(), noise);
+
+    private (VoteProjection City, IReadOnlyList<VoteProjection> Zones) ProjectByZone(List<VoteCandidate> candidates, Rng? noise) =>
+        TerritoryVote.Project(Context.ZoneElectorates, Territory, candidates, Context.ElectorateContent.VoteModel, Context.Themes, noise);
 
     /// <summary>Registra o voto do jogador na urna (GDD 16.3). O voto conta como um voto real.</summary>
     public void CastPlayerVote(UrnaVote vote)
@@ -423,7 +387,7 @@ public sealed class CampaignEngine(CampaignContext ctx)
         {
             // 2º turno: nova projeção só com os dois finalistas.
             var finalists = mayors.Where(c => first.RunoffCandidateIds.Contains(c.Id)).Select(ToVote).ToList();
-            VoteProjection runoff = VoteModel.Project(Context.Electorate, finalists, Context.ElectorateContent.VoteModel, Context.Themes, Rng);
+            VoteProjection runoff = ProjectByZone(finalists, Rng).City;
             winner = ElectionRules.Runoff(mayors.Where(c => first.RunoffCandidateIds.Contains(c.Id))
                 .Select(c => new CandidateVotes(c.Id, (long)Math.Round(runoff.Votes[c.Id]), c.BirthDate)).ToList()).WinnerId;
         }

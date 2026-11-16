@@ -21,6 +21,7 @@ public partial class EncyclopediaDialog : PanelContainer
     private string? _term;
     private string _search = "";
     private VBoxContainer _body = null!;
+    private readonly Dictionary<string, Button> _tabs = [];
 
     public static bool IsOpen(Node root) => root.FindChild(NodeName, recursive: true, owned: false) is not null;
 
@@ -65,12 +66,12 @@ public partial class EncyclopediaDialog : PanelContainer
             ("glossario", "Glossário", "Termos do jogo e das eleições, em linguagem simples."),
             ("como_funciona", "Como funciona", "As regras eleitorais reais e as do jogo, com exemplos e a base legal."),
             ("este_mundo", "Este mundo", "Partidos, institutos e pessoas desta carreira."),
-            ("carreira", "Sua carreira", "O que você decidiu até aqui."),
+            ("carreira", "Sua carreira", "Seu Livro de compromissos (promessas, dívidas, posições e esqueletos) e o que você decidiu até aqui."),
         })
         {
             var b = Ui.Button(tabs, name, () => { _section = id; _term = null; Build(); }, Palette.Tip(Tr(tip), Tr("mostra esta parte da Enciclopédia."), Tr("nada.")));
             b.ToggleMode = true;
-            b.ButtonPressed = id == _section;
+            _tabs[id] = b;
         }
 
         var scroll = root.Add(new ScrollContainer { SizeFlagsVertical = SizeFlags.ExpandFill, HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled });
@@ -107,6 +108,12 @@ public partial class EncyclopediaDialog : PanelContainer
         }
 
         Ui.Clear(_body);
+        foreach (var (id, tab) in _tabs)
+        {
+            // Só a parte aberta fica marcada (o botão de alternância marcaria as duas).
+            tab.SetPressedNoSignal(id == _section);
+        }
+
         Game game = Game.Instance;
         EncyclopediaContent content = game.Encyclopedia;
         switch (_section)
@@ -138,12 +145,12 @@ public partial class EncyclopediaDialog : PanelContainer
     private static string Marked(string text, bool pending) =>
         pending ? $"{text} {TranslationServer.Translate(EncyclopediaContent.MarcaAConferir)}" : text;
 
-    private void Entry(string title, string text, bool highlight = false)
+    private void Entry(string title, string text, bool highlight = false, bool section = false)
     {
         var card = _body.Add(new PanelContainer());
-        card.AddThemeStyleboxOverride("panel", Palette.Box(highlight ? Palette.CartaoAlto : Palette.Cartao, 8, 16, highlight ? Palette.Acao : null, 2));
+        card.AddThemeStyleboxOverride("panel", section ? Palette.Box(Palette.Painel, 0, 4) : Palette.Box(highlight ? Palette.CartaoAlto : Palette.Cartao, 8, 16, highlight ? Palette.Acao : null, 2));
         var col = Ui.Column(card, 6);
-        var heading = Ui.Label(col, title, 22);
+        var heading = Ui.Label(col, title, section ? 26 : 22);
 
         // Título do próprio verbete: não é link para ele mesmo (o teste de explicação ignora pelo nome).
         heading.Name = "TituloVerbete";
@@ -171,6 +178,16 @@ public partial class EncyclopediaDialog : PanelContainer
         {
             Entry($"{pollster.Name} ({Tr(pollster.Internal ? "pesquisa interna" : "instituto de pesquisa")})",
                 string.Format(Tr("Amostra de {0} a {1} entrevistas. Instituto fictício; cada um tem tendência própria, e a margem de erro depende da amostra."), pollster.SampleMin, pollster.SampleMax));
+        }
+
+        if (state.City is { } city && game.Engine is { } engine)
+        {
+            foreach (Leader leader in city.Leaders.Where(l => l.Known && Matches(engine.NameOf(l.PersonId))))
+            {
+                LeaderType type = game.Campaign.Leaders.Type(leader.Type);
+                Entry($"{engine.NameOf(leader.PersonId)} ({type.Papel})",
+                    string.Format(Tr("{0}. Atua em {1}, entre os eleitores do grupo {2}. Influência {3} de 5. Pessoa fictícia; a ficha completa fica na área Pessoas."), type.Nome, engine.ZoneName(leader.Zones[0]), EffectSummary.GroupName(leader.Publico), leader.Influence));
+            }
         }
 
         if (state.Campaign is { } campaign)
@@ -231,11 +248,94 @@ public partial class EncyclopediaDialog : PanelContainer
             string.Join(". ", lines) + " " + Tr("São o ponto de partida; a partir do primeiro dia, tudo evolui pela simulação."));
     }
 
+    /// <summary>
+    /// Sua carreira: o Livro de compromissos (promessas, dívidas, posições assumidas e esqueletos, GDD 17.2) e a
+    /// linha do tempo das decisões em eventos.
+    /// </summary>
     private void BuildCareer(Game game)
     {
-        if (game.State?.Campaign is not { } campaign || campaign.Events.History.Count == 0)
+        GameState? state = game.State;
+        if (state is null)
         {
-            Entry(Tr("Nada registrado ainda"), Tr("Suas decisões em eventos aparecem aqui, com a data e o resultado. A partir da R2a, também as promessas, dívidas e posições assumidas."));
+            Entry(Tr("Nenhuma carreira aberta"), Tr("Comece ou carregue uma carreira para ver o seu Livro de compromissos e as suas decisões."));
+            return;
+        }
+
+        var ptBr = CultureInfo.GetCultureInfo("pt-BR");
+        string Date(DateOnly d) => d.ToString("dd/MM/yyyy", ptBr);
+        string Person(string id)
+        {
+            string name = id == RaceSetup.PlayerId ? state.Player.BallotName : state.Npcs.FirstOrDefault(n => n.Id == id)?.BallotName ?? id;
+            return state.City?.Leader(id) is { } leader ? $"{name} ({game.Campaign.Leaders.Type(leader.Type).Papel})" : name;
+        }
+
+        string Zone(string id) => game.Engine?.ZoneName(id) ?? id;
+        Core.People.Ledger ledger = state.Ledger;
+        Entry(Tr("Livro de compromissos"), Tr("O que fica das suas decisões e atravessa eleições e mandatos: promessas, dívidas, posições assumidas e esqueletos. Quem cobra são as pessoas a quem você deve, os rivais e a imprensa."), section: true);
+
+        if (ledger.Promises.Count == 0)
+        {
+            Entry(Tr("Promessas"), Tr("Nenhuma promessa feita. Aceitar o pedido de uma liderança grava uma promessa aqui, com prazo."));
+        }
+
+        foreach (Core.People.Promise p in ledger.Promises.AsEnumerable().Reverse().Where(p => Matches(p.Text)))
+        {
+            string who = p.ToKind switch
+            {
+                Core.People.Promise.ParaPessoa => Person(p.ToId),
+                Core.People.Promise.ParaZona => Zone(p.ToId),
+                _ => EffectSummary.GroupName(p.ToId),
+            };
+            string status = p.State switch
+            {
+                Core.People.PromiseState.Aberta => Tr("em aberto"),
+                Core.People.PromiseState.Cumprida => Tr("cumprida"),
+                Core.People.PromiseState.Quebrada => Tr("quebrada"),
+                _ => Tr("vencida sem cumprir"),
+            };
+            Entry(string.Format(Tr("Promessa · {0}"), status),
+                string.Format(Tr("A quem: {0}. O quê: {1}.{2} Feita em {3}. Prazo: {4}. Estado: {5}."), who, p.Text, p.ZoneId is null ? "" : " " + string.Format(Tr("Onde: {0}."), Zone(p.ZoneId)), Date(p.Made), Date(p.Deadline), status));
+        }
+
+        if (ledger.Debts.Count == 0)
+        {
+            Entry(Tr("Dívidas"), Tr("Nenhuma dívida política. Um apoio fechado em negociação, sem promessa, fica aqui como dívida."));
+        }
+
+        foreach (Core.People.Debt d in ledger.Debts.AsEnumerable().Reverse().Where(d => Matches(d.Text)))
+        {
+            Entry(string.Format(Tr("Dívida · {0}"), d.Settled ? Tr("quitada") : Tr("em aberto")),
+                string.Format(Tr("A quem: {0}. O quê: {1}. Desde {2}."), Person(d.ToPersonId), d.Text, Date(d.Made)));
+        }
+
+        if (ledger.Positions.Count == 0)
+        {
+            Entry(Tr("Posições assumidas"), Tr("Nenhuma posição dita em público ainda."));
+        }
+
+        foreach (Core.People.StatedPosition position in ledger.Positions.AsEnumerable().Reverse())
+        {
+            string theme = game.World.Parties.Themes.Themes.FirstOrDefault(t => t.Id == position.Theme)?.Name ?? position.Theme;
+            Entry(Tr("Posição assumida"), string.Format(ptBr, Tr("Tema: {0}. Posição: {1:+0;−0;0}, numa escala de −2 a +2. Dita em {2}, {3}."), theme, position.Value, Date(position.Date), position.Where));
+        }
+
+        if (ledger.Skeletons.Count == 0)
+        {
+            Entry(Tr("Esqueletos"), Tr("Nenhum. Um gasto ou acordo irregular fica guardado aqui, com a lista de quem sabe."));
+        }
+
+        foreach (Core.People.LedgerSkeleton skeleton in ledger.Skeletons.AsEnumerable().Reverse().Where(k => Matches(k.Text)))
+        {
+            Entry(string.Format(Tr("Esqueleto · gravidade {0}"), skeleton.Severity),
+                string.Format(Tr("{0}. Desde {1}. Quem sabe: {2}. {3}"), skeleton.Text, Date(skeleton.Created),
+                    skeleton.KnownBy.Count == 0 ? Tr("ninguém além de você") : string.Join(", ", skeleton.KnownBy.Select(Person)),
+                    skeleton.Exposed ? Tr("Já veio a público.") : Tr("Ainda não veio a público.")));
+        }
+
+        Entry(Tr("Linha do tempo"), Tr("Suas decisões em eventos, da mais recente à mais antiga."), section: true);
+        if (state.Campaign is not { } campaign || campaign.Events.History.Count == 0)
+        {
+            Entry(Tr("Nada registrado ainda"), Tr("Suas decisões em eventos aparecem aqui, com a data e o resultado."));
             return;
         }
 

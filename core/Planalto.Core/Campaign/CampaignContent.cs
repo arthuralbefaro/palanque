@@ -13,8 +13,6 @@ public sealed class IntRange
 /// <summary>Conteúdo de data/campaign/config.json: números de balanceamento da campanha.</summary>
 public sealed class CampaignConfig : IValidatable
 {
-    public required int WeeklyEnergy { get; init; }
-
     public required int PartiesInRace { get; init; }
 
     public required int NamedRivals { get; init; }
@@ -50,6 +48,15 @@ public sealed class CampaignConfig : IValidatable
 
     public required double NpcActionEfficiency { get; init; }
 
+    /// <summary>Quantas vezes um rival a vereador prefere uma zona do seu reduto a outra de mesma população.</summary>
+    public required double NpcRedutoWeight { get; init; }
+
+    /// <summary>Fração do efeito de uma saída que a campanha espalhada (prefeito, candidato coletivo) deixa em cada zona.</summary>
+    public required double NpcSpreadFactor { get; init; }
+
+    /// <summary>Imagem que cada saída rende ao rival.</summary>
+    public required double NpcImagePerAction { get; init; }
+
     /// <summary>Empenho dos rivais a vereador (multiplica as ações por semana), sorteado por rival.</summary>
     public required Parties.DoubleRange NpcDrive { get; init; }
 
@@ -81,9 +88,9 @@ public sealed class CampaignConfig : IValidatable
 
     public IEnumerable<string> Validate()
     {
-        if (WeeklyEnergy <= 0 || PartiesInRace < 2 || NamedRivals < 0 || BulkCandidatesPerParty < 1 || LegendVoteShare is < 0 or >= 1)
+        if (PartiesInRace < 2 || NamedRivals < 0 || BulkCandidatesPerParty < 1 || LegendVoteShare is < 0 or >= 1)
         {
-            yield return "energia, partidos na disputa (>= 2), candidatos anônimos (>= 1) e fatia de legenda em [0, 1).";
+            yield return "partidos na disputa (>= 2), candidatos anônimos (>= 1) e fatia de legenda em [0, 1).";
         }
 
         if (MayorCandidates is null || MayorCandidates.Min < 2 || MayorCandidates.Max < MayorCandidates.Min)
@@ -119,6 +126,7 @@ public sealed class CampaignConfig : IValidatable
     }
 }
 
+/// <summary>Alvo de uma ação de mandato (as ações de gabinete ainda usam; saem na R4).</summary>
 public sealed class ActionTarget
 {
     public required string Id { get; init; }
@@ -161,98 +169,52 @@ public sealed class MoneyPerAttribute
     public required decimal Amount { get; init; }
 }
 
-/// <summary>Ação da agenda de campanha (GDD 5.6).</summary>
-public sealed class CampaignActionDefinition
+/// <summary>Fases em que um compromisso pode ser marcado (ids usados em data/).</summary>
+public static class CampaignActionDefinition
 {
     public const string PreCampanha = "pre_campanha";
     public const string Campanha = "campanha";
-
-    public required string Id { get; init; }
-
-    public required string Name { get; init; }
-
-    public required string Description { get; init; }
-
-    public required List<string> Phases { get; init; }
-
-    public required int Energy { get; init; }
-
-    /// <summary>Custo em reais no porte médio (negativo = arrecada); escalado pelo porte.</summary>
-    public required decimal Money { get; init; }
-
-    public MoneyPerAttribute? MoneyPerAttribute { get; init; }
-
-    public required Effects Effects { get; init; }
-
-    public List<ActionTarget> Targets { get; init; } = [];
-
-    public ActionTest? Test { get; init; }
-
-    public required List<ActionRisk> Risks { get; init; }
-
-    public bool AllowedIn(CampaignPhase phase) => phase switch
-    {
-        CampaignPhase.PreCampanha => Phases.Contains(PreCampanha),
-        CampaignPhase.Campanha => Phases.Contains(Campanha),
-        _ => false,
-    };
-}
-
-/// <summary>Conteúdo de data/campaign/actions.json.</summary>
-public sealed class CampaignActionCatalog : IValidatable
-{
-    public required List<CampaignActionDefinition> Actions { get; init; }
-
-    public CampaignActionDefinition Get(string id) => Actions.First(a => a.Id == id);
-
-    public IEnumerable<string> Validate()
-    {
-        if (Actions is null || Actions.Count != 6)
-        {
-            yield return $"a fatia vertical tem 6 ações (GDD, Fase 3); há {Actions?.Count ?? 0}.";
-            yield break;
-        }
-
-        foreach (string error in DataChecks.UniqueIds(Actions.Select(a => a?.Id), "Ação"))
-        {
-            yield return error;
-        }
-
-        foreach (CampaignActionDefinition a in Actions)
-        {
-            if (a.Energy <= 0 || a.Phases.Count == 0 || a.Phases.Any(p => p is not (CampaignActionDefinition.PreCampanha or CampaignActionDefinition.Campanha)))
-            {
-                yield return $"ação '{a.Id}': energia positiva e fases válidas (pre_campanha, campanha).";
-            }
-
-            if (a.Risks.Any(r => r.Chance is < 0 or > 1))
-            {
-                yield return $"ação '{a.Id}': chance de risco entre 0 e 1.";
-            }
-        }
-    }
 }
 
 /// <summary>Conteúdo da campanha já validado.</summary>
 public sealed class CampaignContent
 {
     public const string ConfigFile = "campaign/config.json";
-    public const string ActionsFile = "campaign/actions.json";
 
     public required CampaignConfig Config { get; init; }
 
-    public required CampaignActionCatalog Actions { get; init; }
+    /// <summary>Compromissos da agenda (GDD 17.6).</summary>
+    public required CommitmentCatalog Commitments { get; init; }
+
+    /// <summary>Lideranças locais (GDD 17.10).</summary>
+    public required LeaderCatalog Leaders { get; init; }
+
+    public required World.CityEventCatalog CityEvents { get; init; }
+
+    public required Territory.TerritoryConfig Territory { get; init; }
+
+    public required People.PeopleConfig People { get; init; }
 
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, out CampaignContent? content)
     {
         var config = JsonData.LoadFile<CampaignConfig>(Path.Combine(dataDirectory, ConfigFile));
-        var actions = JsonData.LoadFile<CampaignActionCatalog>(Path.Combine(dataDirectory, ActionsFile));
+        var commitments = JsonData.LoadFile<CommitmentCatalog>(Path.Combine(dataDirectory, CommitmentCatalog.File));
+        var leaders = JsonData.LoadFile<LeaderCatalog>(Path.Combine(dataDirectory, LeaderCatalog.File));
+        var cityEvents = JsonData.LoadFile<World.CityEventCatalog>(Path.Combine(dataDirectory, World.CityEventCatalog.File));
+        var territory = JsonData.LoadFile<Territory.TerritoryConfig>(Path.Combine(dataDirectory, Planalto.Core.Territory.TerritoryConfig.File));
+        var people = JsonData.LoadFile<People.PeopleConfig>(Path.Combine(dataDirectory, Planalto.Core.People.PeopleConfig.File));
         var reports = new List<DataFileReport>
         {
             new(ConfigFile, 1, config.Errors),
-            new(ActionsFile, actions.Value?.Actions.Count ?? 0, actions.Errors),
+            new(CommitmentCatalog.File, commitments.Value?.Tipos.Count ?? 0, commitments.Errors),
+            new(LeaderCatalog.File, leaders.Value?.Tipos.Count ?? 0, leaders.Errors),
+            new(World.CityEventCatalog.File, cityEvents.Value?.Tipos.Count ?? 0, cityEvents.Errors),
+            new(Planalto.Core.Territory.TerritoryConfig.File, 1, territory.Errors),
+            new(Planalto.Core.People.PeopleConfig.File, 1, people.Errors),
         };
-        content = config.IsValid && actions.IsValid ? new CampaignContent { Config = config.Value!, Actions = actions.Value! } : null;
+        content = reports.All(r => r.Errors.Count == 0)
+            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value! }
+            : null;
         return reports;
     }
 

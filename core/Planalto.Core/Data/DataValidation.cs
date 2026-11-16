@@ -58,7 +58,8 @@ public static class DataValidation
         var people = PeopleContent.Load(dataDirectory, out _);
         reports.AddRange(people.Where(r => !reports.Any(x => x.File == r.File)));
         reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
-        reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out _));
+        // A campanha lê também o território e a memória das pessoas, que podem já estar na lista.
+        reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out _).Where(r => !reports.Any(x => x.File == r.File)));
         reports.AddRange(Events.EventContent.Load(dataDirectory, out _));
         reports.AddRange(Legislature.LegislatureContent.Load(
             dataDirectory,

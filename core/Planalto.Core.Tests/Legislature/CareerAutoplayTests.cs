@@ -134,29 +134,14 @@ public class CareerAutoplayTests
 
     private static void PlayCampaign(GameState state, CampaignEngine campaign, LegislatureEngine legislature, Rng policy)
     {
-        int weeks = 0;
-        while (state.Campaign!.Phase != CampaignPhase.Votacao)
-        {
-            Assert.True(++weeks < 60, "A campanha de reeleição não chegou à eleição.");
-            CampaignAutoplayTests.PlayDebate(campaign, policy);
-            while (state.Campaign.Events.Pending.Count > 0)
-            {
-                PendingEvent pending = state.Campaign.Events.Pending[0];
-                var choices = campaign.Context.Events!.Find(pending.EventId)!.Choices;
-                EventEngine.Resolve(campaign.Context, pending, Enumerable.Range(0, choices.Count).First(c => EventEngine.Blocked(campaign.Context, choices[c]) is null), state.Rng);
-            }
-
-            foreach (CampaignActionDefinition action in campaign.Context.Campaign.Actions.Actions)
-            {
-                campaign.Execute(action.Id, action.Targets.Count > 0 ? policy.Pick(action.Targets).Id : null);
-            }
-
-            CareerFlow.AdvanceWeek(state, campaign, legislature);
-            AssertMandate(state);
-        }
-
-        campaign.CastPlayerVote(new UrnaVote(Office.Vereador, state.Campaign.Player.Number, false));
-        campaign.ResolveElection();
+        // A agenda é jogada dia a dia; na virada da semana anda a carreira inteira (mandato em segundo plano e campanha).
+        var robot = new CampaignRobot(campaign, policy.NextUInt64() % 1_000_000);
+        robot.PlayToElection(
+            _ => AssertMandate(state),
+            () => CareerFlow.AdvanceWeek(state, campaign, legislature),
+            maxWeeks: 60);
+        AssertMandate(state);
+        robot.Vote();
     }
 
     private static void AssertMandate(GameState state)

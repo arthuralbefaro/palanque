@@ -22,6 +22,9 @@ public static class Palette
     /// <summary>Escala sequencial do modo Perfil (5 faixas, de #2A2620 a #E0A458).</summary>
     public static Color Perfil(double t) => new Color("#2A2620").Lerp(new Color("#E0A458"), (float)Math.Clamp(t, 0, 1));
 
+    /// <summary>Escala sequencial do modo Minha força (5 faixas, de #1B2A2A a #2FD0A5).</summary>
+    public static Color Forca(double t) => new Color("#1B2A2A").Lerp(new Color("#2FD0A5"), (float)Math.Clamp(t, 0, 1));
+
     private static FontFile? _inter, _oswald, _serif;
 
     public static Font Inter => _inter ??= Load("res://assets/fonts/Inter.ttf");
@@ -78,8 +81,49 @@ public static class Palette
         theme.SetFontSize("font_size", "TooltipLabel", 18);
         theme.SetFont("font", "TooltipLabel", Weight(Inter, 400));
         theme.SetStylebox("panel", "PanelContainer", Box(Painel, 0, 16));
+
+        // Listas de escolha (tipo de compromisso, zona, público): mesma cara dos cartões.
+        theme.SetStylebox("panel", "PopupMenu", Box(CartaoAlto, 8, 8, Linha));
+        theme.SetStylebox("hover", "PopupMenu", Box(new Color(Acao, 0.2f), 4, 4));
+        theme.SetColor("font_color", "PopupMenu", Texto);
+        theme.SetColor("font_hover_color", "PopupMenu", Texto);
+        theme.SetColor("font_disabled_color", "PopupMenu", new Color(Texto, 0.4f));
+        theme.SetFont("font", "PopupMenu", Weight(Inter, 400));
+        theme.SetFontSize("font_size", "PopupMenu", 18);
+        theme.SetConstant("v_separation", "PopupMenu", 12);
         return theme;
     }
+
+    /// <summary>Botão primário (ART_GUIDE, estados de controle): fundo acao, texto fundo.</summary>
+    public static void Primary(Button button)
+    {
+        button.AddThemeStyleboxOverride("normal", Box(Acao, 8, 10));
+        button.AddThemeStyleboxOverride("hover", Box(Acao.Lightened(0.08f), 8, 10));
+        button.AddThemeStyleboxOverride("pressed", Box(Acao.Darkened(0.08f), 8, 10));
+        foreach (string color in new[] { "font_color", "font_hover_color", "font_pressed_color", "font_focus_color" })
+        {
+            button.AddThemeColorOverride(color, Fundo);
+        }
+    }
+
+    /// <summary>Linha de lista clicável (ART_GUIDE): fundo cartao, cartao_alto sob o mouse, sem contorno.</summary>
+    public static void ListRow(Button button, bool selected = false)
+    {
+        var normal = Box(Cartao, 8, 8);
+        if (selected)
+        {
+            normal.BorderColor = Acao;
+            normal.BorderWidthLeft = 3;
+        }
+
+        button.AddThemeStyleboxOverride("normal", normal);
+        button.AddThemeStyleboxOverride("hover", Box(CartaoAlto, 8, 8));
+        button.AddThemeStyleboxOverride("pressed", Box(CartaoAlto, 8, 8));
+        button.AddThemeStyleboxOverride("disabled", Box(new Color(Cartao, 0.4f), 8, 8));
+    }
+
+    /// <summary>Ícone da interface (assets/icons/ui), pelo nome do arquivo sem extensão.</summary>
+    public static Texture2D Icon(string name) => GD.Load<Texture2D>($"res://assets/icons/ui/{name}.svg");
 
     /// <summary>Tooltip em três partes (princípio j): o que é, o que faz (com faixa), quanto custa.</summary>
     public static string Tip(string what, string does, string cost) =>

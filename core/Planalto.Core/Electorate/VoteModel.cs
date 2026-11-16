@@ -69,15 +69,26 @@ public static class VoteModel
         IReadOnlyList<VoteCandidate> candidates,
         VoteModelConfig config,
         ThemeCatalog themes,
-        Rng? rng = null)
+        Rng? rng = null) =>
+        Project(electorate.Segments, candidates, config, themes, Noise(candidates, config, rng));
+
+    /// <summary>Um ruído por candidato: o "humor" da rodada, comum a todos os segmentos (e a todas as zonas).</summary>
+    public static Dictionary<string, double> Noise(IReadOnlyList<VoteCandidate> candidates, VoteModelConfig config, Rng? rng) =>
+        candidates.ToDictionary(c => c.Id, _ => rng is null ? 0 : ElectorateBuilder.Gaussian(rng) * config.NoiseSd, StringComparer.Ordinal);
+
+    /// <summary>Projeção sobre uma lista de segmentos (o município inteiro ou uma zona), com o ruído já sorteado.</summary>
+    public static VoteProjection Project(
+        IReadOnlyList<Segment> segments,
+        IReadOnlyList<VoteCandidate> candidates,
+        VoteModelConfig config,
+        ThemeCatalog themes,
+        IReadOnlyDictionary<string, double> noise)
     {
         if (candidates.Count == 0)
         {
             throw new ArgumentException("Sem candidatos.", nameof(candidates));
         }
 
-        // Um ruído por candidato: o "humor" da rodada, comum a todos os segmentos.
-        var noise = candidates.ToDictionary(c => c.Id, _ => rng is null ? 0 : ElectorateBuilder.Gaussian(rng) * config.NoiseSd, StringComparer.Ordinal);
         var themePositions = candidates.ToDictionary(c => c.Id, c => ThemePositions(c, themes, config), StringComparer.Ordinal);
         var multiplicity = candidates.ToDictionary(c => c.Id, c => Math.Max(1, c.Multiplicity), StringComparer.Ordinal);
 
@@ -92,7 +103,7 @@ public static class VoteModel
         double blankNull = 0;
         double abstention = 0;
 
-        foreach (Segment segment in electorate.Segments)
+        foreach (Segment segment in segments)
         {
             double maxAffinity = segment.Affinity.Count == 0 ? 0 : segment.Affinity.Values.Max();
             var utilities = candidates.ToDictionary(

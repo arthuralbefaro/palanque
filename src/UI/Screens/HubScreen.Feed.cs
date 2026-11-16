@@ -1,0 +1,202 @@
+using Godot;
+using Planalto.Core.Campaign;
+using Planalto.Core.State;
+using Planalto.UI.Theme;
+using Planalto.UI.Widgets;
+
+namespace Planalto.UI.Screens;
+
+/// <summary>
+/// Coluna direita (GDD 17.3): o feed com o resultado explicado de cada compromisso, o que rivais e lideranças fizeram
+/// sozinhos, eventos e pesquisas; e a intenção de voto. Clicar num item com zona centraliza o mapa nela.
+/// </summary>
+public partial class HubScreen
+{
+    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId);
+
+    /// <summary>
+    /// Resultado explicado de um compromisso (princípio f): o que mudou, onde, para quem e por quê.
+    /// "+2,1 de presença em Centro; +0,4 em Vila Nova (vizinha). Fatores: …".
+    /// </summary>
+    private string ResultText(CommitmentResult r)
+    {
+        Commitment c = r.Commitment;
+        CommitmentType type = Catalog.Get(c.Type);
+        var parts = new List<string>();
+        if (c.ZoneId is not null && r.Presence.TryGetValue(c.ZoneId, out double here))
+        {
+            parts.Add(string.Format(Tr("{0} de presença em {1}"), Signed(here, "0.0"), ZoneName(c.ZoneId)));
+            parts.AddRange(r.Presence.Where(p => p.Key != c.ZoneId && Math.Abs(p.Value) >= 0.05).OrderByDescending(p => p.Value)
+                .Select(p => string.Format(Tr("{0} em {1} (vizinha)"), Signed(p.Value, "0.0"), ZoneName(p.Key))));
+        }
+        else if (r.Presence.Count > 0)
+        {
+            parts.Add(string.Format(Tr("{0} de presença em todas as zonas (em média)"), Signed(r.Presence.Values.Average(), "0.0")));
+        }
+
+        if (r.Support > 0)
+        {
+            string? group = c.Publico != CommitmentType.PublicoGeral ? c.Publico : type.PublicoFixo;
+            parts.Add(group is null
+                ? string.Format(Tr("{0} pontos de apoio no público do evento"), Signed(r.Support * 100, "0.0"))
+                : string.Format(Tr("{0} pontos de apoio no grupo {1}"), Signed(r.Support * 100, "0.0"), EffectSummary.GroupName(group)));
+        }
+
+        if (Math.Abs(r.Image) >= 0.005)
+        {
+            parts.Add(string.Format(Tr("{0} de imagem"), Signed(r.Image, "0.00")));
+        }
+
+        if (r.RelationPoints != 0 && c.PersonId is not null)
+        {
+            parts.Add(string.Format(Tr("{0} de relação com {1}"), Signed(r.RelationPoints, "0"), _engine.NameOf(c.PersonId)));
+        }
+
+        if (r.Money != 0)
+        {
+            parts.Add(SignedMoney(r.Money));
+        }
+
+        if (r.Stress != 0)
+        {
+            parts.Add(string.Format(Tr("{0} de estresse"), Signed(r.Stress, "0")));
+        }
+
+        string text = (r.Text.Length > 0 ? r.Text + " " : "") + (parts.Count == 0 ? Tr("Sem efeito nos números desta vez") : string.Join("; ", parts)) + ".";
+        if (HasYield(type) && r.Factors.Count > 0)
+        {
+            text += " " + Tr("Fatores:") + " " + string.Join(", ", r.Factors.Select(f => $"{(f.Id == "lideranca" ? f.Text : LowerFirst(f.Text))} ({Percent(f.Multiplier)})")) + ".";
+        }
+
+        return text;
+    }
+
+    /// <summary>Tudo o que aconteceu, do mais recente ao mais antigo.</summary>
+    private IEnumerable<FeedEntry> FeedEntries()
+    {
+        var items = new List<FeedEntry>();
+        int order = 0;
+        foreach (CommitmentResult r in Agenda.Log)
+        {
+            Commitment c = r.Commitment;
+            items.Add(new FeedEntry(c.Date, order++, Tr("Sua agenda"), $"{CommitmentTitle(c)} ({DayShort(c.Date)}, {TurnoName(c.Turno)})", ResultText(r), c.ZoneId));
+        }
+
+        // Rivais vistos na mesma zona na mesma semana viram um cartão só (ART_GUIDE, densidade das notícias).
+        static DateOnly Monday(DateOnly d) => d.AddDays(-(((int)d.DayOfWeek + 6) % 7));
+        foreach (var group in Agenda.Feed.Where(f => f.Kind == "rival_zona" && f.ZoneId is not null).GroupBy(f => (Week: Monday(f.Date), f.ZoneId)))
+        {
+            var rivals = group.Select(f => f.CandidateId is null ? null : Campaign.Find(f.CandidateId)).OfType<Candidate>().Distinct().ToList();
+            if (rivals.Count == 0)
+            {
+                continue;
+            }
+
+            string zone = ZoneName(group.Key.ZoneId);
+            string text = rivals.Count == 1
+                ? string.Format(Tr("{0} fez campanha em {1}."), CandidateLabel(rivals[0]), zone)
+                : string.Format(Tr("Fizeram campanha em {0}: {1}{2}."), zone, string.Join("; ", rivals.Take(3).Select(CandidateLabel)),
+                    rivals.Count > 3 ? " " + string.Format(Tr("e mais {0}"), rivals.Count - 3) : "");
+            items.Add(new FeedEntry(group.Max(f => f.Date), order++, Tr("Na rua"), null, text, group.Key.ZoneId));
+        }
+
+        foreach (FeedItem f in Agenda.Feed.Where(f => f.Kind is not ("compromisso" or "rival_zona")))
+        {
+            string text = f.Text;
+            if (f.CandidateId is not null && f.CandidateId != RaceSetup.PlayerId && Campaign.Find(f.CandidateId) is { } rival && text.Contains(rival.Name, StringComparison.Ordinal))
+            {
+                // Nome fictício sempre com o que é (princípio j).
+                int at = text.IndexOf(rival.Name, StringComparison.Ordinal);
+                text = text[..at] + CandidateLabel(rival) + text[(at + rival.Name.Length)..];
+            }
+
+            items.Add(new FeedEntry(f.Date, order++, f.Kind == "descoberta" ? Tr("Sua agenda") : Tr("Nos bastidores"), null, text + ".", f.ZoneId));
+        }
+
+        foreach (var h in Campaign.Events.History)
+        {
+            items.Add(new FeedEntry(h.Week, order++, Tr("Cidade"), null, $"{_game.Events.Find(h.EventId)?.Title ?? h.EventId}: {h.Text}", null));
+        }
+
+        foreach (PollRecord poll in Campaign.Polls.Where(p => !p.Internal))
+        {
+            var lead = poll.Candidates.MaxBy(c => c.Value);
+            items.Add(new FeedEntry(poll.Week, order++, _game.Electorate.Pollsters.Get(poll.PollsterId).Name, null, string.Format(PtBr, Tr("{0} lidera com {1:0.0}%."), Campaign.Find(lead.Key)?.Name, lead.Value), null));
+        }
+
+        return items.OrderByDescending(i => i.Date).ThenByDescending(i => i.Order);
+    }
+
+    private void FeedCard(Node parent, FeedEntry entry)
+    {
+        PanelContainer card;
+        if (entry.ZoneId is { } zone && _map.Zonas.ContainsKey(zone))
+        {
+            card = ClickCard(parent, () => { _map.CenterOn(zone); _map.Select(zone); },
+                Palette.Tip(string.Format(Tr("{0}, {1}. Aconteceu em {2}."), entry.Source, entry.Date.ToString("dd/MM", PtBr), ZoneName(zone)), Tr("centraliza o mapa nessa zona e a destaca; clique na zona para abrir a ficha."), Tr("nada.")));
+        }
+        else
+        {
+            card = Card(parent);
+        }
+
+        card.Name = "Feed_" + entry.Order;
+        var col = Ui.Column(card, 4);
+        Label meta = Ui.Value(col, $"{entry.Source} · {entry.Date.ToString("dd/MM", PtBr)}", 18);
+        meta.AddThemeColorOverride("font_color", Palette.Texto3);
+        meta.MouseFilter = MouseFilterEnum.Pass;
+        if (entry.Title is not null)
+        {
+            Glossary.Plain(col, entry.Title, 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+            Glossary.Rich(col, entry.Text);
+        }
+        else
+        {
+            Glossary.Rich(col, entry.Text, 18, Palette.Texto, Palette.Weight(Palette.Inter, 500));
+        }
+    }
+
+    private void BuildRight()
+    {
+        Ui.Clear(_feed);
+        Heading(_feed, Tr("Notícias"));
+        var items = FeedEntries().Take(14).ToList();
+        if (items.Count == 0)
+        {
+            Glossary.Rich(_feed, Tr("Nada ainda. O resultado de cada compromisso e o que os rivais e as lideranças fizerem aparecem aqui."));
+        }
+
+        foreach (FeedEntry entry in items)
+        {
+            FeedCard(_feed, entry);
+        }
+
+        Ui.Clear(_poll);
+        PollRecord? poll = Campaign.Polls.LastOrDefault();
+        Heading(_poll, poll is null ? Tr("Intenção de voto") : string.Format(PtBr, Tr("Intenção ({0}, {1:dd/MM})"), _game.Electorate.Pollsters.Get(poll.PollsterId).Name, poll.Week));
+        if (poll is null)
+        {
+            Glossary.Rich(_poll, Tr("Nenhuma pesquisa ainda. Encomende uma em Finanças; os institutos publicam sozinhos durante a campanha."));
+            return;
+        }
+
+        var ordered = poll.Candidates.OrderByDescending(c => c.Value).ToList();
+        int me = ordered.FindIndex(c => c.Key == RaceSetup.PlayerId);
+        int from = Math.Max(0, me < 0 ? 0 : me - 2);
+        foreach (var (id, value) in ordered.Skip(from).Take(5))
+        {
+            Candidate? c = Campaign.Find(id);
+            HBoxContainer row = Ui.Row(_poll, 8);
+            Label name = Ui.Value(row, $"{(c?.IsPlayer == true ? Tr("Você") : c?.Name)} ({PartySigla(c?.PartyId ?? "")})", 18);
+            name.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            name.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+            name.TooltipText = c is null ? "" : CandidateLabel(c);
+            name.MouseFilter = MouseFilterEnum.Stop;
+            name.AddThemeColorOverride("font_color", Palette.Texto);
+            name.AddThemeFontOverride("font", Palette.Weight(Palette.Inter, c?.IsPlayer == true ? 600 : 400));
+            Ui.Value(row, string.Format(PtBr, "{0:0.0}%", value), 18).AddThemeColorOverride("font_color", Palette.Texto);
+        }
+
+        Glossary.Rich(_poll, string.Format(PtBr, Tr("margem de erro de {0:0.0} pontos"), poll.MarginOfError), 18, Palette.Texto3);
+    }
+}

@@ -16,6 +16,10 @@ public sealed class Effects
 
     public decimal Money { get; init; }
 
+    /// <summary>
+    /// Herança das 6 ações: a energia semanal saiu com a agenda (GDD 17.6). Nos eventos que ainda a citam, cada
+    /// 4 pontos de energia perdidos viram 1 de estresse (e o inverso), para a escolha continuar tendo custo.
+    /// </summary>
     public int Energy { get; init; }
 
     public int Stress { get; init; }
@@ -172,9 +176,11 @@ public sealed class CampaignState
 
     public required List<Candidate> Candidates { get; init; }
 
-    public int EnergyLeft { get; set; }
+    /// <summary>Presença e apoio por zona (GDD 17.5).</summary>
+    public required Territory.TerritoryState Territory { get; init; }
 
-    public List<string> ActionsThisWeek { get; init; } = [];
+    /// <summary>Compromissos, eventos da cidade, convites, cansaço e feed (GDD 17.6).</summary>
+    public AgendaState Agenda { get; init; } = new();
 
     public List<Headline> Headlines { get; init; } = [];
 

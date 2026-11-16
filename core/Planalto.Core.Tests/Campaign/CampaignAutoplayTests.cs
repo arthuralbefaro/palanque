@@ -1,6 +1,5 @@
 using Planalto.Core.Campaign;
 using Planalto.Core.Elections;
-using Planalto.Core.Events;
 using Planalto.Core.Municipios;
 using Planalto.Core.Save;
 using Planalto.Core.State;
@@ -48,6 +47,17 @@ public class CampaignAutoplayTests
         AssertOutcome(engine);
     }
 
+    /// <summary>A mesma campanha com três turnos por dia (estresse do turno extra, descanso) e sem recusar convite.</summary>
+    [Theory]
+    [InlineData(3106200, 41UL)]
+    [InlineData(1100015, 42UL)]
+    public void CampanhaInteira_ComAgendaCheia(int ibge, ulong seed)
+    {
+        CampaignEngine engine = CampaignKit.NewCareer(ibge, seed);
+        Play(engine, seed, new RobotOptions { TurnsPerDay = 3, AcceptInvite = 1, Answer = LeaderAnswer.Aceitar });
+        AssertOutcome(engine);
+    }
+
     [Theory]
     [InlineData(3304557, 5UL)]
     [InlineData(2927408, 6UL)]
@@ -58,58 +68,24 @@ public class CampaignAutoplayTests
         AssertOutcome(engine);
     }
 
-    /// <summary>Política automática: resolve eventos, gasta a energia em ações possíveis, encomenda pesquisas e vota em si.</summary>
-    internal static void Play(CampaignEngine engine, ulong seed)
+    /// <summary>
+    /// Política automática: marca compromissos toda semana, resolve eventos e pedidos de liderança, encomenda
+    /// pesquisas, avança dia a dia e vota em si. Confere o estado a cada semana e o save a cada seis.
+    /// </summary>
+    internal static void Play(CampaignEngine engine, ulong seed, RobotOptions? options = null)
     {
-        var policy = new Rng(seed * 7919);
-        GameState state = engine.Context.State;
-        int weeks = 0;
-        while (state.Campaign!.Phase != CampaignPhase.Votacao)
+        var robot = new CampaignRobot(engine, seed, options);
+        robot.PlayToElection(week =>
         {
-            Assert.True(++weeks < 80, "A campanha não chegou à eleição.");
-            ResolveEvents(engine, policy);
-
-            var actions = engine.Context.Campaign.Actions.Actions;
-            for (int tries = 0; tries < 12; tries++)
-            {
-                CampaignActionDefinition action = policy.Pick(actions);
-                string? target = action.Targets.Count > 0 ? policy.Pick(action.Targets).Id : null;
-                engine.Execute(action.Id, target);
-            }
-
-            if (policy.Chance(0.1))
-            {
-                engine.CommissionPoll("interna");
-            }
-
             AssertState(engine);
-            if (weeks % 6 == 0)
+            if (week % 6 == 0)
             {
                 RoundTrip(engine);
             }
-
-            engine.AdvanceWeek();
-        }
-
-        ResolveEvents(engine, policy);
-        engine.CastPlayerVote(new UrnaVote(Office.Vereador, state.Campaign.Player.Number, false));
-        engine.CastPlayerVote(new UrnaVote(Office.Prefeito, null, true));
-        engine.ResolveElection();
+        });
+        AssertState(engine);
+        robot.Vote();
         RoundTrip(engine);
-    }
-
-    private static void ResolveEvents(CampaignEngine engine, Rng policy)
-    {
-        CampaignState campaign = engine.Context.State.Campaign!;
-        PlayDebate(engine, policy);
-        while (campaign.Events.Pending.Count > 0)
-        {
-            PendingEvent pending = campaign.Events.Pending[0];
-            EventDefinition definition = engine.Context.Events!.Find(pending.EventId)!;
-            var open = Enumerable.Range(0, definition.Choices.Count).Where(i => EventEngine.Blocked(engine.Context, definition.Choices[i]) is null).ToList();
-            Assert.NotEmpty(open);
-            EventEngine.Resolve(engine.Context, pending, policy.Pick(open), engine.Context.State.Rng);
-        }
     }
 
     /// <summary>Joga o debate marcado (se houver): carta sorteada da mão; ataques miram o primeiro rival.</summary>
@@ -130,18 +106,40 @@ public class CampaignAutoplayTests
         }
     }
 
-    private static void AssertState(CampaignEngine engine)
+    internal static void AssertState(CampaignEngine engine)
     {
-        CampaignState c = engine.Context.State.Campaign!;
-        Assert.InRange(c.EnergyLeft, 0, engine.Context.Config.WeeklyEnergy * 2);
+        GameState state = engine.Context.State;
+        CampaignState c = state.Campaign!;
         Assert.All(c.Candidates, x =>
         {
             Assert.InRange(x.Recognition, 0, 100);
             Assert.InRange(x.Image, -1, 1);
             Assert.All(x.Support.Values, v => Assert.InRange(v, 0, 1));
+            Assert.Equal(c.Territory.Recognition(x.Id), x.Recognition, 6);
+            Assert.All(c.Territory.Presence[x.Id], p => Assert.InRange(p, 0, 100));
         });
         Assert.Equal(c.Candidates.Count, c.Candidates.Select(x => x.Id).Distinct().Count());
         Assert.Single(c.Candidates, x => x.IsPlayer);
+
+        // Território e agenda: apoio por zona entre 0 e 1, cansaço positivo, nenhum turno com dois compromissos.
+        Assert.All(c.Territory.Support.Values.SelectMany(zones => zones).SelectMany(z => z.Values), v => Assert.InRange(v, 0, 1));
+        Assert.All(c.Agenda.Fatigue.Values, v => Assert.True(v > 0));
+        var turns = c.Agenda.Scheduled
+            .SelectMany(x => Enumerable.Range((int)x.Turno, engine.Context.Campaign.Commitments.Get(x.Type).Turnos).Select(t => (x.Date, Turno: t)))
+            .ToList();
+        Assert.Equal(turns.Count, turns.Distinct().Count());
+        Assert.All(turns, t => Assert.InRange(t.Turno, 0, 2));
+        Assert.InRange(state.Player.Resources.Stress, 0, 100);
+
+        // Cidade: toda liderança é uma pessoa com personagem, relação e memória dentro dos limites.
+        Assert.All(state.City!.Leaders, l =>
+        {
+            Planalto.Core.People.Person person = state.City.Person(l.PersonId)!;
+            Assert.Contains(state.Npcs, n => n.Id == l.PersonId);
+            Assert.InRange(person.Relation(engine.Today, engine.Context.Campaign.People), -100, 100);
+            Assert.True(person.Memories.Count <= engine.Context.Campaign.People.MaxMemories);
+            Assert.All(l.Favor.Values, f => Assert.InRange(f, 0, 100));
+        });
     }
 
     private static void RoundTrip(CampaignEngine engine)

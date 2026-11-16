@@ -100,6 +100,12 @@ public sealed class GameState
     /// <summary>Câmara e prefeitura do município em foco depois da última eleição jogada.</summary>
     public Legislature.LocalPolitics? Local { get; set; }
 
+    /// <summary>A cidade em foco como lugar com gente: pessoas com memória e lideranças (GDD 17.2 e 17.10).</summary>
+    public Campaign.CityState? City { get; set; }
+
+    /// <summary>Livro de compromissos: promessas, dívidas, posições assumidas e esqueletos; atravessa eleições (GDD 17.2).</summary>
+    public People.Ledger Ledger { get; init; } = new();
+
     /// <summary>Fundação de partido em curso ou concluída (GDD 14.2 B).</summary>
     public Career.PartyFoundingState? Founding { get; set; }
 

@@ -48,12 +48,4 @@ public static class ForecastText
         string text = effects.Count == 0 ? Tr("sem efeito nos números") : string.Join("; ", effects);
         return outcomes.Count == 0 ? text : $"{text}. {Tr("Chances")}: {string.Join(" · ", outcomes)}";
     }
-
-    /// <summary>Só o custo em dinheiro previsto, para a parte "quanto custa" do tooltip.</summary>
-    public static string Cost(Forecast f, int energy)
-    {
-        ForecastLine? money = f.Lines.FirstOrDefault(l => l.Kind == "money");
-        string cash = money is null ? Tr("sem custo em dinheiro") : money.Max <= 0 ? "R$ " + Math.Abs(money.Max).ToString("N0", PtBr) : string.Format(Tr("rende R$ {0}"), money.Min.ToString("N0", PtBr));
-        return string.Format(Tr("{0}; {1} de energia da semana"), cash, energy);
-    }
 }

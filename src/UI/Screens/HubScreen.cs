@@ -5,6 +5,7 @@ using Planalto.Core.Campaign;
 using Planalto.Core.Characters;
 using Planalto.Core.Electorate;
 using Planalto.Core.Elections;
+using Planalto.Core.Events;
 using Planalto.Core.State;
 using Planalto.Core.Territory;
 using Planalto.UI.Map;
@@ -16,44 +17,60 @@ namespace Planalto.UI.Screens;
 
 /// <summary>
 /// Tela central (GDD 17.3, ART_GUIDE seção Interface): barra superior com data e tempo, trilho de áreas, painel da
-/// área, mapa das zonas sempre visível, notícias e intenção de voto, decisões em cartão sobre o mapa. O tempo corre
-/// por dia (GDD 17.4) e pausa sozinho quando algo pede decisão. Só lê o estado e chama o Core.
+/// área (ou a ficha de zona, de pessoa ou de compromisso), mapa das zonas sempre visível, feed e intenção de voto,
+/// decisões em cartão sobre o mapa. O tempo corre por dia (GDD 17.4): a cada dia acontecem os compromissos marcados
+/// na agenda, e o jogo pausa sozinho quando algo pede decisão. Só lê o estado e chama o Core.
 /// </summary>
 public partial class HubScreen : Control
 {
     private static readonly CultureInfo PtBr = CultureInfo.GetCultureInfo("pt-BR");
-    private static readonly Dictionary<string, (ZonasUf Zonas, GeoZonasUf Geo)> ZoneCache = new(StringComparer.Ordinal);
 
     private static readonly (string Id, string Icon, string Name, string Tip)[] Areas =
     [
-        ("campanha", "megafone", "Campanha", "Candidatura e as ações da semana."),
-        ("pessoas", "pessoas", "Pessoas", "Rivais e candidatos a prefeito."),
-        ("agenda", "calendario", "Agenda", "O que você fez nesta semana e as datas que vêm."),
-        ("territorio", "barras", "Território", "As zonas da cidade e o perfil de cada uma."),
+        ("campanha", "megafone", "Campanha", "Sua candidatura e os próximos compromissos."),
+        ("pessoas", "pessoas", "Pessoas", "As lideranças que você conhece e os rivais."),
+        ("agenda", "calendario", "Agenda", "A semana em dias e turnos: marcar, desmarcar e responder a convites."),
+        ("territorio", "barras", "Território", "As zonas da cidade, a sua presença e a demanda de cada uma."),
         ("financas", "cedula", "Finanças", "Caixa, custos e pesquisas."),
         ("midia", "jornal", "Mídia", "Tudo o que saiu nas notícias."),
         ("partido", "predio", "Partido", "Seu partido nesta eleição."),
     ];
 
+    /// <summary>Dicas de primeira vez (até 40 palavras; GDD 17.1). Tudo o que dizem está também na Enciclopédia.</summary>
     private static readonly Dictionary<string, string> Hints = new(StringComparer.Ordinal)
     {
-        ["campanha"] = "Cada ação gasta energia da semana e dinheiro. Passe o mouse para ver a previsão antes de clicar.",
-        ["pessoas"] = "Seus adversários diretos. Quem tem mais reconhecimento costuma ter mais voto.",
-        ["agenda"] = "A semana vai de segunda a domingo; no domingo a cidade reage ao que todos fizeram.",
-        ["territorio"] = "Clique numa zona do mapa para ver quem mora ali e como ela tende a votar.",
+        ["campanha"] = "A campanha anda por compromissos com dia, turno do dia e zona. Marque na Agenda (terceiro ícone); o resultado de cada um aparece na coluna da direita.",
+        ["pessoas"] = "Lideranças movem votos de um público numa zona. Visite para ouvir o pedido: aceitar vira promessa no Livro de compromissos; recusar fica na memória dela. Clique num nome para abrir a ficha.",
+        ["agenda"] = "Cada dia tem três turnos. Clique num turno livre, escolha o compromisso e a zona e veja a previsão antes de confirmar. Repetir o mesmo compromisso na mesma zona rende cada vez menos: é o cansaço.",
+        ["territorio"] = "Sua presença muda de zona para zona e cai nas zonas em que você não aparece. Clique numa zona do mapa ou da lista para abrir a ficha.",
+        ["ficha_zona"] = "A ficha mostra quem mora aqui, a demanda da zona e quem é mais conhecido. Parte do que você ganha numa zona transborda para as vizinhas. Use Marcar compromisso aqui para agir.",
         ["financas"] = "Pesquisa interna mostra onde você está; institutos publicam sozinhos durante a campanha.",
         ["midia"] = "O que aconteceu na cidade e com você, do mais recente ao mais antigo.",
         ["partido"] = "Seu partido define o número de urna e pesa no voto de quem já gosta dele.",
     };
 
+    /// <summary>O que ocupa o painel da esquerda no lugar da área (ART_GUIDE: ficha abre no painel, com voltar).</summary>
+    private enum Sheet
+    {
+        Nenhuma,
+        Zona,
+        Pessoa,
+        Marcar,
+        Compromisso,
+    }
+
+    private sealed record Notice(string Text, string? Button = null, Action? Action = null, string? Tip = null);
+
     private readonly List<string> _log = [];
     private readonly Dictionary<string, Dictionary<string, double>> _zoneParties = [];
+    private readonly Stack<(Sheet Sheet, string? Id)> _back = new();
     private Game _game = null!;
     private CampaignEngine _engine = null!;
     private HBoxContainer _top = null!;
     private VBoxContainer _trail = null!;
     private VBoxContainer _left = null!;
-    private VBoxContainer _right = null!;
+    private VBoxContainer _feed = null!;
+    private VBoxContainer _poll = null!;
     private Control _mapArea = null!;
     private ZoneMapView _map = null!;
     private HBoxContainer _modes = null!;
@@ -61,8 +78,10 @@ public partial class HubScreen : Control
     private PanelContainer? _banner;
     private ColorRect? _eventShade;
     private string _area = "campanha";
-    private string _mapMode = "lider";
-    private string? _visitTarget;
+    private string _mapMode = "forca";
+    private Sheet _sheet = Sheet.Nenhuma;
+    private string? _sheetId;
+    private Notice? _notice;
     private bool _running;
     private int _speed = 1;
     private double _accumulated;
@@ -72,7 +91,11 @@ public partial class HubScreen : Control
 
     private CampaignState Campaign => State.Campaign!;
 
-    /// <summary>Registro de resultados da semana, do mais recente ao mais antigo.</summary>
+    private AgendaState Agenda => Campaign.Agenda;
+
+    private TerritoryState Territory => Campaign.Territory;
+
+    /// <summary>Registro do que o jogador fez na tela, do mais recente ao mais antigo.</summary>
     public IReadOnlyList<string> Log => _log;
 
     /// <summary>Cartão de decisão aberto (testes de fumaça conferem que ele sai).</summary>
@@ -81,6 +104,12 @@ public partial class HubScreen : Control
     public bool Running => _running;
 
     public ZoneMapView ZoneMap => _map;
+
+    /// <summary>Nome da ficha aberta no painel da esquerda ("Nenhuma", "Zona", "Pessoa", "Marcar", "Compromisso").</summary>
+    public string SheetName => _sheet.ToString();
+
+    /// <summary>Texto da faixa de pausa automática, se houver (testes de fumaça).</summary>
+    public string? NoticeText => _notice?.Text;
 
     public override void _Ready()
     {
@@ -118,25 +147,31 @@ public partial class HubScreen : Control
         _mapArea = body.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(640, 0), ClipContents = true });
         _map = _mapArea.Add(new ZoneMapView());
         _map.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        _map.ZoneClicked += id =>
-        {
-            if (id is not null)
-            {
-                _area = "territorio";
-            }
-
-            Refresh();
-        };
+        _map.ZoneClicked += OnZoneClicked;
         _map.HoverText = ZoneTooltip;
         _modes = _mapArea.Add(new HBoxContainer { Position = new Vector2(16, 16) });
         _modes.AddThemeConstantOverride("separation", 8);
-        _legend = _mapArea.Add(new VBoxContainer());
-        _legend.SetAnchorsAndOffsetsPreset(LayoutPreset.BottomLeft);
-        _legend.GrowVertical = GrowDirection.Begin;
-        _legend.OffsetLeft = 16;
-        _legend.OffsetBottom = -16;
 
-        _right = Scroll(Panel(body, new Vector2(400, 0), 16));
+        // Legenda: acima da altura da faixa de decisão, para as duas nunca se cobrirem.
+        var legendPanel = _mapArea.Add(new PanelContainer { MouseFilter = MouseFilterEnum.Ignore });
+        legendPanel.AddThemeStyleboxOverride("panel", Palette.Box(new Color(Palette.Painel, 0.88f), 8, 10, Palette.Linha));
+        legendPanel.SetAnchorsAndOffsetsPreset(LayoutPreset.BottomLeft);
+        legendPanel.GrowVertical = GrowDirection.Begin;
+        legendPanel.OffsetLeft = 16;
+        legendPanel.OffsetBottom = -104;
+        _legend = legendPanel.Add(new VBoxContainer());
+        _legend.AddThemeConstantOverride("separation", 4);
+
+        // Coluna direita: o feed rola; a intenção de voto fica fixa embaixo (ART_GUIDE, grade de painéis).
+        var right = Panel(body, new Vector2(400, 0), 16).Add(new VBoxContainer());
+        right.AddThemeConstantOverride("separation", 12);
+        var feedScroll = right.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled, SizeFlagsVertical = SizeFlags.ExpandFill });
+        _feed = feedScroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        _feed.AddThemeConstantOverride("separation", 8);
+        right.Add(new ColorRect { Color = Palette.Linha, CustomMinimumSize = new Vector2(0, 1), MouseFilter = MouseFilterEnum.Ignore });
+        _poll = right.Add(new VBoxContainer());
+        _poll.AddThemeConstantOverride("separation", 6);
+
         LoadZones();
         Refresh();
     }
@@ -159,26 +194,10 @@ public partial class HubScreen : Control
     private void LoadZones()
     {
         var municipio = _engine.Context.Municipio;
-        if (!ZoneCache.TryGetValue(municipio.Uf, out var files))
-        {
-            var zonas = ZonasPaths.Load(_game.DataDirectory, municipio.Uf);
-            var geo = ZonasPaths.LoadGeo(_game.DataDirectory, municipio.Uf);
-            if (zonas.Value is null || geo.Value is null)
-            {
-                GD.PushError($"Zonas de {municipio.Uf} indisponíveis: rode o importador no modo zonas.");
-                return;
-            }
-
-            files = (zonas.Value, geo.Value);
-            ZoneCache[municipio.Uf] = files;
-        }
-
-        _zonas = files.Zonas.Municipios.FirstOrDefault(m => m.CodigoIbge == municipio.CodigoIbge);
-        if (_zonas is not null)
-        {
-            string prefix = municipio.CodigoIbge.ToString(CultureInfo.InvariantCulture) + "-";
-            _map.Load(_zonas, files.Geo.Zonas.Where(z => z.Id.StartsWith(prefix, StringComparison.Ordinal)), files.Geo.Scale);
-        }
+        _zonas = _engine.Context.Zonas;
+        string prefix = municipio.CodigoIbge.ToString(CultureInfo.InvariantCulture) + "-";
+        GeoZonasUf geo = _game.GeoZonasDe(municipio.Uf);
+        _map.Load(_zonas, geo.Zonas.Where(z => z.Id.StartsWith(prefix, StringComparison.Ordinal)), geo.Scale);
     }
 
     // ------------------------------------------------------------------ tempo
@@ -208,23 +227,33 @@ public partial class HubScreen : Control
     /// <summary>Motivo para o tempo não andar (decisão imediata ou fase que se resolve fora do mapa); null se pode.</summary>
     public string? BlockReason() =>
         Campaign.Events.Pending.Count > 0 ? Tr("há uma decisão esperando você")
+        : Agenda.PendingRequest is not null ? Tr("uma liderança fez um pedido e espera a sua resposta")
         : Campaign.Debate is not null ? Tr("há um debate na TV hoje")
         : Campaign.Phase == CampaignPhase.Votacao ? Tr("é dia de eleição: vá à urna")
         : Campaign.Phase == CampaignPhase.Encerrada ? Tr("a eleição terminou: veja a apuração")
         : null;
 
-    /// <summary>Um dia de jogo. No domingo, a simulação da semana roda e as pausas automáticas são conferidas.</summary>
+    /// <summary>
+    /// Um dia de jogo: acontecem os compromissos de hoje (cada um vira um cartão no feed) e o dia vira; no domingo
+    /// roda a simulação da semana. Depois as pausas automáticas são conferidas (GDD 17.4).
+    /// </summary>
     public void StepDay()
     {
+        if (BlockReason() is not null)
+        {
+            _running = false;
+            Refresh();
+            return;
+        }
+
         int polls = Campaign.Polls.Count;
         CampaignPhase phase = Campaign.Phase;
-        int actions = Campaign.ActionsThisWeek.Count;
-        Game.WeekNote note = Game.WeekNote.Nenhuma;
-        bool turned = Clock.AdvanceDay(State, () => note = _game.AdvanceWeek());
-        if (turned)
+        FeedItem? lastFeed = Agenda.Feed.LastOrDefault();
+        Game.DayReport report = _game.AdvanceDay();
+        if (report.WeekTurned)
         {
             SaveManager.Instance.Autosave();
-            if (note == Game.WeekNote.MandatoEncerrado)
+            if (report.Note == Game.WeekNote.MandatoEncerrado)
             {
                 _log.Insert(0, Tr("Seu mandato terminou."));
             }
@@ -234,42 +263,70 @@ public partial class HubScreen : Control
                 _game.GoToCareer();
                 return;
             }
-
-            CheckPauses(polls, phase, actions);
         }
 
+        CheckPauses(polls, phase, lastFeed, report);
         Refresh();
     }
 
-    private void CheckPauses(int polls, CampaignPhase phase, int actionsLastWeek)
+    private void CheckPauses(int polls, CampaignPhase phase, FeedItem? lastFeed, Game.DayReport report)
     {
         var overrides = Settings.PauseOverrides;
         bool Pause(string id) => Clock.ShouldPause(_game.Time, id, overrides);
-        if (BlockReason() is not null && Pause(Clock.DecisaoImediata))
+        void Stop(Notice? notice)
         {
             _running = false;
+            _notice ??= notice;
+        }
+
+        if ((report.Stopped || BlockReason() is not null) && Pause(Clock.DecisaoImediata))
+        {
+            Stop(null);
         }
 
         if (Campaign.Phase != phase && Pause(Clock.FaseNova))
         {
-            _running = false;
-            _log.Insert(0, Campaign.Phase == CampaignPhase.Campanha ? Tr("Começou a campanha oficial: comício e propaganda liberados.") : Tr("A fase da eleição mudou."));
+            Stop(new Notice(Campaign.Phase == CampaignPhase.Campanha ? Tr("Começou a campanha oficial: o comício está liberado.") : Tr("A fase da eleição mudou.")));
         }
 
         if (Campaign.Polls.Count > polls && Pause(Clock.PesquisaPublicada))
         {
-            _running = false;
+            Stop(null);
         }
 
-        decimal cheapest = _game.Campaign.Actions.Actions.Where(a => a.AllowedIn(Campaign.Phase)).Select(_engine.CostOf).Where(c => c > 0).DefaultIfEmpty(0).Min();
-        if (State.Player.Resources.Money < cheapest && Pause(Clock.CaixaBaixo))
+        // O que entrou no feed desde ontem: liderança perdida e rival em zona onde o jogador lidera a presença.
+        int from = lastFeed is null ? 0 : Agenda.Feed.FindLastIndex(f => ReferenceEquals(f, lastFeed)) + 1;
+        foreach (FeedItem item in Agenda.Feed.Skip(from))
         {
-            _running = false;
+            if (item.Kind == "lideranca_perdida" && Pause(Clock.LiderancaPerdida))
+            {
+                string? person = item.PersonId;
+                Stop(new Notice(item.Text + ".", person is null ? null : "Abrir a ficha", () => OpenSheet(Sheet.Pessoa, person),
+                    Palette.Tip(Tr("Abre a ficha dessa pessoa."), Tr("mostra a relação, as lembranças e o pedido dela."), Tr("nada."))));
+            }
+            else if (item.Kind == "rival_zona" && item.ZoneId is { } zone && _engine.PlayerLeadsPresence(Territory.IndexOf(zone)) && Pause(Clock.RivalEmZonaLider))
+            {
+                Stop(new Notice(string.Format(Tr("{0}, zona em que você lidera a presença."), item.Text), "Ver a zona", () => { _map.CenterOn(zone); _map.Select(zone); OpenSheet(Sheet.Zona, zone); },
+                    Palette.Tip(Tr("Mostra a zona no mapa e abre a ficha dela."), Tr("você vê a presença de cada um ali e pode marcar um compromisso."), Tr("nada."))));
+            }
         }
 
-        if (actionsLastWeek == 0 && Pause(Clock.SemanaSemCompromisso))
+        if (report.WeekTurned)
         {
-            _running = false;
+            decimal cheapest = _engine.Context.Campaign.Commitments.Tipos.Where(t => t.AllowedIn(Campaign.Phase)).Select(_engine.CostOf).Where(c => c > 0).DefaultIfEmpty(0).Min();
+            if (State.Player.Resources.Money < cheapest && Pause(Clock.CaixaBaixo))
+            {
+                Stop(new Notice(string.Format(Tr("O caixa ({0}) não paga nem o compromisso mais barato ({1})."), Money(State.Player.Resources.Money), Money(cheapest))));
+            }
+        }
+
+        // Domingo: a semana que vem ainda está vazia.
+        DateOnly nextWeek = State.Calendar.WeekStart.AddDays(7);
+        if (State.Time.Day == 6 && Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha && nextWeek < Campaign.ElectionDate
+            && _engine.ScheduledIn(nextWeek, nextWeek.AddDays(6)) == 0 && Pause(Clock.SemanaSemCompromisso))
+        {
+            Stop(new Notice(Tr("A semana que vem não tem nenhum compromisso marcado."), "Abrir a agenda", () => { _weekOffset = 1; OpenArea("agenda"); },
+                Palette.Tip(Tr("Abre a Agenda na semana que vem."), Tr("você marca os compromissos da semana; sem nenhum, a sua presença só cai."), Tr("nada."))));
         }
     }
 
@@ -277,7 +334,86 @@ public partial class HubScreen : Control
     {
         _speed = speed;
         _running = BlockReason() is null;
+        if (_running)
+        {
+            _notice = null;
+        }
+
         _accumulated = 0;
+        Refresh();
+    }
+
+    // ------------------------------------------------------------------ navegação do painel
+
+    /// <summary>Mostra uma área do trilho (fecha a ficha aberta).</summary>
+    public void OpenArea(string area)
+    {
+        _area = area;
+        _sheet = Sheet.Nenhuma;
+        _sheetId = null;
+        _draft = null;
+        _back.Clear();
+        Refresh();
+    }
+
+    private void OpenSheet(Sheet sheet, string? id)
+    {
+        if (_sheet != Sheet.Nenhuma && _sheet != Sheet.Marcar && (_sheet != sheet || _sheetId != id))
+        {
+            _back.Push((_sheet, _sheetId));
+        }
+
+        _sheet = sheet;
+        _sheetId = id;
+        if (sheet == Sheet.Marcar)
+        {
+            // Marcar pede escolhas em listas: o tempo para enquanto a marcação está aberta.
+            _running = false;
+        }
+
+        Refresh();
+    }
+
+    private void Back()
+    {
+        _draft = null;
+        (_sheet, _sheetId) = _back.Count > 0 ? _back.Pop() : (Sheet.Nenhuma, null);
+        _map.Select(_sheet == Sheet.Zona ? _sheetId : null);
+        Refresh();
+    }
+
+    private void OnZoneClicked(string? id)
+    {
+        if (_sheet == Sheet.Marcar && _draft is not null)
+        {
+            // Com a marcação aberta, o clique no mapa escolhe a zona do compromisso.
+            if (id is not null && TypeOf(_draft).ExigeZona && !TypeOf(_draft).SoEvento)
+            {
+                SetDraftZone(id);
+            }
+
+            _map.Select(_draft.ZoneId);
+            Refresh();
+            return;
+        }
+
+        if (id is null)
+        {
+            if (_sheet == Sheet.Zona)
+            {
+                Back();
+            }
+            else
+            {
+                Refresh();
+            }
+
+            return;
+        }
+
+        _back.Clear();
+        _sheet = Sheet.Zona;
+        _sheetId = id;
         Refresh();
     }
 
@@ -296,27 +432,91 @@ public partial class HubScreen : Control
         BuildMap();
         BuildRight();
         BuildBanner();
-        ShowPendingEvent();
+        ShowPendingDecision();
     }
 
     private string Money(decimal value) => string.Create(PtBr, $"R$ {value:N0}");
 
+    private static string Signed(double value, string format) => (value >= 0 ? "+" : "−") + Math.Abs(value).ToString(format, PtBr);
+
+    private string Range(double min, double max, string format) =>
+        Signed(min, format) == Signed(max, format) ? Signed(min, format) : $"{Signed(min, format)} {Tr("a")} {Signed(max, format)}";
+
+    private string SignedMoney(decimal value) => (value >= 0 ? "+" : "−") + Money(Math.Abs(value));
+
+    /// <summary>Multiplicador como variação: 1,30 vira "+30%"; 0,45 vira "−55%".</summary>
+    private static string Percent(double multiplier) => Signed((multiplier - 1) * 100, "0") + "%";
+
+    private static string DayShort(DateOnly date) => date.ToString("ddd d", PtBr).Replace(".", "", StringComparison.Ordinal);
+
+    private static string DayLong(DateOnly date) => date.ToString("dddd, d 'de' MMMM", PtBr);
+
+    private string TurnoName(Turno turno) => turno switch
+    {
+        Turno.Manha => Tr("manhã"),
+        Turno.Tarde => Tr("tarde"),
+        _ => Tr("noite"),
+    };
+
+    private string ZoneName(string? id) => id is null ? "" : _engine.ZoneName(id);
+
     private string PartySigla(string partyId) => State.Party(partyId)?.Sigla ?? partyId;
 
-    private static Label Heading(Node parent, string text, int size = 22)
+    /// <summary>Nome fictício sempre com o que é (princípio j): "Fulana (candidata a vereadora, SIGLA)".</summary>
+    private string CandidateLabel(Candidate c)
     {
-        Label l = Ui.Label(parent, text, size);
-        l.AddThemeFontOverride("font", Palette.Weight(Palette.Inter, 600));
-        l.AddThemeColorOverride("font_color", Palette.Texto);
-        l.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-        return l;
+        string office = _game.People.Offices.Name(c.Office, c.Gender).ToLowerInvariant();
+        string role = c.Gender switch
+        {
+            Gender.Feminino => string.Format(Tr("candidata a {0}"), office),
+            Gender.Masculino => string.Format(Tr("candidato a {0}"), office),
+            _ => string.Format(Tr("candidatura a {0}"), office),
+        };
+        return $"{c.Name} ({role}, {PartySigla(c.PartyId)})";
+    }
+
+    private static RichTextLabel Heading(Node parent, string text, int size = 22) =>
+        Glossary.Rich(parent, text, size, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+
+    /// <summary>Título com nome próprio (zona, pessoa): sem links de glossário.</summary>
+    private static RichTextLabel NameTitle(Node parent, string text, int size = 24) =>
+        Glossary.Plain(parent, text, size, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+
+    private static PanelContainer Card(Node parent, Color? background = null, Color? border = null, int margin = 12)
+    {
+        var card = parent.Add(new PanelContainer());
+        card.AddThemeStyleboxOverride("panel", Palette.Box(background ?? Palette.Cartao, 8, margin, border));
+        return card;
+    }
+
+    /// <summary>Cartão clicável (linha de lista ou item do feed): fundo mais claro sob o mouse, tooltip em três partes.</summary>
+    private PanelContainer ClickCard(Node parent, Action onClick, string tip, string? name = null)
+    {
+        var card = parent.Add(new PanelContainer { MouseFilter = MouseFilterEnum.Stop, TooltipText = tip, MouseDefaultCursorShape = CursorShape.PointingHand });
+        if (name is not null)
+        {
+            card.Name = name;
+        }
+
+        card.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Cartao, 8, 12));
+        card.MouseEntered += () => card.AddThemeStyleboxOverride("panel", Palette.Box(Palette.CartaoAlto, 8, 12));
+        card.MouseExited += () => card.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Cartao, 8, 12));
+        card.GuiInput += e =>
+        {
+            // Clique num termo sublinhado abre o verbete, não o cartão.
+            if (e is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: false } && !EncyclopediaDialog.IsOpen(GetTree().Root))
+            {
+                onClick();
+            }
+        };
+        return card;
     }
 
     private Button IconButton(Node parent, string icon, bool pressed, Action onPressed, string tip)
     {
         var b = parent.Add(new Button
         {
-            Icon = GD.Load<Texture2D>($"res://assets/icons/ui/{icon}.svg"),
+            Icon = Palette.Icon(icon),
             ExpandIcon = true,
             IconAlignment = HorizontalAlignment.Center,
             CustomMinimumSize = new Vector2(48, 44),
@@ -328,6 +528,17 @@ public partial class HubScreen : Control
         return b;
     }
 
+    private void BackButton()
+    {
+        var b = Ui.Button(_left, "Voltar", Back, Palette.Tip(Tr("Fecha esta ficha."), Tr("volta ao que estava aberto antes no painel."), Tr("nada.")));
+        b.Name = "Voltar";
+        b.Icon = Palette.Icon("voltar");
+        b.ExpandIcon = true;
+        b.Alignment = HorizontalAlignment.Left;
+        b.CustomMinimumSize = new Vector2(132, 44);
+        b.SizeFlagsHorizontal = SizeFlags.ShrinkBegin;
+    }
+
     private void BuildTop()
     {
         Ui.Clear(_top);
@@ -337,12 +548,13 @@ public partial class HubScreen : Control
         date.AddThemeColorOverride("font_color", Palette.Texto);
         date.CustomMinimumSize = new Vector2(190, 0);
         date.MouseFilter = MouseFilterEnum.Stop;
-        date.TooltipText = Palette.Tip(Tr("Data do jogo. O dia é a unidade do tempo."), Tr("a cada segunda-feira a cidade se mexe: rivais, pesquisas e eventos."), Tr("nada."));
+        date.TooltipText = Palette.Tip(Tr("Data do jogo. O dia é a unidade do tempo."), Tr("a cada dia acontecem os compromissos marcados; a cada segunda-feira a cidade se mexe: rivais, lideranças, pesquisas e eventos."), Tr("nada."));
 
         string? block = BlockReason();
         var pause = IconButton(_top, "pausa", !_running, () => { _running = false; Refresh(); },
-            Palette.Tip(Tr("Pausa o tempo."), Tr("o dia para; você pode olhar o mapa, fazer ações e decidir com calma."), Tr("nada.")));
-        pause.Modulate = !_running && block is not null ? Palette.Atencao : Colors.White;
+            Palette.Tip(Tr("Pausa o tempo."), Tr("o dia para; você pode olhar o mapa, marcar compromissos e decidir com calma."), Tr("nada.")));
+        pause.Modulate = !_running && (block is not null || _notice is not null) ? Palette.Atencao : Colors.White;
+        pause.Name = "Pausa";
         foreach (int speed in _game.Time.Velocidades)
         {
             double seconds = Clock.SecondsPerDay(_game.Time, Clock.ModoCampanha, speed);
@@ -374,14 +586,20 @@ public partial class HubScreen : Control
         phaseLabel.SizeFlagsVertical = SizeFlags.ShrinkCenter;
         phaseLabel.ClipContents = true;
 
-        Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga ações e pesquisas; acabou, só a arrecadação traz mais."));
-        Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."), Tr("o eleitor só vota em quem conhece; cai um pouco toda semana sem campanha."));
+        // Origem do número (ART_GUIDE, densidade): o reconhecimento é a média das presenças por zona, pela população.
+        string zones = string.Join(", ", Enumerable.Range(0, Territory.Zones.Count)
+            .OrderByDescending(z => Territory.Population[z]).Take(4)
+            .Select(z => string.Format(PtBr, "{0} {1:0}", ZoneName(Territory.Zones[z]), Territory.PresenceOf(RaceSetup.PlayerId, z))));
+        Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos e pesquisas; o jantar de arrecadação traz mais."));
+        Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
+            string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
         Stat(Tr("como te veem"), string.Format(PtBr, "{0:+0.00;−0.00;0.00}", Campaign.Player.Image), Tr("Imagem: como a cidade vê você, de −1 a +1."), Tr("pesa no voto; volta aos poucos para zero sem novidades."));
-        Stat(Tr("estresse"), string.Format(PtBr, "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem."), Tr("sobe com a campanha; alto por muito tempo, piora a saúde."));
+        Stat(Tr("estresse"), string.Format(PtBr, "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
+            string.Format(Tr("sobe com cada compromisso e mais com o terceiro turno do mesmo dia; acima de {0}, você se sai pior em entrevistas e negociações. Descanso e família baixa."), _engine.Context.Campaign.Commitments.Regras.EstresseLimite));
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));
-        IconButton(_top, "ajuda", false, () => EncyclopediaDialog.Open(GetTree().Root), Palette.Tip(Tr("Enciclopédia (F1)."), Tr("explica termos, regras eleitorais reais e quem é quem neste mundo."), Tr("nada; o jogo fica pausado.")));
+        IconButton(_top, "ajuda", false, () => EncyclopediaDialog.Open(GetTree().Root), Palette.Tip(Tr("Enciclopédia (F1)."), Tr("explica termos, regras eleitorais reais, quem é quem neste mundo e o seu Livro de compromissos."), Tr("nada; o jogo fica pausado.")));
     }
 
     private void Stat(string caption, string value, string what, string does)
@@ -402,7 +620,8 @@ public partial class HubScreen : Control
         Ui.Clear(_trail);
         foreach (var (id, icon, name, tip) in Areas)
         {
-            IconButton(_trail, icon, _area == id, () => { _area = id; Refresh(); }, Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
+            var b = IconButton(_trail, icon, _area == id && _sheet == Sheet.Nenhuma, () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
+            b.Name = "Area_" + id;
         }
     }
 
@@ -411,6 +630,29 @@ public partial class HubScreen : Control
     private void BuildLeft()
     {
         Ui.Clear(_left);
+        switch (_sheet)
+        {
+            case Sheet.Zona when _sheetId is not null && _map.Zonas.ContainsKey(_sheetId):
+                BuildZoneSheet(_map.Zonas[_sheetId]);
+                return;
+            case Sheet.Pessoa when _sheetId is not null && _engine.City.Leader(_sheetId) is { } leader:
+                BuildPersonSheet(leader);
+                return;
+            case Sheet.Marcar when _draft is not null:
+                BuildScheduleSheet(_draft);
+                return;
+            case Sheet.Compromisso when _sheetId is not null && BuildCommitmentSheet(_sheetId):
+                return;
+            case Sheet.Nenhuma:
+                break;
+            default:
+                // A ficha perdeu o alvo (compromisso concluído e fora do registro, por exemplo): volta à área.
+                _sheet = Sheet.Nenhuma;
+                _sheetId = null;
+                _back.Clear();
+                break;
+        }
+
         Heading(_left, Tr(Areas.First(a => a.Id == _area).Name));
         FirstTimeHint(_area);
         switch (_area)
@@ -425,19 +667,19 @@ public partial class HubScreen : Control
         }
     }
 
-    private void FirstTimeHint(string area)
+    private void FirstTimeHint(string key)
     {
-        if (!Settings.HintsEnabled || Settings.HintSeen(area) || !Hints.TryGetValue(area, out string? text))
+        if (!Settings.HintsEnabled || Settings.HintSeen(key) || !Hints.TryGetValue(key, out string? text))
         {
             return;
         }
 
-        var card = _left.Add(new PanelContainer());
-        card.AddThemeStyleboxOverride("panel", Palette.Box(Palette.CartaoAlto, 8, 12, Palette.Acao));
+        PanelContainer card = Card(_left, Palette.CartaoAlto, Palette.Acao);
+        card.Name = "Dica_" + key;
         var col = Ui.Column(card, 8);
         Glossary.Rich(col, Tr(text), 18, Palette.Texto);
         var row = Ui.Row(col, 8);
-        Ui.Button(row, "Entendi", () => { Settings.MarkHintSeen(area); Refresh(); }, Palette.Tip(Tr("Fecha esta dica."), Tr("ela não volta nesta área; tudo o que ela diz está na Enciclopédia (F1)."), Tr("nada.")));
+        Ui.Button(row, "Entendi", () => { Settings.MarkHintSeen(key); Refresh(); }, Palette.Tip(Tr("Fecha esta dica."), Tr("ela não volta; tudo o que ela diz está na Enciclopédia (F1)."), Tr("nada.")));
         Ui.Button(row, "Sem dicas", () => { Settings.DisableHints(); Refresh(); }, Palette.Tip(Tr("Desliga todas as dicas de primeira vez."), Tr("nenhuma dica volta."), Tr("nada.")));
     }
 
@@ -448,7 +690,7 @@ public partial class HubScreen : Control
         Glossary.Rich(_left, string.Format(Tr("Candidatura: {0} · número {1}"), current, Campaign.Player.Number), 18, Palette.Texto);
         if (State.Mandate is not null)
         {
-            Glossary.Rich(_left, Tr("Campanha de reeleição: durante a campanha, seu mandato vota seguindo a orientação do partido."), 16);
+            Glossary.Rich(_left, Tr("Campanha de reeleição: durante a campanha, seu mandato vota seguindo a orientação do partido."));
         }
 
         if (Campaign.Phase == CampaignPhase.PreCampanha)
@@ -475,206 +717,48 @@ public partial class HubScreen : Control
             }
         }
 
-        Heading(_left, string.Format(Tr("Ações da semana · energia {0}/{1}"), Campaign.EnergyLeft, _engine.Context.Config.WeeklyEnergy), 20);
-        foreach (CampaignActionDefinition action in _game.Campaign.Actions.Actions)
+        Heading(_left, Tr("Próximos compromissos"), 20);
+        var next = Agenda.Scheduled.OrderBy(c => c.Date).ThenBy(c => c.Turno).Take(5).ToList();
+        if (next.Count == 0)
         {
-            if (action.Targets.Count > 0)
-            {
-                var options = Ui.Options(_left, action.Targets.Select(t => (t.Id, t.Name)), _visitTarget ?? action.Targets[0].Id, id => { _visitTarget = id; Refresh(); }, translate: false);
-                options.TooltipText = Palette.Tip(Tr("Onde fazer a visita."), Tr("escolhe o grupo de eleitores que a visita alcança."), Tr("nada; o custo é o da ação."));
-            }
-
-            AddAction(action);
+            Glossary.Rich(_left, Tr("Nenhum compromisso marcado. Sem compromisso, a sua presença cai um pouco toda semana em todas as zonas."));
         }
+
+        foreach (Commitment c in next)
+        {
+            CommitmentRow(c);
+        }
+
+        var open = Ui.Button(_left, "Abrir a agenda", () => OpenArea("agenda"), Palette.Tip(Tr("Abre a Agenda da semana."), Tr("mostra os sete dias e os três turnos de cada um, para marcar e desmarcar."), Tr("nada.")));
+        Palette.Primary(open);
 
         if (_log.Count > 0)
         {
-            Heading(_left, Tr("O que mudou"), 18);
+            Heading(_left, Tr("O que você fez"), 20);
             foreach (string line in _log.Take(6))
             {
-                Glossary.Rich(_left, "· " + line, 16);
+                Glossary.Rich(_left, "· " + line);
             }
         }
     }
 
-    private void AddAction(CampaignActionDefinition action)
+    /// <summary>Linha de um compromisso marcado: o quê e onde à esquerda, quando à direita; abre o detalhe.</summary>
+    private void CommitmentRow(Commitment c)
     {
-        string? target = action.Targets.Count > 0 ? _visitTarget ?? action.Targets[0].Id : null;
-        Forecast forecast = _engine.Forecast(action.Id, target);
-        decimal cost = _engine.CostOf(action);
-        string money = cost >= 0 ? Money(cost) : "+" + Money(-cost);
-        ActionFailure? failure = _engine.CanExecute(action, target);
-        string tip = Palette.Tip(Tr(action.Description), ForecastText.Full(forecast, EffectSummary.GroupName) + ". " + Tr("Efeito na cidade inteira."), ForecastText.Cost(forecast, action.Energy) + ".");
-        var button = Ui.Button(_left, $"{action.Name}\n{action.Energy} {Tr("energia")} · {money}", () =>
-        {
-            EffectSnapshot before = Snapshot();
-            ActionResult result = _engine.Execute(action.Id, target);
-            _log.Insert(0, EffectSummary.Line(action.Name, result.Text, EffectSummary.Describe(before, Snapshot(), EffectSummary.GroupName)));
-            Refresh();
-        }, failure is null ? tip : Palette.Blocked(FailureText(failure.Value), tip));
-        button.Alignment = HorizontalAlignment.Left;
-        button.Disabled = failure is not null;
-        button.ClipText = true;
-    }
-
-    private EffectSnapshot Snapshot() => new(
-        Campaign.Player.Recognition,
-        Campaign.Player.Image,
-        State.Player.Resources.Money,
-        State.Player.Resources.PoliticalCapital,
-        new Dictionary<string, double>(Campaign.Player.Support),
-        new Dictionary<string, double>());
-
-    private string FailureText(ActionFailure failure)
-    {
-        int weeks = Math.Max(0, (Campaign.CampaignStart.DayNumber - Clock.Today(State).DayNumber + 6) / 7);
-        return failure switch
-        {
-            ActionFailure.FaseNaoPermite => string.Format(Tr("só na campanha oficial, a partir de 16 de agosto (faltam {0} semanas)."), weeks),
-            ActionFailure.SemEnergia => string.Format(Tr("falta energia nesta semana (restam {0}); ela volta na segunda-feira."), Campaign.EnergyLeft),
-            ActionFailure.SemDinheiro => Tr("falta dinheiro em caixa; a arrecadação traz mais."),
-            ActionFailure.EventoPendente => Tr("resolva a decisão aberta antes."),
-            _ => Tr("escolha onde fazer a visita."),
-        };
-    }
-
-    private void BuildPeople()
-    {
-        Office office = Campaign.Player.Office;
-        Heading(_left, Tr(office == Office.Prefeito ? "Na disputa pela prefeitura" : "Principais rivais"), 18);
-        foreach (Candidate rival in Campaign.ForOffice(office).Where(c => !c.IsPlayer && !c.IsBulk).OrderByDescending(c => c.Recognition).Take(8))
-        {
-            PersonRow(rival, office == Office.Prefeito ? Tr("candidato(a) a prefeito(a)") : Tr("candidato(a) a vereador(a)"));
-        }
-
-        if (office != Office.Prefeito)
-        {
-            Heading(_left, Tr("Prefeitura"), 18);
-            foreach (Candidate mayor in Campaign.ForOffice(Office.Prefeito))
-            {
-                PersonRow(mayor, Tr("candidato(a) a prefeito(a)"));
-            }
-        }
-    }
-
-    private void PersonRow(Candidate c, string role)
-    {
-        var card = _left.Add(new PanelContainer());
-        card.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Cartao, 8, 8));
-        HBoxContainer row = Ui.Row(card, 8);
-        Appearance? appearance = State.Npcs.FirstOrDefault(n => n.Id == c.CharacterId)?.Appearance;
-        if (appearance is not null)
-        {
-            var view = row.Add(new PortraitView { CustomMinimumSize = new Vector2(56, 56) });
-            GameParty? party = State.Party(c.PartyId);
-            view.Show(appearance, new PortraitOptions(Planalto.Core.Characters.Expression.Neutra, WardrobeContext.Campanha, party?.Colors.Primary, "background_solido", party?.Colors.Secondary), _game.People.Appearance);
-        }
-
-        var col = Ui.Column(row, 2);
-        col.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-        Label name = Ui.Value(col, $"{c.Name} ({PartySigla(c.PartyId)})", 18);
-        name.AddThemeColorOverride("font_color", Palette.Texto);
-        name.AutowrapMode = TextServer.AutowrapMode.WordSmart;
-        Glossary.Rich(col, string.Format(PtBr, "{0}{1} · {2} {3:0}%", role, c.Incumbent ? " · " + Tr("tem mandato") : "", Tr("reconhecimento"), c.Recognition), 16);
-    }
-
-    private void BuildAgendaArea()
-    {
-        Glossary.Rich(_left, string.Format(Tr("Hoje é {0}. Energia da semana: {1} de {2}."), Clock.Today(State).ToString("dddd, d 'de' MMMM", PtBr), Campaign.EnergyLeft, _engine.Context.Config.WeeklyEnergy), 18, Palette.Texto);
-        Heading(_left, Tr("Feito nesta semana"), 18);
-        if (Campaign.ActionsThisWeek.Count == 0)
-        {
-            Glossary.Rich(_left, Tr("Nada ainda. As ações ficam na área Campanha."), 16);
-        }
-
-        foreach (var group in Campaign.ActionsThisWeek.GroupBy(a => a))
-        {
-            Glossary.Rich(_left, $"· {_game.Campaign.Actions.Get(group.Key).Name} × {group.Count()}", 16);
-        }
-
-        Heading(_left, Tr("Datas que vêm"), 18);
-        var dates = new List<(DateOnly Date, string Text)>
-        {
-            (Campaign.CampaignStart, Tr("início da campanha oficial (comício e propaganda)")),
-            (Campaign.ElectionDate, Tr("primeiro turno da eleição")),
-        };
-        if (Campaign.Player.Office == Office.Prefeito)
-        {
-            dates.AddRange(_game.Debate.WeeksBeforeElection.Select(w => (Campaign.ElectionDate.AddDays(-7 * w), Tr("semana de debate na TV"))));
-        }
-
-        foreach (var (date, text) in dates.Where(d => d.Date >= Clock.Today(State)).OrderBy(d => d.Date))
-        {
-            Glossary.Rich(_left, $"{date.ToString("dd/MM/yyyy", PtBr)} · {text}", 16);
-        }
-
-        Glossary.Rich(_left, Tr("Na próxima parte do jogo, cada compromisso terá dia, turno, zona e público."), 14, Palette.Texto3);
-    }
-
-    private void BuildTerritory()
-    {
-        if (_zonas is null)
-        {
-            Glossary.Rich(_left, Tr("As zonas desta cidade não foram carregadas."), 16);
-            return;
-        }
-
-        if (_map.Selected is { } id && _map.Zonas.TryGetValue(id, out Zona? zona))
-        {
-            ZoneCard(zona);
-            Ui.Button(_left, "Ver todas as zonas", () => { _map.Select(null); Refresh(); }, Palette.Tip(Tr("Volta à lista de zonas."), Tr("tira a seleção do mapa."), Tr("nada.")));
-            return;
-        }
-
-        Glossary.Rich(_left, string.Format(Tr("{0} zonas da cidade, montadas com setores do Censo 2022 do IBGE. Clique numa zona do mapa ou da lista."), _zonas.Zonas.Count), 16);
-        foreach (Zona z in _zonas.Zonas.OrderByDescending(z => z.Populacao))
-        {
-            var b = Ui.Button(_left, string.Format(PtBr, "{0} · {1:N0} hab.", z.Nome, z.Populacao), () => { _map.Select(z.Id); Refresh(); },
-                Palette.Tip(string.Format(Tr("Zona {0}."), z.Nome), Tr("abre a ficha da zona e a destaca no mapa."), Tr("nada.")));
-            b.Alignment = HorizontalAlignment.Left;
-            b.ClipText = true;
-        }
-    }
-
-    private void ZoneCard(Zona z)
-    {
-        Heading(_left, z.Nome, 24);
-        string origem = z.NomeFonte switch
-        {
-            Zona.NomeBairro => Tr("nome do bairro mais populoso da zona, pela malha de bairros do IBGE"),
-            Zona.NomeDistrito => Tr("nome do distrito do IBGE"),
-            _ => Tr("nome descritivo do jogo; não há bairro oficial aqui"),
-        };
-        Glossary.Rich(_left, string.Format(PtBr, Tr("{0}. {1:N0} moradores, {2:N0} domicílios, {3:N1} km², {4} setores do Censo 2022. Origem do nome: {5}."),
-            Tr(z.IsRural ? "Zona rural" : "Zona urbana"), z.Populacao, z.Domicilios, z.AreaKm2, z.Setores, origem), 16);
-        if (z.Perfil.RendaResponsavel is { } renda)
-        {
-            Glossary.Rich(_left, string.Format(PtBr, Tr("Rendimento médio do responsável pelo domicílio: R$ {0:N0} ({1})."), renda, z.Perfil.RendaFonte == PerfilZona.FonteZona ? Tr("dado da zona") : Tr("dado do município: setores pequenos têm sigilo")), 16);
-        }
-
-        var ages = ZoneProjection.AgeShares(z);
-        if (ages.Values.Sum() > 0)
-        {
-            Glossary.Rich(_left, string.Format(PtBr, Tr("Eleitores por idade: 16 a 34 anos {0:P0}, 35 a 59 {1:P0}, 60 ou mais {2:P0}."),
-                ages["idade_16_17"] + ages["idade_18_34"], ages["idade_35_59"], ages["idade_60_69"] + ages["idade_70_mais"]), 16);
-        }
-
-        if (_zoneParties.TryGetValue(z.Id, out var parties) && parties.Count > 0)
-        {
-            Heading(_left, Tr("Intenção por partido"), 18);
-            foreach (var (party, share) in parties.OrderByDescending(p => p.Value).Take(5))
-            {
-                Glossary.Rich(_left, string.Format(PtBr, "{0} {1:P1}", PartySigla(party), share), 16);
-            }
-        }
-
-        Glossary.Rich(_left, Tr("Fonte: IBGE, Censo 2022 (setores censitários). A intenção é a da cidade aplicada à idade e à situação da zona: uma estimativa por zona, não uma pesquisa."), 14, Palette.Texto3);
+        CommitmentType type = _engine.Context.Campaign.Commitments.Get(c.Type);
+        string where = c.ZoneId is null ? "" : " · " + ZoneName(c.ZoneId);
+        string when = $"{DayShort(c.Date)}, {TurnoName(c.Turno)}";
+        var b = Ui.Button(_left, $"{type.Nome}{where}\n{when}", () => OpenSheet(Sheet.Compromisso, c.Id),
+            Palette.Tip(string.Format(Tr("{0}, {1}."), CommitmentTitle(c), when), Tr("abre o compromisso: previsão de hoje e a opção de desmarcar."), CostText(type)));
+        b.Alignment = HorizontalAlignment.Left;
+        b.ClipText = true;
+        Palette.ListRow(b);
     }
 
     private void BuildFinances()
     {
         Glossary.Rich(_left, string.Format(Tr("Caixa: {0}."), Money(State.Player.Resources.Money)), 18, Palette.Texto);
-        Heading(_left, Tr("Pesquisas"), 18);
+        Heading(_left, Tr("Pesquisas"), 20);
         foreach (PollsterDefinition p in _game.Electorate.Pollsters.Pollsters.Where(p => p.Internal || p.HouseBias == 0))
         {
             decimal cost = Math.Round(p.Cost * (decimal)_engine.Context.Config.PorteCostMultiplier.GetValueOrDefault(_engine.Context.Municipio.Porte, 1) / 100) * 100;
@@ -702,21 +786,27 @@ public partial class HubScreen : Control
         foreach (PollRecord poll in Campaign.Polls.TakeLast(3).Reverse())
         {
             PollsterDefinition pollster = _game.Electorate.Pollsters.Get(poll.PollsterId);
-            Glossary.Rich(_left, string.Format(PtBr, Tr("{0} · {1:dd/MM} · {2} entrevistas · margem de erro de {3:0.0} pontos · não sabem: {4:0.0}%"), pollster.Name, poll.Week, poll.SampleSize, poll.MarginOfError, poll.Undecided), 16);
+            Glossary.Rich(_left, string.Format(PtBr, Tr("{0} · {1:dd/MM} · {2} entrevistas · margem de erro de {3:0.0} pontos · não sabem: {4:0.0}%"), pollster.Name, poll.Week, poll.SampleSize, poll.MarginOfError, poll.Undecided));
+        }
+
+        Heading(_left, Tr("Custo dos compromissos"), 20);
+        foreach (CommitmentType type in _engine.Context.Campaign.Commitments.Tipos)
+        {
+            Glossary.Rich(_left, $"· {type.Nome}: {CostText(type)}");
         }
     }
 
     private void BuildMedia()
     {
-        var items = NewsItems().ToList();
+        var items = FeedEntries().ToList();
         if (items.Count == 0)
         {
-            Glossary.Rich(_left, Tr("Nada saiu ainda. Semana tranquila na cidade."), 16);
+            Glossary.Rich(_left, Tr("Nada saiu ainda. Semana tranquila na cidade."));
         }
 
-        foreach (var (date, source, text) in items)
+        foreach (FeedEntry entry in items.Take(40))
         {
-            NewsCard(_left, date, source, text);
+            FeedCard(_left, entry);
         }
     }
 
@@ -725,212 +815,15 @@ public partial class HubScreen : Control
         GameParty? party = State.Party(State.Player.PartyId);
         if (party is null)
         {
-            Glossary.Rich(_left, Tr("Você está sem partido."), 16);
+            Glossary.Rich(_left, Tr("Você está sem partido."));
             return;
         }
 
         string family = _game.World.Parties.Families.Families.FirstOrDefault(f => f.Id == party.FamilyId)?.Name ?? party.FamilyId;
-        Heading(_left, $"{party.Sigla} · {party.Number}", 22);
-        Glossary.Rich(_left, string.Format(Tr("{0}. Família ideológica: {1}. Partido fictício."), party.Name, family), 16);
+        NameTitle(_left, $"{party.Sigla} · {party.Number}", 22);
+        Glossary.Rich(_left, string.Format(Tr("{0}. Família ideológica: {1}. Partido fictício."), party.Name, family));
         int named = Campaign.ForOffice(Office.Vereador).Count(c => c.PartyId == party.Id && !c.IsBulk && !c.IsPlayer);
-        Glossary.Rich(_left, string.Format(Tr("Colegas de chapa nomeados para vereador nesta cidade: {0}, além dos demais da lista."), named), 16);
-    }
-
-    // ------------------------------------------------------------------ mapa
-
-    private void BuildMap()
-    {
-        Ui.Clear(_modes);
-        foreach (var (id, name, tip) in new[]
-        {
-            ("lider", "Partido líder", "Cor do partido com mais intenção de voto na zona; mais forte quanto maior a vantagem. Estimativa por zona."),
-            ("renda", "Renda", "Rendimento médio do responsável pelo domicílio (Censo 2022), em 5 faixas da própria cidade."),
-            ("idade", "Idosos", "Parte dos eleitores com 60 anos ou mais (Censo 2022), em 5 faixas da própria cidade."),
-            ("situacao", "Urbana/rural", "Zonas urbanas e rurais pelo Censo 2022."),
-        })
-        {
-            var b = Ui.Button(_modes, name, () => { _mapMode = id; Refresh(); }, Palette.Tip(Tr(tip), Tr("muda as cores do mapa."), Tr("nada.")));
-            b.ToggleMode = true;
-            b.ButtonPressed = _mapMode == id;
-        }
-
-        Ui.Button(_modes, "Cidade inteira", _map.ShowWhole, Palette.Tip(Tr("Enquadra o município inteiro."), Tr("mostra todas as zonas; a roda do mouse aproxima, o botão direito arrasta e o duplo clique volta ao enquadramento."), Tr("nada.")));
-
-        Ui.Clear(_legend);
-        if (_zonas is null)
-        {
-            return;
-        }
-
-        ComputeZoneParties();
-        var colors = new Dictionary<string, Color>();
-        switch (_mapMode)
-        {
-            case "lider":
-                foreach (Zona z in _zonas.Zonas)
-                {
-                    if (!_zoneParties.TryGetValue(z.Id, out var shares) || shares.Count == 0)
-                    {
-                        continue;
-                    }
-
-                    var ordered = shares.OrderByDescending(s => s.Value).ToList();
-                    double margin = ordered[0].Value - (ordered.Count > 1 ? ordered[1].Value : 0);
-                    Color party = new(State.Party(ordered[0].Key)?.Colors.Primary ?? "#8A94A3");
-                    colors[z.Id] = new Color(party, (float)Math.Clamp(0.45 + (margin * 3), 0.45, 1));
-                }
-
-                foreach (string leader in colors.Keys.Select(id => _zoneParties[id].MaxBy(s => s.Value).Key).Distinct())
-                {
-                    LegendRow(new Color(State.Party(leader)?.Colors.Primary ?? "#8A94A3"), PartySigla(leader));
-                }
-
-                Glossary.Rich(_legend, Tr("estimativa por zona"), 14, Palette.Texto3).CustomMinimumSize = new Vector2(220, 0);
-                break;
-            case "situacao":
-                foreach (Zona z in _zonas.Zonas)
-                {
-                    colors[z.Id] = z.IsRural ? Palette.Perfil(0.2) : Palette.Perfil(0.9);
-                }
-
-                LegendRow(Palette.Perfil(0.9), Tr("urbana"));
-                LegendRow(Palette.Perfil(0.2), Tr("rural"));
-                break;
-            default:
-                Func<Zona, double?> value = _mapMode == "renda"
-                    ? z => z.Perfil.RendaResponsavel
-                    : z =>
-                    {
-                        var a = ZoneProjection.AgeShares(z);
-                        return a.Values.Sum() > 0 ? a["idade_60_69"] + a["idade_70_mais"] : null;
-                    };
-                var values = _zonas.Zonas.Select(z => (z.Id, V: value(z))).Where(v => v.V is not null).OrderBy(v => v.V).ToList();
-                for (int i = 0; i < values.Count; i++)
-                {
-                    colors[values[i].Id] = Palette.Perfil(Math.Floor(5.0 * i / Math.Max(1, values.Count)) / 4.0);
-                }
-
-                if (values.Count > 0)
-                {
-                    string Format(double v) => _mapMode == "renda" ? string.Create(PtBr, $"R$ {v:N0}") : v.ToString("P0", PtBr);
-                    LegendRow(Palette.Perfil(0), Format(values[0].V!.Value));
-                    LegendRow(Palette.Perfil(1), Format(values[^1].V!.Value));
-                }
-
-                break;
-        }
-
-        _map.SetColors(colors);
-    }
-
-    private void LegendRow(Color color, string text)
-    {
-        HBoxContainer row = Ui.Row(_legend, 8);
-        row.Add(new ColorRect { Color = color, CustomMinimumSize = new Vector2(18, 18) });
-        Label l = Ui.Label(row, text, 18);
-        l.AddThemeColorOverride("font_color", Palette.Texto);
-    }
-
-    /// <summary>Intenção por partido em cada zona (a disputa do jogador), pela projeção sem ruído.</summary>
-    private void ComputeZoneParties()
-    {
-        _zoneParties.Clear();
-        if (_zonas is null)
-        {
-            return;
-        }
-
-        Office office = Campaign.Player.Office;
-        VoteProjection projection = _engine.Project(office, noise: null);
-        var partyOf = Campaign.ForOffice(office).ToDictionary(c => c.Id, c => c.PartyId);
-        foreach (Zona z in _zonas.Zonas)
-        {
-            _zoneParties[z.Id] = ZoneProjection.Shares(projection, z)
-                .GroupBy(s => partyOf.GetValueOrDefault(s.Key, ""))
-                .ToDictionary(g => g.Key, g => g.Sum(s => s.Value));
-        }
-    }
-
-    private string ZoneTooltip(string id)
-    {
-        if (!_map.Zonas.TryGetValue(id, out Zona? z))
-        {
-            return "";
-        }
-
-        string leader = _zoneParties.TryGetValue(id, out var shares) && shares.Count > 0
-            ? string.Format(PtBr, Tr("Partido líder (estimativa por zona): {0} com {1:P0}."), PartySigla(shares.MaxBy(s => s.Value).Key), shares.Values.Max())
-            : "";
-        return Palette.Tip(
-            string.Format(PtBr, Tr("{0}: {1:N0} moradores ({2})."), z.Nome, z.Populacao, Tr(z.IsRural ? "zona rural" : "zona urbana")),
-            Tr("clique para ver a ficha da zona.") + " " + leader,
-            Tr("nada. Fonte: IBGE, Censo 2022."));
-    }
-
-    // ------------------------------------------------------------------ coluna direita
-
-    private IEnumerable<(DateOnly Date, string Source, string Text)> NewsItems()
-    {
-        var items = Campaign.Events.History.Select(h => (h.Week, Tr("Cidade"), $"{_game.Events.Find(h.EventId)?.Title ?? h.EventId}: {h.Text}")).ToList();
-        foreach (PollRecord poll in Campaign.Polls.Where(p => !p.Internal))
-        {
-            var lead = poll.Candidates.MaxBy(c => c.Value);
-            items.Add((poll.Week, _game.Electorate.Pollsters.Get(poll.PollsterId).Name, string.Format(PtBr, Tr("{0} lidera com {1:0.0}%."), Campaign.Find(lead.Key)?.Name, lead.Value)));
-        }
-
-        return items.OrderByDescending(i => i.Item1);
-    }
-
-    private static void NewsCard(Node parent, DateOnly date, string source, string text)
-    {
-        var card = parent.Add(new PanelContainer());
-        card.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Cartao, 8, 12));
-        var col = Ui.Column(card, 4);
-        Label meta = Ui.Label(col, $"{source} · {date.ToString("dd/MM", PtBr)}", 18);
-        meta.AddThemeColorOverride("font_color", Palette.Texto3);
-        Glossary.Rich(col, text, 18, Palette.Texto, Palette.Weight(Palette.Inter, 500));
-    }
-
-    private void BuildRight()
-    {
-        Ui.Clear(_right);
-        Heading(_right, Tr("Notícias"));
-        var items = NewsItems().Take(5).ToList();
-        if (items.Count == 0)
-        {
-            Glossary.Rich(_right, Tr("Semana tranquila na cidade."), 16);
-        }
-
-        foreach (var (date, source, text) in items)
-        {
-            NewsCard(_right, date, source, text);
-        }
-
-        PollRecord? poll = Campaign.Polls.LastOrDefault();
-        Heading(_right, poll is null ? Tr("Intenção de voto") : string.Format(PtBr, Tr("Intenção ({0}, {1:dd/MM})"), _game.Electorate.Pollsters.Get(poll.PollsterId).Name, poll.Week));
-        if (poll is null)
-        {
-            Glossary.Rich(_right, Tr("Nenhuma pesquisa ainda. Encomende uma em Finanças; os institutos publicam sozinhos durante a campanha."), 16);
-            return;
-        }
-
-        var ordered = poll.Candidates.OrderByDescending(c => c.Value).ToList();
-        int me = ordered.FindIndex(c => c.Key == RaceSetup.PlayerId);
-        int from = Math.Max(0, me < 0 ? 0 : me - 2);
-        foreach (var (id, value) in ordered.Skip(from).Take(5))
-        {
-            Candidate? c = Campaign.Find(id);
-            HBoxContainer row = Ui.Row(_right, 8);
-            Label name = Ui.Label(row, $"{(c?.IsPlayer == true ? Tr("Você") : c?.Name)} ({PartySigla(c?.PartyId ?? "")})", 18);
-            name.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-            name.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
-            name.TooltipText = c?.Name ?? "";
-            name.MouseFilter = MouseFilterEnum.Stop;
-            name.AddThemeColorOverride("font_color", c?.IsPlayer == true ? Palette.Atencao : Palette.Texto);
-            Ui.Value(row, string.Format(PtBr, "{0:0.0}%", value), 18).AddThemeColorOverride("font_color", Palette.Texto);
-        }
-
-        Glossary.Rich(_right, string.Format(PtBr, Tr("margem de erro de {0:0.0} pontos"), poll.MarginOfError), 14, Palette.Texto3);
+        Glossary.Rich(_left, string.Format(Tr("Colegas de chapa nomeados para vereador nesta cidade: {0}, além dos demais da lista."), named));
     }
 
     // ------------------------------------------------------------------ decisões sobre o mapa
@@ -967,6 +860,31 @@ public partial class HubScreen : Control
                         Refresh();
                     }, Palette.Tip(Tr("Não vai ao debate."), Tr("a cadeira vazia vira assunto na cidade."), string.Format(PtBr, Tr("imagem {0:+0.00;−0.00}."), _game.Debate.DeclineImage))));
                 }
+                else if (Agenda.PendingRequest is { } personId && _engine.City.Leader(personId) is { } leader && Campaign.Events.Pending.Count == 0)
+                {
+                    text = string.Format(Tr("{0} fez um pedido. Jogo pausado."), LeaderLabel(leader));
+                    if (_requestHidden)
+                    {
+                        buttons.Add(("Decidir", () => { _requestHidden = false; Refresh(); },
+                            Palette.Tip(Tr("Abre o cartão do pedido."), Tr("mostra o pedido e as quatro respostas, cada uma com a previsão e quem vai lembrar."), Tr("nada; o jogo segue pausado até você responder."))));
+                    }
+                    else
+                    {
+                        buttons.Add(("Ver o mapa", () => { _requestHidden = true; Refresh(); },
+                            Palette.Tip(Tr("Esconde o cartão do pedido para você consultar o mapa."), Tr("o pedido continua esperando; Decidir traz o cartão de volta."), Tr("nada; o jogo segue pausado até você responder."))));
+                    }
+                }
+                else if (_notice is not null && !_running)
+                {
+                    text = _notice.Text + " " + Tr("Jogo pausado.");
+                    if (_notice.Button is not null && _notice.Action is { } action)
+                    {
+                        buttons.Add((_notice.Button, action, _notice.Tip ?? ""));
+                    }
+
+                    buttons.Add(("Fechar aviso", () => { _notice = null; Refresh(); },
+                        Palette.Tip(Tr("Fecha este aviso."), Tr("o jogo continua pausado até você escolher uma velocidade na barra de cima."), Tr("nada."))));
+                }
                 else if (!_running && Campaign.Polls.Count > 0 && Campaign.Polls[^1].Week == State.Calendar.WeekStart && State.Time.Day == 0 && !Campaign.Polls[^1].Internal)
                 {
                     text = string.Format(Tr("Saiu pesquisa do {0}. Jogo pausado."), _game.Electorate.Pollsters.Get(Campaign.Polls[^1].PollsterId).Name);
@@ -980,18 +898,21 @@ public partial class HubScreen : Control
             return;
         }
 
-        _banner = _mapArea.Add(new PanelContainer());
-        _banner.AddThemeStyleboxOverride("panel", Palette.Box(Palette.CartaoAlto, 8, 12, Palette.Atencao));
+        // Um destaque por vez (ART_GUIDE): com um cartão de decisão aberto, a faixa fica neutra.
+        bool cardOpen = Campaign.Events.Pending.Count > 0 || (Agenda.PendingRequest is not null && !_requestHidden);
+        _banner = _mapArea.Add(new PanelContainer { Name = "FaixaDecisao" });
+        _banner.AddThemeStyleboxOverride("panel", Palette.Box(Palette.CartaoAlto, 8, 12, cardOpen ? Palette.Linha : Palette.Atencao));
         _banner.SetAnchorsAndOffsetsPreset(LayoutPreset.CenterBottom);
+        _banner.GrowVertical = GrowDirection.Begin;
         _banner.OffsetLeft = -360;
         _banner.OffsetRight = 360;
         _banner.OffsetTop = -88;
         _banner.OffsetBottom = -16;
         HBoxContainer row = Ui.Row(_banner, 12);
-        Glossary.Rich(row, text, 18, Palette.Texto);
+        Glossary.Rich(row, text, 18, Palette.Texto).SizeFlagsVertical = SizeFlags.ShrinkCenter;
         foreach (var (label, action, tip) in buttons)
         {
-            Ui.Button(row, label, action, tip);
+            Ui.Button(row, label, action, tip).SizeFlagsVertical = SizeFlags.ShrinkCenter;
         }
     }
 
@@ -1011,10 +932,10 @@ public partial class HubScreen : Control
     }
 
     /// <summary>
-    /// Cartão da decisão pendente sobre o mapa escurecido; os painéis laterais continuam visíveis. Ao fechar, o fundo
-    /// sai junto (nunca há mais de um fundo).
+    /// Cartão da decisão pendente sobre o mapa escurecido; os painéis laterais continuam visíveis. Eventos vêm antes
+    /// do pedido de liderança. Ao fechar, o fundo sai junto (nunca há mais de um fundo).
     /// </summary>
-    private void ShowPendingEvent()
+    private void ShowPendingDecision()
     {
         if (_eventShade is not null && IsInstanceValid(_eventShade))
         {
@@ -1022,7 +943,15 @@ public partial class HubScreen : Control
         }
 
         _eventShade = null;
-        if (Campaign.Events.Pending.FirstOrDefault() is not { } pending)
+        _requestCard = null;
+        if (Agenda.PendingRequest is null && _requestResult is null)
+        {
+            _requestHidden = false;
+        }
+
+        PendingEvent? pending = Campaign.Events.Pending.FirstOrDefault();
+        bool request = pending is null && (Agenda.PendingRequest is not null || _requestResult is not null) && !_requestHidden;
+        if (pending is null && !request)
         {
             return;
         }
@@ -1033,16 +962,29 @@ public partial class HubScreen : Control
         shade.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         var center = shade.Add(new CenterContainer());
         center.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        center.Add(new EventDialog(_engine, pending, () =>
+        if (pending is not null)
         {
-            shade.QueueFree();
-            if (_eventShade == shade)
+            center.Add(new EventDialog(_engine, pending, () =>
             {
-                _eventShade = null;
-            }
+                shade.QueueFree();
+                if (_eventShade == shade)
+                {
+                    _eventShade = null;
+                }
 
-            Refresh();
-        }));
+                Refresh();
+            }));
+        }
+        else
+        {
+            BuildRequestCard(center);
+        }
+
+        // A faixa de decisão fica por cima do escurecido.
+        if (_banner is not null)
+        {
+            _mapArea.MoveChild(_banner, -1);
+        }
     }
 
     private void ShowSaveMenu()

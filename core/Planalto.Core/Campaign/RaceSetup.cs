@@ -42,6 +42,19 @@ public sealed class CampaignContext
 
     public PorteCatalog? Portes { get; init; }
 
+    /// <summary>Zonas do município em foco (data/zonas/, GDD 17.5).</summary>
+    public required Territory.ZonasMunicipio Zonas { get; init; }
+
+    private IReadOnlyList<Territory.ZoneElectorate>? _zones;
+
+    /// <summary>Os segmentos do município repartidos pelas zonas (montado uma vez por contexto).</summary>
+    public IReadOnlyList<Territory.ZoneElectorate> ZoneElectorates =>
+        _zones ??= Planalto.Core.Territory.ZoneElectorateBuilder.Build(Electorate, Zonas, Municipio, ElectorateContent.Segments, Campaign.Territory);
+
+    /// <summary>Zonas do município pelo arquivo da UF.</summary>
+    public static Territory.ZonasMunicipio LoadZonas(string dataDirectory, Municipio municipio) =>
+        Planalto.Core.Territory.ZonasPaths.Load(dataDirectory, municipio.Uf).GetValueOrThrow().Municipios.First(z => z.CodigoIbge == municipio.CodigoIbge);
+
     public CampaignConfig Config => Campaign.Config;
 
     /// <summary>Eleitorado do município pelo mesmo procedimento em qualquer momento (determinístico pela semente do mundo).</summary>
@@ -209,9 +222,12 @@ public static class RaceSetup
             ElectionDate = election,
             CampaignStart = config.DateIn(year, config.CampaignStart),
             Candidates = candidates,
-            EnergyLeft = config.WeeklyEnergy,
+            Territory = BuildTerritory(ctx, candidates, rng),
             Phase = state.Calendar.WeekStart >= config.DateIn(year, config.CampaignStart) ? CampaignPhase.Campanha : CampaignPhase.PreCampanha,
         };
+
+        // A cidade com gente (lideranças) nasce quando o município entra em foco e fica no estado do jogo.
+        CityBuilder.Ensure(ctx, campaignState, rng);
 
         // Prefeito em exercício no 1º mandato: começa candidato à reeleição (pode trocar na pré-campanha).
         if (played?.MayorId == PlayerId && !played.MayorReelected)
@@ -220,6 +236,52 @@ public static class RaceSetup
         }
 
         return campaignState;
+    }
+
+    /// <summary>
+    /// Presença de partida por zona (GDD 17.5): o jogador é mais conhecido na zona em que mora (a zona urbana mais
+    /// populosa); cada rival nomeado a vereador tem um ou dois redutos; candidatos a prefeito e o candidato coletivo
+    /// de cada partido começam iguais em toda a cidade. A média pela população reproduz o reconhecimento sorteado.
+    /// </summary>
+    private static Territory.TerritoryState BuildTerritory(CampaignContext ctx, List<Candidate> candidates, Rng rng)
+    {
+        List<Territory.Zona> zonas = ctx.Zonas.Zonas;
+        Territory.TerritorySimulation sim = ctx.Campaign.Territory.Simulacao;
+        var territory = new Territory.TerritoryState
+        {
+            Zones = zonas.Select(z => z.Id).ToList(),
+            Population = zonas.Select(z => z.Populacao).ToList(),
+            HomeZone = zonas.IndexOf(zonas.Where(z => !z.IsRural).DefaultIfEmpty(zonas[0]).MaxBy(z => z.Populacao)!),
+        };
+        territory.MeetingSupport.AddRange(zonas.Select(_ => new Dictionary<string, double>(StringComparer.Ordinal)));
+
+        foreach (Candidate c in candidates)
+        {
+            List<int> strong = [];
+            double factor = 1;
+            if (c.IsPlayer)
+            {
+                strong = [territory.HomeZone];
+                factor = sim.ZonaNatalFator;
+            }
+            else if (!c.IsBulk && c.Office == Office.Vereador)
+            {
+                int count = zonas.Count >= 4 && rng.Chance(0.5) ? 2 : 1;
+                while (strong.Count < Math.Min(count, zonas.Count))
+                {
+                    int pick = rng.PickWeighted(Enumerable.Range(0, zonas.Count).ToList(), i => strong.Contains(i) ? 0 : Math.Max(1, zonas[i].Populacao));
+                    strong.Add(pick);
+                }
+
+                factor = sim.RedutoFator;
+                territory.Redutos[c.Id] = strong;
+            }
+
+            territory.Seed(c.Id, c.Recognition, strong, factor);
+            c.Recognition = territory.Recognition(c.Id);
+        }
+
+        return territory;
     }
 
     /// <summary>Por que o jogador não pode disputar o cargo agora, ou null.</summary>

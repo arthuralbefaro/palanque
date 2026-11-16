@@ -1,0 +1,93 @@
+{
+  "note": "Lideranças locais (GDD 17.10). O tipo descreve o papel social, não uma doutrina: qualquer interesse pode ocorrer em qualquer tipo, com pesos dentro de 2 para 1 (o validador confere), e o público das lideranças religiosas é sorteado na proporção da composição religiosa do município no Censo. Pessoas e pedidos são fictícios. Tudo aqui é parâmetro de jogo.",
+  "regras": {
+    "quantidade_por_porte": {
+      "pequeno": { "min": 6, "max": 8 },
+      "medio": { "min": 10, "max": 14 },
+      "grande": { "min": 16, "max": 20 },
+      "metropole": { "min": 24, "max": 30 }
+    },
+    "semanas_sem_contato": 8,
+    "apoio_por_influencia": 0.09,
+    "pontos_visita": 4,
+    "pontos_visita_sem_compromisso": 1,
+    "pontos_promessa": 22,
+    "pontos_recusa": -8,
+    "pontos_negociacao": 14,
+    "pontos_negociacao_falha": -4,
+    "pontos_convite_aceito": 5,
+    "pontos_promessa_cumprida": 10,
+    "pontos_convite_recusado": -4,
+    "pontos_rivalidade": -10,
+    "chance_assedio": 0.3,
+    "favor_assedio": { "min": 5, "max": 12 },
+    "limiar_alinhamento": 25,
+    "favor_decaimento": 0.6,
+    "chance_convite": 0.08,
+    "conhecidas_no_inicio": 0.4,
+    "chance_descoberta": 0.8,
+    "gravidade_dinheiro": 2
+  },
+  "tipos": [
+    {
+      "id": "religiosa", "nome": "Liderança religiosa", "papel": "liderança de comunidade religiosa", "weight": 3, "situacao": "qualquer",
+      "publicos": { "catolica": 1, "evangelica": 1, "outras": 1 },
+      "interesses": { "programas_sociais": 1.5, "educacao": 1.5, "seguranca": 1.5, "saude": 1.5, "transparencia": 1, "meio_ambiente": 1, "impostos": 1, "agronegocio": 1, "armas": 1, "privatizacoes": 1 },
+      "pedidos": ["obra_bairro", "presenca_evento", "posicao_tema", "vaga_gabinete", "dinheiro_evento"]
+    },
+    {
+      "id": "comunitaria", "nome": "Liderança comunitária", "papel": "presidente de associação de moradores", "weight": 3, "situacao": "urbana",
+      "publicos": { "baixa": 2, "media": 1.5, "idade_60_69": 1 },
+      "interesses": { "saude": 1.5, "seguranca": 1.5, "programas_sociais": 1.5, "educacao": 1.5, "transparencia": 1, "meio_ambiente": 1, "impostos": 1, "agronegocio": 1, "armas": 1, "privatizacoes": 1 },
+      "pedidos": ["obra_bairro", "obra_creche", "presenca_evento", "vaga_gabinete", "dinheiro_evento"]
+    },
+    {
+      "id": "sindical", "nome": "Liderança sindical", "papel": "dirigente de sindicato", "weight": 2, "situacao": "urbana",
+      "publicos": { "media": 2, "baixa": 1.5, "idade_35_59": 1 },
+      "interesses": { "programas_sociais": 1.5, "impostos": 1.5, "privatizacoes": 1.5, "saude": 1, "educacao": 1.5, "transparencia": 1, "seguranca": 1, "meio_ambiente": 1, "agronegocio": 1, "armas": 1 },
+      "pedidos": ["posicao_tema", "presenca_evento", "vaga_gabinete", "obra_bairro"]
+    },
+    {
+      "id": "empresarial", "nome": "Liderança empresarial", "papel": "presidente de associação comercial", "weight": 2, "situacao": "urbana",
+      "publicos": { "alta": 2, "media": 1.5, "medio_superior": 1 },
+      "interesses": { "impostos": 1.5, "seguranca": 1.5, "privatizacoes": 1.5, "transparencia": 1.5, "educacao": 1, "saude": 1, "programas_sociais": 1, "meio_ambiente": 1, "agronegocio": 1, "armas": 1 },
+      "pedidos": ["posicao_tema", "obra_bairro", "presenca_evento", "dinheiro_evento"]
+    },
+    {
+      "id": "rural", "nome": "Liderança rural", "papel": "presidente de associação rural", "weight": 2, "situacao": "rural",
+      "publicos": { "rural": 3 },
+      "interesses": { "agronegocio": 1.5, "meio_ambiente": 1.5, "saude": 1.5, "educacao": 1.5, "programas_sociais": 1, "seguranca": 1, "impostos": 1, "transparencia": 1, "armas": 1, "privatizacoes": 1 },
+      "pedidos": ["obra_estrada", "obra_creche", "presenca_evento", "posicao_tema"]
+    }
+  ],
+  "pedidos": [
+    { "id": "obra_bairro", "kind": "obra", "text": "Prometer a pavimentação e a iluminação de ruas em {zona}", "prazo_semanas": 104 },
+    { "id": "obra_creche", "kind": "obra", "text": "Prometer uma creche em {zona}", "prazo_semanas": 130 },
+    { "id": "obra_estrada", "kind": "obra", "text": "Prometer a recuperação da estrada vicinal de {zona}", "prazo_semanas": 104 },
+    { "id": "vaga_gabinete", "kind": "vaga", "text": "Prometer uma vaga no gabinete para uma pessoa indicada", "prazo_semanas": 8 },
+    { "id": "posicao_tema", "kind": "posicao", "text": "Defender em público a pauta dela em {tema}", "prazo_semanas": 0 },
+    { "id": "presenca_evento", "kind": "presenca", "text": "Comparecer ao próximo evento da comunidade em {zona}", "prazo_semanas": 0 },
+    { "id": "dinheiro_evento", "kind": "dinheiro", "text": "Pagar a festa da comunidade em {zona} (gasto irregular, sem registro)", "prazo_semanas": 0, "weight": 0.5 }
+  ],
+  "textos": {
+    "visita": "Veio visitar",
+    "visita_sem_compromisso": "Veio, ouviu e não se comprometeu",
+    "promessa": "Aceitou o pedido e prometeu",
+    "recusa": "Recusou o pedido",
+    "negociacao": "Negociou e fechou um acordo",
+    "negociacao_falha": "Tentou negociar e a conversa não andou",
+    "convite_aceito": "Aceitou o convite e compareceu",
+    "convite_recusado": "Não foi ao evento para o qual foi convidado",
+    "promessa_cumprida": "Cumpriu o que prometeu",
+    "rivalidade": "Fechou com {nome}, com quem disputa o mesmo público",
+    "assedio": "{nome} ({papel}) recebeu {rival} em {zona}",
+    "mudou_para_rival": "{nome} ({papel}) agora apoia {rival}",
+    "mudou_para_jogador": "{nome} ({papel}) agora apoia você",
+    "ficou_neutra": "{nome} ({papel}) deixou de apoiar um candidato",
+    "descoberta": "Na caminhada em {zona} você conheceu {nome} ({papel})",
+    "convite": "{nome} convida você para um encontro em {zona}",
+    "promessa_livro": "{pedido} (promessa a {nome})",
+    "divida_livro": "Apoio de {nome}, fechado em conversa",
+    "esqueleto_dinheiro": "Pagou a festa da comunidade a pedido de {nome}"
+  }
+}

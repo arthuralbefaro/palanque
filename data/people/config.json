@@ -1,0 +1,5 @@
+{
+  "note": "Pessoa com memória (GDD 17.2). Cada pessoa guarda até 'max_memories' lembranças; as de peso 1 e 2 perdem metade do efeito a cada 'half_life_weeks' semanas; as de peso 3 não se apagam.",
+  "max_memories": 20,
+  "half_life_weeks": 52
+}
