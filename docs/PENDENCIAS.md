@@ -196,3 +196,11 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 - A cabeça A parte dos Human Base Meshes do Blender, distribuídos em `.blend`. Converter para glTF exige o Blender: o Godot só importa `.blend` chamando o executável do Blender. **Conferido em 16/11: o Blender não está instalado nesta máquina.** Nada será instalado sem o autor.
 - **O que o autor precisa fazer, se quiser a cabeça A:** instalar o Blender (versão estável atual, em blender.org; programa livre, GPL, que não entra no repositório) e, no Godot, apontar o caminho do executável em Editor → Configurações do Editor → Sistema de arquivos → Importação → Blender. Alternativa: abrir o `.blend` no Blender e exportar para `.glb` à mão.
 - **Sem isso:** o protótipo segue só com a cabeça B, e a prancha mostra a coluna A vazia com o motivo.
+
+## R4 — pendências já conhecidas (a parte ainda não foi integrada)
+
+### P-30 · Agenda por dia no mandato
+- O mandato de vereador e a prefeitura usam turnos por semana: inauguração e fiscalização acontecem no clique, sem dia nem lugar na agenda (GDD 17.6 e 17.14 pedem compromissos com dia, turno e zona também no mandato). Decidido pelo autor em 16/11: fica como pendência da R4.
+
+### P-31 · Objetivos do mandato além das promessas do Livro
+- No mandato, os objetivos são só as promessas mais urgentes do Livro, sem o gerador da campanha (GDD 17.2, peça 6), sem fixar nem dispensar. Decidido pelo autor em 16/11: fica como pendência da R4.
