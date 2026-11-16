@@ -8,7 +8,7 @@ namespace Planalto.Core.Tests.Campaign;
 
 /// <summary>
 /// Guarda de balanceamento da campanha de vereador (DECISOES D-026): sem campanha não se elege; com o partido mais
-/// forte da cidade e a energia gasta toda semana, elege-se na maior parte das vezes.
+/// forte da cidade e a agenda preenchida toda semana (dois turnos por dia), elege-se na maior parte das vezes.
 /// </summary>
 public class CampaignBalanceTests
 {
@@ -40,7 +40,9 @@ public class CampaignBalanceTests
         foreach (int ibge in cities)
         {
             CampaignEngine engine = CampaignKit.NewCareer(ibge, 3, strongestParty: true);
-            CampaignAutoplayTests.Play(engine, 3);
+            var robot = new CampaignRobot(engine, 3, new RobotOptions { Answer = LeaderAnswer.Aceitar });
+            robot.PlayToElection();
+            robot.Vote();
             wins += engine.Context.State.Campaign!.Outcome!.PlayerElected ? 1 : 0;
         }
 
