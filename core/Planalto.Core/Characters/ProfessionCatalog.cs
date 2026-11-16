@@ -33,6 +33,11 @@ public sealed class ProfessionCatalog : IValidatable
             {
                 yield return error;
             }
+
+            if (profession.MinAge is < 14 or > 70)
+            {
+                yield return $"{where}: min_age entre 14 e 70.";
+            }
         }
 
         foreach (string error in DataChecks.UniqueIds(Professions.Select(p => p?.Id), "Profissão"))

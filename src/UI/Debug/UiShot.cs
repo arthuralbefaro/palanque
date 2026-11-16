@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate|prefeitura|eventos|layout [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|picker|campaign|map|mandate|prefeitura|eventos|layout [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -91,6 +91,26 @@ public partial class UiShot : Node
         {
             creator.RandomizeEverything();
             await Frames(3);
+            if (target == "creator17")
+            {
+                // 17 anos com aniversário em dezembro: sem 18 anos no prazo do registro de 2028.
+                creator.SetAgeForTest(17, 12);
+                await Frames(3);
+                bool warned = creator.AgeWarningsForTest.Count > 0;
+                bool started = creator.TryStartCareer();
+                if (!warned || !started || game.State is null || game.Engine is not null || game.LastNavigation != Game.Scenes.OutOfOffice)
+                {
+                    Fail($"personagem de 17 anos: aviso {warned}, começou {started}, campanha {(game.Engine is null ? "nenhuma" : "aberta")}, tela {game.LastNavigation}.");
+                    return;
+                }
+
+                if (Planalto.Core.Career.CareerFlow.NextEligibleElectionYear(game.State) != 2032)
+                {
+                    Fail("a primeira eleição possível deveria ser a de 2032.");
+                    return;
+                }
+            }
+
             if (target == "hub")
             {
                 bool started = creator.TryStartCareer();

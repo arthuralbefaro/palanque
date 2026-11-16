@@ -41,7 +41,11 @@ public sealed class SocialOriginCatalog : IValidatable
 
     public required StartingAttributes StartingAttributes { get; init; }
 
+    /// <summary>Idade do jogador no início do jogo (GDD 3.3).</summary>
     public required AgeRange StartingAge { get; init; }
+
+    /// <summary>Idade sorteada para NPCs gerados sem idade pedida.</summary>
+    public required AgeRange NpcAge { get; init; }
 
     public required int StartingEnergy { get; init; }
 
@@ -62,6 +66,14 @@ public sealed class SocialOriginCatalog : IValidatable
             yield return error;
         }
 
+        foreach (var (range, name) in new[] { (StartingAge, "starting_age"), (NpcAge, "npc_age") })
+        {
+            if (range is null || range.Min < 16 || range.Max < range.Min)
+            {
+                yield return $"{name}: mínimo de 16 anos ou mais e máximo maior ou igual ao mínimo.";
+            }
+        }
+
         foreach (SocialOriginDefinition? origin in Origins)
         {
             if (origin is null)
@@ -80,9 +92,9 @@ public sealed class SocialOriginCatalog : IValidatable
             }
         }
 
-        if (StartingAge is null || StartingAge.Min < 18 || StartingAge.Max < StartingAge.Min || StartingAttributes is null || StartingAttributes.Base is < 0 or > 100)
+        if (StartingAttributes is null || StartingAttributes.Base is < 0 or > 100)
         {
-            yield return "idade inicial a partir de 18 e atributos-base entre 0 e 100.";
+            yield return "atributos-base entre 0 e 100.";
         }
     }
 }
@@ -155,6 +167,8 @@ public sealed class PeopleContent
 
     public required Elections.OfficeCatalog Offices { get; init; }
 
+    public required FamilyConfig Family { get; init; }
+
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, out PeopleContent? content)
     {
         var reports = new List<DataFileReport>();
@@ -164,6 +178,7 @@ public sealed class PeopleContent
         CampaignIdentityCatalog? campaign = Check<CampaignIdentityCatalog>(dataDirectory, CampaignFile, c => c.Slogans.Count, reports);
         BiographyCatalog? biography = Check<BiographyCatalog>(dataDirectory, BiographyCatalog.File, b => b.Templates.Count, reports);
         Elections.OfficeCatalog? offices = Check<Elections.OfficeCatalog>(dataDirectory, Elections.OfficeCatalog.File, o => o.Offices.Count, reports);
+        FamilyConfig? family = Check<FamilyConfig>(dataDirectory, FamilyConfig.File, f => f.ChildrenCapByAge.Count, reports);
         var professions = JsonData.LoadFile<ProfessionCatalog>(Path.Combine(dataDirectory, "professions.json"));
         var traits = JsonData.LoadFile<TraitCatalog>(Path.Combine(dataDirectory, "traits.json"));
         var appearanceReports = AppearanceContent.Load(dataDirectory, out AppearanceContent? appearance);
@@ -188,6 +203,7 @@ public sealed class PeopleContent
                 Appearance = appearance,
                 Biography = biography!,
                 Offices = offices!,
+                Family = family!,
             }
             : null;
         return reports;

@@ -214,3 +214,9 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Onde ficou registrado:** GDD 3.4, 17.5, 17.8, 17.16, 17.17, 17.18 e 17.20; ROADMAP (R1, R2b, R3, RD, R4 e Fase 6); CLAUDE.md.
 - **Como reverter:** cada item é uma linha da tabela do GDD 17.20; mudar a linha e a subseção que ela cita.
 
+## D-036 — Idade inicial de 17 anos, profissões com idade mínima e família coerente
+- **Data:** 2026-11-16 · **Fase:** R1 · **Trazido do branch `wip/idade-inicial` do autor.**
+- **Decisão:** o jogador começa com 17 a 45 anos; NPCs continuam entre 25 e 45 (`npc_age` em social_origins.json). A idade de 18 anos para vereador é aferida no prazo do registro, 15 de agosto (D-030); quem não a tiver na primeira eleição começa fora da disputa, e a carreira pula para a primeira eleição em que é elegível. Cada profissão tem idade mínima (`min_age` em professions.json, de 17 a 25), e entra a profissão Estudante (17). Estado civil, filhos e cônjuge são gerados coerentes com a idade pelas regras de data/family.json. A chave dos estados civis em family.json é o id em snake_case ("uniao_estavel").
+- **Testes:** idade aferida em 15/8 (aniversário em 15/8 e em 16/8) e na posse para prefeito; NPCs entre 25 e 45; profissão nunca abaixo da idade mínima e Estudante aos 17; família sem incoerência em 10.000 sorteios; configuração inválida reportada; jogador de 17 anos espera a eleição de 2032 e a disputa até a apuração; teste de fumaça `creator17`.
+- **Como reverter:** `starting_age` em social_origins.json e `min_age` em professions.json.
+

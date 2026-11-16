@@ -31,6 +31,14 @@ public sealed class CandidacyRulesConfig
 
     public int RegistrationDeadlineDay { get; init; } = 15;
 
+    /// <summary>Tem a idade mínima do cargo na eleição do ano (posse em 1º de janeiro seguinte).</summary>
+    public bool MeetsAge(DateOnly birthDate, Office office, int electionYear)
+    {
+        DateOnly reference = AgeReferenceDate(office, electionYear, new DateOnly(electionYear + 1, 1, 1));
+        int age = reference.Year - birthDate.Year - (birthDate.AddYears(reference.Year - birthDate.Year) > reference ? 1 : 0);
+        return age >= MinimumAgeFor(office);
+    }
+
     /// <summary>Data em que a idade mínima do cargo é aferida numa eleição com posse em <paramref name="posse"/>.</summary>
     public DateOnly AgeReferenceDate(Office office, int electionYear, DateOnly posse) =>
         MinimumAgeFor(office) == AgeCheckedAtRegistration ? new DateOnly(electionYear, RegistrationDeadlineMonth, RegistrationDeadlineDay) : posse;

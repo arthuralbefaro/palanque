@@ -56,13 +56,18 @@ public partial class OutOfOfficeScreen : Control
         Ui.Button(bar, "Salvar", () => { SaveManager.Instance.Autosave(); _message = Tr("Jogo salvo."); Refresh(); });
         Ui.Button(bar, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); });
 
-        int year = CareerFlow.NextMunicipalElectionYear(State);
+        int year = CareerFlow.NextEligibleElectionYear(State);
         DateOnly opens = CareerFlow.CampaignOpens(year);
         Ui.Value(_root, string.Format(Tr("Próxima eleição municipal: {0}"), Calendar.ElectionFor(year).FirstRound.ToString("dd/MM/yyyy", PtBr)), 30);
         Ui.Paragraph(_root, string.Format(Tr("A pré-campanha abre em {0}, no prazo de filiação: até lá, quem quiser disputar precisa estar filiado a um partido registrado."), MandateTexts.Date(opens)), 1200, 18);
         if (!PartyAffiliation.CanRun(State, year))
         {
             Ui.Label(_root, "Do jeito que está, você não pode disputar: falta partido registrado e filiação dentro do prazo.", 18, Ui.Warning);
+        }
+
+        if (year != CareerFlow.NextMunicipalElectionYear(State))
+        {
+            Ui.Paragraph(_root, string.Format(Tr("Você ainda não terá 18 anos no prazo do registro da eleição de {0}; a primeira que você pode disputar é a de {1}."), CareerFlow.NextMunicipalElectionYear(State), year), 1200, 18);
         }
 
         HBoxContainer actions = Ui.Row(_root, 16);
@@ -102,9 +107,12 @@ public partial class OutOfOfficeScreen : Control
             return;
         }
 
-        _message = note == Game.WeekNote.SemPartidoNoPrazo
-            ? Tr("Passou o prazo de filiação sem partido válido: você não disputa esta eleição.")
-            : "";
+        _message = note switch
+        {
+            Game.WeekNote.SemPartidoNoPrazo => Tr("Passou o prazo de filiação sem partido válido: você não disputa esta eleição."),
+            Game.WeekNote.SemIdade => Tr("Você ainda não tem idade para disputar esta eleição."),
+            _ => "",
+        };
         Refresh();
     }
 

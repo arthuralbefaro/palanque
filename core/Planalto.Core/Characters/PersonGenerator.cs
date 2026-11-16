@@ -11,7 +11,8 @@ public sealed record PersonRequest(
     Gender? Gender = null,
     int? Age = null,
     string? ProfessionId = null,
-    string? PartyId = null);
+    string? PartyId = null,
+    AgeRange? Ages = null);
 
 /// <summary>
 /// Gera jogador e NPCs com o mesmo sistema (GDD 3.8): prenomes do IBGE pela UF, sobrenomes, nome de urna,
@@ -25,7 +26,8 @@ public static class PersonGenerator
     public static Character Generate(Rng rng, PeopleContent content, PersonRequest request)
     {
         Gender gender = request.Gender ?? PickGender(rng);
-        AgeRange ages = content.Origins.StartingAge;
+        // Jogador: faixa de idade inicial; NPCs: faixa própria (DECISOES D-036).
+        AgeRange ages = request.Ages ?? content.Origins.NpcAge;
         int age = request.Age ?? rng.NextInt(ages.Min, ages.Max + 1);
         DateOnly birth = request.Today.AddYears(-age).AddDays(-rng.NextInt(365));
 
@@ -34,8 +36,9 @@ public static class PersonGenerator
         string second = rng.Chance(0.6) ? Surname(rng, content) : "";
         string civil = string.Join(' ', new[] { first, second, surname }.Where(s => s.Length > 0).Distinct());
 
+        // Só profissões possíveis na idade (formação e registro profissional).
         ProfessionDefinition profession = request.ProfessionId is null
-            ? rng.Pick(content.Professions.Professions)
+            ? rng.Pick(content.Professions.Professions.Where(p => p.AvailableAt(age)).ToList())
             : content.Professions.Professions.First(p => p.Id == request.ProfessionId);
         SocialOriginDefinition origin = rng.Pick(content.Origins.Origins);
 
@@ -51,8 +54,8 @@ public static class PersonGenerator
             HomeMunicipio = request.HomeMunicipio,
             SocialOrigin = origin.Id,
             PartyId = request.PartyId,
-            MaritalStatus = rng.Pick(Enum.GetValues<MaritalStatus>()),
-            Children = rng.NextInt(0, 4),
+            MaritalStatus = rng.Pick(FamilyRules.AllowedStatuses(content.Family, age).ToList()),
+            Children = rng.NextInt(0, FamilyRules.MaxChildren(content.Family, age) + 1),
         };
 
         foreach (string trait in rng.Shuffled(content.Traits.Traits.Where(t => t.SelectableAtCreation).Select(t => t.Id)).Take(2))
@@ -62,6 +65,7 @@ public static class PersonGenerator
 
         ApplyStartingStats(character, rng, content, origin, profession);
         character.Appearance = AppearanceGenerator.Random(rng, content.Appearance, gender, age, request.Uf);
+        FamilyRules.Generate(rng, content, character, request.Today);
         return character;
     }
 

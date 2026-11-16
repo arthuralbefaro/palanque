@@ -38,6 +38,9 @@ public sealed class Character
 
     public int Children { get; set; }
 
+    /// <summary>Cônjuge e filhos, com idades coerentes com a do personagem (GDD 3.3).</summary>
+    public List<FamilyMember> Family { get; init; } = [];
+
     public string? PartyId { get; set; }
 
     /// <summary>Data da filiação ao partido atual (prazo de 6 meses, Lei 9.504, art. 9º); null se anterior ao jogo.</summary>

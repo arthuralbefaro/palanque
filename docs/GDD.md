@@ -89,12 +89,12 @@ Cada peça tem cor primária e secundária; a cor do partido pode ser aplicada c
 | Nome civil | Livre |
 | Nome de urna | Livre (ex.: "Zé da Saúde", "Dra. Ana") |
 | Gênero e pronomes | Masculino, feminino, não binário; pronomes usados em todos os textos |
-| Data de nascimento | Define idade inicial (25 a 45 anos) |
+| Data de nascimento | Define idade inicial (17 a 45 anos). Para disputar vereador é preciso ter 18 anos completos no prazo do registro de candidatura, 15 de agosto (Lei 9.504/1997, art. 11, § 2º); quem não tiver começa fora da disputa e a criação avisa qual é a primeira eleição possível. NPCs são gerados entre 25 e 45 anos |
 | Estado e cidade natal | Lista de cidades jogáveis; dá bônus de reconhecimento local |
 | Origem social | Periferia, classe média, família rica, zona rural, família de políticos (cada uma muda recursos iniciais e eventos) |
-| Profissão anterior | Médico(a), advogado(a), professor(a), pastor(a)/líder religioso(a), sindicalista, empresário(a), policial, jornalista, influenciador(a), atleta, agricultor(a), servidor(a) público(a) — cada uma com bônus de atributo, contatos e eventos exclusivos |
+| Profissão anterior | Médico(a), advogado(a), professor(a), pastor(a)/líder religioso(a), sindicalista, empresário(a), policial, jornalista, influenciador(a), atleta, agricultor(a), servidor(a) público(a) e estudante — cada uma com bônus de atributo, contatos e eventos exclusivos e com idade mínima (formação e registro profissional; ex.: médico(a) a partir de 25, estudante a partir de 17). Profissão indisponível na idade aparece desativada, com a idade mínima |
 | Religião | Opcional; libera/afeta eventos |
-| Estado civil e família | Solteiro(a), casado(a), filhos (0–4); cônjuge e filhos têm retratos gerados e podem participar da história |
+| Estado civil e família | Solteiro(a), casado(a), união estável, divorciado(a), viúvo(a); filhos (0–4). Coerentes com a idade (`data/family.json`): casamento e união estável a partir dos 18, divórcio e viuvez a partir dos 20, teto de filhos que cresce com a idade, filhos nascidos com o personagem a partir dos 16 e cônjuge de 18 anos ou mais. Cônjuge e filhos têm nome e idade e podem participar da história |
 | Traços de personalidade | Escolher 2 de 3 entre ~20 (ver 3.5) |
 | Biografia | Gerada automaticamente a partir das escolhas, editável |
 

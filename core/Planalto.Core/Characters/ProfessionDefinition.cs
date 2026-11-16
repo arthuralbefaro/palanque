@@ -10,4 +10,9 @@ public sealed class ProfessionDefinition
     public required string Description { get; init; }
 
     public Dictionary<AttributeId, int> AttributeModifiers { get; init; } = [];
+
+    /// <summary>Idade mínima para ter exercido a profissão (formação e registro profissional).</summary>
+    public required int MinAge { get; init; }
+
+    public bool AvailableAt(int age) => age >= MinAge;
 }

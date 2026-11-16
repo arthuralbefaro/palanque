@@ -1,0 +1,35 @@
+{
+  "note": "Família do personagem (GDD 3.3). O teto de filhos sobe com a idade; idade do personagem no nascimento de cada filho de min_parent_age em diante, com ao menos child_spacing_years entre os filhos. Estado civil por idade mínima (escolha de jogo: casamento e união estável a partir dos 18, divórcio e viuvez a partir dos 20). Cônjuge com idade na faixa de spouse_age_gap em relação ao personagem e nunca abaixo de spouse_min_age.",
+  "children_cap_by_age": [
+    {
+      "age": 17,
+      "max": 1
+    },
+    {
+      "age": 20,
+      "max": 2
+    },
+    {
+      "age": 24,
+      "max": 3
+    },
+    {
+      "age": 28,
+      "max": 4
+    }
+  ],
+  "min_parent_age": 16,
+  "child_spacing_years": 1,
+  "marital_min_age": {
+    "solteiro": 0,
+    "casado": 18,
+    "uniao_estavel": 18,
+    "divorciado": 20,
+    "viuvo": 20
+  },
+  "spouse_age_gap": {
+    "min": -6,
+    "max": 8
+  },
+  "spouse_min_age": 18
+}

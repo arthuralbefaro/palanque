@@ -74,6 +74,28 @@ public static class CareerFlow
             && state.Calendar.WeekStart < Calendar.ElectionFor(year).CampaignStart;
     }
 
+    /// <summary>
+    /// Pode disputar a eleição municipal do ano: partido e filiação no prazo e idade mínima para vereador (a
+    /// candidatura padrão; com 18 anos, aferida no prazo do registro).
+    /// </summary>
+    public static bool CanRun(GameState state, int electionYear) =>
+        PartyAffiliation.CanRun(state, electionYear) && MeetsAge(state, Office.Vereador, electionYear);
+
+    public static bool MeetsAge(GameState state, Office office, int electionYear) =>
+        CandidacyRulesConfig.Default.MeetsAge(state.Player.BirthDate, office, electionYear);
+
+    /// <summary>Primeira eleição municipal, a partir da atual, em que o jogador já tem idade para vereador.</summary>
+    public static int NextEligibleElectionYear(GameState state)
+    {
+        int year = NextMunicipalElectionYear(state);
+        while (!MeetsAge(state, Office.Vereador, year))
+        {
+            year = RaceSetup.NextMunicipalYear(year + 1);
+        }
+
+        return year;
+    }
+
     /// <summary>Próximo ano de eleição municipal em que ainda dá para fazer campanha.</summary>
     public static int NextMunicipalElectionYear(GameState state)
     {

@@ -30,11 +30,12 @@ public class JsonDataTests
     }
 
     [Fact]
-    public void Professions_CarregaAsDozeProfissoesDoGdd()
+    public void Professions_CarregaAsDozeProfissoesDoGddMaisEstudante()
     {
         ProfessionCatalog catalog = JsonData.LoadFile<ProfessionCatalog>(Path.Combine(DataDirectory, "professions.json")).GetValueOrThrow();
 
-        Assert.Equal(12, catalog.Professions.Count);
+        Assert.Equal(13, catalog.Professions.Count);
+        Assert.Equal(17, catalog.Professions.Single(p => p.Id == "estudante").MinAge);
         Assert.All(catalog.Professions, p => Assert.NotEmpty(p.AttributeModifiers));
         Assert.Equal("Servidora pública", catalog.Professions.Single(p => p.Id == "servidor_publico").Name.For(Gender.Feminino));
     }

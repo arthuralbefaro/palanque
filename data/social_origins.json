@@ -7,7 +7,8 @@
     { "id": "familia_politica", "name": { "masculine": "Família de políticos", "feminine": "Família de políticos", "neutral": "Família de políticos" }, "description": "Sobrenome conhecido, padrinhos e cobranças de lealdade.", "money": 25000, "political_capital": 20, "recognition": 10, "attribute_modifiers": { "articulacao": 5, "integridade": -3 } }
   ],
   "starting_attributes": { "base": 40, "spread": 10 },
-  "starting_age": { "min": 25, "max": 45 },
+  "starting_age": { "min": 17, "max": 45 },
+  "npc_age": { "min": 25, "max": 45 },
   "starting_energy": 100,
   "starting_health": 85
 }

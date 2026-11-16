@@ -2,75 +2,94 @@
   "professions": [
     {
       "id": "medico",
+      "min_age": 25,
       "name": { "masculine": "Médico", "feminine": "Médica", "neutral": "Médico(a)" },
       "description": "Contatos na área da saúde e eventos exclusivos.",
       "attribute_modifiers": { "gestao": 5 }
     },
     {
       "id": "advogado",
+      "min_age": 23,
       "name": { "masculine": "Advogado", "feminine": "Advogada", "neutral": "Advogado(a)" },
       "description": "Contatos no meio jurídico e eventos exclusivos.",
       "attribute_modifiers": { "oratoria": 5 }
     },
     {
       "id": "professor",
+      "min_age": 22,
       "name": { "masculine": "Professor", "feminine": "Professora", "neutral": "Professor(a)" },
       "description": "Contatos na área da educação e eventos exclusivos.",
       "attribute_modifiers": { "oratoria": 5 }
     },
     {
       "id": "lider_religioso",
+      "min_age": 21,
       "name": { "masculine": "Pastor / líder religioso", "feminine": "Pastora / líder religiosa", "neutral": "Pastor(a) / líder religioso(a)" },
       "description": "Contatos em comunidades religiosas e eventos exclusivos.",
       "attribute_modifiers": { "carisma": 5 }
     },
     {
       "id": "sindicalista",
+      "min_age": 20,
       "name": { "masculine": "Sindicalista", "feminine": "Sindicalista", "neutral": "Sindicalista" },
       "description": "Contatos no movimento sindical e eventos exclusivos.",
       "attribute_modifiers": { "articulacao": 5 }
     },
     {
       "id": "empresario",
+      "min_age": 18,
       "name": { "masculine": "Empresário", "feminine": "Empresária", "neutral": "Empresário(a)" },
       "description": "Contatos no meio empresarial e eventos exclusivos.",
       "attribute_modifiers": { "gestao": 5 }
     },
     {
       "id": "policial",
+      "min_age": 20,
       "name": { "masculine": "Policial", "feminine": "Policial", "neutral": "Policial" },
       "description": "Contatos na área da segurança pública e eventos exclusivos.",
       "attribute_modifiers": { "gestao": 5 }
     },
     {
       "id": "jornalista",
+      "min_age": 21,
       "name": { "masculine": "Jornalista", "feminine": "Jornalista", "neutral": "Jornalista" },
       "description": "Contatos na imprensa e eventos exclusivos.",
       "attribute_modifiers": { "oratoria": 5 }
     },
     {
       "id": "influenciador",
+      "min_age": 18,
       "name": { "masculine": "Influenciador", "feminine": "Influenciadora", "neutral": "Influenciador(a)" },
       "description": "Contatos nas redes sociais e eventos exclusivos.",
       "attribute_modifiers": { "carisma": 5 }
     },
     {
       "id": "atleta",
+      "min_age": 17,
       "name": { "masculine": "Atleta", "feminine": "Atleta", "neutral": "Atleta" },
       "description": "Contatos no esporte e eventos exclusivos.",
       "attribute_modifiers": { "carisma": 5 }
     },
     {
       "id": "agricultor",
+      "min_age": 17,
       "name": { "masculine": "Agricultor", "feminine": "Agricultora", "neutral": "Agricultor(a)" },
       "description": "Contatos em cooperativas e associações rurais e eventos exclusivos.",
       "attribute_modifiers": { "articulacao": 5 }
     },
     {
       "id": "servidor_publico",
+      "min_age": 18,
       "name": { "masculine": "Servidor público", "feminine": "Servidora pública", "neutral": "Servidor(a) público(a)" },
       "description": "Contatos na administração pública e eventos exclusivos.",
       "attribute_modifiers": { "gestao": 5 }
+    },
+    {
+      "id": "estudante",
+      "min_age": 17,
+      "name": { "masculine": "Estudante", "feminine": "Estudante", "neutral": "Estudante" },
+      "description": "Grêmio, centro acadêmico ou cursinho comunitário: contatos entre os jovens e pouca experiência fora deles.",
+      "attribute_modifiers": { "carisma": 2, "oratoria": 2 }
     }
   ]
 }

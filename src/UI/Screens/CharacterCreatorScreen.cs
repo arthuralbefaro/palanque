@@ -56,7 +56,7 @@ public partial class CharacterCreatorScreen : Control
         _world = _game.PendingWorld;
         _rng = new Rng(_game.PendingSeed + 1);
         Municipio home = _rng.Pick(_game.Municipios.All.Where(m => m.EleicoesMunicipais).ToList());
-        _c = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", home.Uf, home.CodigoIbge, Today, PartyId: _rng.Pick(_world.Parties).Id));
+        _c = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", home.Uf, home.CodigoIbge, Today, PartyId: _rng.Pick(_world.Parties).Id, Ages: People.Origins.StartingAge));
         _offeredTraits = OfferTraits();
         _c.Campaign = NewCampaign();
         _c.Biography = WriteBiography();
@@ -192,7 +192,7 @@ public partial class CharacterCreatorScreen : Control
                 };
                 break;
             case 2:
-                Character fresh = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", _c.HomeUf!, _c.HomeMunicipio, Today, PartyId: _c.PartyId));
+                Character fresh = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", _c.HomeUf!, _c.HomeMunicipio, Today, PartyId: _c.PartyId, Ages: People.Origins.StartingAge));
                 fresh.Appearance = _c.Appearance;
                 fresh.Campaign = _c.Campaign;
                 _c = fresh;
@@ -382,12 +382,16 @@ public partial class CharacterCreatorScreen : Control
         Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => Change(() => _c.Gender = Enum.Parse<Gender>(g)));
 
         AgeRange ages = People.Origins.StartingAge;
-        var age = Ui.Field(t, "Idade").Add(new SpinBox { MinValue = ages.Min, MaxValue = ages.Max, Value = _c.AgeOn(Today) });
-        age.ValueChanged += v => Change(() =>
+        HBoxContainer ageRow = Ui.Field(t, "Idade");
+        var age = ageRow.Add(new SpinBox { MinValue = ages.Min, MaxValue = ages.Max, Value = _c.AgeOn(Today) });
+        age.ValueChanged += v => Change(() => SetAge((int)v, _c.BirthDate.Month));
+        Ui.Label(ageRow, "Aniversário em", color: Ui.Muted);
+        Ui.Options(ageRow, Enumerable.Range(1, 12).Select(m => (m.ToString(CultureInfo.InvariantCulture), MonthName(m))), _c.BirthDate.Month.ToString(CultureInfo.InvariantCulture),
+            m => Change(() => SetAge(_c.AgeOn(Today), int.Parse(m, CultureInfo.InvariantCulture))), translate: false);
+        foreach (string warning in AgeWarnings())
         {
-            ReplaceBirth(Today.AddYears(-(int)v).AddDays(-100));
-            _c.Appearance = AppearanceAging.Apply(_c.Appearance!, (int)v, 0, _c.Gender, People.Appearance);
-        });
+            Ui.Paragraph(t, warning, 760, 15).AddThemeColorOverride("font_color", Ui.Warning);
+        }
 
         HBoxContainer homeRow = Ui.Field(t, "Cidade natal");
         Ui.Value(homeRow, $"{HomeName()} ({_c.HomeUf})");
@@ -401,11 +405,40 @@ public partial class CharacterCreatorScreen : Control
         Ui.Label(t, "A cidade natal é também o palco da primeira campanha.", color: Ui.Muted);
 
         Ui.Options(Ui.Field(t, "Origem social"), People.Origins.Origins.Select(o => (o.Id, o.Name.For(_c.Gender))), _c.SocialOrigin, o => Change(() => { _c.SocialOrigin = o; RecomputeStats(); }), translate: false);
-        Ui.Options(Ui.Field(t, "Profissão anterior"), People.Professions.Professions.Select(p => (p.Id, p.Name.For(_c.Gender))), _c.ProfessionId, p => Change(() => { _c.ProfessionId = p; RecomputeStats(); }), translate: false);
+        // Profissões indisponíveis na idade aparecem desativadas, com a idade mínima.
+        int currentAge = _c.AgeOn(Today);
+        var professions = People.Professions.Professions;
+        var professionOptions = Ui.Options(
+            Ui.Field(t, "Profissão anterior"),
+            professions.Select(p => (p.Id, p.AvailableAt(currentAge) ? p.Name.For(_c.Gender) : string.Format(Tr("{0} (a partir de {1} anos)"), p.Name.For(_c.Gender), p.MinAge))),
+            _c.ProfessionId,
+            p => Change(() => { _c.ProfessionId = p; RecomputeStats(); }),
+            translate: false);
+        for (int i = 0; i < professions.Count; i++)
+        {
+            professionOptions.SetItemDisabled(i, !professions[i].AvailableAt(currentAge));
+        }
+
         Ui.Options(Ui.Field(t, "Religião"), new[] { ("", "Não declarar") }.Concat(Religions.Select(r => (r, r switch { "catolica" => "Católica", "evangelica" => "Evangélica", "outras" => "Outra religião", _ => "Sem religião" }))), _c.Religion ?? "", r => Edit(() => _c.Religion = r.Length == 0 ? null : r));
-        Ui.Options(Ui.Field(t, "Estado civil"), Enum.GetValues<MaritalStatus>().Select(m => (m.ToString(), m switch { MaritalStatus.Solteiro => "Solteiro(a)", MaritalStatus.Casado => "Casado(a)", MaritalStatus.UniaoEstavel => "União estável", MaritalStatus.Divorciado => "Divorciado(a)", _ => "Viúvo(a)" })), _c.MaritalStatus.ToString(), m => Edit(() => _c.MaritalStatus = Enum.Parse<MaritalStatus>(m)));
-        var children = Ui.Field(t, "Filhos").Add(new SpinBox { MinValue = 0, MaxValue = 4, Value = _c.Children });
-        children.ValueChanged += v => Edit(() => _c.Children = (int)v);
+        FamilyConfig family = People.Family;
+        var statuses = Enum.GetValues<MaritalStatus>();
+        var marital = Ui.Options(Ui.Field(t, "Estado civil"), statuses.Select(m => (m.ToString(), m switch { MaritalStatus.Solteiro => "Solteiro(a)", MaritalStatus.Casado => "Casado(a)", MaritalStatus.UniaoEstavel => "União estável", MaritalStatus.Divorciado => "Divorciado(a)", _ => "Viúvo(a)" })), _c.MaritalStatus.ToString(),
+            m => Change(() => { _c.MaritalStatus = Enum.Parse<MaritalStatus>(m); FamilyRules.Generate(_rng, People, _c, Today); }));
+        for (int i = 0; i < statuses.Length; i++)
+        {
+            marital.SetItemDisabled(i, !FamilyRules.Allows(family, statuses[i], currentAge));
+        }
+
+        int maxChildren = FamilyRules.MaxChildren(family, currentAge);
+        HBoxContainer childrenRow = Ui.Field(t, "Filhos");
+        var children = childrenRow.Add(new SpinBox { MinValue = 0, MaxValue = maxChildren, Value = _c.Children });
+        children.ValueChanged += v => Change(() => { _c.Children = (int)v; FamilyRules.Generate(_rng, People, _c, Today); });
+        Ui.Label(childrenRow, string.Format(Tr("até {0} aos {1} anos"), maxChildren, currentAge), color: Ui.Muted);
+        if (_c.Family.Count > 0)
+        {
+            string members = string.Join(" · ", _c.Family.Select(f => string.Format(Tr(f.Relation == FamilyRelation.Conjuge ? "{0}, cônjuge, {1} anos" : "{0}, {1} anos"), f.Name, f.AgeOn(Today))));
+            Ui.Paragraph(t, members, 760, 15);
+        }
 
         Ui.Label(t, "Traços de personalidade: escolha 2 de 3", 20);
         foreach (string id in _offeredTraits)
@@ -434,6 +467,46 @@ public partial class CharacterCreatorScreen : Control
         Ui.Button(bioRow, "Gerar de novo", () => Change(() => _c.Biography = WriteBiography()));
         var bio = t.Add(new TextEdit { Text = _c.Biography ?? "", CustomMinimumSize = new Vector2(0, 110), WrapMode = TextEdit.LineWrappingMode.Boundary });
         bio.TextChanged += () => _c.Biography = bio.Text;
+    }
+
+    /// <summary>
+    /// Idade no início do jogo e mês do aniversário: o mês decide se um personagem de 17 anos chega aos 18 até o
+    /// prazo do registro. Ajusta profissão e família ao que a nova idade permite.
+    /// </summary>
+    private void SetAge(int age, int month)
+    {
+        DateOnly birth = month == 1 ? new DateOnly(Today.Year - age, 1, 1) : new DateOnly(Today.Year - age - 1, month, 1);
+        ReplaceBirth(birth);
+        _c.Appearance = AppearanceAging.Apply(_c.Appearance!, age, 0, _c.Gender, People.Appearance);
+        if (People.Professions.Professions.FirstOrDefault(p => p.Id == _c.ProfessionId) is { } current && !current.AvailableAt(age))
+        {
+            _c.ProfessionId = People.Professions.Professions.Where(p => p.AvailableAt(age)).OrderByDescending(p => p.MinAge).First().Id;
+            RecomputeStats();
+        }
+
+        FamilyRules.Generate(_rng, People, _c, Today);
+    }
+
+    private static string MonthName(int month) => TranslationServer.Translate(month switch
+    {
+        1 => "janeiro", 2 => "fevereiro", 3 => "março", 4 => "abril", 5 => "maio", 6 => "junho",
+        7 => "julho", 8 => "agosto", 9 => "setembro", 10 => "outubro", 11 => "novembro", _ => "dezembro",
+    });
+
+    /// <summary>Avisos (sem bloquear) quando a idade não permite disputar a primeira eleição ou a prefeitura.</summary>
+    private IEnumerable<string> AgeWarnings()
+    {
+        int year = Planalto.Core.Campaign.RaceSetup.NextMunicipalYear(Today.Year);
+        var rules = CandidacyRulesConfig.Default;
+        if (!rules.MeetsAge(_c.BirthDate, Office.Vereador, year))
+        {
+            DateOnly registration = rules.AgeReferenceDate(Office.Vereador, year, new DateOnly(year + 1, 1, 1));
+            yield return string.Format(Tr("Com essa idade, você não terá 18 anos no prazo do registro de candidatura ({0}) e não poderá disputar a eleição de {1}. A carreira começa fora da disputa, até a eleição seguinte."), registration.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), year);
+        }
+        else if (!rules.MeetsAge(_c.BirthDate, Office.Prefeito, year))
+        {
+            yield return string.Format(Tr("Na eleição de {0} você poderá disputar para vereador, mas ainda não terá a idade mínima para a prefeitura (21 anos na posse)."), year);
+        }
     }
 
     private void ReplaceBirth(DateOnly birth)
@@ -640,6 +713,12 @@ public partial class CharacterCreatorScreen : Control
     /// <summary>Sorteia tudo (usado também pelo teste de fumaça da UI).</summary>
     public void RandomizeEverything() => Change(RandomizeAll);
 
+    /// <summary>Teste de fumaça: idade e mês de aniversário, como os controles da aba Identidade.</summary>
+    public void SetAgeForTest(int age, int month) => Change(() => SetAge(age, month));
+
+    /// <summary>Teste de fumaça: avisos de idade mostrados na aba Identidade.</summary>
+    public IReadOnlyList<string> AgeWarningsForTest => AgeWarnings().ToList();
+
     /// <summary>Teste de fumaça: filia ao partido mais forte da cidade escolhida, como a aba Partido sugere.</summary>
     public void ChooseStrongestPartyForTest()
     {
@@ -668,7 +747,9 @@ public partial class CharacterCreatorScreen : Control
         GameState state = NewGame.Create(_world, _c, _game.PendingSeed);
         _game.PendingWorld = null;
         _game.StartCareer(state);
-        _game.GoTo(Game.Scenes.Hub);
+
+        // Sem idade para a primeira eleição, a carreira começa fora da disputa (entressafra).
+        _game.GoToCareer();
     }
 
     // ---------- Presets de aparência (user://presets/) ----------

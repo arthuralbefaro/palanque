@@ -189,7 +189,12 @@ public partial class Game : Node
     public void StartCareer(GameState state)
     {
         State = state;
-        Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
+
+        // Quem não tem 18 anos no prazo do registro da primeira eleição começa fora da disputa (DECISOES D-036).
+        int firstElection = Core.Campaign.RaceSetup.NextMunicipalYear(state.Calendar.Year);
+        Engine = Core.Career.CareerFlow.MeetsAge(state, Core.Elections.Office.Vereador, firstElection)
+            ? Core.Campaign.CampaignEngine.Start(ContextFor(state))
+            : null;
         Mandate = null;
         Prefeitura = null;
         FoundingEngine = NewFoundingEngine(state);
@@ -215,6 +220,7 @@ public partial class Game : Node
         Nenhuma,
         CampanhaAberta,
         SemPartidoNoPrazo,
+        SemIdade,
         MandatoEncerrado,
     }
 
@@ -237,13 +243,13 @@ public partial class Game : Node
         WeekNote note = hadMandate && state.Mandate is null && state.Executive is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
         if (Core.Career.CareerFlow.ShouldStartCampaign(state))
         {
-            if (Core.Career.PartyAffiliation.CanRun(state, state.Calendar.Year))
+            if (Core.Career.CareerFlow.CanRun(state, state.Calendar.Year))
             {
                 Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
                 return WeekNote.CampanhaAberta;
             }
 
-            return WeekNote.SemPartidoNoPrazo;
+            return Core.Career.CareerFlow.MeetsAge(state, Core.Elections.Office.Vereador, state.Calendar.Year) ? WeekNote.SemPartidoNoPrazo : WeekNote.SemIdade;
         }
 
         return note;
@@ -273,8 +279,16 @@ public partial class Game : Node
         {
             note = AdvanceWeek();
         }
-        while (note == WeekNote.Nenhuma && ++guard < 6 * 53);
+        while ((note == WeekNote.Nenhuma || (note == WeekNote.SemIdade && SkipBlockedWindow())) && ++guard < 6 * 53);
         return note;
+    }
+
+    /// <summary>Sem idade para esta eleição: pula a janela dela, para o salto seguir até a próxima.</summary>
+    private bool SkipBlockedWindow()
+    {
+        GameState state = State!;
+        state.Calendar.JumpTo(Core.State.Calendar.ElectionFor(state.Calendar.Year).CampaignStart);
+        return true;
     }
 
     /// <summary>Depois da apuração: posse (se eleito) ou fim do mandato, e o calendário vai a 1º de janeiro.</summary>
