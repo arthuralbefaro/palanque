@@ -824,7 +824,7 @@ public partial class UiShot
                 shown = true;
             }
 
-            if (accounts.MandateLost && (game.State.Mandate is not null || scene != Game.Scenes.OutOfOffice))
+            if (accounts.MandateLost && (game.State.Mandate is not null || game.State.Executive is not null || scene != Game.Scenes.Hub || game.Entressafra is null))
             {
                 Fail("com o diploma cassado, o mandato deveria ter acabado e a carreira ido para a entressafra.");
                 return;

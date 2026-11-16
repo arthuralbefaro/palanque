@@ -103,6 +103,9 @@ public sealed class GameState
     /// <summary>Mandato de prefeito em curso; null fora dele (GDD 5.9).</summary>
     public Executive.ExecutiveState? Executive { get; set; }
 
+    /// <summary>Governo da cidade durante o mandato do jogador: obras, secretários, folha, gabinete e cobranças (GDD 17.14 e 17.15).</summary>
+    public Governance.GovernanceState? Governance { get; set; }
+
     /// <summary>Câmara e prefeitura do município em foco depois da última eleição jogada.</summary>
     public Legislature.LocalPolitics? Local { get; set; }
 
@@ -117,6 +120,15 @@ public sealed class GameState
 
     /// <summary>Fundação de partido em curso ou concluída (GDD 14.2 B).</summary>
     public Career.PartyFoundingState? Founding { get; set; }
+
+    /// <summary>Indicadores do município em foco em unidade real, com o modelo de evolução (GDD 17.17); null em saves anteriores.</summary>
+    public Indicators.MunicipalIndicatorsState? Indicators { get; set; }
+
+    /// <summary>Renovação do mundo político do município em foco: cadeiras, suplentes, prefeito e vice, saídas e entradas (GDD 17.16); null em saves anteriores.</summary>
+    public Renewal.RenewalState? Renewal { get; set; }
+
+    /// <summary>Entressafra (fora de mandato e fora de campanha): presença por zona, turnos e posições; null fora dela.</summary>
+    public Career.OffSeasonState? OffSeason { get; set; }
 
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }

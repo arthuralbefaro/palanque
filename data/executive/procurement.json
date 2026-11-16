@@ -1,0 +1,24 @@
+{
+  "note": "Contratação das obras (GDD 17.15). As regras de lei (modalidades do art. 28, tetos da dispensa por valor do art. 75, I e II, e a emergência do art. 75, VIII, da Lei 14.133/2021) ficam no objeto ProcurementLawConfig do Core; aqui ficam só os parâmetros de jogo: quanto demora cada caminho, a chance de impugnação e de sobrepreço. 'so_pequenas_e_servicos' é simplificação de jogo (pregão para serviços e obras pequenas; concorrência para qualquer obra), não é regra conferida na lei. As empresas são fictícias: o nome sai de 'tipos' + 'nucleos' + 'complementos'. Contratação emergencial sem emergência reconhecida na zona passa como irregularidade.",
+  "regras": {
+    "emergencia_validade_semanas": 12,
+    "gravidade_emergencial_irregular": 3,
+    "sobrepreco": { "min": 0.08, "max": 0.3 },
+    "sobrepreco_por_integridade": 0.12,
+    "empresas_por_porte": { "pequeno": 4, "medio": 6, "grande": 8, "metropole": 12 },
+    "peso_qualidade": 1.0,
+    "imagem_empresa_doadora": -2,
+    "npc_chance_emergencial_irregular": 0.25
+  },
+  "modalidades": [
+    { "modo": "pregao", "nome": "Pregão", "descricao": "Disputa por menor preço, mais rápida. No jogo, serve para serviços e obras pequenas.", "semanas": { "min": 8, "max": 10 }, "chance_impugnacao": 0.1, "impugnacao_semanas": { "min": 3, "max": 6 }, "so_pequenas_e_servicos": true, "chance_sobrepreco": 0.05, "ganho": ["tempo"], "custo": ["risco"] },
+    { "modo": "concorrencia", "nome": "Concorrência", "descricao": "Licitação completa, para qualquer obra. É a mais lenta e a que mais atrai impugnação de quem perde.", "semanas": { "min": 10, "max": 16 }, "chance_impugnacao": 0.25, "impugnacao_semanas": { "min": 4, "max": 9 }, "chance_sobrepreco": 0.07, "ganho": ["posicao"], "custo": ["tempo"] },
+    { "modo": "dispensa_por_valor", "nome": "Dispensa por valor", "descricao": "Contratação direta, só até o teto da lei. Rápida; sem disputa, o preço fica mais sujeito a sobrepreço.", "semanas": { "min": 2, "max": 3 }, "chance_impugnacao": 0, "impugnacao_semanas": { "min": 1, "max": 1 }, "chance_sobrepreco": 0.14, "ganho": ["tempo"], "custo": ["risco"] },
+    { "modo": "emergencial", "nome": "Contratação emergencial", "descricao": "Contratação direta em emergência ou calamidade, só para o necessário. Sem emergência reconhecida na zona, é irregularidade.", "semanas": { "min": 1, "max": 2 }, "chance_impugnacao": 0, "impugnacao_semanas": { "min": 1, "max": 1 }, "chance_sobrepreco": 0.22, "ganho": ["tempo"], "custo": ["risco"] }
+  ],
+  "empresas": {
+    "tipos": ["Construtora", "Engenharia", "Empreiteira", "Terraplanagem", "Serviços"],
+    "nucleos": ["Vale Azul", "Serra Dourada", "Rio Manso", "Três Marcos", "Boa Passagem", "Campo Largo", "Pedra Branca", "Morro Alto", "Ribeirão Claro", "Mata Verde", "Ponte Nova do Sul", "Alto da Colina", "Lagoa Funda", "Cruzeiro do Norte"],
+    "complementos": ["Ltda.", "e Filhos Ltda.", "S.A.", "Obras Ltda.", "do Interior Ltda."]
+  }
+}

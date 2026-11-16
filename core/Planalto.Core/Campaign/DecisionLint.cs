@@ -16,7 +16,7 @@ public sealed class DecisionTrade
 /// (dinheiro, tempo, relação, zona, risco, posição), e o que o conteúdo declara tem de bater com o efeito que a
 /// opção de fato produz. Opção relevante sem rastro (Livro ou lembrança) também reprova (princípio d).
 /// </summary>
-public static class DecisionLint
+public static partial class DecisionLint
 {
     public static IReadOnlyList<string> Run(CampaignContent campaign, EventContent? events)
     {

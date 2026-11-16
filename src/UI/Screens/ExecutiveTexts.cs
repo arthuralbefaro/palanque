@@ -25,17 +25,6 @@ public static class ExecutiveTexts
         _ => n.Subject,
     };
 
-    public static string Failure(ExecutiveFailure failure) => Tr(failure switch
-    {
-        ExecutiveFailure.SemEnergia => "Sem energia nesta semana.",
-        ExecutiveFailure.SemReserva => "A reserva livre do orçamento não cobre o custo.",
-        ExecutiveFailure.JaAdotada => "Já adotada.",
-        ExecutiveFailure.CrisePendente => "Resolva a crise primeiro.",
-        ExecutiveFailure.SemSecretarias => "Não há secretaria para entregar.",
-        ExecutiveFailure.OrcamentoInvalido => "As parcelas precisam somar 100%.",
-        _ => "Escolha um alvo válido.",
-    });
-
     public static string Status(PolicyStatus status) => Tr(status switch
     {
         PolicyStatus.Implantando => "em implantação",

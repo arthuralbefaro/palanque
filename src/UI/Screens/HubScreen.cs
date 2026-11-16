@@ -152,13 +152,16 @@ public partial class HubScreen : Control
             return;
         }
 
-        if (_game.Engine is null)
+        // Sem campanha aberta, a mesma tela mostra o mandato, a prefeitura ou a entressafra (HubScreen.Gov.cs).
+        _gov = _game.State.Campaign is null;
+        if (_gov)
         {
-            _game.GoToCareer();
-            return;
+            _govKind = Kind;
+            _area = GovAreas[0].Id;
+            _mapMode = Kind == GovKind.Prefeito ? "obras" : "base";
         }
 
-        _engine = _game.Engine;
+        _engine = _game.Engine!;
         Theme = Palette.CentralTheme();
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         var background = this.Add(new ColorRect { Color = Palette.Fundo, MouseFilter = MouseFilterEnum.Ignore });
@@ -239,8 +242,8 @@ public partial class HubScreen : Control
 
     private void LoadZones()
     {
-        var municipio = _engine.Context.Municipio;
-        _zonas = _engine.Context.Zonas;
+        var municipio = City;
+        _zonas = _game.ZonasDe(municipio);
         string prefix = municipio.CodigoIbge.ToString(CultureInfo.InvariantCulture) + "-";
         GeoZonasUf geo = _game.GeoZonasDe(municipio.Uf);
         _map.Load(_zonas, geo.Zonas.Where(z => z.Id.StartsWith(prefix, StringComparison.Ordinal)), geo.Scale);
@@ -252,6 +255,12 @@ public partial class HubScreen : Control
     {
         if (!_running)
         {
+            return;
+        }
+
+        if (_gov)
+        {
+            GovProcess(delta);
             return;
         }
 
@@ -272,7 +281,8 @@ public partial class HubScreen : Control
 
     /// <summary>Motivo para o tempo não andar (decisão imediata ou fase que se resolve fora do mapa); null se pode.</summary>
     public string? BlockReason() =>
-        Campaign.Events.Pending.Count > 0 ? Tr("há uma decisão esperando você")
+        _gov ? GovBlockReason()
+        : Campaign.Events.Pending.Count > 0 ? Tr("há uma decisão esperando você")
         : Agenda.PendingRequest is not null ? Tr("uma liderança fez um pedido e espera a sua resposta")
         : _engine.Team.Pending.Count > 0 ? Tr("alguém da sua equipe espera uma decisão sua")
         : Campaign.Debate is not null ? Tr("há um debate na TV hoje")
@@ -286,6 +296,12 @@ public partial class HubScreen : Control
     /// </summary>
     public void StepDay()
     {
+        if (_gov)
+        {
+            StepGovDay();
+            return;
+        }
+
         if (BlockReason() is not null)
         {
             _running = false;
@@ -432,6 +448,7 @@ public partial class HubScreen : Control
         _confirmFire = null;
         _changes = null;
         _back.Clear();
+        ResetGovSheet();
         Refresh();
     }
 
@@ -481,6 +498,11 @@ public partial class HubScreen : Control
 
     private void OnZoneClicked(string? id)
     {
+        if (GovZoneClicked(id))
+        {
+            return;
+        }
+
         if (_sheet == Sheet.Marcar && _draft is not null)
         {
             // Com a marcação aberta, o clique no mapa escolhe a zona do compromisso.
@@ -529,6 +551,13 @@ public partial class HubScreen : Control
     {
         if (_top is null)
         {
+            return;
+        }
+
+        SyncMode();
+        if (_gov)
+        {
+            RefreshGov();
             return;
         }
 
@@ -789,6 +818,8 @@ public partial class HubScreen : Control
             var b = IconButton(_trail, icon, _area == id && (_sheet == Sheet.Nenhuma || SheetArea(_sheet) == id), () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
             b.Name = "Area_" + id;
         }
+
+        GovTrailExtra();
     }
 
     // ------------------------------------------------------------------ painel da área
@@ -796,6 +827,11 @@ public partial class HubScreen : Control
     private void BuildLeft()
     {
         Ui.Clear(_left);
+        if (BuildGovLeft())
+        {
+            return;
+        }
+
         switch (_sheet)
         {
             case Sheet.Zona when _sheetId is not null && _map.Zonas.ContainsKey(_sheetId):
@@ -862,6 +898,11 @@ public partial class HubScreen : Control
                 _sheetId = null;
                 _back.Clear();
                 break;
+        }
+
+        if (BuildGovLeft())
+        {
+            return;
         }
 
         Heading(_left, Tr(Areas.First(a => a.Id == _area).Name));

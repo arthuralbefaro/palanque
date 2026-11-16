@@ -42,6 +42,12 @@ internal static class CampaignKit
 
         public LegislatureContent Legislature { get; }
 
+        private Planalto.Core.Governance.GovernanceContent? _governance;
+
+        /// <summary>Conteúdo dos mandatos da R4 (obras, secretários, folha, instrumentos, cobrança, eventos de mandato).</summary>
+        public Planalto.Core.Governance.GovernanceContent Governance =>
+            _governance ??= Planalto.Core.Governance.GovernanceContent.LoadOrThrow(TestContent.DataDirectory, Executive, Campaign.Promises);
+
         /// <summary>Projeção como o jogo a carrega: reescalada pela projeção por UF de data/demography/.</summary>
         public PopulationProjection Projection { get; }
 
@@ -134,6 +140,24 @@ internal static class CampaignKit
             Legislature = C.Legislature.Config,
             Electorate = campaign.Electorate,
             RecognitionScale = C.Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
+            Indicadores = indicadores,
+        };
+    }
+
+    /// <summary>Contexto do governo da cidade (R4) no município em foco.</summary>
+    public static Planalto.Core.Governance.GovernanceContext GovernanceContext(GameState state, Planalto.Core.Indicators.IndicadoresMunicipio? indicadores = null)
+    {
+        Municipio m = Municipio(state.FocusMunicipio);
+        return new Planalto.Core.Governance.GovernanceContext
+        {
+            State = state,
+            Municipio = m,
+            Content = C.Governance,
+            Legislature = C.Legislature,
+            Executive = C.Executive,
+            People = C.People,
+            Campaign = C.Campaign,
+            Zonas = Zonas(m),
             Indicadores = indicadores,
         };
     }

@@ -341,18 +341,45 @@ public sealed class MandateActionCatalog : IValidatable
     }
 }
 
-/// <summary>Conteúdo do mandato legislativo: configuração, ações e projetos municipais.</summary>
+/// <summary>Textos da previsão do voto do vereador (data/legislature/texts.json).</summary>
+public sealed class LegislatureTextCatalog : IValidatable
+{
+    public static readonly IReadOnlyList<string> TextKeys =
+    [
+        "previsao_voto", "previsao_voto_segue", "previsao_voto_contraria", "previsao_voto_abstem", "previsao_voto_liberado", "previsao_voto_sem_partido",
+        "previsao_voto_limites", "previsao_voto_executivo", "previsao_voto_autor", "previsao_voto_publico", "previsao_voto_abstencao_publico", "previsao_voto_acordo",
+    ];
+
+    public required string Note { get; init; }
+
+    public required Dictionary<string, string> Textos { get; init; }
+
+    public string Texto(string key) => Textos.TryGetValue(key, out string? text) ? text : key;
+
+    public IEnumerable<string> Validate()
+    {
+        foreach (string key in TextKeys.Where(k => !Textos.ContainsKey(k) || string.IsNullOrWhiteSpace(Textos[k])))
+        {
+            yield return $"textos: falta '{key}'.";
+        }
+    }
+}
+
+/// <summary>Conteúdo do mandato legislativo: configuração, ações, projetos municipais e os textos da previsão do voto.</summary>
 public sealed class LegislatureContent
 {
     public const string ConfigFile = "legislature/config.json";
     public const string ActionsFile = "legislature/actions.json";
     public const string MunicipalBillsFile = "bills/municipal.json";
+    public const string TextsFile = "legislature/texts.json";
 
     public required LegislatureConfig Config { get; init; }
 
     public required MandateActionCatalog Actions { get; init; }
 
     public required BillCatalog MunicipalBills { get; init; }
+
+    public required LegislatureTextCatalog Texts { get; init; }
 
     /// <param name="groups">Ids de grupos de segmento válidos (data/electorate/segments.json).</param>
     /// <param name="themes">Ids de temas válidos (data/themes.json).</param>
@@ -361,6 +388,7 @@ public sealed class LegislatureContent
         var config = JsonData.LoadFile<LegislatureConfig>(Path.Combine(dataDirectory, ConfigFile));
         var actions = JsonData.LoadFile<MandateActionCatalog>(Path.Combine(dataDirectory, ActionsFile));
         var bills = JsonData.LoadFile<BillCatalog>(Path.Combine(dataDirectory, MunicipalBillsFile));
+        var texts = JsonData.LoadFile<LegislatureTextCatalog>(Path.Combine(dataDirectory, TextsFile));
 
         var actionErrors = actions.Errors.ToList();
         var billErrors = bills.Errors.ToList();
@@ -388,9 +416,10 @@ public sealed class LegislatureContent
             new(ConfigFile, 1, config.Errors),
             new(ActionsFile, actions.Value?.Actions.Count ?? 0, actionErrors),
             new(MunicipalBillsFile, bills.Value?.Bills.Count ?? 0, billErrors),
+            new(TextsFile, texts.Value?.Textos.Count ?? 0, texts.Errors),
         };
-        content = reports.All(r => r.IsValid) && config.Value is not null && actions.Value is not null && bills.Value is not null
-            ? new LegislatureContent { Config = config.Value, Actions = actions.Value, MunicipalBills = bills.Value }
+        content = reports.All(r => r.IsValid) && config.Value is not null && actions.Value is not null && bills.Value is not null && texts.Value is not null
+            ? new LegislatureContent { Config = config.Value, Actions = actions.Value, MunicipalBills = bills.Value, Texts = texts.Value }
             : null;
         return reports;
     }
