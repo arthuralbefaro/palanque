@@ -108,6 +108,44 @@ public partial class UiShot
     }
 
     /// <summary>
+    /// "Como te veem" na barra de cima: a faixa nomeada de data/campaign/config.json e a régua, sem número cru; o
+    /// número fica no tooltip em três partes, com os limites da faixa.
+    /// </summary>
+    private async Task<bool> CheckImageStat(HubScreen hub)
+    {
+        Game game = Game.Instance;
+        var config = game.Campaign.Config;
+        var player = game.State!.Campaign!.Player;
+        double original = player.Image;
+        var culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+        foreach (double image in new[] { -1, -0.3, -0.02, 0, 0.06, 0.4, 1 })
+        {
+            player.Image = image;
+            hub.Refresh();
+            await Frames(2);
+            string expected = config.ImageBandOf(image).Name;
+            string number = Math.Abs(image).ToString("0.00", culture);
+            var box = Named<Control>(hub, "Imagem");
+            string shown = box is null ? "" : FindAll<Label>(box).FirstOrDefault(l => l.Name == "Faixa")?.Text ?? "";
+            int ticks = box is null ? 0 : FindAll<HBoxContainer>(box).FirstOrDefault(r => r.Name == "Regua")?.GetChildCount() ?? 0;
+            string tip = box?.TooltipText ?? "";
+            if (!shown.EndsWith(expected, StringComparison.Ordinal) || shown.Any(char.IsDigit) || ticks != config.ImageScale.Count
+                || !tip.Contains(number, StringComparison.Ordinal) || !tip.Contains(expected, StringComparison.Ordinal)
+                || !tip.Contains(Tr("O que faz:"), StringComparison.Ordinal) || !tip.Contains(Tr("Quanto custa:"), StringComparison.Ordinal))
+            {
+                Fail($"imagem {image}: a barra mostra \"{shown}\" (esperado: faixa \"{expected}\", sem número), régua com {ticks} casas, tooltip \"{tip}\".");
+                return false;
+            }
+        }
+
+        player.Image = original;
+        hub.Refresh();
+        await Frames(2);
+        GD.Print($"  imagem: {config.ImageScale.Count} faixas nomeadas na barra de cima, número só no tooltip");
+        return true;
+    }
+
+    /// <summary>
     /// 17 anos com aniversário em dezembro (sem 18 anos no prazo do registro de 2028): a criação avisa, na aba
     /// Identidade e na base da tela, que a carreira começa em 2032; ao confirmar, o jogo abre direto na pré-campanha
     /// de 2032, na tela central, com o personagem mais velho.

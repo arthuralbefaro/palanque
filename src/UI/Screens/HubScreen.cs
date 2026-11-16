@@ -649,7 +649,7 @@ public partial class HubScreen : Control
         Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos, pesquisas, a folha da equipe e a verba dos canais (as duas saem toda segunda-feira); o jantar de arrecadação traz mais."));
         Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
             string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
-        Stat(Tr("como te veem"), string.Format(PtBr, "{0:+0.00;−0.00;0.00}", Campaign.Player.Image), Tr("Imagem: como a cidade vê você, de −1 a +1."), Tr("pesa no voto; volta aos poucos para zero sem novidades."));
+        ImageStat();
         AgendaRules agendaRules = _engine.Context.Campaign.Commitments.Regras;
         bool stressed = State.Player.Resources.Stress > agendaRules.EstresseLimite;
         Stat(Tr("estresse"), string.Format(PtBr, stressed ? "{0} ▲" : "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
@@ -672,6 +672,45 @@ public partial class HubScreen : Control
         Label label = Ui.Value(box, value, 20);
         label.AddThemeColorOverride("font_color", color ?? Palette.Texto);
         label.MouseFilter = MouseFilterEnum.Pass;
+    }
+
+    /// <summary>
+    /// Imagem na barra de cima: a faixa nomeada (data/campaign/config.json) e uma régua com uma casa por faixa; o
+    /// número cru fica só no tooltip, com os limites da faixa.
+    /// </summary>
+    private void ImageStat()
+    {
+        CampaignConfig config = _engine.Context.Config;
+        double image = Campaign.Player.Image;
+        int index = config.ImageBandIndex(image);
+        int side = config.ImageBandSide(index);
+        var (from, to) = config.ImageBandRange(index);
+        Color color = side > 0 ? Palette.Positivo : side < 0 ? Palette.Negativo : Palette.Texto;
+        string tip = Palette.Tip(
+            Tr("Imagem: como a cidade vê você, numa régua de −1 a +1."),
+            string.Format(Tr("hoje {0}, na faixa \"{1}\" (de {2} a {3}); pesa no voto e volta aos poucos para zero sem novidades."), Signed(image, "0.00"), config.ImageScale[index].Name, Signed(from, "0.00"), Signed(to, "0.00")),
+            Tr("é um resultado, não um custo."));
+        var box = _top.Add(new VBoxContainer { Name = "Imagem", MouseFilter = MouseFilterEnum.Stop, TooltipText = tip });
+        box.AddThemeConstantOverride("separation", -4);
+        box.SizeFlagsVertical = SizeFlags.ShrinkCenter;
+        Label caption = Ui.Label(box, "como te veem", 18);
+        caption.AddThemeColorOverride("font_color", Palette.Texto3);
+        caption.MouseFilter = MouseFilterEnum.Pass;
+        var row = box.Add(new HBoxContainer { MouseFilter = MouseFilterEnum.Pass });
+        row.AddThemeConstantOverride("separation", 8);
+        var ruler = row.Add(new HBoxContainer { Name = "Regua", MouseFilter = MouseFilterEnum.Pass, SizeFlagsVertical = SizeFlags.ShrinkCenter });
+        ruler.AddThemeConstantOverride("separation", 3);
+        for (int i = 0; i < config.ImageScale.Count; i++)
+        {
+            ruler.Add(new ColorRect { Color = i == index ? color : Palette.Linha, CustomMinimumSize = new Vector2(8, i == index ? 18 : 10), SizeFlagsVertical = SizeFlags.ShrinkCenter, MouseFilter = MouseFilterEnum.Ignore });
+        }
+
+        // Cor de significado vem sempre com sinal (ART_GUIDE): seta para cima ou para baixo antes do nome da faixa.
+        string sign = side > 0 ? "▲ " : side < 0 ? "▼ " : "";
+        Label value = Ui.Value(row, sign + config.ImageScale[index].Name, 20);
+        value.Name = "Faixa";
+        value.AddThemeColorOverride("font_color", color);
+        value.MouseFilter = MouseFilterEnum.Pass;
     }
 
     /// <summary>Aviso visível quando o estresse passa do limite: o que ele causa e como baixar.</summary>

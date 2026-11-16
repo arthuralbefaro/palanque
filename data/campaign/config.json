@@ -26,5 +26,12 @@
   "porte_cost_multiplier": { "pequeno": 0.4, "medio": 1.0, "grande": 2.5, "metropole": 6.0 },
   "porte_recognition_multiplier": { "pequeno": 1.6, "medio": 1.0, "grande": 0.6, "metropole": 0.35 },
   "election_noise_sd": 0.12,
-  "count_snapshots": 12
+  "count_snapshots": 12,
+  "image_scale": [
+    { "from": -1.0, "name": "muito mal" },
+    { "from": -0.25, "name": "mal" },
+    { "from": -0.05, "name": "indiferente" },
+    { "from": 0.05, "name": "bem" },
+    { "from": 0.25, "name": "muito bem" }
+  ]
 }

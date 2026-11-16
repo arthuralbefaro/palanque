@@ -180,6 +180,10 @@ public partial class UiShot : Node
                 var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
                 AddChild(hub);
                 await Frames(5);
+                if (!await CheckImageStat(hub))
+                {
+                    return;
+                }
 
                 // Cada tipo de compromisso que não pede zona nem pessoa especial: marca pela tela, deixa o dia correr e
                 // confere o resultado explicado no feed (nunca só "feito").
