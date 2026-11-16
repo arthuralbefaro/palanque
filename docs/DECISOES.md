@@ -249,3 +249,18 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Como reverter:** cada escolha é uma regra do importador (`tools/Planalto.DataImporter/Rd/`) ou um parâmetro de `data/indicators/definitions.json`; rodar `rd` de novo regenera os arquivos.
 - **Adendo (declarações implausíveis):** DCA cuja receita corrente por habitante cai fora da faixa plausível de `data/indicators/definitions.json`, e RGF cuja despesa com pessoal em % da RCL cai fora dela, são tratados como erro evidente de preenchimento: a declaração é descartada, vale a regra de substituição do indicador e o valor declarado fica na lacuna. Foram 26 casos. Nenhum número é corrigido.
 - **Adendo (IDEB do Distrito Federal):** o DF não tem rede municipal; usa-se a nota da rede estadual (distrital) do próprio município, marcada como `rede_estadual`.
+
+## D-039 — Escolhas da R2a (território, agenda, lideranças, Livro)
+- **Data:** 2026-11-16 · **Fase:** R2a · Tomadas no corujão.
+- **Saem a energia semanal e as 6 ações** (`actions.json`); entram os compromissos de `data/campaign/commitments.json`. Nos eventos antigos, cada 4 pontos de energia viram 1 de estresse.
+- **Presença de partida:** o jogador é 4 vezes mais conhecido na zona natal (a zona urbana mais populosa); cada rival nomeado a vereador tem 1 ou 2 redutos (2,5 vezes); candidatos a prefeito e o candidato coletivo começam iguais em toda a cidade. O reconhecimento é a média das presenças pela população.
+- **Alcance:** as bases de presença são "pontos na cidade inteira"; um turno numa zona rende isso vezes (eleitores da cidade ÷ eleitores da zona), limitado a 10. Zona pequena rende mais presença por turno e vale menos votos.
+- **Reunião com apoiadores** só onde há liderança conhecida e não hostil daquele público na zona; o apoio de conversa tem teto e retorno decrescente.
+- **Evento da cidade:** divide o cansaço com a caminhada na mesma zona; o bônus de 50% vale para o público do evento (presença, se o público é geral; apoio do grupo, se é de um grupo).
+- **Cansaço:** por trio (tipo, zona, público); na visita, por pessoa; no jantar, reduz o arrecadado.
+- **Lideranças:** uma por pedido; aceitar grava promessa no Livro (prazo: a eleição, ou a posse mais o prazo do pedido); pedido de dinheiro aceito é gasto irregular e vira esqueleto que a liderança conhece; a promessa de comparecer se cumpre indo à zona com a liderança; convite recusado ou vencido não conta como contato; um convite pendente por vez.
+- **Demanda da zona:** a regra que mais se destaca entre renda baixa, idosos, jovens e zona rural, com o valor medido e o da cidade; pesa 0,15 no tema dos eleitores dali.
+- **Eleitores por zona no modelo de voto:** pela população de 16 anos ou mais (ver D-038 e P-11).
+- **Dificuldade:** eficiência dos rivais em 0,5 e empenho por porte de 1,05, 1,1, 2,0 e 5,0, para manter os dois extremos da D-026 (parado nunca se elege; ativo no partido mais forte se elege na maior parte das vezes).
+- **Critério do princípio a no BalanceSim:** "melhor escolha da semana" = a opção de maior ganho previsto por turno vista na semana; o par (tipo, zona) é medido turno a turno no conjunto das campanhas, porque as zonas são de cada cidade. O relatório mostra também o que o robô de fato marcou.
+- **Como reverter:** todos os números estão em `data/campaign/commitments.json`, `leaders.json`, `config.json`, `data/territory/config.json` e `data/world/city_events.json`.

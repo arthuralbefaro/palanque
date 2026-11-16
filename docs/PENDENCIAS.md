@@ -69,3 +69,32 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 
 ### P-13 · Termos de uso das fontes não IBGE
 - **O quê:** a RD usa dados do Tesouro Nacional (licença ODbL declarada), TSE (CC BY declarada), INEP, DATASUS, MTE e Banco Central (dados abertos sem licença explícita localizada), sempre citando a fonte em `_fontes.json` e em `assets/CREDITS.md`, como o corujão autoriza. O autor confere os termos de cada uma antes do lançamento.
+
+## R2a — com pendências
+
+### P-15 · Princípio a não passa em cidade grande e metrópole
+- **Critério:** nenhum tipo de compromisso como melhor escolha em mais de 40% das semanas; nenhum par (tipo, zona) em mais de 25%.
+- **Medido** (`docs/balance/r2a.md`, 48 campanhas por porte, 8 cidades): tipo com a opção de maior ganho da semana em 30,2% (pequeno), 34,1% (médio), **41,4% (grande)** e **59,8% (metrópole)**; par mais repetido em 22,6%, 15,5%, 12,6% e 11,5%.
+- **Por quê:** o cansaço deixa os tipos quase empatados toda semana (numa metrópole: caminhada 19,2, reunião 18,7, gravação 17,6, entrevista 17,3 votos por turno), mas a caminhada tem 12 a 20 zonas para escolher e ganha por margem mínima; abrir zona nova sempre rende mais que reforçar zona já trabalhada.
+- **O que foi ajustado** (sete rodadas): reunião só com liderança do público na zona; teto e retorno decrescente no apoio de conversa; cansaço da visita por pessoa; evento da cidade dividindo cansaço com a caminhada e com bônus só para o público dele; alcance pela fatia da cidade (limitado a 10 vezes); entrevista e gravação com alcance maior; menos eventos por semana.
+- **Para fechar:** os sistemas da R2b (verba por canal, equipe, plataforma) e da R3 (tema em alta, rivais que respondem à entrada no reduto) acrescentam razões para não caminhar; o BalanceSim é rodado de novo em cada uma. Se ainda não passar na metrópole, a regra a rever é o retorno de abrir zona nova.
+- **Também não foi feito:** a rodada de 200 campanhas por porte do critério (foram 48, por tempo de máquina: cerca de 40 minutos por rodada completa). Comando: `dotnet run --project tools/Planalto.BalanceSim -- --campanhas 200 --cidades 10 --saida docs/balance/r2a.md`.
+
+### P-16 · Lint de rastro e eventos antigos que não conversam com a agenda
+- **Falta o lint** "toda escolha relevante grava uma entrada no Livro ou uma lembrança em alguém" (princípio d). As escolhas novas (pedido de liderança, convite) gravam; os 32 eventos antigos, não.
+- **Eventos antigos:** 12 escolhas ainda mexem em "energia" (hoje convertida em estresse, com sinal estranho em duas delas); `campanha_comicio_chuva` dispara sem comício marcado; `campanha_carreata` fala de ações que não existem mais; um evento trata de promessa a liderança fora do Livro.
+- **Para fechar:** é o item da R3 "eventos atuais ligados a pessoas, zonas e fatos do save".
+
+### P-17 · Números de jogo ainda no código
+- `CityBuilder` (chance de segunda zona, idade, afinidade, preço e influência das lideranças, favor inicial), `AnswerLeader` (custo do pedido de dinheiro), `LeadersWeek` (limiar de convite, queda de afinidade por semana), `RaceSetup.BuildTerritory` (chance de dois redutos) e o id `"caminhada"` usado pelo motor.
+- **Para fechar:** levar para `data/campaign/leaders.json` e `data/territory/config.json`.
+
+### P-18 · Caixa aperta demais nas cidades médias e maiores
+- **Medido:** o robô gasta 32% (médio), 38% (grande) e 49% (metrópole) dos turnos em escolhas forçadas, quase todas jantar de arrecadação, porque os custos crescem com o porte e a arrecadação por jantar, menos.
+- **Provisório:** fica como está; a R2b troca o gasto por clique pela verba por canal e a R3 traz os doadores.
+
+### P-19 · Sobras da interface da R2a
+- Célula da agenda corta "Caminhada" (o nome inteiro está no tooltip); faixas por quintil exageram diferenças pequenas em cidade de 3 a 5 zonas, e o mapa não fica "quase todo cinza" como no relato 1 (decisão do autor: quintil ou intervalo de valor); a legenda ocupa cerca de 300 × 250 px do mapa; pausa e faixa de decisão em cor de atenção ao mesmo tempo; fichas com mais de 3 blocos.
+- Marcar uma semana cheia custa 3 ou mais cliques por compromisso, sem atalho de repetir; o estresse chega a 100 sem a tela mostrar consequência.
+- As capturas de `docs/referencias/r2a/` e parte do roteiro foram feitas antes da última calibração: os números de presença e a regra da reunião (agora só com liderança do público na zona) podem diferir do texto.
+- Sem ficha de rival, sem seta nas dicas, sem as animações do ART_GUIDE, seção 8.

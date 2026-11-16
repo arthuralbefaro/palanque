@@ -2,24 +2,69 @@
 
 ## Relatório para o autor (atualizado a cada parte)
 
-**Estado em 2026-11-16, depois da RD.** Este bloco é reescrito ao fim de cada parte.
+**Estado em 2026-11-16, depois da R2a.** Este bloco é reescrito ao fim de cada parte.
 
-- **Tags prontas:** `fase-r1` (com pendências) e `fase-rd` (com pendências).
-- **Por qual tag começar a testar:** `fase-r1`, com `docs/ROTEIRO_TESTE_R1.md`; depois `fase-rd`, com `docs/ROTEIRO_TESTE_RD.md` (parte de dados: 20 minutos, quase tudo é conferência de números).
-- **Em andamento:** R2a (Core, testes, interface e BalanceSim prontos no branch `r2a`, entrando na main em seguida) e R2b (Core em desenvolvimento).
+- **Tags prontas:** `fase-r1`, `fase-rd` e `fase-r2a`, as três com pendências.
+- **Por qual tag começar a testar:** `fase-r2a`, com `docs/ROTEIRO_TESTE_R2A.md` (20 minutos). É a primeira em que o jogo muda de verdade: mapa em "Minha força", agenda por dia e turno, lideranças com pedido e o Livro. Os roteiros da R1 e da RD continuam valendo para o que é delas (tela, tempo, tooltips; conferência de números).
+- **Em andamento:** R2b (equipe, verba por canal, plataforma, objetivos).
 - **Pendências que precisam de você** (docs/PENDENCIAS.md):
-  - **P-11:** eleitores por zona. O dado do TSE diz onde se vota, não onde se mora; 4.344 zonas habitadas ficariam sem eleitor. Guardei o dado do TSE no arquivo, mas o modelo de voto reparte os eleitores pela população de 16 anos ou mais. Confirmar ou reverter.
-  - **P-12:** parâmetros de jogo novos (fator pessoal de mortalidade, curva depois dos 89 anos, faixas plausíveis dos indicadores, mínimo de 300 nascidos vivos, homicídios só por agressão).
-  - **P-13:** termos de uso das fontes que não são do IBGE (Tesouro, TSE, INEP, DATASUS, MTE, Banco Central), todas citadas.
-  - **P-10 e P-14:** o que ficou de fora da RD (votação de 2024 por zona; transferências FPM e FPE e saldo do CAGED). Dizer se entram antes da Fase 6 ou junto com a R4.
-- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038):
-  1. Marca "(artigo a conferir)" também nos verbetes "Pré-campanha" e "Horário eleitoral gratuito".
-  2. Declaração ao Tesouro com valor fora da faixa plausível é descartada e registrada como lacuna (26 casos, como despesa com pessoal de 805% da receita); nenhum número é corrigido.
-  3. Brasília usa as finanças do ente estadual (53) e o IDEB da rede distrital.
-  4. Emprego formal pelos microdados de estabelecimentos da RAIS (mesmo estoque, arquivo 30 vezes menor).
-  5. O limite de chamadas do SICONFI obriga a 1 chamada por segundo: o download completo leva cerca de 5 horas e é retomável.
-  6. Religião e escolaridade por zona gravadas como listas, para `data/zonas/` caber no teto de 20 MB (16,8 MB).
-  7. Depois de 2070, a população da UF segue a taxa de 2069 para 2070.
+  - **P-11:** eleitores por zona, onde se vota ou onde se mora (escolhi onde se mora).
+  - **P-12:** parâmetros de jogo novos da RD (mortalidade, faixas plausíveis, 300 nascidos vivos, homicídios só por agressão).
+  - **P-13:** termos de uso das fontes que não são do IBGE.
+  - **P-15:** o princípio a não passa em cidade grande (41,4%) e metrópole (59,8%): a caminhada ganha por margem mínima quase toda semana. Decidir se o critério vale como "opção de maior ganho da semana" (como medi) e se o retorno de abrir zona nova deve cair.
+  - **P-19:** no mapa "Minha força", faixas por quintil (ART_GUIDE) ou por intervalo de valor (o relato 1 pede o mapa "quase todo cinza" no começo).
+  - **P-10 e P-14:** o que ficou de fora da RD (votação de 2024 por zona; transferências e CAGED).
+- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038 e D-039):
+  1. Reunião com apoiadores só onde há liderança conhecida daquele público na zona; apoio de conversa com teto.
+  2. Evento da cidade divide o cansaço com a caminhada; o bônus de 50% vale só para o público do evento.
+  3. Alcance de um turno numa zona limitado a 10 vezes a base (um turno a pé não cobre uma zona de metrópole como cobre a de cidade pequena).
+  4. Pedido de dinheiro de liderança, se aceito, é gasto irregular e vira esqueleto; o jogo avisa e não julga.
+  5. Dificuldade: eficiência dos rivais em 0,5 e empenho 5,0 na metrópole, para manter os dois extremos da D-026.
+  6. Energia dos eventos antigos convertida em estresse (4 para 1).
+  7. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos; marca "(artigo a conferir)" em dois verbetes a mais.
+
+## R2a — Território, agenda, lideranças e Livro de compromissos (2026-11-16, com pendências)
+
+**O que entrou**
+- **Território na simulação:** presença de cada candidato por zona (0 a 100), com decaimento de 0,6 por semana nas zonas sem compromisso e 15% de transbordo para as vizinhas; os 240 segmentos repartidos pelas zonas (idade, renda, religião e escolaridade de cada uma, fechando com o município segmento a segmento); voto calculado zona a zona, e o da cidade é a soma; demanda da zona em unidade real; reconhecimento = média das presenças.
+- **Agenda com lugar e dia:** 9 tipos de compromisso em grade de 7 dias por 3 turnos, com previsão antes de marcar (faixa, fatores e cansaço), resultado explicado depois, chuva prevista, eventos da cidade que só existem no dia (os religiosos na proporção do Censo do município) e convites com dia e turno fixos. Saem a energia semanal e as 6 ações.
+- **Pessoa com memória e Livro:** um modelo de pessoa com interesses, temperamento e até 20 lembranças datadas (as de peso 3 não se apagam); Livro com promessas, dívidas, posições e esqueletos, que atravessa a eleição e o save.
+- **Lideranças:** de 6 a 30 por cidade, com zona, público, influência, interesse e pedido; visitar revela o pedido; aceitar, negociar, ouvir sem se comprometer ou recusar gravam lembrança; apoio por zona; rivalidades; deriva sem contato; rivais que as procuram e aparecem no feed.
+- **BalanceSim:** robô que marca o compromisso de maior ganho previsto de votos, com relatório por porte (`docs/balance/r2a.md`).
+- **Interface:** área Agenda, modo "Minha força", marcadores no mapa, Ficha da zona, área Pessoas com Ficha da pessoa, cartão do pedido de liderança com previsão e "quem vai lembrar", resultado explicado no feed, Livro na Enciclopédia, 12 verbetes novos, pausas novas e dicas de primeira vez.
+
+**Números dos testes**
+- 581 testes no Core (eram 496 na RD); 76 no importador; DataValidator limpo; build do Godot limpo.
+- 15 alvos de fumaça com janela, todos passando: os 12 anteriores mais `agenda`, `zona` e `lideranca`.
+- Capturas em 1366×768 e 1920×1080 em `docs/referencias/r2a/` (24 arquivos), examinadas em duas rodadas de correção.
+- Princípio g (cansaço): o segundo compromisso igual rende 62% e o terceiro, 45%; a previsão mostra o fator.
+- Princípio f: em 1.000 execuções, 100% dos resultados dentro da faixa prevista.
+- Campanha inteira jogada sozinha em 3 sementes por porte, com save e load no meio, terminando igual à sem salvar.
+
+**BalanceSim** (48 campanhas por porte em 8 cidades; critério: 40% por tipo, 25% por par)
+
+| Porte | Tipo com a opção de maior ganho da semana | Par (tipo, zona) mais repetido | Eleito no partido mais forte | Eleito em partido sorteado |
+|---|---|---|---|---|
+| Pequeno | 30,2% | 22,6% | 20 de 24 | 5 de 24 |
+| Médio | 34,1% | 15,5% | 24 de 24 | 5 de 24 |
+| Grande | **41,4%** (fora) | 12,6% | 24 de 24 | 10 de 24 |
+| Metrópole | **59,8%** (fora) | 11,5% | 16 de 24 | 2 de 24 |
+
+O critério passa em pequeno e médio e não passa em grande e metrópole (P-15). Não rodei as 200 campanhas por porte do critério: foram 48, por tempo de máquina.
+
+**As 5 coisas de que menos gostei no meu próprio trabalho**
+1. **O princípio a não fecha nas cidades grandes.** O cansaço empata os tipos, mas a caminhada em zona nova ganha por um fio quase toda semana. Na prática o robô ainda caminha em 49% a 62% dos turnos nessas cidades.
+2. **Dinheiro mal resolvido.** Nas cidades médias e maiores o robô passa de um terço a metade dos turnos arrecadando (P-18).
+3. **O mundo ainda quase não se mexe sozinho.** Os rivais só "fizeram campanha em X"; não há mídia, tema em alta nem rival com plano (R3).
+4. **Uma liderança só faz um pedido,** e as promessas de obra não têm como ser cumpridas antes do mandato; "posições assumidas" no Livro fica vazio até a R2b.
+5. **Marcar a semana dá trabalho:** 3 ou mais cliques por compromisso, sem repetir semana; e o estresse chega a 100 sem consequência visível.
+
+**Autocrítica de imersão (GDD 17.21)**
+- **Relato 1, já acontece:** o mapa abre em "Minha força" com a zona natal acima das outras; a feira de sábado existe como evento da cidade; a visita traz o pedido, e "Veio, ouviu e não se comprometeu" (+1) fica na ficha; rivais aparecem no feed e no mapa sem o jogador agir.
+- **Relato 1, falta:** os três objetivos, o coordenador a contratar e o primo preterido (R2b); a rádio, o tema em alta e o anúncio do prefeito (R3); o rival no "culto de domingo", com ficha; o mapa "quase todo cinza".
+- **Relato 4, já acontece:** presença desigual por zona; o aviso de cansaço antes de confirmar, com ordinal e percentual; aliada com lembranças; liderança que muda de lado, com pausa; promessa no Livro com prazo.
+- **Relato 4, falta:** segundo pedido de quem já é aliado; posição pública com custo (R2b); briga de equipe e financiamento coletivo (R2b, R3); o vereador que desiste e abre a base (R4); objetivos que trocam.
+- Das seis coisas que deveriam mudar a melhor jogada entre a semana 2 e a semana 20, a R2a entrega o mapa, o cansaço e as pessoas (só lideranças), parte do Livro e parte do mundo.
 
 ## RD — Dados reais de partida (2026-11-16, com pendências)
 

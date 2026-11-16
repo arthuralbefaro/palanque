@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 08:20, depois de: RD concluída com pendências (tag fase-rd); R2a pronta num branch, entrando na main; R2b em desenvolvimento.
+Atualizado em 2026-11-16 08:27, depois de: R2a concluída com pendências (tag fase-r2a); R2b em desenvolvimento.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -202,7 +202,13 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - eleitores, religião e escolaridade por zona;
   - receita real na prefeitura; números oficiais do município em F1 → Este mundo.
   Faltam: votação de 2024 por zona, transferências (FPM, FPE) e saldo do CAGED.
-- **Tags:** `fase-r1`, `fase-rd`.
+- **R2a feita, com pendências (tag `fase-r2a`):**
+  - presença e voto por zona, demanda da zona, mapa "Minha força";
+  - agenda de 7 dias por 3 turnos com 9 tipos de compromisso, previsão com cansaço, eventos da cidade e convites (saíram a energia e as 6 ações);
+  - pessoa com memória, Livro de compromissos, lideranças com pedido;
+  - BalanceSim: o critério "nenhum tipo é o melhor em mais de 40% das semanas" passa em cidade pequena (30%) e média (34%) e não passa em grande (41%) e metrópole (60%).
+  - 581 testes no Core, 15 alvos de fumaça com janela.
+- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -245,6 +251,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
 - D-037: respostas do autor às pendências da R1; teto de 20 MB em `data/zonas/`; corujão estendido à Fase R inteira.
 - D-038: escolhas da RD (finanças do DF pelo ente estadual, RAIS de estabelecimentos, homicídios por agressão, declarações implausíveis descartadas, eleitores por zona pela moradia).
+- D-039: escolhas da R2a (presença de partida, alcance pela fatia da cidade, reunião só com liderança do público, evento dividindo cansaço com a caminhada, dificuldade dos rivais, como o BalanceSim mede a "melhor escolha da semana").
 - D-036: idade inicial de 17 a 45 anos (NPCs 25 a 45), 18 anos aferidos em 15/8 para vereador, profissões com idade mínima, Estudante, família coerente com a idade.
 
 **Decisões do GDD 17.20, com a escolha do autor:**
@@ -280,6 +287,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 - **Do autor:** jogar os roteiros da R1 e da RD (tags `fase-r1` e `fase-rd`); o corujão segue sem esperar (D-037).
 - **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3.
+- **Novas, da R2a:** P-15 (princípio a não passa em cidade grande e metrópole), P-16 (lint de rastro e eventos antigos), P-17 (números de jogo ainda no código), P-18 (caixa aperta nas cidades maiores), P-19 (sobras da interface; quintil ou intervalo no mapa).
 - **Novas, da RD:** P-10 (votação de 2024 por zona não ligada), P-11 (eleitores por zona: onde se vota ou onde se mora), P-12 (parâmetros de jogo novos), P-13 (termos de uso das fontes não IBGE), P-14 (transferências e CAGED).
 - **Do autor, com resposta:**
   - P-04: artigos de lei citados de memória nos tooltips do material de campanha;

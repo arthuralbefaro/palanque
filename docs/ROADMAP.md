@@ -118,13 +118,13 @@ Conteúdo de jogo igual ao atual (6 ações, pesquisas, eventos, rivais como est
   - DataValidator: limites de tamanho de texto do ART_GUIDE; todo verbete citado existe.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R1.md
 
-### R2a — Território, agenda, lideranças e Livro de compromissos
+### R2a — Território, agenda, lideranças e Livro de compromissos · **com pendências (tag fase-r2a)**
 Primeira metade da antiga R2. Termina, para e espera o autor.
-- [ ] Território na simulação (GDD 17.5): presença por zona, segmentos por zona, voto por zona, decaimento e transbordo, demanda da zona, Ficha da zona, modo Minha força
-- [ ] Agenda com lugar e dia (17.6): compromissos, turnos, cansaço, ocasião, deslocamento, convites, eventos da cidade; sai a energia semanal. Ainda sem delegação (depende da equipe, R2b); o comício usa o custo fixo atual até a verba por canal (R2b)
-- [ ] Pessoa com memória e Livro de compromissos (17.2): promessas, dívidas, posições assumidas e esqueletos gravados e visíveis na Enciclopédia (Sua carreira)
-- [ ] Rede de lideranças (17.10): descobrir, visitar, pedido, apoio por zona, rivalidades, deriva sem contato; a promessa aceita entra no Livro
-- [ ] `tools/Planalto.BalanceSim`: robô de campanha que escolhe o compromisso de maior ganho previsto, com relatório por porte
+- [x] Território na simulação (GDD 17.5): presença por zona, segmentos por zona, voto por zona, decaimento e transbordo, demanda da zona, Ficha da zona, modo Minha força
+- [x] Agenda com lugar e dia (17.6): compromissos, turnos, cansaço, ocasião, deslocamento, convites, eventos da cidade; sai a energia semanal. Ainda sem delegação (depende da equipe, R2b); o comício usa o custo fixo atual até a verba por canal (R2b)
+- [x] Pessoa com memória e Livro de compromissos (17.2): promessas, dívidas, posições assumidas e esqueletos gravados e visíveis na Enciclopédia (Sua carreira)
+- [x] Rede de lideranças (17.10): descobrir, visitar, pedido, apoio por zona, rivalidades, deriva sem contato; a promessa aceita entra no Livro
+- [x] `tools/Planalto.BalanceSim`: robô de campanha que escolhe o compromisso de maior ganho previsto, com relatório por porte (`docs/balance/r2a.md`) — **o critério do princípio a passa nos portes pequeno e médio e não passa no grande (41,4%) e na metrópole (59,8%): PENDENCIAS P-15**
 - **Princípios que passa a cumprir:** a, g; c para lideranças; d para promessas a lideranças; e (conflito de convites, pedido de liderança).
 - **Testes automáticos:**
   - BalanceSim (200 campanhas por porte): nenhum tipo de compromisso é a melhor escolha em mais de 40% das semanas, nenhum par (tipo, zona) em mais de 25%.
