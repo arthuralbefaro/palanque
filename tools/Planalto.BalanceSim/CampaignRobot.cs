@@ -45,6 +45,49 @@ public sealed class CampaignTrace
     public double FinalRecognition { get; set; }
 
     public int AlignedLeaders { get; set; }
+
+    // ---- R2b: verba, equipe, plataforma, objetivos e decisões com troca.
+
+    public int Weeks { get; set; }
+
+    /// <summary>Canal da primeira parcela de verba (o melhor destino) em cada semana da campanha oficial, com os quatro canais abertos.</summary>
+    public List<string> BestChannelByWeek { get; } = [];
+
+    /// <summary>O mesmo na pré-campanha, em que só Redes e Material estão abertos.</summary>
+    public List<string> BestChannelByWeekPre { get; } = [];
+
+    /// <summary>Soma, por canal, dos votos por real da melhor primeira parcela de cada semana (para calibrar).</summary>
+    public Dictionary<string, double> ChannelValue { get; } = [];
+
+    public Dictionary<string, double> ChannelValuePre { get; } = [];
+
+    public int ChannelWeeks { get; set; }
+
+    public int ChannelWeeksPre { get; set; }
+
+    /// <summary>Verba planejada por canal, em reais.</summary>
+    public Dictionary<string, decimal> Spent { get; } = [];
+
+    public int BudgetWeeks { get; set; }
+
+    /// <summary>Decisões em que se ganha uma coisa e se perde outra, por tipo.</summary>
+    public Dictionary<string, int> TradeDecisions { get; } = [];
+
+    public int Hires { get; set; }
+
+    public int StaffEvents { get; set; }
+
+    public int PositionChanges { get; set; }
+
+    public int PromisesMade { get; set; }
+
+    public int Delegations { get; set; }
+
+    public int ObjectiveKinds { get; set; }
+
+    public int ObjectivesDone { get; set; }
+
+    public int TeamAtEnd { get; set; }
 }
 
 /// <summary>
@@ -52,7 +95,7 @@ public sealed class CampaignTrace
 /// votos. O ganho vem da previsão do próprio jogo (<see cref="CampaignEngine.Forecast(CommitmentRequest)"/>) vezes a
 /// sensibilidade dos votos à presença e ao apoio em cada zona. Não enxerga nada que o jogador não veja.
 /// </summary>
-public sealed class CampaignRobot(CampaignEngine engine)
+public sealed partial class CampaignRobot(CampaignEngine engine)
 {
     /// <summary>Turnos por dia que o robô ocupa (os dois sem custo de estresse).</summary>
     private const int TurnsPerDay = 2;
@@ -80,12 +123,27 @@ public sealed class CampaignRobot(CampaignEngine engine)
             int week = State.Calendar.WeekStart.DayNumber;
             bool firstOfWeek = week != lastWeek;
             lastWeek = week;
+            if (firstOfWeek)
+            {
+                Trace.Weeks++;
+                ManageWeek();
+            }
+
             PlanDay(today, firstOfWeek);
+            if (State.Time.Day == 6)
+            {
+                PlanBudget();
+            }
+
             _engine.AdvanceDay();
             ResolvePending();
         }
 
         CloseWeek();
+        var objectives = _engine.Objectives.History.Concat(_engine.Objectives.Active).ToList();
+        Trace.ObjectiveKinds = objectives.Select(o => o.Kind).Distinct().Count();
+        Trace.ObjectivesDone = objectives.Count(o => o.Status == ObjectiveStatus.Cumprido);
+        Trace.TeamAtEnd = _engine.HiredStaff.Count();
         ElectionOutcome outcome = _engine.ResolveElection();
         Trace.Elected = outcome.PlayerElected;
         Trace.Position = 1 + outcome.Vereador.Votes.Where(v => !v.Key.StartsWith("demais_", StringComparison.Ordinal)).Count(v => v.Value > outcome.Vereador.Votes[RaceSetup.PlayerId]);
@@ -105,7 +163,10 @@ public sealed class CampaignRobot(CampaignEngine engine)
             int choice = Enumerable.Range(0, definition.Choices.Count).First(i => EventEngine.Blocked(_engine.Context, definition.Choices[i]) is null);
             EventEngine.Resolve(_engine.Context, pending, choice, State.Rng);
             Trace.Events++;
+            Decision("evento");
         }
+
+        ResolveStaffDecisions();
 
         while (_engine.Agenda.PendingRequest is { } personId)
         {
@@ -115,6 +176,7 @@ public sealed class CampaignRobot(CampaignEngine engine)
             // O robô joga limpo: pedido de dinheiro irregular vira negociação; os demais são aceitos.
             _engine.AnswerLeader(kind == LeaderRequestDefinition.Dinheiro ? LeaderAnswer.Negociar : LeaderAnswer.Aceitar);
             Trace.LeaderDecisions++;
+            Decision("pedido de liderança");
         }
     }
 
@@ -158,9 +220,11 @@ public sealed class CampaignRobot(CampaignEngine engine)
         foreach (Invite invite in _engine.Agenda.Invites.Where(i => !i.Answered && i.Date == today).ToList())
         {
             _engine.AcceptInvite(invite.Id);
+            Decision("convite");
         }
 
         IReadOnlyCollection<string> groups = Groups();
+        List<RobotOption>? seen = null;
         for (int slot = 0; slot < TurnsPerDay; slot++)
         {
             var turno = (Turno)slot;
@@ -177,10 +241,11 @@ public sealed class CampaignRobot(CampaignEngine engine)
 
             RobotOption best = options.MaxBy(o => o.VotesPerTurn)!;
             bool forced = best.VotesPerTurn >= Forced;
+            seen = forced ? seen : options;
             if (Diagnose && firstOfWeek && slot == 0 && !forced)
             {
                 // Diagnóstico (variável de ambiente PLANALTO_SIM_DIAG): a melhor opção de cada tipo no primeiro turno da semana.
-                Console.WriteLine($"{today:dd/MM} " + string.Join("  ", options.GroupBy(o => o.Request.Type).Select(g => g.MaxBy(o => o.VotesPerTurn)!).OrderByDescending(o => o.VotesPerTurn).Select(o => $"{o.Request.Type}@{o.Request.ZoneId?[^2..] ?? "-"}={o.VotesPerTurn:0.0}")));
+                Console.WriteLine($"{today:dd/MM} caixa {State.Player.Resources.Money:0} folha {_engine.Payroll().Weekly:0} verba {_engine.Budget.Plan.Sum(x => x.Amount):0} equipe {_engine.HiredStaff.Count()} estresse {State.Player.Resources.Stress} " + string.Join("  ", options.GroupBy(o => o.Request.Type).Select(g => g.MaxBy(o => o.VotesPerTurn)!).OrderByDescending(o => o.VotesPerTurn).Select(o => $"{o.Request.Type}@{o.Request.ZoneId?[^2..] ?? "-"}={o.VotesPerTurn:0.0}")));
             }
             if (forced)
             {
@@ -210,6 +275,11 @@ public sealed class CampaignRobot(CampaignEngine engine)
                 Trace.Commitments++;
             }
         }
+
+        if (seen is not null && _engine.DelegationsPerWeek > 0)
+        {
+            Delegate(today, seen);
+        }
     }
 
     private IReadOnlyCollection<string> Groups() =>
@@ -236,6 +306,7 @@ public sealed class CampaignRobot(CampaignEngine engine)
 
         void Consider(CommitmentRequest r)
         {
+            r = r with { Tema = TalkTheme(r.Type) };
             CommitmentForecast f = _engine.Forecast(r);
             if (f.Blocked is not null)
             {

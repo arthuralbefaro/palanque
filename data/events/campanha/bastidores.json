@@ -13,7 +13,7 @@
         "Um fornecedor da prefeitura sugere ajudar sua campanha com {valor} em dinheiro vivo, sem recibo."
       ],
       "choices": [
-        { "label": "Aceitar", "effects": { "money": 8000, "add_skeleton": { "type": "caixa_dois", "severity": 3 }, "schedule": [{ "event": "campanha_investigacao_doacao", "delay_weeks": 5 }] }, "result": "O dinheiro resolve as contas desta semana." },
+        { "relevant": true, "gain": ["dinheiro"], "cost": ["risco"], "label": "Aceitar", "effects": { "money": 8000, "add_skeleton": { "type": "caixa_dois", "severity": 3 }, "schedule": [{ "event": "campanha_investigacao_doacao", "delay_weeks": 5 }] }, "result": "O dinheiro resolve as contas desta semana." },
         { "label": "Pedir que doe oficialmente", "effects": { "money": 2000 }, "result": "Ele doou bem menos, com recibo." },
         { "label": "Recusar", "effects": { "attributes": { "integridade": 2 } }, "result": "Você ficou sem o dinheiro e com a consciência tranquila." }
       ]

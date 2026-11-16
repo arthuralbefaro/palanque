@@ -33,7 +33,7 @@
         "A presidente da associação de um bairro populoso diz que pode levar votos para você, desde que a quadra do bairro entre nas suas prioridades."
       ],
       "choices": [
-        { "label": "Prometer a reforma", "effects": { "support": { "baixa": 0.06 }, "set_flags": ["promessa_lider"], "schedule": [{ "event": "campanha_cobranca_lider", "delay_weeks": 6 }] }, "result": "O bairro passa a falar bem de você." },
+        { "relevant": true, "gain": ["relacao"], "cost": ["risco"], "label": "Prometer a reforma", "effects": { "support": { "baixa": 0.06 }, "set_flags": ["promessa_lider"], "schedule": [{ "event": "campanha_cobranca_lider", "delay_weeks": 6 }] }, "result": "O bairro passa a falar bem de você." },
         {
           "label": "Aceitar o apoio sem prometer nada concreto",
           "test": { "attribute": "articulacao", "success_text": "A liderança aceitou seu compromisso genérico de diálogo.", "success": { "support": { "baixa": 0.04 } }, "failure_text": "A liderança achou a conversa vaga e esfriou.", "failure": { "support": { "baixa": -0.01 } } }

@@ -1,0 +1,31 @@
+{
+  "note": "Promessas locais (GDD 17.9): catálogo ligado a tipos de obra e de serviço municipais (o campo 'obra' é o tipo que a prefeitura executa, GDD 17.15). Cada promessa é feita a uma zona ou a um grupo de eleitores, rende 'apoio' imediato (multiplicado pela credibilidade) e entra no Livro de compromissos com prazo de 'prazo_semanas' depois da posse. Credibilidade = 1 − 'credibilidade_perda' por promessa aberta além de 'promessas_sem_custo' − 'credibilidade_perda_quebrada' por promessa quebrada ou vencida, nunca abaixo de 'credibilidade_minima'. Nenhuma promessa é dirigida a grupo religioso. Tudo aqui é parâmetro de jogo.",
+  "regras": {
+    "promessas_sem_custo": 3,
+    "credibilidade_perda": 0.15,
+    "credibilidade_perda_quebrada": 0.25,
+    "credibilidade_minima": 0.2,
+    "sorte": { "min": 0.9, "max": 1.1 }
+  },
+  "promessas": [
+    { "id": "calcamento", "nome": "Calçar e iluminar ruas", "texto": "Calçar e iluminar ruas em {alvo}", "tipo": "obra", "obra": "pavimentacao", "alvos": ["zona"], "situacao": "urbana", "apoio": 0.03, "prazo_semanas": 104 },
+    { "id": "estrada", "nome": "Recuperar estrada vicinal", "texto": "Recuperar a estrada vicinal de {alvo}", "tipo": "obra", "obra": "estrada", "alvos": ["zona"], "situacao": "rural", "apoio": 0.035, "prazo_semanas": 104 },
+    { "id": "creche", "nome": "Abrir creche", "texto": "Abrir uma creche em {alvo}", "tipo": "obra", "obra": "creche", "alvos": ["zona"], "situacao": "qualquer", "apoio": 0.03, "prazo_semanas": 130 },
+    { "id": "posto_saude", "nome": "Reformar posto de saúde", "texto": "Reformar o posto de saúde de {alvo}", "tipo": "obra", "obra": "saude", "alvos": ["zona"], "situacao": "qualquer", "apoio": 0.03, "prazo_semanas": 104 },
+    { "id": "drenagem", "nome": "Obra contra alagamento", "texto": "Fazer a drenagem contra alagamento em {alvo}", "tipo": "obra", "obra": "drenagem", "alvos": ["zona"], "situacao": "urbana", "apoio": 0.035, "prazo_semanas": 156 },
+    { "id": "praca", "nome": "Praça e área de lazer", "texto": "Construir praça e área de lazer em {alvo}", "tipo": "obra", "obra": "lazer", "alvos": ["zona"], "situacao": "qualquer", "apoio": 0.02, "prazo_semanas": 78 },
+    { "id": "agua", "nome": "Levar água encanada", "texto": "Levar água encanada às comunidades de {alvo}", "tipo": "obra", "obra": "abastecimento", "alvos": ["zona"], "situacao": "rural", "apoio": 0.035, "prazo_semanas": 130 },
+    { "id": "linha_onibus", "nome": "Nova linha de ônibus", "texto": "Criar uma linha de ônibus para {alvo}", "tipo": "servico", "obra": "transporte", "alvos": ["zona"], "situacao": "qualquer", "apoio": 0.025, "prazo_semanas": 52 },
+    { "id": "transporte_consultas", "nome": "Transporte para consultas", "texto": "Garantir transporte para consultas ({alvo})", "tipo": "servico", "obra": "saude", "alvos": ["grupo"], "grupos": ["idade_60_69", "idade_70_mais"], "apoio": 0.03, "prazo_semanas": 52 },
+    { "id": "cursos", "nome": "Cursos de qualificação", "texto": "Abrir cursos de qualificação ({alvo})", "tipo": "servico", "obra": "qualificacao", "alvos": ["grupo"], "grupos": ["idade_16_17", "idade_18_34", "baixa", "fundamental"], "apoio": 0.03, "prazo_semanas": 78 },
+    { "id": "feira_produtor", "nome": "Feira do produtor", "texto": "Criar a feira do produtor ({alvo})", "tipo": "servico", "obra": "abastecimento", "alvos": ["grupo"], "grupos": ["rural"], "apoio": 0.03, "prazo_semanas": 52 },
+    { "id": "regularizacao", "nome": "Regularizar moradias", "texto": "Regularizar lotes e moradias ({alvo})", "tipo": "servico", "obra": "habitacao", "alvos": ["grupo"], "grupos": ["baixa", "media"], "apoio": 0.03, "prazo_semanas": 130 }
+  ],
+  "textos": {
+    "previsao_apoio": "{promessa}: apoio de {min} a {max} para {alvo}, já.",
+    "previsao_credibilidade": "Sua credibilidade está em {antes} e multiplica o apoio; com esta promessa aberta ela vai a {depois}.",
+    "previsao_livro": "Entra no Livro de compromissos, com prazo até {prazo}. No mandato, será cobrada.",
+    "feed": "Você prometeu: {promessa}",
+    "livro": "{promessa} (promessa de campanha)"
+  }
+}

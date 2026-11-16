@@ -1,0 +1,54 @@
+{
+  "note": "Objetivos que nascem do jogo (GDD 17.2, peça 6, e princípio h). Toda segunda-feira o gerador lê o estado e propõe metas até completar 'maximo' ativas, cada uma com condição mensurável, prazo e origem. Proposta não fixada sai depois de 'validade_proposta_semanas'; a fixada fica até o prazo. Cumprir rende 'lealdade_equipe' de lealdade a cada membro da equipe e a lembrança abaixo em quem se beneficiou. 'passo' é quanto a meta pede a mais do que o valor de hoje; valores em dinheiro no porte médio. Tudo aqui é parâmetro de jogo.",
+  "regras": {
+    "maximo": 3,
+    "validade_proposta_semanas": 3,
+    "lealdade_equipe": 2,
+    "historico": 40,
+    "presenca_teto": 90,
+    "conhecida_teto": 0.95
+  },
+  "lembranca": { "peso": 1, "pontos": 4, "texto": "A campanha cumpriu um objetivo que lhe interessava" },
+  "tipos": [
+    {
+      "id": "presenca_zona", "nome": "Presença numa zona", "weight": 3, "prazo_semanas": 6, "passo": 8,
+      "texto": "Chegar a {valor}% de presença em {alvo} até {prazo}",
+      "origem": "{alvo} tem {eleitores} eleitores e você tem só {atual}% de presença ali",
+      "origem_conselho": "Conselho de {nome} ({papel}): concentrar em {alvo}"
+    },
+    {
+      "id": "passar_rival", "nome": "Passar um rival", "weight": 3, "prazo_semanas": 8, "passo": 0,
+      "texto": "Passar {alvo} na intenção de voto até {prazo}",
+      "origem": "Pela conta da sua campanha, {alvo} está logo à sua frente: faltam {atual} votos"
+    },
+    {
+      "id": "trazer_lideranca", "nome": "Trazer uma liderança", "weight": 3, "prazo_semanas": 6, "passo": 0,
+      "texto": "Trazer {alvo} para o seu lado até {prazo}",
+      "origem": "{alvo} ({papel}) move votos em {zona} e ainda não está com você"
+    },
+    {
+      "id": "juntar_caixa", "nome": "Juntar caixa", "weight": 2, "prazo_semanas": 5, "passo": 3000,
+      "texto": "Ter {valor} em caixa até {prazo}",
+      "origem": "O caixa de hoje é {atual}; a folha e a verba levam {semanal} por semana"
+    },
+    {
+      "id": "posicao_conhecida", "nome": "Tornar posição conhecida", "weight": 2, "prazo_semanas": 6, "passo": 0.2,
+      "texto": "Fazer {valor}% conhecerem a sua posição em {alvo} até {prazo}",
+      "origem": "{alvo} pesa para o eleitorado da cidade e só {atual}% conhecem a sua posição"
+    },
+    {
+      "id": "cumprir_promessa", "nome": "Cumprir promessa", "weight": 4, "prazo_semanas": 0, "passo": 0,
+      "texto": "Cumprir até {prazo}: {alvo}",
+      "origem": "Promessa feita a {nome}, que vence na eleição"
+    },
+    {
+      "id": "montar_equipe", "nome": "Montar a equipe", "weight": 2, "prazo_semanas": 4, "passo": 0,
+      "texto": "Contratar alguém para {alvo} até {prazo}",
+      "origem": "A função {alvo} está vaga e a equipe ainda tem lugar"
+    }
+  ],
+  "textos": {
+    "cumprido": "Objetivo cumprido: {texto}",
+    "vencido": "Objetivo não cumprido no prazo: {texto}"
+  }
+}

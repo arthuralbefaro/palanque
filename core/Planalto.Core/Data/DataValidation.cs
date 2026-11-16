@@ -59,8 +59,13 @@ public static class DataValidation
         reports.AddRange(people.Where(r => !reports.Any(x => x.File == r.File)));
         reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
         // A campanha lê também o território e a memória das pessoas, que podem já estar na lista.
-        reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out _).Where(r => !reports.Any(x => x.File == r.File)));
-        reports.AddRange(Events.EventContent.Load(dataDirectory, out _));
+        reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out Campaign.CampaignContent? campaign).Where(r => !reports.Any(x => x.File == r.File)));
+        reports.AddRange(Events.EventContent.Load(dataDirectory, out Events.EventContent? events));
+        if (campaign is not null && events is not null)
+        {
+            // Lint das decisões (GDD 17.1, princípio e): ganho e custo de naturezas diferentes em toda opção.
+            reports.Add(new DataFileReport("lint: decisões com ganho e custo", Campaign.DecisionLint.Count(campaign, events), [.. Campaign.DecisionLint.Run(campaign, events)]));
+        }
         reports.AddRange(Legislature.LegislatureContent.Load(
             dataDirectory,
             electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),

@@ -77,7 +77,7 @@ public sealed partial class CampaignEngine
     public ScheduleFailure? CanSchedule(CommitmentRequest r)
     {
         CommitmentType type = Commitments.Get(r.Type);
-        if (Agenda.PendingRequest is not null || Campaign.Events.Pending.Count > 0)
+        if (Agenda.PendingRequest is not null || Campaign.Events.Pending.Count > 0 || Team.Pending.Count > 0)
         {
             return ScheduleFailure.DecisaoPendente;
         }
@@ -92,10 +92,35 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.ForaDoPrazo;
         }
 
+        // Tema tratado: só nos compromissos em que o candidato fala (entrevista, gravação, comício), e em pessoa.
+        if (r.Tema is not null && (r.Delegado || ThemeGainBase(r.Type, r.Tema) <= 0))
+        {
+            return ScheduleFailure.TemaInvalido;
+        }
+
+        if (r.Delegado)
+        {
+            // Quem vai é um representante: não ocupa o turno do candidato, mas gasta uma delegação do coordenador.
+            if (!type.Delegavel)
+            {
+                return ScheduleFailure.NaoDelegavel;
+            }
+
+            if (StaffIn(StaffRole.Coordenador) is null)
+            {
+                return ScheduleFailure.SemCoordenador;
+            }
+
+            if ((int)r.Turno + type.Turnos > 3 || DelegationsIn(r.Date) >= DelegationsPerWeek)
+            {
+                return ScheduleFailure.SemDelegacao;
+            }
+        }
+
         // Turno já usado hoje (o compromisso aconteceu e saiu da lista de marcados) continua ocupado.
-        if ((int)r.Turno + type.Turnos > 3 || TurnsOf(type, r.Turno).Any(t => Agenda.At(r.Date, t) is not null)
-            || Agenda.Scheduled.Any(c => c.Date == r.Date && TurnsOf(Commitments.Get(c.Type), c.Turno).Intersect(TurnsOf(type, r.Turno)).Any())
-            || Agenda.Log.Any(x => x.Commitment.Date == r.Date && TurnsOf(Commitments.Get(x.Commitment.Type), x.Commitment.Turno).Intersect(TurnsOf(type, r.Turno)).Any()))
+        else if ((int)r.Turno + type.Turnos > 3 || TurnsOf(type, r.Turno).Any(t => Agenda.At(r.Date, t) is not null)
+            || Agenda.Scheduled.Any(c => !c.Delegado && c.Date == r.Date && TurnsOf(Commitments.Get(c.Type), c.Turno).Intersect(TurnsOf(type, r.Turno)).Any())
+            || Agenda.Log.Any(x => !x.Commitment.Delegado && x.Commitment.Date == r.Date && TurnsOf(Commitments.Get(x.Commitment.Type), x.Commitment.Turno).Intersect(TurnsOf(type, r.Turno)).Any()))
         {
             return ScheduleFailure.TurnoOcupado;
         }
@@ -132,6 +157,12 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.SemApoiadorNaZona;
         }
 
+        // O comício depende do canal Rua (GDD 17.8): sem verba de Rua na zona não há estrutura para montar o palanque.
+        if (type.Id == CommitmentCatalog.Comicio && RuaBudgetOn(r.Date, r.ZoneId!) < ComicioRuaMinimum)
+        {
+            return ScheduleFailure.SemVerbaDeRua;
+        }
+
         decimal cost = CostOf(type);
         return cost > 0 && State.Player.Resources.Money < cost ? ScheduleFailure.SemDinheiro : null;
     }
@@ -157,6 +188,30 @@ public sealed partial class CampaignEngine
             factors.Add(Factor("evento", cityEvent.Nome, 1 + Rules.EventoBonus));
         }
 
+        if (type.EquipeFuncao is { } roleId && StaffIn(roleId) is { } staff)
+        {
+            factors.Add(Factor("equipe", $"{NameOf(staff.PersonId)} ({StaffContent.Role(roleId).Papel})", StaffEffect(roleId, type.EquipeEfeito!)));
+        }
+
+        if (r.Delegado)
+        {
+            factors.Add(Factor("delegado", StaffContent.Texto("delegado"), StaffRules.DelegacaoRendimento));
+        }
+
+        if (zone >= 0 && ChannelRules.RuaMultiplica.Contains(type.Id))
+        {
+            decimal rua = RuaBudgetOn(r.Date, r.ZoneId!);
+            if (rua > 0)
+            {
+                factors.Add(Factor("verba_rua", Channels.Texto("fator_verba_rua"), 1 + (ChannelRules.RuaBonusAgenda * Math.Min(1, Math.Sqrt((double)(rua / ChannelScale))))));
+            }
+
+            if (type.Id == CommitmentCatalog.Comicio && rua < ComicioRuaMinimum)
+            {
+                factors.Add(Factor("sem_estrutura", Channels.Texto("sem_estrutura"), Rules.ComicioVazioFator));
+            }
+        }
+
         if (type.Rua && Agenda.Rain.TryGetValue(r.Date, out double rain) && rain > 0)
         {
             factors.Add(Factor("chuva", "Chuva", 1 - rain));
@@ -170,12 +225,12 @@ public sealed partial class CampaignEngine
             factors.Add(Factor("cansaco", $"{ordinal}º compromisso igual{where} em pouco tempo", 1 / (1 + (Rules.CansacoFator * fatigue))));
         }
 
-        if (type.ExigeZona && zone >= 0 && Rules.PortesComDeslocamento.Contains(Context.Municipio.Porte))
+        if (!r.Delegado && type.ExigeZona && zone >= 0 && Rules.PortesComDeslocamento.Contains(Context.Municipio.Porte))
         {
             Zona here = Context.Zonas.Zonas[zone];
             // Conta também o que já aconteceu hoje: na execução o compromisso anterior já saiu da lista de marcados.
             bool far = Agenda.Scheduled.Concat(Agenda.Log.Select(x => x.Commitment))
-                .Any(c => c.Date == r.Date && c.Turno < r.Turno && c.ZoneId is not null && c.ZoneId != r.ZoneId && !here.Vizinhas.Contains(c.ZoneId));
+                .Any(c => !c.Delegado && c.Date == r.Date && c.Turno < r.Turno && c.ZoneId is not null && c.ZoneId != r.ZoneId && !here.Vizinhas.Contains(c.ZoneId));
             if (far)
             {
                 factors.Add(Factor("deslocamento", "Deslocamento entre zonas distantes no mesmo dia", 1 - Rules.DeslocamentoPerda));
@@ -192,7 +247,12 @@ public sealed partial class CampaignEngine
 
     private int StressOf(CommitmentType type, CommitmentRequest r)
     {
-        int sameDay = Agenda.Scheduled.Where(c => c.Date == r.Date).Sum(c => Commitments.Get(c.Type).Turnos);
+        if (r.Delegado)
+        {
+            return 0;
+        }
+
+        int sameDay = Agenda.Scheduled.Where(c => c.Date == r.Date && !c.Delegado).Sum(c => Commitments.Get(c.Type).Turnos);
         int extra = Math.Max(0, sameDay + type.Turnos - Rules.TurnosSemCusto) - Math.Max(0, sameDay - Rules.TurnosSemCusto);
         return type.Estresse + (extra * Rules.EstresseTurnoExtra);
     }
@@ -247,8 +307,9 @@ public sealed partial class CampaignEngine
         double support = SupportGroup(type, r) is { } supportGroup ? type.Apoio * yield * SupportHeadroom(zone, supportGroup) : 0;
         _ = yield;
 
-        double imageMin = type.Imagem * yield * Rules.Sorte.Min;
-        double imageMax = type.Imagem * yield * Rules.Sorte.Max;
+        var luck = LuckRange(Rules.Sorte);
+        double imageMin = type.Imagem * yield * luck.Min;
+        double imageMax = type.Imagem * yield * luck.Max;
         var outcomes = new List<ForecastOutcome>();
         if (type.Teste is { } test)
         {
@@ -259,25 +320,36 @@ public sealed partial class CampaignEngine
             imageMax += Math.Max(test.Success.Image, test.Failure.Image);
         }
 
-        if (type.Id == "caminhada" && zone >= 0 && City.Leaders.Any(l => !l.Known && l.Zones.Contains(r.ZoneId!)))
+        if (type.RiscoViral)
+        {
+            outcomes.Add(new ForecastOutcome(StaffEffect(StaffRole.SocialMedia, StaffRole.Viral), StaffContent.Texto("viral")));
+            imageMin += Math.Min(0, StaffRules.ViralImagem);
+            imageMax += Math.Max(0, StaffRules.ViralImagem);
+        }
+
+        if (type.Id == "caminhada" && !r.Delegado && zone >= 0 && City.Leaders.Any(l => !l.Known && l.Zones.Contains(r.ZoneId!)))
         {
             outcomes.Add(new ForecastOutcome(LeaderRules.ChanceDescoberta, "Você pode conhecer uma liderança da zona."));
         }
 
         double fatigueFactor = factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1;
         decimal money = MoneyOf(type, fatigueFactor);
-        int relation = type.Visita ? VisitPoints(fatigueFactor) : r.InviteId is not null ? LeaderRules.PontosConviteAceito : 0;
+        int relation = type.Visita ? (r.Delegado ? StaffRules.DelegacaoPontosVisita : VisitPoints(fatigueFactor))
+            : r.InviteId is not null ? (r.Delegado ? StaffRules.DelegacaoPontosVisita : LeaderRules.PontosConviteAceito) : 0;
         return new CommitmentForecast(
             blocked,
-            Delta(Rules.Sorte.Min), Delta(Rules.Sorte.Max), Delta(1),
-            support * Rules.Sorte.Min, support * Rules.Sorte.Max,
+            Delta(luck.Min), Delta(luck.Max), Delta(1),
+            support * luck.Min, support * luck.Max,
             imageMin, imageMax,
             money, money,
             StressOf(type, r),
             relation,
             fatigueFactor,
             factors,
-            outcomes);
+            outcomes)
+        {
+            ThemeKnownGain = r.Tema is null ? 0 : ThemeGain(r.Type, r.Tema),
+        };
     }
 
     /// <summary>
@@ -332,6 +404,8 @@ public sealed partial class CampaignEngine
             PersonId = r.PersonId,
             CityEventId = r.CityEventId,
             InviteId = r.InviteId,
+            Delegado = r.Delegado,
+            Tema = r.Tema,
         };
         Agenda.Scheduled.Add(commitment);
         if (r.InviteId is not null && Agenda.Invites.FirstOrDefault(i => i.Id == r.InviteId) is { } invite)
@@ -396,10 +470,11 @@ public sealed partial class CampaignEngine
     private CommitmentResult Run(Commitment c)
     {
         CommitmentType type = Commitments.Get(c.Type);
-        var request = new CommitmentRequest(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId);
+        CommitmentRequest request = RequestOf(c);
         var (factors, yield) = Plan(request);
         int stress = StressOf(type, request);
-        double luck = Rng.NextDouble(Rules.Sorte.Min, Rules.Sorte.Max);
+        var luckRange = LuckRange(Rules.Sorte);
+        double luck = Rng.NextDouble(luckRange.Min, luckRange.Max);
         factors.Add(Factor("sorte", "Sorte do dia", luck));
         int zone = c.ZoneId is null ? -1 : Territory.IndexOf(c.ZoneId);
         var presence = new Dictionary<string, double>(StringComparer.Ordinal);
@@ -453,6 +528,13 @@ public sealed partial class CampaignEngine
             text = passed ? test.SuccessText : test.FailureText;
         }
 
+        if (type.RiscoViral && Rng.Chance(StaffEffect(StaffRole.SocialMedia, StaffRole.Viral)))
+        {
+            image += StaffRules.ViralImagem;
+            text = StaffContent.Texto("viral");
+        }
+
+        double themeKnown = c.Tema is null ? 0 : SpeakOf(c.Tema, type, c.ZoneId);
         decimal money = MoneyOf(type, factors.FirstOrDefault(f => f.Id == "cansaco")?.Multiplier ?? 1);
         Character player = State.Player;
         player.Resources.Money += money;
@@ -470,7 +552,19 @@ public sealed partial class CampaignEngine
         }
 
         int relation = 0;
-        if (type.Visita && c.PersonId is not null && City.Leader(c.PersonId) is { } visited)
+        if (c.Delegado && c.PersonId is not null && City.Leader(c.PersonId) is { } received && (type.Visita || c.InviteId is not null))
+        {
+            // Quem recebeu lembra que o candidato não foi (GDD 17.6): rende menos relação e o pedido não é ouvido.
+            MemoryDefinition delegated = StaffContent.Memory("visita_delegada");
+            relation = StaffRules.DelegacaoPontosVisita;
+            RememberLeader(received, "visita_delegada", delegated.Peso, relation, delegated.Texto, contact: false);
+            Realign(received);
+        }
+        else if (c.Delegado)
+        {
+            // Representante em compromisso de rua: nada a registrar com a liderança que acompanha.
+        }
+        else if (type.Visita && c.PersonId is not null && City.Leader(c.PersonId) is { } visited)
         {
             relation = VisitPoints(visitFatigue);
             RememberLeader(visited, "visita", 1, relation);
@@ -495,7 +589,7 @@ public sealed partial class CampaignEngine
         }
 
         // Caminhar pela zona pode revelar uma liderança que o jogador ainda não conhecia.
-        if (type.Id == "caminhada" && zone >= 0)
+        if (type.Id == "caminhada" && zone >= 0 && !c.Delegado)
         {
             List<Leader> unknown = City.Leaders.Where(l => !l.Known && l.Zones.Contains(c.ZoneId!)).ToList();
             if (unknown.Count > 0 && Rng.Chance(LeaderRules.ChanceDescoberta))
@@ -518,6 +612,7 @@ public sealed partial class CampaignEngine
             RelationPoints = relation,
             Factors = factors,
             Text = text,
+            ThemeKnown = themeKnown,
         };
         Agenda.Log.Add(result);
         if (Agenda.Log.Count > AgendaState.MaxLog)
@@ -605,6 +700,21 @@ public sealed partial class CampaignEngine
                 Publico = type.Publico,
             });
         }
+    }
+
+    private static CommitmentRequest RequestOf(Commitment c) =>
+        new(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId, c.Delegado, c.Tema);
+
+    /// <summary>Delegações que o coordenador faz por semana (pela qualidade); 0 sem coordenador.</summary>
+    public int DelegationsPerWeek => (int)Math.Round(StaffEffect(StaffRole.Coordenador, StaffRole.Delegacoes));
+
+    /// <summary>Delegações já usadas (marcadas ou feitas) na semana da data.</summary>
+    public int DelegationsIn(DateOnly date)
+    {
+        DateOnly monday = date.AddDays(-(((int)date.DayOfWeek + 6) % 7));
+        DateOnly sunday = monday.AddDays(6);
+        return Agenda.Scheduled.Count(c => c.Delegado && c.Date >= monday && c.Date <= sunday)
+            + Agenda.Log.Count(x => x.Commitment.Delegado && x.Commitment.Date >= monday && x.Commitment.Date <= sunday);
     }
 
     /// <summary>Compromissos marcados de hoje até o domingo desta semana (para a pausa "semana sem compromisso").</summary>

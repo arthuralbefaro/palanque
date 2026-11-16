@@ -30,6 +30,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
     public static CampaignEngine Start(CampaignContext ctx)
     {
         ctx.State.Campaign ??= RaceSetup.Create(ctx, ctx.State.Rng);
+        StaffBuilder.Ensure(ctx, ctx.State.Campaign);
         var engine = new CampaignEngine(ctx);
         engine.UpdatePhase();
         if (ctx.State.Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
@@ -38,6 +39,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         }
 
         engine.RefreshSupport();
+        engine.EnsureObjectives();
         return engine;
     }
 
@@ -79,7 +81,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
     public int WeeksToElection => Math.Max(0, (Campaign.ElectionDate.DayNumber - State.Calendar.WeekStart.DayNumber) / 7);
 
     /// <summary>Há uma decisão esperando o jogador (evento, debate ou pedido de liderança): o tempo não anda.</summary>
-    public bool DecisionPending => Campaign.Events.Pending.Count > 0 || Campaign.Debate is not null || Agenda.PendingRequest is not null;
+    public bool DecisionPending => Campaign.Events.Pending.Count > 0 || Campaign.Debate is not null || Agenda.PendingRequest is not null || Team.Pending.Count > 0;
 
     /// <summary>
     /// Avança um dia: acontecem os compromissos de hoje e, no domingo, a virada da semana. Devolve os resultados
@@ -108,7 +110,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
     /// </summary>
     public void AdvanceWeek()
     {
-        if (Campaign.Events.Pending.Count > 0)
+        if (Campaign.Events.Pending.Count > 0 || Team.Pending.Count > 0)
         {
             throw new InvalidOperationException("Há eventos esperando decisão.");
         }
@@ -135,10 +137,17 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
 
         CampaignConfig config = Context.Config;
         TerritorySimulation sim = Context.Campaign.Territory.Simulacao;
+        ChannelsWeekEnd();
         NpcTurn();
         foreach (Candidate c in Campaign.Candidates)
         {
+            double[]? before = c.IsPlayer ? [.. Territory.Presence[c.Id]] : null;
             Territory.Decay(c.Id, sim.DecaimentoSemanal, c.IsBulk ? config.BulkRecognition * RecognitionScale : 0);
+            if (before is not null)
+            {
+                HoldPresenceWithCabos(before);
+            }
+
             c.Recognition = Territory.Recognition(c.Id);
             c.Image -= Math.Sign(c.Image) * Math.Min(Math.Abs(c.Image), config.ImageDecayPerWeek);
             foreach (string group in c.Support.Keys.ToList())
@@ -158,15 +167,20 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         Territory.ActiveThisWeek.Clear();
         State.Player.Resources.Stress += Campaign.Phase == CampaignPhase.Campanha ? 2 : 0;
         ExpireInvites();
+        StaffWeekEnd();
+        PlatformWeek();
         DateOnly next = State.Calendar.WeekStart.AddDays(7);
         LeadersWeek(next);
         State.Ledger.Expire(next);
         State.Calendar.AdvanceWeek();
         State.Time.Day = 0;
         UpdatePhase();
+        ChannelsWeekStart();
         if (Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
         {
             AgendaWeek(State.Calendar.WeekStart);
+            StaffWeekStart();
+            ObjectivesWeek();
         }
 
         if (Campaign.Phase == CampaignPhase.Campanha && WeeksToElection % config.PublicPollEveryWeeks == 0)
@@ -195,7 +209,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         {
             AdvanceWeek();
         }
-        while (Campaign.Phase == CampaignPhase.PreCampanha && Campaign.Events.Pending.Count == 0 && Campaign.Debate is null);
+        while (Campaign.Phase == CampaignPhase.PreCampanha && !DecisionPending);
     }
 
     private void UpdatePhase()
@@ -272,7 +286,10 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         Image = c.Image,
         Support = c.Support,
         Multiplicity = c.Multiplicity,
+        Themes = c.IsPlayer ? PerceivedThemes() : NoThemes,
     };
+
+    private static readonly IReadOnlyDictionary<string, double> NoThemes = new Dictionary<string, double>();
 
     /// <summary>Projeção da cidade: a soma das projeções das zonas (GDD 17.5).</summary>
     public VoteProjection Project(Office office, Rng? noise) => ProjectByZone(office, noise).City;

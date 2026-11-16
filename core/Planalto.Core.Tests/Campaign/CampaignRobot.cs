@@ -29,6 +29,12 @@ internal sealed record RobotOptions
 
     /// <summary>Chance semanal de encomendar a pesquisa interna.</summary>
     public double PollChance { get; init; } = 0.1;
+
+    /// <summary>
+    /// Joga também os sistemas da R2b: contrata e demite, reparte verba pelos canais, assume posições e bandeiras,
+    /// faz promessas, delega compromissos, trata de temas nas falas e fixa ou dispensa objetivos.
+    /// </summary>
+    public bool R2b { get; init; }
 }
 
 /// <summary>
@@ -75,6 +81,11 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
     public void PlayWeek(Action? advanceWeek = null)
     {
         ResolveDecisions();
+        if (_options.R2b)
+        {
+            PlayR2b();
+        }
+
         PlanWeek();
         if (_policy.Chance(_options.PollChance))
         {
@@ -187,7 +198,126 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
     }
 
     private int TurnsOn(DateOnly day) =>
-        Engine.Agenda.Scheduled.Where(c => c.Date == day).Sum(c => Engine.Context.Campaign.Commitments.Get(c.Type).Turnos);
+        Engine.Agenda.Scheduled.Where(c => c.Date == day && !c.Delegado).Sum(c => Engine.Context.Campaign.Commitments.Get(c.Type).Turnos);
+
+    /// <summary>Comandos da R2b dados nesta semana (para os testes conferirem que o robô usou os sistemas).</summary>
+    public Dictionary<string, int> R2bCommands { get; } = [];
+
+    private void Count(string command, bool done)
+    {
+        if (done)
+        {
+            R2bCommands[command] = R2bCommands.GetValueOrDefault(command) + 1;
+        }
+    }
+
+    /// <summary>Uma semana de decisões da R2b, sorteadas pela política do robô (nunca pelo Rng do jogo).</summary>
+    private void PlayR2b()
+    {
+        if (Campaign.Phase is not (CampaignPhase.PreCampanha or CampaignPhase.Campanha))
+        {
+            return;
+        }
+
+        CampaignContent content = Engine.Context.Campaign;
+
+        // Equipe: contrata para funções vagas e, raramente, demite.
+        foreach (StaffRole role in content.Staff.Funcoes)
+        {
+            List<StaffView> candidates = Engine.StaffCandidates(role.Id).Where(v => v.HireBlocked is null).ToList();
+            if (candidates.Count > 0 && _policy.Chance(0.25))
+            {
+                StaffView pick = _policy.Pick(candidates);
+                Assert.NotEmpty(Engine.ForecastHire(pick.Member.PersonId).Explanation);
+                Count("contratar", Engine.Hire(pick.Member.PersonId).Failure is null);
+            }
+        }
+
+        foreach (StaffMember member in Engine.HiredStaff.ToList())
+        {
+            if (_policy.Chance(0.02))
+            {
+                Assert.NotEmpty(Engine.ForecastFire(member.PersonId).Explanation);
+                Count("demitir", Engine.Fire(member.PersonId) is not null);
+            }
+        }
+
+        if (Engine.Team.Advice is not null && _policy.Chance(0.1))
+        {
+            Count("conselho_dispensado", Engine.IgnoreAdvice());
+        }
+
+        // Verba: mexe em um ou dois destinos por semana; às vezes zera um.
+        for (int i = 0; i < 2; i++)
+        {
+            ChannelDefinition channel = _policy.Pick(content.Channels.Canais);
+            IReadOnlyList<ChannelTarget> targets = Engine.ChannelTargets(channel.Id);
+            string target = _policy.Pick(targets).Id;
+            decimal amount = _policy.Chance(0.15) ? 0 : Engine.ChannelStep * _policy.NextInt(1, 12);
+            if (Engine.BeforeOfficialCampaign && Engine.PreCampaignCap(channel.Id) is { } cap)
+            {
+                // Na pré-campanha só cabe o teto (sem impulsionamento, material institucional).
+                amount = Math.Min(amount, cap);
+            }
+
+            if (State.Player.Resources.Money < amount * 3)
+            {
+                continue;
+            }
+
+            CommandForecast forecast = Engine.ForecastChannel(channel.Id, target, amount);
+            Assert.NotEmpty(forecast.Explanation);
+            Count($"verba_{channel.Id}", Engine.SetAllocation(channel.Id, target, amount) is null && amount > 0);
+        }
+
+        // Plataforma: posição, bandeiras e promessas.
+        List<string> themes = Engine.Context.Themes.Themes.Select(t => t.Id).ToList();
+        if (_policy.Chance(0.12))
+        {
+            string theme = _policy.Pick(themes);
+            int value = _policy.NextInt(-2, 3);
+            Assert.NotEmpty(Engine.ForecastPosition(theme, value).Explanation);
+            Count("posicao", Engine.SetPosition(theme, value).Failure is null);
+        }
+
+        if (_policy.Chance(0.08))
+        {
+            Count("bandeiras", Engine.SetFlags(_policy.Shuffled(themes).Take(_policy.NextInt(1, 4)).ToList()) is null);
+        }
+
+        if (_policy.Chance(0.15))
+        {
+            bool toZone = _policy.Chance(0.6);
+            string kind = toZone ? Planalto.Core.People.Promise.ParaZona : Planalto.Core.People.Promise.ParaGrupo;
+            string to = toZone ? _policy.Pick(Engine.Territory.Zones) : _policy.Pick(content.Promises.Promessas.SelectMany(p => p.Grupos).Distinct().ToList());
+            List<PromiseOption> options = Engine.PromiseOptions(kind, to).Where(o => o.Blocked is null).ToList();
+            if (options.Count > 0)
+            {
+                PromiseOption option = _policy.Pick(options);
+                Assert.NotEmpty(Engine.ForecastPromise(option.Definition.Id, kind, to).Explanation);
+                Count("promessa", Engine.MakePromise(option.Definition.Id, kind, to).Failure is null);
+            }
+        }
+
+        // Objetivos: fixa ou dispensa de vez em quando.
+        if (Engine.Objectives.Active.Count > 0 && _policy.Chance(0.2))
+        {
+            Count("fixar", Engine.PinObjective(_policy.Pick(Engine.Objectives.Active).Id));
+        }
+
+        if (Engine.Objectives.Active.Count > 0 && _policy.Chance(0.08))
+        {
+            Count("dispensar", Engine.DismissObjective(_policy.Pick(Engine.Objectives.Active).Id));
+        }
+
+        // Delegação: o coordenador manda representante a uma caminhada.
+        if (Engine.DelegationsPerWeek > 0 && _policy.Chance(0.6))
+        {
+            DateOnly day = Engine.Today.AddDays(_policy.NextInt(0, 7 - State.Time.Day));
+            var request = new CommitmentRequest("caminhada", _policy.Pick(Engine.Territory.Zones), day, (Turno)_policy.NextInt(3), Delegado: true);
+            Count("delegar", Affordable("caminhada") && Engine.Schedule(request).Failure is null);
+        }
+    }
 
     /// <summary>Há caixa para o compromisso, contando o que já está marcado e ainda não foi pago.</summary>
     private bool Affordable(string typeId)
@@ -229,16 +359,26 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
             return known.Count == 0 ? null : new CommitmentRequest(typeId, null, day, turno, PersonId: known[_leader++ % known.Count].PersonId);
         }
 
+        // Na R2b o candidato trata de um tema nas falas (entrevista, gravação, comício).
+        string? theme = _options.R2b && Engine.SpeaksOfThemes(typeId) ? _policy.Pick(Engine.Context.Themes.Themes).Id : null;
         if (!type.ExigeZona)
         {
-            return new CommitmentRequest(typeId, null, day, turno);
+            return new CommitmentRequest(typeId, null, day, turno, Tema: theme);
         }
 
         if (typeId == CommitmentCatalog.Comicio)
         {
             // Comício onde o candidato já é mais conhecido (senão esvazia).
             string best = zones.MaxBy(z => Engine.Territory.PresenceOf(RaceSetup.PlayerId, Engine.Territory.IndexOf(z)))!;
-            return new CommitmentRequest(typeId, best, day, turno);
+
+            // O comício exige verba de Rua na zona (GDD 17.8): o robô a põe no plano semanal quando o canal está aberto.
+            if (Engine.Budget.PlanOf(ChannelDefinition.Rua, best) < Engine.ComicioRuaMinimum
+                && Engine.SetAllocation(ChannelDefinition.Rua, best, Engine.ComicioRuaMinimum) is not null)
+            {
+                return null;
+            }
+
+            return new CommitmentRequest(typeId, best, day, turno, Tema: theme);
         }
 
         string zone = zones[_zone++ % zones.Count];
@@ -270,6 +410,17 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
         if (Engine.Agenda.PendingRequest is not null)
         {
             Engine.AnswerLeader(_options.Answer ?? (LeaderAnswer)_policy.NextInt(4));
+        }
+
+        // Eventos da equipe: uma opção sorteada, sempre com a previsão explicada.
+        while (Engine.Team.Pending.Count > 0)
+        {
+            StaffDecision decision = Engine.Team.Pending[0];
+            StaffEventOption option = _policy.Pick(Engine.Context.Campaign.Staff.Event(decision.EventId).Opcoes);
+            Assert.NotEmpty(Engine.ForecastStaffDecision(decision.Id, option.Id).Explanation);
+            StaffDecisionResult result = Engine.AnswerStaffDecision(decision.Id, option.Id);
+            Assert.DoesNotContain("{", result.Text);
+            Count($"equipe_{decision.EventId}", true);
         }
     }
 

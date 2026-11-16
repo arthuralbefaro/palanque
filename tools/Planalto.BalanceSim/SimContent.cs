@@ -95,6 +95,7 @@ public sealed class SimContent
             Portes = Portes,
             Projection = Projection,
             Zonas = CampaignContext.LoadZonas(DataDirectory, m),
+            MaiorEleitoradoUf = Municipios.All.Where(x => x.Uf == m.Uf).Max(x => x.Eleitorado),
         };
     }
 }

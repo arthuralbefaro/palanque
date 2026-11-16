@@ -124,7 +124,7 @@ public class CampaignAutoplayTests
         // Território e agenda: apoio por zona entre 0 e 1, cansaço positivo, nenhum turno com dois compromissos.
         Assert.All(c.Territory.Support.Values.SelectMany(zones => zones).SelectMany(z => z.Values), v => Assert.InRange(v, 0, 1));
         Assert.All(c.Agenda.Fatigue.Values, v => Assert.True(v > 0));
-        var turns = c.Agenda.Scheduled
+        var turns = c.Agenda.Scheduled.Where(x => !x.Delegado)
             .SelectMany(x => Enumerable.Range((int)x.Turno, engine.Context.Campaign.Commitments.Get(x.Type).Turnos).Select(t => (x.Date, Turno: t)))
             .ToList();
         Assert.Equal(turns.Count, turns.Distinct().Count());
@@ -140,6 +140,33 @@ public class CampaignAutoplayTests
             Assert.True(person.Memories.Count <= engine.Context.Campaign.People.MaxMemories);
             Assert.All(l.Favor.Values, f => Assert.InRange(f, 0, 100));
         });
+
+        // R2b: equipe, verba, plataforma e objetivos dentro dos limites.
+        Assert.All(state.City.Staff, s =>
+        {
+            Assert.InRange(s.Loyalty, 0, 100);
+            Assert.True(s.Salary > 0);
+            Assert.Contains(state.Npcs, n => n.Id == s.PersonId);
+            Assert.NotNull(state.City.Person(s.PersonId));
+            Assert.False(s.Hired && s.Left);
+        });
+        Assert.True(state.City.Staff.Where(s => s.Hired).GroupBy(s => s.Role).All(g => g.Count() == 1), "Uma pessoa por função.");
+        Assert.True(engine.TeamSlotsUsed <= engine.TeamSlots, "Equipe acima das vagas do porte.");
+        Assert.All(c.Budget.Plan.Concat(c.Budget.Active), a =>
+        {
+            Assert.True(a.Amount > 0);
+            Assert.NotNull(engine.Context.Campaign.Channels.Find(a.ChannelId));
+        });
+        Assert.True(engine.CabosPlanned <= engine.CabosLimit, "Cabos acima do limite legal.");
+        Assert.All(c.Platform.Known.Values, k => Assert.InRange(k, 0, 1));
+        Assert.All(c.Platform.Positions.Values, p => Assert.InRange(p, Planalto.Core.Ideology.ThemeDefinition.MinPosition, Planalto.Core.Ideology.ThemeDefinition.MaxPosition));
+        Assert.True(c.Platform.Flags.Count <= engine.Context.Campaign.Platform.Regras.BandeirasMax);
+        Assert.InRange(engine.Credibility, engine.Context.Campaign.Promises.Regras.CredibilidadeMinima, 1);
+
+        if (c.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
+        {
+            ObjectiveTests.AssertPanel(engine);
+        }
     }
 
     private static void RoundTrip(CampaignEngine engine)

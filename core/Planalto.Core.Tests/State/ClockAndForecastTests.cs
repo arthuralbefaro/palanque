@@ -113,6 +113,7 @@ public class ClockAndForecastTests
     public void Resultado_de_cada_compromisso_cai_na_faixa_prevista_em_mil_execucoes()
     {
         CampaignEngine engine = InCampaign(2927408, 33);
+        CampaignKit.FundRua(engine);
         GameState state = engine.Context.State;
         CampaignState campaign = state.Campaign!;
         var types = engine.Context.Campaign.Commitments.Tipos;
@@ -236,9 +237,12 @@ public class ClockAndForecastTests
         Assert.Contains(cansado.Outcomes, o => Math.Abs(o.Probability - Math.Clamp(chance - engine.Context.Campaign.Commitments.Regras.EstressePenalidade, 0.05, 0.95)) < 1e-9);
         state.Player.Resources.Stress = 0;
 
-        // Comício custa dinheiro; jantar arrecada.
+        // Gravação custa dinheiro; jantar arrecada; o comício não custa no clique, mas exige verba de Rua na zona.
         string zone = engine.Territory.Zones[engine.Territory.HomeZone];
-        Assert.True(engine.Forecast(new CommitmentRequest("comicio", zone, today, Turno.Manha)).MoneyMax < 0);
+        Assert.True(engine.Forecast(new CommitmentRequest("gravacao", null, today, Turno.Manha)).MoneyMax < 0);
+        Assert.Equal(ScheduleFailure.SemVerbaDeRua, engine.Forecast(new CommitmentRequest("comicio", zone, today, Turno.Manha)).Blocked);
+        CampaignKit.FundRua(engine);
+        Assert.Null(engine.Forecast(new CommitmentRequest("comicio", zone, today, Turno.Manha)).Blocked);
         Assert.True(engine.Forecast(new CommitmentRequest("jantar", null, today, Turno.Noite)).MoneyMin > 0);
 
         // Caminhada em zona com liderança desconhecida: a previsão avisa da chance de conhecê-la.

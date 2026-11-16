@@ -113,6 +113,17 @@ public sealed class CommitmentType
 
     public ActionTest? Teste { get; init; }
 
+    /// <summary>O coordenador pode mandar representante (GDD 17.6, "Delegar").</summary>
+    public bool Delegavel { get; init; }
+
+    /// <summary>Função da equipe cujo efeito multiplica o rendimento (ex.: marqueteiro no comício), e qual efeito.</summary>
+    public string? EquipeFuncao { get; init; }
+
+    public string? EquipeEfeito { get; init; }
+
+    /// <summary>O compromisso pode pegar mal nas redes (chance pelo social media).</summary>
+    public bool RiscoViral { get; init; }
+
     public bool AllowedIn(CampaignPhase phase) => phase switch
     {
         CampaignPhase.PreCampanha => Fases.Contains(CampaignActionDefinition.PreCampanha),
@@ -164,6 +175,12 @@ public sealed class CommitmentCatalog : IValidatable
                 yield return $"compromisso '{t.Id}': nome com mais de 28 caracteres.";
             }
 
+            if ((t.EquipeFuncao is null) != (t.EquipeEfeito is null)
+                || (t.EquipeFuncao is not null && (!StaffRole.Required.TryGetValue(t.EquipeFuncao, out string[]? effects) || !effects.Contains(t.EquipeEfeito))))
+            {
+                yield return $"compromisso '{t.Id}': função e efeito da equipe desconhecidos.";
+            }
+
             if (t.Presenca < 0 || t.PresencaCidade < 0 || t.Apoio is < 0 or > 1)
             {
                 yield return $"compromisso '{t.Id}': presença e apoio não negativos.";
@@ -204,10 +221,16 @@ public sealed class Commitment
 
     /// <summary>Veio de um convite (dia e turno fixos).</summary>
     public string? InviteId { get; init; }
+
+    /// <summary>Um representante vai no lugar do candidato: rende menos e não ocupa o turno dele.</summary>
+    public bool Delegado { get; init; }
+
+    /// <summary>Tema tratado (entrevista, gravação, comício): torna a posição do candidato mais conhecida.</summary>
+    public string? Tema { get; init; }
 }
 
 /// <summary>O que se pede ao marcar: os mesmos campos do compromisso, sem id.</summary>
-public sealed record CommitmentRequest(string Type, string? ZoneId, DateOnly Date, Turno Turno, string Publico = CommitmentType.PublicoGeral, string? PersonId = null, string? CityEventId = null, string? InviteId = null);
+public sealed record CommitmentRequest(string Type, string? ZoneId, DateOnly Date, Turno Turno, string Publico = CommitmentType.PublicoGeral, string? PersonId = null, string? CityEventId = null, string? InviteId = null, bool Delegado = false, string? Tema = null);
 
 /// <summary>Um fator do rendimento, com o nome que a tela mostra e o multiplicador ("terceira caminhada no Centro em duas semanas", 0,45).</summary>
 public sealed record YieldFactor(string Id, string Text, double Multiplier);
@@ -224,6 +247,11 @@ public enum ScheduleFailure
     SemApoiadorNaZona,
     EventoInvalido,
     DecisaoPendente,
+    NaoDelegavel,
+    SemCoordenador,
+    SemDelegacao,
+    SemVerbaDeRua,
+    TemaInvalido,
 }
 
 /// <summary>
@@ -247,6 +275,9 @@ public sealed record CommitmentForecast(
     IReadOnlyList<YieldFactor> Factors,
     IReadOnlyList<ForecastOutcome> Outcomes)
 {
+    /// <summary>Quanto a posição do candidato no tema tratado ficaria mais conhecida (0 a 1).</summary>
+    public double ThemeKnownGain { get; init; }
+
     /// <summary>Produto dos fatores, sem a sorte.</summary>
     public double Yield => Factors.Aggregate(1.0, (acc, f) => acc * f.Multiplier);
 }
@@ -274,6 +305,9 @@ public sealed class CommitmentResult
 
     /// <summary>Texto do desfecho sorteado (teste de atributo), se houve.</summary>
     public string Text { get; init; } = "";
+
+    /// <summary>Quanto a posição no tema tratado ficou mais conhecida (0 a 1).</summary>
+    public double ThemeKnown { get; init; }
 }
 
 /// <summary>Evento da cidade numa data, zona e turno (GDD 17.6): só existe no dia.</summary>
@@ -350,7 +384,7 @@ public sealed class AgendaState
 
     public static string FatigueKey(Commitment c, bool visit) => FatigueKey(c.Type, c.ZoneId, c.Publico, visit ? c.PersonId : null);
 
-    public Commitment? At(DateOnly date, Turno turno) => Scheduled.FirstOrDefault(c => c.Date == date && c.Turno == turno);
+    public Commitment? At(DateOnly date, Turno turno) => Scheduled.FirstOrDefault(c => c.Date == date && c.Turno == turno && !c.Delegado);
 
     public void AddFeed(FeedItem item)
     {

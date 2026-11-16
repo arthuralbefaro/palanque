@@ -12,8 +12,11 @@ public sealed class VoteCandidate
 
     public required IdeologicalPosition Position { get; init; }
 
-    /// <summary>Posição em cada tema (-2 a 2); temas ausentes são derivados da posição nos eixos.</summary>
-    public IReadOnlyDictionary<string, int> Themes { get; init; } = new Dictionary<string, int>();
+    /// <summary>
+    /// Posição em cada tema (-2 a 2); temas ausentes são derivados da posição nos eixos. Pode ser fracionária: é a
+    /// posição que o eleitorado enxerga, mistura da posição do candidato (quem a conhece) com a do partido (GDD 17.9).
+    /// </summary>
+    public IReadOnlyDictionary<string, double> Themes { get; init; } = new Dictionary<string, double>();
 
     /// <summary>Reconhecimento no município (0 a 1).</summary>
     public required double Recognition { get; init; }
@@ -160,7 +163,7 @@ public static class VoteModel
     private static Dictionary<string, double> ThemePositions(VoteCandidate candidate, ThemeCatalog themes, VoteModelConfig config) =>
         themes.Themes.ToDictionary(
             t => t.Id,
-            t => candidate.Themes.TryGetValue(t.Id, out int position)
+            t => candidate.Themes.TryGetValue(t.Id, out double position)
                 ? position
                 : ElectorateBuilder.ThemePreference(t, AxisPoint.From(candidate.Position), config),
             StringComparer.Ordinal);
