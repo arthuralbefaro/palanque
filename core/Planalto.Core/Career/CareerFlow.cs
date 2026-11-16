@@ -83,11 +83,37 @@ public static class CareerFlow
     /// Uma semana do processo de contas da última eleição (julgamento e representação). Se o diploma for cassado, o
     /// mandato em curso termina. Devolve as manchetes do que aconteceu. O laço semanal do mandato chama isto.
     /// </summary>
-    public static List<Headline> AccountsWeek(GameState state, FinanceCatalog content, CampaignFinanceLawConfig law, Rng? rng = null)
+    /// <param name="state">Estado do jogo.</param>
+    /// <param name="content">Regras de jogo das contas.</param>
+    /// <param name="law">Lei das contas de campanha.</param>
+    /// <param name="rng">Gerador dos sorteios; por padrão, o do estado.</param>
+    /// <param name="renewal">
+    /// Renovação do mundo político (GDD 17.16). Com ela, o cargo cassado segue a sucessão real: a cadeira de vereador
+    /// vai ao suplente e a Prefeitura, cassada a chapa, vai a nova eleição (Código Eleitoral, art. 224, §§ 3º e 4º).
+    /// </param>
+    public static List<Headline> AccountsWeek(GameState state, FinanceCatalog content, CampaignFinanceLawConfig law, Rng? rng = null, Renewal.RenewalEngine? renewal = null)
     {
         List<Headline> news = AccountsEngine.Advance(state, content, law, state.Calendar.WeekStart, rng ?? state.Rng);
-        if (state.Accounts is { MandateLost: true } && (state.Mandate is not null || state.Executive is not null))
+        if (state.Accounts is { MandateLost: true } accounts && (state.Mandate is not null || state.Executive is not null))
         {
+            DateOnly date = accounts.MandateLostOn ?? state.Calendar.WeekStart;
+            if (renewal is not null && state.Renewal is { } r)
+            {
+                if (state.Executive is not null && r.PrefeitoId == RaceSetup.PlayerId)
+                {
+                    renewal.VacateExecutive(Renewal.VacancyCause.JusticaEleitoral, date);
+                }
+                else if (state.Mandate is not null && r.SeatOf(RaceSetup.PlayerId) is not null)
+                {
+                    renewal.VacateSeat(RaceSetup.PlayerId, Renewal.VacancyCause.JusticaEleitoral, date);
+                }
+            }
+
+            if (state.Governance is { } governance)
+            {
+                governance.PlayerRemoved = true;
+            }
+
             state.Mandate = null;
             state.Executive = null;
         }

@@ -96,7 +96,7 @@ public sealed partial class RenewalEngine
                 VacancyCause.JusticaEleitoral => RenewalEventKind.JusticaEleitoral,
                 _ => RenewalEventKind.Cassacao,
             },
-            cause switch { VacancyCause.Renuncia => "renuncia_vereador", VacancyCause.Investidura => "investidura", _ => "cassacao_vereador" },
+            cause switch { VacancyCause.Renuncia => "renuncia_vereador", VacancyCause.Investidura => "investidura", VacancyCause.JusticaEleitoral => "justica_eleitoral_vereador", _ => "cassacao_vereador" },
             personId, CivicRole.Vereador, cause, seat: seat.Numero);
         MarkExit(personId, cause, date);
         seat.TitularId = null;

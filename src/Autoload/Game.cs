@@ -398,7 +398,13 @@ public partial class Game : Node
         SemPartidoNoPrazo,
         SemIdade,
         MandatoEncerrado,
+
+        /// <summary>A Justiça Eleitoral cassou o diploma pelas contas da campanha: o mandato acabou.</summary>
+        DiplomaCassado,
     }
+
+    /// <summary>Manchetes do processo de contas na última semana avançada (julgamento, representação, cassação).</summary>
+    public IReadOnlyList<Core.Campaign.Headline> LastAccountsNews { get; private set; } = [];
 
     /// <summary>Avança uma semana da carreira e abre a campanha quando chega o prazo de filiação do ano da eleição.</summary>
     public WeekNote AdvanceWeek()
@@ -406,6 +412,16 @@ public partial class Game : Node
         GameState state = State!;
         bool hadMandate = state.Mandate is not null || state.Executive is not null;
         Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo, MundoDe(state));
+
+        // Contas da última campanha (GDD 17.12): o julgamento e a representação andam no mandato e na entressafra.
+        // Diploma cassado, a cadeira ou a Prefeitura seguem a sucessão real, pela renovação do mundo.
+        bool cassado = false;
+        if (state.Campaign is null && state.Accounts is { MandateLost: false })
+        {
+            LastAccountsNews = Core.Career.CareerFlow.AccountsWeek(state, Campaign.Finance, Core.Elections.CampaignFinanceLawConfig.Default, renewal: MundoDe(state)?.Renewal);
+            cassado = hadMandate && state.Accounts.MandateLost;
+        }
+
         if (state.Mandate is null)
         {
             Mandate = null;
@@ -421,7 +437,7 @@ public partial class Game : Node
             Prefeitura = null;
         }
 
-        WeekNote note = hadMandate && state.Mandate is null && state.Executive is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
+        WeekNote note = cassado ? WeekNote.DiplomaCassado : hadMandate && state.Mandate is null && state.Executive is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
         if (Core.Career.CareerFlow.ShouldStartCampaign(state))
         {
             if (Core.Career.CareerFlow.CanRun(state, state.Calendar.Year))
