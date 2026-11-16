@@ -32,6 +32,10 @@ public partial class UiShot : Node
         string? shot = args.FirstOrDefault(a => a.StartsWith("--screenshot=", StringComparison.Ordinal))?.Split('=', 2)[1];
         Game game = Game.Instance;
         game.SuppressNavigation = true;
+
+        // O ponteiro do mouse de verdade pode estar parado sobre a janela do teste: sem isto, o tooltip que ele abre
+        // entra na frente dos cliques simulados e nas medidas do layout. Os testes leem o texto do tooltip direto do controle.
+        ProjectSettings.SetSetting("gui/timers/tooltip_delay_sec", 100000.0);
         game.PendingSeed = 2028;
         game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
 
@@ -729,6 +733,15 @@ public partial class UiShot : Node
                     var next = campaign.Events.Pending[0];
                     var nextDefinition = game.Events.Find(next.EventId)!;
                     Core.Events.EventEngine.Resolve(engine.Context, next, Enumerable.Range(0, nextDefinition.Choices.Count).First(i => Core.Events.EventEngine.Blocked(engine.Context, nextDefinition.Choices[i]) is null), game.State.Rng);
+                    hub.Refresh();
+                    await Frames(3);
+                }
+
+                // O efeito da escolha também pode deixar outra decisão esperando (pedido de liderança, decisão da
+                // equipe): o cartão dela é legítimo e não é o objeto deste teste.
+                if (campaign.Agenda.PendingRequest is not null || campaign.Team.Pending.Count > 0)
+                {
+                    ClearInterruptions();
                     hub.Refresh();
                     await Frames(3);
                 }
