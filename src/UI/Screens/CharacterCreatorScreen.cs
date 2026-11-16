@@ -40,6 +40,10 @@ public partial class CharacterCreatorScreen : Control
     private Button _start = null!;
     private bool _ownParty;
 
+    // Dígitos do número de urna como o jogador digitou, enquanto não formam um número válido; null quando valem.
+    private string? _ballotDraft;
+    private Label? _ballotIssue;
+
     private PeopleContent People => _game.People;
 
     private DateOnly Today => new(_world.Options.StartYear, 1, 1);
@@ -115,6 +119,7 @@ public partial class CharacterCreatorScreen : Control
         }
 
         _c = JsonSerializer.Deserialize<Character>(_undo.Pop(), JsonData.Options)!;
+        _ballotDraft = null;
         BuildTabs();
         RefreshPreview();
     }
@@ -135,6 +140,7 @@ public partial class CharacterCreatorScreen : Control
     private CampaignIdentity NewCampaign()
     {
         GameParty? party = CurrentPartyFromWorld();
+        _ballotDraft = null;
         return new CampaignIdentity
         {
             BallotNumber = party is null ? null : $"{party.Number}{_rng.NextInt(1000):000}",
@@ -221,8 +227,8 @@ public partial class CharacterCreatorScreen : Control
         GameParty? party = CurrentPartyFromWorld();
         if (party is not null && _c.Campaign is not null)
         {
-            string suffix = _c.Campaign.BallotNumber is { Length: 5 } n ? n[2..] : $"{_rng.NextInt(1000):000}";
-            _c.Campaign.BallotNumber = $"{party.Number}{suffix}";
+            string suffix = CandidateNumbers.SuffixOf(_c.Campaign.BallotNumber, Office.Vereador);
+            _c.Campaign.BallotNumber = $"{party.Number}{(suffix.Length > 0 ? suffix : $"{_rng.NextInt(1000):000}")}";
         }
     }
 
@@ -523,10 +529,36 @@ public partial class CharacterCreatorScreen : Control
         GameParty? party = CurrentPartyFromWorld();
         HBoxContainer number = Ui.Field(t, "Número de urna");
         Ui.Value(number, party is null ? "--" : party.Number.ToString(CultureInfo.InvariantCulture), 22);
-        int suffix = id.BallotNumber is { Length: 5 } n ? int.Parse(n[2..], CultureInfo.InvariantCulture) : 0;
-        var digits = number.Add(new SpinBox { MinValue = 0, MaxValue = 999, Value = suffix, Prefix = "" });
-        digits.ValueChanged += v => Edit(() => id.BallotNumber = party is null ? null : $"{party.Number}{(int)v:000}");
-        Ui.Label(number, "Vereador: número do partido + 3 dígitos.", color: Ui.Muted);
+        int suffixDigits = CandidateNumberRulesConfig.Default.SuffixDigitsFor(Office.Vereador);
+        var digits = number.Add(new LineEdit
+        {
+            Name = "NumeroUrna",
+            Text = _ballotDraft ?? CandidateNumbers.SuffixOf(id.BallotNumber, Office.Vereador),
+            MaxLength = suffixDigits,
+            PlaceholderText = new string('0', suffixDigits),
+            Alignment = HorizontalAlignment.Center,
+            CustomMinimumSize = new Vector2(96, 0),
+            VirtualKeyboardType = LineEdit.VirtualKeyboardTypeEnum.Number,
+            Editable = party is not null,
+        });
+        digits.AddThemeFontSizeOverride("font_size", 22);
+        digits.TextChanged += typed =>
+        {
+            // Só algarismos entram no campo; o resto é conferido pelo Core.
+            string clean = new(typed.Where(char.IsAsciiDigit).ToArray());
+            if (clean != typed)
+            {
+                digits.Text = clean;
+                digits.CaretColumn = clean.Length;
+            }
+
+            Edit(() => TypeBallotSuffix(clean));
+        };
+        Ui.Label(number, "Vereador: número do partido + 3 algarismos, de 000 a 999.", color: Ui.Muted);
+        _ballotIssue = Ui.Paragraph(t, "", 760, 18);
+        _ballotIssue.Name = "NumeroUrnaMotivo";
+        _ballotIssue.AddThemeColorOverride("font_color", Ui.Warning);
+        ShowBallotIssue();
 
         HBoxContainer sloganRow = Ui.Field(t, "Slogan");
         var slogan = sloganRow.Add(new LineEdit { Text = id.Slogan, SizeFlagsHorizontal = SizeFlags.ExpandFill, MaxLength = 60 });
@@ -547,6 +579,62 @@ public partial class CharacterCreatorScreen : Control
         Ui.Options(Ui.Field(t, "Pose da foto"), People.Campaign.Poses.Select(p => (p.Id, p.Name)), id.PhotoPose, v => Edit(() => id.PhotoPose = v), translate: false);
         Ui.Options(Ui.Field(t, "Expressão da foto"), Enum.GetValues<Expression>().Select(e => (e.ToString(), ExpressionName(e))), id.PhotoExpression.ToString(), v => Edit(() => id.PhotoExpression = Enum.Parse<Expression>(v)));
         Ui.Options(Ui.Field(t, "Fundo da foto"), People.Appearance.Catalog.InCategory("background").Select(b => (b.Id, b.Name)), id.PhotoBackground, v => Edit(() => id.PhotoBackground = v), translate: false);
+    }
+
+    /// <summary>Aplica os dígitos digitados se formam um número de urna válido; senão guarda o rascunho e mantém o número anterior.</summary>
+    private void TypeBallotSuffix(string typed)
+    {
+        GameParty? party = CurrentPartyFromWorld();
+        if (party is null || _c.Campaign is null)
+        {
+            return;
+        }
+
+        if (CandidateNumbers.TryParseSuffix(typed, Office.Vereador, party.Number, OccupiedBallotSuffixes(), out CandidateNumber number) is null)
+        {
+            _c.Campaign.BallotNumber = number.Text;
+            _ballotDraft = null;
+        }
+        else
+        {
+            _ballotDraft = typed;
+        }
+    }
+
+    /// <summary>
+    /// Finais já ocupados no partido, na cidade, para vereador. Na criação ainda não há candidatura registrada: o Core
+    /// reserva primeiro o número do jogador e só depois sorteia, entre os livres, os dos colegas de chapa.
+    /// </summary>
+    private static IReadOnlyCollection<int> OccupiedBallotSuffixes() => [];
+
+    /// <summary>Motivo de o número de urna digitado não valer; null se vale.</summary>
+    private string? BallotProblem(bool detail = false)
+    {
+        GameParty? party = CurrentPartyFromWorld();
+        if (party is null || _c.Campaign is null)
+        {
+            return null;
+        }
+
+        string typed = _ballotDraft ?? CandidateNumbers.SuffixOf(_c.Campaign.BallotNumber, Office.Vereador);
+        return CandidateNumbers.TryParseSuffix(typed, Office.Vereador, party.Number, OccupiedBallotSuffixes(), out _) switch
+        {
+            null => null,
+            CandidateNumberIssue.JaEmUso => string.Format(Tr("Número de urna: {0}{1} já é de outra candidatura do {2}. Escolha outros 3 algarismos."), party.Number, typed, party.Sigla),
+            CandidateNumberIssue.NumeroDePartidoInvalido => Tr("Número de urna: o partido precisa de um número de 10 a 99."),
+            _ when detail => string.Format(Tr("Número de urna: digite exatamente 3 algarismos depois do {0} do partido (zeros à esquerda valem, como 007). Enquanto isso, o número continua {1}."), party.Number, _c.Campaign.BallotNumber),
+            _ => Tr("Número de urna: digite exatamente 3 algarismos (aba Campanha)."),
+        };
+    }
+
+    private void ShowBallotIssue()
+    {
+        if (_ballotIssue is not null && IsInstanceValid(_ballotIssue))
+        {
+            string? problem = BallotProblem(detail: true);
+            _ballotIssue.Text = problem ?? "";
+            _ballotIssue.Visible = problem is not null;
+        }
     }
 
     public static string ExpressionName(Expression e) => e switch
@@ -670,6 +758,7 @@ public partial class CharacterCreatorScreen : Control
             _materiais.Set(card);
         }
 
+        ShowBallotIssue();
         Ui.Clear(_status);
         var problems = Problems().ToList();
         foreach (string problem in problems)
@@ -702,6 +791,11 @@ public partial class CharacterCreatorScreen : Control
             yield return Tr("Escolha um partido.");
         }
 
+        if (BallotProblem() is { } ballot)
+        {
+            yield return ballot;
+        }
+
         WorldValidationReport report = _world.Validate();
         string Sigla(string? id) => id is null ? "" : _world.Find(id)?.Sigla ?? id;
         foreach (WorldIssue issue in report.Errors)
@@ -728,6 +822,12 @@ public partial class CharacterCreatorScreen : Control
             ApplyPartyNumber();
         }
     }
+
+    /// <summary>Teste de fumaça: pendências que impedem começar a carreira, como aparecem na base da tela.</summary>
+    public IReadOnlyList<string> ProblemsForTest => Problems().ToList();
+
+    /// <summary>Teste de fumaça: o botão de começar está liberado.</summary>
+    public bool CanStartForTest => !_start.Disabled;
 
     /// <summary>Teste de fumaça: partido do personagem em criação.</summary>
     public string? PartyIdForTest => _c.PartyId;

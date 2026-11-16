@@ -86,6 +86,48 @@ public static class CandidateNumbers
         number = new CandidateNumber(office, partyNumber, suffix, rules.SuffixDigitsFor(office));
         return null;
     }
+
+    /// <summary>
+    /// Lê os dígitos finais digitados pelo jogador (a parte do candidato, depois do número do partido): exatamente
+    /// os dígitos do cargo, com zeros à esquerda e dígitos repetidos permitidos ("000", "111"), e ainda livres no
+    /// partido. Devolve o problema encontrado, ou null com o número completo em <paramref name="number"/>.
+    /// </summary>
+    /// <param name="occupied">Finais já usados por outras candidaturas do mesmo partido, cargo e circunscrição.</param>
+    public static CandidateNumberIssue? TryParseSuffix(string? text, Office office, int partyNumber, IReadOnlyCollection<int> occupied, out CandidateNumber number, CandidateNumberRulesConfig? rules = null)
+    {
+        rules ??= CandidateNumberRulesConfig.Default;
+        number = default;
+        if (string.IsNullOrEmpty(text) || !text.All(char.IsAsciiDigit))
+        {
+            return CandidateNumberIssue.NaoNumerico;
+        }
+
+        if (text.Length != rules.SuffixDigitsFor(office))
+        {
+            return CandidateNumberIssue.QuantidadeDeDigitosErrada;
+        }
+
+        if (!rules.IsValidPartyNumber(partyNumber))
+        {
+            return CandidateNumberIssue.NumeroDePartidoInvalido;
+        }
+
+        int suffix = int.Parse(text, CultureInfo.InvariantCulture);
+        if (occupied.Contains(suffix))
+        {
+            return CandidateNumberIssue.JaEmUso;
+        }
+
+        number = new CandidateNumber(office, partyNumber, suffix, rules.SuffixDigitsFor(office));
+        return null;
+    }
+
+    /// <summary>Dígitos finais de um número completo já montado ("45007" → "007"); vazio se o texto não tem o tamanho do cargo.</summary>
+    public static string SuffixOf(string? fullNumber, Office office, CandidateNumberRulesConfig? rules = null)
+    {
+        rules ??= CandidateNumberRulesConfig.Default;
+        return fullNumber is not null && fullNumber.Length == rules.DigitsFor(office) ? fullNumber[rules.PartyNumberDigits..] : "";
+    }
 }
 
 /// <summary>
@@ -100,6 +142,10 @@ public sealed class CandidateNumberBook(CandidateNumberRulesConfig? rules = null
 
     public bool IsFree(string constituency, Office office, int partyNumber, int suffix) =>
         !_used.TryGetValue((constituency, office, partyNumber), out HashSet<int>? used) || !used.Contains(suffix);
+
+    /// <summary>Dígitos finais já reservados no partido, para conferir o número que o jogador digita.</summary>
+    public IReadOnlyCollection<int> UsedSuffixes(string constituency, Office office, int partyNumber) =>
+        _used.TryGetValue((constituency, office, partyNumber), out HashSet<int>? used) ? used : [];
 
     /// <summary>Dígitos finais livres no partido, em ordem crescente, para o jogador escolher.</summary>
     public IReadOnlyList<int> FreeSuffixes(string constituency, Office office, int partyNumber)

@@ -107,6 +107,75 @@ public partial class UiShot
         return true;
     }
 
+    /// <summary>
+    /// Número de urna digitado na aba Campanha: três algarismos, com zeros à esquerda e repetidos ("000", "111");
+    /// menos de três ou letra não vale, o motivo aparece embaixo do campo e na base da tela, e a carreira não começa.
+    /// </summary>
+    private async Task<bool> CheckCreatorBallot(CharacterCreatorScreen creator, string? shot)
+    {
+        var tabs = FindAll<TabContainer>(creator).First();
+        tabs.CurrentTab = 3;
+        await Frames(2);
+        async Task Type(string text)
+        {
+            var field = Named<LineEdit>(creator, "NumeroUrna")!;
+            field.Text = text;
+            field.EmitSignal(LineEdit.SignalName.TextChanged, text);
+            await Frames(2);
+        }
+
+        if (Named<LineEdit>(creator, "NumeroUrna") is not { MaxLength: 3 })
+        {
+            Fail("a aba Campanha não tem o campo de 3 algarismos do número de urna.");
+            return false;
+        }
+
+        string prefix = creator.BallotNumberForTest![..2];
+        foreach (string valid in new[] { "000", "111", "007" })
+        {
+            await Type(valid);
+            string santinho = TextOf(FindAll<Santinho>(creator).First());
+            if (creator.BallotNumberForTest != prefix + valid || !santinho.Contains(prefix + valid, StringComparison.Ordinal) || !creator.CanStartForTest
+                || Named<Label>(creator, "NumeroUrnaMotivo") is { Visible: true })
+            {
+                Fail($"número de urna {valid}: ficou {creator.BallotNumberForTest}, começar liberado: {creator.CanStartForTest}.");
+                return false;
+            }
+        }
+
+        foreach (var (typed, shown) in new[] { ("07", "07"), ("", ""), ("1a", "1"), ("x9y", "9") })
+        {
+            await Type(typed);
+            if (typed == "07")
+            {
+                Save(shot, "_urna_invalida");
+            }
+
+            var reason = Named<Label>(creator, "NumeroUrnaMotivo");
+            bool listed = creator.ProblemsForTest.Any(p => p.Contains(Tr("Número de urna"), StringComparison.Ordinal));
+            if (Named<LineEdit>(creator, "NumeroUrna")!.Text != shown || creator.BallotNumberForTest != prefix + "007" || creator.CanStartForTest || !listed
+                || reason is not { Visible: true } || !reason.Text.Contains("3", StringComparison.Ordinal))
+            {
+                Fail($"número de urna \"{typed}\": campo \"{Named<LineEdit>(creator, "NumeroUrna")!.Text}\", número {creator.BallotNumberForTest}, começar liberado: {creator.CanStartForTest}, motivo na base: {listed}, motivo no campo: \"{reason?.Text}\".");
+                return false;
+            }
+        }
+
+        // O rascunho inválido sobrevive à troca de aba; o número válido volta a liberar a carreira.
+        tabs.CurrentTab = 2;
+        await Frames(2);
+        tabs.CurrentTab = 3;
+        await Type("120");
+        if (creator.BallotNumberForTest != prefix + "120" || !creator.CanStartForTest)
+        {
+            Fail("o número de urna 120 deveria valer depois de uma tentativa inválida.");
+            return false;
+        }
+
+        GD.Print($"  número de urna: 000, 111 e 007 aceitos; \"07\", vazio e letras recusados com o motivo; ficou {creator.BallotNumberForTest}");
+        return true;
+    }
+
     /// <summary>Diferença entre o partido escolhido e o que o santinho e o personagem mostram; null se batem.</summary>
     private static string? SantinhoMismatch(CharacterCreatorScreen creator, string partyId, string sigla, int number)
     {
