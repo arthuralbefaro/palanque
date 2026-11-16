@@ -16,6 +16,22 @@ namespace Planalto.BalanceSim;
 /// <summary>O que o robô fez e viu num mandato de vereador.</summary>
 public sealed class MandateTrace
 {
+        public int WorldEvents { get; set; }
+
+        public int Deaths { get; set; }
+
+        public int Substitutes { get; set; }
+
+        public int MayorChanges { get; set; }
+
+        public int IndicatorsMoved { get; set; }
+
+        public int IndicatorsTotal { get; set; }
+
+        public int IndicatorCrises { get; set; }
+
+        public bool Interrupted { get; set; }
+
     /// <summary>Instrumento da opção de maior ganho previsto vista em cada semana.</summary>
     public List<string> BestByWeek { get; } = [];
 
@@ -81,6 +97,7 @@ public static class MandateSim
         var legislature = LegislatureContent.LoadOrThrow(dir, groups, content.World.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal));
         var executive = ExecutiveContent.LoadOrThrow(dir, groups);
         var governance = GovernanceContent.LoadOrThrow(dir, executive, content.Campaign.Promises);
+        var linked = new WorldContentSet(Planalto.Core.Indicators.IndicatorContent.LoadOrThrow(dir), Planalto.Core.Renewal.RenewalContent.LoadOrThrow(dir));
 
         var report = new StringBuilder();
         report.AppendLine("# BalanceSim — mandato de vereador (R4)");
@@ -90,6 +107,8 @@ public static class MandateSim
         report.AppendLine("Como o robô chega ao mandato: a campanha não é o objeto desta medição. Ela é jogada sem agenda, com a presença do candidato mantida em pelo menos 60 em todas as zonas para que ele se eleja (se não se eleger, a preparação é refeita com outra semente), e com até 3 promessas de obra feitas a zonas (para haver cobrança no mandato).");
         report.AppendLine();
         report.AppendLine(string.Format(culture, "Como o robô compara opções (juízo do robô, não regra do jogo): soma as linhas da previsão em pontos de presença na cidade. Presença na zona vale pela fatia da zona na população, tanto a de agora quanto a esperada depois (obra entregue); imagem vale {0:0} pontos por unidade; promessa cumprida, {1:0.0}; capital político, {2:0.00} por ponto; relação com o prefeito, {3:0.00} por ponto; relação com um colega, {4:0.00}; esqueleto no Livro, {5:0.0} por ponto de gravidade. No gabinete, nomeia primeiro quem tem vaga prometida; nas decisões (eventos e achados da fiscalização), escolhe a opção de maior valor pela mesma conta; inaugura toda obra pronta; vota pela orientação do partido.", ImageWeight, PromiseWeight, CapitalWeight, MayorWeight, RelationWeight, SkeletonWeight));
+        report.AppendLine();
+        report.AppendLine("O mundo anda junto, como no jogo: os indicadores da cidade partem dos dados oficiais e evoluem toda semana, e a renovação do mundo político (idade, morte, renúncia, cassação, suplente, vice e nova eleição) roda desde a campanha. As obras entregues empurram os indicadores reais, as crises de indicador baixo vêm deles e quem morre ou sai deixa de votar, de cobrar e de ser nomeado.");
         report.AppendLine();
         report.AppendLine("Critério (GDD 17.1, princípio a, e ROADMAP R4): nenhum instrumento é a melhor escolha em mais de 40% das semanas. A melhor escolha da semana é a opção de maior ganho previsto vista nela (no primeiro turno, antes de o robô gastar qualquer coisa).");
         report.AppendLine();
@@ -110,7 +129,7 @@ public static class MandateSim
                     // A campanha de preparação pode não eleger o candidato: tenta outras sementes na mesma cidade.
                     for (ulong attempt = 0; attempt < 6 && traces[i] is null; attempt++)
                     {
-                        traces[i] = Play(content, legislature, executive, governance, m, seed + (ulong)(1000 * (i + 1)) + attempt);
+                        traces[i] = Play(content, legislature, executive, governance, linked, m, seed + (ulong)(1000 * (i + 1)) + attempt);
                     }
 
                     if (traces[i] is null)
@@ -167,6 +186,9 @@ public static class MandateSim
                 done.Average(t => t.PromisesAtStart), done.Sum(t => t.PromisesCollected) / Math.Max(1.0, done.Sum(t => t.PromisesAtStart)), done.Average(t => t.PromisesKept), done.Average(t => t.PromisesExpired)));
             report.AppendLine(string.Format(culture, "- Presença na cidade: {0:0.0} na posse, {1:0.0} no fim do mandato. Mandatos com CPI aberta pelo robô: {2} de {3}.",
                 done.Average(t => t.PresenceStart), done.Average(t => t.PresenceEnd), done.Count(t => t.CpiOpened), done.Count));
+            report.AppendLine(string.Format(culture, "- Mundo ligado, por mandato, em média: {0:0.0} fatos da renovação ({1:0.00} mortes, {2:0.00} posses de suplente, {3:0.00} trocas na Prefeitura); {4:0.0} de {5} indicadores reais mudaram desde a posse; {6:0.0} crises com causa em indicador baixo. Mandatos interrompidos antes do fim: {7} de {8}.",
+                done.Average(t => t.WorldEvents), done.Average(t => t.Deaths), done.Average(t => t.Substitutes), done.Average(t => t.MayorChanges), done.Average(t => t.IndicatorsMoved), done.Max(t => t.IndicatorsTotal),
+                done.Average(t => t.IndicatorCrises), done.Count(t => t.Interrupted), done.Count));
             report.AppendLine($"- **{(ok ? "Dentro do critério" : "FORA do critério")}.**");
             report.AppendLine();
             Console.WriteLine($"{porte}: melhor instrumento em {maxShare:P1} das semanas, {(ok ? "ok" : "FORA")}");
@@ -184,11 +206,47 @@ public static class MandateSim
         return allOk ? 0 : 1;
     }
 
-    private static MandateTrace? Play(SimContent content, LegislatureContent legislature, ExecutiveContent executive, GovernanceContent governance, Municipio m, ulong seed)
+    /// <summary>Conteúdo do mundo que anda sozinho: modelo dos indicadores reais e renovação do mundo político.</summary>
+    private sealed record WorldContentSet(Planalto.Core.Indicators.IndicatorContent Indicators, Planalto.Core.Renewal.RenewalContent Renewal)
+    {
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Planalto.Core.Indicators.IndicadoresUfFile?> _uf = new();
+
+        public Planalto.Core.Indicators.IndicadoresUfFile? Uf(string dataDirectory, string uf) =>
+            _uf.GetOrAdd(uf, key => Planalto.Core.Indicators.IndicadoresPaths.Load(dataDirectory, key).Value);
+    }
+
+    /// <summary>Monta o mundo do município como o jogo faz: indicadores do save a partir dos dados oficiais e a renovação com as cadeiras do cenário.</summary>
+    private static Planalto.Core.World.WorldEngine NewWorld(SimContent content, WorldContentSet linked, GameState state, Municipio m)
+    {
+        var scenario = content.Brasil2026.Municipio(m.CodigoIbge);
+        var renewal = new Planalto.Core.Renewal.RenewalEngine(new Planalto.Core.Renewal.RenewalContext
+        {
+            State = state,
+            Municipio = m,
+            People = content.People,
+            Content = linked.Renewal,
+            Projection = content.Projection,
+            Themes = content.World.Parties.Themes.Themes.Select(t => t.Id).ToList(),
+            Staff = content.Campaign.Staff,
+            InitialSeats = scenario?.Camara,
+            InitialMayorParty = scenario?.Prefeito,
+        });
+        var world = new Planalto.Core.World.WorldEngine(state, new Planalto.Core.Indicators.IndicatorEvolution(linked.Indicators, m, content.Projection), renewal);
+        if (linked.Uf(content.DataDirectory, m.Uf) is { } uf)
+        {
+            world.EnsureIndicators(uf, content.Municipios);
+        }
+
+        renewal.Ensure();
+        return world;
+    }
+
+    private static MandateTrace? Play(SimContent content, LegislatureContent legislature, ExecutiveContent executive, GovernanceContent governance, WorldContentSet linked, Municipio m, ulong seed)
     {
         CampaignEngine campaign = content.NewCareer(m, seed, strongestParty: true);
         GameState state = campaign.Context.State;
         CampaignState race = state.Campaign!;
+        Planalto.Core.World.WorldEngine world = NewWorld(content, linked, state, m);
 
         // Até 3 promessas de obra a zonas, para o Livro chegar ao mandato com o que cobrar.
         int promised = 0;
@@ -213,6 +271,7 @@ public static class MandateSim
             }
 
             ResolveCampaignPending(campaign);
+            world.AdvanceTo(state.Calendar.WeekStart);
             campaign.AdvanceDay();
         }
 
@@ -231,12 +290,18 @@ public static class MandateSim
         var governanceContext = new GovernanceContext
         {
             State = state, Municipio = m, Content = governance, Legislature = legislature, Executive = executive, People = content.People, Campaign = content.Campaign, Zonas = campaign.Context.Zonas,
+            Indicadores = linked.Uf(content.DataDirectory, m.Uf)?.Municipios.FirstOrDefault(i => i.CodigoIbge == m.CodigoIbge),
+            IndicatorEvolution = world.Indicators,
+            Renewal = world.Renewal,
         };
-        CareerFlow.ConcludeElection(campaign.Context, legislatureContext, governanceContext: governanceContext);
+        CareerFlow.ConcludeElection(campaign.Context, legislatureContext, governanceContext: governanceContext, renewal: world.Renewal);
         var mandate = new LegislatureEngine(legislatureContext);
         var gov = new GovernanceEngine(governanceContext);
         GovernanceState g = state.Governance!;
         var trace = new MandateTrace { PromisesAtStart = g.PromisesAtStart.Count, PresenceStart = g.CityPresence() };
+        DateOnly took = state.Calendar.WeekStart;
+        DateOnly ends = state.Mandate!.End;
+        Dictionary<string, double> atStart = state.Indicators?.Indicadores.ToDictionary(i => i.Id, i => i.Valor) ?? [];
         gov.SetInstruction(VoteInstruction.SeguirOrientacao);
 
         while (state.Mandate is not null && !CareerFlow.ShouldStartCampaign(state) && trace.Weeks < 260)
@@ -314,8 +379,26 @@ public static class MandateSim
                 }
             }
 
-            CareerFlow.AdvanceWeek(state, null, mandate, governance: gov);
+            CareerFlow.AdvanceWeek(state, null, mandate, governance: gov, world: world);
         }
+
+        if (state.Renewal is { } renewed)
+        {
+            var facts = renewed.Historico.Where(e => e.Data >= took).ToList();
+            trace.WorldEvents = facts.Count;
+            trace.Deaths = facts.Count(e => e.Tipo == Planalto.Core.Renewal.RenewalEventKind.Morte);
+            trace.Substitutes = facts.Count(e => e.Tipo == Planalto.Core.Renewal.RenewalEventKind.PosseSuplente);
+            trace.MayorChanges = facts.Count(e => e.Tipo is Planalto.Core.Renewal.RenewalEventKind.PosseVice or Planalto.Core.Renewal.RenewalEventKind.Interino or Planalto.Core.Renewal.RenewalEventKind.EleicaoResolvida);
+        }
+
+        if (state.Indicators is { } real)
+        {
+            trace.IndicatorsTotal = real.Indicadores.Count;
+            trace.IndicatorsMoved = real.Indicadores.Count(i => atStart.TryGetValue(i.Id, out double before) && Math.Abs(i.Valor - before) > 1e-9);
+        }
+
+        trace.IndicatorCrises = g.Crises.Count(c => c.CauseKind == CrisisRecord.CausaIndicador);
+        trace.Interrupted = state.Mandate is null && state.Calendar.WeekStart <= ends && !CareerFlow.ShouldStartCampaign(state);
 
         var (promises, collected) = gov.CollectionStats();
         trace.PromisesCollected = collected;
