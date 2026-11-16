@@ -1,50 +1,297 @@
-# CONTEXTO DO PROJETO PLANALTO — para retomar em nova conversa
+Atualizado em 2026-11-16 00:30, depois de: decisões do autor sobre o GDD 17.20 registradas e corujão da Fase R autorizado; a R1 ainda não começou.
 
-## Quem e o quê
-- Autor e único dono: **Arthur Albefaro**. Conversa em português.
-- Projeto: **Planalto**, simulador de carreira política brasileira. O jogador cria um personagem, começa como cidadão, disputa vereador e sobe até presidente. Simulador livre: qualquer ideologia, ética ou estratégia, o jogo nunca julga moralmente, só simula consequências.
-- Desenvolvimento feito pelo **Claude Code** rodando na máquina do Arthur (Windows), com esta conversa servindo de "consultor": eu reviso relatórios do Claude Code, respondo às perguntas dele e escrevo os prompts.
+# Planalto — contexto para retomar o projeto num chat novo
 
-## Stack e ambiente
-- **Godot 4.7.2 .NET (C#)**, 2D com elementos 2.5D/3D pontuais. Só PC (Windows, Linux, macOS), sem Web.
-- .NET SDK 10.0.201 instalado (projetos em net8.0, runtime 8.0.28 presente).
-- Godot em `C:\Godot`, com atalhos `godot`/`godot.cmd` em `C:\Users\arthu\bin` no PATH.
-- Solução: `Planalto.sln` com projeto Godot (`Planalto.csproj`), `core/Planalto.Core` (.NET puro, sem Godot), `core/Planalto.Core.Tests` (xUnit), `tools/Planalto.DataValidator`, `tools/Planalto.DataImporter` (+ `.Tests`), previstos `tools/Planalto.BalanceSim` e `tools/Planalto.EventLint`.
-- Pacotes aprovados: Godot.NET.Sdk/GodotSharp, xUnit, NetTopologySuite (só no DataImporter).
-- Skills instaladas no Claude Code (via `npx skills add ... --agent claude-code`): dotnet/skills (run-tests, code-testing-agent, analyzing-dotnet-performance, crap-score) e gamedev-skills/awesome-gamedev-agent-skills (godot-ui-control, godot-animation, game-ui-ux, card-game, visual-novel).
+Este documento é para quem não vê o repositório. Ele resume o que importa; os nomes de arquivo citados servem só para pedir coisas ao Claude Code.
 
-## Regras absolutas
-- **Autoria:** commits só em nome de Arthur Albefaro. Nenhuma menção a IA, Claude ou Anthropic em commits, código, comentários, docs ou créditos. Três camadas de proteção: `git config` local, `.claude/settings.json` com `"attribution": {"commit": "", "pr": ""}`, e hook `.githooks/commit-msg` (core.hooksPath) que apaga linhas de atribuição. Nunca `--no-verify`, nunca push sem pedido.
-- **Neutralidade:** partidos, políticos, empresas, institutos e mídia sempre fictícios. Municípios, estados e dados demográficos reais. Lista de bloqueio de siglas e nomes reais (atuais e extintos desde 1945, incluindo nomes "contidos", ex.: "Partido Liberal Brasileiro" bloqueado). Ícones genéricos liberados (estrela, tucano, foice e martelo etc.), mas nenhum logotipo pode copiar o desenho de um real. Aparência nunca altera votos ou atributos. Nenhum evento com estereótipo; tragédias com seriedade.
-- **Commits:** em português, `tipo(escopo): descrição` (feat, fix, refactor, test, data, art, audio, docs, chore).
+## 1. Quem e o quê
 
-## Arquivos de controle no repositório
-- `CLAUDE.md` (regras, verificação obrigatória, autonomia), `docs/GDD.md` (design, seções 1–16), `docs/ROADMAP.md` (fonte única das fases), `docs/DECISOES.md` (D-001 a D-020+), `docs/PROGRESSO.md`, `docs/PENDENCIAS.md` (modo corujão), `docs/ROTEIRO_TESTE_FASE3.md` (a ser criado).
-- Verificação obrigatória: `dotnet build Planalto.sln`, `dotnet test core/Planalto.Core.Tests`, `dotnet run --project tools/Planalto.DataValidator`, `godot --headless --build-solutions --quit` (+ testes do importador quando ele mudar).
+- **Autor e único dono:** Arthur Albefaro. Conversa em português.
+- **Projeto:** Planalto, simulador de carreira política brasileira para PC. O jogador cria um personagem, começa como cidadão numa cidade real do Brasil, disputa vereador e pode subir até presidente. É um simulador livre: qualquer ideologia, ética ou estratégia; o jogo nunca julga moralmente, só simula consequências (eleitorais, judiciais, midiáticas, pessoais).
+- **Divisão do trabalho:**
+  - O **Claude Code**, rodando na máquina do autor (Windows), escreve código, dados, testes e documentação, faz commits locais e escreve relatórios.
+  - O **consultor** (um chat como este) revisa os relatórios, responde às dúvidas de design e escreve os prompts que o autor cola no Claude Code.
+  - O **autor** joga cada parte, decide o que é decisão dele e aprova.
 
-## Design (resumo do GDD)
-- **Cargos:** vereador → prefeito/dep. estadual → dep. federal → senador/governador → presidente. Calendário real: turno = 1 semana; eleições alternadas a cada 2 anos; 1º turno no 1º domingo de outubro, 2º turno no último domingo de outubro; campanha a partir de 16/08; filiação 6 meses antes. Jogo começa em 2028 (semana ISO 1).
-- **Regras eleitorais fiéis à lei:** quociente eleitoral/partidário, cláusula de 10%, sobras com 80/20, 3ª etapa aberta (decisão do STF), sobras obtidas e não preenchidas contam no divisor, desempate pelo mais idoso; parâmetros em `ProportionalRulesConfig`.
-- **Personagem:** 4 abas (Aparência detalhada, Vestuário por contexto, Identidade, Campanha com santinho/jingle/logotipo) + aba Partido. Retratos 2D em camadas com shader de tingimento, expressões, envelhecimento e "Espelho". Atributos: Carisma, Oratória, Articulação, Gestão, Integridade. Traços de personalidade.
-- **Municípios:** todos os 5.571, dados oficiais (IBGE, TSE, Censo 2022, Malha 2025), vagas reais de 2024 + teto constitucional, porte, região imediata, simulação por nível de detalhe.
-- **Partidos:** 16 famílias ideológicas em dois eixos; gerador fictício; tela "Novo Mundo" com predefinições (Brasil realista, Multipartidário moderado — padrão 12–16, Poucos, Bipartidário, Personalizado, **Brasil 2026**); edição/sorteio/trava por campo; jogador pode criar o próprio partido (no início ou fundando na carreira).
-- **Cenário Brasil 2026:** espelho da estrutura real pós-eleição 2026 (30 partidos, 5 federações, bancadas, governadores, Assembleias, prefeitos e Câmaras de 2024 de todos os municípios, força local), com nomes fictícios. Ideologia pela pesquisa de Bolognesi, Ribeiro, Codato e Silva (2025, *Opinião Pública*), regra diagonal + variação sorteada no eixo de costumes. Correspondência real→fictício só no pipeline em `tools/`.
-- **Eleitorado:** 240 segmentos por município, modelo de utilidade + softmax, pesquisas com institutos fictícios.
-- **Eventos:** meta 600+ em 12 categorias, com condições, raridade, cooldown, cadeias, variáveis e eventos dinâmicos.
-- **Urna:** minigame no dia da eleição, voto do jogador conta; números de candidato pela regra real (2/3/4/5 dígitos).
-- **2.5D/3D:** mapa eleitoral 2.5D (polígonos extrudados, modo apuração) e cerimônias de posse em 3D low-poly (bonecos parametrizados a partir da aparência; clímax corta para o retrato 2D).
+## 2. Stack, ambiente e comandos
 
-## Status em 15/11/2026, 20h40
-- Concluído: Fase 0, Fase 1 inteira (1A lógica, 1B municípios, 1C mundo e partidos, 1D cenário Brasil 2026, 1E eleitorado e pesquisas). 322+ testes.
-- Em andamento: Fase 2 (criação de personagem, Novo Mundo, seleção de município), já com decisões D-016 a D-020.
-- **Modo corujão ativo:** Claude Code rodando a noite toda sem perguntar, registrando bloqueios em PENDENCIAS.md, escrevendo o roteiro de teste da Fase 3 e um teste automatizado de campanha completa, e seguindo para as Fases 4, 5... Permissões liberadas em `.claude/settings.json` (deny para push, reset --hard, rebase, rm -rf); sessão iniciada com `claude --permission-mode acceptEdits`.
-- Ajustes pedidos e possivelmente pendentes: prenomes de NPCs por década de nascimento (IBGE, meta 150+ por sexo) e item na Fase 9 para converter telas em `.tscn` editáveis.
+- **Engine:** Godot 4.7.2 .NET (C#), 2D, com mapa 2.5D e cerimônias 3D previstas. Só PC (Windows, Linux, macOS). Tela base de 1920×1080, escala `canvas_items`, aspecto `expand`.
+- **.NET:** SDK 10.0.201 instalado; projetos em net8.0. C# com nullable e warnings como erro.
+- **Godot** instalado em `C:\Godot`, chamado por `godot` (atalho no PATH).
+- **Solução `Planalto.sln`:**
+  - projeto Godot na raiz: interface, em `src/`;
+  - `core/Planalto.Core`: toda a lógica do jogo, .NET puro, sem Godot;
+  - `core/Planalto.Core.Tests`: testes xUnit;
+  - `tools/`: DataImporter (baixa IBGE e TSE e gera `data/`), DataImporter.Tests, DataValidator, EventLint e PlaceholderArt (arte provisória). O BalanceSim está previsto para a Fase R.
+- **Pacotes permitidos:** GodotSharp, xUnit e NetTopologySuite (este só no importador). Nada novo sem o autor aprovar.
+- **Conteúdo:** todo texto, número de balanceamento e dado fica em `data/` (JSON). Dados brutos baixados ficam num cache fora do Git.
+- **Verificação obrigatória**, antes de dar qualquer tarefa por concluída:
+  - `dotnet build Planalto.sln`
+  - `dotnet test core/Planalto.Core.Tests`
+  - `dotnet run --project tools/Planalto.DataValidator`
+  - `godot --headless --build-solutions --quit`
+  - se o importador mudou: `dotnet test tools/Planalto.DataImporter.Tests`
+- **Testes de fumaça da interface com janela.** Sem janela o Godot não entrega cliques de mouse, então estes precisam de janela aberta. Comando: `godot --path . res://src/UI/Debug/UiShot.tscn -- --target=<alvo>` (código 0 = passou).
+  - Exigem janela: `eventos` (clica todas as opções dos eventos) e `layout` (falha se algum controle sair da tela em 1920×1080 e 1366×768).
+  - Também rodam: `newworld`, `creator`, `picker`, `hub`, `campaign`, `map`, `mandate`, `prefeitura`.
+  - Cada parte da Fase R acrescenta alvos.
+- **Jogar:** `godot --path .` na raiz do repositório, ou F5 no editor.
 
-## Próximos passos ao acordar
-1. Ler `docs/PROGRESSO.md` e `docs/PENDENCIAS.md`.
-2. Se o Claude Code parou por limite de uso: "continue de onde parou, seguindo o modo corujão".
-3. Jogar a campanha de vereador seguindo `docs/ROTEIRO_TESTE_FASE3.md` e trazer as impressões (diversão, clareza, ritmo, bugs) para transformar em ajustes.
-4. Revisar `docs/DECISOES.md` e reverter o que não agradar.
+## 3. Regras absolutas
 
-## Formato dos prompts que usamos
-Seções em tags: `<contexto>` (ler CLAUDE.md, GDD, ROADMAP), `<tarefa>`, `<restricoes>`, `<verificacao>` (comandos obrigatórios + testes específicos), `<entrega>` (commits, ROADMAP, resumo curto). Com o modo de autonomia, sem pedir aprovação de plano.
+- **Autoria:**
+  - Commits só em nome de Arthur Albefaro. Nenhuma menção a IA, Claude ou Anthropic em commits, código, comentários, docs, créditos ou metadados.
+  - Três proteções: configuração local do Git, configuração do Claude Code sem atribuição, e um hook de commit que apaga linhas de atribuição.
+  - Proibido: `--no-verify`, push sem pedido, `reset --hard`, `rebase`.
+- **Commits:** em português, no imperativo, `tipo(escopo): descrição`. Tipos: feat, fix, refactor, test, data, art, audio, docs, chore. Um commit por funcionalidade verificada.
+- **Neutralidade:**
+  - Partidos, políticos, empresas, institutos e veículos são sempre fictícios. Municípios, estados e dados demográficos são reais.
+  - Nomes e siglas de partido são validados contra uma lista de bloqueio de partidos reais.
+  - Logotipos usam ícones genéricos e nunca copiam um real.
+  - Aparência nunca altera votos nem atributos. Nenhum evento com estereótipo regional, religioso, racial ou de gênero; tragédias com seriedade.
+  - O espectro democrático inteiro tem caminho viável até a Presidência.
+- **Dados:**
+  - Todos os 5.570 municípios, só de fontes oficiais (IBGE, TSE e, a partir da Fase R, Tesouro, INEP, DATASUS, MTE e Banco Central).
+  - Nunca um número escrito à mão. Lacunas ficam registradas, com a regra de substituição.
+  - Se uma fonte bloquear o download, o trabalho para e informa endereço e arquivo.
+- **Arquitetura:** lógica só no Core; a interface só lê o estado e manda comandos; toda aleatoriedade passa por um gerador com semente.
+- **Lei:** parâmetros que vêm de lei ficam em objetos de configuração com o valor da lei vigente e o artigo citado.
+
+## 4. Direção do jogo
+
+**Visão.** Um jogo em que o jogador perde a noção da hora porque o mundo está vivo, as pessoas lembram e as escolhas pesam. As referências são Geopolitical Simulator (mapa no centro, tempo correndo, mundo que age sozinho), Crusader Kings (pessoas com memória e histórias que nascem da simulação) e Football Manager (gestão com equipe, informação imperfeita e trocas). As diferenças:
+- escala local e brasileira: a cidade real em zonas, com dados do Censo, antes do país;
+- regras eleitorais e leis brasileiras reais;
+- ficção neutra em tudo que é pessoa ou partido;
+- carreira de um personagem só, que envelhece.
+
+**Os 10 princípios** (GDD 17.1). Todo sistema novo precisa cumprir, e cada um tem critério testável.
+- a) **A situação manda.** A melhor ação depende de zona, público, notícia, crise ou rival. Nenhuma ação é a melhor em mais de 40% das semanas, no simulador de balanceamento.
+- b) **O mundo se mexe sozinho.** Rivais, lideranças, mídia e economia agem com o jogador parado, e isso aparece no mapa e no feed.
+- c) **Pessoas com rosto e memória.** Todo NPC relevante tem nome, retrato, interesses e lembranças do jogador; rivais respondem e mudam de plano.
+- d) **A consequência fica.** Promessas são cobradas, apoios criam dívida, escolhas abrem cadeias meses ou anos depois.
+- e) **Troca real.** Toda semana há uma decisão em que se ganha algo e se perde algo; semana sem decisão passa sozinha e rápido.
+- f) **O mundo explica.** Previsão com incerteza antes do clique, e "o que mudou, onde e para quem" depois; nunca só "feito".
+- g) **Repetir cansa.** A mesma ação, no mesmo lugar e público, rende cada vez menos, e o jogo avisa antes.
+- h) **Objetivos que nascem do jogo.** Metas secundárias surgem da simulação e ficam num painel.
+- i) **Clareza.** Em 10 segundos o jogador sabe o que acontece, o que pede atenção e o que pode fazer.
+- j) **Nada sem explicação.** Todo controle tem tooltip (o que é, o que faz, quanto custa); nomes fictícios vêm com o que são; termos técnicos abrem um verbete; há uma Enciclopédia (F1), dicas de primeira vez e motivo em todo botão bloqueado.
+
+**As seis peças da espinha comum** (GDD 17.2). Todos os sistemas usam estas peças, para se entrelaçarem em vez de se somarem.
+1. **Zona:** pedaço do município, formado por setores do Censo 2022. Tudo acontece numa zona.
+2. **Pessoa:** um modelo único para rival, liderança, equipe, doador, jornalista, assessor, secretário e vereador. Tem interesses, temperamento, relação e até 20 lembranças datadas.
+3. **Compromisso:** item da agenda, com o quê, onde, quando (dia e turno) e para quem.
+4. **Livro de compromissos:** promessas, dívidas, posições assumidas e esqueletos (irregularidades com a lista de quem sabe). Atravessa eleições.
+5. **Fato e notícia:** todo sistema emite fatos; a mídia os transforma em notícias conforme a linha editorial.
+6. **Previsão, explicação e objetivo:** todo comando tem previsão e explicação; um gerador propõe até 3 objetivos por semana.
+
+## 5. Design em resumo (GDD, seção por seção)
+
+1. **Visão geral:** conceito, referências e pilares (autêntico ao Brasil, toda escolha cobra preço, ficção neutra, seu político, cada carreira única). Carreira completa de 6 a 12 horas.
+2. **Stack:** Godot .NET com Core em .NET puro testável sem a engine.
+3. **Criação de personagem:** quatro abas.
+   - Aparência em camadas tingíveis, com expressões, envelhecimento e "Espelho".
+   - Vestuário por contexto.
+   - Identidade: nome, nome de urna, gênero e pronomes, cidade, origem, profissão, família, traços.
+   - Campanha: número, slogan, logotipo, jingle, santinho, adesivo, bandeira e peça de redes. O outdoor saiu por ser proibido em lei.
+   - Mais a aba Partido.
+4. **Carreira:** calendário eleitoral real (1º turno no primeiro domingo de outubro, campanha a partir de 16 de agosto, filiação 6 meses antes); escada vereador → prefeito ou deputado → senador ou governador → presidente. A vitória é terminar a Presidência com aprovação acima de 40%.
+5. **Sistemas:**
+   - atributos (Carisma, Oratória, Articulação, Gestão, Integridade) e recursos;
+   - ideologia em dois eixos e 10 temas;
+   - eleitorado em 240 segmentos por município, com modelo de utilidade e softmax;
+   - apuração com as regras reais;
+   - partidos, campanha, debate de cartas, mandatos, mídia, escândalos, NPCs e eventos.
+6. **Laço semanal antigo:** substituído pela seção 17.
+7. **Arquitetura:** pastas, fluxo comando → Core → sinal → interface, retratos, formato de evento, save com versões, balanceamento por simulação de milhares de carreiras.
+8. **Arte e áudio:** vetorial sóbrio, fontes livres, acessibilidade. As regras da interface estão no ART_GUIDE.
+9. **Roadmap:** fica no ROADMAP.md (fonte única).
+10. **Fluxo de desenvolvimento.**
+11. **Riscos e cuidados.**
+12. **Municípios:** todos, com fontes oficiais, vagas reais de vereador, porte (pequeno até 20 mil, médio até 100 mil, grande até 500 mil, metrópole) e simulação por nível de detalhe (detalhado no município em foco, agregado no resto).
+13. **2.5D e 3D:** mapa do estado e do país extrudado; posses em 3D low-poly, sempre puláveis.
+14. **Partidos:** 16 famílias ideológicas simétricas; partido criado pelo jogador, no início ou fundado durante a carreira pela Lei dos Partidos.
+15. **Eventos:** meta de 600 ou mais em 12 categorias, com condições, raridade, cooldown, cadeias e variáveis.
+16. **Novo Mundo:** predefinições de quantidade de partidos; urna jogável no dia da eleição; cenário "Brasil 2026", que espelha bancadas, prefeitos e força local reais com nomes fictícios.
+17. **Reformulação** (a seção que manda agora):
+   - **17.1** Os princípios a–j acima.
+   - **17.2** As seis peças acima.
+   - **17.3 Tela central:**
+     - barra superior com data, pausa, 1x/2x/4x, fase e no máximo 5 números;
+     - trilho com 7 áreas: Campanha ou Mandato, Pessoas, Agenda, Território, Finanças, Mídia, Partido e Câmara;
+     - painel da área à esquerda e mapa 2D das zonas sempre visível no centro;
+     - coluna direita com Notícias, Objetivos e Intenção de voto;
+     - decisões em cartão sobre o mapa, que pausam o jogo.
+   - **17.4 Tempo:**
+     - o dia é a unidade, com 3 turnos;
+     - campanha a 4, 2 ou 1 segundo por dia; mandato a 1, 0,5 ou 0,25;
+     - simulação pesada às segundas;
+     - pausa automática configurável por tipo de acontecimento.
+   - **17.5 Território:**
+     - de 3 a 20 zonas por cidade, conforme o porte, montadas dos setores do Censo 2022; teto de 30 MB para os contornos;
+     - cada candidato tem presença por zona, que decai e transborda para as vizinhas;
+     - religião e escolaridade por área de ponderação do IBGE; regra própria para dados omitidos por sigilo.
+   - **17.6 Agenda:**
+     - compromissos (caminhada, reunião, visita, comício, entrevista, gravação, jantar, evento da cidade, descanso);
+     - fórmula de rendimento com cansaço (o terceiro igual rende 45%), ocasião, deslocamento e delegação.
+   - **17.7 Equipe:** coordenador, marqueteiro, tesoureiro, advogado, social media e cabos, com qualidade, salário, lealdade, vínculos, conselho semanal e eventos próprios.
+   - **17.8 Verba:**
+     - quatro canais pagos: Rua, Redes com impulsionamento, Material gráfico e Cabos (estes com limite legal);
+     - retorno decrescente e disputa por zona;
+     - rádio e TV não se compram: chega-se a eles por entrevista e horário gratuito.
+   - **17.9 Plataforma:** posição em 10 temas, bandeiras, "posição conhecida", promessas locais, custo de mudar e credibilidade.
+   - **17.10 Lideranças:** de 6 a 30 pessoas por cidade (religiosas, comunitárias, sindicais, empresariais, rurais), com zona, influência, pedido, preço, rivalidades e memória.
+   - **17.11 Rivais:**
+     - perfil de campanha e plano refeito toda semana;
+     - resposta a ataque conforme o temperamento;
+     - pactos e dobradinhas;
+     - colega de chapa é aliado e concorrente ao mesmo tempo.
+   - **17.12 Dinheiro:**
+     - fundo do partido, pessoa física com limite, recursos próprios, financiamento coletivo e dinheiro "por fora", que vira esqueleto;
+     - limite de gastos do TSE, julgamento das contas e cassação possível.
+   - **17.13 Mídia local:** veículos fictícios com linha editorial (muda o tom, nunca o fato), tema em alta, entrevista, resposta a ataque com prazo e boatos.
+   - **17.14 Vereador:** gabinete, requerimento, indicação, fiscalização com três saídas, emenda que vira obra no mapa, negociação de voto com contagem nominal e base que cobra promessas.
+   - **17.15 Prefeito:**
+     - secretários com competência e agenda própria;
+     - obras com etapas (licitação ou contratação emergencial) no mapa;
+     - folha de pagamento com limites da Lei de Responsabilidade Fiscal e convênios;
+     - Câmara que negocia e crises com causa.
+   - **17.16 Renovação do mundo:**
+     - envelhecimento e morte pela tábua de mortalidade do IBGE por UF;
+     - saídas: aposentadoria, doença, derrota, Ficha Limpa, cassação, renúncia, escândalo, outra carreira;
+     - entradas: lideranças, sindicatos, igrejas, empresas, mídia, herdeiros;
+     - substituição pela regra real e morte tratada com seriedade;
+     - meta de 40 anos: renovação da Câmara dos Deputados entre 40% e 62% por eleição e do Senado entre 65% e 88% (faixas do DIAP).
+   - **17.17 Estatísticas reais:**
+     - ponto de partida oficial: PIB municipal, finanças do Tesouro, IDEB, mortalidade infantil, homicídios pelo SIM, saneamento do Censo, emprego da RAIS e economia nacional pelo Banco Central;
+     - evolução simulada por tendência inicial, orçamento, políticas, obras, contexto e choques;
+     - o jogador vê sempre a unidade real.
+   - **17.18 Vagas individuais fictícias** para todas as cadeiras do cenário Brasil 2026. O pacote de nomes reais está suspenso.
+   - **17.19** Verificação do desenho.
+   - **17.20** Decisões do autor.
+   - **17.21** Quatro relatos de semanas de jogo ("prova de imersão"), usados como régua do que se quer.
+
+## 6. Estado atual
+
+- **Fases concluídas:** 0 (fundação), 1 (núcleo: regras eleitorais, municípios, partidos, cenário Brasil 2026, eleitorado e pesquisas), 2 (criação de personagem), 3 (fatia vertical de vereador), 4 (mandato de vereador e fundação de partido), 5 (prefeito e debate). Da Fase 6, dois itens: contornos dos municípios e população projetada com vagas por eleição.
+- **Testes:** cerca de 433 no Core (última contagem registrada), 28 no importador, e testes de fumaça em 10 alvos.
+- **Teste do autor:** jogou a fatia vertical e reprovou: "pouca coisa pra fazer, confuso, feio, muito raso", "chato e saturável", "parece o Referee Simulator da Play Store".
+- **Diagnóstico** (documento de auditoria), com as 5 causas do tédio:
+  1. não há decisão, só gasto: 6 ações de efeito fixo, e repetir "Redes sociais" é sempre o melhor;
+  2. o mundo é uma planilha parada;
+  3. ninguém tem rosto nem memória;
+  4. nada fica: tudo decai, os esqueletos nunca voltam;
+  5. a tela não mostra o jogo.
+  As regras do Core são boas e ficam; o que muda é a camada de decisão e a interface.
+- **Em andamento:** **Fase R** (reformulação), em corujão autorizado pelo autor em 16/11/2026, na ordem R1 → RD → R2a → R2b → R3 → R4. Cada parte termina com uma tag local (fase-r1 etc.) para o autor jogar de manhã. Nesta execução, o corujão prevalece sobre todo "pare" ou "pergunte": dúvida vira escolha conservadora registrada em PENDENCIAS; download bloqueado vira lacuna registrada; falta de janela vira parte "com pendências".
+  - **R1:** trazer o branch `wip/idade-inicial` (idade inicial de 17 a 45 anos, profissão Estudante, família coerente) com testes; importar as zonas; tela central; tempo corrente; previsão e explicação; tooltips; Enciclopédia; troca do outdoor.
+  - **RD:** dados reais de partida.
+  - **R2a:** território, agenda, lideranças, Livro, BalanceSim.
+  - **R2b:** equipe, verba, plataforma, objetivos.
+  - **R3:** rivais, mídia, doadores.
+  - **R4:** mandatos novos, indicadores reais, renovação no município.
+- **Tags:** nenhuma ainda.
+- **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
+
+## 7. Decisões
+
+**Registro de decisões (D-001 a D-035), uma linha cada:**
+- D-001: ideologia dos partidos reais espelhados pela pesquisa de Bolognesi, Ribeiro, Codato e Silva (2025, *Opinião Pública*).
+- D-002: partidos fundidos levam a média das siglas de origem; renomeados mantêm o escore.
+- D-003: partido real sem classificação publicada entra com família sorteada.
+- D-004: eixo econômico pelo escore publicado; costumes com variação sorteada; só famílias gerais para partidos reais.
+- D-005: Amapá usa a Câmara e a Assembleia de 2022 (resultado de 2026 nulo na fonte).
+- D-006: base do governo = coligação do presidente eleito; oposição = coligação do segundo colocado.
+- D-007: prefeito "reeleito" em 2024 identificado pelo título de eleitor eleito em 2020.
+- D-008: números de partidos fictícios evitam os números reais.
+- D-009: o cenário Brasil 2026 é editável campo a campo, sem adicionar nem remover partidos.
+- D-010: fundo eleitoral e tempo de TV calculados no Core pelas regras da lei.
+- D-011: municípios sem resultado de 2024 ficam pendentes ou usam 2020; nenhum número inventado.
+- D-012: 240 segmentos por município (zona × idade × renda × religião × escolaridade).
+- D-013: afinidade partidária dos segmentos ajustada à força local de 2024.
+- D-014: modelo de voto (utilidade, softmax, brancos e nulos, comparecimento) e pesquisas com viés simétrico.
+- D-015: calibração contra os prefeitos de 2024 (erro médio de 11 pontos, vencedor certo em 72%).
+- D-016: tom de pele dos NPCs pela composição de cor ou raça do Censo por UF, sem efeito mecânico.
+- D-017: prenomes do IBGE por UF e década; sobrenomes por lista com pesos.
+- D-018: telas montadas em C#; textos por `Tr()`.
+- D-019: o jogo começa na semana 1 de 2028, já filiado.
+- D-020: partido criado na criação de personagem entra como nanico.
+- D-021: disputa com 6 partidos, 10 rivais nomeados e um "candidato coletivo" por partido.
+- D-022: ritmo semanal, energia de 100, custos por porte, ganhos decrescentes. Substituído pela Fase R.
+- D-023: 0 a 3 eventos por semana, sorteados com raridade e cooldown.
+- D-024: urna, apuração com 12 parciais, saves (autosave, véspera da eleição, ironman).
+- D-025: contornos simplificados da Malha Municipal 2025 (6,3 MB) para o mapa 2.5D.
+- D-026: balanceamento da campanha (o eleitor só vota em quem conhece; rivais mais ativos por porte).
+- D-027: mandato de vereador (Câmara, base, pauta, voto NPC, fidelidade com advertência, sanção e expulsão).
+- D-028: transição de carreira e janela partidária só no fim do mandato.
+- D-029: fundação de partido pela Lei 9.096 simplificada (566.265 assinaturas no Brasil 2026).
+- D-030: candidatura a prefeito; idade mínima de 18 anos aferida em 15/8 para vereador.
+- D-031: mandato de prefeito (orçamento por área, mínimos de saúde e educação, 7 indicadores, 17 políticas, secretarias, 7 crises).
+- D-032: debate de TV com 3 rodadas e 6 cartas.
+- D-033: população projetada e vagas de vereador pelo teto constitucional a cada eleição.
+- D-034: Fase R criada a partir da auditoria; regras do Core mantidas.
+- D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
+
+**Decisões do GDD 17.20, com a escolha do autor:**
+1. Mapa da cidade em 2D plano: aprovado.
+2. Zonas pelo Censo 2022 em `data/`: aprovado, com teto de 30 MB.
+3. Nome de zona sem bairro oficial (distrito ou nome gerado): aprovado.
+4. Religião e escolaridade por área de ponderação: aprovado.
+5. Renda por zona estimada pela mediana: aprovado.
+6. Eleitores e voto de 2024 por zona pelos locais de votação do TSE: aprovado, na RD.
+7. Termos de uso: as fontes são usadas citando-as; o autor confere depois.
+8. Ritmo do tempo: aprovado.
+9. Regras de campanha, com correções:
+   - rádio e TV fora da verba (art. 44), viram presença conquistada;
+   - outdoor proibido (art. 39, § 8º) e trocado na criação;
+   - impulsionamento pago nas redes é canal (art. 57-C);
+   - limite de cabos pelo eleitorado (art. 100-A);
+   - o resto é conferido na R3; o que é de memória fica marcado.
+10. Limite de gastos pela tabela do TSE: aprovado.
+11. Lista de bloqueio de veículos: aprovado.
+12. Vacância no Executivo, com correção: morte ou renúncia seguem o padrão do art. 81 da CF, configurável; decisão da Justiça Eleitoral segue o Código Eleitoral, art. 224, §§ 3º e 4º. Um teste para cada caminho.
+13. Alterada: tábua de mortalidade por UF, com a do Brasil como reserva.
+14. Renovação de vereadores só informativa: aprovado.
+15. Pacote de nomes reais: **não aprovado, suspenso**. As vagas fictícias seguem.
+16. População reescalada pelas Projeções por UF: aprovado.
+17. Homicídios pelo SIM: aprovado.
+18. RAIS com brutos só no cache: aprovado.
+19. Proteção social como índice do jogo: aprovado.
+20. Aprovação pela variação: aprovado.
+21. Fontes Inter, Oswald e Source Serif 4: aprovado.
+22. Parâmetros de mortalidade como parâmetros de jogo: aprovado.
+
+## 8. Pendências
+
+- **Do autor, de manhã:** jogar as partes da Fase R na ordem das tags, seguindo o roteiro de teste de cada uma.
+- **Do autor, depois:** conferir os termos de uso de IBGE, INEP, DATASUS, MJSP e MTE.
+- **Do Claude Code:** conferir no texto oficial os artigos de lei citados de memória (Lei 9.504: limites, doações, propaganda, cabos; LRF; Lei de Licitações) antes de virarem configuração (R3 e R4).
+- **Lista de bloqueios do corujão:** nenhum por enquanto.
+
+## 9. Próximos passos ao abrir um chat novo
+
+1. Colar este documento e dizer em que ponto o autor está (o que jogou, o que achou).
+2. Se o Claude Code parou por limite de uso: mandar retomar o corujão (frase na seção 10).
+3. Se a noite terminou: ler o "Relatório da manhã" no topo do PROGRESSO.md (o Claude Code escreve ao parar), jogar as partes na ordem das tags com os roteiros e trazer as impressões.
+4. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
+5. Revisar a lista de pendências e o registro de decisões; reverter o que não agradar.
+
+## 10. Como pedir trabalho ao Claude Code
+
+**Formato de prompt**, em seções com tags:
+- `<contexto>`: o que ler primeiro (CLAUDE.md, GDD seção 17, ART_GUIDE, ROADMAP, DECISOES) e a situação atual;
+- `<tarefa>`: o que fazer, numerado, concreto;
+- `<restricoes>`: regras do CLAUDE.md e limites da tarefa (o que não tocar);
+- `<verificacao>`: os comandos obrigatórios, testes específicos e checagens a fazer antes de entregar;
+- `<entrega>`: commits (tipo e escopo), ROADMAP marcado, resumo pedido.
+
+**Frases de retomada:**
+- "continue de onde parou, seguindo o corujão da Fase R";
+- "releia CLAUDE.md, ROADMAP, DECISOES, PENDENCIAS e PROGRESSO e continue a próxima parte pendente".
+
+**Boas práticas que funcionaram:**
+- pedir tudo concreto (nomes, números, critérios testáveis);
+- separar o que é decisão do autor;
+- exigir os testes de fumaça com janela, porque sem janela os cliques não são testados;
+- pedir prints nas duas resoluções (1366×768 e 1920×1080);
+- pedir que o Claude Code critique o próprio trabalho contra os princípios e os relatos da prova de imersão.
