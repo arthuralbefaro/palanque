@@ -55,17 +55,17 @@
 - [x] Aba "Partido" na criação de personagem (seção 14.2 A): filiar-se a um partido existente ou criar o seu
 
 ## Fase 3 — Fatia vertical: Vereador
-- [ ] 1 cidade, 6 partidos, ~10 rivais
-- [ ] Hub semanal, agenda de campanha, 6 ações
-- [ ] Painel de pesquisas, noite da apuração
-- [ ] 30 eventos
-- [ ] Save/Load
-- [ ] Simulação detalhada do município em foco: todos os segmentos, candidatos NPC individuais, mídia local e eventos locais
-- [ ] Candidatos e políticos NPC do município gerados só quando ele entra em foco e persistidos no save
-- [ ] Protótipo do mapa 2.5D com os municípios de um estado (validar desempenho e visual antes da Fase 6)
-- [ ] Motor de eventos (seção 15.3): condições, peso, raridade, cooldown, cadeias e variáveis de texto
-- [ ] tools/Planalto.EventLint (seção 15.5): referências, variáveis inexistentes, cadeias quebradas, eventos inalcançáveis, distribuição por categoria
-- [ ] Urna (seção 16.3) para vereador e prefeito
+- [x] 1 cidade, 6 partidos, ~10 rivais
+- [x] Hub semanal, agenda de campanha, 6 ações
+- [x] Painel de pesquisas, noite da apuração
+- [x] 30 eventos
+- [x] Save/Load
+- [x] Simulação detalhada do município em foco: todos os segmentos, candidatos NPC individuais, mídia local e eventos locais
+- [x] Candidatos e políticos NPC do município gerados só quando ele entra em foco e persistidos no save
+- [x] Protótipo do mapa 2.5D com os municípios de um estado (validar desempenho e visual antes da Fase 6)
+- [x] Motor de eventos (seção 15.3): condições, peso, raridade, cooldown, cadeias e variáveis de texto
+- [x] tools/Planalto.EventLint (seção 15.5): referências, variáveis inexistentes, cadeias quebradas, eventos inalcançáveis, distribuição por categoria
+- [x] Urna (seção 16.3) para vereador e prefeito
 - **Marco:** campanha de vereador jogável do início ao fim e divertida
 
 ## Fase 4 — Mandato legislativo
