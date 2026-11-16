@@ -353,3 +353,11 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Também:** a projeção do modelo de voto passou a guardar os temas em vetores (mesmas contas, mesma ordem, relatório idêntico), o que deixou o robô cerca de 5 vezes mais rápido; testes lentos com a categoria `Lento` (569 rápidos em cerca de 10 s; 203 lentos).
 - **Resultado e o que não fechou:** ver PENDENCIAS P-26.
 - **Como reverter:** `data/campaign/channels.json` e `data/campaign/config.json`.
+
+## D-049 — Zona rural por distritos e o mapa de cidade pequena (P-24, item 10)
+- **Data:** 2026-11-16 · **Fase:** R (teste do autor na `fase-r1`) · Escopo reduzido pelo autor: só simulação e leitura básica; contorno, estilo e rótulos por zoom ficam para a RV.
+- **Rural por distritos:** a parte rural de cada distrito do IBGE (código e nome do agregado básico por setores do Censo 2022, já no cache) vira uma zona com o nome oficial; a da sede fica "<município> (rural)". Distrito com menos de **200** moradores rurais vai para o vizinho de maior divisa; o município pode passar do máximo de zonas do porte em até **4**; quando há mais grupos que o permitido, os menores se juntam e a zona misturada volta ao nome gerado; grupo com mais de uma zona ganha "(rural norte)", "(rural sul)". Parâmetros em `data/territory/config.json`, bloco `rural_por_distrito`.
+- **Resultado:** 1.518 municípios ganharam zonas (28.135 → 31.026); `data/zonas` 19,5 MB (teto 20) e `data/geo/zonas` 22,6 MB (teto 30). Regenerado de novo na main, pela importação, com resultado idêntico ao do branch (só a data de geração muda).
+- **Ids de zona mudaram em 2.024 municípios.** Versão da divisão gravada nos dados e no save (`ZonasPaths.Versao = 2`, `GameState.ZonasVersao`); save sem a versão, com outra versão ou com id de zona inexistente é recusado com a mensagem combinada e o jogo fica no menu. Sem migração (decisão do autor).
+- **Mapa:** cidade pequena abre no núcleo urbano (mancha urbana em volta da zona urbana mais populosa), com o botão "Cidade inteira" / "Núcleo urbano"; nomes de zona com desvio de colisão, no máximo 12, abreviados com o nome inteiro no tooltip.
+- **Como reverter:** `data/territory/config.json` e a importação `zonas` com o bloco desligado.
