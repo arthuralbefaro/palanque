@@ -6,13 +6,13 @@ using FileAccess = Godot.FileAccess;
 namespace Planalto.Autoload;
 
 /// <summary>
-/// Saves em user://saves/ (GDD 7.6): 3 slots, autosave semanal e antes da eleição. No modo Ironman há um
+/// Saves na pasta "saves" da base de UserPaths (GDD 7.6): 3 slots, autosave semanal e antes da eleição. No modo Ironman há um
 /// único save, gravado automaticamente a cada semana.
 /// </summary>
 public partial class SaveManager : Node
 {
     public const int Slots = 3;
-    public const string Folder = "user://saves";
+    public static string Folder => UserPaths.Of("saves");
     public const string AutosaveSlot = "autosave";
     public const string ElectionSlot = "antes_da_eleicao";
     public const string IronmanSlot = "ironman";

@@ -7,7 +7,8 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|gabinete|obras|fiscal|indicadores|entressafra [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=perfil|newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|rivais|midia|contas|gabinete|obras|fiscal|indicadores|entressafra [--perfil=nome] [--screenshot=arquivo.png]".
+/// Os dados de usuário da rodada ficam em user://smoke/&lt;perfil&gt;/, apagado no início; sem --perfil, vale o nome do branch git.
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -30,6 +31,15 @@ public partial class UiShot : Node
         string[] args = OS.GetCmdlineUserArgs();
         string target = args.FirstOrDefault(a => a.StartsWith("--target=", StringComparison.Ordinal))?.Split('=', 2)[1] ?? "creator";
         string? shot = args.FirstOrDefault(a => a.StartsWith("--screenshot=", StringComparison.Ordinal))?.Split('=', 2)[1];
+        string profile = UserPaths.UseSmokeProfile(
+            args.FirstOrDefault(a => a.StartsWith("--perfil=", StringComparison.Ordinal))?.Split('=', 2)[1] ?? CurrentBranch());
+        UI.Settings.Reload();
+        if (target == "perfil")
+        {
+            await ProfileIsolation(profile);
+            return;
+        }
+
         Game game = Game.Instance;
         game.SuppressNavigation = true;
 
