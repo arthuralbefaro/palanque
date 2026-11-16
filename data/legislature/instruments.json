@@ -1,0 +1,177 @@
+{
+  "note": "Instrumentos do mandato de vereador (GDD 17.14), que substituem as ações de gabinete de efeito fixo. Cada instrumento ocupa turnos da semana ('turnos_por_semana'), tem alvo (obra, secretaria, zona, colega) e rende conforme a situação: o mesmo instrumento repetido cansa ('cansaco_fator' elevado ao número de usos recentes; o cansaço some 'cansaco_recuperacao_semanal' por semana), e cansa mais na mesma zona. 'presenca' e 'imagem' são o ganho na hora, antes dos fatores. O gabinete tem as vagas de 'gabinete_por_porte'; 'funcoes' diz o que cada assessor faz por qualidade (chefe: soma à chance de a indicação ser atendida e de a fiscalização achar o problema; legislativo: soma à chance do projeto na comissão; comunicação: multiplica presença e imagem; base: fração da presença da zona que ele segura). 'pedidos' são o que um vereador indeciso quer em troca do voto. Pessoas e empresas são fictícias. Tudo aqui é parâmetro de jogo, ajustado pelo BalanceSim.",
+  "regras": {
+    "turnos_por_semana": 3,
+    "cansaco_fator": 0.7,
+    "cansaco_zona_fator": 0.8,
+    "cansaco_recuperacao_semanal": 0.6,
+    "gabinete_por_porte": { "pequeno": 2, "medio": 3, "grande": 4, "metropole": 6 },
+    "presenca_decaimento_semanal": 0.12,
+    "presenca_piso": 0.5,
+    "zonas_da_base": 2,
+    "base_cobra_abaixo": 0.8,
+    "base_cobra_prazo_semanas": 8,
+    "chance_demanda_de_base": 0.08,
+    "bonus_demanda_de_base": 0.3,
+    "semanas_de_negligencia": 20,
+    "contagem_certeza": 0.75,
+    "acordo_logito": 4,
+    "semanas_sem_negociar_depois_de_enganado": 52,
+    "chance_irregularidade_base": 0.04,
+    "semanas_entre_fiscalizacoes": 26,
+    "prazo_do_achado_semanas": 3,
+    "gravidade_nepotismo": 2,
+    "candidatos_por_vaga": 2,
+    "imagem_requerimento_revelador": 0.012,
+    "achado_atraso_fator": 0.5,
+    "cargo_folha": 0.0005
+  },
+  "instrumentos": [
+    {
+      "id": "requerimento", "nome": "Requerimento de informação",
+      "descricao": "Pede por escrito os dados de uma obra ou de uma secretaria. Em 2 a 4 semanas a resposta revela o que estava escondido (atraso, sobrepreço, quem venceu a licitação). Esfria a relação com a prefeitura.",
+      "turnos": 1, "capital": 0, "relacao_prefeito": -3, "presenca": 0.4, "imagem": 0.002, "prazo_semanas": { "min": 2, "max": 4 },
+      "ganho": ["posicao"], "custo": ["relacao", "tempo"]
+    },
+    {
+      "id": "indicacao", "nome": "Indicação",
+      "descricao": "Pede à prefeitura um serviço ou uma pequena obra numa zona. O atendimento depende da relação; atendida, a obra entra no mapa a pedido do seu mandato e cumpre promessa.",
+      "turnos": 1, "capital": 0, "relacao_prefeito": 0, "presenca": 0.8, "imagem": 0, "prazo_semanas": { "min": 1, "max": 3 }, "chance_base": 0.45, "chance_por_relacao": 0.5,
+      "ganho": ["zona"], "custo": ["risco", "tempo"]
+    },
+    {
+      "id": "fiscalizacao", "nome": "Fiscalização",
+      "descricao": "Vai a uma obra em andamento no mapa. Pode encontrar normalidade, atraso ou irregularidade; o que fazer com o achado é outra decisão.",
+      "turnos": 1, "capital": 0, "relacao_prefeito": -1, "presenca": 1.2, "imagem": 0.002, "chance_base": 0.6,
+      "ganho": ["zona", "posicao"], "custo": ["tempo", "relacao", "risco"]
+    },
+    {
+      "id": "emenda", "nome": "Emenda",
+      "descricao": "Destina uma obra a uma zona. Você tem poucas por ano; a liberação depende do Executivo, e a entrega é uma inauguração sua.",
+      "turnos": 1, "capital": 0, "relacao_prefeito": 0, "presenca": 1.0, "imagem": 0,
+      "ganho": ["zona"], "custo": ["tempo", "risco"]
+    },
+    {
+      "id": "projeto", "nome": "Projeto de lei",
+      "descricao": "Protocola um dos modelos de projeto. Passa pela comissão e vai a plenário; aprovado, rende capital político e o apoio dos grupos a quem agrada.",
+      "turnos": 1, "capital": 2, "relacao_prefeito": 0, "presenca": 0, "imagem": 0.004,
+      "ganho": ["relacao"], "custo": ["posicao", "tempo", "risco"]
+    },
+    {
+      "id": "negociar_voto", "nome": "Negociar voto",
+      "descricao": "Procura quem está indeciso numa votação da Câmara. Há sempre um pedido em troca; aceitar garante o voto e põe a promessa no Livro.",
+      "turnos": 1, "capital": 1, "relacao_prefeito": 0, "presenca": 0, "imagem": 0,
+      "ganho": ["posicao", "relacao"], "custo": ["risco", "tempo"]
+    }
+  ],
+  "achados": [
+    {
+      "id": "denunciar", "nome": "Denunciar",
+      "descricao": "Leva o caso à imprensa: rende imagem e presença na zona, e a inimizade da prefeitura e da empresa. Irregularidade denunciada vira escândalo no governo e pode sustentar uma CPI.",
+      "imagem": 0.02, "presenca": 2.5, "relacao_prefeito": -12, "esqueleto": 0, "ganha_obra": false,
+      "ganho": ["posicao", "zona"], "custo": ["relacao"],
+      "lembranca": { "peso": -2, "pontos": -12, "texto": "Denunciou na imprensa a obra: {obra}" }
+    },
+    {
+      "id": "negociar", "nome": "Negociar em silêncio",
+      "descricao": "Guarda o achado em troca de uma obra pequena na zona, a seu pedido. Vira esqueleto: a prefeitura e a empresa sabem.",
+      "imagem": 0, "presenca": 0, "relacao_prefeito": 6, "esqueleto": 2, "ganha_obra": true,
+      "ganho": ["zona", "relacao"], "custo": ["risco"],
+      "lembranca": { "peso": 2, "pontos": 6, "texto": "Fechou acordo em silêncio sobre a obra: {obra}" }
+    },
+    {
+      "id": "tribunal", "nome": "Mandar ao Tribunal de Contas",
+      "descricao": "Manda o caso ao Tribunal de Contas. É lento e limpo: rende menos, sem briga com a prefeitura.",
+      "imagem": 0.008, "presenca": 0.8, "relacao_prefeito": 0, "esqueleto": 0, "ganha_obra": false, "semanas": { "min": 12, "max": 20 },
+      "ganho": ["posicao", "zona"], "custo": ["tempo"],
+      "lembranca": { "peso": -1, "pontos": -3, "texto": "Mandou ao Tribunal de Contas a obra: {obra}" }
+    }
+  ],
+  "funcoes": [
+    { "id": "chefe", "nome": "Chefe de gabinete", "descricao": "Organiza o gabinete: aumenta a chance de a indicação ser atendida e de a fiscalização achar o problema.", "por_qualidade": [0.0, 0.04, 0.08, 0.12, 0.16], "maximo": 1 },
+    { "id": "legislativo", "nome": "Assessor legislativo", "descricao": "Cuida dos projetos: aumenta a chance de o seu projeto passar na comissão.", "por_qualidade": [0.0, 0.04, 0.08, 0.12, 0.16], "maximo": 1 },
+    { "id": "comunicacao", "nome": "Assessor de comunicação", "descricao": "Faz o mandato aparecer: multiplica a presença e a imagem que os instrumentos rendem.", "por_qualidade": [1.0, 1.06, 1.12, 1.18, 1.25], "maximo": 1 },
+    { "id": "base", "nome": "Assessor de base", "descricao": "Fica numa zona: segura a presença ali e traz demandas. Sem atenção do gabinete, pode disputar a eleição contra você.", "por_qualidade": [0.4, 0.55, 0.7, 0.85, 1.0], "maximo": 6 }
+  ],
+  "pedidos": [
+    { "id": "apoio_projeto", "papeis": ["vereador"], "texto": "o seu voto a favor de um projeto de autoria própria: {projeto}", "prazo_semanas": 20, "weight": 2, "ganho": ["posicao", "relacao"], "custo": ["risco"] },
+    { "id": "emenda_reduto", "papeis": ["vereador"], "texto": "uma emenda sua em {zona}, onde tem o reduto", "prazo_semanas": 52, "weight": 2, "ganho": ["posicao", "relacao"], "custo": ["risco", "zona"] },
+    { "id": "cargo", "papeis": ["vereador", "prefeito"], "texto": "um cargo para uma pessoa indicada", "prazo_semanas": 12, "weight": 1.5, "ganho": ["posicao", "relacao"], "custo": ["risco", "dinheiro"] },
+    { "id": "obra_reduto", "papeis": ["prefeito"], "texto": "uma obra em {zona}, onde tem o reduto", "prazo_semanas": 40, "weight": 2, "ganho": ["posicao", "relacao"], "custo": ["risco", "zona"] },
+    { "id": "liberar_emenda", "papeis": ["prefeito"], "texto": "a liberação de uma emenda para {zona}, onde tem o reduto", "prazo_semanas": 26, "weight": 1.5, "ganho": ["posicao", "relacao"], "custo": ["risco", "zona"] }
+  ],
+  "lembrancas": {
+    "nomeado": { "peso": 2, "pontos": 12, "texto": "Você me nomeou {funcao}" },
+    "exonerado": { "peso": -2, "pontos": -18, "texto": "Você me tirou do gabinete" },
+    "preterido": { "peso": -2, "pontos": -10, "texto": "O gabinete fechou e eu fiquei de fora" },
+    "acordo": { "peso": 1, "pontos": 6, "texto": "Fechamos um acordo de voto: {pedido}" },
+    "acordo_cumprido": { "peso": 2, "pontos": 10, "texto": "Você cumpriu o que combinamos" },
+    "acordo_quebrado": { "peso": -3, "pontos": -25, "texto": "Você me enganou: dei o voto e o combinado não veio" },
+    "indicacao": { "peso": 1, "pontos": 2, "texto": "Pediu à prefeitura {obra} para {zona}" },
+    "indicacao_negada": { "peso": -1, "pontos": -1, "texto": "O pedido de {obra} para {zona} não foi atendido" },
+    "emenda": { "peso": 2, "pontos": 5, "texto": "Destinou emenda de {obra} para {zona}" },
+    "requerimento": { "peso": -1, "pontos": -3, "texto": "Mandou requerimento de informação contra o governo" },
+    "base_cobra_vencida": { "peso": -2, "pontos": -12, "texto": "Cobramos presença em {zona} e você não apareceu" },
+    "base_cobra_atendida": { "peso": 1, "pontos": 5, "texto": "Voltou a {zona} quando cobramos" }
+  },
+  "textos": {
+    "requerimento_protocolado": "Requerimento protocolado sobre {alvo}. A resposta deve chegar por volta de {data}",
+    "requerimento_resposta_normal": "A resposta do requerimento não mostra problema em {obra} ({zona}): contrato com a {empresa}, no prazo",
+    "requerimento_resposta_atraso": "A resposta do requerimento confirma: {obra} em {zona} tem {semanas} semana(s) de atraso com a {empresa}",
+    "requerimento_resposta_irregular": "A resposta do requerimento mostra irregularidade em {obra} ({zona}): contrato com a {empresa} com sobrepreço de {sobrepreco}",
+    "requerimento_secretaria": "A resposta do requerimento sobre {secretaria}: titular {nome}, competência {competencia} de 5; a folha da prefeitura está em {folha} da RCL",
+    "indicacao_protocolada": "Indicação protocolada: {obra} em {zona}. {prefeito} decide se atende",
+    "indicacao_atendida": "{prefeito} atendeu a sua indicação: {obra} em {zona} entra no mapa",
+    "indicacao_negada": "{prefeito} não atendeu a sua indicação de {obra} em {zona}",
+    "fiscalizacao_normal": "Fiscalização em {obra} ({zona}): tudo dentro do contrato",
+    "fiscalizacao_atraso": "Fiscalização em {obra} ({zona}): a {empresa} está {semanas} semana(s) atrasada",
+    "fiscalizacao_irregular": "Fiscalização em {obra} ({zona}): irregularidade no contrato com a {empresa}, com sobrepreço de {sobrepreco}",
+    "achado_denunciar": "Você denunciou {obra} em {zona}: a imprensa cobra {prefeito} e a {empresa}",
+    "achado_negociar": "Você guardou o que viu em {obra} ({zona}), em troca de uma obra na zona",
+    "achado_so_irregularidade": "Atraso não é segredo: só há o que negociar em silêncio quando a fiscalização acha irregularidade",
+    "achado_tribunal": "Você encaminhou {obra} ({zona}) ao Tribunal de Contas",
+    "tribunal_resultado": "O Tribunal de Contas deu razão ao seu mandato sobre {obra} em {zona}: a {empresa} terá de corrigir",
+    "esqueleto_acordo": "Acordo em silêncio sobre irregularidade em {obra} ({zona})",
+    "projeto_protocolado": "Projeto protocolado: {projeto}. Fica na comissão até cerca de {data}",
+    "acordo_fechado": "Acordo fechado com {nome}: em troca do voto, {pedido}",
+    "acordo_cumprido": "{nome} reconhece: você cumpriu o que combinaram",
+    "acordo_quebrado": "{nome} diz que foi enganado por você e não negocia mais tão cedo",
+    "acordo_livro": "Combinado com {nome} em troca de voto: {pedido}",
+    "assessor_nomeado": "{nome} assume como {funcao} no seu gabinete",
+    "assessor_exonerado": "{nome} deixa o seu gabinete",
+    "assessor_preterido": "Com o gabinete fechado, ficam de fora e vão lembrar: {nomes}",
+    "assessor_negligenciado": "{nome}, que cuida da base do seu gabinete em {zona}, reclama que o mandato esqueceu a zona",
+    "esqueleto_nepotismo": "Nomeação de parente no gabinete: {nome}",
+    "demanda_de_base": "{nome} trouxe uma demanda de {zona}: indicação ou emenda ali rende mais agora",
+    "base_cobra": "{nome} cobra a sua presença em {zona}: a base quer ver o mandato ali em até {semanas} semanas",
+    "base_cobra_atendida": "O mandato voltou a {zona}; {nome} registra",
+    "base_cobra_vencida": "A cobrança de presença em {zona} venceu sem resposta. {nome} não esquece",
+    "instrucao": "Instrução permanente de voto: {instrucao}",
+    "sem_turno": "Não há turno livre nesta semana",
+    "sem_capital": "Falta capital político: é preciso {capital}",
+    "contagem": "{sim} sim, {nao} não, {indecisos} indeciso(s)",
+    "motivo_lider": "segue a orientação da bancada",
+    "motivo_governo": "vota com o governo",
+    "motivo_oposicao": "vota contra o governo",
+    "motivo_ideologia": "vota pela própria convicção",
+    "motivo_relacao": "vota pela relação com você",
+    "motivo_pedido": "quer {pedido}",
+    "motivo_acordo": "fechou acordo com você",
+    "previsao_requerimento": "Requerimento sobre {alvo}: resposta em {min} a {max} semanas, com o que hoje está escondido",
+    "previsao_indicacao": "Indicação de {obra} em {zona}: {chance} de {prefeito} atender (relação {relacao})",
+    "previsao_fiscalizacao": "Fiscalização em {obra} ({zona}), contrato com a {empresa}: se houver problema, {chance} de encontrá-lo",
+    "previsao_emenda": "Emenda de {obra} para {zona}; restam {restam} neste ano. Liberação: {chance} por semana com {prefeito}, obrigatória em {limite} semanas",
+    "previsao_projeto": "{projeto}: {chance} de passar na comissão, em {min} a {max} semanas",
+    "previsao_negociar": "{nome} vota {voto} em troca de: {pedido}. Prazo de {semanas} semanas para cumprir; faltam {faltam} voto(s) certos para aprovar",
+    "previsao_prefeito": "A relação com {prefeito} muda em {pontos}",
+    "previsao_quem_lembra": "{nome} vai lembrar",
+    "previsao_livro": "Entra no Livro de compromissos; sabe(m): {quem}",
+    "fator_cansaco": "Instrumento repetido ({vezes} uso(s) recentes)",
+    "fator_cansaco_zona": "O mesmo instrumento há pouco em {zona}",
+    "fator_comunicacao": "Assessor de comunicação: {nome}",
+    "fator_demanda": "Demanda trazida pelo assessor de base de {zona}",
+    "conflito_orientacao": "A orientação do partido contraria a sua plataforma",
+    "conflito_base": "O voto previsto desagrada os grupos que apoiam você",
+    "conflito_acordo": "Você prometeu apoiar este projeto num acordo de voto"
+  }
+}

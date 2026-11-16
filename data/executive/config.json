@@ -12,8 +12,8 @@
     { "id": "contas", "name": "Contas públicas" }
   ],
   "areas": [
-    { "id": "saude", "name": "Saúde", "reference_share": 0.22, "minimum_share": 0.15, "effects": { "saude": 1.0 } },
-    { "id": "educacao", "name": "Educação", "reference_share": 0.27, "minimum_share": 0.25, "effects": { "educacao": 1.0 } },
+    { "id": "saude", "name": "Saúde", "reference_share": 0.22, "minimum_share": 0, "effects": { "saude": 1.0 } },
+    { "id": "educacao", "name": "Educação", "reference_share": 0.27, "minimum_share": 0, "effects": { "educacao": 1.0 } },
     { "id": "seguranca", "name": "Segurança e defesa civil", "reference_share": 0.05, "minimum_share": 0, "effects": { "seguranca": 1.0 } },
     { "id": "obras", "name": "Obras e infraestrutura", "reference_share": 0.12, "minimum_share": 0, "effects": { "infraestrutura": 1.0, "emprego": 0.5 } },
     { "id": "assistencia", "name": "Assistência social", "reference_share": 0.06, "minimum_share": 0, "effects": { "social": 1.0 } },
@@ -53,5 +53,7 @@
   "minimum_violation_image": -0.1,
   "crisis_chance_per_week": 0.03,
   "auto_crisis_choice": 0,
-  "emendas_impositivas_share": 0.012
+  "emendas_impositivas_share": 0.012,
+  "tax_base_share_note": "Estimativa de jogo (não é dado oficial do município): fatia da receita corrente que é receita de impostos próprios mais transferências constitucionais de impostos, por porte. É a base dos mínimos de saúde (15%) e de educação (25%) e do teto de gasto da Câmara; os percentuais e os artigos ficam no objeto FiscalLawConfig do Core. Sai daqui quando as transferências forem importadas do Tesouro.",
+  "tax_base_share": { "pequeno": 0.62, "medio": 0.6, "grande": 0.58, "metropole": 0.6 }
 }

@@ -74,7 +74,10 @@ public static class DataValidation
         reports.AddRange(Executive.ExecutiveContent.Load(
             dataDirectory,
             electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
-            out _));
+            out Executive.ExecutiveContent? executive));
+        // Mandatos da R4 (GDD 17.14 e 17.15): obras, licitação, secretários, folha, convênios, instrumentos, Câmara,
+        // cobrança e eventos de mandato, com o lint das decisões (ganho e custo de naturezas diferentes, e rastro).
+        reports.AddRange(Governance.GovernanceContent.Load(dataDirectory, executive, campaign?.Promises, out _));
         if (dataSet is not null)
         {
             reports.AddRange(ValidateGeo(dataDirectory, dataSet));

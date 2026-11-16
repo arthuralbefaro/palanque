@@ -1,0 +1,66 @@
+{
+  "note": "Servidores e folha (GDD 17.15). A folha do Executivo é uma fração da receita corrente líquida (RCL); o ponto de partida é o do Relatório de Gestão Fiscal do município quando ele foi importado e, sem ele, a faixa de 'folha_inicial_por_porte' (estimativa de jogo). Os limites (alerta, prudencial e máximo), as vedações do art. 22 e as consequências do art. 23 da LC 101/2000 ficam no objeto FiscalLawConfig do Core, não aqui. Todo ano cada categoria abre a sua mesa na data-base; a greve só nasce de uma mesa que terminou sem acordo. 'rcl_crescimento_anual' vale até o modelo de evolução dos indicadores (GDD 17.17) fornecer o crescimento da receita. Tudo aqui é parâmetro de jogo.",
+  "regras": {
+    "folha_inicial_por_porte": {
+      "pequeno": { "min": 0.44, "max": 0.52 },
+      "medio": { "min": 0.45, "max": 0.52 },
+      "grande": { "min": 0.44, "max": 0.51 },
+      "metropole": { "min": 0.4, "max": 0.48 }
+    },
+    "crescimento_vegetativo_anual": 0.02,
+    "rcl_crescimento_anual": { "min": -0.02, "max": 0.09 },
+    "revisao_geral": { "min": 0.03, "max": 0.06 },
+    "prazo_semanas": 3,
+    "aceite_base": -0.1,
+    "aceite_por_oferta": 1.0,
+    "aceite_por_relacao": 0.2,
+    "contraproposta_fracao": 0.7,
+    "perda_acumulada": 0.5,
+    "corte_fracao": 0.03,
+    "corte_aprovacao": -3,
+    "restricao_aprovacao_semanal": -0.3,
+    "npc_folha_confortavel": 0.49,
+    "repasse_camara_inicial": 0.85,
+    "relacao_camara_por_corte_de_repasse": -6,
+    "lideranca_sindical": "sindical"
+  },
+  "mesas": [
+    { "id": "servidores", "nome": "data-base dos servidores", "categoria": "os professores e demais servidores municipais", "mes": 5, "crise": "greve_professores", "afeta_folha": true, "pedido": { "min": 0.05, "max": 0.1 } },
+    { "id": "rodoviarios", "nome": "data-base dos rodoviários", "categoria": "os motoristas e cobradores do transporte coletivo", "mes": 9, "crise": "greve_onibus", "afeta_folha": false, "custo_por_ponto": 0.0006, "pedido": { "min": 0.05, "max": 0.09 } }
+  ],
+  "respostas": [
+    { "id": "conceder", "nome": "Conceder o pedido", "descricao": "Fecha a mesa na hora, pelo valor pedido.", "ganho": ["relacao"], "custo": ["dinheiro"] },
+    { "id": "contraproposta", "nome": "Fazer contraproposta", "descricao": "Oferece parte do pedido. A categoria pode aceitar ou parar.", "ganho": ["dinheiro"], "custo": ["risco"] },
+    { "id": "revisao_geral", "nome": "Dar só a revisão geral", "descricao": "Repõe a inflação do ano, que a lei permite mesmo acima do limite prudencial.", "ganho": ["dinheiro"], "custo": ["risco", "relacao"] },
+    { "id": "negar", "nome": "Negar reajuste", "descricao": "Não oferece nada. A folha não cresce; a greve é quase certa.", "ganho": ["dinheiro"], "custo": ["risco", "relacao"] }
+  ],
+  "lembrancas": {
+    "acordo": { "peso": 1, "pontos": 6, "texto": "A mesa fechou com {reajuste} de reajuste" },
+    "fracasso": { "peso": -2, "pontos": -12, "texto": "A prefeitura ofereceu {oferta} e a categoria parou" },
+    "corte": { "peso": -2, "pontos": -10, "texto": "Cortou comissionados e horas extras dos servidores" },
+    "repasse": { "peso": -2, "pontos": -10, "texto": "Cortou o repasse da Câmara" }
+  },
+  "textos": {
+    "mesa_aberta": "Abriu a {mesa}: {categoria} pedem {pedido} de reajuste. Resposta até {data}",
+    "acordo": "Acordo na mesa: {categoria} aceitam {reajuste}",
+    "fracasso": "A mesa terminou sem acordo: {categoria} rejeitaram a oferta",
+    "greve": "{crise}: {categoria} cruzam os braços",
+    "alerta": "O Tribunal de Contas alertou a prefeitura: a folha chegou a {folha} da RCL, acima de {alerta} ({artigo})",
+    "prudencial": "A folha passou do limite prudencial ({folha} da RCL; o prudencial é {prudencial}). Reajuste além da revisão geral, cargo novo, admissão e hora extra ficam vedados ({artigo})",
+    "excedido": "A folha está acima do limite legal ({folha} da RCL; o limite é {limite}). O excesso tem de sumir em dois quadrimestres, um terço no primeiro ({artigo})",
+    "restricoes": "Prazo vencido com a folha acima do limite ({artigo}): o município {consequencias}",
+    "normalizou": "A folha voltou para dentro dos limites: {folha} da RCL",
+    "corte": "{prefeito} cortou comissionados e horas extras: a folha foi a {folha} da RCL",
+    "revisao_anual": "Ano novo nas contas: a receita variou {receita} e a folha abre o ano em {folha} da RCL",
+    "vedado_art22": "Com a folha em {folha} da RCL, acima do limite prudencial de {prudencial}, só cabe a revisão geral anual ({artigo})",
+    "repasse_camara": "O repasse à Câmara fica em {repasse} da base de impostos (teto de {teto}; {artigo})",
+    "repasse_acima_do_teto": "O repasse à Câmara não pode passar de {teto} da receita tributária e das transferências do ano anterior ({artigo})",
+    "previsao_conceder": "Conceder {oferta} na {mesa}: {categoria} fecham na hora",
+    "previsao_contraproposta": "Oferecer {oferta} dos {pedido} pedidos na {mesa}: {chance} de {categoria} aceitarem",
+    "previsao_revisao_geral": "Dar só a revisão geral de {oferta} na {mesa}: {chance} de {categoria} aceitarem",
+    "previsao_negar": "Não oferecer nada na {mesa}: {chance} de {categoria} aceitarem",
+    "previsao_folha": "Folha: de {antes} para {depois} da RCL ({faixa}; prudencial em {prudencial}, limite em {limite})",
+    "previsao_corte": "Cortar comissionados e horas extras: a folha vai de {antes} para {depois} da RCL ({faixa})",
+    "sem_resposta": "A prefeitura não respondeu à {mesa} no prazo: valeu só a revisão geral"
+  }
+}

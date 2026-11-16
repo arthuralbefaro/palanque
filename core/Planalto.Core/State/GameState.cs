@@ -97,6 +97,9 @@ public sealed class GameState
     /// <summary>Mandato de prefeito em curso; null fora dele (GDD 5.9).</summary>
     public Executive.ExecutiveState? Executive { get; set; }
 
+    /// <summary>Governo da cidade durante o mandato do jogador: obras, secretários, folha, gabinete e cobranças (GDD 17.14 e 17.15).</summary>
+    public Governance.GovernanceState? Governance { get; set; }
+
     /// <summary>Câmara e prefeitura do município em foco depois da última eleição jogada.</summary>
     public Legislature.LocalPolitics? Local { get; set; }
 

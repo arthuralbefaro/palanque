@@ -114,9 +114,10 @@ public sealed class MandateState
 
     public required List<ChamberMember> Members { get; init; }
 
-    public required string MayorId { get; init; }
+    /// <summary>Muda se o prefeito perde o mandato e o vice assume.</summary>
+    public required string MayorId { get; set; }
 
-    public required string MayorName { get; init; }
+    public required string MayorName { get; set; }
 
     public required string MayorPartyId { get; init; }
 
