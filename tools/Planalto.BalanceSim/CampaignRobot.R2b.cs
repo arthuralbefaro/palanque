@@ -390,7 +390,9 @@ public sealed partial class CampaignRobot
         }
     }
 
-    /// <summary>Tema de que o candidato trata numa fala: a bandeira cuja posição é menos conhecida.</summary>
+    /// <summary>Tema de que o candidato trata numa fala: o que está em alta no noticiário; senão, a bandeira cuja posição é menos conhecida.</summary>
     private string? TalkTheme(string typeId) =>
-        _engine.SpeaksOfThemes(typeId) && _engine.Platform.Flags.Count > 0 ? _engine.Platform.Flags.MinBy(_engine.KnownOf) : null;
+        !_engine.SpeaksOfThemes(typeId) ? null
+        : _engine.HotThemes().FirstOrDefault()?.Theme
+            ?? (_engine.Platform.Flags.Count > 0 ? _engine.Platform.Flags.MinBy(_engine.KnownOf) : null);
 }
