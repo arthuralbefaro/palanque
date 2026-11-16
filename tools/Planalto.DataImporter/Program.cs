@@ -6,7 +6,8 @@ using Planalto.DataImporter;
 
 // Uso: dotnet run --project tools/Planalto.DataImporter
 // Baixa as fontes oficiais para o cache (uma vez só) e gera data/municipios/.
-// Com o argumento "cenario", gera data/parties/scenarios/brasil_2026/; com "aparencia", data/appearance/cor_raca_uf.json; com "nomes", data/names/first_names.json.
+// Com o argumento "cenario", gera data/parties/scenarios/brasil_2026/; com "aparencia", data/appearance/cor_raca_uf.json; com "nomes", data/names/first_names.json;
+// com "geo", data/geo/ (contornos simplificados para o mapa).
 
 // O .dbf da malha do IBGE pode declarar páginas de código que o .NET só lê com este provedor.
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -29,7 +30,7 @@ http.DefaultRequestHeaders.UserAgent.ParseAdd("Planalto.DataImporter/1.0");
 var cache = new SourceCache(cacheDirectory, http);
 
 // Modos "cenario" (Brasil 2026, GDD 16.4) e "aparencia" (cor ou raça por UF, GDD 3.8).
-if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes")
+if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo")
 {
     try
     {
@@ -37,6 +38,7 @@ if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes")
         {
             "cenario" => await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory),
             "aparencia" => await Planalto.DataImporter.Appearance.CorRacaImport.RunAsync(cache, dataDirectory),
+            "geo" => await Planalto.DataImporter.Geo.GeoImport.RunAsync(cache, dataDirectory),
             _ => await Planalto.DataImporter.Names.FirstNamesImport.RunAsync(cache, dataDirectory),
         };
     }

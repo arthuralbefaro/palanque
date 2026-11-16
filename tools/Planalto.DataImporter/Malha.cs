@@ -32,6 +32,38 @@ public static class Malha
     /// <summary>Lê a malha do ZIP (extraído uma vez dentro do cache) e calcula o ponto de cada município.</summary>
     public static Dictionary<int, PontoMunicipio> Read(string zipPath)
     {
+        string shp = ExtractedShapefile(zipPath);
+        var result = new Dictionary<int, PontoMunicipio>();
+        foreach (var feature in Shapefile.ReadAllFeatures(shp))
+        {
+            int code = Code(feature.Attributes["CD_MUN"]);
+            double area = Convert.ToDouble(feature.Attributes["AREA_KM2"], CultureInfo.InvariantCulture);
+            var (lat, lon, metodo) = RepresentativePoint(feature.Geometry, $"{code}");
+
+            if (!result.TryAdd(code, new PontoMunicipio(lat, lon, area, metodo)))
+            {
+                throw new ImportException($"Malha: município {code} repetido.");
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>Código IBGE de 7 dígitos do campo CD_MUN.</summary>
+    public static int Code(object? value)
+    {
+        string rawCode = Convert.ToString(value, CultureInfo.InvariantCulture) ?? string.Empty;
+        if (!int.TryParse(rawCode, NumberStyles.None, CultureInfo.InvariantCulture, out int code))
+        {
+            throw new ImportException($"Malha: código de município inválido '{rawCode}'.");
+        }
+
+        return code;
+    }
+
+    /// <summary>Caminho do .shp, extraindo o ZIP para dentro do cache na primeira vez.</summary>
+    public static string ExtractedShapefile(string zipPath)
+    {
         string extractDirectory = Path.Combine(Path.GetDirectoryName(zipPath)!, Path.GetFileNameWithoutExtension(zipPath));
         string? shp = Directory.Exists(extractDirectory)
             ? Directory.EnumerateFiles(extractDirectory, "*.shp", SearchOption.AllDirectories).FirstOrDefault()
@@ -44,25 +76,7 @@ public static class Malha
                 ?? throw new ImportException($"{Path.GetFileName(zipPath)}: nenhum .shp dentro do ZIP.");
         }
 
-        var result = new Dictionary<int, PontoMunicipio>();
-        foreach (var feature in Shapefile.ReadAllFeatures(shp))
-        {
-            string rawCode = Convert.ToString(feature.Attributes["CD_MUN"], CultureInfo.InvariantCulture) ?? string.Empty;
-            if (!int.TryParse(rawCode, NumberStyles.None, CultureInfo.InvariantCulture, out int code))
-            {
-                throw new ImportException($"Malha: código de município inválido '{rawCode}'.");
-            }
-
-            double area = Convert.ToDouble(feature.Attributes["AREA_KM2"], CultureInfo.InvariantCulture);
-            var (lat, lon, metodo) = RepresentativePoint(feature.Geometry, $"{code}");
-
-            if (!result.TryAdd(code, new PontoMunicipio(lat, lon, area, metodo)))
-            {
-                throw new ImportException($"Malha: município {code} repetido.");
-            }
-        }
-
-        return result;
+        return shp;
     }
 
     /// <summary>Centroide arredondado se estiver dentro do polígono; senão, ponto interior arredondado.</summary>

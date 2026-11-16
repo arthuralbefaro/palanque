@@ -81,6 +81,22 @@ public static class ElectorateBuilder
         IReadOnlyDictionary<string, int>? localStrength,
         Rng rng)
     {
+        var (center, strength) = Strength(parties, config, localStrength, rng);
+        var segments = BuildSegments(municipio, catalog, config, themes, center);
+        FitAffinity(segments, parties, strength, config);
+        return new MunicipalElectorate { CodigoIbge = municipio.CodigoIbge, Center = center, Segments = segments, PartyStrength = strength };
+    }
+
+    /// <summary>
+    /// Só o centro ideológico e a força dos partidos (primeira etapa de <see cref="Build"/>, com o mesmo uso do Rng),
+    /// para quem precisa da força de muitos municípios sem montar os segmentos, como o mapa.
+    /// </summary>
+    public static (AxisPoint Center, Dictionary<string, double> Strength) Strength(
+        IReadOnlyList<ElectoralParty> parties,
+        VoteModelConfig config,
+        IReadOnlyDictionary<string, int>? localStrength,
+        Rng rng)
+    {
         Dictionary<string, double> strength;
         AxisPoint center;
         if (localStrength is { Count: > 0 })
@@ -100,9 +116,7 @@ public static class ElectorateBuilder
                     * Math.Exp(Gaussian(rng) * config.RandomWorldStrengthNoiseSd)));
         }
 
-        var segments = BuildSegments(municipio, catalog, config, themes, center);
-        FitAffinity(segments, parties, strength, config);
-        return new MunicipalElectorate { CodigoIbge = municipio.CodigoIbge, Center = center, Segments = segments, PartyStrength = strength };
+        return (center, strength);
     }
 
     /// <summary>Fatia de cada grupo: soma das categorias dividida pela soma das categorias do bloco.</summary>

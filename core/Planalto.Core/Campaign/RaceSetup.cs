@@ -36,12 +36,18 @@ public sealed class CampaignContext
     public CampaignConfig Config => Campaign.Config;
 
     /// <summary>Eleitorado do município pelo mesmo procedimento em qualquer momento (determinístico pela semente do mundo).</summary>
-    public static MunicipalElectorate BuildElectorate(GameState state, Municipio municipio, ElectorateContent electorate, ThemeCatalog themes, IReadOnlyDictionary<Parties.PartySize, int> sizeWeights, MunicipalScenario? local)
-    {
-        var parties = state.Parties.Select(p => new ElectoralParty(p.Id, p.Position, sizeWeights[p.Size])).ToList();
-        var rng = new Rng((state.World?.Seed ?? 1) ^ (ulong)municipio.CodigoIbge);
-        return ElectorateBuilder.Build(municipio, electorate.Segments, electorate.VoteModel, themes, parties, local?.ForcaVereador, rng);
-    }
+    public static MunicipalElectorate BuildElectorate(GameState state, Municipio municipio, ElectorateContent electorate, ThemeCatalog themes, IReadOnlyDictionary<Parties.PartySize, int> sizeWeights, MunicipalScenario? local) =>
+        ElectorateBuilder.Build(municipio, electorate.Segments, electorate.VoteModel, themes, ElectoralParties(state, sizeWeights), local?.ForcaVereador, ElectorateRng(state, municipio.CodigoIbge));
+
+    /// <summary>Força dos partidos no município, idêntica à de <see cref="BuildElectorate"/>, sem montar os segmentos.</summary>
+    public static IReadOnlyDictionary<string, double> PartyStrength(GameState state, int codigoIbge, ElectorateContent electorate, IReadOnlyList<ElectoralParty> parties, MunicipalScenario? local) =>
+        ElectorateBuilder.Strength(parties, electorate.VoteModel, local?.ForcaVereador, ElectorateRng(state, codigoIbge)).Strength;
+
+    public static List<ElectoralParty> ElectoralParties(GameState state, IReadOnlyDictionary<Parties.PartySize, int> sizeWeights) =>
+        state.Parties.Select(p => new ElectoralParty(p.Id, p.Position, sizeWeights[p.Size])).ToList();
+
+    /// <summary>O eleitorado de cada município tem semente própria, derivada da semente do mundo.</summary>
+    private static Rng ElectorateRng(GameState state, int codigoIbge) => new((state.World?.Seed ?? 1) ^ (ulong)codigoIbge);
 }
 
 /// <summary>
