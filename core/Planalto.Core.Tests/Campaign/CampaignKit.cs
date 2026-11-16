@@ -41,6 +41,8 @@ internal static class CampaignKit
 
         public LegislatureContent Legislature { get; }
 
+        public Planalto.Core.Executive.ExecutiveContent Executive { get; } = Planalto.Core.Executive.ExecutiveContent.LoadOrThrow(TestContent.DataDirectory);
+
         public PorteCatalog Portes { get; }
 
         public MunicipiosDataSet Municipios { get; }
@@ -103,6 +105,21 @@ internal static class CampaignKit
             Municipio = campaign.Municipio,
             Content = C.Legislature,
             People = C.People,
+            Electorate = campaign.Electorate,
+            RecognitionScale = C.Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
+        };
+    }
+
+    /// <summary>Contexto da prefeitura no município em foco.</summary>
+    public static Planalto.Core.Executive.ExecutiveContext ExecutiveContext(GameState state)
+    {
+        CampaignContext campaign = Context(state);
+        return new Planalto.Core.Executive.ExecutiveContext
+        {
+            State = state,
+            Municipio = campaign.Municipio,
+            Content = C.Executive,
+            Legislature = C.Legislature.Config,
             Electorate = campaign.Electorate,
             RecognitionScale = C.Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
         };

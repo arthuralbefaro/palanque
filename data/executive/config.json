@@ -1,0 +1,57 @@
+{
+  "weekly_energy": 100,
+  "revenue_per_capita_note": "Estimativa de jogo para a receita corrente anual por habitante, por porte (não é dado oficial do município). Só define a escala em reais mostrada na tela; as regras usam as parcelas do orçamento.",
+  "revenue_per_capita": { "pequeno": 5200, "medio": 4100, "grande": 4000, "metropole": 5000 },
+  "indicators": [
+    { "id": "saude", "name": "Saúde" },
+    { "id": "educacao", "name": "Educação" },
+    { "id": "seguranca", "name": "Segurança" },
+    { "id": "infraestrutura", "name": "Infraestrutura" },
+    { "id": "emprego", "name": "Emprego" },
+    { "id": "social", "name": "Proteção social" },
+    { "id": "contas", "name": "Contas públicas" }
+  ],
+  "areas": [
+    { "id": "saude", "name": "Saúde", "reference_share": 0.22, "minimum_share": 0.15, "effects": { "saude": 1.0 } },
+    { "id": "educacao", "name": "Educação", "reference_share": 0.27, "minimum_share": 0.25, "effects": { "educacao": 1.0 } },
+    { "id": "seguranca", "name": "Segurança e defesa civil", "reference_share": 0.05, "minimum_share": 0, "effects": { "seguranca": 1.0 } },
+    { "id": "obras", "name": "Obras e infraestrutura", "reference_share": 0.12, "minimum_share": 0, "effects": { "infraestrutura": 1.0, "emprego": 0.5 } },
+    { "id": "assistencia", "name": "Assistência social", "reference_share": 0.06, "minimum_share": 0, "effects": { "social": 1.0 } },
+    { "id": "custeio", "name": "Administração e dívida", "reference_share": 0.20, "minimum_share": 0.1, "effects": { "contas": 1.0 } },
+    { "id": "reserva", "name": "Reserva para programas", "reference_share": 0.08, "minimum_share": 0, "effects": {} }
+  ],
+  "target_sensitivity": 45,
+  "indicator_bounds": { "min": 5, "max": 95 },
+  "indicator_speed_per_week": 0.035,
+  "unused_reserve_to_accounts": 120,
+  "approval": {
+    "base": 50,
+    "indicator_weight": 0.7,
+    "image_weight": 15,
+    "support_weight": 20,
+    "honeymoon_weeks": 26,
+    "honeymoon_bonus": 8
+  },
+  "group_weights": {
+    "baixa": { "saude": 1.2, "social": 1.2, "emprego": 1.0, "infraestrutura": 0.8, "seguranca": 0.6, "educacao": 0.8 },
+    "media": { "saude": 1.0, "educacao": 1.0, "seguranca": 1.0, "infraestrutura": 0.8, "emprego": 0.8, "contas": 0.4 },
+    "alta": { "seguranca": 1.2, "contas": 1.0, "infraestrutura": 0.8, "educacao": 0.6, "saude": 0.4 },
+    "idade_18_34": { "emprego": 1.2, "educacao": 1.0, "seguranca": 0.8, "saude": 0.6 },
+    "idade_60_69": { "saude": 1.4, "seguranca": 0.8, "social": 0.6 },
+    "idade_70_mais": { "saude": 1.6, "social": 0.8 },
+    "rural": { "infraestrutura": 1.4, "saude": 0.8, "emprego": 0.8 },
+    "urbana": { "seguranca": 1.0, "infraestrutura": 0.8, "saude": 0.8, "educacao": 0.6 }
+  },
+  "enact_energy": 20,
+  "support_per_point": 0.012,
+  "image_per_point": 0.006,
+  "relation_drift_per_week": 0.2,
+  "support_decay_per_week": 0.003,
+  "recognition_decay_per_week": 0.1,
+  "secretarias": 8,
+  "secretaria_relation": 15,
+  "minimum_violation_image": -0.1,
+  "crisis_chance_per_week": 0.03,
+  "auto_crisis_choice": 0,
+  "emendas_impositivas_share": 0.012
+}

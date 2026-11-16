@@ -1,0 +1,57 @@
+{
+  "actions": [
+    {
+      "id": "visitar_bairro",
+      "kind": "geral",
+      "name": "Visitar um bairro",
+      "description": "Andar pelo bairro com secretários, ouvir reclamações e prometer prazos.",
+      "energy": 20,
+      "capital": 0,
+      "effects": { "recognition": 1.0 },
+      "targets": [
+        { "id": "periferia", "name": "Bairro da periferia", "group": "baixa", "support": 0.05 },
+        { "id": "centro", "name": "Centro comercial", "group": "media", "support": 0.05 },
+        { "id": "zona_rural", "name": "Zona rural", "group": "rural", "support": 0.05 },
+        { "id": "condominios", "name": "Bairro de condomínios", "group": "alta", "support": 0.05 },
+        { "id": "igreja_evangelica", "name": "Culto evangélico", "group": "evangelica", "support": 0.05 },
+        { "id": "paroquia", "name": "Festa da paróquia", "group": "catolica", "support": 0.05 },
+        { "id": "centro_idosos", "name": "Centro de convivência de idosos", "group": "idade_60_69", "support": 0.05 }
+      ]
+    },
+    {
+      "id": "entrevista_coletiva",
+      "kind": "geral",
+      "name": "Entrevista coletiva",
+      "description": "Prestar contas à imprensa. Teste de Oratória.",
+      "energy": 15,
+      "capital": 0,
+      "effects": { "recognition": 1.5 },
+      "test": {
+        "attribute": "oratoria",
+        "success_text": "A coletiva rendeu manchetes positivas sobre a gestão.",
+        "success": { "image": 0.04 },
+        "failure_text": "Uma pergunta sobre a fila da saúde deixou você sem resposta ao vivo.",
+        "failure": { "image": -0.04 }
+      }
+    },
+    {
+      "id": "inaugurar",
+      "kind": "geral",
+      "name": "Inaugurar obra",
+      "description": "Fita, discurso e foto na obra entregue. Rende mais quando a infraestrutura vai bem.",
+      "energy": 25,
+      "capital": 0,
+      "effects": { "recognition": 2.5, "image": 0.02 }
+    },
+    {
+      "id": "reunir_vereadores",
+      "kind": "articular",
+      "name": "Receber um vereador no gabinete",
+      "description": "Ouvir pedidos, prometer obras no reduto dele. Melhora a relação e os votos na Câmara.",
+      "energy": 15,
+      "capital": 0,
+      "relation": 12,
+      "effects": {}
+    }
+  ]
+}

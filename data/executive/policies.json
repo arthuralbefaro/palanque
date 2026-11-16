@@ -1,0 +1,157 @@
+{
+  "policies": [
+    {
+      "id": "mutirao_cirurgias",
+      "name": "Mutirão de cirurgias eletivas",
+      "description": "Contrata horas extras e salas privadas para zerar a fila de cirurgias simples.",
+      "cost": 0.010, "implementation_weeks": 8, "requires_law": false, "quorum": "simples",
+      "position": { "economic": 0, "social": 0 },
+      "boosts": { "saude": 7 },
+      "popularity": { "idade_60_69": 2, "idade_70_mais": 2, "baixa": 1 }, "salience": 0.6
+    },
+    {
+      "id": "nova_upa",
+      "name": "Nova UPA 24 horas",
+      "description": "Uma unidade de pronto atendimento no bairro mais populoso, com equipe própria.",
+      "cost": 0.020, "implementation_weeks": 30, "requires_law": false, "quorum": "simples",
+      "position": { "economic": -20, "social": 0 },
+      "boosts": { "saude": 6, "emprego": 1 },
+      "popularity": { "baixa": 2, "urbana": 1 }, "salience": 0.7
+    },
+    {
+      "id": "escola_integral",
+      "name": "Escola em tempo integral",
+      "description": "Amplia a jornada das escolas municipais com reforço, esporte e cultura à tarde.",
+      "cost": 0.025, "implementation_weeks": 26, "requires_law": true, "quorum": "simples",
+      "position": { "economic": -20, "social": -5 },
+      "boosts": { "educacao": 8, "social": 2 },
+      "popularity": { "baixa": 1, "media": 1, "idade_18_34": 1 }, "salience": 0.6
+    },
+    {
+      "id": "creches_convenio",
+      "name": "Vagas em creche por convênio",
+      "description": "Paga entidades filantrópicas e religiosas por vaga para zerar a fila da creche.",
+      "cost": 0.015, "implementation_weeks": 12, "requires_law": true, "quorum": "simples",
+      "position": { "economic": 25, "social": 10 },
+      "boosts": { "educacao": 4, "social": 3 },
+      "popularity": { "baixa": 2, "idade_18_34": 1 }, "salience": 0.6
+    },
+    {
+      "id": "guarda_ampliada",
+      "name": "Ampliar a Guarda Municipal",
+      "description": "Concurso para novos guardas e patrulhas noturnas nos bairros.",
+      "cost": 0.015, "implementation_weeks": 26, "requires_law": true, "quorum": "simples",
+      "position": { "economic": 0, "social": 25 },
+      "boosts": { "seguranca": 7, "emprego": 1 },
+      "popularity": { "idade_35_59": 1, "alta": 1, "urbana": 1 }, "salience": 0.7
+    },
+    {
+      "id": "cameras_monitoramento",
+      "name": "Câmeras de monitoramento",
+      "description": "Rede de câmeras nas avenidas e praças, ligada a uma central da Guarda.",
+      "cost": 0.008, "implementation_weeks": 12, "requires_law": false, "quorum": "simples",
+      "position": { "economic": 0, "social": 15 },
+      "boosts": { "seguranca": 4 },
+      "popularity": { "urbana": 1, "media": 1 }, "salience": 0.4
+    },
+    {
+      "id": "asfalto_bairros",
+      "name": "Asfalto nos bairros",
+      "description": "Pavimenta ruas de terra e recupera as vias mais esburacadas.",
+      "cost": 0.030, "implementation_weeks": 20, "requires_law": false, "quorum": "simples",
+      "position": { "economic": -10, "social": 0 },
+      "boosts": { "infraestrutura": 8, "emprego": 3 },
+      "popularity": { "baixa": 2, "rural": 1 }, "salience": 0.7
+    },
+    {
+      "id": "ppp_iluminacao",
+      "name": "Parceria público-privada de iluminação",
+      "description": "Uma empresa troca toda a iluminação por LED e cuida da manutenção por 20 anos.",
+      "cost": 0.005, "implementation_weeks": 26, "requires_law": true, "quorum": "absoluta",
+      "position": { "economic": 50, "social": 0 },
+      "boosts": { "infraestrutura": 5, "contas": 3 },
+      "popularity": { "urbana": 1 }, "salience": 0.4
+    },
+    {
+      "id": "distrito_industrial",
+      "name": "Distrito industrial com incentivo fiscal",
+      "description": "Terrenos e isenção de ISS por dez anos para quem abrir fábrica e contratar na cidade.",
+      "cost": 0.010, "implementation_weeks": 40, "requires_law": true, "quorum": "absoluta",
+      "position": { "economic": 45, "social": 0 },
+      "boosts": { "emprego": 8, "contas": -3 },
+      "popularity": { "media": 1, "alta": 1, "idade_18_34": 1 }, "salience": 0.6
+    },
+    {
+      "id": "restaurante_popular",
+      "name": "Restaurante popular",
+      "description": "Refeição completa a preço simbólico no centro e nos bairros mais pobres.",
+      "cost": 0.012, "implementation_weeks": 16, "requires_law": false, "quorum": "simples",
+      "position": { "economic": -40, "social": 0 },
+      "boosts": { "social": 6 },
+      "popularity": { "baixa": 2, "alta": -1 }, "salience": 0.6
+    },
+    {
+      "id": "renda_municipal",
+      "name": "Transferência de renda municipal",
+      "description": "Complemento mensal para famílias em extrema pobreza, pago pela prefeitura.",
+      "cost": 0.025, "implementation_weeks": 12, "requires_law": true, "quorum": "simples",
+      "position": { "economic": -55, "social": -10 },
+      "boosts": { "social": 8 },
+      "popularity": { "baixa": 2, "media": -1, "alta": -1 }, "salience": 0.7
+    },
+    {
+      "id": "reforma_administrativa",
+      "name": "Reforma administrativa",
+      "description": "Corta cargos comissionados e funde secretarias. Libera dinheiro e irrita aliados.",
+      "cost": -0.010, "implementation_weeks": 12, "requires_law": true, "quorum": "absoluta",
+      "position": { "economic": 30, "social": 0 },
+      "boosts": { "contas": 8 },
+      "popularity": { "media": 1, "alta": 1 }, "salience": 0.5
+    },
+    {
+      "id": "atualizacao_iptu",
+      "name": "Atualização do IPTU",
+      "description": "Corrige a planta de valores dos imóveis. Mais arrecadação, mais reclamação.",
+      "cost": -0.020, "implementation_weeks": 12, "requires_law": true, "quorum": "absoluta",
+      "position": { "economic": -35, "social": 0 },
+      "boosts": { "contas": 10 },
+      "popularity": { "media": -2, "alta": -2, "baixa": -1, "idade_60_69": -1 }, "salience": 0.8
+    },
+    {
+      "id": "refis",
+      "name": "Parcelamento de dívidas com a prefeitura",
+      "description": "Perdoa juros e multas de quem pagar ou parcelar impostos atrasados.",
+      "cost": -0.005, "implementation_weeks": 8, "requires_law": true, "quorum": "simples",
+      "position": { "economic": 20, "social": 0 },
+      "boosts": { "contas": 4 },
+      "popularity": { "media": 1, "alta": 1, "baixa": 1 }, "salience": 0.4
+    },
+    {
+      "id": "agricultura_familiar",
+      "name": "Merenda com produtos da agricultura familiar",
+      "description": "Compra direto dos pequenos produtores da cidade para a merenda escolar.",
+      "cost": 0.004, "implementation_weeks": 8, "requires_law": false, "quorum": "simples",
+      "position": { "economic": -10, "social": 0 },
+      "boosts": { "emprego": 3, "social": 2 },
+      "popularity": { "rural": 2 }, "salience": 0.4
+    },
+    {
+      "id": "tarifa_zero_domingo",
+      "name": "Tarifa zero aos domingos",
+      "description": "Ônibus de graça aos domingos e feriados, pago pelo orçamento.",
+      "cost": 0.012, "implementation_weeks": 8, "requires_law": true, "quorum": "simples",
+      "position": { "economic": -50, "social": 0 },
+      "boosts": { "social": 3, "emprego": 1 },
+      "popularity": { "baixa": 2, "idade_18_34": 1, "alta": -1 }, "salience": 0.6
+    },
+    {
+      "id": "hospital_os",
+      "name": "Gestão do hospital municipal por organização social",
+      "description": "Uma organização social contratada assume o hospital, com metas de atendimento.",
+      "cost": 0.005, "implementation_weeks": 26, "requires_law": true, "quorum": "simples",
+      "position": { "economic": 45, "social": 0 },
+      "boosts": { "saude": 5, "contas": 2 },
+      "popularity": { "baixa": -1, "alta": 1 }, "salience": 0.6
+    }
+  ]
+}

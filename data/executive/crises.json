@@ -1,0 +1,102 @@
+{
+  "crises": [
+    {
+      "id": "enchente",
+      "name": "Enchente",
+      "text": "A chuva da madrugada fez o rio transbordar. Há famílias desalojadas e ruas debaixo d'água.",
+      "months": [12, 1, 2, 3],
+      "weight": 1.0,
+      "worse_when_below": { "infraestrutura": 45 },
+      "shock": { "infraestrutura": -6, "social": -4 },
+      "choices": [
+        { "label": "Decretar emergência e mobilizar a defesa civil", "result": "Abrigos abertos em horas; a imprensa elogiou a resposta.", "cost": 0.010, "indicators": { "infraestrutura": 3, "social": 2 }, "image": 0.03 },
+        { "label": "Pedir ajuda ao governo do estado", "result": "A ajuda chegou, mas devagar. O estado ficou com o crédito.", "cost": 0.0, "indicators": { "infraestrutura": 1 }, "image": 0.0 },
+        { "label": "Minimizar e esperar a água baixar", "result": "A foto do prefeito ausente circulou o dia todo.", "cost": 0.0, "indicators": {}, "image": -0.06 }
+      ]
+    },
+    {
+      "id": "dengue",
+      "name": "Epidemia de dengue",
+      "text": "Os casos de dengue triplicaram em um mês e os postos estão lotados.",
+      "months": [1, 2, 3, 4, 5],
+      "weight": 1.0,
+      "worse_when_below": { "saude": 50 },
+      "shock": { "saude": -6 },
+      "choices": [
+        { "label": "Mutirão contra o mosquito e tendas de hidratação", "result": "Agentes de casa em casa e atendimento nas praças. Os casos caíram.", "cost": 0.006, "indicators": { "saude": 4 }, "image": 0.02 },
+        { "label": "Campanha publicitária de prevenção", "result": "A campanha apareceu na TV; os postos continuaram cheios.", "cost": 0.002, "indicators": { "saude": 1 }, "image": 0.0 },
+        { "label": "Dizer que a situação está sob controle", "result": "Os números do estado desmentiram a prefeitura no dia seguinte.", "cost": 0.0, "indicators": {}, "image": -0.05 }
+      ]
+    },
+    {
+      "id": "greve_professores",
+      "name": "Greve dos professores",
+      "text": "Os professores da rede municipal pararam pedindo reposição salarial.",
+      "months": [],
+      "weight": 0.8,
+      "worse_when_below": { "educacao": 45 },
+      "shock": { "educacao": -5 },
+      "choices": [
+        { "label": "Negociar um reajuste", "result": "Acordo fechado em duas semanas; as aulas voltaram.", "cost": 0.012, "indicators": { "educacao": 4, "contas": -2 }, "image": 0.02 },
+        { "label": "Cortar o ponto dos grevistas", "result": "A greve acabou, com sindicato e pais contra a prefeitura.", "cost": 0.0, "indicators": { "educacao": -2 }, "image": -0.03 },
+        { "label": "Levar a greve à Justiça", "result": "A Justiça mandou voltar às aulas; o clima nas escolas azedou.", "cost": 0.002, "indicators": { "educacao": -1 }, "image": -0.01 }
+      ]
+    },
+    {
+      "id": "greve_onibus",
+      "name": "Greve no transporte coletivo",
+      "text": "Motoristas e cobradores cruzaram os braços por salários atrasados pela empresa de ônibus.",
+      "months": [],
+      "weight": 0.6,
+      "worse_when_below": {},
+      "shock": { "emprego": -2, "infraestrutura": -2 },
+      "choices": [
+        { "label": "Intervir na empresa e pagar os salários", "result": "Os ônibus voltaram; a conta ficou com a prefeitura.", "cost": 0.008, "indicators": { "infraestrutura": 2 }, "image": 0.02 },
+        { "label": "Mediar entre empresa e sindicato", "result": "Depois de quatro dias, um acordo. A cidade andou a pé.", "cost": 0.0, "indicators": {}, "image": -0.01 },
+        { "label": "Culpar a empresa e esperar", "result": "Uma semana sem ônibus. A paciência da cidade acabou antes da greve.", "cost": 0.0, "indicators": { "emprego": -1 }, "image": -0.04 }
+      ]
+    },
+    {
+      "id": "escandalo_secretario",
+      "name": "Escândalo na secretaria",
+      "text": "Um jornal mostrou um secretário municipal contratando a empresa do cunhado sem licitação.",
+      "months": [],
+      "weight": 0.6,
+      "worse_when_below": {},
+      "shock": {},
+      "choices": [
+        { "label": "Demitir o secretário e abrir sindicância", "result": "A demissão saiu no mesmo dia. O partido dele reclamou.", "cost": 0.0, "indicators": {}, "image": 0.03 },
+        { "label": "Manter e defender o secretário", "result": "A oposição pediu CPI e o assunto rendeu por semanas.", "cost": 0.0, "indicators": {}, "image": -0.06 },
+        { "label": "Afastar até a investigação acabar", "result": "Saída de meio-termo: nem herói, nem vilão.", "cost": 0.0, "indicators": {}, "image": 0.0 }
+      ]
+    },
+    {
+      "id": "queda_arrecadacao",
+      "name": "Queda na arrecadação",
+      "text": "Os repasses federais e o ICMS caíram com a economia. O caixa da prefeitura não fecha o mês.",
+      "months": [],
+      "weight": 0.5,
+      "worse_when_below": { "contas": 40 },
+      "shock": { "contas": -8 },
+      "choices": [
+        { "label": "Cortar despesas de custeio", "result": "Contratos renegociados e obras adiadas. O caixa respirou.", "cost": 0.0, "indicators": { "contas": 4, "social": -2, "infraestrutura": -1 }, "image": -0.01 },
+        { "label": "Atrasar pagamentos a fornecedores", "result": "Os fornecedores reclamaram e alguns serviços pararam.", "cost": 0.0, "indicators": { "contas": 1, "saude": -2 }, "image": -0.02 },
+        { "label": "Pedir socorro ao estado e à bancada federal", "result": "Uma emenda parlamentar ajudou a fechar as contas do trimestre.", "cost": 0.0, "indicators": { "contas": 2 }, "image": 0.0 }
+      ]
+    },
+    {
+      "id": "onda_assaltos",
+      "name": "Onda de assaltos",
+      "text": "Uma série de assaltos a ônibus e comércios virou manchete todos os dias.",
+      "months": [],
+      "weight": 0.7,
+      "worse_when_below": { "seguranca": 40 },
+      "shock": { "seguranca": -4 },
+      "choices": [
+        { "label": "Reforçar a Guarda com horas extras", "result": "Patrulhas nas linhas mais visadas. Os casos diminuíram.", "cost": 0.008, "indicators": { "seguranca": 4 }, "image": 0.02 },
+        { "label": "Cobrar mais policiamento do estado", "result": "A PM mandou reforço por um mês.", "cost": 0.0, "indicators": { "seguranca": 2 }, "image": 0.0 },
+        { "label": "Dizer que segurança é problema do estado", "result": "Juridicamente certo, politicamente desastroso.", "cost": 0.0, "indicators": {}, "image": -0.04 }
+      ]
+    }
+  ]
+}

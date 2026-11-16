@@ -56,6 +56,10 @@ public static class DataValidation
             electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
             world?.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal),
             out _));
+        reports.AddRange(Executive.ExecutiveContent.Load(
+            dataDirectory,
+            electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
+            out _));
         if (dataSet is not null)
         {
             reports.AddRange(ValidateGeo(dataDirectory, dataSet));
