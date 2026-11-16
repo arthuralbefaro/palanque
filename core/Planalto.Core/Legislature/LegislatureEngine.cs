@@ -45,6 +45,12 @@ public sealed class LegislatureEngine
 
     public bool InRecess => Config.RecessMonths.Contains(Week.Month);
 
+    /// <summary>
+    /// Luto oficial pela morte de vereador, prefeito ou vice (GDD 17.16): a Câmara não faz sessão enquanto ele alcança
+    /// a semana. A pauta espera a semana seguinte; o gabinete continua aberto.
+    /// </summary>
+    public bool InMourning => State.Renewal is { } renewal && renewal.Municipio == Context.Municipio.CodigoIbge && Renewal.RenewalQueries.InMourning(renewal, Week);
+
     public bool Over => State.Calendar.WeekStart > Mandate.End;
 
     /// <summary>Projetos na pauta do plenário nesta semana.</summary>
@@ -223,7 +229,7 @@ public sealed class LegislatureEngine
     public void ResolveWeek(bool automatic)
     {
         MandateState mandate = Mandate;
-        if (!InRecess)
+        if (!InRecess && !InMourning)
         {
             foreach (Bill bill in Pauta.ToList())
             {

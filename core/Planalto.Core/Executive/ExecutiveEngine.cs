@@ -50,6 +50,9 @@ public enum ExecutiveFailure
     AlvoInvalido,
     SemSecretarias,
     OrcamentoInvalido,
+
+    /// <summary>Luto oficial (GDD 17.16): a Câmara não faz sessão, e projeto que precisa de lei espera.</summary>
+    CamaraEmLuto,
 }
 
 public sealed record EnactResult(bool Ok, ExecutiveFailure? Failure, bool Approved, int Yes, int No);
@@ -230,6 +233,9 @@ public sealed partial class ExecutiveEngine
 
     // ---------------------------------------------------------------- políticas
 
+    /// <summary>Luto oficial em curso: a Câmara não vota nesta semana (GDD 17.16).</summary>
+    public bool ChamberInMourning => State.Renewal is { } renewal && renewal.Municipio == Context.Municipio.CodigoIbge && Renewal.RenewalQueries.InMourning(renewal, State.Calendar.WeekStart);
+
     public ExecutiveFailure? CanEnact(PolicyDefinition policy)
     {
         ExecutiveState e = Executive;
@@ -246,6 +252,11 @@ public sealed partial class ExecutiveEngine
         if (e.Policies.Any(p => p.PolicyId == policy.Id && p.Counts))
         {
             return ExecutiveFailure.JaAdotada;
+        }
+
+        if (policy.RequiresLaw && ChamberInMourning)
+        {
+            return ExecutiveFailure.CamaraEmLuto;
         }
 
         return policy.Cost > 0 && FreeReserve + 1e-9 < policy.Cost ? ExecutiveFailure.SemReserva : null;
