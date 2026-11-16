@@ -56,6 +56,13 @@ public partial class Game : Node
     /// <summary>Motor da fundação de partido (vale em qualquer momento da carreira).</summary>
     public Core.Career.PartyFoundingEngine? FoundingEngine { get; private set; }
 
+    public Core.Executive.ExecutiveContent ExecutiveContent { get; private set; } = null!;
+
+    public Core.Debate.DebateContent Debate { get; private set; } = null!;
+
+    /// <summary>Motor da prefeitura; null fora do mandato de prefeito.</summary>
+    public Core.Executive.ExecutiveEngine? Prefeitura { get; private set; }
+
     public override void _Ready()
     {
         Instance = this;
@@ -86,6 +93,8 @@ public partial class Game : Node
             Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
             World.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal));
         Founding = JsonData.LoadFile<Core.Career.FoundingConfig>(Path.Combine(DataDirectory, Core.Career.FoundingConfig.File)).GetValueOrThrow();
+        ExecutiveContent = Core.Executive.ExecutiveContent.LoadOrThrow(DataDirectory, Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal));
+        Debate = JsonData.LoadFile<Core.Debate.DebateContent>(Path.Combine(DataDirectory, Core.Debate.DebateContent.File)).GetValueOrThrow();
     }
 
     /// <summary>Contexto da simulação detalhada do município em foco (GDD 12.5).</summary>
@@ -105,6 +114,22 @@ public partial class Game : Node
             Themes = World.Parties.Themes,
             Events = Events,
             Portes = Portes,
+            Debate = Debate,
+        };
+    }
+
+    /// <summary>Contexto da prefeitura no município em foco.</summary>
+    public Core.Executive.ExecutiveContext ExecutiveContextFor(GameState state)
+    {
+        Core.Campaign.CampaignContext campaign = ContextFor(state);
+        return new Core.Executive.ExecutiveContext
+        {
+            State = state,
+            Municipio = campaign.Municipio,
+            Content = ExecutiveContent,
+            Legislature = Legislature.Config,
+            Electorate = campaign.Electorate,
+            RecognitionScale = Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
         };
     }
 
@@ -161,6 +186,7 @@ public partial class Game : Node
         State = state;
         Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
         Mandate = null;
+        Prefeitura = null;
         FoundingEngine = NewFoundingEngine(state);
     }
 
@@ -170,6 +196,7 @@ public partial class Game : Node
         State = state;
         Engine = state.Campaign is null ? null : Core.Campaign.CampaignEngine.Start(ContextFor(state));
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
+        Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
         FoundingEngine = NewFoundingEngine(state);
     }
 
@@ -189,14 +216,19 @@ public partial class Game : Node
     public WeekNote AdvanceWeek()
     {
         GameState state = State!;
-        bool hadMandate = state.Mandate is not null;
-        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine);
+        bool hadMandate = state.Mandate is not null || state.Executive is not null;
+        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura);
         if (state.Mandate is null)
         {
             Mandate = null;
         }
 
-        WeekNote note = hadMandate && state.Mandate is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
+        if (state.Executive is null)
+        {
+            Prefeitura = null;
+        }
+
+        WeekNote note = hadMandate && state.Mandate is null && state.Executive is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
         if (Core.Career.CareerFlow.ShouldStartCampaign(state))
         {
             if (Core.Career.PartyAffiliation.CanRun(state, state.Calendar.Year))
@@ -219,7 +251,7 @@ public partial class Game : Node
         {
             note = AdvanceWeek();
         }
-        while (note == WeekNote.Nenhuma && State!.Campaign is { Phase: Core.Campaign.CampaignPhase.PreCampanha } campaign && campaign.Events.Pending.Count == 0);
+        while (note == WeekNote.Nenhuma && State!.Campaign is { Phase: Core.Campaign.CampaignPhase.PreCampanha, Debate: null } campaign && campaign.Events.Pending.Count == 0);
         return note;
     }
 
@@ -243,9 +275,22 @@ public partial class Game : Node
     public void ConcludeElection()
     {
         GameState state = State!;
-        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state));
+        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state));
         Engine = null;
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
+        Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
+    }
+
+    /// <summary>Troca o cargo disputado na pré-campanha; prefeito que disputa outro cargo renuncia.</summary>
+    public (Core.Campaign.CandidacyIssue? Issue, bool Renounced) SwitchCandidacy(Core.Elections.Office office)
+    {
+        var result = Core.Career.CareerFlow.SwitchCandidacy(Engine!.Context, office);
+        if (State!.Executive is null)
+        {
+            Prefeitura = null;
+        }
+
+        return result;
     }
 
     /// <summary>Muda o partido do jogador (troca, filiação depois de expulso ou partido fundado).</summary>
@@ -265,8 +310,9 @@ public partial class Game : Node
         GoTo(Core.Career.CareerFlow.Mode(state) switch
         {
             Core.Career.CareerMode.Mandato => Scenes.Mandate,
+            Core.Career.CareerMode.Prefeitura => Scenes.Executive,
             Core.Career.CareerMode.ForaDeMandato => Scenes.OutOfOffice,
-            _ => state.Campaign?.Outcome is not null ? Scenes.ElectionNight : Scenes.Hub,
+            _ => state.Campaign?.Outcome is not null ? Scenes.ElectionNight : state.Campaign?.Debate is not null ? Scenes.Debate : Scenes.Hub,
         });
     }
 
@@ -295,5 +341,7 @@ public partial class Game : Node
         public const string Map = "res://src/UI/Map/MapScreen.tscn";
         public const string Mandate = "res://src/UI/Screens/MandateScreen.tscn";
         public const string OutOfOffice = "res://src/UI/Screens/OutOfOfficeScreen.tscn";
+        public const string Executive = "res://src/UI/Screens/ExecutiveScreen.tscn";
+        public const string Debate = "res://src/UI/Screens/DebateScreen.tscn";
     }
 }
