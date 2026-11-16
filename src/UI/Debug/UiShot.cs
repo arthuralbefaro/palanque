@@ -160,7 +160,7 @@ public partial class UiShot : Node
                 }
             }
 
-            if (target == "creator" && !(await CheckCreatorGender(creator) && await CheckCreatorBallot(creator, shot) && await CheckCreatorParty(creator)))
+            if (target == "creator" && !(await CheckCreatorColors(creator) && await CheckCreatorGender(creator) && await CheckCreatorBallot(creator, shot) && await CheckCreatorParty(creator)))
             {
                 return;
             }

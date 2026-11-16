@@ -161,12 +161,28 @@ public static class Ui
         return slider;
     }
 
-    public static ColorPickerButton ColorPicker(Node parent, string hex, Action<string> onChanged)
+    /// <param name="size">Tamanho mínimo do botão; o padrão dá uma amostra de 44 × 32.</param>
+    public static ColorPickerButton ColorPicker(Node parent, string hex, Action<string> onChanged, Vector2? size = null)
     {
-        var picker = parent.Add(new ColorPickerButton { Color = new Color(hex), CustomMinimumSize = new Vector2(40, 32), EditAlpha = false });
+        var picker = parent.Add(new ColorPickerButton { Color = new Color(hex), CustomMinimumSize = size ?? new Vector2(56, 44), EditAlpha = false });
+
+        // A amostra de cor ocupa o que sobra das margens do estilo do botão. As margens do tema são para texto
+        // grande (32 de cada lado): não sobrava largura nenhuma e o botão aparecia como um quadrado vazio.
+        foreach (string state in new[] { "normal", "hover", "pressed", "disabled", "focus" })
+        {
+            if (picker.GetThemeStylebox(state)?.Duplicate() is StyleBox style)
+            {
+                style.ContentMarginLeft = style.ContentMarginRight = style.ContentMarginTop = style.ContentMarginBottom = ColorSwatchMargin;
+                picker.AddThemeStyleboxOverride(state, style);
+            }
+        }
+
         picker.ColorChanged += c => onChanged("#" + c.ToHtml(false).ToUpperInvariant());
         return picker;
     }
+
+    /// <summary>Margem em volta da amostra de cor de um seletor de cor.</summary>
+    public const float ColorSwatchMargin = 6;
 
     /// <summary>Campo rotulado: rótulo à esquerda (largura fixa) e controle à direita.</summary>
     public static HBoxContainer Field(Node parent, string label, int labelWidth = 180)

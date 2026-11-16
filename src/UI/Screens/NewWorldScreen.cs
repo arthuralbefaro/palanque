@@ -13,6 +13,9 @@ public partial class NewWorldScreen : Control
 {
     private const string ScenarioFolder = "user://scenarios";
 
+    // Amostra de cor da tabela de partidos: menor que a do resto do jogo, para a linha não crescer.
+    private static readonly Vector2 TableSwatch = new(40, 32);
+
     private Game _game = null!;
     private WorldSetup _setup = null!;
     private Rng _rng = null!;
@@ -195,8 +198,8 @@ public partial class NewWorldScreen : Control
         Tools(size, PartyField.Size);
 
         HBoxContainer visual = Cell(250);
-        Ui.Compact(Ui.ColorPicker(visual, party.Colors.Primary, c => { party.Colors = party.Colors with { Primary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); RefreshIssues(); }), 30);
-        Ui.Compact(Ui.ColorPicker(visual, party.Colors.Secondary, c => { party.Colors = party.Colors with { Secondary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); }), 30);
+        Ui.Compact(Ui.ColorPicker(visual, party.Colors.Primary, c => { party.Colors = party.Colors with { Primary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); RefreshIssues(); }, TableSwatch), 30);
+        Ui.Compact(Ui.ColorPicker(visual, party.Colors.Secondary, c => { party.Colors = party.Colors with { Secondary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); }, TableSwatch), 30);
         Small(Ui.Options(visual, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), party.LogoIcon, i => { party.LogoIcon = i; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); }), 104);
         Tools(visual, PartyField.Visual);
 

@@ -146,14 +146,13 @@ public partial class MateriaisPermitidos : HBoxContainer
         name.CustomMinimumSize = new Vector2(110, 0);
         sticker.TooltipText = TranslationServer.Translate("Adesivo: material permitido na campanha, com até 50 cm por 40 cm (Lei 9.504/1997, art. 38, § 3º).");
 
-        // Bandeira: retângulo com o logotipo.
-        var flag = Piece(new Vector2(200, 150), secondary, 6);
+        // Bandeira: retângulo na cor primária do logotipo, com o logotipo (ícone, nome e número na cor secundária dele).
+        // O fundo na cor secundária do partido apagava o nome, que por padrão tem essa mesma cor.
+        var flag = Piece(new Vector2(200, 150), new Color(identity.LogoPrimaryColor), 6);
         VBoxContainer f = Ui.Column(flag, 4);
         f.Alignment = BoxContainer.AlignmentMode.Center;
         var logo = f.Add(new LogoView());
         logo.Set(identity, card.Character.BallotName, 26);
-        Label flagNumber = Ui.Value(f, identity.BallotNumber ?? "", 22);
-        flagNumber.AddThemeColorOverride("font_color", primary);
         flag.TooltipText = TranslationServer.Translate("Bandeira: permitida ao longo das ruas durante a campanha, móvel e sem atrapalhar o trânsito, posta e retirada entre 6h e 22h (Lei 9.504/1997, art. 37, §§ 2º, 6º e 7º).");
 
         // Peça para redes: retrato, slogan e número.

@@ -146,6 +146,61 @@ public partial class UiShot
     }
 
     /// <summary>
+    /// Todo seletor de cor da criação mostra a cor que guarda: em cada aba, a amostra tem área (o botão menos as
+    /// margens do estilo) e o ponto do meio do botão, lido da imagem da tela, é da cor escolhida.
+    /// </summary>
+    private async Task<bool> CheckCreatorColors(CharacterCreatorScreen creator)
+    {
+        var tabs = FindAll<TabContainer>(creator).First();
+        int checkedCount = 0;
+        for (int tab = 0; tab < tabs.GetTabCount(); tab++)
+        {
+            tabs.CurrentTab = tab;
+            await Frames(3);
+            await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
+            Image screen = GetViewport().GetTexture().GetImage();
+            Rect2 window = GetViewport().GetVisibleRect();
+            foreach (ColorPickerButton picker in FindAll<ColorPickerButton>(creator).Where(p => p.IsVisibleInTree()))
+            {
+                Vector2 swatch = picker.Size - picker.GetThemeStylebox("normal").GetMinimumSize();
+                if (swatch.X < 24 || swatch.Y < 16)
+                {
+                    Fail($"aba {tabs.GetTabTitle(tab)}: seletor de cor com amostra de {swatch.X:0}×{swatch.Y:0} (o botão mede {picker.Size.X:0}×{picker.Size.Y:0}): a cor não aparece.");
+                    return false;
+                }
+
+                // Só confere a imagem se o botão está inteiro na parte visível (a aba rola).
+                Rect2 rect = picker.GetGlobalRect();
+                Rect2 clip = FindAll<ScrollContainer>(creator).First(sc => sc.IsVisibleInTree() && sc.IsAncestorOf(picker)).GetGlobalRect();
+                if (!clip.Encloses(rect) || !window.Encloses(rect))
+                {
+                    continue;
+                }
+
+                Vector2 point = GetViewport().GetFinalTransform() * rect.GetCenter();
+                Color seen = screen.GetPixel((int)point.X, (int)point.Y);
+                Color wanted = picker.Color;
+                if (Math.Abs(seen.R - wanted.R) > 0.04f || Math.Abs(seen.G - wanted.G) > 0.04f || Math.Abs(seen.B - wanted.B) > 0.04f)
+                {
+                    Fail($"aba {tabs.GetTabTitle(tab)}: o seletor de cor guarda #{wanted.ToHtml(false)} e a tela mostra #{seen.ToHtml(false)} no meio dele.");
+                    return false;
+                }
+
+                checkedCount++;
+            }
+        }
+
+        if (checkedCount < 8)
+        {
+            Fail($"só {checkedCount} seletores de cor conferidos na imagem da criação (esperado: 8 ou mais).");
+            return false;
+        }
+
+        GD.Print($"  cores: {checkedCount} seletores de cor conferidos na imagem da tela, em todas as abas");
+        return true;
+    }
+
+    /// <summary>
     /// 17 anos com aniversário em dezembro (sem 18 anos no prazo do registro de 2028): a criação avisa, na aba
     /// Identidade e na base da tela, que a carreira começa em 2032; ao confirmar, o jogo abre direto na pré-campanha
     /// de 2032, na tela central, com o personagem mais velho.
