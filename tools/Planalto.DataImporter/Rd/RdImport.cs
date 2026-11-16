@@ -37,6 +37,32 @@ public static class RdImport
 
     public sealed record Lacuna(int CodigoIbge, string Nome, string Uf, string Indicador, string Regra);
 
+    /// <summary>Lê saúde (DATASUS) e IDEB (INEP) e monta os arquivos.</summary>
+    public static async Task<int> RunAsync(SourceCache cache, string dataDirectory)
+    {
+        Console.WriteLine("Ministério da Saúde — SIM, SINASC e CNES");
+        SaudeAgregados agregados = await SaudeImport.ReadAsync(cache);
+        Dictionary<int, long> Soma(Dictionary<int, Dictionary<string, int>> porAno) =>
+            porAno.Values.SelectMany(d => d).GroupBy(p => int.Parse(p.Key, CultureInfo.InvariantCulture)).ToDictionary(g => g.Key, g => g.Sum(p => (long)p.Value));
+        DateTimeOffset baixado = agregados.Arquivos.Max(f => f.DownloadedAt);
+        var saude = new SaudeInput(
+            agregados.Anos,
+            Soma(agregados.ObitosMenoresDeUmAno),
+            Soma(agregados.NascidosVivos),
+            Soma(agregados.ObitosPorAgressao),
+            int.Parse(agregados.CompetenciaLeitos[2..], CultureInfo.InvariantCulture),
+            agregados.Leitos.ToDictionary(p => int.Parse(p.Key, CultureInfo.InvariantCulture), p => p.Value.Existentes),
+            [
+                ("saude.obitos_infantis, saude.obitos_agressao", "Ministério da Saúde, DATASUS, Sistema de Informações sobre Mortalidade (SIM), declarações de óbito por município de residência", string.Format(CultureInfo.InvariantCulture, SaudeImport.SimUrl, "{UF}", "{ano}"), baixado),
+                ("saude.nascidos_vivos, saude.mortalidade_infantil", "Ministério da Saúde, DATASUS, Sistema de Informações sobre Nascidos Vivos (SINASC), por município de residência", string.Format(CultureInfo.InvariantCulture, SaudeImport.SinascUrl, "{UF}", "{ano}"), baixado),
+                ("saude.leitos", "Ministério da Saúde, DATASUS, Cadastro Nacional de Estabelecimentos de Saúde (CNES), leitos existentes", string.Format(CultureInfo.InvariantCulture, SaudeImport.CnesLeitosUrl, "{UF}", "{AAMM}"), baixado),
+            ]);
+
+        Console.WriteLine("INEP — IDEB");
+        IdebInput ideb = await IdebImport.ReadAsync(cache);
+        return await RunAsync(cache, dataDirectory, saude, ideb);
+    }
+
     public static async Task<int> RunAsync(SourceCache cache, string dataDirectory, SaudeInput saude, IdebInput ideb)
     {
         PorteCatalog portes = JsonData.LoadFile<PorteCatalog>(Path.Combine(dataDirectory, "portes.json")).GetValueOrThrow();
@@ -243,7 +269,7 @@ public static class RdImport
 
             foreach (var (id, value) in IndicatorDefinitions.RealValues(item, m))
             {
-                IndicatorDefinition d = definitions.Get(id);
+                RealIndicatorDefinition d = definitions.Get(id);
                 if (value < d.Min || value > d.Max)
                 {
                     errors.Add($"{m.CodigoIbge} {m.Nome}/{m.Uf}: {id} = {value:0.##} fora da faixa plausível [{d.Min}, {d.Max}].");

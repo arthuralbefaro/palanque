@@ -42,12 +42,14 @@ if (args.Length > 1 && args[0] == "rd" && args[1] == "mortalidade")
 }
 
 // Modos "cenario" (Brasil 2026, GDD 16.4) e "aparencia" (cor ou raça por UF, GDD 3.8).
-if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas" or "zonas-rd")
+if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas" or "zonas-rd" or "rd")
 {
     try
     {
         return args[0] switch
         {
+            // "rd": monta data/indicadores_reais/ e data/economy/start.json (depois de "rd siconfi-baixar").
+            "rd" => await Planalto.DataImporter.Rd.RdImport.RunAsync(cache, dataDirectory),
             "zonas-rd" => await Planalto.DataImporter.Rd.ZonasRdImport.RunAsync(cache, dataDirectory),
             "cenario" => await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory),
             "aparencia" => await Planalto.DataImporter.Appearance.CorRacaImport.RunAsync(cache, dataDirectory),
