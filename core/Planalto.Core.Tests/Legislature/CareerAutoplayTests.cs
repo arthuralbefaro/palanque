@@ -20,6 +20,7 @@ public class CareerAutoplayTests
     [InlineData(3UL)]
     [InlineData(4UL)]
     [InlineData(5UL)]
+    [Trait("Categoria", "Lento")]
     public void Mandato_inteiro_e_reeleicao_sem_travar(ulong seed)
     {
         var (state, legislature) = LegislatureTests.ElectedCouncillor(seed);
@@ -61,6 +62,7 @@ public class CareerAutoplayTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Derrota_leva_a_entressafra_e_a_proxima_eleicao()
     {
         CampaignEngine campaign = CampaignKit.NewCareer(3550308, 8);

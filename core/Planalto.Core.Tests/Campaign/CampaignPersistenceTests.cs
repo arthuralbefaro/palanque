@@ -9,6 +9,7 @@ namespace Planalto.Core.Tests.Campaign;
 public class CampaignPersistenceTests
 {
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Rivais_nomeados_viram_NPCs_persistidos_do_municipio_em_foco()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3304557, 7);
@@ -26,6 +27,7 @@ public class CampaignPersistenceTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Carregar_o_save_retoma_a_mesma_disputa_sem_gerar_NPCs_novos()
     {
         CampaignEngine engine = CampaignKit.NewCareer(2927408, 21);

@@ -41,6 +41,7 @@ public class ElectorateTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Afinidade_ReproduzAForcaLocalDe2024()
     {
         MunicipalElectorate electorate = F.Build(F.SaoPaulo);

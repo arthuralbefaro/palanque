@@ -58,6 +58,7 @@ public class R3WorldTests
     [InlineData("medio", 6UL)]
     [InlineData("grande", 7UL)]
     [InlineData("metropole", 8UL)]
+    [Trait("Categoria", "Lento")]
     public void Em_40_semanas_sem_comando_o_mundo_se_mexe_sozinho(string porte, ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(City(porte), seed);
@@ -115,6 +116,7 @@ public class R3WorldTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Depois_de_um_ataque_os_rivais_nao_calculistas_respondem_em_ate_14_dias()
     {
         int attacked = 0;
@@ -255,6 +257,7 @@ public class R3WorldTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Perfil_de_campanha_nao_depende_de_ideologia_nem_de_partido()
     {
         // O sorteio só olha os pesos do perfil e se o rival está na situação: partidos de famílias diferentes têm a
@@ -328,6 +331,7 @@ public class R3WorldTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Painel_da_chapa_diz_quantas_cadeiras_o_partido_faria_e_a_posicao_do_jogador()
     {
         foreach (string porte in new[] { "pequeno", "metropole" })
@@ -365,6 +369,7 @@ public class R3WorldTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Ficha_do_rival_mostra_o_plano_conforme_a_confianca_do_coordenador()
     {
         CampaignEngine engine = CampaignKit.NewCareer(City("grande"), 71);

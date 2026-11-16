@@ -42,6 +42,7 @@ public class ExecutiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Candidatura_a_prefeito_troca_de_lista_e_respeita_a_idade_minima()
     {
         CampaignEngine campaign = CampaignKit.NewCareer(SmallTown(), 4, strongestParty: true);
@@ -91,6 +92,7 @@ public class ExecutiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Posse_de_prefeito_monta_orcamento_camara_e_coalizao()
     {
         var (state, engine) = ElectedMayor();
@@ -108,6 +110,7 @@ public class ExecutiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Gastar_mais_numa_area_sobe_o_alvo_e_descumprir_o_minimo_rejeita_as_contas()
     {
         var (state, engine) = ElectedMayor();
@@ -132,6 +135,7 @@ public class ExecutiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Politica_por_decreto_entra_em_vigor_e_lei_passa_pela_Camara()
     {
         var (state, engine) = ElectedMayor();
@@ -172,6 +176,7 @@ public class ExecutiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Secretaria_poe_partido_na_base_e_crise_pede_decisao()
     {
         var (state, engine) = ElectedMayor();
@@ -201,6 +206,7 @@ public class ExecutiveTests
     [Theory]
     [InlineData(3UL)]
     [InlineData(6UL)]
+    [Trait("Categoria", "Lento")]
     public void Mandato_de_prefeito_inteiro_e_reeleicao_sem_travar(ulong seed)
     {
         var (state, engine) = ElectedMayor(seed);

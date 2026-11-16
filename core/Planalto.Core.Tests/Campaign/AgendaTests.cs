@@ -50,6 +50,7 @@ public class AgendaTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Terceiro_compromisso_igual_em_duas_semanas_rende_no_maximo_metade_e_a_previsao_informa()
     {
         CampaignEngine engine = Fresh(3106200, 61);
@@ -109,6 +110,7 @@ public class AgendaTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Dois_compromissos_nao_ocupam_o_mesmo_turno()
     {
         CampaignEngine engine = Fresh(3106200, 63, campaign: true);
@@ -143,6 +145,7 @@ public class AgendaTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Comicio_so_na_campanha()
     {
         CampaignEngine pre = Fresh(3106200, 64);
@@ -173,6 +176,7 @@ public class AgendaTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Comicio_com_presenca_abaixo_de_vinte_esvazia()
     {
         CampaignEngine engine = Fresh(3106200, 65, campaign: true);
@@ -396,6 +400,7 @@ public class AgendaTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Convites_chegam_sozinhos_com_dia_e_turno_da_semana_que_entra()
     {
         CampaignEngine engine = Fresh(3550308, 70);
@@ -480,6 +485,7 @@ public class AgendaTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Semana_planejada_tem_chuva_por_dia_e_o_que_passou_sai_da_agenda()
     {
         CampaignEngine engine = Fresh(3106200, 73);

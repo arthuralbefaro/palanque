@@ -39,6 +39,7 @@ public class ObjectiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void No_primeiro_dia_ha_de_um_a_tres_objetivos_com_condicao_prazo_e_origem()
     {
         foreach (string porte in new[] { "pequeno", "medio", "grande", "metropole" })
@@ -50,6 +51,7 @@ public class ObjectiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Em_qualquer_dia_da_campanha_ha_de_um_a_tres_objetivos_e_aparecem_quatro_tipos_ou_mais()
     {
         CampaignEngine engine = CampaignKit.NewCareer(CityOf("medio"), 72);
@@ -114,6 +116,7 @@ public class ObjectiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Objetivo_de_presenca_mede_a_presenca_na_zona_e_vence_no_prazo()
     {
         CampaignEngine engine = Fresh("medio", 74);
@@ -149,6 +152,7 @@ public class ObjectiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void O_jogador_pode_fixar_ou_dispensar_e_a_proposta_nao_fixada_e_trocada()
     {
         CampaignEngine engine = Fresh("medio", 75);
@@ -182,6 +186,7 @@ public class ObjectiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Os_tipos_nascem_do_estado_caixa_posicao_equipe_rival_e_promessa()
     {
         CampaignEngine engine = Fresh("medio", 76);
@@ -225,6 +230,7 @@ public class ObjectiveTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Contratar_cumpre_o_objetivo_de_montar_a_equipe_e_falar_do_tema_o_de_posicao_conhecida()
     {
         CampaignEngine engine = Fresh("medio", 77);

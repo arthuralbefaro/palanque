@@ -47,6 +47,7 @@ public class PersonGeneratorTests
     [Theory]
     [InlineData(Gender.Masculino)]
     [InlineData(Gender.Feminino)]
+    [Trait("Categoria", "Lento")]
     public void Prenomes_TemAoMenos150DistintosPorSexoNoBrasil(Gender gender)
     {
         var rng = new Rng(3);

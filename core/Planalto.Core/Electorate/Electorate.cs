@@ -45,6 +45,39 @@ public sealed class Segment
     public required Dictionary<string, double> Affinity { get; init; }
 
     public bool Has(string groupId) => Groups.Values.Contains(groupId);
+
+    /// <summary>
+    /// Os temas do segmento em vetores, na ordem de <see cref="ThemePriority"/>, para o modelo de voto não procurar
+    /// cada tema em dicionário a cada candidato. Prioridade e preferência não mudam depois de o segmento nascer.
+    /// </summary>
+    internal sealed record ThemeRow(ThemeCatalog Catalog, int[] Index, double[] Priority, double[] Preference);
+
+    private ThemeRow? _themeRow;
+
+    internal ThemeRow ThemeRowFor(ThemeCatalog catalog)
+    {
+        ThemeRow? row = _themeRow;
+        if (row is not null && ReferenceEquals(row.Catalog, catalog))
+        {
+            return row;
+        }
+
+        int n = ThemePriority.Count;
+        var index = new int[n];
+        var priority = new double[n];
+        var preference = new double[n];
+        int k = 0;
+        foreach (var (theme, value) in ThemePriority)
+        {
+            index[k] = catalog.Themes.FindIndex(t => t.Id == theme);
+            priority[k] = value;
+            preference[k] = ThemePreference.GetValueOrDefault(theme);
+            k++;
+        }
+
+        _themeRow = row = new ThemeRow(catalog, index, priority, preference);
+        return row;
+    }
 }
 
 /// <summary>Partido como o eleitorado o vê: posição e tamanho relativo.</summary>

@@ -28,6 +28,7 @@ public class PortraitCompositionTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Arquivos_DeTodasAsCamadasExistem()
     {
         var rng = new Rng(2);

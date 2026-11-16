@@ -108,6 +108,7 @@ public class StaffTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Vagas_seguem_o_porte_e_a_funcao_so_tem_uma_pessoa()
     {
         var expected = new Dictionary<string, int> { ["pequeno"] = 3, ["medio"] = 4, ["grande"] = 5, ["metropole"] = 6 };
@@ -317,6 +318,7 @@ public class StaffTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Eventos_da_equipe_aumento_proposta_de_rival_e_porta_aberta()
     {
         CampaignEngine engine = Fresh(CityOf("grande"), 17);
@@ -430,6 +432,7 @@ public class StaffTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Demissao_grava_lembranca_e_demitido_com_lealdade_baixa_que_conhece_esqueleto_pode_vazar()
     {
         int leaks = 0;
@@ -475,6 +478,7 @@ public class StaffTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Demitido_leal_ou_que_nao_sabe_de_nada_nao_vaza()
     {
         for (ulong seed = 1; seed <= 6; seed++)
@@ -573,6 +577,7 @@ public class StaffTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Tesoureiro_melhor_erra_menos_e_o_erro_vira_esqueleto_no_Livro()
     {
         StaffScale scale = CampaignKit.C.Campaign.Staff.Role(StaffRole.Tesoureiro).Efeitos[StaffRole.ErroContabil];
@@ -585,7 +590,7 @@ public class StaffTests
         HireFirst(engine, StaffRole.Coordenador);
         Assert.Equal(0.35, engine.LawyerSuccessChance);
         int weeks = 0;
-        while (engine.Context.State.Campaign!.Phase == CampaignPhase.PreCampanha && weeks++ < 30)
+        while (engine.Context.State.Campaign!.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha && weeks++ < 40)
         {
             Week(engine);
         }

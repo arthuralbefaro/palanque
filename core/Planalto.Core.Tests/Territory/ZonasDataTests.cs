@@ -34,6 +34,7 @@ public class ZonasDataTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Eleitores_das_zonas_somam_o_eleitorado_do_municipio_sem_tolerancia()
     {
         var zonas = Files.Value.Values.SelectMany(f => f.Zonas.Municipios).ToDictionary(m => m.CodigoIbge);
@@ -86,6 +87,7 @@ public class ZonasDataTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Regra_de_sigilo_cobertura_decide_a_fonte_do_perfil()
     {
         double minimum = Config.CoberturaMinima;

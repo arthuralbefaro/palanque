@@ -27,6 +27,7 @@ public partial class EventEngineTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Cadeia_DisparaDepoisDoPrazo()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3550308, 1);
@@ -42,6 +43,7 @@ public partial class EventEngineTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Unico_NaoSeRepeteECooldownRespeitado()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3550308, 2);
@@ -57,6 +59,7 @@ public partial class EventEngineTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Escolha_ComRequisitoMostraOMotivo()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3550308, 3);
@@ -66,6 +69,7 @@ public partial class EventEngineTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Resolver_AplicaEfeitosEAgendaContinuacao()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3550308, 4);
@@ -85,6 +89,7 @@ public partial class EventEngineTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Sorteio_GeraEventosNaCampanhaComFrequenciaNormal()
     {
         int fired = 0;

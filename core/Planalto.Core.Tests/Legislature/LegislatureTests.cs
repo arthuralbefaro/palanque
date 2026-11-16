@@ -44,6 +44,7 @@ public class LegislatureTests
         Assert.Equal(approved, LegislatureEngine.Approved(quorum, yes, no, members));
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Posse_monta_a_Camara_com_o_jogador_o_prefeito_a_base_e_os_lideres()
     {
         var (state, engine) = ElectedCouncillor();
@@ -66,6 +67,7 @@ public class LegislatureTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Base_do_prefeito_soma_maioria_quando_ha_partidos_proximos()
     {
         var (state, _) = ElectedCouncillor();
@@ -80,6 +82,7 @@ public class LegislatureTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Vereador_mais_proximo_do_projeto_tem_logito_maior()
     {
         var (state, engine) = ElectedCouncillor();
@@ -94,6 +97,7 @@ public class LegislatureTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Votar_sempre_contra_o_partido_leva_a_advertencia_sancao_e_expulsao()
     {
         var (state, engine) = ElectedCouncillor();
@@ -128,6 +132,7 @@ public class LegislatureTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Projeto_protocolado_tramita_e_tem_desfecho()
     {
         var (state, engine) = ElectedCouncillor();
@@ -155,6 +160,7 @@ public class LegislatureTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Acoes_respeitam_energia_capital_e_emendas()
     {
         var (state, engine) = ElectedCouncillor();

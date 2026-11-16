@@ -14,6 +14,7 @@ public class PartyGeneratorTests
     private static PartyGenerator Generator => new(Content);
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Estresse_DezMilPartidosSemColisaoComAListaESemSiglaRepetidaNoMundo()
     {
         const int partiesPerWorld = 35;

@@ -39,6 +39,7 @@ public class CityContentTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Eventos_religiosos_saem_na_proporcao_da_composicao_do_municipio()
     {
         // Os municípios vêm dos dados: o de maior fatia católica e o de maior fatia evangélica entre os de porte
@@ -86,6 +87,7 @@ public class CityContentTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Eventos_da_cidade_respeitam_porte_mes_dia_turno_e_situacao()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3106200, 93);
@@ -171,6 +173,7 @@ public class CityContentTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Compromissos_e_pedidos_apontam_para_conteudo_que_existe()
     {
         CommitmentCatalog commitments = CampaignKit.C.Campaign.Commitments;
@@ -193,6 +196,7 @@ public class CityContentTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Estado_novo_vai_e_volta_igual_pelo_save()
     {
         // Meio de campanha com tudo o que a R2a acrescentou: compromissos marcados, convite, evento da cidade,
@@ -323,6 +327,7 @@ public class CityContentTests
 
     [Theory]
     [MemberData(nameof(PorPorte))]
+    [Trait("Categoria", "Lento")]
     public void Campanha_inteira_com_save_e_load_no_meio_termina_igual_a_sem_salvar(int ibge, ulong seed)
     {
         CampaignEngine straight = CampaignKit.NewCareer(ibge, seed);

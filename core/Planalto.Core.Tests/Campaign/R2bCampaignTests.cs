@@ -33,6 +33,7 @@ public class R2bCampaignTests
 
     [Theory]
     [MemberData(nameof(Cases))]
+    [Trait("Categoria", "Lento")]
     public void Campanha_inteira_jogada_sozinha_com_save_e_load_no_meio(string porte, ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(CityOf(porte, (int)(seed % 3)), seed);
@@ -89,6 +90,7 @@ public class R2bCampaignTests
     [InlineData("medio")]
     [InlineData("grande")]
     [InlineData("metropole")]
+    [Trait("Categoria", "Lento")]
     public void Todo_comando_novo_tem_previsao_com_faixa_e_explicacao_e_o_resultado_cai_na_faixa(string porte)
     {
         int total = 0;
