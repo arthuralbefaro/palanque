@@ -1,14 +1,15 @@
 using Godot;
+using Planalto.Autoload;
 
 namespace Planalto.UI;
 
 /// <summary>
-/// Preferências do jogador fora do save (user://opcoes.cfg): pausas automáticas desligadas ou ligadas e dicas de
+/// Preferências do jogador fora do save (opcoes.cfg na base de UserPaths): pausas automáticas desligadas ou ligadas e dicas de
 /// primeira vez já vistas (GDD 17.1, princípio j: dica dispensada nunca volta).
 /// </summary>
 public static class Settings
 {
-    private const string Path = "user://opcoes.cfg";
+    private static string Path => UserPaths.Of("opcoes.cfg");
     private static ConfigFile? _file;
 
     private static ConfigFile File
@@ -53,6 +54,9 @@ public static class Settings
         File.SetValue("dicas", "ligadas", false);
         Save();
     }
+
+    /// <summary>Esquece o que foi lido; a próxima consulta lê de novo o arquivo (troca de perfil nos testes de fumaça).</summary>
+    public static void Reload() => _file = null;
 
     /// <summary>Testes de fumaça: volta às dicas ligadas e nenhuma vista, sem gravar.</summary>
     public static void ResetForTest()
