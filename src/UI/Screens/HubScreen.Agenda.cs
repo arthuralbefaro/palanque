@@ -29,6 +29,12 @@ public partial class HubScreen
         public string? PersonId { get; set; }
 
         public string? CityEventId { get; set; }
+
+        /// <summary>Um representante vai no lugar do candidato (GDD 17.6, "Delegar").</summary>
+        public bool Delegado { get; set; }
+
+        /// <summary>Tema de que o candidato vai falar (entrevista, gravação, comício).</summary>
+        public string? Tema { get; set; }
     }
 
     private int _weekOffset;
@@ -48,7 +54,9 @@ public partial class HubScreen
         string? zone = type.ExigeZona ? d.ZoneId
             : type.Visita && person is not null && _engine.City.Leader(person) is { } visited ? visited.Zones[0]
             : null;
-        return new CommitmentRequest(d.Type, zone, d.Date, d.Turno, type.EscolhePublico ? d.Publico : CommitmentType.PublicoGeral, person, type.SoEvento ? d.CityEventId : null);
+        bool delegated = d.Delegado && type.Delegavel;
+        string? theme = !delegated && _engine.SpeaksOfThemes(type.Id) ? d.Tema : null;
+        return new CommitmentRequest(d.Type, zone, d.Date, d.Turno, type.EscolhePublico ? d.Publico : CommitmentType.PublicoGeral, person, type.SoEvento ? d.CityEventId : null, Delegado: delegated, Tema: theme);
     }
 
     /// <summary>"Caminhada em Centro", "Visita a Fulana (presidente de associação rural)".</summary>
@@ -60,7 +68,8 @@ public partial class HubScreen
             return string.Format(Tr("Visita a {0}"), LeaderLabel(leader));
         }
 
-        return c.ZoneId is null ? type.Nome : string.Format(Tr("{0} em {1}"), type.Nome, ZoneName(c.ZoneId));
+        string title = c.ZoneId is null ? type.Nome : string.Format(Tr("{0} em {1}"), type.Nome, ZoneName(c.ZoneId));
+        return c.Delegado ? string.Format(Tr("{0} (com representante)"), title) : title;
     }
 
     /// <summary>Quanto custa um tipo de compromisso, para a terceira parte do tooltip.</summary>
@@ -115,8 +124,10 @@ public partial class HubScreen
             next.TooltipText = Palette.Blocked(string.Format(Tr("só dá para marcar com até {0} dias de antecedência."), Catalog.Regras.AntecedenciaDias), nextTip);
         }
 
-        HBoxContainer header = Ui.Row(_left, 2);
-        header.Add(new Control { CustomMinimumSize = new Vector2(58, 0) });
+        RepeatWeekButton(start);
+
+        HBoxContainer header = Ui.Row(_left, 0);
+        header.Add(new Control { CustomMinimumSize = new Vector2(DayColumn, 0) });
         foreach (Turno turno in Enum.GetValues<Turno>())
         {
             Label l = Ui.Value(header, TurnoName(turno), 18);
@@ -128,18 +139,18 @@ public partial class HubScreen
         for (int d = 0; d < 7; d++)
         {
             DateOnly date = start.AddDays(d);
-            HBoxContainer row = Ui.Row(_left, 2);
+            HBoxContainer row = Ui.Row(_left, 0);
             row.Name = "Dia_" + date.ToString("yyyyMMdd", PtBr);
             double rain = Agenda.Rain.GetValueOrDefault(date);
             var day = row.Add(new PanelContainer
             {
-                CustomMinimumSize = new Vector2(58, 60),
+                CustomMinimumSize = new Vector2(DayColumn, 60),
                 MouseFilter = MouseFilterEnum.Stop,
                 TooltipText = DayLong(date) + ". " + (rain > 0
                     ? string.Format(PtBr, Tr("Chuva prevista: compromissos de rua rendem {0:P0} menos nesse dia."), rain)
                     : Agenda.Rain.ContainsKey(date) ? Tr("Sem chuva prevista.") : Tr("A previsão de chuva da semana sai na segunda-feira.")),
             });
-            var box = Palette.Box(date == today ? Palette.Cartao : new Color(Palette.Cartao, 0), 8, 4);
+            var box = Palette.Box(date == today ? Palette.Cartao : new Color(Palette.Cartao, 0), 8, 2);
             if (date == today)
             {
                 // Hoje: barra de 3 px em acao à esquerda, como a linha selecionada do ART_GUIDE.
@@ -226,7 +237,7 @@ public partial class HubScreen
 
     /// <summary>Compromisso concluído que ocupou o turno (para a semana em curso mostrar o que já foi feito).</summary>
     private CommitmentResult? DoneAt(DateOnly date, Turno turno) =>
-        Agenda.Log.LastOrDefault(r => r.Commitment.Date == date && (int)turno >= (int)r.Commitment.Turno && (int)turno < (int)r.Commitment.Turno + Catalog.Get(r.Commitment.Type).Turnos);
+        Agenda.Log.LastOrDefault(r => !r.Commitment.Delegado && r.Commitment.Date == date && (int)turno >= (int)r.Commitment.Turno && (int)turno < (int)r.Commitment.Turno + Catalog.Get(r.Commitment.Type).Turnos);
 
     /// <summary>Primeira palavra do nome do tipo: é o que cabe numa célula; o nome inteiro vai no tooltip.</summary>
     private static string ShortName(CommitmentType type) => type.SoEvento ? TranslationServer.Translate("Evento") : type.Nome.Split(' ')[0];
@@ -280,11 +291,15 @@ public partial class HubScreen
         b.CustomMinimumSize = new Vector2(0, 60);
         b.ClipText = true;
         b.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
-        foreach (string state in new[] { "hover", "pressed", "disabled", "focus" })
+
+        // A célula tem cerca de 100 px: sem margem lateral, "Caminhada" (o nome mais usado) cabe inteiro em 18 px.
+        foreach (string state in new[] { "normal", "hover", "pressed", "disabled", "focus" })
         {
-            if (b.GetThemeStylebox(state)?.Duplicate() is StyleBox style)
+            if (b.GetThemeStylebox(state)?.Duplicate() is StyleBoxFlat style)
             {
-                style.ContentMarginLeft = style.ContentMarginRight = 2;
+                style.ContentMarginLeft = style.ContentMarginRight = 0;
+                style.SetExpandMargin(Side.Left, -1);
+                style.SetExpandMargin(Side.Right, -1);
                 b.AddThemeStyleboxOverride(state, style);
             }
         }
@@ -541,6 +556,9 @@ public partial class HubScreen
             }
         }
 
+        DelegateControls(d, type);
+        ThemeControls(d, type);
+
         // Previsão antes de confirmar (princípio f).
         CommitmentRequest request = RequestOf(d);
         CommitmentForecast forecast = _engine.Forecast(request);
@@ -579,10 +597,120 @@ public partial class HubScreen
         Ui.Button(row, "Cancelar", Back, Palette.Tip(Tr("Fecha a marcação sem marcar nada."), Tr("o turno continua livre."), Tr("nada."))).Name = "Cancelar";
     }
 
-    private void FieldLabel(string text)
+    private void FieldLabel(string text) => Glossary.Rich(_left, Tr(text), 18, Palette.Texto3);
+
+    private const int DayColumn = 54;
+
+    /// <summary>"Mandar representante" (GDD 17.6): só com alguém na coordenação, e até o número de delegações da semana.</summary>
+    private void DelegateControls(Draft d, CommitmentType type)
     {
-        Label l = Ui.Label(_left, text, 18);
-        l.AddThemeColorOverride("font_color", Palette.Texto3);
+        if (!type.Delegavel)
+        {
+            d.Delegado = false;
+            return;
+        }
+
+        StaffRules rules = StaffContent.Regras;
+        StaffMember? coordinator = _engine.StaffIn(StaffRole.Coordenador);
+        int perWeek = _engine.DelegationsPerWeek;
+        int used = _engine.DelegationsIn(d.Date);
+        string memory = StaffContent.Memory("visita_delegada").Texto;
+        string tip = Palette.Tip(
+            Tr("Um representante da campanha vai no seu lugar."),
+            string.Format(PtBr, Tr("o compromisso rende {0:P0} do normal, não ocupa o seu turno e não dá estresse. Quem recebe lembra que você não foi (\"{1}\"); numa visita, a relação sobe só {2} e o pedido não é ouvido."), rules.DelegacaoRendimento, memory, Signed(rules.DelegacaoPontosVisita, "0")),
+            string.Format(Tr("o custo do compromisso e uma das delegações da semana ({0} de {1} usadas)."), used, perWeek));
+        var toggle = Ui.Button(_left, "Mandar representante", () => { d.Delegado = !d.Delegado; Refresh(); }, tip);
+        toggle.Name = "Delegar";
+        toggle.ToggleMode = true;
+        toggle.ButtonPressed = d.Delegado;
+        if (coordinator is null)
+        {
+            d.Delegado = false;
+            toggle.ButtonPressed = false;
+            toggle.Disabled = true;
+            toggle.TooltipText = Palette.Blocked(Tr("falta alguém na Coordenação da equipe: é quem manda representante. Contrate em Campanha, Equipe."), tip);
+            return;
+        }
+
+        if (!d.Delegado && used >= perWeek)
+        {
+            toggle.Disabled = true;
+            toggle.TooltipText = Palette.Blocked(string.Format(Tr("{0} já usou as {1} delegações desta semana; coordenação melhor delega mais."), StaffLabel(coordinator), perWeek), tip);
+        }
+
+        Glossary.Rich(_left, string.Format(Tr("Delegações de {0} na semana desse dia: {1} de {2} usadas."), StaffLabel(coordinator), used, perWeek), 18, Palette.Texto3);
+    }
+
+    /// <summary>Tema de que o candidato fala (GDD 17.9): entrevista, gravação e comício tornam a posição mais conhecida.</summary>
+    private void ThemeControls(Draft d, CommitmentType type)
+    {
+        if (!_engine.SpeaksOfThemes(type.Id) || (d.Delegado && type.Delegavel))
+        {
+            return;
+        }
+
+        var themes = _engine.Context.Themes.Themes;
+        if (d.Tema is not null && themes.All(t => t.Id != d.Tema))
+        {
+            d.Tema = null;
+        }
+
+        FieldLabel("Tema de que você vai falar");
+        var items = new List<(string Id, string Text)> { ("", Tr("Nenhum tema em especial")) };
+        items.AddRange(themes.Select(t => (t.Id, string.Format(PtBr, Tr("{0} · conhecida {1:P0}{2}"), t.Name, _engine.KnownOf(t.Id), Platform.Flags.Contains(t.Id) ? " · " + Tr("bandeira") : ""))));
+        var options = Ui.Options(_left, items, d.Tema ?? "", id => { d.Tema = id.Length == 0 ? null : id; Refresh(); }, translate: false);
+        options.Name = "Tema";
+        options.ClipText = true;
+        options.TooltipText = Palette.Tip(
+            Tr("O tema de que você fala neste compromisso."),
+            Tr("a sua posição nesse tema fica mais conhecida (mais ainda se for bandeira) e entra no Livro de compromissos como posição assumida, com a data e o lugar. Quem não gosta dela também fica sabendo."),
+            Tr("nada em dinheiro; posição conhecida custa mais para mudar depois."));
+    }
+
+    /// <summary>
+    /// Atalho "Repetir a semana anterior": marca de novo, nos mesmos dias e turnos da semana mostrada, o que foi feito
+    /// ou está marcado na semana anterior a ela. O que não couber (turno ocupado, sem dinheiro, fora de época) fica de fora.
+    /// </summary>
+    private void RepeatWeekButton(DateOnly start)
+    {
+        DateOnly from = start.AddDays(-7), to = start.AddDays(-1);
+        var source = Agenda.Log.Select(r => r.Commitment).Concat(Agenda.Scheduled)
+            .Where(c => c.Date >= from && c.Date <= to && c.CityEventId is null && c.InviteId is null)
+            .OrderBy(c => c.Date).ThenBy(c => c.Turno).ToList();
+        var requests = source.Select(c => new CommitmentRequest(c.Type, c.ZoneId, c.Date.AddDays(7), c.Turno, c.Publico, c.PersonId, null, null, c.Delegado, c.Tema)).ToList();
+        var possible = requests.Where(r => _engine.CanSchedule(r) is null).ToList();
+        decimal cost = possible.Sum(r => Math.Max(0, _engine.CostOf(Catalog.Get(r.Type))));
+        string tip = Palette.Tip(
+            Tr("Repete a semana anterior nesta semana."),
+            string.Format(Tr("marca de novo, nos mesmos dias e turnos, os compromissos da semana anterior a esta: {0} de {1} cabem hoje. Evento da cidade e convite não se repetem; o cansaço de repetir continua valendo e aparece na previsão de cada um."), possible.Count, requests.Count),
+            string.Format(Tr("{0} ao todo, cobrados quando cada compromisso acontece."), Money(cost)));
+        var repeat = Ui.Button(_left, "Repetir a semana anterior", () =>
+        {
+            int done = 0;
+            foreach (CommitmentRequest r in requests)
+            {
+                if (_engine.Schedule(r).Failure is null)
+                {
+                    done++;
+                }
+            }
+
+            _log.Insert(0, string.Format(Tr("Semana repetida: {0} de {1} compromissos marcados."), done, requests.Count));
+            Refresh();
+        }, tip);
+        repeat.Name = "RepetirSemana";
+        if (BlockReason() is { } block)
+        {
+            repeat.Disabled = true;
+            repeat.TooltipText = Palette.Blocked(string.Format(Tr("{0}; resolva antes de marcar."), block), tip);
+        }
+        else if (possible.Count == 0)
+        {
+            repeat.Disabled = true;
+            repeat.TooltipText = Palette.Blocked(requests.Count == 0
+                ? Tr("a semana anterior a esta não teve compromisso para repetir; falta marcar ao menos um.")
+                : Tr("nenhum compromisso da semana anterior cabe nesta: os turnos estão ocupados, já passaram ou falta dinheiro."), tip);
+        }
     }
 
     /// <summary>Por que não dá para marcar e o que falta (princípio j).</summary>
@@ -615,6 +743,19 @@ public partial class HubScreen
                 return string.Format(PtBr, Tr("você ainda não tem quem abra a casa nessa zona: faltam {0:0.0} pontos de presença (tem {1:0.0}, precisa de {2:0}) ou uma liderança conhecida ali que não esteja contra você."), Math.Max(0, rules.ReuniaoPresencaMinima - presence), presence, rules.ReuniaoPresencaMinima);
             case ScheduleFailure.EventoInvalido:
                 return Tr("o evento da cidade só existe no dia, no turno e na zona dele.");
+            case ScheduleFailure.NaoDelegavel:
+                return string.Format(Tr("{0} exige a sua presença: não dá para mandar representante. Desmarque a opção."), type.Nome);
+            case ScheduleFailure.SemCoordenador:
+                return Tr("falta alguém na Coordenação da equipe: é quem manda representante. Contrate em Campanha, Equipe.");
+            case ScheduleFailure.SemDelegacao:
+                return _engine.DelegationsIn(r.Date) >= _engine.DelegationsPerWeek
+                    ? string.Format(Tr("as {0} delegações da semana desse dia já foram usadas; falta esperar a semana seguinte ou ter coordenação melhor."), _engine.DelegationsPerWeek)
+                    : string.Format(Tr("{0} ocupa {1} turnos seguidos e o dia acaba antes; escolha um turno mais cedo."), type.Nome, type.Turnos);
+            case ScheduleFailure.SemVerbaDeRua:
+                decimal has = r.ZoneId is null ? 0 : _engine.RuaBudgetFor(r.Date, r.ZoneId);
+                return string.Format(Tr("comício precisa de palanque e som: falta verba no canal Rua em {0} na semana do comício. Tem {1} por semana, precisa de {2} (faltam {3}). Ponha em Campanha, Verba por canal, Rua."), ZoneName(r.ZoneId), Money(has), Money(_engine.ComicioRuaMinimum), Money(Math.Max(0, _engine.ComicioRuaMinimum - has)));
+            case ScheduleFailure.TemaInvalido:
+                return Tr("só você fala pela sua posição: com representante, ou neste tipo de compromisso, não há tema. Escolha Nenhum tema em especial.");
             default:
                 return Tr("há uma decisão aberta; resolva antes de marcar.");
         }
@@ -662,6 +803,11 @@ public partial class HubScreen
             lines.Add(string.Format(Tr("estresse: {0}"), Signed(f.Stress, "0")));
         }
 
+        if (r.Tema is not null && f.ThemeKnownGain >= 0.0005 && _engine.Context.Themes.Themes.FirstOrDefault(t => t.Id == r.Tema) is { } theme)
+        {
+            lines.Add(string.Format(PtBr, Tr("posição conhecida em {0}: {1} pontos (você dirá {2})"), theme.Name, Signed(f.ThemeKnownGain * 100, "0"), PositionText(theme, _engine.PositionOf(theme.Id))));
+        }
+
         return lines;
     }
 
@@ -700,7 +846,13 @@ public partial class HubScreen
             Glossary.Rich(col, "· " + char.ToUpper(line[0], PtBr) + line[1..], 18, Palette.Texto);
         }
 
-        if (type.Visita)
+        if (r.Delegado && f.Factors.FirstOrDefault(x => x.Id == "delegado") is { } delegated)
+        {
+            PanelContainer sent = Card(col, Palette.CartaoAlto, Palette.Linha, 10);
+            sent.Name = "Representante";
+            Glossary.Rich(sent, string.Format(PtBr, Tr("Com representante: rende {0:P0} do normal e não ocupa o seu turno. Quem recebe lembra que você não foi."), delegated.Multiplier), 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+        }
+        else if (type.Visita)
         {
             Glossary.Rich(col, Tr("Na visita ela faz o pedido dela; a resposta é uma decisão sua, com o jogo pausado."));
         }
@@ -716,7 +868,7 @@ public partial class HubScreen
                 Glossary.Rich(warn, string.Format(PtBr, Tr("Cansaço: {0}: rende {1:P0}."), fatigue.Text, fatigue.Multiplier), 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
             }
 
-            var others = f.Factors.Where(x => x.Id != "cansaco").ToList();
+            var others = f.Factors.Where(x => x.Id is not ("cansaco" or "delegado")).ToList();
             if (f.Factors.Count > 0)
             {
                 Glossary.Rich(col, string.Format(PtBr, Tr("Rendimento: {0:P0} do valor de base, antes da sorte do dia (de {1:P0} a {2:P0})."), f.Yield, Catalog.Regras.Sorte.Min, Catalog.Regras.Sorte.Max));
@@ -764,6 +916,11 @@ public partial class HubScreen
             Glossary.Rich(_left, string.Format(Tr("Público: {0}."), EffectSummary.GroupName(c.Publico)));
         }
 
+        if (c.Tema is not null)
+        {
+            Glossary.Rich(_left, string.Format(Tr("Tema de que você fala: {0}."), ThemeName(c.Tema)));
+        }
+
         if (!type.Visita && c.PersonId is not null && _engine.City.Leader(c.PersonId) is { } companion)
         {
             Glossary.Rich(_left, string.Format(Tr("Com você: {0}."), LeaderLabel(companion)));
@@ -783,7 +940,7 @@ public partial class HubScreen
             return true;
         }
 
-        var request = new CommitmentRequest(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId);
+        var request = new CommitmentRequest(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId, c.Delegado, c.Tema);
         ForecastBlock(_left, request, _engine.ForecastOf(c), showBlocked: false);
         LeaderRules rules = _engine.Context.Campaign.Leaders.Regras;
         string invite = c.InviteId is null ? "" : " " + string.Format(Tr("Veio de um convite: desmarcar conta como recusa ({0} de relação com quem convidou)."), Signed(rules.PontosConviteRecusado, "0"));

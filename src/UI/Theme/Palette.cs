@@ -25,6 +25,9 @@ public static class Palette
     /// <summary>Escala sequencial do modo Minha força (5 faixas, de #1B2A2A a #2FD0A5).</summary>
     public static Color Forca(double t) => new Color("#1B2A2A").Lerp(new Color("#2FD0A5"), (float)Math.Clamp(t, 0, 1));
 
+    /// <summary>Escala sequencial do modo Verba (5 faixas, do painel à cor de ação: a mesma cor da barra de verba).</summary>
+    public static Color Verba(double t) => new Color("#1B2230").Lerp(Acao, (float)Math.Clamp(t, 0, 1));
+
     private static FontFile? _inter, _oswald, _serif;
 
     public static Font Inter => _inter ??= Load("res://assets/fonts/Inter.ttf");
@@ -104,6 +107,25 @@ public static class Palette
         {
             button.AddThemeColorOverride(color, Fundo);
         }
+    }
+
+    /// <summary>Botão perigoso (ART_GUIDE: demitir, romper, renunciar): contorno e texto em negativo; pede confirmação.</summary>
+    public static void Danger(Button button)
+    {
+        button.AddThemeStyleboxOverride("normal", Box(Cartao, 8, 10, Negativo));
+        button.AddThemeStyleboxOverride("hover", Box(CartaoAlto, 8, 10, Negativo));
+        button.AddThemeStyleboxOverride("pressed", Box(CartaoAlto, 8, 10, Negativo, 2));
+        foreach (string color in new[] { "font_color", "font_hover_color", "font_pressed_color", "font_focus_color" })
+        {
+            button.AddThemeColorOverride(color, Negativo);
+        }
+    }
+
+    /// <summary>Botão de escolha marcada (ART_GUIDE, "selecionado"): fundo acao a 20%, contorno acao.</summary>
+    public static void Selected(Button button)
+    {
+        button.AddThemeStyleboxOverride("normal", Box(new Color(Acao, 0.2f), 8, 10, Acao));
+        button.AddThemeStyleboxOverride("hover", Box(new Color(Acao, 0.28f), 8, 10, Acao));
     }
 
     /// <summary>Linha de lista clicável (ART_GUIDE): fundo cartao, cartao_alto sob o mouse, sem contorno.</summary>

@@ -62,6 +62,11 @@ public partial class HubScreen
             parts.Add(string.Format(Tr("{0} de estresse"), Signed(r.Stress, "0")));
         }
 
+        if (c.Tema is not null && r.ThemeKnown >= 0.0005)
+        {
+            parts.Add(string.Format(Tr("{0} pontos de posição conhecida em {1}"), Signed(r.ThemeKnown * 100, "0"), ThemeName(c.Tema)));
+        }
+
         string text = (r.Text.Length > 0 ? r.Text + " " : "") + (parts.Count == 0 ? Tr("Sem efeito nos números desta vez") : string.Join("; ", parts)) + ".";
         if (HasYield(type) && r.Factors.Count > 0)
         {
@@ -110,7 +115,16 @@ public partial class HubScreen
                 text = text[..at] + CandidateLabel(rival) + text[(at + rival.Name.Length)..];
             }
 
-            items.Add(new FeedEntry(f.Date, order++, f.Kind == "descoberta" ? Tr("Sua agenda") : Tr("Nos bastidores"), null, text + ".", f.ZoneId));
+            string source = f.Kind switch
+            {
+                "descoberta" => Tr("Sua agenda"),
+                "objetivo" => Tr("Objetivos"),
+                "equipe" or "conselho" or "contas" or "vazamento" or Clock.CaixaBaixo => Tr("Sua equipe"),
+                "verba" or "cabos" => Tr("Sua verba"),
+                "posicao" or "promessa" => Tr("Sua plataforma"),
+                _ => Tr("Nos bastidores"),
+            };
+            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId));
         }
 
         foreach (var h in Campaign.Events.History)
@@ -142,9 +156,7 @@ public partial class HubScreen
 
         card.Name = "Feed_" + entry.Order;
         var col = Ui.Column(card, 4);
-        Label meta = Ui.Value(col, $"{entry.Source} · {entry.Date.ToString("dd/MM", PtBr)}", 18);
-        meta.AddThemeColorOverride("font_color", Palette.Texto3);
-        meta.MouseFilter = MouseFilterEnum.Pass;
+        Glossary.Rich(col, $"{entry.Source} · {entry.Date.ToString("dd/MM", PtBr)}", 18, Palette.Texto3);
         if (entry.Title is not null)
         {
             Glossary.Plain(col, entry.Title, 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));

@@ -168,10 +168,18 @@ public partial class HubScreen
     }
 
     /// <summary>Linha de lista: nome à esquerda (cede e quebra), um valor à direita (nunca cortado).</summary>
-    private static void ValueRow(Node parent, string name, string value, bool highlight = false)
+    private static void ValueRow(Node parent, string name, string value, bool highlight = false, bool link = false)
     {
         HBoxContainer row = Ui.Row(parent, 8);
-        Glossary.Plain(row, name, 18, highlight ? Palette.Texto : Palette.Texto2);
+        if (link)
+        {
+            Glossary.Rich(row, name, 18, highlight ? Palette.Texto : Palette.Texto2);
+        }
+        else
+        {
+            Glossary.Plain(row, name, 18, highlight ? Palette.Texto : Palette.Texto2);
+        }
+
         Label v = Ui.Value(row, value, 18);
         v.AddThemeColorOverride("font_color", Palette.Texto);
         v.SizeFlagsVertical = SizeFlags.ShrinkBegin;
@@ -186,7 +194,15 @@ public partial class HubScreen
         ("renda", "Renda", "Rendimento médio do responsável pelo domicílio (Censo 2022), em 5 faixas da própria cidade."),
         ("idade", "Idosos", "Parte dos eleitores com 60 anos ou mais (Censo 2022), em 5 faixas da própria cidade."),
         ("situacao", "Urbana/rural", "Zonas urbanas e rurais pelo Censo 2022."),
+        ("verba", "Verba", "Onde está a sua verba semanal nos canais de zona (Rua, Material gráfico e Cabos eleitorais), em 5 faixas; com um canal aberto no painel, só a verba dele. O tooltip de cada zona compara com a verba dos rivais."),
     ];
+
+    /// <summary>Canais de verba cujo alvo é zona (os que o mapa mostra).</summary>
+    private IEnumerable<ChannelDefinition> ZoneChannels => Channels.Canais.Where(c => c.Alvo == ChannelDefinition.AlvoZona);
+
+    /// <summary>Canal que o modo Verba mostra sozinho: o que está aberto no painel, se o alvo dele é zona.</summary>
+    private ChannelDefinition? MapChannel =>
+        _sheet == Sheet.Canal && _sheetId is not null && Channels.Find(_sheetId) is { Alvo: ChannelDefinition.AlvoZona } channel ? channel : null;
 
     private void BuildMap()
     {
@@ -234,6 +250,11 @@ public partial class HubScreen
                     LegendRow(PartyColor(leader), PartySigla(leader));
                 }
 
+                break;
+            case "verba":
+                ChannelDefinition? only = MapChannel;
+                LegendTitle(only is null ? Tr("Sua verba por semana (canais de zona)") : string.Format(Tr("Sua verba por semana: {0}"), only.Nome));
+                Bands(_zonas.Zonas.Select(z => (z.Id, (double?)(double)(only is null ? ZoneChannels.Sum(c => _engine.Budget.PlanOf(c.Id, z.Id)) : _engine.Budget.PlanOf(only.Id, z.Id)))), Palette.Verba, v => string.Create(PtBr, $"R$ {v:N0}"), colors);
                 break;
             case "situacao":
                 LegendTitle(Tr("Situação (Censo 2022)"));
@@ -360,6 +381,26 @@ public partial class HubScreen
             markers.Add(new ZoneMapView.Marker(leader.Zones[0], SideColor(leader), Palette.Icon("lider_" + leader.Type), null));
         }
 
+        // Verba: no modo Verba, uma etiqueta por canal com verba na zona (no lugar dos outros marcadores); nos demais
+        // modos, só onde há cabos contratados.
+        bool budgetMode = _mapMode == "verba";
+        if (budgetMode)
+        {
+            markers.Clear();
+        }
+
+        foreach (ChannelAllocation a in _engine.Budget.Plan.Where(a => a.Amount > 0 && Channels.Find(a.ChannelId) is { Alvo: ChannelDefinition.AlvoZona }))
+        {
+            if (a.ChannelId == ChannelDefinition.Cabos)
+            {
+                markers.Add(new ZoneMapView.Marker(a.TargetId, Palette.Acao, Palette.Icon("pessoas"), null));
+            }
+            else if (budgetMode)
+            {
+                markers.Add(new ZoneMapView.Marker(a.TargetId, Palette.Verba(0.55), null, Channels.Get(a.ChannelId).Nome.Split(' ')[0]));
+            }
+        }
+
         var pulsing = Agenda.CityEvents.Where(e => e.Date == today).Select(e => e.ZoneId).ToList();
         _map.SetMarkers(markers, pulsing);
 
@@ -367,6 +408,13 @@ public partial class HubScreen
         var chips = _legend.Add(new HFlowContainer { CustomMinimumSize = new Vector2(300, 0) });
         chips.AddThemeConstantOverride("h_separation", 14);
         chips.AddThemeConstantOverride("v_separation", 4);
+        if (budgetMode)
+        {
+            Chip(chips, Palette.Verba(0.55), Tr("etiqueta: canal com verba sua na zona"), Palette.Icon("marcador"));
+            Chip(chips, Palette.Acao, Tr("cabos contratados"), Palette.Icon("pessoas"));
+            return;
+        }
+
         Chip(chips, Palette.Acao, Tr("compromisso seu"), Palette.Icon("calendario"));
         foreach (string type in _engine.City.Leaders.Where(l => l.Known).Select(l => l.Type).Distinct())
         {
@@ -376,6 +424,11 @@ public partial class HubScreen
         Chip(chips, Palette.Positivo, Tr("apoia você"));
         Chip(chips, Palette.NeutroDado, Tr("neutra"));
         Chip(chips, Palette.Texto2, Tr("sigla: rival visto na semana"), Palette.Icon("marcador"));
+        if (_engine.CabosNetworkActive)
+        {
+            Chip(chips, Palette.Acao, Tr("cabos contratados"), Palette.Icon("pessoas"));
+        }
+
         if (pulsing.Count > 0)
         {
             Chip(chips, Palette.Atencao, Tr("pulsando: evento da cidade hoje"), Palette.Icon("marcador"));
@@ -419,6 +472,9 @@ public partial class HubScreen
         }
     }
 
+    /// <summary>Texto do tooltip de uma zona (testes de fumaça conferem a verba própria e a dos rivais).</summary>
+    public string ZoneTooltipForTest(string id) => ZoneTooltip(id);
+
     private string ZoneTooltip(string id)
     {
         if (!_map.Zonas.TryGetValue(id, out Zona? z))
@@ -436,7 +492,14 @@ public partial class HubScreen
         here.AddRange(Agenda.CityEvents.Where(e => e.ZoneId == id && e.Date == _engine.Today).Select(e => string.Format(Tr("hoje: {0} ({1})"), e.Nome, TurnoName(e.Turno))));
         here.AddRange(RivalSightings().Where(f => f.ZoneId == id).Select(f => f.Text));
         here.AddRange(_engine.City.Leaders.Where(l => l.Known && l.Zones[0] == id).Select(l => $"{LeaderLabel(l)}: {SideText(l)}"));
-        string marks = here.Count == 0 ? "" : "\n\n" + Tr("Nesta zona:") + "\n· " + string.Join("\n· ", here.Take(8));
+        // Verba própria e dos rivais em cada canal de zona: sempre no modo Verba; nos outros, só onde você gasta.
+        var budget = ZoneChannels
+            .Select(c => (c.Nome, Own: _engine.Budget.PlanOf(c.Id, id), Rival: _engine.RivalBudget(c.Id, id)))
+            .Where(x => _mapMode == "verba" || x.Own > 0)
+            .Select(x => string.Format(Tr("{0}: você {1}, rivais cerca de {2}"), x.Nome, Money(x.Own), Money(x.Rival)))
+            .ToList();
+        string marks = (budget.Count == 0 ? "" : "\n\n" + Tr("Verba por semana nesta zona:") + "\n· " + string.Join("\n· ", budget))
+            + (here.Count == 0 ? "" : "\n\n" + Tr("Nesta zona:") + "\n· " + string.Join("\n· ", here.Take(8)));
         return Palette.Tip(
             string.Format(PtBr, Tr("{0}: {1:N0} moradores ({2})."), z.Nome, z.Populacao, Tr(z.IsRural ? "zona rural" : "zona urbana")),
             string.Format(PtBr, Tr("clique para abrir a ficha da zona. Sua presença aqui: {0:0.0} de 100."), Territory.PresenceOf(RaceSetup.PlayerId, index)) + leader,
