@@ -139,6 +139,44 @@ public sealed class CampaignTrace
     public int OutletInterviews { get; set; }
 
     public int HotThemeCommitments { get; set; }
+
+    // ---- Diagnóstico do canal de verba, do par mais repetido e da dificuldade
+
+    public bool Strongest { get; set; }
+
+    /// <summary>Campanha sem campanha: o robô ficou parado.</summary>
+    public bool Idle { get; set; }
+
+    /// <summary>Por canal, as contas da melhor primeira parcela nas semanas da campanha oficial.</summary>
+    public Dictionary<string, ChannelDiag> ChannelDiag { get; } = [];
+
+    public decimal CashAtOfficialStart { get; set; }
+
+    /// <summary>Verba de canais paga até o começo da campanha oficial, e na campanha inteira.</summary>
+    public decimal BudgetSpentPre { get; set; }
+
+    public decimal BudgetSpentTotal { get; set; }
+
+    public int CabosLimit { get; set; }
+
+    public decimal ChannelStep { get; set; }
+
+    /// <summary>O par (tipo, lugar) mais repetido da campanha, descrito, e em quantos turnos foi a melhor escolha.</summary>
+    public string TopPair { get; set; } = "";
+
+    public int TopPairTurns { get; set; }
+
+    /// <summary>Reconhecimento final dos rivais nomeados do mesmo cargo: média e o maior.</summary>
+    public double RivalRecognition { get; set; }
+
+    public double RivalRecognitionMax { get; set; }
+
+    /// <summary>Votos do jogador sobre o quociente eleitoral, cadeiras do partido dele e a posição dele na chapa.</summary>
+    public double VotesOverQuotient { get; set; }
+
+    public int PartySeats { get; set; }
+
+    public int RankInParty { get; set; }
 }
 
 /// <summary>
@@ -206,6 +244,7 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
         Trace.ObjectiveKinds = objectives.Select(o => o.Kind).Distinct().Count();
         Trace.ObjectivesDone = objectives.Count(o => o.Status == ObjectiveStatus.Cumprido);
         Trace.TeamAtEnd = _engine.HiredStaff.Count();
+        DiagnosePair();
         ElectionOutcome outcome = _engine.ResolveElection();
         Trace.Dirty = Dirty;
         Trace.CampaignSpent = _engine.Finance.Spent;
@@ -213,6 +252,7 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
         Trace.Elected = outcome.PlayerElected;
         Trace.Position = 1 + outcome.Vereador.Votes.Where(v => !v.Key.StartsWith("demais_", StringComparison.Ordinal)).Count(v => v.Value > outcome.Vereador.Votes[RaceSetup.PlayerId]);
         Trace.FinalRecognition = Campaign.Player.Recognition;
+        DiagnoseOutcome(outcome);
         Trace.AlignedLeaders = _engine.City.Leaders.Count(l => l.AlignedWith == RaceSetup.PlayerId);
         Trace.Promises = State.Ledger.Promises.Count;
         return Trace;
@@ -377,6 +417,13 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
         void Consider(CommitmentRequest r)
         {
             r = r with { Tema = TalkTheme(r.Type) };
+
+            // A previsão traz o mesmo bloqueio de CanSchedule; conferir antes poupa a conta das opções bloqueadas.
+            if (_engine.CanSchedule(r) is not null)
+            {
+                return;
+            }
+
             CommitmentForecast f = _engine.Forecast(r);
             if (f.Blocked is not null)
             {

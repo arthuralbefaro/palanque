@@ -1,12 +1,14 @@
 using System.Globalization;
 using System.Text;
 using Planalto.BalanceSim;
+using Planalto.Core.Campaign;
 using Planalto.Core.Data;
 using Planalto.Core.Municipios;
 using Planalto.Core.State;
 
 // Uso: dotnet run --project tools/Planalto.BalanceSim -- [--campanhas 200] [--cidades 10] [--portes pequeno,medio,grande,metropole]
-//                                                        [--semente 1] [--saida docs/balance/r3.md]
+//                                                        [--semente 1] [--paradas 0] [--saida docs/balance/r3.md]
+// --paradas N: além das campanhas jogadas, N campanhas por porte com o robô parado (a régua "sem campanha" da D-026).
 // Joga campanhas de vereador com o robô que escolhe sempre o compromisso de maior ganho previsto de votos e, desde a
 // R2b, contrata, reparte a verba pelos canais, assume posições e faz promessas; desde a R3, responde a doadores e a
 // ataques, e depois da eleição passa pelo julgamento das contas. Mede o princípio a do GDD 17.1 (nenhum tipo de
@@ -31,6 +33,7 @@ string Arg(string name, string fallback)
 int campaigns = int.Parse(Arg("--campanhas", "200"), CultureInfo.InvariantCulture);
 int cities = int.Parse(Arg("--cidades", "10"), CultureInfo.InvariantCulture);
 ulong seed = ulong.Parse(Arg("--semente", "1"), CultureInfo.InvariantCulture);
+int idleCampaigns = int.Parse(Arg("--paradas", "0"), CultureInfo.InvariantCulture);
 string[] portes = Arg("--portes", "pequeno,medio,grande,metropole").Split(',', StringSplitOptions.RemoveEmptyEntries);
 string? output = Array.IndexOf(args, "--saida") >= 0 ? Arg("--saida", "") : null;
 
@@ -71,6 +74,7 @@ foreach (string porte in portes)
         {
             var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
             traces[i] = new CampaignRobot(engine) { Diagnose = i == 0 && Environment.GetEnvironmentVariable("PLANALTO_SIM_DIAG") == "1", Dirty = i % 4 >= 2 }.Play();
+            traces[i].Strongest = i % 2 == 0;
         }
         catch (Exception ex)
         {
@@ -82,9 +86,32 @@ foreach (string porte in portes)
     });
 
     List<CampaignTrace> done = traces.Where(t => t is not null).ToList();
+    double playedSeconds = (DateTime.UtcNow - started).TotalSeconds;
+
+    // Sem campanha: as mesmas cidades e sementes, com o robô parado.
+    var idle = new CampaignTrace[idleCampaigns];
+    Parallel.For(0, idleCampaigns, i =>
+    {
+        Municipio m = chosen[i % chosen.Count];
+        try
+        {
+            var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
+            idle[i] = new CampaignRobot(engine).PlayIdle();
+            idle[i].Strongest = i % 2 == 0;
+            idle[i].Idle = true;
+        }
+        catch (Exception ex)
+        {
+            lock (failures)
+            {
+                failures.Add($"{m.CodigoIbge} {m.Nome}, campanha parada {i}: {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+    });
+    List<CampaignTrace> idleDone = idle.Where(t => t is not null).ToList();
     report.AppendLine($"## Porte {porte}");
     report.AppendLine();
-    report.AppendLine(string.Format(culture, "{0} campanhas concluídas, {1} com erro, em {2:0} s. Cidades: {3}.", done.Count, failures.Count, (DateTime.UtcNow - started).TotalSeconds, string.Join(", ", chosen.Select(m => $"{m.Nome}/{m.Uf}"))));
+    report.AppendLine(string.Format(culture, "{0} campanhas concluídas, {1} com erro, em {2:0} s. Cidades: {3}.", done.Count, failures.Count, playedSeconds, string.Join(", ", chosen.Select(m => $"{m.Nome}/{m.Uf}"))));
     foreach (string f in failures.Take(5))
     {
         report.AppendLine($"- ERRO {f}");
@@ -139,10 +166,22 @@ foreach (string porte in portes)
     report.AppendLine();
     report.AppendLine(string.Format(culture, "- Tipo com a opção de maior ganho da semana: **{0:P1}** das semanas (limite 40%). Informativo: o tipo mais marcado foi a melhor escolha em {1:P1} dos turnos e o mais marcado da semana em {2:P1} das semanas.", maxType, maxTurn, maxPlurality));
     report.AppendLine(string.Format(culture, "- Par (tipo, zona) mais repetido: **{0:P1}** das semanas no conjunto das campanhas (limite 25%), medido turno a turno; {1:P1} na pior campanha isolada pela opção de maior ganho da semana.", pooledPair, maxPair));
-    report.AppendLine(string.Format(culture, "- Eleitos: {0} de {1} no partido mais forte; {2} de {3} em partido sorteado. Posição mediana entre os nomeados: {4}.",
-        done.Where((_, i) => i % 2 == 0).Count(t => t.Elected), done.Where((_, i) => i % 2 == 0).Count(),
-        done.Where((_, i) => i % 2 == 1).Count(t => t.Elected), done.Where((_, i) => i % 2 == 1).Count(),
-        done.Select(t => t.Position).Order().ElementAt(done.Count / 2)));
+    string Elected(IEnumerable<CampaignTrace> list) => $"{list.Count(t => t.Elected)} de {list.Count()}";
+    List<CampaignTrace> strong = done.Where(t => t.Strongest).ToList();
+    List<CampaignTrace> drawn = done.Where(t => !t.Strongest).ToList();
+    report.AppendLine(string.Format(culture, "- Eleitos: {0} no partido mais forte; {1} em partido sorteado. Posição mediana entre os nomeados: {2}.",
+        Elected(strong), Elected(drawn), done.Select(t => t.Position).Order().ElementAt(done.Count / 2)));
+    report.AppendLine(string.Format(culture, "- Eleitos, campanhas limpas: {0} no partido mais forte e {1} em partido sorteado; campanhas \"sujas\": {2} e {3}.",
+        Elected(strong.Where(t => !t.Dirty)), Elected(drawn.Where(t => !t.Dirty)), Elected(strong.Where(t => t.Dirty)), Elected(drawn.Where(t => t.Dirty))));
+    string idleText = idleDone.Count == 0 ? "não medido" : $"{Elected(idleDone.Where(t => t.Strongest))} no partido mais forte; {Elected(idleDone.Where(t => !t.Strongest))} em partido sorteado";
+    report.AppendLine($"- Eleitos sem campanha (robô parado, mesmas cidades e sementes): {idleText}.");
+    string Hardness(List<CampaignTrace> list) => list.Count == 0 ? "sem campanhas" : string.Format(culture, "reconhecimento do jogador {0:0.0}% (rivais nomeados: média {1:0.0}%, o maior {2:0.0}%), votos de {3:P0} do quociente eleitoral, {4:0.0} cadeiras do partido, posição mediana {5} entre os nomeados da chapa",
+        list.Average(t => t.FinalRecognition), list.Average(t => t.RivalRecognition), list.Average(t => t.RivalRecognitionMax), list.Average(t => t.VotesOverQuotient), list.Average(t => (double)t.PartySeats), list.Select(t => t.RankInParty).Order().ElementAt(list.Count / 2));
+    report.AppendLine($"- No fim da campanha, no partido mais forte: {Hardness(strong)}. Em partido sorteado: {Hardness(drawn)}. Sem campanha: {Hardness(idleDone)}.");
+    var pairs = done.Where(t => t.TopPairTurns > 0).GroupBy(t => t.TopPair).OrderByDescending(g => g.Sum(t => t.TopPairTurns)).ToList();
+    double pairTurns = Math.Max(1.0, done.Sum(t => t.BestPairByTurn.Count));
+    report.AppendLine(string.Format(culture, "- De que é feito o par mais repetido (pontos percentuais da fatia; campanhas em que foi o par mais repetido): {0}.",
+        string.Join("; ", pairs.Take(8).Select(g => string.Format(culture, "{0}: {1:0.0} ({2} campanhas, {3:P1} dos turnos delas)", g.Key, 100 * g.Sum(t => t.TopPairTurns) / pairTurns, g.Count(), g.Sum(t => t.TopPairTurns) / Math.Max(1.0, g.Sum(t => t.BestPairByTurn.Count)))))));
     report.AppendLine(string.Format(culture, "- Por campanha, em média: {0:0} compromissos, {1:0.0} decisões de pedido de liderança, {2:0.0} promessas no Livro, {3:0.0} lideranças aliadas no fim, {4:0.0} eventos; reconhecimento final {5:0.0}%.",
         done.Average(t => t.Commitments), done.Average(t => t.LeaderDecisions), done.Average(t => t.Promises), done.Average(t => t.AlignedLeaders), done.Average(t => t.Events), done.Average(t => t.FinalRecognition)));
     report.AppendLine(string.Format(culture, "- Turnos de escolha forçada (arrecadar sem caixa ou descansar com estresse alto), fora da estatística acima: {0:P1}.", done.Sum(t => t.ForcedTurns) / (double)Math.Max(1, done.Sum(t => t.Turns))));
@@ -160,6 +199,48 @@ foreach (string porte in portes)
     report.AppendLine();
     report.AppendLine(string.Format(culture, "- Canal que mais vezes foi o melhor destino: **{0:P1}** das semanas da campanha oficial (limite 40%), em {1:0.0} semanas por campanha. Semanas com verba repartida, por campanha: {2:0.0} de {3:0.0}.",
         maxChannel, done.Average(t => (double)t.BestChannelByWeek.Count), done.Average(t => (double)t.BudgetWeeks), done.Average(t => (double)t.Weeks)));
+    // Diagnóstico do canal: as contas da melhor primeira parcela de cada canal, nas semanas da campanha oficial.
+    report.AppendLine();
+    report.AppendLine("| Canal (campanha oficial) | Melhor destino | Votos por R$ 1.000 | Retorno | Disputa no melhor alvo | Verba de rival no melhor alvo | Fatores (produto) | Saturação | Verba dos rivais no canal, por semana | Alvos com verba de rival | Verba de rival por alvo com verba | Disputa média nesses alvos |");
+    report.AppendLine("|---|---|---|---|---|---|---|---|---|---|---|---|");
+    var diag = new Dictionary<string, ChannelDiag>();
+    foreach (var (id, d) in done.SelectMany(t => t.ChannelDiag))
+    {
+        if (!diag.TryGetValue(id, out ChannelDiag? sum))
+        {
+            diag[id] = sum = new ChannelDiag();
+        }
+
+        sum.Add(d);
+    }
+
+    foreach (var channel in content.Campaign.Channels.Canais.OrderByDescending(c => byChannel.GetValueOrDefault(c.Id)))
+    {
+        if (!diag.TryGetValue(channel.Id, out ChannelDiag? d) || d.Weeks == 0)
+        {
+            continue;
+        }
+
+        double n = Math.Max(1, d.OptionWeeks);
+        report.AppendLine(string.Format(culture, "| {0} | {1:P1} | {2:0.00} | {3:0.000} | {4:P0} | R$ {5:N0} | {6:0.00} | {7:0.00} | R$ {8:N0} | {9:P0} | R$ {10:N0} | {11:P0} |", channel.Nome,
+            d.Wins / channelWeeks, d.VotesPerReal / n * 1000, d.Return / n, d.Share / n, d.RivalAtTarget / n, d.Yield / n, d.Saturation / n,
+            d.RivalWeekly / d.Weeks, d.TargetsWithRival / Math.Max(1, d.Targets), d.RivalWeekly / Math.Max(1, d.TargetsWithRival), d.ShareWhereRival / Math.Max(1, d.TargetsWithRival)));
+    }
+
+    report.AppendLine();
+    report.AppendLine(string.Format(culture, "- Onde cada canal venceu: {0}.", string.Join("; ", diag.Where(d => d.Value.Wins > 0).OrderByDescending(d => d.Value.Wins)
+        .Select(d => $"{content.Campaign.Channels.Get(d.Key).Nome}: " + string.Join(", ", d.Value.WinTargets.OrderByDescending(w => w.Value).Select(w => string.Format(culture, "{0} {1:P0}", w.Key, w.Value / (double)d.Value.Wins)))))));
+    if (diag.TryGetValue(ChannelDefinition.Cabos, out ChannelDiag? cabos) && cabos.Weeks > 0)
+    {
+        report.AppendLine(string.Format(culture, "- Cabos e a lei: limite legal médio de {0:0.0} pessoas por candidatura (art. 100-A; mínimo {1}, máximo {2}), em grupos de {3}; {4:P1} dos alvos-semana bloqueados pelo limite legal e {5:P1} por falta de vaga na equipe; sem alvo permitido em {6:P1} das semanas; o melhor alvo estava sem material gráfico em {7:P0} das semanas e com liderança contrária em {8:P0}.",
+            done.Average(t => (double)t.CabosLimit), done.Min(t => t.CabosLimit), done.Max(t => t.CabosLimit), content.Campaign.Channels.Regras.CabosPorGrupo,
+            cabos.BlockedLaw / Math.Max(1, cabos.Targets), cabos.BlockedSlot / Math.Max(1, cabos.Targets), 1 - (cabos.OptionWeeks / (double)cabos.Weeks),
+            cabos.SemMaterial / Math.Max(1.0, cabos.OptionWeeks), cabos.LiderancaContraria / Math.Max(1.0, cabos.OptionWeeks)));
+    }
+
+    report.AppendLine(string.Format(culture, "- Caixa e verba: parcela de R$ {0:N0}; caixa de R$ {1:N0} no começo da campanha oficial; verba de canais paga na pré-campanha R$ {2:N0} e na campanha oficial R$ {3:N0} por campanha ({4:P0} do gasto total da campanha).",
+        done.Average(t => (double)t.ChannelStep), done.Average(t => (double)t.CashAtOfficialStart), done.Average(t => (double)t.BudgetSpentPre), done.Average(t => (double)(t.BudgetSpentTotal - t.BudgetSpentPre)),
+        done.Sum(t => (double)t.BudgetSpentTotal) / Math.Max(1, done.Sum(t => (double)t.CampaignSpent))));
     report.AppendLine(string.Format(culture, "- Decisões com troca: **{0:0.00}** por semana (mínimo 1). Por tipo, por campanha: {1}.",
         tradePerWeek, string.Join("; ", trades.OrderByDescending(t => t.Value).Select(t => string.Format(culture, "{0} {1:0.0}", t.Key, t.Value / (double)done.Count)))));
     report.AppendLine(string.Format(culture, "- Equipe: {0:0.0} contratações por campanha, {1:0.0} pessoas na equipe no fim, {2:0.0} eventos da equipe, {3:0.0} compromissos delegados. Plataforma: {4:0.0} mudanças de posição e {5:0.0} promessas locais.",
@@ -200,9 +281,21 @@ foreach (string porte in portes)
     report.AppendLine(string.Format(culture, "- Simulação semanal (virada de domingo, com as campanhas rodando em paralelo): média de {0:0.0} ms, 95% abaixo de {1:0.0} ms, máximo de {2:0.0} ms.", ms, ms95, msMax));
     report.AppendLine($"- **{(ok ? "Dentro dos critérios" : "FORA dos critérios")}.**");
     report.AppendLine();
-    summary.Add(string.Format(culture, "| {0} | {1:P1} | {2:P1} | {3:P1} | {4:0.00} | {5} de {6} | {7:P1} | {8:0.0} ms |", porte, maxType, pooledPair, maxChannel, tradePerWeek,
-        done.Where((_, i) => i % 2 == 0).Count(t => t.Elected), done.Where((_, i) => i % 2 == 0).Count(), done.Sum(t => t.ForcedTurns) / (double)Math.Max(1, done.Sum(t => t.Turns)), ms95));
+    string winner = byChannel.Count == 0 ? "-" : content.Campaign.Channels.Get(byChannel.MaxBy(c => c.Value).Key).Nome;
+    List<CampaignTrace> cleanPorte = done.Where(t => t.OffBooksShare <= 0).ToList();
+    List<CampaignTrace> dirtyPorte = done.Where(t => t.OffBooksShare > 0.3).ToList();
+    string LostShare(List<CampaignTrace> list) => list.Sum(t => t.Replicas) == 0 ? "-" : string.Format(culture, "{0:P1}", list.Sum(t => t.MandatesLost) / (double)list.Sum(t => t.Replicas));
+    summary.Add(string.Format(culture, "| {0} | {1:P1} | {2:P1} | {3} {4:P1} | {5:0.00} | {6} | {7} | {8} | {9:P1} | {10} | {11} | {12:0} s |", porte, maxType, pooledPair, winner, maxChannel, tradePerWeek,
+        Elected(strong), Elected(drawn), idleDone.Count == 0 ? "não medido" : $"{Elected(idleDone.Where(t => t.Strongest))} e {Elected(idleDone.Where(t => !t.Strongest))}",
+        done.Sum(t => t.ForcedTurns) / (double)Math.Max(1, done.Sum(t => t.Turns)), LostShare(cleanPorte), LostShare(dirtyPorte), playedSeconds));
+    Console.WriteLine($"{porte}: eleitos {Elected(strong)} (mais forte), {Elected(drawn)} (sorteado), sem campanha {idleText}; canal {winner}");
     Console.WriteLine($"{porte}: tipo {maxType:P1}, par {pooledPair:P1}, canal {maxChannel:P1}, decisões {tradePerWeek:0.00}/semana, semana {ms:0.0} ms (máx. {msMax:0.0}), {(ok ? "ok" : "FORA")}");
+    if (output is { Length: > 0 })
+    {
+        // O relatório parcial fica no arquivo a cada porte: a rodada inteira leva horas.
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output))!);
+        File.WriteAllText(output, report.ToString().ReplaceLineEndings("\n"), new UTF8Encoding(false));
+    }
 }
 
 // Contas (GDD 17.12), no conjunto dos portes.
@@ -215,8 +308,8 @@ bool accountsOk = cleanLost < 0.01 && dirtyLost is >= 0.25 and <= 0.40;
 allOk &= accountsOk;
 report.AppendLine("## Resumo");
 report.AppendLine();
-report.AppendLine("| Porte | Tipo de compromisso (até 40%) | Par tipo e zona (até 25%) | Canal de verba (até 40%) | Decisões com troca por semana (1 ou mais) | Eleitos no partido mais forte | Turnos forçados | Semana simulada (95%) |");
-report.AppendLine("|---|---|---|---|---|---|---|---|");
+report.AppendLine("| Porte | Tipo de compromisso (até 40%) | Par tipo e zona (até 25%) | Canal vencedor e fatia (até 40%) | Decisões com troca por semana (1 ou mais) | Eleitos no partido mais forte | Eleitos em partido sorteado | Eleitos sem campanha (mais forte e sorteado) | Turnos forçados | Mandato perdido, contas limpas | Mandato perdido, \"por fora\" acima de 30% | Tempo de máquina |");
+report.AppendLine("|---|---|---|---|---|---|---|---|---|---|---|---|");
 foreach (string line in summary)
 {
     report.AppendLine(line);

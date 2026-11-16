@@ -305,6 +305,7 @@ public sealed partial class CampaignRobot
             if (open)
             {
                 Trace.ChannelWeeks++;
+                DiagnoseChannels(first);
             }
             else
             {
