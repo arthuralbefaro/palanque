@@ -108,6 +108,56 @@ public partial class UiShot
     }
 
     /// <summary>
+    /// 17 anos com aniversário em dezembro (sem 18 anos no prazo do registro de 2028): a criação avisa, na aba
+    /// Identidade e na base da tela, que a carreira começa em 2032; ao confirmar, o jogo abre direto na pré-campanha
+    /// de 2032, na tela central, com o personagem mais velho.
+    /// </summary>
+    private async Task<bool> CheckCreatorSeventeen(CharacterCreatorScreen creator, string? shot)
+    {
+        Game game = Game.Instance;
+        string normal = FindAll<Button>(creator).Last().Text;
+        creator.SetAgeForTest(17, 12);
+        await Frames(3);
+        var tabs = FindAll<TabContainer>(creator).First();
+        tabs.CurrentTab = 2;
+        await Frames(2);
+        Save(shot, "_aviso");
+        bool warned = creator.AgeWarningsForTest.Any(w => w.Contains("2032", StringComparison.Ordinal) && w.Contains("2028", StringComparison.Ordinal));
+        bool atBottom = Named<Label>(creator, "AvisoComecoTardio") is { Visible: true } notice && notice.Text.Contains("2032", StringComparison.Ordinal);
+        bool onButton = FindAll<Button>(creator).Any(b => b.Text.StartsWith(Tr("Começar carreira"), StringComparison.Ordinal) && b.Text.Contains("2032", StringComparison.Ordinal));
+        bool started = creator.TryStartCareer();
+        if (!warned || !atBottom || !onButton || !started || game.State is not { } state)
+        {
+            Fail($"personagem de 17 anos: aviso na aba {warned}, aviso na base {atBottom}, ano no botão {onButton} (antes: \"{normal}\"), começou {started}.");
+            return false;
+        }
+
+        int age = state.Player.AgeOn(state.Calendar.WeekStart);
+        if (state.Calendar.Year != 2032 || game.Engine is null || state.Campaign is not { Phase: Core.Campaign.CampaignPhase.PreCampanha } campaign
+            || campaign.ElectionDate.Year != 2032 || age < 20 || game.LastNavigation != Game.Scenes.Hub || !Core.Career.CareerFlow.CanRun(state, 2032))
+        {
+            Fail($"personagem de 17 anos: calendário em {state.Calendar.Year}, campanha {(game.Engine is null ? "nenhuma" : state.Campaign?.Phase.ToString())}, eleição de {state.Campaign?.ElectionDate.Year}, idade {age}, tela {game.LastNavigation}.");
+            return false;
+        }
+
+        // A tela central abre de fato nessa pré-campanha.
+        RemoveChild(creator);
+        creator.QueueFree();
+        var hub = GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate<HubScreen>();
+        AddChild(hub);
+        await Frames(5);
+        string text = TextOf(hub);
+        if (!text.Contains(Tr("Pré-campanha"), StringComparison.Ordinal) || !text.Contains(campaign.Player.Number, StringComparison.Ordinal))
+        {
+            Fail("personagem de 17 anos: a tela central não abriu na pré-campanha de 2032.");
+            return false;
+        }
+
+        GD.Print($"  17 anos: aviso na aba e na base; carreira aberta em {state.Calendar.WeekStart:dd/MM/yyyy}, pré-campanha de 2032, aos {age} anos");
+        return true;
+    }
+
+    /// <summary>
     /// Troca de gênero na aba Identidade: sem edição à mão, a aparência é sorteada de novo na hora; com edição à mão,
     /// aparece a pergunta, e cada resposta faz o que diz (sortear de novo ou manter).
     /// </summary>

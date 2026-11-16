@@ -271,7 +271,8 @@ public partial class Game : Node
     {
         State = state;
 
-        // Quem não tem 18 anos no prazo do registro da primeira eleição começa fora da disputa (DECISOES D-036).
+        // O Core já abre o calendário no ano da primeira eleição que o personagem pode disputar; a conferência da
+        // idade fica só para um estado montado à mão com o calendário antes disso.
         int firstElection = Core.Campaign.RaceSetup.NextMunicipalYear(state.Calendar.Year);
         Engine = Core.Career.CareerFlow.MeetsAge(state, Core.Elections.Office.Vereador, firstElection)
             ? Core.Campaign.CampaignEngine.Start(ContextFor(state))

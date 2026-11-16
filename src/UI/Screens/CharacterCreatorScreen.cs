@@ -581,13 +581,24 @@ public partial class CharacterCreatorScreen : Control
         if (!rules.MeetsAge(_c.BirthDate, Office.Vereador, year))
         {
             DateOnly registration = rules.AgeReferenceDate(Office.Vereador, year, new DateOnly(year + 1, 1, 1));
-            yield return string.Format(Tr("Com essa idade, você não terá 18 anos no prazo do registro de candidatura ({0}) e não poderá disputar a eleição de {1}. A carreira começa fora da disputa, até a eleição seguinte."), registration.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), year);
+            yield return string.Format(
+                Tr("Com essa idade, você não terá 18 anos no prazo do registro de candidatura ({0}) e não poderá disputar a eleição de {1}. A carreira vai começar em {2}, direto na pré-campanha da eleição daquele ano, a primeira que você pode disputar, com você aos {3} anos."),
+                registration.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                year,
+                CareerStart.AddDays(6).Year,
+                _c.AgeOn(CareerStart));
         }
         else if (!rules.MeetsAge(_c.BirthDate, Office.Prefeito, year))
         {
             yield return string.Format(Tr("Na eleição de {0} você poderá disputar para vereador, mas ainda não terá a idade mínima para a prefeitura (21 anos na posse)."), year);
         }
     }
+
+    /// <summary>Segunda-feira em que a carreira começa (pelo Core): mais tarde para quem não tem idade para a primeira eleição.</summary>
+    private DateOnly CareerStart => NewGame.StartCalendar(_world.Options.StartYear, _c.BirthDate).WeekStart;
+
+    /// <summary>A carreira começa depois do ano inicial do mundo, porque o personagem ainda não pode disputar a primeira eleição.</summary>
+    private bool StartsLater => Planalto.Core.Career.CareerFlow.CareerStartYear(_c.BirthDate, _world.Options.StartYear) != _world.Options.StartYear;
 
     private void ReplaceBirth(DateOnly birth)
     {
@@ -840,6 +851,16 @@ public partial class CharacterCreatorScreen : Control
             Ui.Value(_status, "✕ " + problem).AddThemeColorOverride("font_color", Ui.Error);
         }
 
+        // Aviso que não bloqueia, à vista em qualquer aba: a carreira começa anos depois, com o personagem mais velho.
+        int startYear = CareerStart.AddDays(6).Year;
+        if (StartsLater)
+        {
+            Label notice = Ui.Paragraph(_status, string.Format(Tr("Atenção: sem 18 anos no registro da primeira eleição, a carreira começa em {0}, na pré-campanha, com você aos {1} anos."), startYear, _c.AgeOn(CareerStart)), 400);
+            notice.Name = "AvisoComecoTardio";
+            notice.AddThemeColorOverride("font_color", Ui.Warning);
+        }
+
+        _start.Text = StartsLater ? string.Format(Tr("Começar carreira em {0}"), startYear) : Tr("Começar carreira");
         _start.Disabled = problems.Count > 0;
     }
 
@@ -936,7 +957,7 @@ public partial class CharacterCreatorScreen : Control
         _game.PendingWorld = null;
         _game.StartCareer(state);
 
-        // Sem idade para a primeira eleição, a carreira começa fora da disputa (entressafra).
+        // Sem idade para a primeira eleição, o Core abre o calendário na pré-campanha da primeira que dá para disputar.
         _game.GoToCareer();
     }
 

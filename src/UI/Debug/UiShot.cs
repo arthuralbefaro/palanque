@@ -154,20 +154,8 @@ public partial class UiShot : Node
             await Frames(3);
             if (target == "creator17")
             {
-                // 17 anos com aniversário em dezembro: sem 18 anos no prazo do registro de 2028.
-                creator.SetAgeForTest(17, 12);
-                await Frames(3);
-                bool warned = creator.AgeWarningsForTest.Count > 0;
-                bool started = creator.TryStartCareer();
-                if (!warned || !started || game.State is null || game.Engine is not null || game.LastNavigation != Game.Scenes.OutOfOffice)
+                if (!await CheckCreatorSeventeen(creator, shot))
                 {
-                    Fail($"personagem de 17 anos: aviso {warned}, começou {started}, campanha {(game.Engine is null ? "nenhuma" : "aberta")}, tela {game.LastNavigation}.");
-                    return;
-                }
-
-                if (Planalto.Core.Career.CareerFlow.NextEligibleElectionYear(game.State) != 2032)
-                {
-                    Fail("a primeira eleição possível deveria ser a de 2032.");
                     return;
                 }
             }

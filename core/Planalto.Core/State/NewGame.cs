@@ -18,8 +18,7 @@ public static class NewGame
             throw new ArgumentException("O personagem precisa estar filiado a um partido do mundo.", nameof(player));
         }
 
-        // Começa na semana ISO 1 do ano inicial (DECISOES D-019), já filiado (antes do prazo de abril).
-        Calendar calendar = Calendar.FromIsoWeek(world.Options.StartYear, 1);
+        Calendar calendar = StartCalendar(world.Options.StartYear, player.BirthDate);
         player.AffiliatedOn ??= calendar.WeekStart;
         return new GameState
         {
@@ -37,4 +36,12 @@ public static class NewGame
             FocusMunicipio = home,
         };
     }
+
+    /// <summary>
+    /// Semana em que a carreira começa: a semana ISO 1 do ano inicial (DECISOES D-019), já filiado (antes do prazo de
+    /// abril). Quem ainda não tem idade para a primeira eleição começa na semana 1 do ano da primeira eleição que
+    /// pode disputar, direto na pré-campanha e já com a idade daquele ano: o calendário avança até lá na criação.
+    /// </summary>
+    public static Calendar StartCalendar(int startYear, DateOnly birthDate) =>
+        Calendar.FromIsoWeek(Career.CareerFlow.CareerStartYear(birthDate, startYear), 1);
 }
