@@ -86,6 +86,9 @@ public sealed class LedgerSkeleton
     public List<string> KnownBy { get; init; } = [];
 
     public bool Exposed { get; set; }
+
+    /// <summary>Valor em reais, quando a irregularidade tem um (dinheiro "por fora", doação acima do teto).</summary>
+    public decimal Amount { get; set; }
 }
 
 /// <summary>
@@ -120,9 +123,9 @@ public sealed class Ledger
         return debt;
     }
 
-    public LedgerSkeleton AddSkeleton(string type, string text, int severity, DateOnly created, IEnumerable<string> knownBy)
+    public LedgerSkeleton AddSkeleton(string type, string text, int severity, DateOnly created, IEnumerable<string> knownBy, decimal amount = 0)
     {
-        var skeleton = new LedgerSkeleton { Id = NewId("e"), Type = type, Text = text, Severity = severity, Created = created, KnownBy = knownBy.Distinct().ToList() };
+        var skeleton = new LedgerSkeleton { Id = NewId("e"), Type = type, Text = text, Severity = severity, Created = created, KnownBy = knownBy.Distinct().ToList(), Amount = amount };
         Skeletons.Add(skeleton);
         return skeleton;
     }

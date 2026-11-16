@@ -209,6 +209,20 @@ public sealed class CampaignContent
     /// <summary>Gerador de objetivos (GDD 17.2, peça 6).</summary>
     public required ObjectiveCatalog Objectives { get; init; }
 
+    /// <summary>Rivais com estratégia (GDD 17.11).</summary>
+    public required RivalCatalog Rivals { get; init; }
+
+    public required AttackCatalog Attacks { get; init; }
+
+    /// <summary>Doadores e prestação de contas (GDD 17.12).</summary>
+    public required FinanceCatalog Finance { get; init; }
+
+    /// <summary>Mídia local (GDD 17.13).</summary>
+    public required Media.MediaContent Media { get; init; }
+
+    /// <summary>Números nacionais de partida da economia, para os fatos econômicos.</summary>
+    public required Economy.EconomyStart Economy { get; init; }
+
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, out CampaignContent? content)
     {
         var config = JsonData.LoadFile<CampaignConfig>(Path.Combine(dataDirectory, ConfigFile));
@@ -222,8 +236,27 @@ public sealed class CampaignContent
         var platform = JsonData.LoadFile<PlatformCatalog>(Path.Combine(dataDirectory, PlatformCatalog.File));
         var promises = JsonData.LoadFile<PromiseCatalog>(Path.Combine(dataDirectory, PromiseCatalog.File));
         var objectives = JsonData.LoadFile<ObjectiveCatalog>(Path.Combine(dataDirectory, ObjectiveCatalog.File));
+        var rivals = JsonData.LoadFile<RivalCatalog>(Path.Combine(dataDirectory, RivalCatalog.File));
+        var attacks = JsonData.LoadFile<AttackCatalog>(Path.Combine(dataDirectory, AttackCatalog.File));
+        var finance = JsonData.LoadFile<FinanceCatalog>(Path.Combine(dataDirectory, FinanceCatalog.File));
+        var outlets = JsonData.LoadFile<Media.OutletCatalog>(Path.Combine(dataDirectory, Planalto.Core.Media.OutletCatalog.File));
+        var templates = JsonData.LoadFile<Media.TemplateCatalog>(Path.Combine(dataDirectory, Planalto.Core.Media.TemplateCatalog.File));
+        var blocklist = JsonData.LoadFile<Media.OutletBlocklist>(Path.Combine(dataDirectory, Planalto.Core.Media.OutletBlocklist.File));
+        var economy = JsonData.LoadFile<Economy.EconomyStart>(Path.Combine(dataDirectory, Planalto.Core.Economy.EconomyStart.File));
+        List<string> outletErrors = [.. outlets.Errors];
+        if (outlets.Value is not null && blocklist.Value is not null)
+        {
+            outletErrors.AddRange(Planalto.Core.Media.MediaContent.CrossCheck(outlets.Value, blocklist.Value).Select(e => $"{Planalto.Core.Media.OutletCatalog.File}: {e}"));
+        }
+
         var reports = new List<DataFileReport>
         {
+            new(RivalCatalog.File, rivals.Value?.Perfis.Count ?? 0, rivals.Errors),
+            new(AttackCatalog.File, attacks.Value?.Tipos.Count ?? 0, attacks.Errors),
+            new(FinanceCatalog.File, finance.Value?.Pedidos.Count ?? 0, finance.Errors),
+            new(Planalto.Core.Media.OutletCatalog.File, outlets.Value?.Tipos.Count ?? 0, outletErrors),
+            new(Planalto.Core.Media.TemplateCatalog.File, templates.Value?.Fatos.Count ?? 0, templates.Errors),
+            new(Planalto.Core.Media.OutletBlocklist.File, blocklist.Value?.Nomes.Count ?? 0, blocklist.Errors),
             new(ObjectiveCatalog.File, objectives.Value?.Tipos.Count ?? 0, objectives.Errors),
             new(PlatformCatalog.File, platform.Value?.Falas.Count ?? 0, platform.Errors),
             new(PromiseCatalog.File, promises.Value?.Promessas.Count ?? 0, promises.Errors),
@@ -236,10 +269,70 @@ public sealed class CampaignContent
             new(Planalto.Core.Territory.TerritoryConfig.File, 1, territory.Errors),
             new(Planalto.Core.People.PeopleConfig.File, 1, people.Errors),
         };
-        content = reports.All(r => r.Errors.Count == 0)
-            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value!, Staff = staff.Value!, Channels = channels.Value!, Platform = platform.Value!, Promises = promises.Value!, Objectives = objectives.Value! }
+        content = reports.All(r => r.Errors.Count == 0) && economy.Errors.Count == 0
+            ? new CampaignContent { Config = config.Value!, Commitments = commitments.Value!, Leaders = leaders.Value!, CityEvents = cityEvents.Value!, Territory = territory.Value!, People = people.Value!, Staff = staff.Value!, Channels = channels.Value!, Platform = platform.Value!, Promises = promises.Value!, Objectives = objectives.Value!, Rivals = rivals.Value!, Attacks = attacks.Value!, Finance = finance.Value!, Media = new Media.MediaContent { Outlets = outlets.Value!, Templates = templates.Value!, Blocklist = blocklist.Value! }, Economy = economy.Value! }
             : null;
         return reports;
+    }
+
+    /// <summary>
+    /// Referências dos arquivos da R3 a outros conteúdos: temas dos fatos da cidade e da economia, públicos dos
+    /// veículos, compromissos e canais dos perfis de rival, canais de ataque.
+    /// </summary>
+    public static IEnumerable<string> CrossCheck(CampaignContent content, IReadOnlySet<string>? themes, IReadOnlySet<string>? groups)
+    {
+        if (themes is not null)
+        {
+            foreach (Media.CityFactDefinition fact in content.Media.Templates.FatosDaCidade.Where(f => !themes.Contains(f.Tema)))
+            {
+                yield return $"{Planalto.Core.Media.TemplateCatalog.File}: fato da cidade '{fact.Id}' com tema '{fact.Tema}' desconhecido.";
+            }
+
+            foreach (Media.EconomyFactDefinition fact in content.Media.Templates.FatosEconomicos.Where(f => f.Tema is not null && !themes.Contains(f.Tema)))
+            {
+                yield return $"{Planalto.Core.Media.TemplateCatalog.File}: fato econômico '{fact.Indicador}' com tema '{fact.Tema}' desconhecido.";
+            }
+        }
+
+        if (groups is not null)
+        {
+            foreach (Media.OutletType type in content.Media.Outlets.Tipos)
+            {
+                foreach (string publico in type.Publicos.Where(p => p != CommitmentType.PublicoGeral && !groups.Contains(p)))
+                {
+                    yield return $"{Planalto.Core.Media.OutletCatalog.File}: tipo '{type.Id}' com público '{publico}' desconhecido.";
+                }
+            }
+        }
+
+        foreach (RivalProfile profile in content.Rivals.Perfis)
+        {
+            foreach (string commitment in profile.Compromissos.Keys.Where(k => content.Commitments.Tipos.All(t => t.Id != k)))
+            {
+                yield return $"{RivalCatalog.File}: perfil '{profile.Id}' com compromisso '{commitment}' desconhecido.";
+            }
+
+            foreach (string channel in profile.Canais.Keys.Where(k => content.Channels.Find(k) is null))
+            {
+                yield return $"{RivalCatalog.File}: perfil '{profile.Id}' com canal '{channel}' desconhecido.";
+            }
+
+            // Compromisso de liderança, de evento ou de arrecadação não é ato público de rival.
+            foreach (string commitment in profile.Compromissos.Keys.Where(k => content.Commitments.Tipos.FirstOrDefault(x => x.Id == k) is { } found && (found.Visita || found.SoEvento || found.Arrecada is not null)))
+            {
+                yield return $"{RivalCatalog.File}: perfil '{profile.Id}': '{commitment}' não serve de ato público de rival.";
+            }
+        }
+
+        if (content.Commitments.Tipos.All(t => t.Id != CommitmentCatalog.Entrevista))
+        {
+            yield return $"{CommitmentCatalog.File}: falta o compromisso '{CommitmentCatalog.Entrevista}' (entrevista em veículo).";
+        }
+
+        if (content.Media.Templates.Find(FactKind.Compromisso, null) is null || content.Media.Templates.Find(FactKind.RivalZona, null) is null)
+        {
+            yield return $"{Planalto.Core.Media.TemplateCatalog.File}: faltam os tipos de fato 'compromisso' e 'rival_zona'.";
+        }
     }
 
     public static CampaignContent LoadOrThrow(string dataDirectory)

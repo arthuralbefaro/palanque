@@ -92,6 +92,9 @@ public static class ChamberSetup
             double relation = rng.NextDouble(-10, 10);
             relation += m.PartyId == player.PartyId ? 20 : 0;
             relation += baseParties.Contains(m.PartyId ?? "") == baseParties.Contains(player.PartyId ?? "") ? 5 : -5;
+
+            // O que o vereador lembra da campanha (ataque, pacto, pacto quebrado) atravessa a eleição (GDD 17.11).
+            relation += state.City?.Person(m.Id)?.Memories.Sum(memory => (double)memory.Pontos) ?? 0;
             m.Relation = Math.Clamp(relation, -100, 100);
         }
 

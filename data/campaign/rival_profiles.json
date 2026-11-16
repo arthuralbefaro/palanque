@@ -1,0 +1,262 @@
+{
+  "note": "Rivais com estratégia (GDD 17.11). O perfil é um estilo de campanha, sorteado sem relação com ideologia ou partido (o de máquina só exige estar no cargo ou ser do partido da prefeitura). O plano é refeito toda segunda. Todos os números são de balanceamento.",
+  "regras": {
+    "compromissos_por_semana": {
+      "min": 2,
+      "max": 4
+    },
+    "gatilho_presenca_reduto": 10,
+    "gatilho_queda_pesquisa": 3,
+    "muito_a_frente": 3,
+    "revide_dias": {
+      "min": 3,
+      "max": 7
+    },
+    "vitima_dias": {
+      "min": 1,
+      "max": 3
+    },
+    "justica_dias": {
+      "min": 4,
+      "max": 10
+    },
+    "vitima_imagem": 0.02,
+    "chance_ataque_semanal": 0.07,
+    "chance_investigar": 0.1,
+    "caixa_inicial": 1500,
+    "arrecadacao_semanal": 300,
+    "meta_folga": 1.1,
+    "fraquezas_por_rival": {
+      "min": 0,
+      "max": 2
+    },
+    "investigar_custo": 800,
+    "investigar_chance": 0.5,
+    "investigar_descoberto": 0.25,
+    "pacto_chance_base": 0.35,
+    "pacto_chance_por_relacao": 0.01,
+    "pacto_mesmo_partido": 0.2,
+    "pacto_combativo": -0.15,
+    "pacto_semanas_entre_propostas": 4,
+    "dobradinha_presenca": 0.01,
+    "dobradinha_imagem": 0.1,
+    "confianca_zonas": 0.5,
+    "confianca_postura": 0.75,
+    "ataque_intervalo_dias": 21,
+    "fator_concentracao": 2.5
+  },
+  "perfis": [
+    {
+      "id": "base",
+      "nome": "Campanha de base",
+      "descricao": "Forte em uma ou duas zonas, com cabos e lideranças comunitárias.",
+      "weight": 1,
+      "zonas_alvo": 2,
+      "foco": 8,
+      "compromissos": {
+        "caminhada": 5,
+        "reuniao": 3,
+        "comicio": 1,
+        "entrevista": 0.5
+      },
+      "canais": {
+        "rua": 0.3,
+        "material": 0.2,
+        "cabos": 0.4,
+        "redes": 0.1
+      },
+      "verba_fator": 0.9,
+      "lideranca_fator": 1.5,
+      "agressividade": 0.3
+    },
+    {
+      "id": "midia",
+      "nome": "Campanha de mídia",
+      "descricao": "Redes, entrevistas e horário gratuito; fina na cidade inteira.",
+      "weight": 1,
+      "zonas_alvo": 3,
+      "foco": 1.5,
+      "compromissos": {
+        "entrevista": 4,
+        "gravacao": 4,
+        "caminhada": 1,
+        "comicio": 1
+      },
+      "canais": {
+        "rua": 0.15,
+        "material": 0.2,
+        "cabos": 0.05,
+        "redes": 0.6
+      },
+      "verba_fator": 1.0,
+      "lideranca_fator": 0.5,
+      "agressividade": 0.6
+    },
+    {
+      "id": "maquina",
+      "nome": "Campanha de máquina",
+      "descricao": "De quem está no cargo ou é aliado da prefeitura: obras, emendas e lideranças.",
+      "weight": 2,
+      "exige_situacao": true,
+      "zonas_alvo": 3,
+      "foco": 4,
+      "compromissos": {
+        "caminhada": 3,
+        "reuniao": 3,
+        "comicio": 2,
+        "entrevista": 1
+      },
+      "canais": {
+        "rua": 0.3,
+        "material": 0.3,
+        "cabos": 0.3,
+        "redes": 0.1
+      },
+      "verba_fator": 1.2,
+      "lideranca_fator": 2,
+      "agressividade": 0.2
+    },
+    {
+      "id": "causa",
+      "nome": "Campanha de causa",
+      "descricao": "Um tema e um público.",
+      "weight": 1,
+      "usa_tema": true,
+      "zonas_alvo": 2,
+      "foco": 3,
+      "compromissos": {
+        "reuniao": 4,
+        "gravacao": 3,
+        "caminhada": 2,
+        "entrevista": 2
+      },
+      "canais": {
+        "rua": 0.15,
+        "material": 0.3,
+        "cabos": 0.1,
+        "redes": 0.45
+      },
+      "verba_fator": 0.7,
+      "lideranca_fator": 1,
+      "agressividade": 0.5
+    },
+    {
+      "id": "estrutura",
+      "nome": "Campanha de estrutura",
+      "descricao": "Dinheiro, material e equipe.",
+      "weight": 1,
+      "zonas_alvo": 3,
+      "foco": 3,
+      "compromissos": {
+        "caminhada": 3,
+        "comicio": 3,
+        "gravacao": 2,
+        "entrevista": 1
+      },
+      "canais": {
+        "rua": 0.3,
+        "material": 0.3,
+        "cabos": 0.25,
+        "redes": 0.15
+      },
+      "verba_fator": 1.6,
+      "lideranca_fator": 1,
+      "agressividade": 0.4
+    }
+  ],
+  "textos": {
+    "fato_caminhada": "{nome} fez caminhada em {zona}",
+    "fato_reuniao": "{nome} reuniu apoiadores em {zona}",
+    "fato_comicio": "{nome} fez comício em {zona}",
+    "fato_entrevista": "{nome} deu entrevista sobre a campanha",
+    "fato_gravacao": "{nome} publicou vídeo de campanha nas redes",
+    "fato_queda": "{nome} cai {pontos} pontos na pesquisa",
+    "fato_vitima": "{nome} diz ser alvo de campanha suja de {alvo}",
+    "fato_justica_aceita": "Justiça Eleitoral dá razão a {nome} contra {alvo}",
+    "fato_justica_negada": "Justiça Eleitoral nega pedido de {nome} contra {alvo}",
+    "pacto_nao_agressao": "{nome} aceitou o pacto de não agressão: ele não ataca você, e as zonas dele ficam fechadas para os seus atos de rua.",
+    "pacto_dobradinha": "{nome} aceitou a dobradinha: o seu nome vai no material da campanha a prefeito.",
+    "pacto_recusado": "{nome} recusou a proposta.",
+    "pacto_quebrado": "Pacto com {nome} quebrado",
+    "pacto_explica": "Proposta a {nome}: {chance} de aceitar. Zonas que ficam fechadas para você: {zonas}. Quebrar o pacto grava uma lembrança que não se apaga e vira notícia.",
+    "pacto_divida": "Dobradinha com {nome}: você deve apoio à campanha a prefeito",
+    "investigar_explica": "Levantar a vida de {nome}: custa {custo}; {chance} de achar um ponto fraco que sirva de prova, se houver. Pontos fracos já conhecidos: {conhecidos}.",
+    "investigar_achou": "A investigação achou um ponto fraco.",
+    "investigar_nada": "A investigação não achou nada.",
+    "investigar_descoberto": "{nome} ficou sabendo da investigação.",
+    "plano_expandir": "{nome} trabalha para crescer nas zonas-alvo",
+    "plano_defender": "{nome} voltou a campanha para defender o reduto",
+    "plano_atacar": "{nome} partiu para o ataque",
+    "plano_recompor": "{nome} tenta recompor a base e as lideranças",
+    "chapa": "Seu partido hoje faria {cadeiras} cadeiras; você é o {posicao}º da chapa",
+    "resposta_revide": "{nome} é de revidar: espere um ataque de volta em 3 a 7 dias.",
+    "resposta_vitima": "{nome} tende a se fazer de vítima e ganhar imagem na própria base.",
+    "resposta_justica": "{nome} tende a acionar a Justiça Eleitoral.",
+    "resposta_ignora": "{nome} está muito à frente e deve ignorar.",
+    "dobradinha_semana": "A dobradinha rendeu presença na cidade inteira"
+  },
+  "lembrancas": {
+    "ataque": {
+      "peso": -3,
+      "pontos": -30,
+      "texto": "Atacou em público durante a campanha"
+    },
+    "pacto": {
+      "peso": 2,
+      "pontos": 10,
+      "texto": "Fez pacto de não agressão"
+    },
+    "dobradinha": {
+      "peso": 2,
+      "pontos": 12,
+      "texto": "Fechou dobradinha na campanha"
+    },
+    "pacto_quebrado": {
+      "peso": -3,
+      "pontos": -35,
+      "texto": "Quebrou o pacto"
+    },
+    "investigado": {
+      "peso": -2,
+      "pontos": -10,
+      "texto": "Mandou levantar a vida dele"
+    },
+    "proposta_recusada": {
+      "peso": -1,
+      "pontos": -1,
+      "texto": "Propôs um pacto que não interessava"
+    }
+  },
+  "pactos": {
+    "nao_agressao": {
+      "ganho": [
+        "tempo",
+        "risco"
+      ],
+      "custo": [
+        "zona"
+      ]
+    },
+    "dobradinha": {
+      "ganho": [
+        "zona"
+      ],
+      "custo": [
+        "posicao",
+        "relacao"
+      ]
+    }
+  },
+  "fraquezas": {
+    "incoerencia": [
+      "Defendeu o contrário do que diz hoje numa votação antiga",
+      "Mudou de posição sobre uma obra da cidade depois de trocar de partido",
+      "Prometeu não se candidatar e voltou atrás"
+    ],
+    "esqueleto": [
+      "Tem uma multa eleitoral antiga que não foi paga",
+      "Usou carro oficial em compromisso particular",
+      "Recebeu doação que não aparece nas contas de uma campanha passada"
+    ]
+  }
+}

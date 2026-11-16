@@ -48,16 +48,25 @@ public class ChannelTests
     /// <summary>Campanha oficial numa cidade que tenha zona sem verba de rival (nenhum reduto ali).</summary>
     private static CampaignEngine WithFreeZone(string porte, ulong seed)
     {
-        for (ulong s = seed; s < seed + 30; s++)
+        CampaignEngine engine = InCampaign(porte, seed);
+
+        // Os rivais refazem o plano de verba na segunda: a primeira semana inteira de campanha oficial já tem Rua e Cabos.
+        StaffTests.Week(engine);
+        engine.Context.State.Player.Resources.Money = 1_000_000;
+        List<string> zones = engine.Territory.Zones;
+        if (zones.All(z => engine.RivalBudget(ChannelDefinition.Rua, z) > 0))
         {
-            CampaignEngine engine = InCampaign(porte, s);
-            if (engine.Territory.Zones.Any(z => engine.RivalBudget(ChannelDefinition.Rua, z) == 0) && engine.Territory.Zones.Any(z => engine.RivalBudget(ChannelDefinition.Rua, z) > 0))
+            // A verba dos rivais tem estado (R3): tira-se do plano desta semana o que eles puseram numa zona.
+            string free = zones[^1];
+            foreach (RivalRecord record in engine.Rivals.Records)
             {
-                return engine;
+                record.Budget.RemoveAll(a => a.TargetId == free);
             }
         }
 
-        throw new InvalidOperationException("Nenhuma cidade com zona sem reduto de rival.");
+        Assert.Contains(zones, z => engine.RivalBudget(ChannelDefinition.Rua, z) == 0);
+        Assert.Contains(zones, z => engine.RivalBudget(ChannelDefinition.Rua, z) > 0);
+        return engine;
     }
 
     private static string ZoneWithoutRival(CampaignEngine engine, string channel) =>
@@ -120,12 +129,21 @@ public class ChannelTests
     }
 
     [Fact]
-    public void Rivais_gastam_nos_seus_redutos()
+    public void Rivais_gastam_nas_zonas_alvo_do_plano_de_cada_um()
     {
-        CampaignEngine engine = WithFreeZone("grande", 33);
-        var redutos = engine.Territory.Redutos.Values.SelectMany(z => z).Select(z => engine.Territory.Zones[z]).ToHashSet();
-        Assert.NotEmpty(redutos);
-        Assert.All(engine.Territory.Zones, z => Assert.Equal(redutos.Contains(z), engine.RivalBudget(ChannelDefinition.Rua, z) > 0));
+        CampaignEngine engine = InCampaign("grande", 33);
+        StaffTests.Week(engine);
+        CampaignState campaign = engine.Context.State.Campaign!;
+        List<RivalRecord> spending = campaign.Rivals.Records
+            .Where(r => campaign.Find(r.CandidateId)!.Office == campaign.Player.Office && r.Budget.Any(a => a.ChannelId == ChannelDefinition.Rua)).ToList();
+        var targets = spending.SelectMany(r => r.Plan!.TargetZones).Select(z => engine.Territory.Zones[z]).ToHashSet();
+        Assert.NotEmpty(targets);
+        Assert.All(engine.Territory.Zones, z => Assert.Equal(targets.Contains(z), engine.RivalBudget(ChannelDefinition.Rua, z) > 0));
+
+        // O que cada rival põe na rua sai do caixa dele, e a soma por zona é o que o jogador enfrenta.
+        Assert.All(spending, r => Assert.True(r.Spent > 0));
+        string zone = targets.First();
+        Assert.Equal(Math.Round(spending.Sum(r => r.Budget.Where(a => a.ChannelId == ChannelDefinition.Rua && a.TargetId == zone).Sum(a => a.Amount))), engine.RivalBudget(ChannelDefinition.Rua, zone));
     }
 
     [Fact]
@@ -174,9 +192,13 @@ public class ChannelTests
         Assert.True(law.ImpulsionamentoSoParaPromover);
         Assert.True(law.ImpulsionamentoIdentificadoEContratadoPelaCampanha);
 
-        // Citado de memória: a conferência no texto oficial é da R3, e o objeto diz isso.
-        Assert.False(law.ConferidoNoTextoOficial);
-        Assert.Contains("R3", law.Conferencia);
+        // Conferido no texto oficial na R3 (docs/referencias/LEIS_CONFERIDAS.md), e o objeto diz isso.
+        Assert.True(law.ConferidoNoTextoOficial);
+        Assert.Contains("16/11/2026", law.Conferencia);
+        Assert.True(law.ImpulsionamentoProvedorNoPais);
+        Assert.Equal(5_000m, law.ImpulsionamentoMultaMinima);
+        Assert.Equal(30_000m, law.ImpulsionamentoMultaMaxima);
+        Assert.Equal(80_000m, law.ImpulsionamentoMultaMaximaPara(40_000m));
 
         // Com o padrão da lei, impulsionar (verba acima da produção) antes da campanha oficial é barrado.
         CampaignEngine engine = Fresh("medio", 35);
@@ -198,12 +220,15 @@ public class ChannelTests
     [Theory]
     [InlineData(Office.Prefeito, 8_000, null, 80)]
     [InlineData(Office.Prefeito, 30_000, null, 300)]
-    [InlineData(Office.Prefeito, 30_999, null, 300)]
+    [InlineData(Office.Prefeito, 30_499, null, 300)]
+    [InlineData(Office.Prefeito, 30_500, null, 301)]
+    [InlineData(Office.Prefeito, 8_050, null, 81)]
+    [InlineData(Office.Vereador, 8_100, null, 41)]
     [InlineData(Office.Prefeito, 100_000, null, 370)]
     [InlineData(Office.Vereador, 8_000, null, 40)]
     [InlineData(Office.Vereador, 100_000, null, 185)]
     [InlineData(Office.Vereador, 100_000, 1_000_000L, 185)]
-    [InlineData(Office.Vereador, 1_000_000, 1_000_000L, 355)]
+    [InlineData(Office.Vereador, 1_000_000, 1_000_000L, 356)]
     public void Limite_de_cabos_pelo_eleitorado_segue_o_artigo_100A(Office office, long eleitorado, long? maiorDaUf, int expected)
     {
         ChannelLawConfig law = ChannelLawConfig.Default;
@@ -444,6 +469,7 @@ public class ChannelTests
         string zone = engine.Territory.Zones[0];
         decimal verba = engine.ChannelStep * 10;
         decimal money = state.Player.Resources.Money;
+        decimal raised = engine.Finance.Declared;
 
         // O aumento sai na hora; baixar o plano não devolve nada e só vale na segunda.
         Assert.Null(engine.SetAllocation(ChannelDefinition.Rua, zone, verba));
@@ -456,16 +482,17 @@ public class ChannelTests
         StaffTests.Week(engine);
         Assert.Equal(verba, Assert.Single(engine.Budget.LastResults).Spent);
         Assert.Equal(verba / 2, engine.Budget.ActiveOf(ChannelDefinition.Rua, zone));
-        Assert.Equal(money - verba - (verba / 2), state.Player.Resources.Money);
+        Assert.Equal(money - verba - (verba / 2) + engine.Finance.Declared - raised, state.Player.Resources.Money);
         BudgetView view = engine.BudgetSummary();
         Assert.Equal(verba / 2, view.PlanWeekly);
         Assert.Equal(verba / 2, view.ActiveWeekly);
 
         // Sem caixa na segunda: a verba não é paga, não rende, e o feed avisa.
         state.Player.Resources.Money = verba / 4;
+        raised = engine.Finance.Declared;
         StaffTests.Week(engine);
         Assert.Equal(0, engine.Budget.ActiveOf(ChannelDefinition.Rua, zone));
-        Assert.Equal(verba / 4, state.Player.Resources.Money);
+        Assert.Equal((verba / 4) + engine.Finance.Declared - raised, state.Player.Resources.Money);
         Assert.Contains(engine.Agenda.Feed, f => f.Kind == "verba");
         StaffTests.Week(engine);
         Assert.Empty(engine.Budget.LastResults);

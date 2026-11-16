@@ -1,0 +1,328 @@
+{
+  "note": "Mídia local (GDD 17.13). Veículos fictícios por porte, cada um com tipo, linha editorial (em relação à prefeitura, sem relação com ideologia), dois temas de interesse, grau de sensacionalismo, dono e jornalista. Os nomes são prefixo + termo neutro e nenhum pode bater em data/media/blocklist.json. Todos os números são de balanceamento.",
+  "tipos": [
+    {
+      "id": "radio_comunitaria",
+      "nome": "rádio comunitária",
+      "prefixos": [
+        "Rádio"
+      ],
+      "emissora": true,
+      "alcance": {
+        "min": 0.25,
+        "max": 0.6
+      },
+      "publicos": [
+        "geral",
+        "idade_60_69",
+        "rural"
+      ]
+    },
+    {
+      "id": "radio",
+      "nome": "rádio local",
+      "prefixos": [
+        "Rádio"
+      ],
+      "emissora": true,
+      "alcance": {
+        "min": 0.2,
+        "max": 0.5
+      },
+      "publicos": [
+        "geral",
+        "idade_35_59",
+        "idade_60_69"
+      ]
+    },
+    {
+      "id": "jornal",
+      "nome": "jornal",
+      "prefixos": [
+        "Jornal",
+        "Gazeta",
+        "Diário"
+      ],
+      "escrita": true,
+      "alcance": {
+        "min": 0.05,
+        "max": 0.25
+      },
+      "anuncio_custo": 600,
+      "publicos": [
+        "geral",
+        "alta",
+        "medio_superior"
+      ]
+    },
+    {
+      "id": "portal",
+      "nome": "portal de notícias",
+      "prefixos": [
+        "Portal"
+      ],
+      "alcance": {
+        "min": 0.15,
+        "max": 0.4
+      },
+      "publicos": [
+        "geral",
+        "idade_18_34",
+        "idade_35_59"
+      ]
+    },
+    {
+      "id": "pagina",
+      "nome": "página de notícias",
+      "prefixos": [
+        "Giro",
+        "Fala"
+      ],
+      "rede": true,
+      "alcance": {
+        "min": 0.2,
+        "max": 0.55
+      },
+      "publicos": [
+        "idade_18_34",
+        "geral"
+      ]
+    },
+    {
+      "id": "tv",
+      "nome": "TV regional",
+      "prefixos": [
+        "TV"
+      ],
+      "emissora": true,
+      "alcance": {
+        "min": 0.3,
+        "max": 0.6
+      },
+      "publicos": [
+        "geral",
+        "idade_35_59"
+      ]
+    }
+  ],
+  "por_porte": {
+    "pequeno": [
+      [
+        "radio_comunitaria",
+        "pagina"
+      ]
+    ],
+    "medio": [
+      [
+        "radio",
+        "jornal",
+        "pagina"
+      ],
+      [
+        "radio",
+        "portal",
+        "pagina"
+      ],
+      [
+        "radio",
+        "jornal",
+        "portal",
+        "pagina"
+      ]
+    ],
+    "grande": [
+      [
+        "radio",
+        "jornal",
+        "portal",
+        "pagina",
+        "tv"
+      ],
+      [
+        "radio",
+        "radio",
+        "jornal",
+        "pagina",
+        "tv"
+      ]
+    ],
+    "metropole": [
+      [
+        "radio",
+        "radio",
+        "jornal",
+        "portal",
+        "pagina",
+        "tv"
+      ],
+      [
+        "radio",
+        "jornal",
+        "jornal",
+        "portal",
+        "portal",
+        "pagina",
+        "tv"
+      ]
+    ]
+  },
+  "termos": [
+    "Vale",
+    "Serra",
+    "Horizonte",
+    "Mirante",
+    "Ribeira",
+    "Planície",
+    "Travessia",
+    "Colina",
+    "Nascente",
+    "Baixada",
+    "Chapada",
+    "Vereda",
+    "Estação",
+    "Ponte",
+    "Cais",
+    "Clareira",
+    "Várzea",
+    "Encosta"
+  ],
+  "linhas": [
+    {
+      "id": "governista",
+      "nome": "linha governista",
+      "weight": 1,
+      "tons": {
+        "situacao": {
+          "favoravel": 0.7,
+          "neutro": 0.3
+        },
+        "oposicao": {
+          "critico": 0.6,
+          "neutro": 0.4
+        },
+        "nenhum": {
+          "neutro": 0.8,
+          "favoravel": 0.2
+        }
+      }
+    },
+    {
+      "id": "critica",
+      "nome": "linha crítica",
+      "weight": 1,
+      "tons": {
+        "situacao": {
+          "critico": 0.7,
+          "neutro": 0.3
+        },
+        "oposicao": {
+          "favoravel": 0.5,
+          "neutro": 0.5
+        },
+        "nenhum": {
+          "neutro": 0.7,
+          "critico": 0.3
+        }
+      }
+    },
+    {
+      "id": "independente",
+      "nome": "linha independente",
+      "weight": 1,
+      "tons": {
+        "situacao": {
+          "neutro": 0.7,
+          "critico": 0.15,
+          "favoravel": 0.15
+        },
+        "oposicao": {
+          "neutro": 0.7,
+          "critico": 0.15,
+          "favoravel": 0.15
+        },
+        "nenhum": {
+          "neutro": 1
+        }
+      }
+    }
+  ],
+  "regras": {
+    "cobertura_por_visibilidade": [
+      0,
+      0.25,
+      0.6,
+      0.9
+    ],
+    "interesse_fator": 1.6,
+    "desvio_de_tom": 0.03,
+    "imagem_por_noticia": 0.004,
+    "sensacionalismo": {
+      "min": 0.1,
+      "max": 0.9
+    },
+    "tema_em_alta_noticias": 3,
+    "tema_em_alta_fatos": 2,
+    "tema_em_alta_bonus": 0.3,
+    "tema_em_alta_semanas": 1,
+    "tema_em_alta_alcance_minimo": 0.3,
+    "fato_da_cidade_chance_diaria": 0.3,
+    "economia_a_cada_semanas": 4,
+    "entrevista_critico_chance": -0.15,
+    "entrevista_critico_credito": 1.35,
+    "entrevista_amigo_chance": 0.1,
+    "entrevista_amigo_credito": 0.8,
+    "entrevista_chance_por_relacao": 0.002,
+    "pauta_chance_base": 0.35,
+    "pauta_chance_por_relacao": 0.006,
+    "pauta_interesse": 0.2,
+    "pauta_dias": 14,
+    "anuncio_presenca": 1.2,
+    "sorte": {
+      "min": 0.85,
+      "max": 1.15
+    },
+    "horario_gratuito_presenca": 1.0,
+    "max_noticias": 400,
+    "economia_passo": 0.03,
+    "dono_lideranca_chance": 0.3,
+    "dono_doador_chance": 0.2
+  },
+  "textos": {
+    "fator_veiculo_critico": "Veículo crítico a você: pergunta mais duro, mas quem ouve dá mais crédito",
+    "fator_veiculo_amigo": "Veículo amigo: entrevista segura, mas convence pouco",
+    "fator_alcance": "Alcance de {veiculo}",
+    "fator_tema_em_alta": "Tema em alta no noticiário: {tema}",
+    "pauta_explica": "Sugerir a {jornalista}, de {veiculo}, a pauta \"{fato}\": {chance} de entrar. A linha do veículo decide o tom, nunca o fato.",
+    "pauta_sucesso": "A pauta entrou.",
+    "pauta_falha": "O jornalista achou a pauta fraca e não publicou.",
+    "anuncio_explica": "Anúncio em {veiculo}: custa {custo} e chega a {alcance} dos eleitores da cidade.",
+    "anuncio_limite": "{artigo}: até {limite} anúncios por veículo, em datas diversas, até {ultimo}. Restam {restam} neste veículo.",
+    "anuncio_feito": "Anúncio de campanha publicado em {veiculo}, com o valor pago ({valor}) à vista",
+    "horario_gratuito": "Começa o horário eleitoral gratuito no rádio e na TV",
+    "horario_sem_emissora": "Sem emissora de rádio ou TV na cidade, não há horário eleitoral gratuito aqui",
+    "tema_em_alta": "Tema em alta na cidade: {tema}",
+    "pesquisa_fato": "Sai pesquisa do instituto {instituto}"
+  },
+  "lembrancas": {
+    "entrevista": {
+      "peso": 1,
+      "pontos": 3,
+      "texto": "Deu entrevista a {veiculo}"
+    },
+    "pauta_boa": {
+      "peso": 1,
+      "pontos": 2,
+      "texto": "Sugeriu uma pauta que rendeu"
+    },
+    "pauta_fraca": {
+      "peso": -1,
+      "pontos": -2,
+      "texto": "Insistiu numa pauta fraca"
+    },
+    "anuncio": {
+      "peso": 1,
+      "pontos": 2,
+      "texto": "Anunciou no veículo"
+    }
+  }
+}

@@ -88,6 +88,57 @@ public sealed class CampaignTrace
     public int ObjectivesDone { get; set; }
 
     public int TeamAtEnd { get; set; }
+
+    // ---- R3: doadores, ataques, mídia, rivais e contas
+
+    /// <summary>Respostas dadas às ofertas de doação, por tipo.</summary>
+    public Dictionary<string, int> DonationAnswers { get; } = [];
+
+    public int AttacksReceived { get; set; }
+
+    public int RumorsReceived { get; set; }
+
+    public int AttacksMade { get; set; }
+
+    /// <summary>Respostas a ataques, por tipo.</summary>
+    public Dictionary<string, int> Responses { get; } = [];
+
+    /// <summary>Notícias que não citam o jogador, semana a semana.</summary>
+    public List<int> NewsByWeek { get; } = [];
+
+    public int HotThemeWeeks { get; set; }
+
+    /// <summary>Trocas de plano dos rivais, por gatilho.</summary>
+    public Dictionary<string, int> PlanChanges { get; } = [];
+
+    public decimal Limit { get; set; }
+
+    public decimal CampaignSpent { get; set; }
+
+    public double OffBooksShare { get; set; }
+
+    public int Risk { get; set; }
+
+    /// <summary>Arrecadado por fonte.</summary>
+    public Dictionary<string, decimal> Raised { get; } = [];
+
+    public int Replicas { get; set; }
+
+    public int MandatesLost { get; set; }
+
+    public int Representations { get; set; }
+
+    public Dictionary<string, int> Verdicts { get; } = [];
+
+    /// <summary>Tempo da simulação semanal (a virada de domingo), em milissegundos.</summary>
+    public List<double> WeekMs { get; } = [];
+
+    public bool Dirty { get; set; }
+
+    /// <summary>Entrevistas marcadas num veículo, e compromissos que trataram de tema em alta.</summary>
+    public int OutletInterviews { get; set; }
+
+    public int HotThemeCommitments { get; set; }
 }
 
 /// <summary>
@@ -127,15 +178,26 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
             {
                 Trace.Weeks++;
                 ManageWeek();
+                ManageR3Week();
             }
 
+            ManageR3Day();
             PlanDay(today, firstOfWeek);
-            if (State.Time.Day == 6)
+            bool sunday = State.Time.Day == 6;
+            if (sunday)
             {
                 PlanBudget();
             }
 
+            // Um comando do próprio dia pode ter emitido um fato que dispara um evento (GDD 15.4): responde antes de o dia andar.
+            ResolvePending();
+            _clock.Restart();
             _engine.AdvanceDay();
+            if (sunday && !_engine.DecisionPending)
+            {
+                Trace.WeekMs.Add(_clock.Elapsed.TotalMilliseconds);
+            }
+
             ResolvePending();
         }
 
@@ -145,6 +207,9 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
         Trace.ObjectivesDone = objectives.Count(o => o.Status == ObjectiveStatus.Cumprido);
         Trace.TeamAtEnd = _engine.HiredStaff.Count();
         ElectionOutcome outcome = _engine.ResolveElection();
+        Trace.Dirty = Dirty;
+        Trace.CampaignSpent = _engine.Finance.Spent;
+        AccountsAfterElection();
         Trace.Elected = outcome.PlayerElected;
         Trace.Position = 1 + outcome.Vereador.Votes.Where(v => !v.Key.StartsWith("demais_", StringComparison.Ordinal)).Count(v => v.Value > outcome.Vereador.Votes[RaceSetup.PlayerId]);
         Trace.FinalRecognition = Campaign.Player.Recognition;
@@ -160,7 +225,9 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
         {
             PendingEvent pending = Campaign.Events.Pending[0];
             EventDefinition definition = _engine.Context.Events!.Find(pending.EventId)!;
-            int choice = Enumerable.Range(0, definition.Choices.Count).First(i => EventEngine.Blocked(_engine.Context, definition.Choices[i]) is null);
+            // A primeira escolha permitida; o robô limpo pula a que deixa esqueleto (dinheiro por fora, propaganda irregular).
+            List<int> allowed = Enumerable.Range(0, definition.Choices.Count).Where(i => EventEngine.Blocked(_engine.Context, definition.Choices[i]) is null).ToList();
+            int choice = Dirty ? allowed[0] : allowed.Where(i => definition.Choices[i].Effects.AddSkeleton is null).DefaultIfEmpty(allowed[0]).First();
             EventEngine.Resolve(_engine.Context, pending, choice, State.Rng);
             Trace.Events++;
             Decision("evento");
@@ -192,7 +259,8 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
     {
         if (_weekBest is { } best)
         {
-            string place = best.Request.ZoneId
+            // O lugar do compromisso: a zona; na visita, a zona da liderança; na entrevista, o veículo (GDD 17.13).
+            string place = best.Request.ZoneId ?? best.Request.OutletId
                 ?? (best.Request.PersonId is { } person && _engine.City.Leader(person) is { } leader ? leader.Zones[0] : "-");
             Trace.BestTypeByWeek.Add(best.Request.Type);
             Trace.BestPairByWeek.Add($"{best.Request.Type}|{place}");
@@ -263,16 +331,18 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
             Trace.Turns++;
             if (!forced)
             {
-                string turnPlace = best.Request.ZoneId
+                string turnPlace = best.Request.ZoneId ?? best.Request.OutletId
                     ?? (best.Request.PersonId is { } visited && _engine.City.Leader(visited) is { } visitedLeader ? visitedLeader.Zones[0] : "-");
                 Trace.BestTypeByTurn.Add(best.Request.Type);
                 Trace.BestPairByTurn.Add($"{best.Request.Type}|{turnPlace}");
                 _weekTypes.Add(best.Request.Type);
             }
 
-            if (_engine.Schedule(best.Request).Failure is null)
+            if (_engine.Schedule(best.Request) is { Failure: null, Commitment: { } marked })
             {
                 Trace.Commitments++;
+                Trace.OutletInterviews += marked.OutletId is not null ? 1 : 0;
+                Trace.HotThemeCommitments += marked.TemaEmAlta ? 1 : 0;
             }
         }
 
@@ -412,6 +482,14 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
             else
             {
                 Consider(new CommitmentRequest(type.Id, null, date, turno));
+                if (type.Id == CommitmentCatalog.Entrevista)
+                {
+                    // Entrevista num veículo (GDD 17.13): o crítico arrisca mais e convence mais; o amigo, o contrário.
+                    foreach (Planalto.Core.Media.Outlet outlet in _engine.City.Outlets)
+                    {
+                        Consider(new CommitmentRequest(type.Id, null, date, turno, OutletId: outlet.Id));
+                    }
+                }
             }
         }
 

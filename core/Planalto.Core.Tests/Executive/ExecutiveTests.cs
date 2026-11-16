@@ -152,10 +152,12 @@ public class ExecutiveTests
         Assert.Equal(PolicyStatus.Ativa, e.Policies.Single(p => p.PolicyId == decree.Id).Status);
         Assert.True(engine.Targets()[decree.Boosts.First().Key] > target - 1e-9);
 
+        // (Uma crise sorteada na última semana travaria a caneta; o teste é sobre o projeto de lei.)
+        e.Crisis = null;
         e.EnergyLeft = 100;
         PolicyDefinition law = CampaignKit.C.Executive.Policies.Policies.First(p => p.RequiresLaw && p.Cost <= engine.FreeReserve);
         EnactResult vote = engine.Enact(law.Id);
-        Assert.True(vote.Ok);
+        Assert.True(vote.Ok, $"Projeto de lei barrado: {vote.Failure}.");
         Assert.True(vote.Yes + vote.No <= e.Chamber.Count);
         Assert.Equal(vote.Approved, LegislatureEngine.Approved(law.Quorum, vote.Yes, vote.No, e.Chamber.Count));
         Assert.Contains(e.News, n => n.Kind is ExecutiveNewsKind.PoliticaAprovada or ExecutiveNewsKind.PoliticaRejeitada);

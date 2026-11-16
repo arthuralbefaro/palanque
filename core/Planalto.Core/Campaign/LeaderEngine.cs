@@ -246,11 +246,17 @@ public sealed partial class CampaignEngine
 
         string? before = leader.AlignedWith;
         leader.AlignedWith = next;
+        if (before is not null && before != RaceSetup.PlayerId && Rivals.Record(before) is { } lost)
+        {
+            // Perder uma liderança faz o rival rever o plano na segunda seguinte (GDD 17.11).
+            lost.PendingTrigger ??= RivalPlan.GatilhoLideranca;
+        }
+
         string zone = leader.Zones[0];
         if (next == RaceSetup.PlayerId)
         {
             leader.Known = true;
-            Agenda.AddFeed(new FeedItem(Today, "lideranca", LeaderText("mudou_para_jogador", leader), zone, leader.PersonId, RaceSetup.PlayerId));
+            EmitFeed(Today, "lideranca", LeaderText("mudou_para_jogador", leader), zone, leader.PersonId, RaceSetup.PlayerId);
             foreach (Leader other in leader.Rivals.Select(id => City.Leader(id)!).Where(o => o is not null))
             {
                 City.Person(other.PersonId)!.Remember(Today, "rivalidade", 2, LeaderRules.PontosRivalidade, LeaderText("rivalidade", other, other: NameOf(leader.PersonId)), PeopleConfig);
@@ -258,11 +264,11 @@ public sealed partial class CampaignEngine
         }
         else if (next is not null)
         {
-            Agenda.AddFeed(new FeedItem(Today, before == RaceSetup.PlayerId ? "lideranca_perdida" : "lideranca", LeaderText("mudou_para_rival", leader, next), zone, leader.PersonId, next));
+            EmitFeed(Today, before == RaceSetup.PlayerId ? "lideranca_perdida" : "lideranca", LeaderText("mudou_para_rival", leader, next), zone, leader.PersonId, next);
         }
         else
         {
-            Agenda.AddFeed(new FeedItem(Today, before == RaceSetup.PlayerId ? "lideranca_perdida" : "lideranca", LeaderText("ficou_neutra", leader), zone, leader.PersonId));
+            EmitFeed(Today, before == RaceSetup.PlayerId ? "lideranca_perdida" : "lideranca", LeaderText("ficou_neutra", leader), zone, leader.PersonId);
         }
     }
 
@@ -318,7 +324,6 @@ public sealed partial class CampaignEngine
     private void LeadersWeek(DateOnly nextWeekStart)
     {
         LeaderRules rules = LeaderRules;
-        TerritoryState t = Territory;
         foreach (Leader leader in City.Leaders)
         {
             Person person = City.Person(leader.PersonId)!;
@@ -334,25 +339,7 @@ public sealed partial class CampaignEngine
             }
         }
 
-        foreach (Candidate rival in Campaign.Candidates.Where(c => !c.IsPlayer && !c.IsBulk && t.Redutos.ContainsKey(c.Id)))
-        {
-            if (!Rng.Chance(rules.ChanceAssedio * Math.Clamp(rival.Drive, 0.2, 1.5)))
-            {
-                continue;
-            }
-
-            List<Leader> near = City.Leaders.Where(l => t.Redutos[rival.Id].Any(z => l.Zones.Contains(t.Zones[z]))).ToList();
-            if (near.Count == 0)
-            {
-                continue;
-            }
-
-            Leader target = Rng.Pick(near);
-            target.Favor[rival.Id] = Math.Min(100, target.Favor.GetValueOrDefault(rival.Id) + Rng.NextInt(rules.FavorAssedio.Min, rules.FavorAssedio.Max + 1));
-            DateOnly day = Today.AddDays(-Rng.NextInt(0, 7));
-            Agenda.AddFeed(new FeedItem(day < State.Calendar.WeekStart ? State.Calendar.WeekStart : day, "rival_lideranca", LeaderText("assedio", target, rival.Id), target.Zones[0], target.PersonId, rival.Id));
-        }
-
+        // A procura dos rivais pelas lideranças acontece em dias, pelo plano de cada um (RivalEngine).
         foreach (Leader leader in City.Leaders)
         {
             Realign(leader);

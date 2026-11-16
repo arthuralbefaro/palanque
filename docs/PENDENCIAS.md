@@ -123,3 +123,29 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - **Saturação:** a mesma verba no mesmo alvo por 33 semanas chegou a −94%; conferir no BalanceSim da R3 se a curva não está dura demais.
 - **A interface foi num commit só** (as telas se cruzam em `HubScreen.cs`), e não um por funcionalidade.
 - **Lei dos cabos (art. 100-A):** o arredondamento do texto (despreza abaixo de 0,5 e arredonda para 1 a partir daí) e as frações de deputado ainda não estão conferidos no objeto de configuração; entra na conferência da R3.
+
+## Teste do autor na tag fase-r1 (2026-11-16)
+
+### P-24 · Dez itens do teste do autor, a corrigir antes da fase-r-final
+Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Situação de cada um é atualizada aqui.
+1. **Criação, gênero:** mudar o gênero sorteia de novo a aparência com os pesos do gênero novo; se a aparência já foi editada à mão, perguntar antes. — aberto
+2. **Número de urna:** campo de texto com 3 dígitos (zeros à esquerda e dígitos repetidos permitidos, como 000 e 111), validado contra os números ocupados no partido. — aberto
+3. **Nenhum texto ao jogador cita o GDD ou outro documento interno** (ex.: "(GDD 16.2)"); checagem no DataValidator ou no alvo `explicacao`. — aberto
+4. **Botões da base da criação encostam na barra de tarefas do Windows;** o alvo `layout` deve considerar a janela real, não só o viewport. — aberto
+5. **Partido da criação × tela seguinte:** o santinho mostrou FRB e a tela seguinte, ACNB. Conferir, corrigir se for erro e testar. — aberto
+6. **"Como te veem 0,00":** mostrar a imagem numa escala legível, seguindo o ART_GUIDE. — aberto
+7. **Cores do logotipo aparecem como quadrados vazios.** — aberto
+8. **Personagem que não pode disputar a primeira eleição** começa direto na pré-campanha da primeira que pode disputar, com a idade correspondente; a criação avisa; ajustar o alvo `creator17`. — aberto
+9. **Entressafra na tela central,** com a agenda fora de campanha (visitar lideranças, entrevistas, posições, presença nas zonas). — aberto (vai com a R4, junto da P-01)
+10. **Mapa de cidade pequena (P-09):** enquadramento inicial no núcleo urbano; zona rural dividida por localidades ou distritos, quando houver; todos os nomes de zona legíveis, com desvio de colisão; contorno rural menos simplificado. Teste com Mantena (MG) e capturas antes e depois. — aberto (fase-r-final)
+- **Também:** corrigir os encaixes errados de brinco e cabelo da arte 2D atual (os retratos 3D ficam para depois da Fase R). — aberto
+- **Pesquisa pedida, sem implementar:** se o IBGE publica as faces de logradouro ou as quadras do Censo 2022 para todos os municípios e quanto ocupariam simplificadas só no núcleo urbano; o resultado entra aqui como decisão do autor.
+
+### P-25 · Ruas ou quadras do IBGE no mapa das cidades (decisão do autor; nada foi implementado)
+- **O que existe (lido nas listagens oficiais do geoftp e na ficha do produto):** a "Base de Faces de Logradouros do Brasil, versão 2022 (Censo Demográfico), resultados preliminares": linhas de rua das áreas urbanizadas, expansões urbanas e aglomerados rurais, um arquivo por município (5.570), 13,85 milhões de faces, em shapefile e JSON, um zip por UF, de 2024-06-07 (`geoftp.ibge.gov.br/recortes_para_fins_estatisticos/malha_de_setores_censitarios/censo_2022/base_de_faces_de_logradouros_versao_2022_censo_demografico/`). Total nacional: cerca de 1,0 GB em zip (RR 1,7 MB; PR 38 MB; SP 377 MB).
+- **Quadras em polígono:** nenhum produto encontrado nas pastas percorridas; a quadra só aparece como atributo da face (`CD_QUADRA`) e teria de ser reconstruída. Em Roraima, 9,7% das faces não têm código de quadra.
+- **Medido em Roraima** (15 municípios, 37.917 faces): simplificado a 3 m e gravado em JSON compacto sem atributos, dá cerca de 22 bytes por face; um município pequeno fica entre 6 e 70 KB.
+- **Estimativa** (não é número do IBGE): o país inteiro daria de 305 a 415 MB nesse JSON; só os municípios com até 1.000 faces (2.853 deles), de 32 a 44 MB; só os com até 500 faces (1.441), de 10 a 13 MB. Com 17 MB de zonas já no repositório e o teto de 20 MB (D-037), **não cabe**. Caberia apenas um recorte dos menores municípios com compactação mais agressiva (não medida), ou os dados fora do repositório, baixados por município.
+- **Licença:** não confirmada. As listagens dizem "Todos os arquivos aqui disponíveis são públicos"; a ficha do produto só traz ressalvas de qualidade e isenção de responsabilidade; as páginas do ibge.gov.br recusaram a leitura automática. O autor confere os termos antes de qualquer uso.
+- **Não confirmado:** se há versão definitiva mais nova; a fração de faces fora da sede; a taxa de simplificação fora de Roraima.
+- **A decidir pelo autor:** (a) não usar e manter as zonas; (b) usar só nas cidades pequenas, com teto próprio de tamanho; (c) baixar por município, fora do Git. Nada muda até a decisão.

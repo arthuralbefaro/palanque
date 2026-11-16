@@ -315,6 +315,8 @@ public class CityHallTests
         GovernanceState g = h.G;
         FiscalLawConfig law = FiscalLawConfig.Default;
         g.Payroll.Share = 0.52;
+        g.Payroll.Band = PayrollBand.Normal;
+        g.Feed.Clear();
         g.Fiscal.GeneralRevision = 0.03;
         NegotiationTable table = Content.Personnel.Mesas.First(m => m.AfetaFolha);
         h.State.Calendar.JumpTo(new DateOnly(g.Start.Year, table.Mes, 10));
@@ -618,8 +620,15 @@ public class CityHallTests
         Assert.Contains(g.Feed, f => f.Kind == "cpi" && f.Text.Contains("CPI instalada"));
 
         // A CPI vira decisão do prefeito (evento de mandato ligado ao fato).
-        for (int i = 0; i < 6 && g.Decision is null; i++)
+        // Outra decisão pode chegar antes (uma cobrança do Livro, por exemplo): vale a opção padrão e a espera segue.
+        for (int i = 0; i < 12 && g.Decision?.EventId != "cpi_contra_o_governo"; i++)
         {
+            if (GovernanceQueries.Decision(h.Gov) is { } other)
+            {
+                Assert.True(h.Gov.Decide(other.Default.Id).Ok);
+                continue;
+            }
+
             Sink();
             h.Week();
         }

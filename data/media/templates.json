@@ -1,0 +1,600 @@
+{
+  "note": "Tipos de fato (GDD 17.2, peça 5) com a visibilidade padrão (0 a 3; 0 só é conhecido por quem estava presente) e as manchetes por tom (GDD 17.13). A linha do veículo escolhe o tom; o fato é sempre o mesmo. Manchetes de até 70 caracteres com nomes de tamanho comum; aceitam {ator}, {alvo}, {zona}, {tema} e {texto}.",
+  "padrao": {
+    "favoravel": "Em destaque: {texto}",
+    "neutro": "{texto}",
+    "critico": "Sob crítica: {texto}"
+  },
+  "boato_prefixo": "Boato: ",
+  "fatos": [
+    {
+      "id": "compromisso",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} leva propostas a {zona}"
+        ],
+        "neutro": [
+          "{ator} cumpre agenda em {zona}"
+        ],
+        "critico": [
+          "{ator} busca voto em {zona} sem novidade"
+        ]
+      }
+    },
+    {
+      "id": "compromisso:reuniao",
+      "visibilidade": 0
+    },
+    {
+      "id": "compromisso:visita",
+      "visibilidade": 0
+    },
+    {
+      "id": "compromisso:jantar",
+      "visibilidade": 0
+    },
+    {
+      "id": "compromisso:descanso",
+      "visibilidade": 0
+    },
+    {
+      "id": "compromisso:comicio",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "Comício de {ator} enche a praça em {zona}"
+        ],
+        "neutro": [
+          "{ator} faz comício em {zona}"
+        ],
+        "critico": [
+          "Comício de {ator} atrapalha o trânsito em {zona}"
+        ]
+      }
+    },
+    {
+      "id": "compromisso:entrevista",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "{ator} detalha propostas em entrevista"
+        ],
+        "neutro": [
+          "{ator} dá entrevista sobre a campanha"
+        ],
+        "critico": [
+          "Em entrevista, {ator} evita perguntas difíceis"
+        ]
+      }
+    },
+    {
+      "id": "compromisso:gravacao",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Vídeo de {ator} repercute bem nas redes"
+        ],
+        "neutro": [
+          "{ator} publica vídeo de campanha"
+        ],
+        "critico": [
+          "Vídeo de {ator} divide opiniões nas redes"
+        ]
+      }
+    },
+    {
+      "id": "rival_zona",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} leva propostas a {zona}"
+        ],
+        "neutro": [
+          "{ator} cumpre agenda em {zona}"
+        ],
+        "critico": [
+          "{ator} busca voto em {zona} sem novidade"
+        ]
+      }
+    },
+    {
+      "id": "rival_zona:comicio",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "Comício de {ator} enche a praça em {zona}"
+        ],
+        "neutro": [
+          "{ator} faz comício em {zona}"
+        ],
+        "critico": [
+          "Comício de {ator} atrapalha o trânsito em {zona}"
+        ]
+      }
+    },
+    {
+      "id": "rival_zona:entrevista",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "{ator} detalha propostas em entrevista"
+        ],
+        "neutro": [
+          "{ator} dá entrevista sobre a campanha"
+        ],
+        "critico": [
+          "Em entrevista, {ator} evita perguntas difíceis"
+        ]
+      }
+    },
+    {
+      "id": "rival_zona:gravacao",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Vídeo de {ator} repercute bem nas redes"
+        ],
+        "neutro": [
+          "{ator} publica vídeo de campanha"
+        ],
+        "critico": [
+          "Vídeo de {ator} divide opiniões nas redes"
+        ]
+      }
+    },
+    {
+      "id": "rival_lideranca",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} ouve lideranças de {zona}"
+        ],
+        "neutro": [
+          "{ator} visita liderança de {zona}"
+        ],
+        "critico": [
+          "{ator} corteja lideranças de {zona}"
+        ]
+      }
+    },
+    {
+      "id": "lideranca",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Liderança de {zona} declara apoio na eleição"
+        ],
+        "neutro": [
+          "Liderança de {zona} muda de lado na eleição"
+        ],
+        "critico": [
+          "Troca de apoio em {zona} levanta suspeitas"
+        ]
+      }
+    },
+    {
+      "id": "lideranca_perdida",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Liderança de {zona} declara apoio na eleição"
+        ],
+        "neutro": [
+          "Liderança de {zona} muda de lado na eleição"
+        ],
+        "critico": [
+          "Troca de apoio em {zona} levanta suspeitas"
+        ]
+      }
+    },
+    {
+      "id": "descoberta",
+      "visibilidade": 0
+    },
+    {
+      "id": "equipe",
+      "visibilidade": 0
+    },
+    {
+      "id": "conselho",
+      "visibilidade": 0
+    },
+    {
+      "id": "objetivo",
+      "visibilidade": 0
+    },
+    {
+      "id": "verba",
+      "visibilidade": 0
+    },
+    {
+      "id": "caixa_baixo",
+      "visibilidade": 0
+    },
+    {
+      "id": "cabos",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Cabos eleitorais reforçam campanha de {ator}"
+        ],
+        "neutro": [
+          "Cabos eleitorais trocam de campanha em {zona}"
+        ],
+        "critico": [
+          "Cabos dispensados reclamam em {zona}"
+        ]
+      }
+    },
+    {
+      "id": "vazamento",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "Ex-assessor conta bastidores de campanha"
+        ],
+        "neutro": [
+          "Ex-assessor deixa campanha e fala"
+        ],
+        "critico": [
+          "Ex-assessor expõe bastidores de campanha"
+        ]
+      }
+    },
+    {
+      "id": "promessa",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} assume compromisso com {zona}"
+        ],
+        "neutro": [
+          "{ator} faz promessa de campanha"
+        ],
+        "critico": [
+          "{ator} promete mais do que explica"
+        ]
+      }
+    },
+    {
+      "id": "posicao",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} define posição em público"
+        ],
+        "neutro": [
+          "{ator} assume posição em público"
+        ],
+        "critico": [
+          "{ator} muda o discurso de campanha"
+        ]
+      }
+    },
+    {
+      "id": "pesquisa",
+      "visibilidade": 2
+    },
+    {
+      "id": "pesquisa:queda",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "{ator} recua na pesquisa, mas segue na disputa"
+        ],
+        "neutro": [
+          "{ator} cai na pesquisa"
+        ],
+        "critico": [
+          "{ator} despenca na pesquisa"
+        ]
+      }
+    },
+    {
+      "id": "evento",
+      "visibilidade": 0
+    },
+    {
+      "id": "doacao",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Campanha de {alvo} recebe doação declarada"
+        ],
+        "neutro": [
+          "{ator} doa à campanha de {alvo}"
+        ],
+        "critico": [
+          "Doação de {ator} a {alvo} chama atenção"
+        ]
+      }
+    },
+    {
+      "id": "doacao:oferta",
+      "visibilidade": 0
+    },
+    {
+      "id": "doacao:coletivo",
+      "visibilidade": 0
+    },
+    {
+      "id": "fundo",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "Partido aposta na campanha de {alvo}"
+        ],
+        "neutro": [
+          "Partido define cota do fundo de {alvo}"
+        ],
+        "critico": [
+          "Divisão do fundo eleitoral gera queixas"
+        ]
+      }
+    },
+    {
+      "id": "contas",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} entrega prestação de contas parcial"
+        ],
+        "neutro": [
+          "{ator} entrega prestação de contas parcial"
+        ],
+        "critico": [
+          "Contas parciais de {ator} deixam dúvidas"
+        ]
+      }
+    },
+    {
+      "id": "contas:apuracao",
+      "visibilidade": 0
+    },
+    {
+      "id": "ataque",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "{ator} cobra explicações de {alvo}"
+        ],
+        "neutro": [
+          "{ator} critica {alvo}"
+        ],
+        "critico": [
+          "{ator} parte para o ataque contra {alvo}"
+        ]
+      }
+    },
+    {
+      "id": "boato",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "circula mensagem contra {alvo}"
+        ],
+        "neutro": [
+          "circula mensagem contra {alvo}"
+        ],
+        "critico": [
+          "circula mensagem contra {alvo}"
+        ]
+      }
+    },
+    {
+      "id": "resposta",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} responde a {alvo} com firmeza"
+        ],
+        "neutro": [
+          "{ator} responde a {alvo}"
+        ],
+        "critico": [
+          "Resposta de {ator} a {alvo} não convence"
+        ]
+      }
+    },
+    {
+      "id": "justica",
+      "visibilidade": 2,
+      "manchetes": {
+        "favoravel": [
+          "{ator} recorre à Justiça Eleitoral"
+        ],
+        "neutro": [
+          "{ator} aciona a Justiça Eleitoral"
+        ],
+        "critico": [
+          "{ator} leva a disputa aos tribunais"
+        ]
+      }
+    },
+    {
+      "id": "pacto",
+      "visibilidade": 1,
+      "manchetes": {
+        "favoravel": [
+          "{ator} e {alvo} anunciam acordo"
+        ],
+        "neutro": [
+          "{ator} e {alvo} se aproximam"
+        ],
+        "critico": [
+          "Acordo entre {ator} e {alvo} é questionado"
+        ]
+      }
+    },
+    {
+      "id": "plano_rival",
+      "visibilidade": 0
+    },
+    {
+      "id": "investigacao",
+      "visibilidade": 0
+    },
+    {
+      "id": "tema_em_alta",
+      "visibilidade": 0
+    },
+    {
+      "id": "anuncio",
+      "visibilidade": 0
+    },
+    {
+      "id": "economia",
+      "visibilidade": 2
+    },
+    {
+      "id": "cidade",
+      "visibilidade": 2
+    },
+    {
+      "id": "esqueleto",
+      "visibilidade": 3,
+      "manchetes": {
+        "favoravel": [
+          "{alvo} é citado em denúncia e nega"
+        ],
+        "neutro": [
+          "Denúncia atinge campanha de {alvo}"
+        ],
+        "critico": [
+          "Denúncia grave atinge campanha de {alvo}"
+        ]
+      }
+    },
+    {
+      "id": "morte",
+      "visibilidade": 3
+    },
+    {
+      "id": "horario_gratuito",
+      "visibilidade": 1
+    }
+  ],
+  "fatos_da_cidade": [
+    {
+      "id": "falta_agua",
+      "tema": "meio_ambiente",
+      "situacao": "qualquer",
+      "texto": "Falta d'água atinge moradores de {zona}",
+      "weight": 1
+    },
+    {
+      "id": "posto_fila",
+      "tema": "saude",
+      "situacao": "qualquer",
+      "texto": "Fila no posto de saúde de {zona} cresce",
+      "weight": 1.5
+    },
+    {
+      "id": "posto_medico",
+      "tema": "saude",
+      "situacao": "qualquer",
+      "texto": "Posto de saúde de {zona} fica sem médico",
+      "weight": 1
+    },
+    {
+      "id": "escola_vagas",
+      "tema": "educacao",
+      "situacao": "qualquer",
+      "texto": "Faltam vagas na escola de {zona}",
+      "weight": 1.5
+    },
+    {
+      "id": "escola_rural",
+      "tema": "educacao",
+      "situacao": "rural",
+      "texto": "Transporte escolar falha em {zona}",
+      "weight": 1
+    },
+    {
+      "id": "assaltos",
+      "tema": "seguranca",
+      "situacao": "urbana",
+      "texto": "Moradores de {zona} relatam onda de assaltos",
+      "weight": 1.5
+    },
+    {
+      "id": "furto_gado",
+      "tema": "seguranca",
+      "situacao": "rural",
+      "texto": "Produtores de {zona} relatam furtos",
+      "weight": 1
+    },
+    {
+      "id": "estrada",
+      "tema": "agronegocio",
+      "situacao": "rural",
+      "texto": "Estrada de {zona} fica intransitável com a chuva",
+      "weight": 1.5
+    },
+    {
+      "id": "safra",
+      "tema": "agronegocio",
+      "situacao": "rural",
+      "texto": "Produtores de {zona} discutem a safra",
+      "weight": 1
+    },
+    {
+      "id": "lixo",
+      "tema": "meio_ambiente",
+      "situacao": "urbana",
+      "texto": "Lixo acumulado incomoda moradores de {zona}",
+      "weight": 1
+    },
+    {
+      "id": "taxa",
+      "tema": "impostos",
+      "situacao": "urbana",
+      "texto": "Comerciantes de {zona} reclamam de taxas",
+      "weight": 1
+    },
+    {
+      "id": "cesta",
+      "tema": "programas_sociais",
+      "situacao": "qualquer",
+      "texto": "Famílias de {zona} cobram vaga em programa social",
+      "weight": 1
+    },
+    {
+      "id": "obra_parada",
+      "tema": "transparencia",
+      "situacao": "qualquer",
+      "texto": "Obra parada em {zona} gera cobrança por explicação",
+      "weight": 1
+    }
+  ],
+  "fatos_economicos": [
+    {
+      "indicador": "selic",
+      "tema": "impostos",
+      "sobe": "Juro básico sobe para {valor}% ao ano",
+      "cai": "Juro básico cai para {valor}% ao ano",
+      "estavel": "Juro básico é mantido em {valor}% ao ano"
+    },
+    {
+      "indicador": "ipca",
+      "tema": "programas_sociais",
+      "sobe": "Inflação em 12 meses sobe para {valor}%",
+      "cai": "Inflação em 12 meses recua para {valor}%",
+      "estavel": "Inflação em 12 meses fica em {valor}%"
+    },
+    {
+      "indicador": "cambio",
+      "sobe": "Dólar sobe e é cotado a R$ {valor}",
+      "cai": "Dólar cai e é cotado a R$ {valor}",
+      "estavel": "Dólar fecha estável, a R$ {valor}"
+    },
+    {
+      "indicador": "desocupacao",
+      "tema": "programas_sociais",
+      "sobe": "Desocupação no país sobe para {valor}%",
+      "cai": "Desocupação no país cai para {valor}%",
+      "estavel": "Desocupação no país fica em {valor}%"
+    }
+  ]
+}

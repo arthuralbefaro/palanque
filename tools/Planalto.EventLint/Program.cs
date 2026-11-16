@@ -36,6 +36,13 @@ foreach (var (category, (count, target)) in report.Distribution)
 }
 
 Console.WriteLine();
+Console.WriteLine($"Escolhas marcadas como sem rastro: {report.SemRastro?.Count ?? 0}");
+foreach (string line in report.SemRastro ?? [])
+{
+    Console.WriteLine($"  {line}");
+}
+
+Console.WriteLine();
 foreach (string warning in report.Warnings)
 {
     Console.WriteLine($"AVISO {warning}");

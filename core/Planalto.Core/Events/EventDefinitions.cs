@@ -54,6 +54,21 @@ public sealed class EventConditions
     public bool NeedsRival { get; init; }
 
     public bool NeedsSkeleton { get; init; }
+
+    /// <summary>Só com um compromisso desse tipo marcado na agenda (ex.: chuva no comício).</summary>
+    public string? NeedsCommitment { get; init; }
+
+    /// <summary>
+    /// Evento dinâmico (GDD 15.4): não entra no sorteio da semana; dispara quando um fato desse tipo é emitido
+    /// ("tipo" ou "tipo:subtipo"), com a chance de <see cref="Chance"/>, e envolve as pessoas e a zona do fato.
+    /// </summary>
+    public string? Trigger { get; init; }
+
+    /// <summary>Tipo de veículo que o evento envolve: "emissora", "escrita" ou "rede"; null = qualquer.</summary>
+    public string? OutletKind { get; init; }
+
+    /// <summary>Situação da zona que o evento envolve: "urbana" ou "rural"; null = qualquer.</summary>
+    public string? ZoneKind { get; init; }
 }
 
 public sealed class ChoiceRequirement
@@ -104,6 +119,12 @@ public sealed class EventChoice
     public List<string>? Gain { get; init; }
 
     public List<string>? Cost { get; init; }
+
+    /// <summary>
+    /// Marca explícita de escolha que não deixa rastro, com o motivo (GDD 17.1, princípio d): sem ela, toda escolha
+    /// tem de gravar uma lembrança em alguém ou uma entrada no Livro de compromissos. O EventLint lista as marcadas.
+    /// </summary>
+    public string? SemRastro { get; init; }
 }
 
 /// <summary>Evento escrito (GDD 7.5 e 15.5).</summary>
@@ -123,6 +144,9 @@ public sealed class EventDefinition
 
     /// <summary>Só acontece quando agendado por outro evento (continuação de cadeia).</summary>
     public bool ChainOnly { get; init; }
+
+    /// <summary>Evento de morte e luto (GDD 17.16): texto sóbrio, conferido pelas regras de texto de morte do EventLint.</summary>
+    public bool Luto { get; init; }
 
     public EventConditions Conditions { get; init; } = new();
 
@@ -193,7 +217,78 @@ public static class EventValidation
     [
         "municipio.nome", "municipio.uf", "municipio.porte", "rival.nome", "rival.partido", "partido.sigla", "partido.nome",
         "jogador.nome", "jogador.pronome", "jogador.o", "ano", "valor", "semanas",
+        "lideranca.nome", "lideranca.papel", "zona.nome", "veiculo.nome", "jornalista.nome", "doador.nome", "colega.nome", "dirigente.nome", "equipe.nome", "tema.nome",
     ];
+
+    /// <summary>Variável de texto → o que o evento precisa encontrar no save para poder disparar.</summary>
+    public static readonly IReadOnlyDictionary<string, string> Bindings = new Dictionary<string, string>(StringComparer.Ordinal)
+    {
+        ["lideranca"] = EventRole.Lideranca,
+        ["jornalista"] = EventRole.Jornalista,
+        ["doador"] = EventRole.Doador,
+        ["colega"] = EventRole.Colega,
+        ["dirigente"] = EventRole.Dirigente,
+        ["equipe"] = EventRole.Equipe,
+        ["veiculo"] = "veiculo",
+        ["zona"] = "zona",
+        ["tema"] = "tema",
+        ["rival"] = EventRole.Rival,
+    };
+
+    /// <summary>O que o evento envolve do save: pelos papéis citados nos textos e nos efeitos.</summary>
+    public static HashSet<string> Needs(EventDefinition e)
+    {
+        var needs = new HashSet<string>(StringComparer.Ordinal);
+        IEnumerable<string> texts = e.Variants.Append(e.Title)
+            .Concat(e.Choices.SelectMany(c => new[] { c.Label, c.Result, c.Test?.SuccessText, c.Test?.FailureText }).Where(t => t is not null).Select(t => t!));
+        foreach (string text in texts)
+        {
+            foreach (var (prefix, need) in Bindings)
+            {
+                if (text.Contains("{" + prefix + ".", StringComparison.Ordinal))
+                {
+                    needs.Add(need);
+                }
+            }
+        }
+
+        foreach (Effects fx in e.Choices.SelectMany(c => c.Test is null ? [c.Effects] : new[] { c.Effects, c.Test.Success, c.Test.Failure }))
+        {
+            needs.UnionWith(fx.Memories.Select(m => m.Quem));
+            needs.UnionWith(fx.SkeletonKnownBy);
+            if (fx.Promise is { } promise)
+            {
+                needs.Add(promise.Para);
+            }
+
+            if (e.Conditions.ZoneKind is not null)
+            {
+                needs.Add("zona");
+            }
+
+            if (fx.Debt is { } debt)
+            {
+                needs.Add(debt.Para);
+            }
+
+            if (Math.Abs(fx.ZonePresence) > 0)
+            {
+                needs.Add("zona");
+            }
+        }
+
+        if (needs.Contains(EventRole.Jornalista) || e.Conditions.OutletKind is not null)
+        {
+            needs.Add("veiculo");
+        }
+
+        if (e.Conditions.NeedsRival)
+        {
+            needs.Add(EventRole.Rival);
+        }
+
+        return needs;
+    }
 
     public static IEnumerable<string> Check(EventDefinition e)
     {

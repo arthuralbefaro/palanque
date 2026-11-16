@@ -59,6 +59,41 @@ Fontes: Lei 9.504/1997 (`planalto.gov.br/ccivil_03/leis/l9504.htm`), Lei 9.096/1
 - **Art. 75, I e II:** dispensa por valor; valores vigentes em 2026 pelo Decreto 12.807/2025: **R$ 130.984,20** (obras e serviços de engenharia) e **R$ 65.492,11** (outros serviços e compras), atualizados todo 1º de janeiro pelo IPCA-E.
 - **Art. 75, VIII:** dispensa por emergência ou calamidade, só para o necessário ao atendimento e para parcelas concluídas em até **1 ano**, vedadas a prorrogação e a recontratação da mesma empresa. Confere com o uso no GDD 17.15.
 
+## Segunda leitura (16/11/2026): sucessão, contas, direito de resposta e condutas vedadas
+
+Mesmas páginas do Planalto, lidas por trechos.
+
+**Constituição**
+- **Art. 14, § 5º:** prefeito e quem o houver sucedido ou substituído no curso do mandato podem ser reeleitos para um único período subsequente. Confere.
+- **Art. 56, § 1º:** o suplente é convocado em caso de vaga, de investidura em função prevista no artigo ou de licença superior a 120 dias. **§ 2º:** vaga sem suplente: eleição se faltarem mais de 15 meses para o fim do mandato. Confere.
+- **Art. 79:** o vice substitui no impedimento e sucede na vaga. **Art. 80:** impedidos ou vagos os dois cargos, chamam-se sucessivamente os presidentes da Câmara, do Senado e do STF. Conferem.
+- **Art. 81:** vagos os dois cargos, eleição 90 dias depois de aberta a última vaga; **§ 1º:** se a vacância ocorrer nos últimos dois anos, eleição pelo Congresso 30 dias depois da última vaga; **§ 2º:** os eleitos completam o período dos antecessores. Confere. O artigo trata do Presidente; a aplicação ao município é padrão do jogo (a Lei Orgânica de cada município pode dispor de outro modo), como o GDD 17.20 já diz.
+
+**Código Eleitoral**
+- **Art. 112:** suplentes da representação partidária são os mais votados sob a mesma legenda e não eleitos; desempate pela idade. Confere.
+- **Art. 113:** vaga sem suplente: eleição, salvo se faltarem menos de **9 meses** para o fim do mandato. **Diferença a registrar:** a Constituição (art. 56, § 2º) fala em mais de 15 meses para deputados e senadores; o jogo usa os 15 meses por simetria (a confirmar pelo autor).
+- **Art. 224, § 3º:** decisão da Justiça Eleitoral que indefere o registro, cassa o diploma ou faz perder o mandato de eleito em pleito majoritário acarreta nova eleição, qualquer que seja o número de votos anulados. **§ 4º:** a eleição é indireta se a vacância ocorrer a menos de seis meses do fim do mandato (I) e direta nos demais casos (II). Confere. A página remete à ADI 5.525 junto aos dois parágrafos; o acórdão não foi aberto.
+
+**Lei 9.504/1997**
+- **Art. 100-A, completo:** I e II como já registrado; § 1º: presidente e senador, o número do município de maior eleitorado do estado; governador, o dobro; deputado federal, 70% desse limite; deputado estadual, 50% do de deputado federal; prefeito, o limite dos incisos; vereador, 50% dele, até 80% do limite de deputado estadual; § 2º: fração abaixo de 0,5 é desprezada e a partir de 0,5 vale 1; § 6º: fora do limite a militância não remunerada, o apoio administrativo e operacional, fiscais e delegados e advogados. Confere.
+- **Art. 28, § 4º:** recursos em dinheiro recebidos divulgados em até 72 horas do recebimento (I); relatório em 15 de setembro (II). Confere.
+- **Art. 29, III e IV:** contas até o 30º dia depois da eleição; havendo 2º turno, até o 20º dia depois dele. Confere.
+- **Art. 30:** quatro desfechos: aprovação, aprovação com ressalvas, desaprovação e contas não prestadas (depois de notificação com prazo de 72 horas). Confere.
+- **Art. 58, § 1º:** direito de resposta pedido em 24 horas (horário gratuito), 48 horas (programação normal de rádio e TV), 72 horas (imprensa escrita) e, na internet, a qualquer tempo enquanto o conteúdo estiver no ar ou em 72 horas depois da retirada. Confere.
+- **Art. 73:** V: nomear, contratar, admitir, demitir sem justa causa e mexer em vantagens nos três meses antes do pleito e até a posse (com as exceções das alíneas); VI: nos três meses antes, transferências voluntárias, publicidade institucional e pronunciamento em cadeia de rádio e TV; **VII: empenhar, no primeiro semestre do ano de eleição, despesa de publicidade acima de 6 vezes a média mensal dos três últimos anos** (redação da Lei 14.356/2022; não é um teto de "gasto"); VIII: revisão geral de remuneração acima da recomposição da inflação. Conferidos; os §§ 4º e 5º (penas) não foram lidos.
+- **Art. 77:** já registrado; parágrafo único: cassação do registro ou do diploma. Confere.
+
+## Terceira leitura (16/11/2026): CPI, Mesa, contas do prefeito e cassação pela Câmara
+
+Fontes: Constituição (mesma página) e Decreto-Lei 201/1967 (`planalto.gov.br/ccivil_03/decreto-lei/del0201.htm`, lido inteiro).
+
+- **CF, art. 58, § 3º:** CPI por requerimento de um terço dos membros, para fato determinado e por prazo certo; as conclusões vão, se for o caso, ao Ministério Público. Confere (o artigo trata do Congresso; no município é simetria).
+- **CF, art. 57, § 4º:** Mesa com mandato de 2 anos, vedada a recondução para o mesmo cargo na eleição imediatamente subsequente. Confere (idem: trata das Casas do Congresso).
+- **CF, art. 31, § 2º:** o parecer prévio sobre as contas anuais do prefeito, emitido pelo "órgão competente", só deixa de prevalecer por dois terços dos membros da Câmara Municipal. Confere; o Tribunal de Contas aparece no § 1º (auxílio ao controle externo).
+- **DL 201/1967, art. 4º:** dez infrações político-administrativas do prefeito julgadas pela Câmara e punidas com cassação: impedir o funcionamento da Câmara (I); impedir o exame de documentos (II); desatender convocação ou pedido de informação (III); retardar a publicação de leis (IV); não apresentar a proposta orçamentária no prazo (V); descumprir o orçamento (VI); praticar ato contra a lei ou omitir-se (VII); negligenciar a defesa de bens e rendas do município (VIII); ausentar-se sem autorização (IX); proceder de modo incompatível com o decoro (X).
+- **DL 201/1967, art. 5º:** rito, "se outro não for estabelecido pela legislação do Estado": denúncia por qualquer eleitor (I); recebimento pelo voto da maioria dos presentes e comissão processante de três vereadores sorteados (II); afastamento definitivo por dois terços, pelo menos, dos membros da Câmara (VI); processo concluído em 90 dias da notificação, senão é arquivado, sem impedir nova denúncia (VII). Confere.
+- **DL 201/1967, art. 7º:** a Câmara pode cassar vereador por corrupção ou improbidade no uso do mandato (I), residência fora do município (II) ou falta de decoro (III); o processo segue o art. 5º. **Art. 8º:** extingue-se o mandato por morte, renúncia, perda dos direitos políticos ou condenação por crime funcional ou eleitoral (I), falta de posse (II), ausência a um terço das sessões ordinárias do ano (III, redação de 1980) ou impedimento não sanado (IV); o presidente da Câmara declara e convoca o suplente (§ 1º).
+
 ## O que não foi aberto
 - Resolução TSE 23.607/2019 e a tabela de limites de gastos por município (o site do TSE bloqueou o acesso automatizado; ver PENDENCIAS).
 - Acórdãos das ADIs 4650, 7228, 7263, 7325, 5970, 6890, 2238 e 5105.

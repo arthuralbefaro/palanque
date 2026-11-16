@@ -267,7 +267,7 @@ public sealed partial class CampaignEngine
         member.Hired = true;
         member.HiredOn = Today;
         Memory memory = RememberStaff(member, "contratacao");
-        Agenda.AddFeed(new FeedItem(Today, "equipe", StaffText("contratado", member), null, member.PersonId, RaceSetup.PlayerId));
+        EmitFeed(Today, "equipe", StaffText("contratado", member), null, member.PersonId, RaceSetup.PlayerId);
         UpdatePayrollAlert();
         return (null, memory);
     }
@@ -311,7 +311,7 @@ public sealed partial class CampaignEngine
         member.Left = true;
         Memory memory = RememberStaff(member, memoryKey);
         Team.Pending.RemoveAll(d => d.PersonId == member.PersonId || d.OtherPersonId == member.PersonId);
-        Agenda.AddFeed(new FeedItem(Today, "equipe", StaffText("demitido", member), null, member.PersonId, RaceSetup.PlayerId));
+        EmitFeed(Today, "equipe", StaffText("demitido", member), null, member.PersonId, RaceSetup.PlayerId);
 
         var exposed = new List<string>();
         string? rivalId = null;
@@ -334,7 +334,7 @@ public sealed partial class CampaignEngine
             }
 
             RememberStaff(member, "vazamento");
-            Agenda.AddFeed(new FeedItem(Today, "vazamento", StaffText("vazou", member, ("rival", rivalId is null ? "" : NameOf(rivalId))), null, member.PersonId, rivalId));
+            EmitFeed(Today, "vazamento", StaffText("vazou", member, ("rival", rivalId is null ? "" : NameOf(rivalId))), null, member.PersonId, rivalId);
         }
 
         UpdatePayrollAlert();
@@ -346,7 +346,7 @@ public sealed partial class CampaignEngine
         bool alert = Payroll().Alert;
         if (alert && !Team.PayrollAlert)
         {
-            Agenda.AddFeed(new FeedItem(Today, Clock.CaixaBaixo, Texts.Fill(StaffContent.Texto("caixa_baixo"), ("semanas", Texts.Number(StaffRules.SemanasDeFolhaAlerta))), null, null, RaceSetup.PlayerId));
+            EmitFeed(Today, Clock.CaixaBaixo, Texts.Fill(StaffContent.Texto("caixa_baixo"), ("semanas", Texts.Number(StaffRules.SemanasDeFolhaAlerta))), null, null, RaceSetup.PlayerId);
         }
 
         Team.PayrollAlert = alert;
@@ -386,7 +386,7 @@ public sealed partial class CampaignEngine
         {
             ChangeLoyalty(coordinator, followed ? StaffRules.LealdadeConselho : -StaffRules.LealdadeConselho);
             RememberStaff(coordinator, followed ? "conselho_seguido" : "conselho_ignorado");
-            Agenda.AddFeed(new FeedItem(Today, "conselho", StaffText(followed ? "conselho_seguido" : "conselho_ignorado", coordinator), advice.ZoneId, coordinator.PersonId, RaceSetup.PlayerId));
+            EmitFeed(Today, "conselho", StaffText(followed ? "conselho_seguido" : "conselho_ignorado", coordinator), advice.ZoneId, coordinator.PersonId, RaceSetup.PlayerId);
         }
 
         Team.AdviceLog.Add(advice);
@@ -431,7 +431,7 @@ public sealed partial class CampaignEngine
             AvoidZoneId = avoid,
             Text = StaffText(avoid is null ? "conselho_unico" : "conselho", coordinator, ("zona", ZoneName(zone)), ("evitar", avoid is null ? "" : ZoneName(avoid))),
         };
-        Agenda.AddFeed(new FeedItem(Today, "conselho", Team.Advice.Text, zone, coordinator.PersonId, RaceSetup.PlayerId));
+        EmitFeed(Today, "conselho", Team.Advice.Text, zone, coordinator.PersonId, RaceSetup.PlayerId);
     }
 
     // ------------------------------------------------------------------ virada da semana
@@ -453,6 +453,7 @@ public sealed partial class CampaignEngine
             {
                 State.Player.Resources.Money -= member.Salary;
                 Team.RegisteredSpending += member.Salary;
+                RegisterSpending(member.Salary);
             }
             else
             {
@@ -471,14 +472,14 @@ public sealed partial class CampaignEngine
         Campaign.Player.Money = State.Player.Resources.Money;
         if (late)
         {
-            Agenda.AddFeed(new FeedItem(Today, "equipe", StaffContent.Texto("folha_atrasada"), null, null, RaceSetup.PlayerId));
+            EmitFeed(Today, "equipe", StaffContent.Texto("folha_atrasada"), null, null, RaceSetup.PlayerId);
         }
 
         // Erro contábil: só há o que registrar errado em semana com gasto de campanha (folha ou canais).
         if (Team.RegisteredSpending > 0 && Rng.Chance(StaffEffect(StaffRole.Tesoureiro, StaffRole.ErroContabil)))
         {
             State.Ledger.AddSkeleton("erro_contabil", StaffContent.Texto("erro_contabil_livro"), StaffRules.GravidadeErroContabil, Today, []);
-            Agenda.AddFeed(new FeedItem(Today, "contas", StaffContent.Texto("erro_contabil"), null, StaffIn(StaffRole.Tesoureiro)?.PersonId, RaceSetup.PlayerId));
+            EmitFeed(Today, "contas", StaffContent.Texto("erro_contabil"), null, StaffIn(StaffRole.Tesoureiro)?.PersonId, RaceSetup.PlayerId);
         }
 
         Team.RegisteredSpending = 0;
@@ -729,7 +730,7 @@ public sealed partial class CampaignEngine
                 }
 
                 Campaign.Find(decision.RivalId)!.Recognition = Territory.Recognition(decision.RivalId);
-                Agenda.AddFeed(new FeedItem(Today, "rival_zona", Texts.Fill(StaffContent.Texto("reforco_rival"), ("rival", NameOf(decision.RivalId))), Territory.Zones[redutos[0]], null, decision.RivalId));
+                EmitFeed(Today, "rival_zona", Texts.Fill(StaffContent.Texto("reforco_rival"), ("rival", NameOf(decision.RivalId))), Territory.Zones[redutos[0]], null, decision.RivalId);
             }
         }
 

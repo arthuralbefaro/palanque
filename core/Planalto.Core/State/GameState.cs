@@ -109,6 +109,9 @@ public sealed class GameState
     /// <summary>Livro de compromissos: promessas, dívidas, posições assumidas e esqueletos; atravessa eleições (GDD 17.2).</summary>
     public People.Ledger Ledger { get; init; } = new();
 
+    /// <summary>Contas da última eleição disputada: julgamento e representação depois da apuração (GDD 17.12).</summary>
+    public Campaign.AccountsCase? Accounts { get; set; }
+
     /// <summary>Fundação de partido em curso ou concluída (GDD 14.2 B).</summary>
     public Career.PartyFoundingState? Founding { get; set; }
 

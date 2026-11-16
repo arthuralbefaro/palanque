@@ -223,6 +223,7 @@ internal static class CampaignKit
             Projection = C.Projection,
             Zonas = Zonas(m),
             ChannelLaw = law ?? ChannelLawConfig.Default,
+            CamaraSeats = state.World?.ScenarioId == "brasil_2026" ? C.Brasil2026.National.Camara.ByParty : null,
             MaiorEleitoradoUf = LargestElectorate.GetOrAdd(m.Uf, uf => C.Municipios.All.Where(x => x.Uf == uf).Max(x => x.Eleitorado)),
         };
     }
