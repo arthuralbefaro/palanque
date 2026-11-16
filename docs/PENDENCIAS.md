@@ -123,3 +123,20 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - **Saturação:** a mesma verba no mesmo alvo por 33 semanas chegou a −94%; conferir no BalanceSim da R3 se a curva não está dura demais.
 - **A interface foi num commit só** (as telas se cruzam em `HubScreen.cs`), e não um por funcionalidade.
 - **Lei dos cabos (art. 100-A):** o arredondamento do texto (despreza abaixo de 0,5 e arredonda para 1 a partir daí) e as frações de deputado ainda não estão conferidos no objeto de configuração; entra na conferência da R3.
+
+## Teste do autor na tag fase-r1 (2026-11-16)
+
+### P-24 · Dez itens do teste do autor, a corrigir antes da fase-r-final
+Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Situação de cada um é atualizada aqui.
+1. **Criação, gênero:** mudar o gênero sorteia de novo a aparência com os pesos do gênero novo; se a aparência já foi editada à mão, perguntar antes. — aberto
+2. **Número de urna:** campo de texto com 3 dígitos (zeros à esquerda e dígitos repetidos permitidos, como 000 e 111), validado contra os números ocupados no partido. — aberto
+3. **Nenhum texto ao jogador cita o GDD ou outro documento interno** (ex.: "(GDD 16.2)"); checagem no DataValidator ou no alvo `explicacao`. — aberto
+4. **Botões da base da criação encostam na barra de tarefas do Windows;** o alvo `layout` deve considerar a janela real, não só o viewport. — aberto
+5. **Partido da criação × tela seguinte:** o santinho mostrou FRB e a tela seguinte, ACNB. Conferir, corrigir se for erro e testar. — aberto
+6. **"Como te veem 0,00":** mostrar a imagem numa escala legível, seguindo o ART_GUIDE. — aberto
+7. **Cores do logotipo aparecem como quadrados vazios.** — aberto
+8. **Personagem que não pode disputar a primeira eleição** começa direto na pré-campanha da primeira que pode disputar, com a idade correspondente; a criação avisa; ajustar o alvo `creator17`. — aberto
+9. **Entressafra na tela central,** com a agenda fora de campanha (visitar lideranças, entrevistas, posições, presença nas zonas). — aberto (vai com a R4, junto da P-01)
+10. **Mapa de cidade pequena (P-09):** enquadramento inicial no núcleo urbano; zona rural dividida por localidades ou distritos, quando houver; todos os nomes de zona legíveis, com desvio de colisão; contorno rural menos simplificado. Teste com Mantena (MG) e capturas antes e depois. — aberto (fase-r-final)
+- **Também:** corrigir os encaixes errados de brinco e cabelo da arte 2D atual (os retratos 3D ficam para depois da Fase R). — aberto
+- **Pesquisa pedida, sem implementar:** se o IBGE publica as faces de logradouro ou as quadras do Censo 2022 para todos os municípios e quanto ocupariam simplificadas só no núcleo urbano; o resultado entra aqui como decisão do autor.

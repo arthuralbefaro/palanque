@@ -278,3 +278,15 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Gravação para as redes** tem risco de viral negativo mesmo sem social media (`risco_viral`).
 - **Lint de decisões:** as naturezas de ganho e custo são declaradas nos dados e conferidas contra os efeitos.
 - **Lei:** `ChannelLawConfig` (cabos, art. 100-A; impulsionamento, art. 57-C; vedados: rádio e TV, outdoor, brinde) nasceu com os números de memória e a marca de não conferido; a conferência no texto oficial está em `docs/referencias/LEIS_CONFERIDAS.md` e a marca sai na R3.
+
+## D-041 — Respostas do autor em 16/11 (segunda rodada): integração, tags e retratos 3D
+- **Data:** 2026-11-16 · **Fase:** R · Decisão do autor.
+- **Tags:** a `fase-r2a` não é movida; o que o autor pediu para a R2a depois da tag (CONTENT_GUIDE e EventLint) entra na main antes da `fase-r3`. O branch `wip/idade-inicial` fica com o autor.
+- **Ordem de integração:** a R4 só entra na main depois da R3 integrada e com a tag `fase-r3`. Ao integrar a R4, roda-se tudo de novo: verificação obrigatória, os alvos de fumaça com janela e o BalanceSim com os critérios da R2a, da R2b e da R3; critério de parte anterior quebrado pela integração é corrigido antes da `fase-r4`. O Relatório para o autor lista todas as tags e o BalanceSim de cada uma.
+- **Teste do autor na `fase-r1`:** dez itens registrados na PENDENCIAS P-24, corrigidos antes da `fase-r-final`, um commit por item.
+- **Retratos e personagens em 3D** (o autor chamou esta decisão de D-038; esse número já estava em uso pelas escolhas da RD, então ela fica aqui): os retratos e personagens passam a ser bonecos 3D low-poly estilizados, os mesmos das posses (GDD 13.2), no lugar das camadas 2D.
+  - **Não se faz durante a Fase R.** Ao terminar a `fase-r-final`, antes de parar, entrega-se só: esta decisão; o GDD atualizado (3.1, 3.6, 3.7, 7.4, 13.2 e 13.3); uma parte nova no ROADMAP entre a Fase R e a Fase 6, com itens e testes; e um protótipo com 3 personagens sorteados da mesma Appearance, em 3 expressões, com capturas.
+  - **Desenho:** cabeça low-poly com o rosto em textura (olhos, sobrancelhas e boca trocáveis, o que dá as expressões); tom de pele, cabelo, grisalho e roupas por material tingível; 8 a 12 cabelos e 4 a 6 barbas em 3D, mapeados dos estilos atuais; retrato renderizado em SubViewport e guardado pelo PortraitCache.
+  - **Base:** só pacotes CC0 ou CC BY (ex.: Kenney, Quaternius), com licença conferida e crédito em CREDITS.md; nenhum pacote de código novo.
+  - A aparência continua sem efeito mecânico e com a diversidade do Censo (D-016).
+  - Até lá, só se corrigem os encaixes errados de brinco e cabelo da arte 2D atual.
