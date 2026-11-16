@@ -702,7 +702,7 @@ public partial class HubScreen : Control
         ruler.AddThemeConstantOverride("separation", 3);
         for (int i = 0; i < config.ImageScale.Count; i++)
         {
-            ruler.Add(new ColorRect { Color = i == index ? color : Palette.Linha, CustomMinimumSize = new Vector2(8, i == index ? 18 : 10), SizeFlagsVertical = SizeFlags.ShrinkCenter, MouseFilter = MouseFilterEnum.Ignore });
+            ruler.Add(new ColorRect { Color = i == index ? color : new Color(Palette.Texto3, 0.5f), CustomMinimumSize = new Vector2(8, i == index ? 18 : 10), SizeFlagsVertical = SizeFlags.ShrinkCenter, MouseFilter = MouseFilterEnum.Ignore });
         }
 
         // Cor de significado vem sempre com sinal (ART_GUIDE): seta para cima ou para baixo antes do nome da faixa.
