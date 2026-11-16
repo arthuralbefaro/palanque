@@ -69,6 +69,40 @@ public partial class Game : Node
     /// <summary>Governo da cidade no mandato em curso (GDD 17.14 e 17.15); null fora de mandato ou em save antigo.</summary>
     public Core.Governance.GovernanceEngine? Governo { get; private set; }
 
+    /// <summary>Números da agenda fora de campanha (entressafra).</summary>
+    public Core.Career.OffSeasonConfig OffSeasonConfig { get; private set; } = null!;
+
+    /// <summary>Agenda fora de campanha; null em mandato ou com campanha aberta.</summary>
+    public Core.Career.OffSeasonEngine? Entressafra { get; private set; }
+
+    /// <summary>Monta a entressafra quando o jogador está sem cargo e sem eleição aberta, e a desmonta fora disso.</summary>
+    private void EnsureEntressafra(GameState state)
+    {
+        Municipio? m = Municipios.All.FirstOrDefault(x => x.CodigoIbge == state.FocusMunicipio);
+        if (m is null || !Core.Career.OffSeasonEngine.Applies(state))
+        {
+            Entressafra = null;
+            return;
+        }
+
+        if (Entressafra is not null && ReferenceEquals(Entressafra.Context.State, state) && state.OffSeason is not null)
+        {
+            return;
+        }
+
+        var context = new Core.Career.OffSeasonContext
+        {
+            State = state,
+            Municipio = m,
+            Zonas = ZonasDe(m),
+            Config = OffSeasonConfig,
+            Memory = Campaign.People,
+            Themes = World.Parties.Themes.Themes.ToDictionary(t => t.Id, t => t.Name),
+        };
+        Core.Career.OffSeasonEngine.Ensure(context);
+        Entressafra = new Core.Career.OffSeasonEngine(context);
+    }
+
     public override void _Ready()
     {
         Instance = this;
@@ -107,6 +141,7 @@ public partial class Game : Node
         Projection = PopulationProjection.Load(DataDirectory, Municipios);
         IndicatorModel = Core.Indicators.IndicatorContent.LoadOrThrow(DataDirectory);
         RenewalContent = Core.Renewal.RenewalContent.LoadOrThrow(DataDirectory);
+        OffSeasonConfig = JsonData.LoadFile<Core.Career.OffSeasonConfig>(Path.Combine(DataDirectory, Core.Career.OffSeasonConfig.File)).GetValueOrThrow();
     }
 
     /// <summary>Definições e modelo de evolução dos indicadores reais (GDD 17.17).</summary>
@@ -370,6 +405,7 @@ public partial class Game : Node
 
         // Depois da campanha montada, para a cidade já ter gente (lideranças e equipe) quando o mundo começa a andar.
         Mundo = NewMundo(state);
+        EnsureEntressafra(state);
     }
 
     /// <summary>Retoma uma carreira salva no ponto em que estava (campanha, mandato ou entressafra).</summary>
@@ -384,6 +420,7 @@ public partial class Game : Node
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
         Governo = NewGoverno(state);
         FoundingEngine = NewFoundingEngine(state);
+        EnsureEntressafra(state);
     }
 
     private Core.Career.PartyFoundingEngine NewFoundingEngine(GameState state) =>
@@ -411,7 +448,7 @@ public partial class Game : Node
     {
         GameState state = State!;
         bool hadMandate = state.Mandate is not null || state.Executive is not null;
-        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo, MundoDe(state));
+        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo, MundoDe(state), Entressafra);
 
         // Contas da última campanha (GDD 17.12): o julgamento e a representação andam no mandato e na entressafra.
         // Diploma cassado, a cadeira ou a Prefeitura seguem a sucessão real, pela renovação do mundo.
@@ -443,14 +480,19 @@ public partial class Game : Node
             if (Core.Career.CareerFlow.CanRun(state, state.Calendar.Year))
             {
                 Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
-                // A presença por zona do mandato vai para a campanha de reeleição.
+                // A presença por zona do mandato vai para a campanha de reeleição; a da entressafra, com as posições
+                // assumidas nela, para a campanha de quem estava sem cargo.
                 Core.Governance.GovernanceEngine.CarryToCampaign(state);
+                Core.Career.OffSeasonEngine.CarryToCampaign(state);
+                Entressafra = null;
                 return WeekNote.CampanhaAberta;
             }
 
+            EnsureEntressafra(state);
             return Core.Career.CareerFlow.MeetsAge(state, Core.Elections.Office.Vereador, state.Calendar.Year) ? WeekNote.SemPartidoNoPrazo : WeekNote.SemIdade;
         }
 
+        EnsureEntressafra(state);
         return note;
     }
 

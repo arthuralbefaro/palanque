@@ -98,6 +98,8 @@ public static class DataValidation
         }
 
         reports.AddRange(Indicators.IndicatorContent.Validate(dataDirectory));
+        DataLoadResult<Career.OffSeasonConfig> offSeason = JsonData.LoadFile<Career.OffSeasonConfig>(Path.Combine(dataDirectory, Career.OffSeasonConfig.File));
+        reports.Add(new DataFileReport(Career.OffSeasonConfig.File, offSeason.Value?.Textos.Count ?? 0, offSeason.Errors));
         reports.AddRange(Renewal.RenewalContent.Validate(dataDirectory));
 
         return reports;

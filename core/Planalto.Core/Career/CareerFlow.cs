@@ -196,8 +196,10 @@ public static class CareerFlow
     /// o calendário andar.
     /// </param>
     /// <param name="world">O mundo que anda sozinho (indicadores e renovação); anda até a semana do calendário antes de tudo.</param>
+    /// <param name="offSeason">Agenda fora de campanha: fecha a semana (presença, cansaço, turnos) quando não há cargo nem eleição aberta.</param>
     public static void AdvanceWeek(
-        GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null, ExecutiveEngine? executive = null, GovernanceEngine? governance = null, World.WorldEngine? world = null)
+        GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null, ExecutiveEngine? executive = null, GovernanceEngine? governance = null, World.WorldEngine? world = null,
+        OffSeasonEngine? offSeason = null)
     {
         world?.AdvanceTo(state.Calendar.WeekStart);
         founding?.Tick();
@@ -257,6 +259,7 @@ public static class CareerFlow
             return;
         }
 
+        offSeason?.ResolveWeek();
         state.Calendar.AdvanceWeek();
     }
 

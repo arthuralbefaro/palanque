@@ -121,5 +121,8 @@ public sealed class GameState
     /// <summary>Renovação do mundo político do município em foco: cadeiras, suplentes, prefeito e vice, saídas e entradas (GDD 17.16); null em saves anteriores.</summary>
     public Renewal.RenewalState? Renewal { get; set; }
 
+    /// <summary>Entressafra (fora de mandato e fora de campanha): presença por zona, turnos e posições; null fora dela.</summary>
+    public Career.OffSeasonState? OffSeason { get; set; }
+
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }
