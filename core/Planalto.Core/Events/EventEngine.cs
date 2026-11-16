@@ -109,6 +109,14 @@ public static partial class EventEngine
     private static IEnumerable<Candidate> Rivals(CampaignState campaign) =>
         campaign.Candidates.Where(x => !x.IsPlayer && !x.IsBulk && x.Office == campaign.Player.Office);
 
+    /// <summary>Dispara um evento pelo id, fora do sorteio (cadeias forçadas, depuração e testes de fumaça).</summary>
+    public static PendingEvent Trigger(CampaignContext ctx, string eventId, Rng rng)
+    {
+        EventDefinition e = ctx.Events?.Find(eventId) ?? throw new ArgumentException($"Evento '{eventId}' inexistente.", nameof(eventId));
+        Fire(ctx, e, rng);
+        return ctx.State.Campaign!.Events.Pending[^1];
+    }
+
     private static void Fire(CampaignContext ctx, EventDefinition e, Rng rng)
     {
         CampaignState campaign = ctx.State.Campaign!;

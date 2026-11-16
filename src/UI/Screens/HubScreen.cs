@@ -24,6 +24,7 @@ public partial class HubScreen : Control
     private VBoxContainer _root = null!;
     private readonly List<string> _log = [];
     private string? _visitTarget;
+    private ColorRect? _eventShade;
 
     private GameState State => _game.State!;
 
@@ -354,17 +355,40 @@ public partial class HubScreen : Control
         Refresh();
     }
 
+    /// <summary>
+    /// Janela do evento pendente sobre um fundo escuro que bloqueia o hub. Ao fechar, o fundo sai junto (antes só a
+    /// janela saía e o fundo ficava, travando a tela); nunca há mais de um fundo.
+    /// </summary>
     private void ShowPendingEvent()
     {
+        if (_eventShade is not null && IsInstanceValid(_eventShade))
+        {
+            _eventShade.QueueFree();
+        }
+
+        _eventShade = null;
         if (Campaign.Events.Pending.FirstOrDefault() is { } pending)
         {
             var shade = this.Add(new ColorRect { Color = new Color(0, 0, 0, 0.55f), MouseFilter = MouseFilterEnum.Stop });
+            _eventShade = shade;
             shade.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
             var center = shade.Add(new CenterContainer());
             center.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-            center.Add(new EventDialog(_engine, pending, Refresh));
+            center.Add(new EventDialog(_engine, pending, () =>
+            {
+                shade.QueueFree();
+                if (_eventShade == shade)
+                {
+                    _eventShade = null;
+                }
+
+                Refresh();
+            }));
         }
     }
+
+    /// <summary>Fundo do evento aberto (testes de fumaça conferem que ele sai).</summary>
+    public bool EventOpen => _eventShade is not null && IsInstanceValid(_eventShade);
 
     private void ShowSaveMenu()
     {

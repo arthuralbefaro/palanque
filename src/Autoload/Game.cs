@@ -327,6 +327,9 @@ public partial class Game : Node
 
     public string? LastNavigation { get; private set; }
 
+    /// <summary>Teste de fumaça: zera a última navegação registrada.</summary>
+    public void ResetNavigationForTest() => LastNavigation = null;
+
     public void GoTo(string scene)
     {
         LastNavigation = scene;

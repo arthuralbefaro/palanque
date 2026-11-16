@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate|prefeitura [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate|prefeitura|eventos [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -40,6 +40,12 @@ public partial class UiShot : Node
 
             GD.Print("Smoke picker: ok");
             GetTree().Quit(0);
+            return;
+        }
+
+        if (target == "eventos")
+        {
+            await PlayAllEvents();
             return;
         }
 
@@ -154,6 +160,133 @@ public partial class UiShot : Node
 
         GD.Print("Smoke map: ok");
         GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Todos os eventos, todas as opções, com cliques de mouse de verdade: abre o evento no hub (Mantena/MG,
+    /// fevereiro de 2028), clica a opção e "Continuar", e confere que o fundo escuro saiu e que um clique no hub
+    /// volta a chegar aos botões.
+    /// </summary>
+    private async Task PlayAllEvents()
+    {
+        Game game = Game.Instance;
+        if (DisplayServer.GetName() == "headless")
+        {
+            // Sem janela, o Godot não entrega cliques de mouse à interface: este teste precisa rodar com janela.
+            Fail("o teste de eventos clica com o mouse e precisa de janela (rode sem --headless).");
+            return;
+        }
+
+        var world = game.PendingWorld!;
+        var city = game.Municipios.All.First(m => m.CodigoIbge == 3139607);
+        var player = Core.Characters.PersonGenerator.Generate(new Rng(11), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 35, PartyId: world.Parties[0].Id));
+        game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
+        var engine = game.Engine!;
+        var campaign = game.State!.Campaign!;
+        while (game.State.Calendar.WeekStart.Month < 2)
+        {
+            campaign.Events.Pending.Clear();
+            game.AdvanceWeek();
+        }
+
+        campaign.Events.Pending.Clear();
+        var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
+        AddChild(hub);
+        await Frames(3);
+
+        int clicked = 0, blocked = 0;
+        foreach (var definition in game.Events.Events)
+        {
+            for (int choice = 0; choice < definition.Choices.Count; choice++)
+            {
+                game.State.Player.Resources.Money = 50_000;
+                Core.Events.EventEngine.Trigger(engine.Context, definition.Id, game.State.Rng);
+                hub.Refresh();
+                await Frames(3);
+                var dialog = FindAll<Widgets.EventDialog>(hub).SingleOrDefault();
+                if (dialog is null || !hub.EventOpen)
+                {
+                    Fail($"o evento {definition.Id} não abriu.");
+                    return;
+                }
+
+                var buttons = FindAll<Button>(dialog).ToList();
+                if (buttons[choice].Disabled)
+                {
+                    blocked++;
+                    Core.Events.EventEngine.Resolve(engine.Context, campaign.Events.Pending[0], Enumerable.Range(0, definition.Choices.Count).First(i => !buttons[i].Disabled), game.State.Rng);
+                    hub.Refresh();
+                    await Frames(3);
+                    continue;
+                }
+
+                await Click(buttons[choice]);
+                var proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
+                if (proceed is null)
+                {
+                    Fail($"{definition.Id}, opção {choice + 1}: sem o botão Continuar depois de escolher.");
+                    return;
+                }
+
+                await Click(proceed);
+                await Frames(3);
+                if (hub.EventOpen || campaign.Events.Pending.Count > 0)
+                {
+                    Fail($"{definition.Id}, opção {choice + 1}: o fundo do evento continuou na tela.");
+                    return;
+                }
+
+                var map = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
+                game.ResetNavigationForTest();
+                await Click(map);
+                if (game.LastNavigation != Game.Scenes.Map)
+                {
+                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento.");
+                    return;
+                }
+
+                clicked++;
+            }
+        }
+
+        GD.Print($"Smoke eventos: ok ({game.Events.Events.Count} eventos, {clicked} opções clicadas, {blocked} bloqueadas por requisito)");
+        GetTree().Quit(0);
+    }
+
+    private void Fail(string message)
+    {
+        GD.PushError("Smoke: " + message);
+        GetTree().Quit(1);
+    }
+
+    /// <summary>Clique de mouse de verdade no centro do controle (passa pelo roteamento de entrada da interface).</summary>
+    private async Task Click(Control control)
+    {
+        // Direto na janela: sem janela de verdade (headless), Input.ParseInputEvent não chega à interface.
+        Vector2 center = control.GetGlobalRect().GetCenter();
+        Viewport viewport = GetViewport();
+        viewport.PushInput(new InputEventMouseMotion { Position = center, GlobalPosition = center });
+        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = center, GlobalPosition = center });
+        await Frames(1);
+        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = center, GlobalPosition = center });
+        await Frames(2);
+    }
+
+    private static IEnumerable<T> FindAll<T>(Node root)
+        where T : Node
+    {
+        foreach (Node child in root.GetChildren())
+        {
+            if (child is T match)
+            {
+                yield return match;
+            }
+
+            foreach (T inner in FindAll<T>(child))
+            {
+                yield return inner;
+            }
+        }
     }
 
     /// <summary>
