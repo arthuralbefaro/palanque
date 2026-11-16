@@ -74,8 +74,8 @@
 - [x] Fundação de partido durante a carreira (seção 14.2 B): fundadores, apoio de eleitores, registro no TSE, prazo
 
 ## Fase 5 — Prefeito
-- [ ] Orçamento, indicadores, políticas, coalizão municipal
-- [ ] Minigame de debate
+- [x] Orçamento, indicadores, políticas, coalizão municipal
+- [x] Minigame de debate
 
 ## Fase 6 — Esfera estadual e federal
 - [ ] 27 estados
