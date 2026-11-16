@@ -12,7 +12,7 @@ namespace Planalto.UI.Screens;
 /// </summary>
 public partial class HubScreen
 {
-    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId);
+    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId, FeedItem? Item = null);
 
     /// <summary>
     /// Resultado explicado de um compromisso (princípio f): o que mudou, onde, para quem e por quê.
@@ -119,12 +119,18 @@ public partial class HubScreen
             {
                 "descoberta" => Tr("Sua agenda"),
                 "objetivo" => Tr("Objetivos"),
-                "equipe" or "conselho" or "contas" or "vazamento" or Clock.CaixaBaixo => Tr("Sua equipe"),
+                "equipe" or "conselho" or "vazamento" or Clock.CaixaBaixo => Tr("Sua equipe"),
+                FactKind.Contas or FactKind.Doacao or FactKind.Fundo or FactKind.Esqueleto => Tr("Suas contas"),
+                FactKind.Ataque or FactKind.Resposta or FactKind.Boato or FactKind.Justica or FactKind.Pacto or FactKind.Investigacao => Tr("Disputa"),
+                FactKind.Plano or FactKind.RivalLideranca => Tr("Rivais"),
+                FactKind.Cidade or FactKind.Morte => Tr("Cidade"),
+                FactKind.Economia => Tr("Economia"),
+                FactKind.TemaEmAlta or FactKind.Anuncio or FactKind.HorarioGratuito => Tr("Mídia"),
                 "verba" or "cabos" => Tr("Sua verba"),
                 "posicao" or "promessa" => Tr("Sua plataforma"),
                 _ => Tr("Nos bastidores"),
             };
-            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId));
+            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId, f));
         }
 
         foreach (var h in Campaign.Events.History)
@@ -141,10 +147,45 @@ public partial class HubScreen
         return items.OrderByDescending(i => i.Date).ThenByDescending(i => i.Order);
     }
 
+    /// <summary>O que o clique num item do feed abre: o ataque com prazo, a oferta de doação ou a ficha do rival; null se nada.</summary>
+    private (Action Open, string Tip)? FeedTarget(FeedEntry entry)
+    {
+        if (entry.Item is not { } item)
+        {
+            return null;
+        }
+
+        Fact? fact = item.FactId is null ? null : _engine.Facts.Find(item.FactId);
+        if (fact is { Kind: FactKind.Ataque or FactKind.Boato, TargetId: RaceSetup.PlayerId } && _engine.Rivals.Attacks.FirstOrDefault(a => a.FactId == fact.Id) is { } attack)
+        {
+            return (() => OpenAreaSheet(Sheet.Ataque, attack.Id),
+                Palette.Tip(Tr("Ataque contra você."), Tr("abre o ataque, com o prazo e as respostas possíveis, cada uma com a previsão."), Tr("nada para abrir.")));
+        }
+
+        if (item.Kind == FactKind.Doacao && item.PersonId is { } donorId && _engine.Finance.Offers.FirstOrDefault(o => o.DonorId == donorId) is { } offer)
+        {
+            return (() => OpenAreaSheet(Sheet.Oferta, offer.Id),
+                Palette.Tip(Tr("Oferta de doação à espera de resposta."), Tr("abre a decisão, com a previsão de cada resposta e quem fica sabendo."), Tr("nada para abrir.")));
+        }
+
+        string? rivalId = item.CandidateId is { } actor && actor != RaceSetup.PlayerId ? actor : fact?.TargetId is { } target && target != RaceSetup.PlayerId ? target : null;
+        if (rivalId is not null && entry.ZoneId is null && _engine.RivalSheetOf(rivalId) is not null)
+        {
+            return (() => OpenAreaSheet(Sheet.Rival, rivalId),
+                Palette.Tip(string.Format(Tr("{0}, {1}. Sobre {2}."), entry.Source, entry.Date.ToString("dd/MM", PtBr), PersonLabel(rivalId)), Tr("abre a ficha: plano percebido, redutos, ataques trocados e o que dá para fazer."), Tr("nada.")));
+        }
+
+        return null;
+    }
+
     private void FeedCard(Node parent, FeedEntry entry)
     {
         PanelContainer card;
-        if (entry.ZoneId is { } zone && _map.Zonas.ContainsKey(zone))
+        if (FeedTarget(entry) is { } target)
+        {
+            card = ClickCard(parent, target.Open, target.Tip);
+        }
+        else if (entry.ZoneId is { } zone && _map.Zonas.ContainsKey(zone))
         {
             card = ClickCard(parent, () => { _map.CenterOn(zone); _map.Select(zone); },
                 Palette.Tip(string.Format(Tr("{0}, {1}. Aconteceu em {2}."), entry.Source, entry.Date.ToString("dd/MM", PtBr), ZoneName(zone)), Tr("centraliza o mapa nessa zona e a destaca; clique na zona para abrir a ficha."), Tr("nada.")));
@@ -165,6 +206,22 @@ public partial class HubScreen
         else
         {
             Glossary.Rich(col, entry.Text, 18, Palette.Texto, Palette.Weight(Palette.Inter, 500));
+        }
+
+        // Fato coberto pela mídia local: em que veículos saiu e, se for o caso, a marca de boato (GDD 17.13).
+        if (entry.Item?.FactId is { } factId)
+        {
+            Fact? fact = _engine.Facts.Find(factId);
+            var covered = _engine.Media.News.Where(n => n.FactId == factId).Select(n => _engine.City.Outlet(n.OutletId)).OfType<Planalto.Core.Media.Outlet>().Distinct().ToList();
+            if (fact is { Rumor: true })
+            {
+                Glossary.Rich(col, Tr("BOATO de rede: pode ser falso."), 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+            }
+
+            if (covered.Count > 0)
+            {
+                Glossary.Plain(col, string.Format(Tr("Saiu em: {0}{1}."), _engine.OutletLabel(covered[0]), covered.Count > 1 ? " " + string.Format(Tr("e mais {0}"), covered.Count - 1) : ""), 18, Palette.Texto3);
+            }
         }
     }
 

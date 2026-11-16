@@ -212,6 +212,23 @@ public partial class EncyclopediaDialog : PanelContainer
             }
         }
 
+        if (state.City is { } media && game.Engine is { } mediaEngine)
+        {
+            var ptBr = CultureInfo.GetCultureInfo("pt-BR");
+            foreach (OutletView o in mediaEngine.Outlets().Where(o => Matches(o.Label)))
+            {
+                Entry(o.Label,
+                    string.Format(ptBr, Tr("Alcança {0:P0} dos eleitores da cidade. Temas de interesse: {1}. Quem manda: {2}. Jornalista principal: {3}. Veículo fictício; a ficha completa fica na área Mídia."),
+                        o.ReachShare, string.Join(", ", o.Outlet.Themes.Select(t => game.World.Parties.Themes.Themes.FirstOrDefault(x => x.Id == t)?.Name ?? t)), o.OwnerName, o.JournalistName));
+            }
+
+            foreach (DonorView d in mediaEngine.Donors().Where(d => Matches(d.Name)))
+            {
+                Entry(string.Format(Tr("{0} (doa como pessoa física)"), d.Name),
+                    string.Format(ptBr, Tr("Teto legal de doação neste ano: R$ {0:N0}. Em troca, {1}. Pessoa fictícia; a ficha completa fica em Finanças, Contas."), d.LegalCap, d.RequestText));
+            }
+        }
+
         if (state.Campaign is { } campaign)
         {
             foreach (Candidate c in campaign.Candidates.Where(c => !c.IsBulk && !c.IsPlayer && Matches(c.Name)))

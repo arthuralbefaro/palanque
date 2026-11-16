@@ -49,6 +49,23 @@ public partial class HubScreen
 
     private void BuildPeople()
     {
+        BuildSlateBlock();
+        Office office = Campaign.Player.Office;
+        Heading(_left, Tr(office == Office.Prefeito ? "Na disputa pela prefeitura" : "Principais rivais"), 20);
+        foreach (Candidate rival in Campaign.ForOffice(office).Where(c => !c.IsPlayer && !c.IsBulk).OrderByDescending(c => c.Recognition).Take(6))
+        {
+            RivalRow(rival);
+        }
+
+        if (office != Office.Prefeito)
+        {
+            Heading(_left, Tr("Prefeitura"), 20);
+            foreach (Candidate mayor in Campaign.ForOffice(Office.Prefeito))
+            {
+                RivalRow(mayor);
+            }
+        }
+
         var known = _engine.City.Leaders.Where(l => l.Known).OrderByDescending(l => _engine.RelationOf(l.PersonId)).ToList();
         int unknown = _engine.City.Leaders.Count - known.Count;
         Heading(_left, Tr("Lideranças que você conhece"), 20);
@@ -66,22 +83,6 @@ public partial class HubScreen
         {
             Glossary.Rich(_left, string.Format(Tr("Há mais {0} na cidade que você ainda não conhece: aparecem como ? na ficha da zona em que atuam."), unknown), 18, Palette.Texto3);
         }
-
-        Office office = Campaign.Player.Office;
-        Heading(_left, Tr(office == Office.Prefeito ? "Na disputa pela prefeitura" : "Principais rivais"), 20);
-        foreach (Candidate rival in Campaign.ForOffice(office).Where(c => !c.IsPlayer && !c.IsBulk).OrderByDescending(c => c.Recognition).Take(6))
-        {
-            PersonRow(rival);
-        }
-
-        if (office != Office.Prefeito)
-        {
-            Heading(_left, Tr("Prefeitura"), 20);
-            foreach (Candidate mayor in Campaign.ForOffice(Office.Prefeito))
-            {
-                PersonRow(mayor);
-            }
-        }
     }
 
     /// <summary>Linha de liderança: nome com o que é, zona, relação e lado; o cartão inteiro abre a ficha.</summary>
@@ -96,25 +97,6 @@ public partial class HubScreen
         col.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         Glossary.Rich(col, LeaderLabel(leader), 18, Palette.Texto, Palette.Weight(Palette.Inter, 500));
         Glossary.Rich(col, string.Format(Tr("{0} · relação {1} · {2}"), ZoneName(leader.Zones[0]), Signed(_engine.RelationOf(leader.PersonId), "0"), SideText(leader)));
-    }
-
-    private void PersonRow(Candidate c)
-    {
-        PanelContainer card = Card(_left, margin: 8);
-        HBoxContainer row = Ui.Row(card, 10);
-        Appearance? appearance = State.Npcs.FirstOrDefault(n => n.Id == c.CharacterId)?.Appearance;
-        if (appearance is not null)
-        {
-            var view = row.Add(new PortraitView { CustomMinimumSize = new Vector2(56, 56) });
-            view.SizeFlagsVertical = SizeFlags.ShrinkBegin;
-            GameParty? party = State.Party(c.PartyId);
-            view.Show(appearance, new PortraitOptions(Planalto.Core.Characters.Expression.Neutra, WardrobeContext.Campanha, party?.Colors.Primary, "background_solido", party?.Colors.Secondary), _game.People.Appearance);
-        }
-
-        var col = Ui.Column(row, 2);
-        col.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-        Glossary.Plain(col, CandidateLabel(c), 18, Palette.Texto, Palette.Weight(Palette.Inter, 500));
-        Glossary.Rich(col, string.Format(PtBr, "{0}{1} {2:0}%", c.Incumbent ? Tr("tem mandato") + " · " : "", Tr("reconhecimento"), c.Recognition));
     }
 
     // ------------------------------------------------------------------ ficha da pessoa

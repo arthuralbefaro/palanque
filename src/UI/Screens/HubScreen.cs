@@ -28,11 +28,11 @@ public partial class HubScreen : Control
     private static readonly (string Id, string Icon, string Name, string Tip)[] Areas =
     [
         ("campanha", "megafone", "Campanha", "Sua candidatura e os próximos compromissos."),
-        ("pessoas", "pessoas", "Pessoas", "As lideranças que você conhece e os rivais."),
+        ("pessoas", "pessoas", "Pessoas", "A chapa do seu partido, os rivais e as lideranças que você conhece."),
         ("agenda", "calendario", "Agenda", "A semana em dias e turnos: marcar, desmarcar e responder a convites."),
         ("territorio", "barras", "Território", "As zonas da cidade, a sua presença e a demanda de cada uma."),
-        ("financas", "cedula", "Finanças", "Caixa, custos e pesquisas."),
-        ("midia", "jornal", "Mídia", "Tudo o que saiu nas notícias."),
+        ("financas", "cedula", "Finanças", "Caixa, contas da campanha, doadores e pesquisas."),
+        ("midia", "jornal", "Mídia", "Os veículos da cidade, o tema em alta, os ataques com prazo e o noticiário."),
         ("partido", "predio", "Partido", "Seu partido nesta eleição."),
     ];
 
@@ -43,12 +43,14 @@ public partial class HubScreen : Control
         ["equipe"] = "Cada função tem de dois a quatro nomes. A qualidade aparece em faixa nas primeiras semanas. Clique num nome para ver o vínculo, a previsão e contratar. Toda pessoa lembra do que você fez com ela.",
         ["verba"] = "A verba é semanal e sai do caixa toda segunda-feira. Escolha o canal, o alvo e o valor: a previsão mostra duas contas, o retorno da sua verba e a disputa com a verba dos rivais no mesmo lugar.",
         ["plataforma"] = "Em cada tema você tem uma posição de −2 a +2. Quem não conhece a sua posição presume a do partido. Mudar o que já é conhecido custa incoerência; a previsão mostra quem gosta e quem não gosta.",
-        ["pessoas"] = "Lideranças movem votos de um público numa zona. Visite para ouvir o pedido: aceitar vira promessa no Livro de compromissos; recusar fica na memória dela. Clique num nome para abrir a ficha.",
+        ["pessoas"] = "Rivais têm plano e memória; lideranças movem votos de um público numa zona. Clique num nome para abrir a ficha. Visitar uma liderança traz o pedido dela: aceitar vira promessa no Livro de compromissos.",
+        ["rivais"] = "A ficha mostra o que a sua coordenação consegue ler do plano do rival. Atacar tira imagem dos dois e fica na memória; pacto fecha zonas; investigar pode achar a prova. Veja a previsão antes de confirmar.",
+        ["contas"] = "Toda campanha tem limite de gastos e presta contas. Dinheiro \"por fora\" não tem limite, mas vira esqueleto: quem sabe pode contar. O risco das contas decide o julgamento depois da eleição.",
         ["agenda"] = "Cada dia tem três turnos. Clique num turno livre, escolha o compromisso e a zona e veja a previsão antes de confirmar. Repetir o mesmo compromisso na mesma zona rende cada vez menos: é o cansaço.",
         ["territorio"] = "Sua presença muda de zona para zona e cai nas zonas em que você não aparece. Clique numa zona do mapa ou da lista para abrir a ficha.",
         ["ficha_zona"] = "A ficha mostra quem mora aqui, a demanda da zona e quem é mais conhecido. Parte do que você ganha numa zona transborda para as vizinhas. Use Marcar compromisso aqui para agir.",
-        ["financas"] = "Pesquisa interna mostra onde você está; institutos publicam sozinhos durante a campanha.",
-        ["midia"] = "O que aconteceu na cidade e com você, do mais recente ao mais antigo.",
+        ["financas"] = "O bloco Contas mostra o limite de gastos, o risco e as ofertas de doação à espera de resposta. Pesquisa interna mostra onde você está; institutos publicam sozinhos durante a campanha.",
+        ["midia"] = "Cada veículo tem linha editorial: ela decide o tom da notícia, nunca o fato. Clique num veículo para marcar entrevista, sugerir pauta ou anunciar. Tema em alta rende mais naquela semana.",
         ["partido"] = "Seu partido define o número de urna e pesa no voto de quem já gosta dele.",
     };
 
@@ -67,6 +69,14 @@ public partial class HubScreen : Control
         Plataforma,
         Tema,
         Prometer,
+        Rival,
+        Atacar,
+        Chapa,
+        Gente,
+        Ataque,
+        Veiculo,
+        Contas,
+        Oferta,
     }
 
     /// <summary>Fichas que pertencem à área Campanha (o trilho continua marcando a área).</summary>
@@ -100,6 +110,8 @@ public partial class HubScreen : Control
     private int _speed = 1;
     private double _accumulated;
     private ZonasMunicipio? _zonas;
+    private HashSet<string> _knownAttacks = [];
+    private HashSet<string> _knownOffers = [];
 
     private GameState State => _game.State!;
 
@@ -168,6 +180,7 @@ public partial class HubScreen : Control
         _map = _mapArea.Add(new ZoneMapView());
         _map.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         _map.ZoneClicked += OnZoneClicked;
+        _map.MarkerClicked += id => OpenAreaSheet(Sheet.Rival, id);
         _map.HoverText = ZoneTooltip;
         _modes = _mapArea.Add(new HBoxContainer { Position = new Vector2(16, 16) });
         _modes.AddThemeConstantOverride("separation", 8);
@@ -195,8 +208,17 @@ public partial class HubScreen : Control
         _poll = right.Add(new VBoxContainer());
         _poll.AddThemeConstantOverride("separation", 6);
 
+        // O que já estava de pé ao abrir a tela não pausa de novo; só o que chegar depois.
+        RememberDeadlines();
         LoadZones();
         Refresh();
+    }
+
+    /// <summary>Guarda os ataques e as ofertas com prazo já avisados, para a pausa valer só para os novos.</summary>
+    private void RememberDeadlines()
+    {
+        _knownAttacks = _engine.PendingAttacks().Select(a => a.Attack.Id).ToHashSet(StringComparer.Ordinal);
+        _knownOffers = _engine.Finance.Offers.Select(o => o.Id).ToHashSet(StringComparer.Ordinal);
     }
 
     private static PanelContainer Panel(Node parent, Vector2 minimum, int margin)
@@ -318,6 +340,31 @@ public partial class HubScreen : Control
             Stop(null);
         }
 
+        // Ataque novo contra o jogador: o prazo de resposta começou a correr (pausa que dá para desligar).
+        if (_engine.PendingAttacks().FirstOrDefault(a => !_knownAttacks.Contains(a.Attack.Id)) is { } fresh && Pause(Clock.AtaqueContraVoce))
+        {
+            string attackId = fresh.Attack.Id;
+            Stop(new Notice(AttackBannerText(fresh), "Responder", () => { _notice = null; OpenAreaSheet(Sheet.Ataque, attackId); },
+                Palette.Tip(Tr("Abre as respostas ao ataque."), Tr("mostra o ataque e cada resposta possível com a previsão: quanto do dano sobra, em quantas semanas se apaga e o custo."), Tr("nada para abrir; o prazo corre se você soltar o tempo."))));
+        }
+
+        // Oferta de doação nova: decisão com prazo, pausa ao chegar.
+        if (_engine.Finance.Offers.FirstOrDefault(o => !_knownOffers.Contains(o.Id)) is { } offered && Pause(Clock.DecisaoComPrazo))
+        {
+            string offerId = offered.Id;
+            Stop(new Notice(string.Format(Tr("{0} fez uma oferta de doação: responda até {1}."), _engine.NameOf(offered.DonorId), offered.Deadline.ToString("dddd, d/MM", PtBr)), "Decidir", () => { _notice = null; OpenAreaSheet(Sheet.Oferta, offerId); },
+                Palette.Tip(Tr("Abre a oferta de doação."), Tr("mostra cada resposta com a previsão: o dinheiro que entra, o risco das contas, a dívida e quem fica sabendo."), Tr("nada para abrir; o prazo corre se você soltar o tempo."))));
+        }
+
+        RememberDeadlines();
+
+        // Contas da eleição anterior: julgamento ou representação com novidade nesta semana.
+        if (report.WeekTurned && _game.AccountsNews.Count > 0 && Pause(Clock.DecisaoImediata))
+        {
+            Stop(new Notice(string.Join(". ", _game.AccountsNews.Select(h => h.Text)) + ".", "Ver as contas", () => { _notice = null; OpenAreaSheet(Sheet.Contas, null); },
+                Palette.Tip(Tr("Abre o painel Contas."), Tr("mostra o andamento do julgamento das contas da eleição anterior e da representação, se houver."), Tr("nada."))));
+        }
+
         // O que entrou no feed desde ontem: liderança perdida e rival em zona onde o jogador lidera a presença.
         int from = lastFeed is null ? 0 : Agenda.Feed.FindLastIndex(f => ReferenceEquals(f, lastFeed)) + 1;
         foreach (FeedItem item in Agenda.Feed.Skip(from))
@@ -382,6 +429,7 @@ public partial class HubScreen : Control
         _sheetId = null;
         _draft = null;
         _confirmFire = null;
+        _changes = null;
         _back.Clear();
         Refresh();
     }
@@ -408,6 +456,7 @@ public partial class HubScreen : Control
         _confirmFire = null;
         _positionDraft = null;
         _positionResult = null;
+        _changes = null;
         if (sheet == Sheet.Marcar)
         {
             // Marcar pede escolhas em listas: o tempo para enquanto a marcação está aberta.
@@ -423,6 +472,7 @@ public partial class HubScreen : Control
         _confirmFire = null;
         _positionDraft = null;
         _positionResult = null;
+        _changes = null;
         (_sheet, _sheetId) = _back.Count > 0 ? _back.Pop() : (Sheet.Nenhuma, null);
         _map.Select(_sheet == Sheet.Zona ? _sheetId : null);
         Refresh();
@@ -593,6 +643,7 @@ public partial class HubScreen : Control
         b.Alignment = HorizontalAlignment.Left;
         b.CustomMinimumSize = new Vector2(132, 44);
         b.SizeFlagsHorizontal = SizeFlags.ShrinkBegin;
+        ChangesCard();
     }
 
     private void BuildTop()
@@ -695,7 +746,7 @@ public partial class HubScreen : Control
         Ui.Clear(_trail);
         foreach (var (id, icon, name, tip) in Areas)
         {
-            var b = IconButton(_trail, icon, _area == id && (_sheet == Sheet.Nenhuma || (id == "campanha" && IsCampaignSheet(_sheet))), () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
+            var b = IconButton(_trail, icon, _area == id && (_sheet == Sheet.Nenhuma || SheetArea(_sheet) == id), () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
             b.Name = "Area_" + id;
         }
     }
@@ -739,6 +790,30 @@ public partial class HubScreen : Control
             case Sheet.Prometer:
                 BuildPromiseSheet();
                 return;
+            case Sheet.Rival when _sheetId is not null && _engine.RivalSheetOf(_sheetId) is { } rivalSheet:
+                BuildRivalSheet(rivalSheet);
+                return;
+            case Sheet.Atacar when _sheetId is not null && _engine.RivalSheetOf(_sheetId) is not null:
+                BuildAttackSheet(_sheetId);
+                return;
+            case Sheet.Chapa:
+                BuildSlateSheet();
+                return;
+            case Sheet.Gente when _sheetId is not null && _engine.City.Person(_sheetId) is { } anyone:
+                BuildGenericPersonSheet(anyone);
+                return;
+            case Sheet.Ataque when _sheetId is not null:
+                BuildAttackResponseSheet(_sheetId);
+                return;
+            case Sheet.Veiculo when _sheetId is not null && _engine.Outlets().FirstOrDefault(o => o.Outlet.Id == _sheetId) is { } outletView:
+                BuildOutletSheet(outletView);
+                return;
+            case Sheet.Contas:
+                BuildAccountsSheet();
+                return;
+            case Sheet.Oferta when _sheetId is not null:
+                BuildOfferSheet(_sheetId);
+                return;
             case Sheet.Nenhuma:
                 break;
             default:
@@ -751,6 +826,7 @@ public partial class HubScreen : Control
 
         Heading(_left, Tr(Areas.First(a => a.Id == _area).Name));
         FirstTimeHint(_area);
+        ChangesCard();
         StressWarning();
         switch (_area)
         {
@@ -856,10 +932,11 @@ public partial class HubScreen : Control
         Palette.ListRow(b);
     }
 
-    private void BuildFinances()
+    /// <summary>Pesquisas e custo dos compromissos (o resto da área Finanças; o bloco Contas vem antes).</summary>
+    private void BuildPollsBlock()
     {
-        Glossary.Rich(_left, string.Format(Tr("Caixa: {0}."), Money(State.Player.Resources.Money)), 18, Palette.Texto);
         Heading(_left, Tr("Pesquisas"), 20);
+        Glossary.Rich(_left, Tr("Encomende uma pesquisa (sai na hora):"));
         foreach (PollsterDefinition p in _game.Electorate.Pollsters.Pollsters.Where(p => p.Internal || p.HouseBias == 0))
         {
             decimal cost = Math.Round(p.Cost * (decimal)_engine.Context.Config.PorteCostMultiplier.GetValueOrDefault(_engine.Context.Municipio.Porte, 1) / 100) * 100;
@@ -867,7 +944,7 @@ public partial class HubScreen : Control
                 string.Format(Tr("{0} ({1})."), p.Name, Tr(p.Internal ? "pesquisa interna da sua campanha" : "instituto de pesquisa")),
                 string.Format(PtBr, Tr("mostra a intenção de voto na cidade, com amostra de {0} a {1} entrevistas; sai na hora."), p.SampleMin, p.SampleMax),
                 Money(cost) + ".");
-            var b = Ui.Button(_left, $"{Tr("Encomendar")}: {p.Name} · {Money(cost)}", () =>
+            var b = Ui.Button(_left, $"{p.Name} · {Money(cost)}", () =>
             {
                 if (_engine.CommissionPoll(p.Id) is null)
                 {
@@ -897,20 +974,6 @@ public partial class HubScreen : Control
         }
     }
 
-    private void BuildMedia()
-    {
-        var items = FeedEntries().ToList();
-        if (items.Count == 0)
-        {
-            Glossary.Rich(_left, Tr("Nada saiu ainda. Semana tranquila na cidade."));
-        }
-
-        foreach (FeedEntry entry in items.Take(40))
-        {
-            FeedCard(_left, entry);
-        }
-    }
-
     private void BuildParty()
     {
         GameParty? party = State.Party(State.Player.PartyId);
@@ -925,6 +988,13 @@ public partial class HubScreen : Control
         Glossary.Rich(_left, string.Format(Tr("{0}. Família ideológica: {1}. Partido fictício."), party.Name, family));
         int named = Campaign.ForOffice(Office.Vereador).Count(c => c.PartyId == party.Id && !c.IsBulk && !c.IsPlayer);
         Glossary.Rich(_left, string.Format(Tr("Colegas de chapa nomeados para vereador nesta cidade: {0}, além dos demais da lista."), named));
+        BuildSlateBlock();
+        if (_engine.City.Bosses.TryGetValue(party.Id, out string? boss))
+        {
+            Heading(_left, Tr("Direção"), 20);
+            PersonLink(_left, boss, string.Format(Tr("Dirigente na cidade: {0}"), _engine.NameOf(boss)));
+            Glossary.Rich(_left, Tr("É quem decide a sua cota do fundo eleitoral: pesam a relação, a sua viabilidade na pesquisa e a distância da linha do partido. O valor de hoje está em Finanças, Contas."));
+        }
     }
 
     // ------------------------------------------------------------------ decisões sobre o mapa
@@ -933,6 +1003,8 @@ public partial class HubScreen : Control
     {
         if (_banner is not null && IsInstanceValid(_banner))
         {
+            // Sai da árvore já: a faixa nova precisa do mesmo nome, mesmo com dois redesenhos no mesmo quadro.
+            _banner.GetParent()?.RemoveChild(_banner);
             _banner.QueueFree();
         }
 
@@ -1000,6 +1072,21 @@ public partial class HubScreen : Control
                     buttons.Add(("Fechar aviso", () => { _notice = null; Refresh(); },
                         Palette.Tip(Tr("Fecha este aviso."), Tr("o jogo continua pausado até você escolher uma velocidade na barra de cima."), Tr("nada."))));
                 }
+                else if (_engine.PendingAttacks().OrderBy(a => a.Deadline).FirstOrDefault() is { } pendingAttack && !(_sheet == Sheet.Ataque && _sheetId == pendingAttack.Attack.Id))
+                {
+                    // Decisão com prazo (GDD 17.4): não trava o tempo; a faixa mostra a contagem e a opção padrão.
+                    text = AttackBannerText(pendingAttack);
+                    string attackId = pendingAttack.Attack.Id;
+                    buttons.Add(("Responder", () => { _notice = null; OpenAreaSheet(Sheet.Ataque, attackId); },
+                        Palette.Tip(Tr("Abre as respostas ao ataque."), Tr("mostra o ataque e cada resposta possível com a previsão: quanto do dano sobra, em quantas semanas se apaga e o custo."), Tr("nada para abrir; o prazo continua correndo."))));
+                }
+                else if (_engine.Finance.Offers.OrderBy(o => o.Deadline).FirstOrDefault() is { } openOffer && !(_sheet == Sheet.Oferta && _sheetId == openOffer.Id))
+                {
+                    text = string.Format(Tr("{0} fez uma oferta de doação: responda até {1}."), _engine.NameOf(openOffer.DonorId), openOffer.Deadline.ToString("dddd, d/MM", PtBr));
+                    string offerId = openOffer.Id;
+                    buttons.Add(("Decidir", () => { _notice = null; OpenAreaSheet(Sheet.Oferta, offerId); },
+                        Palette.Tip(Tr("Abre a oferta de doação."), Tr("mostra cada resposta com a previsão: o dinheiro que entra, o risco das contas, a dívida e quem fica sabendo."), Tr("nada para abrir; o prazo continua correndo."))));
+                }
                 else if (!_running && Campaign.Polls.Count > 0 && Campaign.Polls[^1].Week == State.Calendar.WeekStart && State.Time.Day == 0 && !Campaign.Polls[^1].Internal)
                 {
                     text = string.Format(Tr("Saiu pesquisa do {0}. Jogo pausado."), _game.Electorate.Pollsters.Get(Campaign.Polls[^1].PollsterId).Name);
@@ -1034,6 +1121,20 @@ public partial class HubScreen : Control
                 b.Name = "FecharAviso";
             }
         }
+    }
+
+    /// <summary>Zona citada num cartão de decisão: centraliza o mapa e abre a ficha no painel.</summary>
+    private void OpenZoneFromCard(string zone)
+    {
+        if (!_map.Zonas.ContainsKey(zone))
+        {
+            return;
+        }
+
+        _map.CenterOn(zone);
+        _map.Select(zone);
+        _area = "territorio";
+        OpenSheet(Sheet.Zona, zone);
     }
 
     private void GoToUrna()
@@ -1100,7 +1201,15 @@ public partial class HubScreen : Control
                 }
 
                 Refresh();
-            }));
+            })
+            {
+                // Nomes do cartão são links: a ficha abre no painel da esquerda, que continua legível.
+                PersonLabel = PersonLabel,
+                CanOpenPerson = HasPersonSheet,
+                OpenPerson = OpenPerson,
+                OpenZone = OpenZoneFromCard,
+                OpenOutlet = outlet => OpenAreaSheet(Sheet.Veiculo, outlet),
+            });
         }
         else if (request)
         {

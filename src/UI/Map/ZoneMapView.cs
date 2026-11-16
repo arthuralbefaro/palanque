@@ -15,7 +15,8 @@ public partial class ZoneMapView : Control
     /// Marcador numa zona (GDD 17.3): compromisso da semana, rival visto, liderança conhecida. Com ícone, é um disco
     /// com o ícone na cor; com texto (sigla de partido), uma etiqueta na cor.
     /// </summary>
-    public sealed record Marker(string ZoneId, Color Color, Texture2D? Icon, string? Text);
+    /// <param name="Id">Com id, o marcador é clicável (rival visto: abre a ficha dele).</param>
+    public sealed record Marker(string ZoneId, Color Color, Texture2D? Icon, string? Text, string? Id = null);
 
     /// <summary>Acima deste número, os marcadores da zona viram um só, com a contagem (ART_GUIDE, densidade).</summary>
     public const int MaxMarkersPerZone = 3;
@@ -71,6 +72,9 @@ public partial class ZoneMapView : Control
     }
 
     public string? Selected { get; private set; }
+
+    /// <summary>Marcador com id clicado (o clique não seleciona a zona).</summary>
+    public event Action<string>? MarkerClicked;
 
     /// <summary>Zona clicada (ou null ao clicar fora).</summary>
     public event Action<string?>? ZoneClicked;
@@ -229,54 +233,84 @@ public partial class ZoneMapView : Control
         DrawMarkers(t, font);
     }
 
-    /// <summary>Marcadores em fila sob o rótulo da zona; mais de três viram um disco com a contagem.</summary>
-    private void DrawMarkers(Transform2D t, Font font)
+    private const float MarkerHeight = 28;
+    private const float MarkerGap = 4;
+
+    /// <summary>Onde cada marcador fica na tela (fila sob o rótulo da zona). Zona com mais de três não tem marcador individual.</summary>
+    private IEnumerable<(Marker Marker, Rect2 Rect)> MarkerLayout(Transform2D t, Font font)
     {
-        const float Height = 28;
-        const float Gap = 4;
         float xScale = (float)Math.Cos(_zonas.Values.Average(v => v.Lat) * Math.PI / 180);
         foreach (var group in _markers.GroupBy(m => m.ZoneId))
         {
-            Zona z = _zonas[group.Key];
-            Vector2 anchor = (t * new Vector2((float)z.Lon * xScale, -(float)z.Lat)) + new Vector2(0, 30);
             List<Marker> list = group.ToList();
             if (list.Count > MaxMarkersPerZone)
             {
-                string count = list.Count.ToString(System.Globalization.CultureInfo.InvariantCulture);
-                Vector2 size = font.GetStringSize(count, HorizontalAlignment.Left, -1, 18);
-                DrawCircle(anchor, 16, new Color(Palette.Fundo, 0.9f));
-                DrawArc(anchor, 16, 0, Mathf.Tau, 32, Palette.Texto, 2, antialiased: true);
-                DrawString(font, anchor + new Vector2(-size.X / 2, 6), count, HorizontalAlignment.Left, -1, 18, Palette.Texto);
                 continue;
             }
 
-            float[] widths = list.Select(m => m.Text is null ? Height : font.GetStringSize(m.Text, HorizontalAlignment.Left, -1, 18).X + 14).ToArray();
-            float x = anchor.X - ((widths.Sum() + (Gap * (list.Count - 1))) / 2);
+            Zona z = _zonas[group.Key];
+            Vector2 anchor = (t * new Vector2((float)z.Lon * xScale, -(float)z.Lat)) + new Vector2(0, 30);
+            float[] widths = list.Select(m => m.Text is null ? MarkerHeight : font.GetStringSize(m.Text, HorizontalAlignment.Left, -1, 18).X + 14).ToArray();
+            float x = anchor.X - ((widths.Sum() + (MarkerGap * (list.Count - 1))) / 2);
             for (int i = 0; i < list.Count; i++)
             {
-                Marker m = list[i];
-                var rect = new Rect2(x, anchor.Y - (Height / 2), widths[i], Height);
-                if (m.Text is not null)
-                {
-                    DrawRect(rect, m.Color);
-                    DrawRect(rect, Palette.Fundo, filled: false, width: 2);
-                    DrawString(font, new Vector2(rect.Position.X + 8, rect.End.Y - 7), m.Text, HorizontalAlignment.Left, -1, 18, new Color(0, 0, 0, 0.8f));
-                    DrawString(font, new Vector2(rect.Position.X + 7, rect.End.Y - 8), m.Text, HorizontalAlignment.Left, -1, 18, Palette.Texto);
-                }
-                else
-                {
-                    Vector2 center = rect.GetCenter();
-                    DrawCircle(center, Height / 2, new Color(Palette.Fundo, 0.9f));
-                    DrawArc(center, Height / 2, 0, Mathf.Tau, 32, m.Color, 2, antialiased: true);
-                    if (m.Icon is not null)
-                    {
-                        DrawTextureRect(m.Icon, new Rect2(center - new Vector2(9, 9), new Vector2(18, 18)), false, m.Color);
-                    }
-                }
-
-                x += widths[i] + Gap;
+                yield return (list[i], new Rect2(x, anchor.Y - (MarkerHeight / 2), widths[i], MarkerHeight));
+                x += widths[i] + MarkerGap;
             }
         }
+    }
+
+    /// <summary>Marcadores em fila sob o rótulo da zona; mais de três viram um disco com a contagem.</summary>
+    private void DrawMarkers(Transform2D t, Font font)
+    {
+        float xScale = (float)Math.Cos(_zonas.Values.Average(v => v.Lat) * Math.PI / 180);
+        foreach (var group in _markers.GroupBy(m => m.ZoneId).Where(g => g.Count() > MaxMarkersPerZone))
+        {
+            Zona z = _zonas[group.Key];
+            Vector2 anchor = (t * new Vector2((float)z.Lon * xScale, -(float)z.Lat)) + new Vector2(0, 30);
+            string count = group.Count().ToString(System.Globalization.CultureInfo.InvariantCulture);
+            Vector2 size = font.GetStringSize(count, HorizontalAlignment.Left, -1, 18);
+            DrawCircle(anchor, 16, new Color(Palette.Fundo, 0.9f));
+            DrawArc(anchor, 16, 0, Mathf.Tau, 32, Palette.Texto, 2, antialiased: true);
+            DrawString(font, anchor + new Vector2(-size.X / 2, 6), count, HorizontalAlignment.Left, -1, 18, Palette.Texto);
+        }
+
+        foreach (var (m, rect) in MarkerLayout(t, font))
+        {
+            if (m.Text is not null)
+            {
+                DrawRect(rect, m.Color);
+                DrawRect(rect, m.Id is null ? Palette.Fundo : Palette.Texto, filled: false, width: 2);
+                DrawString(font, new Vector2(rect.Position.X + 8, rect.End.Y - 7), m.Text, HorizontalAlignment.Left, -1, 18, new Color(0, 0, 0, 0.8f));
+                DrawString(font, new Vector2(rect.Position.X + 7, rect.End.Y - 8), m.Text, HorizontalAlignment.Left, -1, 18, Palette.Texto);
+            }
+            else
+            {
+                Vector2 center = rect.GetCenter();
+                DrawCircle(center, MarkerHeight / 2, new Color(Palette.Fundo, 0.9f));
+                DrawArc(center, MarkerHeight / 2, 0, Mathf.Tau, 32, m.Color, 2, antialiased: true);
+                if (m.Icon is not null)
+                {
+                    DrawTextureRect(m.Icon, new Rect2(center - new Vector2(9, 9), new Vector2(18, 18)), false, m.Color);
+                }
+            }
+        }
+    }
+
+    /// <summary>Marcador clicável sob um ponto da tela; null se não há.</summary>
+    public string? MarkerAt(Vector2 screen) =>
+        _shapes.Count == 0 ? null : MarkerLayout(ToScreen(), Palette.Inter).FirstOrDefault(x => x.Marker.Id is not null && x.Rect.HasPoint(screen)).Marker?.Id;
+
+    /// <summary>Centro de um marcador clicável na tela (testes de fumaça clicam por aqui); null se ele não está desenhado.</summary>
+    public Vector2? MarkerCenter(string id)
+    {
+        if (_shapes.Count == 0)
+        {
+            return null;
+        }
+
+        var hit = MarkerLayout(ToScreen(), Palette.Inter).FirstOrDefault(x => x.Marker.Id == id);
+        return hit.Marker is null ? null : hit.Rect.GetCenter();
     }
 
     public override void _GuiInput(InputEvent e)
@@ -312,6 +346,10 @@ public partial class ZoneMapView : Control
         else if (e is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left, DoubleClick: true })
         {
             ResetView();
+        }
+        else if (e is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } markerClick && MarkerAt(markerClick.Position) is { } marker)
+        {
+            MarkerClicked?.Invoke(marker);
         }
         else if (e is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } click)
         {
