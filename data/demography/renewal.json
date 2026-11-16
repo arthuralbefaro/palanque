@@ -57,6 +57,7 @@
     "cassacao_prefeito": "A Câmara Municipal cassou o mandato de {nome} na Prefeitura.",
     "cassacao_vice_prefeito": "A Câmara Municipal cassou o mandato de {nome}, vice na Prefeitura.",
     "justica_eleitoral": "A Justiça Eleitoral cassou a chapa de {nome}. A Prefeitura está vaga e haverá nova eleição.",
+    "justica_eleitoral_vereador": "A Justiça Eleitoral cassou o diploma de {nome}, que deixa a cadeira na Câmara Municipal.",
     "investidura": "{nome} deixou a cadeira na Câmara Municipal para assumir a Prefeitura.",
     "aposentadoria": "{nome} não disputa a próxima eleição e deixa a política ao fim do mandato.",
     "desistencia": "{nome} não disputa a próxima eleição.",

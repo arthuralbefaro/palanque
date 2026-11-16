@@ -150,7 +150,7 @@ public sealed class RenewalConfig : IValidatable
         "morte_vereador", "morte_prefeito", "morte_vice_prefeito", "morte_suplente", "morte_lideranca", "morte_equipe", "morte_governo", "lembranca_luto",
         "posse_suplente", "posse_vice", "interino", "interino_ate_o_fim", "eleicao_direta_convocada", "eleicao_indireta_convocada",
         "eleicao_direta_resultado", "eleicao_indireta_resultado", "renuncia_vereador", "renuncia_prefeito", "renuncia_vice_prefeito",
-        "cassacao_vereador", "cassacao_prefeito", "cassacao_vice_prefeito", "justica_eleitoral", "investidura", "aposentadoria", "desistencia",
+        "cassacao_vereador", "cassacao_prefeito", "cassacao_vice_prefeito", "justica_eleitoral", "justica_eleitoral_vereador", "investidura", "aposentadoria", "desistencia",
         "aposentadoria_lideranca", "mudanca_lideranca", "nova_lideranca", "mudanca_equipe", "novo_equipe", "estreia", "eleicao_municipal",
         "posse_legislatura", "cadeira_vaga", "eleicao_cadeira_convocada", "eleicao_cadeira_resultado",
     ];
@@ -191,6 +191,10 @@ public sealed class RenewalConfig : IValidatable
 
     public string Texto(string key) => Textos.TryGetValue(key, out string? text) ? text : key;
 
+    /// <summary>Texto que fala de morte ou de luto: pela chave ("morte_", "luto") ou pelas palavras do próprio texto.</summary>
+    public static bool IsDeathText(string key, string text) =>
+        key.StartsWith("morte_", StringComparison.Ordinal) || key.Contains("luto", StringComparison.Ordinal) || Events.EventLint.MentionsDeath(text);
+
     public IEnumerable<string> Validate()
     {
         foreach (string papel in Papeis.Where(p => !EstressePorPapel.TryGetValue(p, out int v) || v is < 0 or > 100))
@@ -201,6 +205,15 @@ public sealed class RenewalConfig : IValidatable
         foreach (string key in TextKeys.Where(k => !Textos.TryGetValue(k, out string? t) || string.IsNullOrWhiteSpace(t)))
         {
             yield return $"textos: falta '{key}'.";
+        }
+
+        // Morte tratada com seriedade (GDD 17.16): todo texto de morte ou de luto passa pelas regras de tom dos eventos.
+        foreach (var (key, text) in Textos.Where(t => IsDeathText(t.Key, t.Value)).OrderBy(t => t.Key, StringComparer.Ordinal))
+        {
+            foreach (string problem in Events.EventLint.CheckDeathText(text))
+            {
+                yield return $"textos.{key}: {problem}";
+            }
         }
 
         if (Saude.Inicial.Min < 1 || Saude.Inicial.Max > 100 || Saude.Inicial.Min > Saude.Inicial.Max || Saude.PerdaAnual < 0)
