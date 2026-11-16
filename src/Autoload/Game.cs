@@ -95,7 +95,25 @@ public partial class Game : Node
         Founding = JsonData.LoadFile<Core.Career.FoundingConfig>(Path.Combine(DataDirectory, Core.Career.FoundingConfig.File)).GetValueOrThrow();
         ExecutiveContent = Core.Executive.ExecutiveContent.LoadOrThrow(DataDirectory, Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal));
         Debate = JsonData.LoadFile<Core.Debate.DebateContent>(Path.Combine(DataDirectory, Core.Debate.DebateContent.File)).GetValueOrThrow();
+        Encyclopedia = JsonData.LoadFile<Core.Encyclopedia.EncyclopediaContent>(Path.Combine(DataDirectory, Core.Encyclopedia.EncyclopediaContent.File)).GetValueOrThrow();
+        Time = JsonData.LoadFile<Core.State.TimeConfig>(Path.Combine(DataDirectory, Core.State.TimeConfig.File)).GetValueOrThrow();
         Projection = PopulationProjection.From(Municipios, JsonData.LoadFile<PopulationProjectionConfig>(Path.Combine(DataDirectory, PopulationProjectionConfig.File)).GetValueOrThrow());
+    }
+
+    /// <summary>Glossário e artigos da Enciclopédia (F1 em qualquer tela).</summary>
+    public Core.Encyclopedia.EncyclopediaContent Encyclopedia { get; private set; } = null!;
+
+    /// <summary>Ritmo do tempo e pausas automáticas (GDD 17.4).</summary>
+    public Core.State.TimeConfig Time { get; private set; } = null!;
+
+    /// <summary>F1 abre a Enciclopédia em qualquer tela (princípio j).</summary>
+    public override void _UnhandledInput(InputEvent e)
+    {
+        if (e is InputEventKey { Pressed: true, Echo: false, Keycode: Key.F1 })
+        {
+            UI.Widgets.EncyclopediaDialog.Open(GetTree().Root);
+            GetViewport().SetInputAsHandled();
+        }
     }
 
     /// <summary>Projeção da população e das vagas de vereador a cada eleição.</summary>

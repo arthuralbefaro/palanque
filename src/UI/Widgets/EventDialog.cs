@@ -24,15 +24,20 @@ public partial class EventDialog : PanelContainer
     public override void _Ready()
     {
         SetAnchorsAndOffsetsPreset(LayoutPreset.Center);
-        CustomMinimumSize = new Vector2(900, 0);
-        var style = new StyleBoxFlat { BgColor = new Color("#13233C"), BorderColor = new Color("#E9C46A"), CornerRadiusBottomLeft = 10, CornerRadiusBottomRight = 10, CornerRadiusTopLeft = 10, CornerRadiusTopRight = 10 };
-        style.SetBorderWidthAll(2);
-        style.SetContentMarginAll(24);
-        AddThemeStyleboxOverride("panel", style);
-        Show(choosing: true, result: null);
+        CustomMinimumSize = new Vector2(720, 0);
+        AddThemeStyleboxOverride("panel", UI.Theme.Palette.Box(UI.Theme.Palette.CartaoAlto, 12, 24, UI.Theme.Palette.Atencao, 2));
+        Show(choosing: true, result: null, changes: null);
     }
 
-    private void Show(bool choosing, string? result)
+    private EffectSnapshot Snapshot()
+    {
+        var player = _engine.Context.State.Campaign!.Player;
+        var state = _engine.Context.State;
+        return new EffectSnapshot(player.Recognition, player.Image, state.Player.Resources.Money, state.Player.Resources.PoliticalCapital,
+            new Dictionary<string, double>(player.Support), new Dictionary<string, double>());
+    }
+
+    private void Show(bool choosing, string? result, string? changes)
     {
         Ui.Clear(this);
         Game game = Game.Instance;
@@ -46,20 +51,26 @@ public partial class EventDialog : PanelContainer
         };
         if (face is not null)
         {
-            var portrait = row.Add(new PortraitView { CustomMinimumSize = new Vector2(220, 220) });
+            var portrait = row.Add(new PortraitView { CustomMinimumSize = new Vector2(160, 160) });
             portrait.Show(face, new PortraitOptions(definition.PortraitExpression, WardrobeContext.Campanha), game.People.Appearance);
         }
 
-        VBoxContainer column = Ui.Column(row, 12);
-        Ui.Value(column, _pending.Title, 30);
-        Ui.Paragraph(column, choosing ? _pending.Text : result ?? "", 620, 20);
+        VBoxContainer column = Ui.Column(row, 10);
+        column.CustomMinimumSize = new Vector2(480, 0);
+        Label title = Ui.Value(column, _pending.Title, 32);
+        title.AddThemeFontOverride("font", UI.Theme.Palette.Weight(UI.Theme.Palette.Oswald, 600));
+        title.AddThemeColorOverride("font_color", UI.Theme.Palette.Texto);
+        Glossary.Rich(column, choosing ? _pending.Text : result ?? "", 22, UI.Theme.Palette.Texto, UI.Theme.Palette.Serif);
         if (!choosing)
         {
+            Label heading = Ui.Label(column, "O que mudou", 20);
+            heading.AddThemeColorOverride("font_color", UI.Theme.Palette.Texto);
+            Glossary.Rich(column, changes ?? "", 18);
             Ui.Button(column, "Continuar", () =>
             {
                 QueueFree();
                 _onClosed();
-            });
+            }, UI.Theme.Palette.Tip(Tr("Fecha o cartão da decisão."), Tr("volta ao mapa; o jogo continua pausado até você soltar o tempo."), Tr("nada.")));
             return;
         }
 
@@ -67,13 +78,18 @@ public partial class EventDialog : PanelContainer
         {
             string? blocked = EventEngine.Blocked(_engine.Context, choice);
             string label = EventEngine.Resolve(choice.Label, _pending.Variables) + (blocked is null ? "" : $"  ({blocked})");
+            string forecast = ForecastText.Full(Forecaster.ForChoice(_engine.Context, choice), EffectSummary.GroupName);
+            string tip = UI.Theme.Palette.Tip(EventEngine.Resolve(choice.Label, _pending.Variables) + ".", forecast + ".", Tr("o que está na previsão; o jogo continua pausado."));
             var button = Ui.Button(column, label, () =>
             {
+                EffectSnapshot before = Snapshot();
                 EventResolution resolution = EventEngine.Resolve(_engine.Context, _pending, index, _engine.Context.State.Rng);
-                Show(choosing: false, result: resolution.Text.Length > 0 ? resolution.Text : Tr("Decisão registrada."));
-            });
+                string changes = EffectSummary.Describe(before, Snapshot(), EffectSummary.GroupName);
+                Show(choosing: false, result: resolution.Text.Length > 0 ? resolution.Text : Tr("Decisão registrada."), changes: char.ToUpper(changes[0]) + changes[1..] + ".");
+            }, blocked is null ? tip : UI.Theme.Palette.Blocked(string.Format(Tr("{0}; falta cumprir o requisito."), blocked), tip));
             button.Disabled = blocked is not null;
             button.Alignment = HorizontalAlignment.Left;
+            Glossary.Rich(column, Tr("Previsão") + ": " + forecast, 16, UI.Theme.Palette.Texto3);
         }
     }
 }

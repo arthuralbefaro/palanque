@@ -19,6 +19,9 @@ public static class DataValidation
         {
             Check<TraitCatalog>(dataDirectory, "traits.json", catalog => catalog.Traits.Count, out _),
             Check<ProfessionCatalog>(dataDirectory, "professions.json", catalog => catalog.Professions.Count, out _),
+            Check<State.TimeConfig>(dataDirectory, State.TimeConfig.File, c => c.Pausas.Count, out _),
+            Check<Territory.TerritoryConfig>(dataDirectory, Territory.TerritoryConfig.File, c => c.ZonasPorPorte.Count, out _),
+            Check<Encyclopedia.EncyclopediaContent>(dataDirectory, Encyclopedia.EncyclopediaContent.File, c => c.Termos.Count, out _),
             Check<PorteCatalog>(dataDirectory, "portes.json", catalog => catalog.Portes.Count, out PorteCatalog? portes),
             Check<Career.FoundingConfig>(dataDirectory, Career.FoundingConfig.File, config => config.Intensities.Count, out _),
             Check<Debate.DebateContent>(dataDirectory, Debate.DebateContent.File, content => content.Cards.Count, out _),

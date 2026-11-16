@@ -19,7 +19,7 @@ namespace Planalto.UI.Screens;
 
 /// <summary>
 /// Criação de personagem (GDD 3 e 14.2 A): abas Aparência, Vestuário, Identidade, Campanha e Partido, com
-/// pré-visualização do retrato, santinho e outdoor; aleatório geral e por aba, desfazer e presets.
+/// pré-visualização do retrato, santinho e material permitido (adesivo, bandeira e peça de redes; outdoor é proibido); aleatório geral e por aba, desfazer e presets.
 /// </summary>
 public partial class CharacterCreatorScreen : Control
 {
@@ -35,7 +35,7 @@ public partial class CharacterCreatorScreen : Control
     private TabContainer _tabs = null!;
     private PortraitView _portrait = null!;
     private Santinho _santinho = null!;
-    private Outdoor _outdoor = null!;
+    private MateriaisPermitidos _materiais = null!;
     private VBoxContainer _status = null!;
     private Button _start = null!;
     private bool _ownParty;
@@ -78,7 +78,7 @@ public partial class CharacterCreatorScreen : Control
         VBoxContainer preview = Ui.Column(body, 10);
         _portrait = preview.Add(new PortraitView { CustomMinimumSize = new Vector2(240, 240) });
         _santinho = preview.Add(new Santinho());
-        _outdoor = preview.Add(new Outdoor());
+        _materiais = preview.Add(new MateriaisPermitidos());
 
         HBoxContainer bottom = Ui.Row(screen, 16);
         _status = Ui.Column(bottom, 2);
@@ -667,7 +667,7 @@ public partial class CharacterCreatorScreen : Control
         {
             var card = new CampaignCard(_c, party.Sigla, party.Name, party.Colors.Primary, party.Colors.Secondary, People.Offices.Name(Office.Vereador, _c.Gender), HomeName());
             _santinho.Set(card);
-            _outdoor.Set(card);
+            _materiais.Set(card);
         }
 
         Ui.Clear(_status);

@@ -23,3 +23,15 @@ Ano, endereço e data de download de cada fonte estão em `data/municipios/_font
 - **IBGE**, Censo Demográfico 2022, SIDRA tabela 9605 (população por cor ou raça e UF): pesos regionais de tom de pele dos personagens.
 - **IBGE**, Censo Demográfico 2010, API de nomes: prenomes mais frequentes por sexo, UF e década de nascimento.
 - Classificação ideológica dos partidos reais (só no pipeline de dados): Bolognesi, B.; Ribeiro, E.; Codato, A.; Silva, B. F. *O desaparecimento do centro ideológico no sistema partidário brasileiro: a classificação mais atualizada dos experts*. Opinião Pública, v. 31, e31120, 2025.
+
+### Zonas das cidades
+- **IBGE**, Censo Demográfico 2022: Malha de Setores Censitários (versão definitiva) e Agregados por Setores Censitários (básico, demografia e rendimento do responsável). Os setores são agrupados em zonas pelo DataImporter (`data/zonas/` e `data/geo/zonas/`); fonte, método e lacunas em `data/zonas/_fontes.json`.
+
+## Fontes tipográficas
+Todas sob a SIL Open Font License 1.1; a licença de cada uma está em `assets/fonts/`.
+- **Inter**, Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter).
+- **Oswald**, Copyright 2016 The Oswald Project Authors (https://github.com/googlefonts/OswaldFont).
+- **Source Serif 4**, Copyright 2014 The Source Serif 4 Project Authors (https://github.com/adobe-fonts/source-serif).
+
+## Ícones
+Ícones da interface em `assets/icons/ui/`: desenho próprio do projeto.

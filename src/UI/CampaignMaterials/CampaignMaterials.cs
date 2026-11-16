@@ -119,29 +119,66 @@ public partial class Santinho : HBoxContainer
     }
 }
 
-/// <summary>Outdoor: faixa larga com retrato, nome de urna, número e slogan.</summary>
-public partial class Outdoor : PanelContainer
+/// <summary>
+/// Material de campanha permitido (Lei 9.504/1997, art. 39; outdoor é proibido pelo § 8º): adesivo redondo com o
+/// número, bandeira com o logotipo e peça para redes com retrato e slogan.
+/// </summary>
+public partial class MateriaisPermitidos : HBoxContainer
 {
     public void Set(CampaignCard card)
     {
         Ui.Clear(this);
+        AddThemeConstantOverride("separation", 12);
         CampaignIdentity identity = card.Character.Campaign!;
-        var style = new StyleBoxFlat { BgColor = new Color(card.PartyPrimary) };
-        style.SetContentMarginAll(12);
-        AddThemeStyleboxOverride("panel", style);
-        CustomMinimumSize = new Vector2(520, 150);
+        Color primary = new(card.PartyPrimary);
+        Color secondary = new(card.PartySecondary);
 
-        HBoxContainer row = Ui.Row(this, 16);
-        var photo = row.Add(new PortraitView { CustomMinimumSize = new Vector2(126, 126) });
+        // Adesivo: círculo com o número e o nome de urna.
+        var sticker = Piece(new Vector2(150, 150), primary, 75);
+        VBoxContainer s = Ui.Column(sticker, 0);
+        s.Alignment = BoxContainer.AlignmentMode.Center;
+        Label number = Ui.Value(s, identity.BallotNumber ?? "", 34);
+        number.HorizontalAlignment = HorizontalAlignment.Center;
+        number.AddThemeColorOverride("font_color", secondary);
+        Label name = Ui.Value(s, card.Character.BallotName, 14);
+        name.HorizontalAlignment = HorizontalAlignment.Center;
+        name.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+        name.CustomMinimumSize = new Vector2(110, 0);
+        sticker.TooltipText = TranslationServer.Translate("Adesivo: material permitido na campanha (Lei 9.504/1997, art. 38).");
+
+        // Bandeira: retângulo com o logotipo.
+        var flag = Piece(new Vector2(200, 150), secondary, 6);
+        VBoxContainer f = Ui.Column(flag, 4);
+        f.Alignment = BoxContainer.AlignmentMode.Center;
+        var logo = f.Add(new LogoView());
+        logo.Set(identity, card.Character.BallotName, 26);
+        Label flagNumber = Ui.Value(f, identity.BallotNumber ?? "", 22);
+        flagNumber.AddThemeColorOverride("font_color", primary);
+        flag.TooltipText = TranslationServer.Translate("Bandeira: permitida nas ruas durante a campanha, sem atrapalhar o trânsito (Lei 9.504/1997, art. 37, § 6º).");
+
+        // Peça para redes: retrato, slogan e número.
+        var post = Piece(new Vector2(150, 150), primary, 10);
+        VBoxContainer pc = Ui.Column(post, 2);
+        var photo = pc.Add(new PortraitView { CustomMinimumSize = new Vector2(84, 84) });
         photo.Show(
             card.Character.Appearance!,
             new PortraitOptions(Expression.SorrisoLargo, WardrobeContext.Campanha, card.PartyPrimary, identity.PhotoBackground, card.PartySecondary),
             Game.Instance.People.Appearance);
-        VBoxContainer text = Ui.Column(row, 2);
-        var logo = text.Add(new LogoView());
-        logo.Set(identity, card.Character.BallotName, 34);
-        Label slogan = Ui.Value(text, identity.Slogan, 20);
-        slogan.AddThemeColorOverride("font_color", new Color(card.PartySecondary));
-        Ui.Value(text, $"{card.Office} · {card.PartySigla}", 16);
+        Label slogan = Ui.Value(pc, identity.Slogan, 12);
+        slogan.AddThemeColorOverride("font_color", secondary);
+        slogan.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+        slogan.CustomMinimumSize = new Vector2(126, 0);
+        Ui.Value(pc, $"{card.Office} · {card.PartySigla}", 12);
+        post.TooltipText = TranslationServer.Translate("Peça para redes sociais: pode ser impulsionada com pagamento, dentro das regras (Lei 9.504/1997, art. 57-C).");
+    }
+
+    private PanelContainer Piece(Vector2 size, Color color, int radius)
+    {
+        var panel = this.Add(new PanelContainer { CustomMinimumSize = size, MouseFilter = MouseFilterEnum.Stop });
+        var style = new StyleBoxFlat { BgColor = color };
+        style.SetCornerRadiusAll(radius);
+        style.SetContentMarginAll(10);
+        panel.AddThemeStyleboxOverride("panel", style);
+        return panel;
     }
 }

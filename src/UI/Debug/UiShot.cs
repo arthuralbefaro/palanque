@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|picker|campaign|map|mandate|prefeitura|eventos|layout [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -40,6 +40,12 @@ public partial class UiShot : Node
 
             GD.Print("Smoke picker: ok");
             GetTree().Quit(0);
+            return;
+        }
+
+        if (target == "explicacao")
+        {
+            await CheckExplanations(shot);
             return;
         }
 
@@ -358,6 +364,17 @@ public partial class UiShot : Node
         AddChild(hub);
         await Frames(3);
 
+        {
+            var probe = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
+            game.ResetNavigationForTest();
+            await Click(probe);
+            if (game.LastNavigation != Game.Scenes.Map)
+            {
+                Fail($"o clique simulado não acertou o botão Mapa num hub novo (sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}).");
+                return;
+            }
+        }
+
         int clicked = 0, blocked = 0;
         foreach (var definition in game.Events.Events)
         {
@@ -405,7 +422,7 @@ public partial class UiShot : Node
                 await Click(map);
                 if (game.LastNavigation != Game.Scenes.Map)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento.");
+                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}).");
                     return;
                 }
 
@@ -414,6 +431,110 @@ public partial class UiShot : Node
         }
 
         GD.Print($"Smoke eventos: ok ({game.Events.Events.Count} eventos, {clicked} opções clicadas, {blocked} bloqueadas por requisito)");
+        GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Princípio j (GDD 17.1): na tela central, em todas as áreas do trilho e modos do mapa, todo controle interativo tem
+    /// tooltip em três partes, todo controle bloqueado diz o motivo, nenhum termo do glossário fica em Label sem link,
+    /// e F1 abre a Enciclopédia. Precisa de janela (o F1 entra como tecla).
+    /// </summary>
+    private async Task CheckExplanations(string? shot)
+    {
+        Game game = Game.Instance;
+        UI.Settings.ResetForTest();
+        var world = game.PendingWorld!;
+        var city = game.Municipios.All.First(m => m.CodigoIbge == 3106200);
+        var player = Core.Characters.PersonGenerator.Generate(new Rng(5), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 35, PartyId: world.Parties[0].Id));
+        game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
+        game.State!.Campaign!.Events.Pending.Clear();
+        var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
+        AddChild(hub);
+        await Frames(5);
+
+        var problems = new List<string>();
+        void Check(Node root, string where)
+        {
+            foreach (Control c in FindAll<Control>(root).Where(c => c.IsVisibleInTree()))
+            {
+                if (c is BaseButton or LineEdit or SpinBox)
+                {
+                    string tip = c.TooltipText;
+                    string name = c is Button b ? b.Text : c.Name;
+                    if (!tip.Contains(Tr("O que faz:"), StringComparison.Ordinal) || !tip.Contains(Tr("Quanto custa:"), StringComparison.Ordinal))
+                    {
+                        problems.Add($"{where}: controle '{name}' sem tooltip em três partes");
+                    }
+
+                    if (c is BaseButton { Disabled: true } && !tip.StartsWith(Tr("Bloqueado:"), StringComparison.Ordinal))
+                    {
+                        problems.Add($"{where}: controle bloqueado '{name}' sem motivo");
+                    }
+                }
+                else if (c is Label label && !label.Name.ToString().StartsWith("TituloVerbete", StringComparison.Ordinal) && Widgets.Glossary.TermsIn(label.Text).FirstOrDefault() is { } term)
+                {
+                    problems.Add($"{where}: termo '{term}' sem link em \"{label.Text}\"");
+                }
+            }
+        }
+
+        List<Button> Trail() => FindAll<Button>(hub).Where(b => b.Icon is not null && b.GetParent() is VBoxContainer).ToList();
+        int areas = Trail().Count;
+        for (int i = 0; i < areas; i++)
+        {
+            Trail()[i].EmitSignal(BaseButton.SignalName.Pressed);
+            await Frames(2);
+            Check(hub, $"área {i + 1}");
+        }
+
+        var modes = FindAll<Button>(hub).Where(b => b.GetParent() is HBoxContainer h && h.Position == new Vector2(16, 16)).Select(b => b.Text).ToList();
+        foreach (string text in modes)
+        {
+            FindAll<Button>(hub).First(b => IsInstanceValid(b) && !b.IsQueuedForDeletion() && b.Text == text).EmitSignal(BaseButton.SignalName.Pressed);
+            await Frames(2);
+            Check(hub, $"mapa {text}");
+        }
+
+        // Ficha de uma zona: clique no centro da maior zona.
+        var zoneMap = hub.ZoneMap;
+        string? biggest = zoneMap.Zonas.Values.OrderByDescending(z => z.Populacao).FirstOrDefault()?.Id;
+        if (biggest is null)
+        {
+            Fail("a tela central não carregou as zonas da cidade.");
+            return;
+        }
+
+        zoneMap.Select(biggest);
+        hub.Refresh();
+        await Frames(2);
+        Check(hub, "ficha da zona");
+
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
+        await Frames(4);
+        if (!Widgets.EncyclopediaDialog.IsOpen(GetTree().Root))
+        {
+            Fail("F1 não abriu a Enciclopédia.");
+            return;
+        }
+
+        Check(GetTree().Root.FindChild("Enciclopedia", recursive: true, owned: false)!, "Enciclopédia");
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot);
+        }
+
+        if (problems.Count > 0)
+        {
+            foreach (string p in problems.Distinct().Take(40))
+            {
+                GD.PushError("  " + p);
+            }
+
+            Fail($"{problems.Distinct().Count()} problemas de explicação.");
+            return;
+        }
+
+        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, Enciclopédia aberta com F1)");
         GetTree().Quit(0);
     }
 
@@ -429,10 +550,11 @@ public partial class UiShot : Node
         // Direto na janela: sem janela de verdade (headless), Input.ParseInputEvent não chega à interface.
         Vector2 center = control.GetGlobalRect().GetCenter();
         Viewport viewport = GetViewport();
-        viewport.PushInput(new InputEventMouseMotion { Position = center, GlobalPosition = center });
-        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = center, GlobalPosition = center });
+        // Coordenadas do próprio viewport: com a janela num tamanho diferente da tela base, as da janela erram o alvo.
+        viewport.PushInput(new InputEventMouseMotion { Position = center, GlobalPosition = center }, inLocalCoords: true);
+        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = center, GlobalPosition = center }, inLocalCoords: true);
         await Frames(1);
-        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = center, GlobalPosition = center });
+        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = center, GlobalPosition = center }, inLocalCoords: true);
         await Frames(2);
     }
 
