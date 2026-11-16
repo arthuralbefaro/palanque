@@ -418,6 +418,12 @@ public partial class Game : Node
         Engine = state.Campaign is null ? null : Core.Campaign.CampaignEngine.Start(ContextFor(state));
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
+        if (state.Governance is null && (state.Mandate is not null || state.Executive is not null) && state.City is not null)
+        {
+            // Save anterior ao governo da cidade: o mandato em curso ganha obras, gabinete, folha e cobranças agora.
+            Core.Governance.GovernanceEngine.Start(GovernanceContextFor(state), state.Campaign?.Territory);
+        }
+
         Governo = NewGoverno(state);
         FoundingEngine = NewFoundingEngine(state);
         EnsureEntressafra(state);
@@ -589,19 +595,21 @@ public partial class Game : Node
         {
             Mandate = null;
         }
+
+        if (State.Mandate is null && State.Executive is null)
+        {
+            Governo = null;
+        }
+
+        EnsureEntressafra(State);
     }
 
     /// <summary>Tela certa para o momento da carreira.</summary>
     public void GoToCareer()
     {
         GameState state = State!;
-        GoTo(Core.Career.CareerFlow.Mode(state) switch
-        {
-            Core.Career.CareerMode.Mandato => Scenes.Mandate,
-            Core.Career.CareerMode.Prefeitura => Scenes.Executive,
-            Core.Career.CareerMode.ForaDeMandato => Scenes.OutOfOffice,
-            _ => state.Campaign?.Outcome is not null ? Scenes.ElectionNight : state.Campaign?.Debate is not null ? Scenes.Debate : Scenes.Hub,
-        });
+        // Mandato, prefeitura e entressafra ficam na tela central, como a campanha (GDD 17.3).
+        GoTo(state.Campaign?.Outcome is not null ? Scenes.ElectionNight : state.Campaign?.Debate is not null ? Scenes.Debate : Scenes.Hub);
     }
 
     /// <summary>Nos testes de fumaça da UI, registra a navegação em vez de trocar de cena.</summary>
@@ -630,9 +638,6 @@ public partial class Game : Node
         public const string Urna = "res://src/UI/Screens/UrnaScreen.tscn";
         public const string ElectionNight = "res://src/UI/Screens/ElectionNightScreen.tscn";
         public const string Map = "res://src/UI/Map/MapScreen.tscn";
-        public const string Mandate = "res://src/UI/Screens/MandateScreen.tscn";
-        public const string OutOfOffice = "res://src/UI/Screens/OutOfOfficeScreen.tscn";
-        public const string Executive = "res://src/UI/Screens/ExecutiveScreen.tscn";
         public const string Debate = "res://src/UI/Screens/DebateScreen.tscn";
     }
 }

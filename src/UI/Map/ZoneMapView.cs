@@ -321,6 +321,14 @@ public partial class ZoneMapView : Control
         }
     }
 
+    /// <summary>Teste de fumaça: o mesmo que clicar na zona (para percorrer telas sem depender do enquadramento do mapa).</summary>
+    public void EmitZoneClickForTest(string id)
+    {
+        Selected = id;
+        ZoneClicked?.Invoke(id);
+        QueueRedraw();
+    }
+
     /// <summary>Volta ao enquadramento inicial.</summary>
     public void ResetView()
     {
