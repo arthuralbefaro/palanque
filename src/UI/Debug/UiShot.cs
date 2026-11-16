@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate|prefeitura [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -40,6 +40,12 @@ public partial class UiShot : Node
 
             GD.Print("Smoke picker: ok");
             GetTree().Quit(0);
+            return;
+        }
+
+        if (target == "prefeitura")
+        {
+            await PlayMayor(shot);
             return;
         }
 
@@ -147,6 +153,155 @@ public partial class UiShot : Node
         }
 
         GD.Print("Smoke map: ok");
+        GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Prefeito numa cidade média: candidatura, debates de TV pela tela do debate, eleição, posse, orçamento,
+    /// políticas, secretaria, crise e save/load.
+    /// </summary>
+    private async Task PlayMayor(string? shot)
+    {
+        Game game = Game.Instance;
+        var world = game.PendingWorld!;
+        var city = game.Municipios.All.Where(m => m.EleicoesMunicipais && m.Porte == "medio").OrderBy(m => m.CodigoIbge).Skip(3).First();
+        var parties = Core.Campaign.CampaignContext.ElectoralParties(world.Parties.Select(GameParty.From), game.World.Parties.Generator.SizeShareWeights);
+        var local = world.Preset.Scenario == "brasil_2026" ? game.Brasil2026?.Municipio(city.CodigoIbge) : null;
+        string party = Core.Campaign.CampaignContext.PartyStrength(game.PendingSeed, city.CodigoIbge, game.Electorate, parties, local).MaxBy(x => x.Value).Key;
+        var player = Core.Characters.PersonGenerator.Generate(new Rng(7), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 40, PartyId: party));
+        foreach (var attribute in Enum.GetValues<Core.Characters.AttributeId>())
+        {
+            player.Attributes.Set(attribute, 70);
+        }
+
+        game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
+        if (game.SwitchCandidacy(Core.Elections.Office.Prefeito).Issue is { } issue)
+        {
+            GD.PushError($"Smoke: candidatura a prefeito recusada ({issue}).");
+            GetTree().Quit(1);
+            return;
+        }
+
+        var campaign = game.State!.Campaign!;
+        int debates = 0;
+        while (campaign.Phase != Core.Campaign.CampaignPhase.Votacao)
+        {
+            while (campaign.Events.Pending.Count > 0)
+            {
+                var pending = campaign.Events.Pending[0];
+                var definition = game.Events.Find(pending.EventId)!;
+                Core.Events.EventEngine.Resolve(game.Engine!.Context, pending, Enumerable.Range(0, definition.Choices.Count).First(i => Core.Events.EventEngine.Blocked(game.Engine.Context, definition.Choices[i]) is null), game.State.Rng);
+            }
+
+            if (campaign.Debate is { } debate)
+            {
+                debates++;
+                var screen = GD.Load<PackedScene>(Game.Scenes.Debate).Instantiate();
+                AddChild(screen);
+                await Frames(3);
+                while (!debate.Finished)
+                {
+                    string card = debate.Hand[0];
+                    Core.Debate.DebateEngine.Play(game.Engine!.Context, game.Debate, card, game.Debate.Card(card).Targeted ? debate.Participants[1] : null, game.State.Rng);
+                }
+
+                screen.QueueFree();
+                screen = GD.Load<PackedScene>(Game.Scenes.Debate).Instantiate();
+                AddChild(screen);
+                await Frames(3);
+                if (shot is not null && debates == 1)
+                {
+                    GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_debate.png"));
+                }
+
+                screen.QueueFree();
+                Core.Debate.DebateEngine.Close(campaign);
+            }
+
+            game.AdvanceWeek();
+        }
+
+        if (debates != game.Debate.WeeksBeforeElection.Count)
+        {
+            GD.PushError($"Smoke: {debates} debates em vez de {game.Debate.WeeksBeforeElection.Count}.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        // Só neste teste: garante a eleição para exercitar a prefeitura.
+        campaign.Player.Recognition = 100;
+        campaign.Player.Image = 1;
+        game.Engine!.CastPlayerVote(new Core.Campaign.UrnaVote(Core.Elections.Office.Prefeito, campaign.Player.Number, false));
+        game.Engine.ResolveElection();
+        var night = GD.Load<PackedScene>(Game.Scenes.ElectionNight).Instantiate();
+        AddChild(night);
+        await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
+        night.QueueFree();
+        if (!campaign.Outcome!.PlayerElected)
+        {
+            GD.PushError("Smoke: o jogador não se elegeu prefeito nem com reconhecimento máximo.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        game.ConcludeElection();
+        game.GoToCareer();
+        if (game.LastNavigation != Game.Scenes.Executive || game.Prefeitura is null)
+        {
+            GD.PushError("Smoke: a posse não levou à prefeitura.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        var engine = game.Prefeitura;
+        var decree = game.ExecutiveContent.Policies.Policies.First(p => !p.RequiresLaw && p.Cost > 0 && p.Cost <= engine.FreeReserve);
+        engine.Enact(decree.Id);
+        var law = game.ExecutiveContent.Policies.Policies.First(p => p.RequiresLaw && p.Cost <= engine.FreeReserve);
+        engine.Enact(law.Id);
+        if (game.State.Executive!.Chamber.Select(m => m.PartyId).FirstOrDefault(p => p is not null && !game.State.Executive.InBase(p)) is { } outsider)
+        {
+            engine.GiveSecretaria(outsider);
+        }
+
+        for (int week = 0; week < 20; week++)
+        {
+            if (game.State.Executive!.Crisis is not null)
+            {
+                engine.ResolveCrisis(0);
+            }
+
+            game.AdvanceWeek();
+        }
+
+        var executive = GD.Load<PackedScene>(Game.Scenes.Executive).Instantiate();
+        AddChild(executive);
+        await Frames(3);
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_prefeitura.png"));
+        }
+
+        executive.QueueFree();
+        game.State.Executive!.Crisis = new Core.Executive.PendingCrisis("enchente", game.State.Calendar.WeekStart);
+        executive = GD.Load<PackedScene>(Game.Scenes.Executive).Instantiate();
+        AddChild(executive);
+        await Frames(3);
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_crise.png"));
+        }
+
+        executive.QueueFree();
+        engine.ResolveCrisis(0);
+        SaveManager.Instance.Save("smoke_prefeitura");
+        if (SaveManager.Instance.Load("smoke_prefeitura") is not null || game.Prefeitura is null || game.State!.Executive is null)
+        {
+            GD.PushError("Smoke: save/load da prefeitura falhou.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        GD.Print($"Smoke prefeitura: ok ({debates} debates, aprovação {game.State.Executive.Approval:0}%, {game.State.Executive.Policies.Count} políticas)");
         GetTree().Quit(0);
     }
 
