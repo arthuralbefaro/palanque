@@ -1268,10 +1268,24 @@ public partial class UiShot
         await Press(hub, "FecharResultado");
         Save(shot, "_entrevista");
 
-        // Ir para a pré-campanha: a presença e a posição vão junto.
+        // Ir para a pré-campanha: a presença e a posição vão junto. O salto para nas semanas em que as contas da
+        // eleição anterior andam (prestação, julgamento); cada parada mostra a novidade na faixa e o jogador segue.
         await Click(Named<Button>(hub, "Area_entressafra")!);
         await Click(Named<Button>(hub, "PularParaCampanha")!);
         await Frames(3);
+        int accountStops = 0;
+        while (game.State.Campaign is null && game.AccountsNews.Count > 0 && accountStops++ < 6)
+        {
+            if (hub.NoticeText is not { } notice || !notice.Contains(game.AccountsNews[0].Text, StringComparison.Ordinal) || Named<Button>(hub, "PularParaCampanha") is not { } again)
+            {
+                Fail("o salto parou nas contas sem mostrar a novidade na faixa ou sem o botão para seguir.");
+                return;
+            }
+
+            await Click(again);
+            await Frames(3);
+        }
+
         if (game.State.Campaign is not { } campaign || game.State.OffSeason is not null || hub.GovMode)
         {
             Fail("a pré-campanha não abriu a partir da entressafra.");
@@ -1284,7 +1298,7 @@ public partial class UiShot
             return;
         }
 
-        GD.Print($"Smoke entressafra: ok (caminhada em {zone} com cansaço, turnos, visita, posição no Livro, entrevista e pré-campanha de {campaign.ElectionDate.Year} com a presença levada)");
+        GD.Print($"Smoke entressafra: ok (caminhada em {zone} com cansaço, turnos, visita, posição no Livro, entrevista e pré-campanha de {campaign.ElectionDate.Year} com a presença levada; {accountStops} parada(s) do salto nas contas)");
         GetTree().Quit(0);
     }
 

@@ -69,12 +69,21 @@ public partial class HubScreen
         Heading(_left, Tr("Pular a entressafra"), 20);
         string skipTip = Palette.Tip(
             string.Format(Tr("Avança o tempo até a abertura da pré-campanha de {0}."), year),
-            Tr("as semanas passam sem a sua agenda: a presença cai, a cidade muda e a fundação de partido em curso segue andando."),
+            Tr("as semanas passam sem a sua agenda: a presença cai, a cidade muda e a fundação de partido em curso segue andando; o salto para quando há novidade nas contas da eleição anterior."),
             Tr("a presença que você deixa de manter até lá."));
         var skip = Ui.Button(_left, string.Format(Tr("Ir para a pré-campanha de {0}"), year), () =>
         {
             Game.WeekNote note = _game.SkipToNextElection();
             SaveManager.Instance.Autosave();
+            if (State.Campaign is null && _game.AccountsNews.Count > 0)
+            {
+                // O salto para na semana em que as contas da eleição anterior andam: o jogador vê a novidade antes de seguir.
+                _notice = AccountsNotice();
+                _log.Insert(0, _notice.Text);
+                Refresh();
+                return;
+            }
+
             _log.Insert(0, note switch
             {
                 Game.WeekNote.CampanhaAberta => Tr("Abriu a pré-campanha da próxima eleição."),

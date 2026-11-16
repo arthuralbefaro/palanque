@@ -326,8 +326,7 @@ public partial class HubScreen
             if (line is null && _game.AccountsNews.Count > 0 && Clock.ShouldPause(_game.Time, Clock.DecisaoImediata, Settings.PauseOverrides))
             {
                 _running = false;
-                _notice = new Notice(string.Join(". ", _game.AccountsNews.Select(h => h.Text)) + ".", "Ver as contas", () => { _notice = null; OpenGovArea(GovAreas[0].Id); },
-                    Palette.Tip(Tr("Abre o resumo, com o andamento das contas."), Tr("mostra a prestação de contas final, o julgamento das contas da eleição anterior e a representação, se houver."), Tr("nada.")));
+                _notice = AccountsNotice();
             }
 
             if (State.Campaign is not null || Kind != before)
@@ -344,6 +343,11 @@ public partial class HubScreen
 
         Refresh();
     }
+
+    /// <summary>Faixa com as novidades das contas da eleição anterior, com o atalho para o resumo onde está o andamento.</summary>
+    private Notice AccountsNotice() =>
+        new(string.Join(". ", _game.AccountsNews.Select(h => h.Text)) + ".", "Ver as contas", () => { _notice = null; OpenGovArea(GovAreas[0].Id); },
+            Palette.Tip(Tr("Abre o resumo, com o andamento das contas."), Tr("mostra a prestação de contas final, o julgamento das contas da eleição anterior e a representação, se houver."), Tr("nada.")));
 
     private void GovStop(string id, Notice notice)
     {
