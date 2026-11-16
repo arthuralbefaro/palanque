@@ -231,3 +231,19 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Corujão:** o autor não testa por enquanto e autoriza seguir a Fase R inteira (RD → R2a → R2b → R3 → R4, depois o resto das pendências da R1 com a tag `fase-r-final`), sem esperar pelo teste dele. Dúvida vira escolha conservadora em PENDENCIAS; download bloqueado vira lacuna registrada; falta de janela vira parte "com pendências". Parar ao fim das pendências da R1; não começar a Fase 6.
 - **Como reverter:** o teto é uma constante; a marca é um campo por verbete.
 
+
+## D-038 — Escolhas da RD (dados reais de partida)
+- **Data:** 2026-11-16 · **Fase:** RD · Tomadas no corujão; as marcadas "a confirmar" estão em docs/PENDENCIAS.md.
+- **Finanças do Distrito Federal:** o DF não tem declaração municipal no SICONFI; Brasília usa a do ente estadual (código 53). Fica dito em `data/indicadores_reais/_fontes.json`.
+- **Finanças, o que é lido:** receita corrente = receitas correntes brutas menos as deduções (DCA, Anexo I-C); despesa por função = despesa empenhada (Anexo I-E); receita corrente líquida e despesa total com pessoal em % da RCL ajustada = como publicadas no RGF, Anexo 01, do Executivo (quadrimestral ou, nos municípios que entregam o simplificado, semestral). Exercício mais recente entre 2025, 2024 e 2023. Sem nenhuma DCA: mediana por habitante dos municípios do mesmo porte na UF, marcada como estimativa (GDD 17.17).
+- **Limite de chamadas do SICONFI:** a API recusa (HTTP 429) acima de cerca de 1 chamada por segundo; o baixador respeita o ritmo e espera quando o limite é atingido. O download completo leva algumas horas e é retomável.
+- **Emprego formal:** soma de "Qtd Vínculos Ativos" dos microdados de **estabelecimentos** da RAIS 2025 (144 MB), em vez dos microdados de vínculos (4 GB): dá o mesmo estoque em 31/12 por município. O .7z é aberto pelo `tar` do sistema (bsdtar), sem pacote novo; os brutos ficam só no cache.
+- **Homicídios:** óbitos por agressão do SIM, CID-10 de X85 a Y09, por município de residência, soma de 2022 a 2024 (definitivos). Intervenção legal (Y35 e Y36) fica de fora, a confirmar.
+- **Mortalidade infantil:** óbitos de menores de 1 ano ÷ nascidos vivos, soma de 2022 a 2024; com menos de 300 nascidos vivos no período (`min_nascidos_mortalidade_infantil`), vale a taxa da região geográfica imediata.
+- **Leitos:** todos os leitos existentes do CNES (SUS e não SUS, inclusive complementares) na competência de setembro de 2026.
+- **PIB por habitante:** o arquivo guarda o PIB de 2023; a divisão pela população é feita no Core (não há estimativa municipal de população para 2023).
+- **Faixas plausíveis:** `data/indicators/definitions.json` declara, por indicador, a faixa fora da qual o importador e os testes reprovam o valor. São limites de conferência, largos, não dados.
+- **Eleitores por zona:** o arquivo guarda os eleitores pelos locais de votação do TSE (onde se vota), reescalados para o eleitorado atual. No modelo de voto, porém, os eleitores de cada zona são repartidos pela população de 16 anos ou mais (onde se mora): 4.344 zonas habitadas não têm local de votação e ficariam sem eleitor, e as zonas centrais ficariam com vários múltiplos dos moradores. **A confirmar pelo autor** (PENDENCIAS).
+- **Religião e escolaridade por zona:** gravadas como listas na ordem das categorias do perfil, para `data/zonas/` caber no teto de 20 MB (ficou em 16,8 MB).
+- **Votação de 2024 por zona:** os arquivos por seção do TSE estão no cache (26 UFs, cerca de 3 GB), mas a ligação com os partidos fictícios do cenário não foi feita nesta parte (PENDENCIAS).
+- **Como reverter:** cada escolha é uma regra do importador (`tools/Planalto.DataImporter/Rd/`) ou um parâmetro de `data/indicators/definitions.json`; rodar `rd` de novo regenera os arquivos.
