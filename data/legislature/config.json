@@ -34,7 +34,7 @@
     "mayor_against": -5,
     "author_with": 4,
     "author_against": -4,
-    "drift_per_week": 0.5
+    "drift_per_week": 0.2
   },
   "capital": {
     "start": 10,
