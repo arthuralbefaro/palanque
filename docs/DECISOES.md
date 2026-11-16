@@ -194,3 +194,11 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Data:** 2026-11-15 · **Fase:** 6
 - **Decisão:** a população de cada município cresce pela taxa anual geométrica entre o Censo 2022 e a estimativa do IBGE gravada em data/municipios/ (2026), limitada entre -3% e +5% ao ano (data/population_projection.json), projetada a partir do ano da estimativa. Em cada eleição municipal, as vagas de vereador são o mínimo entre as vagas atuais e o teto da CF, art. 29, IV, calculado com a população do ano anterior à eleição (a estimativa que o TSE usa). Assim as vagas nunca sobem sozinhas (aumentar é decisão da Câmara) e caem quando a população sai da faixa.
 - **Como reverter:** sem Projection no CampaignContext, valem as vagas de data/municipios/.
+
+## D-034 — Reformulação depois do teste da fatia vertical
+- **Data:** 2026-11-16 · **Fase:** R · **Decidido pelo autor.**
+- **Pergunta:** o autor jogou a fatia vertical (Fases 3 a 5) e a reprovou: rasa, repetitiva, confusa e feia. Como seguir?
+- **Decisão:** antes da Fase 6 entra a Fase R (R1, R2, R3, RD, R4), descrita no GDD, seção 17, a partir do diagnóstico de docs/AUDITORIA_FASE3.md. O laço semanal com 6 ações de efeito fixo dá lugar a uma tela central com o mapa da cidade, tempo corrente por dia, território em zonas, pessoas com memória, compromissos com lugar e dia e consequências que ficam; as regras eleitorais, o modelo de voto, a Câmara, a prefeitura e o debate do Core são mantidos. O modo autônomo fica desligado na Fase R: cada parte termina, para e espera o autor jogar. Os princípios a–j do GDD 17.1 têm critério verificável e valem para todo sistema novo.
+- **Pendências do autor:** as 22 decisões do GDD 17.20 (fontes de dados, regras de lei a confirmar, pacote de nomes e outras), cada uma com recomendação. Nenhuma foi tomada por conta própria.
+- **Alternativas:** seguir para a Fase 6 e polir depois; refazer só a interface.
+- **Como reverter:** a Fase R é aditiva no ROADMAP; os motores atuais continuam no Core e as telas antigas ficam no histórico do Git.

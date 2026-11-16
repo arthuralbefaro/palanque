@@ -1,7 +1,7 @@
 # PLANALTO — Simulador de Carreira Política no Brasil
 > Game Design Document + Plano de Desenvolvimento
 > Engine: Godot 4.7.2 .NET (C#) · Plataforma: PC (Windows, Linux, macOS)
-> Versão 2.0 — novembro de 2026
+> Versão 2.1 — novembro de 2026 (seção 17: reformulação)
 
 ---
 
@@ -211,6 +211,9 @@ Toda regra com testes unitários usando casos calculados à mão.
 Partidos fictícios cobrindo o espectro, na quantidade da predefinição escolhida na tela "Novo Mundo" (seção 16.1), com ideologia, tamanho, fundo eleitoral, caciques (NPCs), disciplina interna, reputação, cor e logotipo. Mecânicas: filiação, convenção, janela partidária, federações, cargos na direção, apoio em eleições majoritárias.
 
 ### 5.6 Campanha
+
+> A lista de ações abaixo foi a da fatia vertical. A seção 17 a substitui por compromissos com lugar e dia (17.6), equipe (17.7), verba por canal (17.8), plataforma (17.9) e lideranças (17.10).
+
 Agenda semanal com Energia e Dinheiro:
 
 | Ação | Efeito principal |
@@ -253,6 +256,8 @@ JSON com condições, texto com variáveis (`{cidade}`, `{rival.nome}`, `{jogado
 
 ## 6. LOOP DE JOGO
 
+> O laço semanal abaixo foi o da fatia vertical (Fases 3 a 5). A seção 17 o substitui por tempo corrente com o dia como unidade (17.4) e pela tela central (17.3).
+
 ### 6.1 Semana
 1. Manchetes da semana
 2. Eventos (0 a 3 decisões)
@@ -288,7 +293,7 @@ planalto/
 │   ├── GDD.md
 │   ├── ROADMAP.md
 │   ├── CONTENT_GUIDE.md             # como escrever eventos
-│   └── ART_GUIDE.md                 # especificação das camadas de retrato
+│   └── ART_GUIDE.md                 # interface (paleta, tipografia, grade) e especificação das camadas de retrato
 ├── core/
 │   ├── Planalto.Core/
 │   │   ├── State/                   # GameState, Calendar, Rng
@@ -412,8 +417,8 @@ GameState inteiro em JSON com versão de formato e migrações; 3 slots + autosa
 1. Menu principal
 2. **Criação de personagem** (4 abas + pré-visualização de retrato, santinho e outdoor)
 3. **Espelho** (mudança de visual durante a carreira)
-4. Hub semanal
-5. Pesquisas · Finanças · Relações · Mapa eleitoral
+4. Tela central (seção 17.3), que reúne o hub, as pesquisas, as finanças, as relações e o mapa da cidade em painéis
+5. Mapa eleitoral do estado e do país (seção 13.1)
 6. Debate
 7. Noite da apuração
 8. Plenário
@@ -818,3 +823,753 @@ Nível estadual (eleições de 2026): partido do governador e do vice, composiç
 **Testes:** soma das cadeiras de cada Câmara igual a vagas_vereador do município; todo município com eleição tem prefeito com partido; percentuais de força local somam 100% por município; nenhum nome ou sigla real no arquivo final.
 
 **Limitação conhecida:** trocas de partido de prefeitos e vereadores depois de 2024 não são capturadas (não há base oficial consolidada); o cenário reflete a situação eleita, ajustada por eleições suplementares.
+---
+
+## 17. REFORMULAÇÃO: IMERSÃO E PROFUNDIDADE
+
+> Escrita depois de o autor jogar a fatia vertical (Fases 3 a 5) e reprová-la. O diagnóstico está em `docs/AUDITORIA_FASE3.md`. Esta seção substitui o laço semanal da seção 6, a lista de ações da 5.6 e as telas 4 e 5 da 8.2; as regras eleitorais, o modelo de voto, a Câmara, a prefeitura, o debate e os dados dos municípios continuam valendo. Onde esta seção e outra divergirem, vale esta. A ordem de construção é a Fase R do ROADMAP.
+
+### 17.1 Princípios
+
+Todo sistema novo cumpre os princípios abaixo. Cada um tem um critério que um teste ou o BalanceSim verifica; sistema que não passa não está pronto.
+
+| | Princípio | Critério verificável |
+|---|---|---|
+| a | **A situação manda.** A melhor ação depende da zona, do público, da notícia, da crise ou do rival | BalanceSim, 200 campanhas por porte jogadas por um robô que escolhe sempre o compromisso de maior ganho previsto de votos: nenhum tipo de compromisso é a melhor escolha em mais de 40% das semanas, e nenhum par (tipo, zona) em mais de 25% |
+| b | **O mundo se mexe sozinho.** Rivais, lideranças, mídia e economia agem com o jogador parado, e isso aparece no mapa e no feed | Teste: campanha de 40 semanas sem nenhum comando do jogador. O feed recebe pelo menos 3 notícias por semana que não citam o jogador; a liderança da intenção muda em pelo menos 1 zona; a presença de algum rival muda em mais da metade das zonas; há pelo menos 1 fato econômico a cada 8 semanas |
+| c | **Pessoas com rosto e memória.** Todo NPC relevante tem nome, retrato, interesses e lembrança do que o jogador fez. Rivais respondem a ataques e mudam de estratégia | Teste: toda pessoa nos papéis de rival, liderança, equipe, doador, jornalista, assessor, secretário e vereador tem nome, aparência, pelo menos 1 interesse e lista de lembranças. Depois de um ataque do jogador, pelo menos 80% dos rivais de temperamento diferente de "calculista" respondem em até 14 dias. Rival ultrapassado pelo jogador no próprio reduto troca de plano em até 2 semanas |
+| d | **A consequência fica.** Promessas cobradas no mandato, apoios com dívida, escolhas que abrem cadeias meses ou anos depois | Lint de conteúdo: toda escolha marcada como relevante grava uma entrada no Livro de compromissos ou uma lembrança em alguém; escolha relevante sem rastro reprova. Teste de carreira (campanha + mandato): pelo menos 70% das promessas geram cobrança no mandato |
+| e | **Troca real.** Toda semana há ao menos uma decisão em que se ganha uma coisa e se perde outra. Semana sem decisão passa sozinha e rápido | Lint: em toda decisão, cada opção tem pelo menos um ganho e um custo de naturezas diferentes (dinheiro, tempo, relação, zona, risco, posição). BalanceSim: média de 1 ou mais decisões com troca por semana de campanha. Semana sem decisão pendente leva no máximo 7 segundos em 4x |
+| f | **O mundo explica.** O efeito aparece antes do clique (previsão com incerteza) e depois (o que mudou, onde e para quem). A informação chega também por manchete, boato, conversa e pesquisa | Teste: todo comando do jogador tem previsão com faixa e explicação com lista de mudanças (o quê, onde, quem, por quê); nenhuma explicação vazia. Em 1.000 execuções simuladas, o resultado cai dentro da faixa prevista em pelo menos 80% |
+| g | **Repetir cansa.** A mesma ação no mesmo lugar e público rende cada vez menos, e o jogo mostra isso antes do clique | Teste: o terceiro compromisso igual (tipo, zona, público) em 2 semanas rende no máximo 50% do primeiro, e a previsão mostra o fator de cansaço |
+| h | **Objetivos que nascem do jogo.** Metas secundárias surgem da simulação e ficam visíveis num painel | Teste: em qualquer dia de campanha ou mandato há de 1 a 3 objetivos ativos, cada um com condição mensurável, prazo e origem; em uma campanha aparecem pelo menos 4 tipos diferentes |
+| i | **Clareza.** Em até 10 segundos o jogador sabe o que está acontecendo, o que pede atenção e o que pode fazer | Teste automático: barra superior com no máximo 5 números; no máximo 1 elemento em cor de atenção por vez; todo acontecimento que pausa tem faixa de decisão; todo controle desativado diz o motivo. Roteiro do autor: olhar a tela por 10 segundos e responder às três perguntas |
+| j | **Nada sem explicação.** Todo botão, termo, número e nome próprio do jogo se explica sozinho | Teste automático percorre todas as telas e áreas do trilho e falha se algum controle interativo não tiver tooltip nas três partes, se algum controle desativado não disser o motivo e o que falta, ou se algum termo da lista do glossário aparecer sem link para o verbete |
+
+**Como o princípio j se cumpre:**
+- **Tooltip em três partes em todo controle:** o que é (uma frase, sem jargão), o que faz (efeito esperado, com faixa de incerteza) e quanto custa (dinheiro, tempo, risco). Exemplo: "Pesquisa do instituto Prisma — mostra a intenção de voto na cidade, com margem de erro de 4 pontos. Custa R$ 35 mil e sai em 3 dias. Institutos têm tendências diferentes." O efeito e o custo vêm da previsão do Core (17.2, peça 6), nunca de texto fixo.
+- **Nome fictício sempre com o que é:** "Prisma (instituto de pesquisa)", "Rádio Vale (rádio local, linha governista)", "Lúcia R. (coordenadora da sua campanha)". Na primeira ocorrência em cada painel, notícia ou cartão; nas seguintes, o nome é link para a ficha.
+- **Termos técnicos sublinhados e clicáveis,** abrindo o verbete: quociente eleitoral, quociente partidário, legenda, sobras, federação, janela partidária, desincompatibilização, capital político, imagem, reconhecimento, presença, fidelidade, cansaço, margem de erro, limite de gastos, prestação de contas, emenda, indicação, requerimento, licitação, convênio, entre outros. A lista fica em `data/encyclopedia/glossary.json` e é a que o teste usa.
+- **Enciclopédia** aberta por F1 de qualquer tela, com busca. Quatro partes: **Glossário** (os verbetes), **Como funciona** (as regras eleitorais reais em linguagem simples, com o artigo de lei citado e um exemplo numérico: como o quociente distribui as cadeiras, quando há segundo turno, quem pode doar), **Este mundo** (partidos, institutos, veículos, lideranças e políticos conhecidos do save atual, gerados do estado) e **Sua carreira** (linha do tempo e Livro de compromissos). Os textos fixos ficam em `data/encyclopedia/`; a parte "Este mundo" é montada do save.
+- **Primeira vez:** ao abrir um sistema pela primeira vez, um cartão curto (até 40 palavras e uma seta para o controle principal), com "Entendi" e "Não mostrar dicas". Dispensado, nunca volta nesse perfil de jogador (guardado fora do save, em `user://`). Tudo o que ele diz está também na Enciclopédia.
+- **Controle bloqueado diz por quê e o que falta:** "Comício: só a partir de 16 de agosto (faltam 22 semanas)", "Contratar: faltam R$ 400".
+
+### 17.2 A espinha: seis peças que todos os sistemas usam
+
+Para que os sistemas se entrelacem em vez de se somarem, todos são construídos sobre as mesmas seis peças do Core.
+
+1. **Zona.** Pedaço do município em foco (17.5). Tudo acontece numa zona: compromisso, obra, liderança, reduto de rival, notícia.
+2. **Pessoa.** Um só modelo para rival, liderança, membro da equipe, doador, jornalista, assessor, secretário e vereador: nome, retrato, papel, 1 a 3 **interesses** (um tema, uma zona, um objetivo próprio), **temperamento** (conciliador, combativo, calculista, leal ou volúvel), **relação** com o jogador (−100 a 100) e **memória**: até 20 lembranças, cada uma com data, fato, peso de −3 a +3 e texto ("Veio à festa da comunidade, mai/2028, +2"). Lembranças de peso 1 e 2 perdem metade do efeito a cada 52 semanas; as de peso 3 não se apagam. A relação é a soma das lembranças mais a afinidade. A ficha da pessoa mostra as lembranças por extenso.
+3. **Compromisso.** Item de agenda: o quê, em que zona, em que dia e turno, para que público, com quem (17.6). Vale para campanha e para mandato.
+4. **Livro de compromissos.** O que fica: **promessas** (a quem, o quê, prazo, estado), **dívidas** (a quem, o que se deve), **posições assumidas** (tema, data, onde foi dito) e **esqueletos** (o quê, gravidade, quem sabe). É lido pela cobrança no mandato, pelos ataques dos rivais, pela mídia e pela prestação de contas. Atravessa eleições.
+5. **Fato e notícia.** Todo sistema emite fatos (quem fez o quê, onde, quando, com visibilidade de 0 a 3). A mídia local (17.13) transforma fatos em notícias conforme a linha de cada veículo. Fato de visibilidade 0 só é conhecido por quem estava presente, e pode vazar.
+6. **Previsão, explicação e objetivo.** Todo comando do jogador tem uma previsão (faixa de resultado e fatores) e uma explicação (o que mudou, onde, para quem, por quê). Toda segunda-feira o gerador de objetivos lê o estado e propõe até 3 metas com condição, prazo e origem ("Liderar a intenção na Vila Nova até a pesquisa de setembro", "Passar Bruna C.", "Trazer Seu Anselmo para o seu lado", "Entregar a creche da Vila Nova até jun/2031"). O jogador pode fixar ou dispensar um objetivo; cumprir rende +2 de lealdade na equipe e uma lembrança positiva em quem se beneficiou.
+
+### 17.3 Tela central
+
+**O que é.** Uma tela só para campanha e mandato, no desenho de `docs/referencias/tela_central.png` e com as medidas de `docs/ART_GUIDE.md`:
+- **Barra superior:** data com dia da semana, pausa, 1x/2x/4x, fase e contagem ("Pré-campanha · 29 sem. até a eleição"); à direita, dinheiro, reconhecimento, imagem e estresse.
+- **Trilho** com 7 áreas: Campanha (no mandato, Mandato), Pessoas, Agenda, Território, Finanças, Mídia, Partido e Câmara.
+- **Painel da área** (esquerda): o conteúdo da área escolhida. Em Campanha: Equipe (3/6), Verba por canal, Plataforma e próximos compromissos.
+- **Mapa** (centro, sempre visível): as zonas do município. Modos: **Minha força**, **Partido líder**, **Perfil** (renda, idade, urbano e rural), **Rival** (escolher um) e, no mandato, **Obras** e **Promessas**. Marcadores: compromissos da semana, rivais em campo, lideranças (ícone do tipo, cor do alinhamento), obras com barra de andamento, acontecimentos (pulso).
+- **Coluna direita:** Notícias (veículo, tempo, manchete), Objetivos (até 3) e Intenção de voto (o jogador, os dois acima e os dois abaixo, com a fonte).
+- **Faixa de decisão** sobre a base do mapa: "Empreiteiro oferece doação 'por fora'. Jogo pausado. [Decidir]".
+
+**O que o jogador decide.** Para onde olhar e por onde agir. Clicar numa zona abre a **Ficha da zona** no painel: população, eleitores, perfil, presença do jogador e dos três primeiros, lideranças conhecidas, "o que você já fez aqui", cansaço por público e o botão "Marcar compromisso aqui". Clicar numa pessoa abre a **Ficha da pessoa**: interesses, relação, lembranças, o que ela quer e o que se pode fazer com ela. Clicar numa notícia mostra o fato de origem e centraliza o mapa na zona.
+
+**Decisões sobre o mapa.** A decisão abre num cartão de 720 px sobre o mapa escurecido; os painéis continuam legíveis para consulta. Cada opção mostra a **previsão** em até 2 linhas ("+R$ 8.000 · esqueleto grave: Lúcia e o empreiteiro saberão") e **quem vai lembrar**. Depois da escolha, o cartão vira a lista **O que mudou**, linha por linha, e fecha.
+
+**Resultado explicado.** Todo compromisso concluído gera um cartão no feed: "Caminhada no Centro (ter, manhã): +2,1 de presença no Centro; +0,4 na Vila Nova (vizinha). Fatores: Dona Cida foi junto (+30%), terceira caminhada no Centro em duas semanas (−55%), chuva (−10%)."
+
+**Tooltips de origem.** Todo número mostra a conta e a data do dado: "Reconhecimento 17% = média das zonas pela população: Centro 31%, Vila Nova 22%, Rural 4%".
+
+**A troca.** Atenção: a tela mostra mais do que cabe acompanhar; o jogador escolhe que área manter aberta, e o que ele não olha anda sozinho.
+
+**Interage com** todos os sistemas: é a única porta de entrada. **Princípios:** b, f, h, i. **Dados:** nenhum novo além dos contornos de zona (17.5).
+
+**Reaproveita:** `Game.Execute`, `EffectSummary` (vira a explicação), `EventDialog` (vira o cartão de decisão), `PortraitView` e cache, save e autosave, o código de malhas do `MapScreen`. **Muda:** `HubScreen`, `MandateScreen` e `ExecutiveScreen` deixam de existir como telas; seu conteúdo vira painéis. O mapa da cidade é 2D plano, como na referência; o mapa 2.5D do estado (13.1) continua previsto para as esferas estadual e federal e para a apuração.
+
+### 17.4 Tempo
+
+**O que é.** O relógio corre. A unidade é o **dia**, com três turnos (manhã, tarde, noite). O jogador pausa e escolhe 1x, 2x ou 4x.
+
+| Ritmo | 1x | 2x | 4x | Quando |
+|---|---|---|---|---|
+| Campanha | 4 s por dia | 2 s | 1 s | Do prazo de filiação até a eleição |
+| Mandato | 1 s por dia | 0,5 s | 0,25 s | Fora do ano eleitoral do próprio mandato |
+
+Uma semana de campanha sem decisão leva 7 s em 4x. Um mandato de 4 anos sem nenhuma pausa levaria 6 minutos em 4x; as pausas é que fazem a duração. Os valores ficam em `data/time.json`.
+
+**No Core.** `AdvanceDay` é leve (meta: menos de 5 ms): executa os compromissos do dia do jogador e dos rivais, emite fatos, publica notícias, vence prazos, dispara eventos ligados a fatos. Toda segunda-feira roda a **simulação semanal** (meta mantida: menos de 200 ms): projeção de voto por zona, replanejamento dos rivais, deriva das lideranças, pagamento da equipe, economia, sorteio de eventos, objetivos, autosave. Os motores atuais continuam semanais e passam a ser chamados nesse passo.
+
+**Pausa automática, configurável por tipo** (Opções → Tempo):
+
+| Acontecimento | Padrão | Pode desligar |
+|---|---|---|
+| Decisão imediata (ex.: crise, proposta que expira hoje) | Pausa | Não |
+| Decisão com prazo (ex.: "responder ao ataque até quinta") | Pausa ao chegar; o prazo corre se o jogador retomar | Não |
+| Ataque contra o jogador | Pausa | Sim |
+| Pesquisa publicada | Pausa | Sim |
+| Rival entra numa zona em que o jogador lidera | Pausa | Sim |
+| Liderança muda de lado | Pausa | Sim |
+| Problema na equipe | Pausa | Sim |
+| Caixa abaixo de 2 semanas de folha | Pausa | Sim |
+| Semana seguinte sem nenhum compromisso marcado | Pausa no domingo | Sim |
+| Compromisso concluído | Não pausa; cartão no feed | Sim |
+| Notícia comum | Não pausa | Sim |
+
+**O que o jogador decide.** Quando parar e quando deixar correr. Decisão com prazo não trava o jogo: fica na faixa com a contagem; vencido o prazo, vale a opção padrão, que a faixa mostra desde o começo ("sem resposta: o ataque fica sem contestação").
+
+**A troca.** Decidir já, com a informação de hoje, ou esperar a pesquisa de quinta e arriscar o prazo. Velocidade alta poupa tempo do jogador e deixa passar o que ele não configurou para pausar.
+
+**Interage com:** Agenda (compromissos caem em dia e turno), Rivais (agem nos mesmos dias), Mídia (notícia diária), Livro de compromissos (prazos). **Princípios:** b, e, i. **Dados:** `data/time.json` (ritmos, tipos de pausa e padrões).
+
+**Reaproveita:** `Calendar` (ganha o dia), os motores semanais como estão, o sorteio de eventos (D-023), o autosave semanal. **Muda:** "Avançar semana" e "Avançar até algo acontecer" somem; o bloqueio "a semana não avança com evento pendente" vira pausa.
+
+### 17.5 Território
+
+**O que é.** O município em foco é dividido em **zonas**. Cada zona tem contorno no mapa, população, eleitores, perfil e, para cada candidato, **presença** (0 a 100): quanto ele é conhecido ali. O reconhecimento na cidade passa a ser a média das presenças pesada pela população. O modelo de voto roda por zona, com os mesmos 240 segmentos (D-012) repesados pelo perfil de cada zona.
+
+| Porte | Zonas |
+|---|---|
+| Pequeno | 3 a 5 |
+| Médio | 5 a 8 |
+| Grande | 8 a 12 |
+| Metrópole | 12 a 20 |
+
+**O que existe no IBGE** (conferido em 15/11/2026 nos diretórios oficiais `geoftp.ibge.gov.br` e `ftp.ibge.gov.br/Censos/Censo_Demografico_2022/`; contagens feitas nos próprios arquivos):
+
+| Dado | Cobertura | Formato | Serve para |
+|---|---|---|---|
+| Malha de Setores Censitários 2022, versão definitiva (nov/2024) | Todos os 5.570 municípios; 468.097 setores | SHP e GPKG, Brasil (738 MB em SHP) e por UF (2 a 92 MB); KML por município; sem GeoJSON; coordenadas geográficas SIRGAS 2000 | Contorno das zonas |
+| Campos da malha | Todos os setores | CD_SETOR, situação (CD_SIT, 8 categorias urbano/rural), tipo (CD_TIPO), área, distrito, subdistrito, bairro, favela e comunidade urbana | Separar urbano e rural, nomear zonas |
+| Agregados por setor, universo: básico (população e domicílios), sexo e idade, alfabetização, cor ou raça, características do domicílio (água, esgoto, lixo), rendimento do responsável (média e mediana) | Todos os setores, com supressão ("X") em setores muito pequenos: 132.519 das 458.772 linhas de sexo e idade têm alguma célula suprimida; o básico não tem supressão | CSV e XLSX, um arquivo Brasil por tema (9 a 136 MB) | População, idade, saneamento e nível de renda por zona |
+| Distritos | 10.698, em todos os municípios | Malha e agregados | Zonas fora da sede |
+| Bairros | 17.575 bairros em **895 municípios** (83,6 dos 203,08 milhões de habitantes) | Malha (26 MB) e agregados | Nome e limite de zona onde existem |
+| Subdistritos | 643, em 54 municípios | Malha e agregados | Apoio nas metrópoles |
+| Áreas de ponderação (amostra) | 14.270; **2.576 municípios têm duas ou mais, 2.994 têm uma só** (igual ao município) | Geometria em GPKG por UF; de-para setor → área; 35 tabelas em XLSX (44 MB) | Religião, nível de instrução e renda domiciliar per capita abaixo do município |
+| Religião, instrução, renda per capita, trabalho | **Não existem por setor.** Só por área de ponderação | — | — |
+
+Também existem, no TSE (licença CC BY declarada): eleitorado por local de votação com latitude e longitude (93.337 locais em 2024; 6,4% sem coordenada) e votação por seção.
+
+**Conclusão.** Contorno, população, idade, saneamento e nível de renda existem para todos os municípios. Bairros oficiais só existem em 895. Religião e escolaridade, duas das cinco dimensões dos segmentos, não descem ao setor.
+
+**Como as zonas são formadas** (novo modo `zonas` do DataImporter; os brutos ficam no cache, fora do Git):
+1. Setores urbanos e rurais nunca entram na mesma zona.
+2. Cada distrito fora da sede vira uma zona, ou é agrupado com o vizinho até o mínimo de população da zona.
+3. Na sede, onde há bairros do IBGE, a zona é um grupo de bairros vizinhos e leva o nome do bairro mais populoso (`nome_fonte: "bairro_ibge"`).
+4. Onde não há bairros, os setores vizinhos são agrupados por contiguidade até equilibrar a população. O nome é o do distrito (`"distrito_ibge"`) ou descritivo, gerado pela posição em relação ao núcleo mais denso: "Centro", "Zona Norte", "Rural Leste" (`"gerado"`). Nome gerado é rótulo do jogo, não dado; a Ficha da zona diz isso.
+5. Contornos dissolvidos e simplificados pelo mesmo método da D-025; adjacência entre zonas gravada.
+6. Atributos da zona: soma dos setores. Célula suprimida não é estimada: cada bloco é normalizado pela soma das categorias publicadas (mesma regra do perfil municipal). Zona com mais de 20% da população em setores suprimidos num bloco usa a distribuição do município nesse bloco, com a lacuna em `_fontes.json`.
+7. Testes do importador: toda zona fica dentro do polígono do município; a soma da população das zonas é igual à do município no Censo, sem tolerância; nenhum setor fica sem zona; nenhuma zona mistura urbano e rural.
+
+Arquivos gerados: `data/zonas/{UF}.json` (atributos) e `data/geo/zonas/{UF}.json` (contornos). São cerca de 30 mil zonas no país; o tamanho será medido na R1 (referência: os 5.570 contornos municipais ocupam 6,3 MB).
+
+**O que não tem dado e vira decisão do autor** (lista em 17.20):
+- Religião e escolaridade por zona: usar a área de ponderação onde o município tem duas ou mais e o perfil municipal nos outros 2.994; ou o perfil municipal em todos.
+- Faixas de renda por zona: o setor só traz média e mediana do responsável. Proposta: deslocar a distribuição municipal pela razão entre a mediana da zona e a do município, marcada como estimativa de jogo.
+- Eleitores por zona: repartir o eleitorado do TSE pela população de 16 anos ou mais de cada zona; ou usar os locais de votação do TSE com coordenada, o que também daria a votação real de 2024 por zona no cenário Brasil 2026.
+- Termos de uso do IBGE: o FTP declara os arquivos públicos, mas a página de licença não pôde ser aberta (o site recusa acesso automatizado).
+
+**A demanda da zona.** Cada zona mostra a maior carência medida, em unidade real: "38% dos domicílios sem rede de esgoto", "renda mediana do responsável: R$ 1.412". Ela pesa nos temas dos eleitores dali e é o assunto que lideranças e imprensa levantam.
+
+**O que o jogador decide.** Onde abrir frente e onde consolidar. A presença decai 0,6 ponto por semana em zona sem compromisso nem cabos (metade disso com cabos); 15% de cada ganho transborda para as zonas vizinhas.
+
+**A troca.** Turno gasto numa zona não é gasto em outra. Zona populosa e disputada rende menos por turno do que zona pequena e abandonada, mas vale mais votos. Entrar no reduto de um rival provoca resposta (17.11).
+
+**Interage com:** Agenda (todo compromisso tem zona), Verba (canais com alvo de zona), Lideranças e Rivais (têm zona), Mandato e Prefeitura (obras e promessas têm zona). **Princípios:** a, b, f, g, h. **Dados:** `data/zonas/`, `data/geo/zonas/`, `data/territory/config.json` (zonas por porte, decaimento, transbordo).
+
+**Reaproveita:** construção de segmentos a partir de um perfil (`ElectorateBuilder`), `VoteModel` sem mudança na fórmula, curva de ganho decrescente (`EffectApplier.Gain`), pipeline de contornos da D-025, NetTopologySuite só no importador. **Muda:** `Candidate.Recognition` passa a ser derivado das presenças; o apoio por grupo passa a valer por zona.
+
+### 17.6 Agenda com lugar e dia
+
+**O que é.** A semana é uma grade de 7 dias por 3 turnos. Cada **compromisso** ocupa um turno (o comício, dois), numa zona, para um público, com ou sem acompanhante. Substitui a energia de 100 pontos.
+
+| Compromisso | Onde e para quem | O que rende | Condição |
+|---|---|---|---|
+| Caminhada | Uma zona; público geral | Presença na zona | Rende mais com cabos e liderança da zona junto |
+| Reunião em casa de apoiador | Uma zona; um grupo | Apoio do grupo na zona | Exige apoiador ou liderança na zona |
+| Visita a liderança | A liderança | Relação; revela o pedido | — |
+| Comício | Uma zona; geral | Presença alta, imagem | Só na campanha; exige verba de Rua; esvazia se a presença na zona for menor que 20 |
+| Entrevista | Um veículo | Alcance do veículo; torna posições conhecidas | Teste de Oratória; ver 17.13 |
+| Gravação para as redes | Sem zona; um tema | Posição conhecida; presença entre os mais jovens | Rende conforme o social media |
+| Jantar de arrecadação | Doadores | Dinheiro | Ver 17.12 |
+| Reunião de equipe | Comitê | Lealdade; conselho do coordenador; informação sobre os rivais | — |
+| Evento da cidade | A zona e o dia do evento | Bônus com o público presente | Só existe no dia (feira de sábado, festa da paróquia, vigília, assembleia do sindicato, jogo, festa junina) |
+| Descanso e família | — | −5 de estresse | — |
+
+**Rendimento,** mostrado na previsão antes de marcar:
+`base do tipo × alcance na zona e no público × afinidade da plataforma com o público × equipe × liderança presente × ocasião × (1 ÷ (1 + 0,6 × cansaço)) × sorte`
+
+- **Cansaço** (princípio g): cada compromisso soma 1 ao cansaço do trio (tipo, zona, público), que perde 0,25 por semana. O segundo igual na mesma semana rende 62%; o terceiro, 45%. A Ficha da zona e a previsão mostram o fator.
+- **Ocasião:** evento da cidade (+50% com o público dele), tema em alta na imprensa (+30% se o compromisso trata do tema), chuva em compromisso de rua (−10% a −40%).
+- **Turnos:** dois por dia sem custo; o terceiro soma +3 de estresse. Estresse acima de 70 reduz a chance nos testes de atributo.
+- **Deslocamento:** em cidade grande e metrópole, dois compromissos no mesmo dia em zonas não vizinhas perdem 25% no segundo.
+- **Delegar:** o coordenador manda representante (membro da equipe ou liderança aliada). Rende 50%, e quem recebeu lembra que o candidato não foi (+1 em vez de +4).
+
+**O que o jogador decide.** O que marcar, onde, quando, com quem; que convite aceitar. Convites chegam com dia e turno fixos e conflitam entre si: a assembleia do sindicato é na quinta à noite, mesma hora do jantar com doadores.
+
+**A troca.** Cada turno é um só. Aceitar um convite é recusar outro, e quem foi recusado lembra. Ir pessoalmente rende o dobro e ocupa o candidato.
+
+**Interage com:** Território (zona), Equipe (delegação, multiplicadores), Lideranças (acompanhante, convites), Mídia (entrevista, tema em alta), Rivais (os compromissos públicos deles aparecem no mapa no dia; com coordenador de qualidade 4 ou 5, na véspera), Tempo (dia e turno). **Princípios:** a, e, f, g. **Dados:** `data/campaign/commitments.json` (substitui `actions.json`), `data/world/city_events.json` (tipos de evento da cidade por porte, mês e composição do município; eventos religiosos proporcionais à composição do Censo).
+
+**Reaproveita:** `Effects`, teste de atributo e riscos das 6 ações, custo por porte, a regra "comício só a partir de 16 de agosto". **Muda:** energia semanal sai; o efeito deixa de ser constante.
+
+### 17.7 Equipe
+
+**O que é.** Cinco funções com pessoa nomeada e a rede de cabos eleitorais. Vagas por porte: pequeno 3, médio 4, grande 5, metrópole 6 (contando a rede de cabos).
+
+| Função | O que faz sozinha | Qualidade 1 → 5 |
+|---|---|---|
+| Coordenador(a) | Organiza a agenda, delega compromissos, comanda os cabos, dá o conselho da semana | 1 → 5 compromissos delegados por semana; com 4 ou 5, vê a agenda dos rivais na véspera |
+| Marqueteiro(a) | Tom da campanha, programa de rádio e TV, material | Rendimento de comício, material e rádio de 0,8 a 1,3; estreita a faixa das previsões |
+| Tesoureiro(a) | Registra receitas e gastos, cuida do limite | Chance de erro contábil por semana de 8% a 0,5% |
+| Advogado(a) | Responde a impugnações, pede direito de resposta | Chance de êxito de 35% a 85%; sem advogado, vale a pior opção padrão |
+| Social media | Toca o canal Redes, reage a virais | Alcance de 0,7 a 1,4; risco de viral negativo de 10% a 3% |
+| Cabos eleitorais | Mantêm a presença na zona, enchem comício | Por zona, em grupos de 5; rendem metade sem material gráfico |
+
+Cada candidato a uma vaga (2 a 4 por função, gerados quando o município entra em foco) tem qualidade (mostrada como faixa até completar 4 semanas de trabalho), salário semanal, lealdade (0 a 100), temperamento, interesses e **vínculos**: "coordenou a campanha de Daniel A. em 2024", "sobrinha de Seu Anselmo". Exemplo em cidade média: Lúcia R., coordenadora, qualidade 3 a 4, R$ 900 por semana.
+
+**Opinião.** Toda segunda, o coordenador dá um conselho calculado da projeção real, com erro maior quanto menor a qualidade: "A Vila Nova está cara demais para nós; eu concentraria no Centro". Marqueteiro opina sobre plataforma e tom; tesoureiro, sobre o limite; advogado, sobre risco. Seguir ou ignorar o conselho mexe na lealdade (±2).
+
+**Eventos próprios.** Pede aumento; recebe proposta de um rival; briga com outro membro (o jogador escolhe um lado); traz um doador ou uma liderança pelo vínculo; comete irregularidade na rua; demitido com lealdade baixa, conta ao rival o plano e os esqueletos que conhecia.
+
+**O que o jogador decide.** Quem contratar, quanto pagar, a quem ouvir, quem demitir.
+
+**A troca.** Dinheiro contra qualidade; competência contra lealdade (o melhor marqueteiro da cidade trabalhou para o rival; a prima é leal e tem qualidade 2); demitir quem sabe demais.
+
+**Interage com:** Agenda (delegação), Verba (multiplicadores), Doadores e contas (tesoureiro e advogado), Mídia (social media, marqueteiro), Rivais (assédio, vazamento), Lideranças (vínculos), Mandato (a equipe vira gabinete; quem fica de fora lembra). **Princípios:** a, c, d, e, f. **Dados:** `data/campaign/staff.json`.
+
+**Reaproveita:** `PersonGenerator`, retratos, atributos, eventos de bastidores existentes (ex.: "brindes proibidos"). **Novo:** a Pessoa com memória (17.2).
+
+### 17.8 Verba por canal
+
+**O que é.** A verba semanal da campanha é repartida em cinco canais, cada um com alvo.
+
+| Canal | O que compra | Alvo | Rende mais | Rende menos |
+|---|---|---|---|---|
+| Rua | Carro de som, bandeiras, estrutura de comício | Zonas | Zona densa; multiplica caminhada e comício na zona | Zona rural espalhada |
+| Redes | Produção e impulsionamento | Faixa de idade | 16 a 34 anos (peso 1,0); 35 a 59 (0,5) | 60 ou mais (0,15) |
+| Rádio | Produção do programa e das inserções do horário eleitoral gratuito | Cidade inteira | 35 anos ou mais, zona rural, porte pequeno e médio | 16 a 34 (0,3); cidade sem emissora |
+| Material gráfico | Santinhos, adesivos, placas dentro do permitido | Zonas | Presença baixa e duradoura; pré-requisito dos cabos | — |
+| Cabos eleitorais | Pessoal por zona | Zonas | Converte indecisos; segura a presença | Zona onde uma liderança contrária domina |
+
+- **Retorno:** efeito = k × √(verba ÷ escala do porte) × (verba própria ÷ verba total do canal na zona)^0,5. Dobrar a verba num canal rende 41% a mais, e gritar onde todos gritam rende menos. A previsão mostra as duas contas.
+- **Pré-campanha:** só Redes sem impulsionamento e material institucional do partido; os canais abrem em 16 de agosto.
+- **Lei** (parâmetros em objetos de configuração, a confirmar com o autor, 17.20): propaganda paga em rádio e TV é proibida (Lei 9.504/1997, art. 44), por isso o canal Rádio paga a produção e o tempo vem do partido (D-010); outdoor é proibido (art. 39, § 8º); brindes são proibidos (art. 39, § 6º); há limite de contratação de pessoal (art. 100-A).
+
+**O que o jogador decide.** Quanto gastar por semana, em que canais, com que alvos.
+
+**A troca.** Todo real gasto conta no limite legal e sai do caixa da reta final. Cortar cabos de uma zona os manda para um rival, e eles lembram.
+
+**Interage com:** Território (alvos), Equipe (multiplicadores), Doadores e contas (caixa e limite), Rivais (disputa de canal por zona), Mídia (emissoras existentes). **Princípios:** a, e, f, g. **Dados:** `data/campaign/channels.json`.
+
+**Reaproveita:** custo por porte, multiplicador de reconhecimento por porte, tempo de TV pelo partido (D-010). **Muda:** dinheiro deixa de ser gasto só por clique de ação.
+
+### 17.9 Plataforma
+
+**O que é.** Três camadas:
+1. **Posições** em 10 temas, de −2 a +2 (GDD 5.2). O `VoteModel` já aceita posição por tema e a campanha atual nunca preenche; passa a preencher. O padrão é a posição do partido.
+2. **Bandeiras:** até 3 temas que a campanha enfatiza. Cada tema tem **posição conhecida** (0 a 100%): sobe quando o jogador fala dele em entrevista, gravação, comício e debate. O eleitor que não conhece a posição presume a do partido.
+3. **Promessas locais:** "calçar a Rua 3 da Vila Nova até 2030", feita a uma zona, a um grupo ou a uma liderança, escolhida de um catálogo ligado aos tipos de obra e serviço (17.15). Dá apoio imediato e entra no Livro de compromissos.
+
+**Painel "Plataforma × públicos".** Para cada tema, quem gosta e quem não gosta, por grupo e por zona. A previsão de uma mudança aparece antes: "Segurança de 0 para +2: +1,8 ponto entre 60 anos ou mais, −1,1 entre 18 e 34; Vila Nova +0,9; Centro −0,4".
+
+**Custo de mudar.** Incoerência = tamanho do salto × posição conhecida × (1 + mudanças nas últimas 52 semanas). Pesa na imagem, vira fato que rivais e imprensa usam, grava lembrança em lideranças com interesse no tema e, se a nova posição sair da faixa do partido, esfria a relação com a direção (menos fundo). Promessas demais derrubam a **credibilidade**, que multiplica o apoio que cada promessa nova rende.
+
+**O que o jogador decide.** Onde se posicionar, o que enfatizar, o que prometer e a quem.
+
+**A troca.** Toda posição agrada um público e desagrada outro; enfatizar torna a posição conhecida também por quem não gosta. Ficar vago é permitido e custa diferenciação.
+
+**Interage com:** Território (mistura de públicos por zona), Lideranças (interesses e pedidos), Rivais (posicionam-se e atacam contradições), Mídia (entrevista pergunta sobre temas; tema em alta), Debate (o que é dito ao vivo vira posição assumida), Mandato (votos na Câmara comparados com as posições; promessas cobradas). **Princípios:** a, d, e, f. **Dados:** `data/campaign/platform.json`, `data/campaign/promises.json`.
+
+**Reaproveita:** `ThemeCatalog`, preferências e prioridades de tema dos segmentos, `VoteCandidate.Themes`, `DebateEngine`. **Novo:** posição conhecida, promessas, credibilidade.
+
+### 17.10 Rede de lideranças locais
+
+**O que é.** Pessoas nomeadas que movem votos numa zona e num público. Quantidade por porte: pequeno 6 a 8, médio 10 a 14, grande 16 a 20, metrópole 24 a 30. Tipos: religiosa, comunitária, sindical, empresarial, rural.
+
+Cada liderança tem: zona (uma ou duas), público, **influência** (1 a 5), **interesse** (um tema ou a demanda da zona), **pedido** (uma promessa de obra, uma vaga no gabinete para um indicado, uma posição pública num tema, a presença num evento ou dinheiro para um evento, que é irregular e vira esqueleto), **preço** (a relação mínima mais o pedido), alinhamento (com o jogador, com um rival, neutra) e memória.
+
+Exemplo: Seu Anselmo, presidente da associação rural, zona Rural, influência 4, interesse na estrada vicinal. Pedido: a promessa de cascalhar 12 km. Lembranças: "Veio à assembleia, fev/2028, +2".
+
+**Como funciona.**
+- **Descobrir:** a Ficha da zona mostra as lideranças conhecidas; as outras aparecem como "?" até uma caminhada na zona ou um achado do coordenador.
+- **Visitar** (compromisso): ouve o pedido. O jogador aceita (promessa no Livro), negocia (teste de Articulação) ou recusa.
+- **Apoio:** liderança alinhada dá ao seu público, na sua zona, apoio igual a influência × relação ÷ 100, rende +30% nos compromissos em que acompanha e fornece cabos.
+- **Entre elas:** têm rivalidades. Fechar com a presidente da associação esfria o pastor que disputa o mesmo bairro (−10).
+- **Sozinhas:** sem contato por 8 semanas, a relação cai 1 por semana; recebem rivais ("Pastor Elias recebeu Daniel A. no culto de domingo", no feed); mudam de lado.
+
+**Neutralidade.** O tipo descreve o papel social, não uma doutrina. Lideranças religiosas são sorteadas na proporção da composição religiosa do município no Censo. Qualquer interesse pode ocorrer em qualquer tipo, com pesos que não passam de 2 para 1; o DataValidator verifica.
+
+**O que o jogador decide.** Quem procurar, o que conceder, com quem romper.
+
+**A troca.** Cada aliado custa uma promessa ou uma dívida e afasta os desafetos dele. Manter a rede consome turnos.
+
+**Interage com:** Território, Agenda, Plataforma (interesse e promessa), Rivais (disputam as mesmas lideranças), Equipe (vínculos), Doadores (lideranças empresariais doam), Mídia (veículo cujo dono é liderança), Mandato (cobrança), Renovação (17.16: lideranças viram candidatos). **Princípios:** a, b, c, d, e, h. **Dados:** `data/campaign/leaders.json`.
+
+**Reaproveita:** o apoio por grupo do `VoteModel`; os 8 alvos da ação "Visita" viram tipos de liderança; `PersonGenerator`. **Muda:** apoio deixa de ser um número sem dono que decai sozinho.
+
+### 17.11 Rivais com estratégia
+
+**O que é.** Cada rival nomeado tem **perfil**, **plano** e **memória**.
+
+| Perfil de campanha | Como joga |
+|---|---|
+| De base | Forte em 1 ou 2 zonas, com cabos e lideranças comunitárias |
+| De mídia | Redes e rádio; fino na cidade inteira |
+| De máquina | Incumbente ou aliado da prefeitura; obras, emendas e lideranças |
+| De causa | Um tema e um público |
+| De estrutura | Dinheiro, material e equipe |
+
+O perfil é um estilo de campanha, sorteado sem relação com ideologia ou partido.
+
+**Plano**, refeito toda segunda: meta de votos, 2 ou 3 zonas-alvo, mistura de canais e postura diante de cada concorrente (ignorar, disputar a zona, atacar, compor). Gatilhos de mudança: pesquisa; o jogador ganhar mais de 10 pontos de presença no reduto dele; ataque; perda de uma liderança; saída de outro rival (17.16).
+
+**Resposta a ataque,** pelo temperamento: combativo revida em 3 a 7 dias; conciliador se faz de vítima e ganha imagem na própria base; calculista aciona a Justiça Eleitoral; quem está muito à frente ignora. A lembrança do ataque atravessa a eleição: na Câmara, o rival atacado vota contra os projetos do jogador (o `ChamberVote` já pesa a relação).
+
+**Alianças entre eles.** Dobradinha de candidato a vereador com candidato a prefeito; pacto de não agressão; divisão de zonas. E a regra real do sistema proporcional: **colegas de chapa são aliados e concorrentes ao mesmo tempo.** O painel mostra "Seu partido hoje faria 2 cadeiras; você é o 3º da chapa": o voto do colega ajuda o partido a fazer a cadeira e pode deixá-lo na frente do jogador.
+
+**O que o jogador decide.** Na Ficha do rival (reduto, plano estimado com a confiança do coordenador, lembranças): atacar (por incoerência, esqueleto ou tema; por que canal; sem prova há risco de processo), propor pacto ou dobradinha, investigar, responder.
+
+**A troca.** Atacar tira imagem de quem ataca entre quem rejeita campanha negativa e provoca resposta. Pacto libera agenda e fecha zonas; quebrá-lo grava −3 e vira notícia.
+
+**Interage com:** Território (redutos, marcadores no mapa), Verba (disputa de canal), Lideranças (assédio), Equipe (assédio e vazamento), Mídia (ataques e respostas), Plataforma (contradições), Doadores e contas (denúncia), Mandato (memória na Câmara). **Princípios:** a, b, c, d, e. **Dados:** `data/campaign/rival_profiles.json`, `data/campaign/attacks.json`.
+
+**Reaproveita:** `RaceSetup` (6 partidos, 10 nomeados, candidato coletivo, incumbentes), empenho por porte (D-026), estilos do debate, `EventState.Relations`. **Descarta:** o sorteio de ações de `NpcTurn`. O candidato coletivo continua sem plano.
+
+### 17.12 Doadores e prestação de contas
+
+**De onde vem o dinheiro.**
+
+| Fonte | Regra | Custo |
+|---|---|---|
+| Fundo eleitoral, pela direção do partido | Cota decidida pelo cacique (NPC): relação, viabilidade na pesquisa, distância da linha do partido | Fidelidade; dívida com a direção |
+| Doação de pessoa física | Doadores nomeados (4 a 12 por porte), cada um com capacidade, interesse, pedido e memória; limite de 10% da renda do doador no ano anterior (Lei 9.504, art. 23, § 1º) | Dívida no Livro; o doador cobra no mandato |
+| Recursos próprios | Até 10% do limite de gastos do cargo (art. 23, § 2º-A) | Dinheiro do personagem |
+| Financiamento coletivo | A partir de 15 de maio do ano da eleição (art. 22-A, § 3º); cresce com a presença nas redes | Pouco dinheiro |
+| "Por fora" | Sem limite e sem registro | Esqueleto; quem entregou e quem viu sabem |
+
+Empresa não doa (STF, ADI 4650; Lei 13.165/2015): a oferta de um empresário é doação pessoal dentro do limite ou é "por fora".
+
+**Limite de gastos.** Por cargo e por município (Lei 9.504, art. 18-C; o TSE publica a tabela a cada eleição). Usar os valores reais depende de importar a tabela do TSE: decisão do autor (17.20).
+
+**Painel Contas.** Arrecadado, gasto, barra do limite e a lista de irregularidades, cada uma com o que é e quem sabe. O **risco de contas** (0 a 100) soma gasto não declarado, doação acima do limite, fonte vedada, gasto acima do limite, erro contábil e pessoal acima do permitido. Há prestação parcial em setembro e final 30 dias depois da eleição.
+
+**Risco real.** Depois da eleição as contas são aprovadas, aprovadas com ressalvas ou desaprovadas. Irregularidade grave mais denúncia (de rival, de ex-membro da equipe ou da imprensa) abre representação por captação ou gasto ilícito (art. 30-A), que pode cassar o diploma meses depois da posse. Meta de balanceamento: campanha com mais de 30% do limite em dinheiro "por fora" perde o mandato em 25% a 40% das carreiras em até 2 anos; campanha limpa, em menos de 1%.
+
+**Esqueletos passam a funcionar.** Cada um tem gravidade e a lista de quem sabe. Chance semanal de vir à tona = base × gravidade × (pessoas que sabem com relação ou lealdade abaixo de −20) × exposição (cargo e posição na pesquisa).
+
+**O que o jogador decide.** De quem aceitar, quanto declarar, quando parar de gastar.
+
+**A troca.** Dinheiro agora contra dívida e risco depois. Campanha limpa é campanha mais pobre.
+
+**Interage com:** Verba (gasto), Equipe (tesoureiro, advogado, quem sabe), Lideranças (empresariais), Rivais (denúncia), Mídia (reportagem), Mandato e Prefeitura (cobrança do doador, cassação). **Princípios:** c, d, e, f. **Dados:** `data/campaign/finance.json`; regras de lei num objeto de configuração com o padrão da lei vigente.
+
+**Reaproveita:** `Effects.AddSkeleton` e a lista de esqueletos (hoje gravada e nunca lida), a cadeia "doação por fora → perguntas do jornal", `PartyFundingRulesConfig` (D-010).
+
+### 17.13 Mídia local
+
+**O que é.** Veículos fictícios por porte: pequeno 2 (rádio comunitária e página de notícias da cidade), médio 3 ou 4 (rádio, jornal ou portal, páginas), grande 5 (mais TV regional e segundo portal), metrópole 6 ou 7.
+
+Cada veículo tem tipo, alcance por zona e por público, **linha editorial** (governista, crítica ou independente em relação à prefeitura; 2 temas de interesse; grau de sensacionalismo), **dono** (uma Pessoa, que pode ser doador, liderança ou político) e **jornalista principal** (Pessoa com memória). O nome sempre aparece com o que é: "Rádio Vale (rádio local, linha governista)".
+
+**O feed.** Cada fato de visibilidade 1 ou mais é coberto pelos veículos conforme o interesse; a linha editorial decide o tom (favorável, neutro, crítico), nunca o fato: veículo não inventa. Itens de rede marcados como **boato** podem ser falsos; o jogador desmente, processa ou ignora (GDD 5.10).
+
+**Tema em alta.** Uma semana de notícias sobre a seca aumenta o peso do tema água nas zonas rurais. O melhor assunto da semana depende do noticiário (princípio a).
+
+**O que o jogador decide.**
+- **Entrevista** (compromisso): as perguntas são sobre temas; responder torna a posição conhecida. Veículo crítico pergunta mais duro (chance menor) e convence mais (alcance com mais crédito).
+- **Sugerir pauta** ao jornalista: sobre um ato próprio ou um fato de um rival; depende da relação.
+- **Responder a ataque,** decisão com prazo de 48 horas: no mesmo veículo, por outro canal, direito de resposta (advogado, 2 a 4 dias), contra-ataque ou silêncio. Ataque respondido bem se apaga em 4 semanas; sem resposta, em 26.
+- **Anunciar:** imprensa escrita e internet, dentro dos limites da lei (art. 43); rádio e TV só no horário gratuito.
+
+**A troca.** Falar com o veículo amigo é seguro e convence pouco; ir ao crítico arrisca. Responder dá sobrevida ao assunto; calar deixa a versão do rival.
+
+**Interage com:** Agenda, Plataforma (posição conhecida, tema em alta), Rivais (ataques), Equipe (social media, advogado, marqueteiro), Doadores e contas (reportagem investigativa), Lideranças (donos), todos os sistemas (fatos). **Princípios:** a, b, c, e, f. **Dados:** `data/media/outlets.json` (tipos por porte, termos de nome, linhas), `data/media/templates.json` (manchetes por tipo de fato e tom), `data/media/blocklist.json` (nomes de veículos reais a evitar; decisão do autor em 17.20).
+
+**Reaproveita:** `Headline`, os 9 eventos de mídia, a manchete de pesquisa, o teste da ação "Entrevista".
+
+### 17.14 Mandato de vereador
+
+**Gabinete.** Assessores nomeados (2 em cidade pequena, até 6 em metrópole): chefe de gabinete, assessor legislativo (qualidade aumenta a chance do projeto na comissão), assessor de comunicação e **assessores de base**, cada um numa zona, mantendo a presença e trazendo demandas. Nomear gente da campanha ou indicados de lideranças paga dívidas; quem fica de fora lembra; parente nomeado é esqueleto.
+
+**Instrumentos** (substituem as 7 ações de gabinete):
+
+| Instrumento | O que o jogador escolhe | O que acontece |
+|---|---|---|
+| Requerimento de informação | Uma secretaria, obra ou contrato | Em 2 a 4 semanas revela dado oculto (atraso, sobrepreço, quem venceu a licitação); esfria a relação com o prefeito |
+| Indicação | Um serviço ou pequena obra numa zona | O prefeito atende conforme a relação e a base; atendida, aparece no mapa "a pedido do vereador" e cumpre promessa |
+| Fiscalização | Uma obra ou serviço no mapa (compromisso na zona) | Encontra normalidade, atraso ou irregularidade; então: denunciar (imprensa, inimizade do prefeito e do contratado), negociar em silêncio (ganha obra ou cargo; vira esqueleto) ou encaminhar ao Tribunal de Contas (lento e limpo) |
+| Emenda | Tipo de obra, zona | Entra no mapa com prazo; a liberação depende do Executivo; a entrega é um compromisso de inauguração |
+| Projeto de lei | Um dos modelos, ligado à plataforma | Tramitação atual (comissão, plenário) |
+| Negociar voto | Um vereador indeciso | Ele tem um pedido (apoio ao projeto dele, emenda no reduto dele, cargo); cumprir ou não fica na memória |
+
+**Votações.** O painel mostra a **contagem** nominal antes do voto: "5 sim, 4 não, 2 indecisos: Marta (quer a emenda da creche) e Josué (segue o líder)". O jogador define uma instrução permanente ("seguir a orientação" ou "seguir minha plataforma") e o jogo só pausa nas votações em que orientação, plataforma, promessa ou base entram em conflito.
+
+**A base cobra.** O mapa ganha o modo "Meus votos" (a apuração por zona). Cada promessa do Livro tem prazo; lideranças vêm cobrar; promessa vencida derruba a relação, e a liderança passa a apoiar um desafiante. Assessor de base negligenciado pode sair candidato contra o jogador.
+
+**A cidade se mexe.** O prefeito NPC toca obras, atrasa, enfrenta crises; a Mesa é eleita a cada dois anos; fiscalização pode virar CPI (pendências da D-027).
+
+**O que o jogador decide.** Onde pôr emenda e assessor, o que fiscalizar, denunciar ou negociar, quando contrariar o partido.
+
+**A troca.** Fidelidade ao partido contra a base; boa relação com o prefeito (indicações atendidas) contra fiscalização (visibilidade); emenda numa zona e não em outra.
+
+**Interage com:** Território (obras, votos por zona), Agenda (fiscalização, inauguração), Equipe (gabinete), Lideranças (cobrança), Plataforma (coerência, promessas), Mídia (denúncia), Rivais (memória; novos desafiantes), Prefeitura (as mesmas obras e secretarias). **Princípios:** a, b, c, d, e, h. **Dados:** `data/legislature/instruments.json`, `data/works/types.json` (compartilhado com 17.15), mais projetos em `data/bills/`.
+
+**Reaproveita:** `LegislatureEngine` inteiro: `ChamberVote`, fidelidade, quóruns, comissões, tramitação, os 36 projetos, relação com o prefeito, `CareerFlow`. **Descarta:** as 7 ações de efeito fixo e a emenda sem lugar.
+
+### 17.15 Prefeitura
+
+**Secretários.** As 8 secretarias passam a ter titular: competência (1 a 5: velocidade do indicador da área e atraso das obras), lealdade, partido, integridade (oculta) e **agenda própria**: quer ser candidato e usa a pasta para aparecer; favorece uma zona; tem um projeto de estimação; obedece ao cacique do partido dele. Entregar a secretaria a um partido aliado é nomear um dos 2 nomes que ele oferece. Demitir tira o partido da base.
+
+**Obras no mapa.** Catálogo: posto de saúde, creche, escola, pavimentação, estrada vicinal, ponte, drenagem, praça, iluminação, terminal. Cada obra tem zona, custo, secretaria e quatro etapas com barra no mapa:
+
+| Etapa | Duração de exemplo | O que pode acontecer |
+|---|---|---|
+| Projeto | 4 a 8 semanas | Depende da competência do secretário |
+| Licitação | Concorrência ou pregão: 8 a 16 semanas. Contratação emergencial: 1 a 2 semanas, válida só em emergência ou calamidade (Lei 14.133/2021, art. 75, VIII) | Impugnação atrasa; emergencial sem emergência é irregularidade; empresa de doador vencendo é fato que a imprensa nota |
+| Execução | 12 a 60 semanas | Atraso e aditivo conforme a empresa (fictícia, com qualidade e dono), o secretário e a chuva |
+| Entrega | Compromisso de inauguração | Só se inaugura obra que existe. Nos 3 meses antes da eleição, candidato não comparece a inauguração (Lei 9.504, art. 77): obra que não fica pronta até julho não rende palanque |
+
+**Servidores.** A folha é uma fração da receita corrente líquida, com os limites da Lei de Responsabilidade Fiscal (LC 101/2000, art. 20, III, b: 54% para o Executivo municipal; limite prudencial de 95% disso, 51,3%, acima do qual reajuste e contratação ficam vedados, art. 22). Na data-base, o sindicato dos servidores (uma liderança sindical) pede reajuste; a negociação decide entre percentual, limite e greve. A greve deixa de ser sorteio e passa a ser consequência.
+
+**Convênios.** Com o estado e a União: valor, objeto (uma obra), contrapartida do município, prazo e prestação de contas. Dependem da relação com o governador (NPC) e de deputados aliados. Convênio não executado devolve o dinheiro e bloqueia novos.
+
+**Câmara que negocia.** Projeto que precisa de lei mostra a contagem nominal; cada indeciso tem um pedido (obra no reduto, cargo para indicado, liberação de emenda). Vereador atendido lembra; enganado, também. Aprovação baixa somada a escândalo abre CPI e pedido de cassação (pendência da D-031).
+
+**Orçamento e indicadores.** Continuam (D-031), agora ancorados em números reais e mostrados em unidade real (17.17).
+
+**Crises com causa.** Enchente atinge uma zona e é menor onde há drenagem entregue; greve vem da negociação da folha; escândalo vem da integridade de um secretário ou de uma licitação; queda de arrecadação vem da economia (17.17).
+
+**O que o jogador decide.** Quem nomear, que obra fazer e onde, por que modalidade licitar, quanto dar de reajuste, que pedido de vereador atender, que convênio buscar.
+
+**A troca.** Competência contra coalizão; rapidez contra legalidade; reajuste contra limite fiscal; zona A contra zona B; contrapartida de convênio contra prioridade própria; promessa de campanha contra emergência.
+
+**Interage com:** Território (obras, crises e aprovação por zona), Agenda (inauguração, visita), Plataforma (promessas cobradas), Lideranças (sindicato, cobrança), Doadores (cobrança, empresa na licitação), Mídia (linha diante da prefeitura), Mandato de vereador (os mesmos instrumentos, do outro lado), Estatísticas reais (17.17), Renovação (17.16). **Princípios:** a, b, c, d, e, f, h. **Dados:** `data/executive/secretaries.json`, `data/works/types.json`, `data/executive/procurement.json`, `data/executive/personnel.json`, `data/executive/agreements.json`; limites de lei em objeto de configuração.
+
+**Reaproveita:** `ExecutiveEngine` quase inteiro (orçamento com mínimos e Tribunal de Contas, indicadores com atraso, aprovação por grupo, 17 políticas, coalizão, 7 crises), `ChamberVote`. **Descarta:** secretaria como contador, "Inaugurar obra" sem obra, crise só por sorteio.
+
+### 17.16 Renovação do mundo político
+
+**O que é.** Toda Pessoa (17.2) envelhece, pode morrer, pode sair da política e é substituída por gente nova. Vale para rivais, vereadores, prefeitos, secretários, lideranças, equipe, doadores, jornalistas e, a partir da Fase 6, deputados, senadores, governadores e presidente. O personagem do jogador segue as regras de saúde e idade da seção 4.3.
+
+**Envelhecimento e mortalidade.**
+- Fonte: **IBGE, Tábuas Completas de Mortalidade para o Brasil, 2024** (a mais recente; arquivos de 1º/12/2025), em `https://ftp.ibge.gov.br/Tabuas_Completas_de_Mortalidade/Tabuas_Completas_de_Mortalidade_2024/`, em XLSX e ODS, uma planilha para homens, uma para mulheres e uma para ambos os sexos. Só Brasil; idades simples de 0 a 89 e grupo aberto de 90 anos ou mais. Coluna usada: Q(X), probabilidade de morte entre as idades X e X+1, por mil.
+- Conferência de leitura (valores de 2024, por mil): aos 40 anos, 3,265 para homens e 1,535 para mulheres; aos 60, 12,532 e 6,888; aos 80, 62,284 e 46,531.
+- O importador grava a tábua em `data/demography/mortality.json`, com a fonte em `_fontes.json`. Personagem não binário usa a tábua de ambos os sexos.
+- Chance anual de morte = Q(sexo, idade) × fator pessoal. O fator vai de 0,6 a 2,5 conforme saúde e estresse acumulado (`data/demography/config.json`); o sorteio é mensal, pelo Rng. Para 90 anos ou mais, a tábua não dá idade simples: a curva é prolongada por um parâmetro de jogo declarado no mesmo arquivo.
+- Tábuas por UF existem nas Projeções da População 2024, mas abreviadas (faixas de 5 anos); usá-las exigiria interpolar. Proposta: só a tábua do Brasil (17.20).
+
+**Saídas da política.** Verificadas uma vez por mês para cada pessoa; quando mais de uma ocorre, a ordem é sorteada pelo Rng.
+
+| Saída | Quando | O que deixa |
+|---|---|---|
+| Morte | Tábua do IBGE × fator pessoal | Luto; substituição pela regra (abaixo); a base fica em disputa |
+| Aposentadoria | Chance crescente a partir dos 65 anos e a cada derrota; anunciada antes do prazo de registro | Um herdeiro político indicado, ou a base solta |
+| Doença | Saúde abaixo de um limite: licença (o suplente assume por mais de 120 dias) ou renúncia | Vaga temporária ou definitiva |
+| Derrota eleitoral | Na apuração: tenta de novo, desce de cargo, vira liderança ou sai | Rival persistente ou vaga |
+| Inelegibilidade | Lei da Ficha Limpa (LC 64/1990, art. 1º, I, com a contagem de prazos da LC 219/2025): 8 anos, por condenação colegiada, contas rejeitadas, abuso de poder ou captação ilícita | Fora das urnas pelo prazo; pode apoiar outro nome |
+| Cassação | Câmara ou Justiça Eleitoral (17.12, 17.14, 17.15) | Suplente, vice ou nova eleição |
+| Renúncia | Para disputar outro cargo (desincompatibilização), por escândalo ou por doença | Idem |
+| Escândalo | Esqueleto que veio à tona com gravidade alta | Imagem destruída; costuma levar a renúncia, cassação ou derrota |
+| Carreira fora da política | Chance pequena por ano, maior depois de derrota: empresa, magistério, mídia, cargo técnico | Vira doador, liderança, dono de veículo ou comentarista: continua no mundo, em outro papel |
+
+**Entradas.** Toda vaga e toda disputa têm de ter gente. A cada ciclo, novos nomes surgem das fontes abaixo, com pesos em `data/demography/entries.json`:
+- **lideranças locais** (17.10): a mais influente de uma zona sem representante vira pré-candidata;
+- **sindicatos, igrejas e empresas:** lideranças sindicais, religiosas e empresariais lançam um nome;
+- **mídia:** jornalista ou comunicador conhecido;
+- **equipe:** coordenador ou assessor de base de um político que saiu;
+- **famílias de políticos:** filho, cônjuge ou sobrinho de quem se aposentou, morreu ou ficou inelegível, com parte do reconhecimento e da rede do antecessor e com a memória da família em relação ao jogador;
+- **gerados:** quando nada acima preenche a vaga.
+
+A origem não determina partido nem ideologia; os pesos por origem ficam dentro de 2 para 1 entre as famílias ideológicas, e o DataValidator verifica.
+
+**Substituição pela regra real** (parâmetros em objeto de configuração com o padrão da lei; a Enciclopédia explica cada caso):
+
+| Cargo | Regra | Base legal |
+|---|---|---|
+| Vereador, deputado | Assume o suplente do partido ou da federação; sem suplente e faltando mais de 15 meses, nova eleição | CF, art. 56, §§ 1º e 2º (por simetria nos estados e municípios) |
+| Senador | Assume o primeiro suplente da chapa | CF, art. 46, § 3º, e art. 56 |
+| Prefeito | Assume o vice. Vagos os dois, o presidente da Câmara assume interinamente; se a causa for eleitoral (cassação de diploma ou de registro), nova eleição direta, ou indireta a menos de 6 meses do fim do mandato | Código Eleitoral, art. 224, §§ 3º e 4º, com a ADI 5525. Para morte ou renúncia dos dois, a regra é da Lei Orgânica de cada município: **decisão do autor** (17.20) |
+| Governador | Assume o vice; dupla vacância conforme a Constituição do estado | Decisão do autor (17.20) |
+| Presidente | Assume o vice; vagos os dois, eleição direta em 90 dias, ou indireta pelo Congresso em 30 dias se nos dois últimos anos | CF, arts. 79 a 81 |
+| Candidato que morre na campanha | O partido substitui em até 10 dias; no caso de morte, mesmo a menos de 20 dias da eleição | Lei 9.504/1997, art. 13 |
+
+**Morte tratada com seriedade.** Texto sóbrio, sem humor, sem causa sensacionalista e sem escolha que zombe do morto. A notícia sai em todos os veículos em tom neutro, qualquer que seja a linha editorial. Há luto oficial (três dias sem sessão na Câmara; a campanha do partido para um dia), e o jogador escolhe como se manifesta: comparecer ao velório é um compromisso; atacar a memória do morto não é uma opção oferecida. Família e aliados guardam a lembrança do que o jogador fez. As variações de texto seguem o CONTENT_GUIDE e o EventLint reprova texto de morte fora da categoria e do tom definidos.
+
+**Feed e mapa.** Aposentadoria anunciada, morte, cassação, inelegibilidade, estreia de candidato: tudo é fato e vira notícia. No mapa, o reduto de quem saiu passa a aparecer como **zona em disputa** (hachura) até alguém liderar.
+
+**Oportunidades e cadeias.** A saída de alguém abre, conforme o caso: uma base sem dono (objetivo novo no painel), uma liderança livre para negociar, uma vaga na chapa ou na Mesa, a corrida dos outros rivais pela mesma base, um herdeiro que herda as dívidas e as mágoas do antecessor, e a chance de ser lembrado por quem ficou.
+
+**O que o jogador decide.** Como reagir a cada saída: disputar a base, apoiar o herdeiro, atrair a equipe de quem saiu, ocupar a vaga, ou ficar de fora.
+
+**A troca.** A base de quem saiu custa turnos e promessas, e os outros também a querem. Apoiar o herdeiro rende a gratidão da família e fortalece um futuro concorrente.
+
+**Interage com:** Lideranças (viram candidatos; perdem o padrinho), Rivais (replanejam; herdeiros), Equipe (migra), Mídia (cobertura), Território (zona em disputa), Mandato e Prefeitura (suplente e vice assumem; secretário que sai), Plataforma e Livro (dívidas e promessas feitas a quem saiu passam ao sucessor ou se extinguem). **Princípios:** b, c, d, h, j.
+
+**Critério de balanceamento (BalanceSim, 40 anos de jogo).** A renovação simulada fica dentro da faixa observada, medida pela mesma régua da fonte:
+
+| Casa | Régua | Faixa observada | Fonte | Critério |
+|---|---|---|---|---|
+| Câmara dos Deputados | Eleitos que não foram reeleitos ÷ cadeiras (inclui ex-deputados que voltam) | De 43,86% (1998) a 61,82% (1990), nas eleições de 1990 a 2022; média de cerca de 49% | DIAP, "Raio-X das candidaturas" (edições de 2022 e de 2026), mesma tabela reproduzida até 2014 por estudo da Consultoria Legislativa da Câmara | Cada eleição entre 40% e 62%; média das 10 eleições entre 44% e 54% |
+| Câmara, régua alternativa | Deputados de primeiro mandato ÷ cadeiras | De cerca de 36% a 47% | Secretaria-Geral da Mesa da Câmara (2018: 47,37%, conferido; demais anos por notícia) | Só informativo |
+| Senado | Novos ÷ vagas em disputa | De 68,5% (2010) a 85,2% (2018), nas eleições de 1994 a 2026 | DIAP; Agência Senado para 2018 e 2026 | Cada eleição entre 65% e 88% |
+| Câmaras Municipais | Não reeleitos ÷ eleitos | Cerca de 59% em 2024 (fonte secundária, com dados do TSE); sem série publicada encontrada | — | Só informativo, até haver série oficial (17.20) |
+| Recandidatura e sucesso | Deputados que tentam a reeleição e os que conseguem | Tentam de 74% a 87%; conseguem de 51% a 71% | DIAP | Só informativo |
+
+As séries do DIAP e da Mesa usam definições diferentes e não se misturam. O resultado de 2026 pela régua do DIAP ainda não foi publicado.
+
+**Dados:** `data/demography/mortality.json` (importado), `data/demography/config.json` (fator pessoal, aposentadoria, saídas), `data/demography/entries.json` (origens e pesos), textos de luto em `data/events/`.
+
+**Reaproveita:** `PersonGenerator`, datas de nascimento e envelhecimento da aparência (Fase 2), saúde e estresse do personagem, `CareerFlow`, suplentes da apuração proporcional (a ordem de votação já existe em `ElectionOutcome`), a inelegibilidade por reeleição do cenário (D-007). **Novo:** tábua, saídas, entradas, substituição.
+
+**Nível de detalhe.** Pessoas persistidas no save (município em foco, vagas individuais do cenário, rivais persistentes) são verificadas mês a mês. Nos municípios e estados fora de foco não há pessoas (12.5): a renovação ali é só a troca estatística de cadeiras por partido a cada eleição.
+
+### 17.17 Estatísticas reais como ponto de partida, evolução simulada
+
+**Regra.** O mundo começa com os números oficiais mais recentes de cada município, UF e do país. A partir do primeiro dia, tudo evolui pela simulação: decisões do jogador e dos NPCs, ciclo econômico, choques e crises sorteados pelo Rng. Nenhuma série histórica é tocada como gravação; da série recente só se tira o valor inicial e a inclinação inicial.
+
+**Fontes** (pesquisa de 16/11/2026; "conferido" = API, FTP ou arquivo oficial aberto na pesquisa; o que não foi conferido está dito):
+
+| Item | Fonte e conjunto | Mais recente | Nível | Acesso | Lacunas e regra de substituição |
+|---|---|---|---|---|---|
+| População (ponto de partida) | IBGE, Estimativas da População, SIDRA 6579 | 2026 (conferido) | Município | API SIDRA, JSON | Já usada (D-033) |
+| População (trajetória) | IBGE, Projeções da População, revisão 2024 | 2000 a 2070, por sexo e idade (conferido) | Brasil, regiões, UF; **não há por município** | XLSX no FTP do IBGE | Ver "População" abaixo |
+| PIB municipal | IBGE, PIB dos Municípios, SIDRA 5938 (PIB e valor adicionado por setor) | 2023 (conferido) | Município | API SIDRA | Nenhuma: 5.570 municípios. PIB per capita é calculado com a população do mesmo ano |
+| Emprego formal, estoque | MTE, RAIS, microdados | 2025 (arquivos de mai/2026; não confirmado se definitivos) | Vínculo, com município | FTP do MTE, 140 a 770 MB por arquivo | Agregar no importador. Município sem vínculo: zero |
+| Emprego formal, fluxo | MTE, Novo CAGED, microdados | Set/2026 (conferido) | Movimentação, com município | FTP do MTE | Só saldo; serve para a inclinação inicial |
+| Finanças municipais e estaduais | Tesouro Nacional, SICONFI: DCA (receita corrente, despesa por função), RGF (receita corrente líquida, despesa com pessoal em % da RCL), RREO | DCA 2025; RGF do 3º quadrimestre de 2025 (conferido) | Município, UF, União | API `apidatalake.tesouro.gov.br`, JSON, uma chamada por ente e anexo | Ente sem entrega no ano: DCA do ano anterior (até 2 anos); sem nenhuma: mediana por habitante dos municípios do mesmo porte na UF, marcada como estimativa. Numa amostra de 151 municípios, 150 tinham a DCA de 2025; a contagem completa sai na RD |
+| Transferências (FPM, FPE) | Tesouro Transparente, Transferências Constitucionais para Municípios e para Estados | Out/2026 (municípios, conferido no catálogo) | Município, UF | CSV mensal; licença ODbL | Colunas a conferir na RD |
+| PIB nacional | IBGE, Contas Nacionais, SIDRA 1846 e 5932 (trimestral), 6784 (anual) | 2º tri de 2026; anual 2024 (conferido) | Brasil | API SIDRA | — |
+| Inflação | IBGE, IPCA, SIDRA 1737; BCB, SGS 433 | Out/2026: 0,14% no mês (conferido) | Brasil | API do SGS, JSON | — |
+| Juros | BCB, SGS 432 (meta Selic) | 13,75% ao ano (conferido). A série traz datas futuras: filtrar pela data | Brasil | API do SGS | — |
+| Câmbio | BCB, SGS 1 | R$ 5,6518 em 13/11/2026 (conferido) | Brasil | API do SGS | — |
+| Desemprego | IBGE, PNAD Contínua trimestral, SIDRA 4099 | 2º tri de 2026: 5,4% no Brasil (conferido) | Brasil, UF, capitais; **não desce a município** | API SIDRA | Município usa a taxa da UF como contexto; o indicador municipal de emprego é o formal (RAIS) |
+| Dívida pública | BCB, SGS 13762 (bruta do governo geral) e 4513 (líquida) | Set/2026: 82,95% e 70,00% do PIB (conferido) | Brasil | API do SGS | — |
+| Educação | INEP, IDEB por município e rede | 2025 (conferido) | Município × rede | Planilhas em `download.inep.gov.br/ideb/resultados/` | Anos iniciais: 5.479 de 5.569 municípios têm nota. Sem nota: a edição anterior; sem nenhuma: média da rede na UF, marcada |
+| Mortalidade infantil | Ministério da Saúde, SIM (óbitos de menores de 1 ano) e SINASC (nascidos vivos), por município de residência | 2024 definitivo; 2025 e 2026 preliminares (conferido) | Registro, com município | FTP do DATASUS, arquivos .dbc (exigem conversão) | Não há indicador pronto confirmado: a taxa é calculada. Em município pequeno a taxa anual oscila: usar a soma de 3 anos; abaixo de um mínimo de nascimentos (parâmetro), a taxa da região imediata, marcada |
+| Leitos | Ministério da Saúde, CNES, leitos | Set/2026 (conferido) | Estabelecimento, com município | FTP do DATASUS, .dbc | Município sem hospital: zero |
+| Segurança | (a) SIM, óbitos por agressão, base do Atlas da Violência; (b) MJSP, SINESP, "Dados Nacionais de Segurança Pública" | (a) 2024; (b) 2025 completo, 2026 até setembro (conferido) | Município | (a) FTP do DATASUS; (b) XLSX no gov.br | (a) tem código IBGE e é comparável no país, mas é mais antiga; (b) é mais recente, sem código IBGE (casar por nome), é registro policial declarado pelos estados e confunde zero com não informado. **Decisão do autor** (17.20) |
+| Saneamento | IBGE, Censo 2022, SIDRA 6803 a 6806 (rede de água, abastecimento, esgotamento) | 2022 (conferido) | Município (e setor, 17.5) | API SIDRA | Cobertura completa; sem tratamento de esgoto. O SINISA (Ministério das Cidades, referência 2023) tem tratamento, é autodeclarado e incompleto: só complemento |
+| Proteção social | **Sem fonte pesquisada** | — | — | — | Decisão do autor (17.20) |
+
+Não confirmados e fora do desenho por ora: cobertura da atenção primária (sem arquivo ou API encontrados), IDHM municipal (o último é de 2010), tabela pronta do CAGED por município. Licença: o Tesouro declara ODbL e o TSE, CC BY; IBGE, INEP, DATASUS, MJSP e MTE publicam dados abertos sem licença explícita localizada (17.20).
+
+**População.** A D-033 projeta cada município pela taxa geométrica entre o Censo 2022 e a estimativa de 2026, limitada entre −3% e +5% ao ano. Em 40 anos, taxa constante se afasta do que o IBGE projeta para a UF. Proposta: manter a taxa municipal como distribuição relativa e, a cada ano, reescalar os municípios de cada UF para que a soma acompanhe a Projeção da População 2024 daquela UF; a migração e os choques da simulação entram como desvio sobre isso (17.20).
+
+**Indicadores da prefeitura em unidade real.** Os sete indicadores de 0 a 100 da D-031 passam a ter âncora real. O jogador vê a unidade real; a escala de jogo fica por dentro.
+
+| Indicador da D-031 | O que o jogador vê | Fonte |
+|---|---|---|
+| Educação | "IDEB anos iniciais (rede municipal): 5,4" | INEP |
+| Saúde | "Mortalidade infantil: 11,8 por mil nascidos vivos"; "Leitos: 1,9 por mil habitantes" | SIM, SINASC, CNES |
+| Segurança | "Homicídios: 21 por 100 mil habitantes" | Conforme a decisão |
+| Infraestrutura | "Domicílios ligados à rede de esgoto: 62%"; "à rede de água: 91%" | Censo 2022 |
+| Emprego | "Empregos formais: 24 por 100 habitantes"; "Saldo no ano: +310" | RAIS, CAGED |
+| Contas públicas | "Pessoal: 49,2% da receita corrente líquida"; "Receita: R$ 212 milhões" | SICONFI |
+| Proteção social | Índice do jogo, rotulado como tal, até haver fonte | — |
+
+(Os valores acima são exemplos de formato, não dados.)
+
+- **Conversão:** cada indicador tem, em `data/indicators/definitions.json`, unidade, sentido (maior é melhor ou pior), limites plausíveis e a função que leva a unidade real à escala de 0 a 100 e de volta (linear, ou logarítmica para taxas). O valor inicial na escala de jogo é a conversão do dado importado, não mais 50 ± 8.
+- **Receita:** a receita real do SICONFI substitui a receita por habitante estimada da D-031; o orçamento por área parte da despesa por função declarada.
+- **Como o eleitor julga:** a aprovação reage à **variação** desde a posse e à comparação com municípios do mesmo porte na UF, não ao nível absoluto. Cidade que parte de indicador ruim não começa condenada; cidade que parte bem não vive de herança.
+- **Tooltip:** todo indicador mostra fonte, ano do dado de partida e "a partir daí, simulado".
+
+**Modelo de evolução de cada indicador** (forma única; parâmetros por indicador em `data/indicators/model.json`):
+
+`valor(t+1) = valor(t) + velocidade × (alvo(t) − valor(t)) + choque(t)`, limitado aos limites plausíveis.
+
+`alvo(t) = partida + tendência(t) + efeito do orçamento + efeito das políticas + efeito das obras entregues + contexto`
+
+- **tendência(t):** inclinação inicial tirada das últimas edições da série (ex.: variação do IDEB entre 2021, 2023 e 2025), que perde força até zerar em N anos (parâmetro). É a única herança da série histórica.
+- **efeito do orçamento:** gasto da área em relação à referência do próprio município (regra atual da D-031: sensibilidade por ponto percentual).
+- **efeito das políticas e das obras:** as 17 políticas e as obras entregues por zona (17.15), cada uma com efeito e prazo declarados.
+- **contexto:** ciclo econômico (emprego, receita), população, indicadores vizinhos (segurança piora com desemprego alto por muito tempo, por exemplo, com peso declarado).
+- **choque(t):** crises e fatos sorteados pelo Rng (fábrica que fecha ou abre, enchente, epidemia), com distribuição por tipo.
+- **velocidade:** hoje 3,5% por semana para todos; passa a ser por indicador (educação muda devagar; contas públicas, depressa).
+- **limites plausíveis:** piso e teto por indicador, tirados da distribuição observada entre os municípios (percentis 1 e 99 do dado importado), para que 40 anos de simulação não produzam valores impossíveis.
+
+**Economia.**
+- Na R4, um ciclo simples: crescimento = tendência + componente cíclico autorregressivo + choque, partindo dos números nacionais da tabela; ele move a receita (as transferências acompanham a arrecadação nacional), o emprego e o humor do eleitor. Parâmetros em `data/economy/cycle.json`.
+- Na Fase 7, o modelo de economia nacional completo: PIB, inflação, juros, câmbio, desemprego e dívida ligados entre si e às decisões do governo federal (do jogador ou de NPC), com os mesmos pontos de partida.
+
+**O que o jogador decide.** Nada diretamente: é a base de números sobre a qual a Prefeitura (17.15) e, depois, os governos estadual e federal decidem. A troca aparece lá: mover orçamento melhora um indicador devagar e piora outro.
+
+**Interage com:** Prefeitura (indicadores, receita, folha), Território (saneamento e renda por zona vêm da mesma fonte), Mídia (notícias citam os números com a unidade real), Plataforma (promessa mensurável: "levar o esgoto a 80% dos domicílios"), Renovação (população). **Princípios:** b, d, f, j.
+
+**Registro.** Cada fonte entra em `data/municipios/_fontes.json` (órgão, conjunto, ano, endereço, data do download, lacunas e regra aplicada) e em `assets/CREDITS.md`, como já é feito. Arquivos gerados: `data/indicadores_reais/{UF}.json` (municípios), `data/indicadores_reais/_ufs.json`, `data/economy/start.json` (país). A importação é a parte RD da Fase R.
+
+**Reaproveita:** `ExecutiveEngine` (alvo e velocidade dos indicadores, aprovação por grupo, mínimos legais), `PopulationProjection` (D-033), o padrão de importação e de `_fontes.json`. **Muda:** valor inicial, unidade mostrada, receita, velocidade por indicador.
+
+### 17.18 Pacote de nomes (decisão pendente do autor)
+
+> **Estado:** proposta do autor, **sem aprovação para distribuição**. Nada desta subseção é construído antes de o autor decidir (17.20). O que segue documenta só o formato.
+
+**Vagas individuais no cenário Brasil 2026.** Cada cadeira de deputado federal (513), deputado estadual e distrital (1.059), senador (81), governador (27) e presidente passa a ser um NPC **fictício**, gerado pelo `PersonGenerator`, com o partido fictício e o cargo que o espelho já registra. Cada vaga tem um id estável, que não depende de nome: `cargo.UF.ordem`, em que a ordem é a colocação entre os eleitos daquele cargo na UF (ex.: `df.SP.017`, `de.MG.003`, `sen.BA.2`, `gov.PR`, `pres`). O id, o partido fictício e a ordem são fatos estruturais, como as cadeiras por partido que o cenário já guarda.
+
+**Pacote opcional.** Se existir um arquivo em `user://mods/nomes/`, o jogo o lê ao criar o mundo e troca, para cada id presente, nome, nome de urna, ano de nascimento e gênero do NPC da vaga. Formato:
+
+```json
+{
+  "formato": 1,
+  "cenario": "brasil_2026",
+  "titulo": "texto livre mostrado na tela Novo Mundo",
+  "vagas": {
+    "df.SP.017": { "nome": "…", "nome_urna": "…", "nascimento": 1975, "genero": "feminino" }
+  }
+}
+```
+
+- Todos os campos de uma vaga são opcionais; id desconhecido é ignorado com aviso; `nome` até 60 caracteres, `nome_urna` até 24; `genero` é `masculino`, `feminino` ou `nao_binario`; `nascimento` entre 1930 e o ano que dê a idade mínima do cargo.
+- A aparência continua gerada (retrato fictício); se o gênero mudar, é sorteada de novo com a mesma semente.
+- A tela Novo Mundo mostra "Pacote de nomes carregado: N vagas. Conteúdo de terceiros, não faz parte do jogo." O save registra que foi criado com pacote.
+
+**O que nunca acontece.** O jogo e o repositório não contêm nomes reais. O pipeline de `tools/` não gera o pacote, não o baixa e não documenta de onde obtê-lo. O DataValidator continua bloqueando nomes reais em `data/`, e o teste do cenário (16.4) continua exigindo que nenhum nome ou sigla real apareça nos arquivos finais. O jogo não distribui, não hospeda e não aponta para pacotes.
+
+**Regra de neutralidade que isto flexibiliza.** Hoje vale, sem exceção: "partidos, políticos, empresas, institutos e veículos de mídia são fictícios; nunca use nomes reais de políticos" (CLAUDE.md, Neutralidade; GDD 1, pilar 3; 16.4, "o que é sempre fictício"). Com o pacote, o jogo passa a aceitar que o usuário ponha nomes reais em NPCs que a simulação envolve em eventos fictícios de escândalo, doença, derrota e morte. Aprovar o pacote exige mudar o texto dessas três regras.
+
+**Risco jurídico** (a avaliar com advogado antes de qualquer decisão; isto não é parecer):
+- **Código Civil, art. 17:** o nome da pessoa não pode ser empregado em publicações ou representações que a exponham ao desprezo público, ainda que sem intenção difamatória. Um evento de escândalo sorteado sobre um NPC com nome real é esse caso.
+- **Art. 18:** sem autorização, não se pode usar o nome alheio em propaganda comercial. Divulgar o jogo mostrando ou mencionando o recurso com nomes reais entra aqui.
+- **Art. 20:** a divulgação de escritos e a utilização da imagem de uma pessoa podem ser proibidas, com indenização, se lhe atingirem a honra, a boa fama ou a respeitabilidade, ou se se destinarem a fins comerciais. O jogo é comercial.
+- O fato de o arquivo ser feito e instalado pelo usuário reduz, mas não afasta, o risco para quem fornece o mecanismo.
+
+**Mitigações, se o autor aprovar:** com pacote carregado, eventos das categorias escândalo, vida pessoal, doença e morte não sorteiam NPCs de vagas renomeadas (ou usam só texto institucional); capturas de divulgação nunca são feitas com pacote; o jogo não oferece nenhuma forma de compartilhar pacotes.
+
+### 17.19 Verificação do desenho
+
+**Cada causa do tédio tem correção.**
+
+| Causa (AUDITORIA_FASE3) | Correção |
+|---|---|
+| 1. Não há decisão, só gasto | Território (17.5), Agenda com cansaço e ocasião (17.6), Verba por canal (17.8), Plataforma (17.9); critério do princípio a no BalanceSim |
+| 2. O mundo é uma planilha parada | Tempo corrente (17.4), Rivais com plano (17.11), Mídia e tema em alta (17.13), Renovação (17.16), economia e choques (17.17) |
+| 3. Ninguém tem rosto, interesse ou memória | Pessoa com memória (17.2), Equipe (17.7), Lideranças (17.10), Rivais (17.11), assessores, secretários e vereadores com pedido (17.14, 17.15) |
+| 4. Nada fica | Livro de compromissos (17.2), promessas (17.9), dívidas e esqueletos que funcionam (17.12), obras no mapa e base que cobra (17.14, 17.15) |
+| 5. A tela não mostra o jogo | Tela central (17.3), previsão e explicação (17.2), princípio j, ART_GUIDE (Interface) |
+
+**Cada sistema cumpre pelo menos três princípios e interage com pelo menos dois outros.**
+
+| Sistema | Princípios | Interage com |
+|---|---|---|
+| 17.3 Tela central | b, f, h, i, j | Todos |
+| 17.4 Tempo | b, e, i | Agenda, Rivais, Mídia, Livro |
+| 17.5 Território | a, b, f, g, h | Agenda, Verba, Lideranças, Rivais, Mandato, Prefeitura |
+| 17.6 Agenda | a, e, f, g | Território, Equipe, Lideranças, Mídia, Rivais, Tempo |
+| 17.7 Equipe | a, c, d, e, f | Agenda, Verba, Contas, Mídia, Rivais, Lideranças, Mandato |
+| 17.8 Verba por canal | a, e, f, g | Território, Equipe, Contas, Rivais, Mídia |
+| 17.9 Plataforma | a, d, e, f | Território, Lideranças, Rivais, Mídia, Debate, Mandato |
+| 17.10 Lideranças | a, b, c, d, e, h | Território, Agenda, Plataforma, Rivais, Equipe, Doadores, Mídia, Mandato, Renovação |
+| 17.11 Rivais | a, b, c, d, e | Território, Verba, Lideranças, Equipe, Mídia, Plataforma, Contas, Mandato |
+| 17.12 Doadores e contas | c, d, e, f | Verba, Equipe, Lideranças, Rivais, Mídia, Mandato, Prefeitura |
+| 17.13 Mídia local | a, b, c, e, f | Agenda, Plataforma, Rivais, Equipe, Contas, Lideranças |
+| 17.14 Mandato de vereador | a, b, c, d, e, h | Território, Agenda, Equipe, Lideranças, Plataforma, Mídia, Rivais, Prefeitura |
+| 17.15 Prefeitura | a, b, c, d, e, f, h | Território, Agenda, Plataforma, Lideranças, Doadores, Mídia, Vereador, Estatísticas, Renovação |
+| 17.16 Renovação | b, c, d, h, j | Lideranças, Rivais, Equipe, Mídia, Território, Mandato, Prefeitura |
+| 17.17 Estatísticas reais | b, d, f, j | Prefeitura, Território, Mídia, Plataforma |
+
+O princípio j vale para todos os sistemas pela regra de tooltip, verbete e ficha. O Debate (5.7) continua como está e passa a gravar posições assumidas (17.9) e lembranças nos rivais (17.11). O pacote de nomes (17.18) não é sistema de jogo.
+
+### 17.20 Decisões que dependem do autor
+
+Nada abaixo é construído antes da decisão. Cada item traz a recomendação e a parte da Fase R que depende dele.
+
+| # | Decisão | Recomendação | Usada em |
+|---|---|---|---|
+| 1 | Mapa da cidade na tela central: 2D plano (como a referência) ou 2.5D | 2D plano. O 2.5D fica para o estado, o país e a apuração | R1 |
+| 2 | Importar a Malha de Setores e os agregados do Censo 2022 e guardar em `data/` as zonas de todos os municípios | Sim. Medir o tamanho na R1; se passar de 40 MB, simplificar mais os contornos antes de pensar em outra saída | R1 |
+| 3 | Nome de zona onde não há bairro oficial (4.675 dos 5.570 municípios): nome de distrito ou nome descritivo gerado ("Centro", "Zona Norte") | Aceitar, com a Ficha da zona dizendo que o nome é do jogo | R1 |
+| 4 | Religião e escolaridade por zona: área de ponderação onde o município tem duas ou mais (2.576 municípios) e perfil municipal nos demais; ou perfil municipal em todos | Área de ponderação onde houver. É dado oficial e dá diferença entre zonas justamente nas cidades maiores | RD, R2 |
+| 5 | Faixas de renda por zona: estimativa a partir da mediana do rendimento do responsável | Aceitar como estimativa de jogo, marcada | R2 |
+| 6 | Eleitores e votação de 2024 por zona a partir dos locais de votação do TSE (93 mil locais com coordenada; 6,4% sem) | Sim, na RD. Até lá, repartir o eleitorado pela população de 16 anos ou mais | RD |
+| 7 | Termos de uso dos dados do IBGE, INEP, DATASUS, MJSP e MTE: não há licença explícita localizada (o site do IBGE recusa acesso automatizado) | O autor confere os termos antes da R1 (IBGE) e da RD (os demais). É a mesma condição dos dados já usados | R1, RD |
+| 8 | Ritmo do tempo: 4, 2 e 1 segundo por dia na campanha; 1, 0,5 e 0,25 no mandato | Começar assim e ajustar no teste da R1 | R1 |
+| 9 | Regras de campanha a confirmar no texto da lei antes de virar configuração: propaganda paga em rádio e TV proibida (art. 44), outdoor proibido (art. 39, § 8º), limite de pessoal (art. 100-A), doação de pessoa física (art. 23), recursos próprios, financiamento coletivo, inauguração no período vedado (art. 77) | Confirmar item por item na R3. Observação: a criação de personagem (3.4) mostra um "outdoor"; sugerido tratá-lo como peça de pré-visualização ou trocar por placa e adesivo | R2, R3 |
+| 10 | Limite de gastos real por município e cargo (tabela do TSE) | Importar a de 2024 e corrigir pela regra da lei. Se a fonte bloquear, parar e informar | R3 |
+| 11 | Nomes de veículos de mídia: como garantir que não coincidam com veículos reais | Gerador com termos neutros mais lista de bloqueio manual em `data/media/blocklist.json`, validada como a dos partidos | R3 |
+| 12 | Morte ou renúncia de prefeito e vice (regra de cada Lei Orgânica) e de governador e vice (Constituição do estado) | Padrão único, configurável, espelhando a CF, art. 81: eleição direta na primeira metade do mandato, indireta pela Casa legislativa na segunda. A Enciclopédia diz que é simplificação | R4, Fase 6 |
+| 13 | Mortalidade: tábua do Brasil ou tábuas por UF das Projeções (abreviadas, exigem interpolação) | Só a do Brasil | RD |
+| 14 | Renovação das Câmaras Municipais: não há série oficial encontrada (só cerca de 59% em 2024, por fonte secundária) | Critério apenas informativo, até o autor indicar uma fonte ou aprovar calcular a série dos arquivos do TSE | R4 |
+| 15 | **Pacote de nomes** (17.18) | Não aprovar agora. Ouvir um advogado sobre os arts. 17, 18 e 20 do Código Civil. As vagas individuais fictícias podem ser feitas de qualquer modo, porque não dependem do pacote | Fase 6 |
+| 16 | População: reescalar os municípios para acompanhar as Projeções da População 2024 por UF | Sim | RD |
+| 17 | Fonte de homicídios: SIM (2024, com código IBGE) ou SINESP (2025 e 2026, sem código IBGE, registro policial) | SIM, soma de 3 anos, como ponto de partida; SINESP só para conferência | RD |
+| 18 | Emprego formal: baixar os microdados da RAIS (arquivos de 140 a 770 MB) para agregar por município | Sim, com os brutos no cache. Se o FTP bloquear, parar e informar | RD |
+| 19 | Proteção social: sem fonte pesquisada | Manter como índice do jogo, rotulado, e pesquisar uma fonte oficial depois | R4 |
+| 20 | Aprovação pela variação e pela comparação com municípios semelhantes, e não pelo nível absoluto | Sim | R4 |
+| 21 | Fontes tipográficas: Inter, Oswald e Source Serif 4 (todas OFL) | Aprovar | R1 |
+| 22 | Extensão da curva de mortalidade depois dos 89 anos e o fator pessoal de 0,6 a 2,5: são parâmetros de jogo, não dado | Aceitar como parâmetro declarado em `data/demography/config.json` | RD |
+
+### 17.20.1 Dados novos em `data/` (resumo)
+
+| Pasta | Conteúdo | Origem |
+|---|---|---|
+| `data/zonas/`, `data/geo/zonas/` | Zonas de todos os municípios e contornos | Importador (IBGE) |
+| `data/indicadores_reais/`, `data/economy/start.json` | Indicadores e economia de partida | Importador (17.17) |
+| `data/demography/mortality.json` | Tábua de mortalidade | Importador (IBGE) |
+| `data/time.json`, `data/territory/config.json`, `data/demography/config.json`, `data/demography/entries.json`, `data/indicators/`, `data/economy/cycle.json` | Parâmetros de jogo | Escritos e balanceados |
+| `data/campaign/` (`commitments`, `staff`, `channels`, `platform`, `promises`, `leaders`, `rival_profiles`, `attacks`, `finance`) | Conteúdo da campanha | Escrito |
+| `data/media/` (`outlets`, `templates`, `blocklist`), `data/world/city_events.json` | Mídia e eventos da cidade | Escrito |
+| `data/legislature/instruments.json`, `data/works/types.json`, `data/executive/` (`secretaries`, `procurement`, `personnel`, `agreements`) | Mandatos | Escrito |
+| `data/encyclopedia/` (`glossary`, textos de "Como funciona") | Enciclopédia | Escrito |
+
+### 17.21 Anexo: prova de imersão
+
+Quatro semanas de jogo no desenho novo, contadas por quem joga. Nomes de pessoas, veículos e zonas são ilustrativos. Entre colchetes, o sistema de onde cada coisa vem.
+
+#### Relato 1 — Cidade pequena, pré-campanha, semana 2 (janeiro de 2028)
+
+Minha cidade tem 12 mil habitantes e quatro zonas. No modo "Minha força" o mapa está quase todo cinza: 9% de presença no Centro, onde moro, e 1% no resto [17.5]. A coluna da direita me dá três objetivos; o primeiro é "Ser conhecido por 15% do Centro até março" [17.2].
+
+Deixei o tempo correr em 2x. Na terça o jogo pausou: dois nomes para coordenar a campanha [17.7]. Lúcia R., qualidade 3 a 4, R$ 350 por semana, e o vínculo dela dizia "coordenou a campanha de Daniel A. em 2024". Meu primo Téo, qualidade 2, R$ 150, lealdade 90. Daniel é o vereador mais votado da cidade e meu colega de partido. Contratei a Lúcia. A previsão avisava: "Téo vai lembrar".
+
+Na quinta a Rádio Vale (rádio local, linha governista) abriu o noticiário com a seca na zona Rural [17.13]. O tooltip do tema "água" mostrava alta de 30% no peso entre os eleitores de lá. Eu tinha uma caminhada marcada no Centro para sábado de manhã, dia de feira [17.6]. Troquei a tarde de sábado por uma visita a Seu Anselmo, presidente da associação rural. Ele me recebeu bem e fez o pedido: a promessa pública de cascalhar os 12 km da estrada do Córrego Fundo [17.10]. Não prometi. Disse que voltava. Ganhei +1 de relação em vez de +4, e a ficha dele agora registra "Veio, ouviu e não se comprometeu".
+
+Enquanto isso, sem eu fazer nada: o feed mostrou Daniel no culto de domingo da Vila Nova, e o marcador dele acendeu naquela zona [17.11]; o prefeito anunciou a reforma do posto de saúde; Téo passou a aparecer como "sem função" na lista de pessoas, com relação −6.
+
+Fechei a semana com R$ 2.100, uma coordenadora que talvez ainda fale com o Daniel, e uma dúvida: a estrada custa uma promessa que eu só pago se ganhar, mas a zona Rural tem 2.300 eleitores e ninguém do meu partido foi lá.
+
+#### Relato 2 — Metrópole, reta final, última semana de setembro
+
+Dezesseis zonas, 41 vagas, 3% na pesquisa de segunda. O painel da chapa diz: "Seu partido faria 3 cadeiras; você é a 4ª" [17.11]. Faltam cerca de 1.900 votos para passar o Ivan, colega de chapa, forte na Zona Leste.
+
+Segunda, 8h, pausa: o Portal Capital (portal de notícias, linha crítica) publicou que mudei de posição sobre a tarifa de ônibus em julho. É verdade; o Livro de compromissos tem as duas datas [17.9]. A fonte é a campanha da Renata, do outro partido. Prazo de 48 horas [17.13]. Opções: responder no próprio portal (teste de Oratória, 55%), pedir direito de resposta (meu advogado tem qualidade 4: 70%, sai na quinta), contra-atacar com a doação mal explicada dela, ou calar. Pedi o direito de resposta e gravei um vídeo para as redes sobre o tema. Minha social media avisou do risco: 6% de viral negativo.
+
+A barra do limite de gastos está em 91% [17.12]. O tesoureiro quer parar. A coordenadora quer os últimos R$ 40 mil em cabos na Zona Sul, onde a previsão dá +0,4 ponto com faixa de +0,1 a +0,8, porque dois rivais já gastam lá e meu canal Rua rende 58% [17.8]. Pus R$ 25 mil nos cabos da Zona Norte, onde só eu estou, e cortei o carro de som.
+
+Quarta choveu. O comício do Jardim Aurora caiu de "cheio" para "meia praça" na previsão [17.6]; mantive, e o resultado veio dentro da faixa, com a explicação: chuva −35%, Dona Marlene no palanque +30%. Na volta, o trânsito tirou 25% da reunião da noite na Zona Oeste.
+
+Sozinho, o mundo fez o seguinte: o pastor Elias, que estava comigo desde junho, apareceu no feed ao lado do Ivan [17.10], e fui ver a ficha dele: seis semanas sem visita minha. A candidata a prefeita do meu partido me ofereceu dobradinha nos santinhos, e o preço era subir no palanque dela na sexta, mesmo turno da entrevista que eu tinha marcada na rádio.
+
+Fui ao palanque. Na quinta o direito de resposta saiu. Na pesquisa de sábado eu tinha 3,4%, ainda em quarto.
+
+#### Relato 3 — Prefeitura, segundo ano, em crise (março de 2030)
+
+Abri o jogo no modo "Obras". A drenagem da Baixada está parada na etapa de licitação há 11 semanas: impugnada por uma empresa perdedora [17.15]. Na terça choveu 140 mm e a Baixada alagou. O jogo pausou com o mapa pulsando naquela zona: 310 famílias fora de casa. A decisão não tinha opção boa. Decretar emergência e contratar sem licitação resolve em duas semanas, e a previsão avisava que a única empresa disponível é do Valdir, que doou para a minha campanha [17.12]: "a imprensa vai notar". Esperar o julgamento da impugnação leva de 4 a 9 semanas. Usar a equipe própria de obras atrasa a creche da Vila Nova, que é promessa minha com prazo em junho.
+
+Meu secretário de Obras, Ramiro, veio pela cota do partido aliado: competência 2, e a ficha diz que ele quer ser candidato a vereador. Defendeu a emergência com a empresa do Valdir. A secretária de Finanças lembrou que a folha está em 52,1% da receita corrente líquida, acima do limite prudencial, e que na data-base de abril o sindicato vai pedir 8%.
+
+Decretei a emergência e chamei a equipe própria; a creche escorregou para setembro. No Livro, a promessa ficou amarela, e Dona Cida, da associação da Vila Nova, ganhou a lembrança "Creche adiada, mar/2030, −2".
+
+Para abrir o crédito suplementar precisei da Câmara. Contagem: 6 sim, 5 não, 2 indecisos [17.15]. Marta quer a pavimentação da rua da escola no reduto dela. Josué quer um cargo para o cunhado. Atendi a Marta: é obra, aparece no mapa e eu inauguro. O Josué votou contra e avisou a Gazeta (jornal, linha crítica), que na sexta deu a manchete "Prefeitura escolhe a quem atender".
+
+Sem eu mexer: a aprovação caiu de 44% para 39%, e o mapa mostrou onde: Baixada 21%, Vila Nova 35%. A Rádio Vale, governista, falou do socorro; a Gazeta, da drenagem que não saiu. O governador liberou um convênio de R$ 1,8 milhão para drenagem, com contrapartida de 10% e prazo de 12 meses. E Ramiro deu entrevista por conta própria dizendo que avisou.
+
+Objetivo novo no painel: "Entregar a drenagem da Baixada antes das chuvas de novembro".
+
+#### Relato 4 — A mesma campanha do relato 1, semana 20 (maio de 2028)
+
+O mapa não é mais cinza. Lidero na zona Rural com 34% de presença, tenho 27% no Centro e 8% na Vila Nova, que está pintada na cor do partido do Daniel.
+
+Prometi a estrada em fevereiro. Hoje Seu Anselmo é aliado, com relação 62, e me cobra outra coisa: quer que eu diga em público, na Rádio Vale, que sou contra o fechamento da escola rural. A matriz da plataforma mostra o custo: +2,1 pontos na zona Rural, −0,8 no Centro, onde a prefeitura quer concentrar as turmas, e o cacique do meu partido, que apoia o prefeito, não vai gostar [17.9]. Em janeiro eu nem tinha posição conhecida para arriscar; agora 40% da cidade sabe o que eu penso sobre educação.
+
+Marquei uma caminhada no Centro por hábito e a previsão me parou: seria a quarta em três semanas, com fator de cansaço de 39% [17.6]. Na semana 2 a mesma caminhada era o melhor uso do sábado. Hoje o melhor uso é a entrevista.
+
+A Lúcia e o tesoureiro brigaram por causa de um gasto sem nota. O jogo pediu que eu escolhesse um lado [17.7]. Fiquei com o tesoureiro; a lealdade dela caiu para 48, e eu sei para quem ela trabalhou.
+
+No dia 15 abriu o financiamento coletivo: R$ 1.300 na primeira semana [17.12]. No mesmo dia veio um empreiteiro com R$ 8 mil "por fora". Recusei. Com R$ 2.100 em janeiro eu teria pensado mais.
+
+E a notícia da semana não era sobre mim. Seu Olavo, vereador há cinco mandatos, 74 anos, anunciou na Gazeta que não disputa a reeleição [17.16]. Ele fazia 400 votos na Vila Nova. O feed de sábado já mostrava o Daniel na casa dele. O coordenador de Olavo, um rapaz chamado Bruno, virou pré-candidato pelo mesmo partido. Meu painel trocou um objetivo: saiu "Ser conhecido por 15% do Centro", cumprido em março, e entrou "Conquistar ao menos uma liderança da Vila Nova antes da convenção".
+
+**Por que a semana 20 não é a semana 2.** Na semana 2 as decisões eram de abertura: quem contratar, onde aparecer primeiro, prometer ou não. Na semana 20 são de manutenção e de disputa: honrar ou ampliar uma aliança, pagar o custo de uma posição pública, administrar uma equipe rachada, reagir a uma vaga que se abriu. Seis coisas mudaram o que é a melhor jogada: o mapa (presença desigual por zona), o cansaço (a caminhada no Centro rende 39%), as pessoas (Anselmo, Lúcia, Téo e Daniel têm lembranças que não existiam), o Livro (uma promessa feita e uma posição conhecida), o calendário (financiamento coletivo aberto, convenção chegando) e o mundo (um vereador saiu e a base dele está solta). Nenhuma decisão do relato 4 estava disponível no relato 1, e a ação que era a melhor no relato 1 é agora a que o jogo desaconselha.
