@@ -105,7 +105,59 @@ public partial class Game : Node
         Encyclopedia = JsonData.LoadFile<Core.Encyclopedia.EncyclopediaContent>(Path.Combine(DataDirectory, Core.Encyclopedia.EncyclopediaContent.File)).GetValueOrThrow();
         Time = JsonData.LoadFile<Core.State.TimeConfig>(Path.Combine(DataDirectory, Core.State.TimeConfig.File)).GetValueOrThrow();
         Projection = PopulationProjection.Load(DataDirectory, Municipios);
+        IndicatorModel = Core.Indicators.IndicatorContent.LoadOrThrow(DataDirectory);
+        RenewalContent = Core.Renewal.RenewalContent.LoadOrThrow(DataDirectory);
     }
+
+    /// <summary>Definições e modelo de evolução dos indicadores reais (GDD 17.17).</summary>
+    public Core.Indicators.IndicatorContent IndicatorModel { get; private set; } = null!;
+
+    /// <summary>Conteúdo da renovação do mundo político (GDD 17.16).</summary>
+    public Core.Renewal.RenewalContent RenewalContent { get; private set; } = null!;
+
+    /// <summary>
+    /// O mundo que anda sozinho no município em foco: indicadores em unidade real e renovação do mundo político; null
+    /// antes de haver município em foco.
+    /// </summary>
+    public WorldEngine? Mundo { get; private set; }
+
+    /// <summary>
+    /// Monta o mundo do estado e garante que o save tem os indicadores e a renovação do município em foco: cria os dois
+    /// num mundo novo e num save anterior a eles, sem mexer no resto.
+    /// </summary>
+    private WorldEngine? NewMundo(GameState state)
+    {
+        Municipio? m = Municipios.All.FirstOrDefault(x => x.CodigoIbge == state.FocusMunicipio);
+        if (m is null)
+        {
+            return null;
+        }
+
+        MunicipalScenario? scenario = LocalScenario(state, m.CodigoIbge);
+        var renewal = new Core.Renewal.RenewalEngine(new Core.Renewal.RenewalContext
+        {
+            State = state,
+            Municipio = m,
+            People = People,
+            Content = RenewalContent,
+            Projection = Projection,
+            Themes = World.Parties.Themes.Themes.Select(t => t.Id).ToList(),
+            Staff = Campaign.Staff,
+            InitialSeats = scenario?.Camara,
+            InitialMayorParty = scenario?.Prefeito,
+        });
+        var world = new WorldEngine(state, new Core.Indicators.IndicatorEvolution(IndicatorModel, m, Projection), renewal);
+        if (IndicadoresUf(m.Uf) is { } uf)
+        {
+            world.EnsureIndicators(uf, Municipios);
+        }
+
+        renewal.Ensure();
+        return world;
+    }
+
+    /// <summary>O mundo do estado, se é o que está montado.</summary>
+    private WorldEngine? MundoDe(GameState state) => Mundo is { } world && ReferenceEquals(world.State, state) ? world : null;
 
     /// <summary>Glossário e artigos da Enciclopédia (F1 em qualquer tela).</summary>
     public Core.Encyclopedia.EncyclopediaContent Encyclopedia { get; private set; } = null!;
@@ -205,6 +257,8 @@ public partial class Game : Node
             Campaign = Campaign,
             Zonas = campaign.Zonas,
             Indicadores = IndicadoresDe(campaign.Municipio),
+            IndicatorEvolution = MundoDe(state)?.Indicators,
+            Renewal = MundoDe(state)?.Renewal,
         };
     }
 
@@ -224,6 +278,7 @@ public partial class Game : Node
             Electorate = campaign.Electorate,
             RecognitionScale = Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
             Indicadores = IndicadoresDe(campaign.Municipio),
+            IndicatorEvolution = MundoDe(state)?.Indicators,
         };
     }
 
@@ -236,15 +291,19 @@ public partial class Game : Node
     private readonly Dictionary<string, Core.Indicators.IndicadoresUfFile?> _indicadores = [];
 
     /// <summary>Ponto de partida oficial do município (data/indicadores_reais/, GDD 17.17); null se o arquivo da UF faltar.</summary>
-    public Core.Indicators.IndicadoresMunicipio? IndicadoresDe(Municipio m)
+    public Core.Indicators.IndicadoresMunicipio? IndicadoresDe(Municipio m) =>
+        IndicadoresUf(m.Uf)?.Municipios.FirstOrDefault(i => i.CodigoIbge == m.CodigoIbge);
+
+    /// <summary>Arquivo de indicadores da UF, lido uma vez; null se faltar.</summary>
+    private Core.Indicators.IndicadoresUfFile? IndicadoresUf(string uf)
     {
-        if (!_indicadores.TryGetValue(m.Uf, out Core.Indicators.IndicadoresUfFile? file))
+        if (!_indicadores.TryGetValue(uf, out Core.Indicators.IndicadoresUfFile? file))
         {
-            file = Core.Indicators.IndicadoresPaths.Load(DataDirectory, m.Uf).Value;
-            _indicadores[m.Uf] = file;
+            file = Core.Indicators.IndicadoresPaths.Load(DataDirectory, uf).Value;
+            _indicadores[uf] = file;
         }
 
-        return file?.Municipios.FirstOrDefault(i => i.CodigoIbge == m.CodigoIbge);
+        return file;
     }
 
     /// <summary>Dados reais do município no cenário Brasil 2026; null nos mundos gerados.</summary>
@@ -308,12 +367,18 @@ public partial class Game : Node
         Prefeitura = null;
         Governo = null;
         FoundingEngine = NewFoundingEngine(state);
+
+        // Depois da campanha montada, para a cidade já ter gente (lideranças e equipe) quando o mundo começa a andar.
+        Mundo = NewMundo(state);
     }
 
     /// <summary>Retoma uma carreira salva no ponto em que estava (campanha, mandato ou entressafra).</summary>
     public void Resume(GameState state)
     {
         State = state;
+
+        // Antes dos motores de mandato, que leem o mundo pelo contexto; save antigo ganha aqui indicadores e renovação.
+        Mundo = NewMundo(state);
         Engine = state.Campaign is null ? null : Core.Campaign.CampaignEngine.Start(ContextFor(state));
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
@@ -340,7 +405,7 @@ public partial class Game : Node
     {
         GameState state = State!;
         bool hadMandate = state.Mandate is not null || state.Executive is not null;
-        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo);
+        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo, MundoDe(state));
         if (state.Mandate is null)
         {
             Mandate = null;
@@ -439,7 +504,7 @@ public partial class Game : Node
     public void ConcludeElection()
     {
         GameState state = State!;
-        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state), GovernanceContextFor(state));
+        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state), GovernanceContextFor(state), MundoDe(state)?.Renewal);
         Engine = null;
         Governo = NewGoverno(state);
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));

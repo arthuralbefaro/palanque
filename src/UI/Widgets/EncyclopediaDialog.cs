@@ -313,6 +313,7 @@ public partial class EncyclopediaDialog : PanelContainer
                 Core.People.PromiseState.Aberta => Tr("em aberto"),
                 Core.People.PromiseState.Cumprida => Tr("cumprida"),
                 Core.People.PromiseState.Quebrada => Tr("quebrada"),
+                Core.People.PromiseState.Extinta => Tr("extinta: não há mais quem a cobre"),
                 _ => Tr("vencida sem cumprir"),
             };
             Entry(string.Format(Tr("Promessa · {0}"), status),
