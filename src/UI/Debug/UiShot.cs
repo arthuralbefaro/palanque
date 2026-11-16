@@ -1145,6 +1145,13 @@ public partial class UiShot : Node
             await Frames(1);
         }
 
+        // Com a máquina carregada passam mais dias na espera e uma pausa automática pode ter parado o relógio:
+        // nesse caso o clique em Pausa o religaria. Volta a correr antes, para o clique testar a pausa.
+        if (!hub.Running)
+        {
+            await Click(FindAll<Button>(hub).First(b => b.Text == "4x"));
+        }
+
         await Click(Named<Button>(hub, "Pausa")!);
         if (hub.Running)
         {
