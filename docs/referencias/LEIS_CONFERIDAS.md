@@ -83,6 +83,17 @@ Mesmas páginas do Planalto, lidas por trechos.
 - **Art. 73:** V: nomear, contratar, admitir, demitir sem justa causa e mexer em vantagens nos três meses antes do pleito e até a posse (com as exceções das alíneas); VI: nos três meses antes, transferências voluntárias, publicidade institucional e pronunciamento em cadeia de rádio e TV; **VII: empenhar, no primeiro semestre do ano de eleição, despesa de publicidade acima de 6 vezes a média mensal dos três últimos anos** (redação da Lei 14.356/2022; não é um teto de "gasto"); VIII: revisão geral de remuneração acima da recomposição da inflação. Conferidos; os §§ 4º e 5º (penas) não foram lidos.
 - **Art. 77:** já registrado; parágrafo único: cassação do registro ou do diploma. Confere.
 
+## Terceira leitura (16/11/2026): CPI, Mesa, contas do prefeito e cassação pela Câmara
+
+Fontes: Constituição (mesma página) e Decreto-Lei 201/1967 (`planalto.gov.br/ccivil_03/decreto-lei/del0201.htm`, lido inteiro).
+
+- **CF, art. 58, § 3º:** CPI por requerimento de um terço dos membros, para fato determinado e por prazo certo; as conclusões vão, se for o caso, ao Ministério Público. Confere (o artigo trata do Congresso; no município é simetria).
+- **CF, art. 57, § 4º:** Mesa com mandato de 2 anos, vedada a recondução para o mesmo cargo na eleição imediatamente subsequente. Confere (idem: trata das Casas do Congresso).
+- **CF, art. 31, § 2º:** o parecer prévio sobre as contas anuais do prefeito, emitido pelo "órgão competente", só deixa de prevalecer por dois terços dos membros da Câmara Municipal. Confere; o Tribunal de Contas aparece no § 1º (auxílio ao controle externo).
+- **DL 201/1967, art. 4º:** dez infrações político-administrativas do prefeito julgadas pela Câmara e punidas com cassação: impedir o funcionamento da Câmara (I); impedir o exame de documentos (II); desatender convocação ou pedido de informação (III); retardar a publicação de leis (IV); não apresentar a proposta orçamentária no prazo (V); descumprir o orçamento (VI); praticar ato contra a lei ou omitir-se (VII); negligenciar a defesa de bens e rendas do município (VIII); ausentar-se sem autorização (IX); proceder de modo incompatível com o decoro (X).
+- **DL 201/1967, art. 5º:** rito, "se outro não for estabelecido pela legislação do Estado": denúncia por qualquer eleitor (I); recebimento pelo voto da maioria dos presentes e comissão processante de três vereadores sorteados (II); afastamento definitivo por dois terços, pelo menos, dos membros da Câmara (VI); processo concluído em 90 dias da notificação, senão é arquivado, sem impedir nova denúncia (VII). Confere.
+- **DL 201/1967, art. 7º:** a Câmara pode cassar vereador por corrupção ou improbidade no uso do mandato (I), residência fora do município (II) ou falta de decoro (III); o processo segue o art. 5º. **Art. 8º:** extingue-se o mandato por morte, renúncia, perda dos direitos políticos ou condenação por crime funcional ou eleitoral (I), falta de posse (II), ausência a um terço das sessões ordinárias do ano (III, redação de 1980) ou impedimento não sanado (IV); o presidente da Câmara declara e convoca o suplente (§ 1º).
+
 ## O que não foi aberto
 - Resolução TSE 23.607/2019 e a tabela de limites de gastos por município (o site do TSE bloqueou o acesso automatizado; ver PENDENCIAS).
 - Acórdãos das ADIs 4650, 7228, 7263, 7325, 5970, 6890, 2238 e 5105.
