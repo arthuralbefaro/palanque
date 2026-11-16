@@ -72,3 +72,14 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando, dados invá
 - Aparência do personagem nunca altera votos ou atributos.
 - Nenhum evento cita pessoas, partidos ou empresas reais nem se baseia em estereótipo regional, religioso, racial ou de gênero; tragédias são tratadas com seriedade.
 - Urna, edifícios e símbolos oficiais só em versões estilizadas: sem réplicas de edifícios reais, brasões ou marcas oficiais; sons originais.
+
+## Autonomia
+- Trabalhe em sequência pelas fases do ROADMAP sem pedir aprovação de plano entre etapas.
+- Diante de ambiguidade ou decisão de design, escolha a opção mais coerente com o GDD, registre em docs/DECISOES.md (data, fase, pergunta, decisão, alternativas, como reverter) e siga em frente.
+- Só pare e pergunte quando:
+  1. um download ou site for bloqueado e não houver fonte oficial alternativa;
+  2. uma decisão envolver classificar ou retratar entidades reais (partidos, pessoas, instituições) sem fonte publicada que a sustente;
+  3. a ação for destrutiva ou irreversível (apagar dados, reescrever histórico do Git, push);
+  4. a verificação obrigatória continuar falhando depois de 3 tentativas de correção.
+- Ao terminar cada etapa: verificação obrigatória, commits, ROADMAP marcado, resumo de 3 linhas em docs/PROGRESSO.md, e siga para a próxima sem esperar.
+- Se o contexto for compactado, releia CLAUDE.md, docs/ROADMAP.md, docs/DECISOES.md e docs/PROGRESSO.md antes de continuar.
