@@ -544,7 +544,12 @@ public partial class CharacterCreatorScreen : Control
                 badge.Set(p.LogoIcon, p.Colors.Primary, p.Colors.Secondary);
                 string family = _game.World.Parties.Families.Find(p.FamilyId)?.Name ?? p.FamilyId;
                 string strength = local is null ? "" : string.Format(System.Globalization.CultureInfo.GetCultureInfo("pt-BR"), " · {0} {1:0.0}%", Tr("força local"), local.GetValueOrDefault(p.Id) * 100);
-                var choose = row.Add(new CheckBox { Text = $"{p.Number} · {p.Sigla} — {p.Name} · {family} · {WorldTexts.Size(p.Size)}{strength}", ButtonPressed = p.Id == _c.PartyId });
+
+                // Duas linhas (nome em cima, detalhes embaixo), para a lista não alargar a tela.
+                VBoxContainer text = Ui.Column(row, 0);
+                var choose = text.Add(new CheckBox { Text = $"{p.Number} · {p.Sigla} — {p.Name}", ButtonPressed = p.Id == _c.PartyId });
+                choose.AddThemeFontSizeOverride("font_size", 18);
+                Ui.Label(text, $"{family} · {WorldTexts.Size(p.Size)}{strength}", 15, Ui.Muted);
                 choose.Pressed += () => Change(() => { _c.PartyId = p.Id; ApplyPartyNumber(); });
             }
 

@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate|prefeitura|eventos [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate|prefeitura|eventos|layout [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -40,6 +40,12 @@ public partial class UiShot : Node
 
             GD.Print("Smoke picker: ok");
             GetTree().Quit(0);
+            return;
+        }
+
+        if (target == "layout")
+        {
+            await CheckLayout(shot);
             return;
         }
 
@@ -185,6 +191,119 @@ public partial class UiShot : Node
 
         GD.Print("Smoke map: ok");
         GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Nenhum controle cortado: em 1920x1080 e 1366x768, abre a criação de personagem (todas as abas), o Novo
+    /// Mundo e o hub, tira print e falha se algum controle visível passar dos limites da janela.
+    /// </summary>
+    private async Task CheckLayout(string? shot)
+    {
+        Game game = Game.Instance;
+        var problems = new List<string>();
+        foreach (Vector2I size in new[] { new Vector2I(1920, 1080), new Vector2I(1366, 768) })
+        {
+            GetTree().Root.Size = size;
+            DisplayServer.WindowSetSize(size);
+            await Frames(4);
+            string tag = $"{size.X}x{size.Y}";
+
+            game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+            var world = GD.Load<PackedScene>(Game.Scenes.NewWorld).Instantiate<Control>();
+            AddChild(world);
+            await Frames(5);
+            problems.AddRange(Overflow(world, $"Novo Mundo {tag}"));
+            Save(shot, $"_novo_mundo_{tag}");
+            RemoveChild(world);
+            world.QueueFree();
+
+            game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+            var creator = GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate<CharacterCreatorScreen>();
+            AddChild(creator);
+            await Frames(5);
+            var tabs = FindAll<TabContainer>(creator).First();
+            for (int tab = 0; tab < tabs.GetTabCount(); tab++)
+            {
+                tabs.CurrentTab = tab;
+                await Frames(4);
+                problems.AddRange(Overflow(creator, $"Criação, aba {tabs.GetTabTitle(tab)}, {tag}"));
+                Save(shot, $"_criacao_{tab}_{tag}");
+            }
+
+            creator.TryStartCareer();
+            RemoveChild(creator);
+            creator.QueueFree();
+            var hub = GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate<Control>();
+            AddChild(hub);
+            await Frames(5);
+            problems.AddRange(Overflow(hub, $"Hub {tag}"));
+            Save(shot, $"_hub_{tag}");
+            RemoveChild(hub);
+            hub.QueueFree();
+        }
+
+        if (problems.Count > 0)
+        {
+            foreach (var group in problems.GroupBy(p => p[..p.IndexOf(':')]))
+            {
+                GD.PushError($"  {group.Key}: {group.Count()} controles; o mais largo: {group.First()}");
+            }
+
+            foreach (string problem in problems.Where(p => p.Contains("Label") || p.Contains("Button") || p.Contains("CheckBox")).Take(12))
+            {
+                GD.PushError("  " + problem);
+            }
+
+            Fail($"{problems.Count} controles passam da janela.");
+            return;
+        }
+
+        GD.Print("Smoke layout: ok (1920x1080 e 1366x768, criação em todas as abas, Novo Mundo e hub)");
+        GetTree().Quit(0);
+    }
+
+    private void Save(string? shot, string suffix)
+    {
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", suffix + ".png"));
+        }
+    }
+
+    /// <summary>
+    /// Controles visíveis que passam dos limites da janela. O que está dentro de um ScrollContainer (rola) ou de
+    /// um controle que recorta o conteúdo não conta; o contêiner em si, sim.
+    /// </summary>
+    private List<string> Overflow(Node root, string where)
+    {
+        Rect2 window = GetViewport().GetVisibleRect();
+        var problems = new List<string>();
+        void Visit(Node node, bool contained)
+        {
+            if (node is Window)
+            {
+                return;
+            }
+
+            if (node is Control control && control.IsVisibleInTree() && !contained && control.Size.X > 0 && control.Size.Y > 0)
+            {
+                Rect2 rect = control.GetGlobalRect();
+                if (rect.Position.X < window.Position.X - 1 || rect.Position.Y < window.Position.Y - 1 || rect.End.X > window.End.X + 1 || rect.End.Y > window.End.Y + 1)
+                {
+                    string label = control switch { Button b => $" \"{b.Text}\"", Label l => $" \"{l.Text[..Math.Min(40, l.Text.Length)]}\"", _ => "" };
+                    problems.Add($"{where}: {control.GetType().Name}{label} em {rect} (janela {window.Size})");
+                }
+            }
+
+            bool inner = contained || node is ScrollContainer || node is Control { ClipContents: true };
+            foreach (Node child in node.GetChildren())
+            {
+                Visit(child, inner);
+            }
+        }
+
+        Visit(root, false);
+        return problems;
     }
 
     /// <summary>

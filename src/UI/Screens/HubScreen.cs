@@ -88,13 +88,16 @@ public partial class HubScreen : Control
             _ => Tr("Eleição encerrada"),
         };
         Ui.Value(bar, string.Create(PtBr, $"{State.Calendar.WeekStart:dd/MM/yyyy}"), 26);
-        Ui.Value(bar, $"{phase} · {_engine.Context.Municipio.Nome} ({_engine.Context.Municipio.Uf})", 20);
-        Ui.Value(bar, string.Format(Tr("Faltam {0} semanas"), _engine.WeeksToElection), 20);
-        Ui.Value(bar, string.Format(Tr("Energia {0}/{1}"), Campaign.EnergyLeft, _engine.Context.Config.WeeklyEnergy), 20);
-        Ui.Value(bar, Money(State.Player.Resources.Money), 20);
-        Ui.Value(bar, string.Format(PtBr, "{0} {1:0}%", Tr("Reconhecimento"), Campaign.Player.Recognition), 20);
-        Ui.Value(bar, string.Format(PtBr, "{0} {1:+0.00;-0.00;0.00}", Tr("Imagem"), Campaign.Player.Image), 20);
-        bar.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill });
+
+        // Os indicadores quebram de linha quando não cabem (cidade de nome longo), em vez de empurrar os botões.
+        var stats = bar.Add(new HFlowContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        stats.AddThemeConstantOverride("h_separation", 22);
+        Ui.Value(stats, $"{phase} · {_engine.Context.Municipio.Nome} ({_engine.Context.Municipio.Uf})", 20);
+        Ui.Value(stats, string.Format(Tr("Faltam {0} semanas"), _engine.WeeksToElection), 20);
+        Ui.Value(stats, string.Format(Tr("Energia {0}/{1}"), Campaign.EnergyLeft, _engine.Context.Config.WeeklyEnergy), 20);
+        Ui.Value(stats, Money(State.Player.Resources.Money), 20);
+        Ui.Value(stats, string.Format(PtBr, "{0} {1:0}%", Tr("Reconhecimento"), Campaign.Player.Recognition), 20);
+        Ui.Value(stats, string.Format(PtBr, "{0} {1:+0.00;-0.00;0.00}", Tr("Imagem"), Campaign.Player.Image), 20);
         Ui.Button(bar, "Salvar", ShowSaveMenu);
         Ui.Button(bar, "Mapa", () => _game.GoTo(Game.Scenes.Map));
         Ui.Button(bar, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); });
@@ -281,7 +284,7 @@ public partial class HubScreen : Control
         {
             HBoxContainer row = Ui.Row(column, 8);
             AddFace(row, rival, 56);
-            Ui.Value(row, string.Format(PtBr, "{0} ({1}){2}\n{3} {4:0}%", rival.Name, PartySigla(rival.PartyId), rival.Incumbent ? " · " + Tr("vereador(a)") : "", Tr("reconhecimento"), rival.Recognition), 14);
+            Ui.Paragraph(row, string.Format(PtBr, "{0} ({1}){2}\n{3} {4:0}%", rival.Name, PartySigla(rival.PartyId), rival.Incumbent ? " · " + Tr("vereador(a)") : "", Tr("reconhecimento"), rival.Recognition), 340, 14);
         }
 
         Ui.Label(column, "Prefeitura", 22);
@@ -289,7 +292,7 @@ public partial class HubScreen : Control
         {
             HBoxContainer row = Ui.Row(column, 8);
             AddFace(row, mayor, 48);
-            Ui.Value(row, $"{mayor.Number} · {mayor.Name} ({PartySigla(mayor.PartyId)}){(mayor.Incumbent ? " · " + Tr("prefeito(a)") : "")}", 14);
+            Ui.Paragraph(row, $"{mayor.Number} · {mayor.Name} ({PartySigla(mayor.PartyId)}){(mayor.Incumbent ? " · " + Tr("prefeito(a)") : "")}", 350, 14);
         }
     }
 
