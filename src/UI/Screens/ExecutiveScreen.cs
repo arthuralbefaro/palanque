@@ -117,9 +117,11 @@ public partial class ExecutiveScreen : Control
         foreach (BudgetArea area in Config.Areas)
         {
             double share = _draft.GetValueOrDefault(area.Id);
-            string minimum = area.MinimumShare > 0 ? string.Format(PtBr, Tr(" · mínimo {0:0}%"), area.MinimumShare * 100) : "";
+            // Saúde e educação: o mínimo da lei incide sobre a base de impostos e transferências, não sobre o orçamento todo.
+            double minimumShare = _engine.MinimumShare(area);
+            string minimum = minimumShare > 0 ? string.Format(PtBr, Tr(" · mínimo {0:0.#}%"), minimumShare * 100) : "";
             Label label = Ui.Value(column, string.Format(PtBr, "{0}: {1:0.0}% · {2}{3}", area.Name, share * 100, Money(share), minimum), 15);
-            if (share + 1e-9 < area.MinimumShare)
+            if (share + 1e-9 < minimumShare)
             {
                 label.AddThemeColorOverride("font_color", Ui.Error);
             }

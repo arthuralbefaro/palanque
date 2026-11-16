@@ -35,6 +35,9 @@ public sealed class ExecutiveContext
     /// </summary>
     public Indicators.IndicatorEvolution? IndicatorEvolution { get; init; }
 
+    /// <summary>Mínimos de saúde e educação, com o padrão da lei vigente.</summary>
+    public Governance.FiscalLawConfig FiscalLaw { get; init; } = Governance.FiscalLawConfig.Default;
+
     public ExecutiveConfig Config => Content.Config;
 }
 
@@ -144,8 +147,21 @@ public sealed partial class ExecutiveEngine
     /// <summary>Reserva livre: a parcela da reserva menos o custo das políticas.</summary>
     public double FreeReserve => Executive.Allocation.GetValueOrDefault(ExecutiveConfig.ReserveArea) - PolicyCost;
 
-    /// <summary>Áreas abaixo do mínimo legal (saúde 15%, educação 25%).</summary>
-    public IEnumerable<BudgetArea> BelowMinimum => Config.Areas.Where(a => Executive.Allocation.GetValueOrDefault(a.Id) + 1e-9 < a.MinimumShare);
+    /// <summary>
+    /// Fatia do orçamento que é base dos mínimos de saúde e de educação: impostos próprios mais transferências de
+    /// impostos, sobre a receita (corrige a simplificação da D-031, que aplicava os mínimos ao orçamento todo).
+    /// </summary>
+    public double TaxBaseShare => State.Governance?.Fiscal.TaxBaseShare ?? Config.TaxBaseShare.GetValueOrDefault(Context.Municipio.Porte, 1);
+
+    /// <summary>
+    /// Parcela mínima do orçamento que a área precisa ter: em saúde (15%) e educação (25%), o percentual da lei sobre
+    /// a base de impostos e transferências; nas demais, o piso de jogo de data/executive/config.json.
+    /// </summary>
+    public double MinimumShare(BudgetArea area) =>
+        Context.FiscalLaw.MinimoDaArea(area.Id) > 0 ? Context.FiscalLaw.MinimoSobreOrcamento(area.Id, TaxBaseShare) : area.MinimumShare;
+
+    /// <summary>Áreas abaixo do mínimo: saúde e educação pela lei, as demais pelo piso de jogo.</summary>
+    public IEnumerable<BudgetArea> BelowMinimum => Config.Areas.Where(a => Executive.Allocation.GetValueOrDefault(a.Id) + 1e-9 < MinimumShare(a));
 
     public ExecutiveFailure? SetAllocation(IReadOnlyDictionary<string, double> allocation)
     {
@@ -253,7 +269,8 @@ public sealed partial class ExecutiveEngine
             {
                 int side = e.InBase(m.PartyId) ? 1 : -1;
                 int orientation = m.PartyId == e.PartyId ? 1 : ChamberVote.PartyOrientation(Context.Legislature, State, m.PartyId, policy.Position, side);
-                double logit = ChamberVote.Logit(Context.Legislature, State, m, policy.Position, orientation, side, m.Relation);
+                // Quem fechou acordo com o prefeito vota como combinado (GDD 17.15).
+                double logit = ChamberVote.Logit(Context.Legislature, State, m, policy.Position, orientation, side, m.Relation) + (State.Governance?.DealLogit(policy.Id, m.Id) ?? 0);
                 switch (ChamberVote.Decide(Context.Legislature, logit, Rng))
                 {
                     case VoteChoice.Sim:
@@ -440,6 +457,7 @@ public sealed partial class ExecutiveEngine
         Shift("contas", -choice.Cost * Config.UnusedReserveToAccounts);
         e.Image = Math.Clamp(e.Image + choice.Image, -1, 1);
         e.Crisis = null;
+        State.Governance?.CrisisResolved(crisis.Id, Math.Clamp(choiceIndex, 0, crisis.Choices.Count - 1));
         e.News.Add(new ExecutiveNews(Week, ExecutiveNewsKind.CriseResolvida, crisis.Name));
         return choice.Result;
     }
@@ -461,7 +479,8 @@ public sealed partial class ExecutiveEngine
     private void MaybeCrisis()
     {
         ExecutiveState e = Executive;
-        if (e.Crisis is not null || Rng.NextDouble() >= Config.CrisisChancePerWeek)
+        // Com o governo da R4, nenhuma crise é só sorteio: quem as dispara é a causa (GDD 17.15).
+        if (State.Governance is not null || e.Crisis is not null || Rng.NextDouble() >= Config.CrisisChancePerWeek)
         {
             return;
         }
@@ -515,7 +534,9 @@ public sealed partial class ExecutiveEngine
         {
             foreach (var (indicator, target) in Targets())
             {
-                e.Indicators[indicator] += Config.IndicatorSpeedPerWeek * (target - e.Indicators[indicator]);
+                // A competência do secretário da pasta acelera ou atrasa o indicador (GDD 17.15).
+                double speed = Config.IndicatorSpeedPerWeek * (State.Governance?.AreaSpeed.GetValueOrDefault(indicator, 1) ?? 1);
+                e.Indicators[indicator] += Math.Clamp(speed, 0, 1) * (target - e.Indicators[indicator]);
             }
         }
 

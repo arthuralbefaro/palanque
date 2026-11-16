@@ -38,6 +38,12 @@ const double MaxChannelShare = 0.40;
 const double MinTradeDecisions = 1.0;
 
 var content = new SimContent(dataDirectory);
+if (Array.IndexOf(args, "--mandato") >= 0)
+{
+    // BalanceSim de mandato (R4): dotnet run --project tools/Planalto.BalanceSim -- --mandato [--mandatos 24] [--cidades 6] [--saida docs/balance/r4.md]
+    return MandateSim.Run(content, portes, int.Parse(Arg("--mandatos", "24"), CultureInfo.InvariantCulture), cities, seed, output);
+}
+
 var report = new StringBuilder();
 var culture = CultureInfo.GetCultureInfo("pt-BR");
 report.AppendLine("# BalanceSim — campanha de vereador (R2b)");

@@ -712,7 +712,7 @@ public class RenewalTests(ITestOutputHelper output)
         int before = r.Legislatura;
         CampaignAutoplayTests.Play(campaign, 3);
         var losers = state.Campaign!.Candidates.Where(c => c.Office == Planalto.Core.Elections.Office.Vereador && c.CharacterId is not null && !c.IsPlayer).Select(c => c.CharacterId!).ToList();
-        CareerFlow.ConcludeElection(campaign.Context, CampaignKit.LegislatureContext(state), CampaignKit.ExecutiveContext(state), comGancho ? engine : null);
+        CareerFlow.ConcludeElection(campaign.Context, CampaignKit.LegislatureContext(state), CampaignKit.ExecutiveContext(state), renewal: comGancho ? engine : null);
         Assert.Equal(comGancho, r.Eleitos is { Jogada: true });
         world.AdvanceTo(state.Calendar.WeekStart);
         if (comGancho)

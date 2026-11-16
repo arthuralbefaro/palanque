@@ -20,7 +20,10 @@ public sealed class BudgetArea
 
     public required double ReferenceShare { get; init; }
 
-    /// <summary>Mínimo constitucional ou legal (saúde 15%, educação 25%); 0 se não houver.</summary>
+    /// <summary>
+    /// Piso de jogo da área, em parcela do orçamento (0 se não houver). Os mínimos de saúde e de educação não ficam
+    /// aqui: vêm da lei, sobre a base de impostos e transferências (<see cref="Governance.FiscalLawConfig"/>).
+    /// </summary>
     public required double MinimumShare { get; init; }
 
     public required Dictionary<string, double> Effects { get; init; }
@@ -104,6 +107,14 @@ public sealed class ExecutiveConfig : IValidatable
 
     public required double EmendasImpositivasShare { get; init; }
 
+    public required string TaxBaseShareNote { get; init; }
+
+    /// <summary>
+    /// Fatia do orçamento que é base dos mínimos de saúde e de educação (impostos próprios e transferências de
+    /// impostos ÷ receita), por porte. Estimativa de jogo até as transferências serem importadas.
+    /// </summary>
+    public required Dictionary<string, double> TaxBaseShare { get; init; }
+
     public BudgetArea Area(string id) => Areas.First(a => a.Id == id);
 
     public IEnumerable<string> Validate()
@@ -138,6 +149,17 @@ public sealed class ExecutiveConfig : IValidatable
             {
                 yield return $"group_weights.{group}: indicador '{i}' inexistente.";
             }
+        }
+
+        Governance.FiscalLawConfig law = Governance.FiscalLawConfig.Default;
+        foreach (BudgetArea a in Areas.Where(a => law.MinimoDaArea(a.Id) > 0 && a.MinimumShare > 0))
+        {
+            yield return $"{a.Id}: o mínimo vem da lei ({(a.Id == law.AreaSaude ? law.ArtigoSaude : law.ArtigoEducacao)}); minimum_share deve ser 0.";
+        }
+
+        if (TaxBaseShare.Count == 0 || TaxBaseShare.Values.Any(v => v is <= 0 or > 1))
+        {
+            yield return "tax_base_share: fração em (0, 1] para cada porte.";
         }
 
         if (IndicatorSpeedPerWeek is <= 0 or > 1 || CrisisChancePerWeek is < 0 or > 1 || Secretarias < 1 || WeeklyEnergy <= 0)
@@ -209,6 +231,30 @@ public sealed class CrisisChoice
     public required double Image { get; init; }
 }
 
+/// <summary>
+/// A causa de uma crise (GDD 17.15): o fato do estado do jogo sem o qual ela não acontece. Com o governo da R4, crise
+/// sem causa não ocorre.
+/// </summary>
+public sealed class CrisisCause
+{
+    /// <summary>negociacao_falhou, zona_sem_drenagem, secretario, indicador_baixo ou receita_em_queda.</summary>
+    public required string Kind { get; init; }
+
+    /// <summary>Chance por semana enquanto a causa vale (na greve não se usa: ela nasce da negociação que falhou).</summary>
+    public required double Chance { get; init; }
+
+    /// <summary>Semanas até a mesma crise poder voltar.</summary>
+    public required int CooldownWeeks { get; init; }
+
+    /// <summary>Para indicador_baixo: o indicador e o valor abaixo do qual a causa vale.</summary>
+    public string? Indicator { get; init; }
+
+    public double Below { get; init; }
+
+    /// <summary>A causa por extenso, mostrada com a crise; aceita {zona}, {pessoa}, {secretaria}, {categoria}, {indicador}, {valor}, {queda}.</summary>
+    public required string Text { get; init; }
+}
+
 public sealed class CrisisDefinition
 {
     public required string Id { get; init; }
@@ -228,6 +274,9 @@ public sealed class CrisisDefinition
     public required Dictionary<string, double> Shock { get; init; }
 
     public required List<CrisisChoice> Choices { get; init; }
+
+    /// <summary>O antecedente da crise no estado do jogo; null só em conteúdo antigo (aí ela não ocorre com o governo da R4).</summary>
+    public CrisisCause? Cause { get; init; }
 }
 
 public sealed class CrisisCatalog : IValidatable
@@ -241,6 +290,24 @@ public sealed class CrisisCatalog : IValidatable
         foreach (CrisisDefinition c in Crises.Where(c => c.Choices.Count == 0 || c.Weight < 0 || c.Months.Any(m => m is < 1 or > 12)))
         {
             yield return $"{c.Id}: ao menos uma escolha, peso não negativo e meses de 1 a 12.";
+        }
+
+        string[] kinds =
+        [
+            Governance.CrisisRecord.CausaNegociacao, Governance.CrisisRecord.CausaZonaSemDrenagem, Governance.CrisisRecord.CausaSecretario, Governance.CrisisRecord.CausaIndicador,
+            Governance.CrisisRecord.CausaReceita,
+        ];
+        foreach (CrisisDefinition c in Crises)
+        {
+            if (c.Cause is not { } cause)
+            {
+                yield return $"{c.Id}: toda crise precisa de causa (GDD 17.15).";
+            }
+            else if (!kinds.Contains(cause.Kind) || cause.Chance is < 0 or > 1 || cause.CooldownWeeks < 0 || string.IsNullOrWhiteSpace(cause.Text)
+                || (cause.Kind == Governance.CrisisRecord.CausaIndicador && cause.Indicator is null))
+            {
+                yield return $"{c.Id}: causa com tipo conhecido, chance entre 0 e 1, texto e, em indicador_baixo, o indicador.";
+            }
         }
     }
 }
@@ -273,7 +340,7 @@ public sealed class ExecutiveContent
         var crisisErrors = crises.Errors.ToList();
         var configErrors = config.Errors.ToList();
         policyErrors.AddRange((policies.Value?.Policies ?? []).SelectMany(p => p.Boosts.Keys.Where(i => !indicators.Contains(i)).Select(i => $"{p.Id}: indicador '{i}' inexistente.")));
-        crisisErrors.AddRange((crises.Value?.Crises ?? []).SelectMany(c => c.Shock.Keys.Concat(c.WorseWhenBelow.Keys).Concat(c.Choices.SelectMany(ch => ch.Indicators.Keys))
+        crisisErrors.AddRange((crises.Value?.Crises ?? []).SelectMany(c => c.Shock.Keys.Concat(c.WorseWhenBelow.Keys).Concat(c.Choices.SelectMany(ch => ch.Indicators.Keys)).Concat(c.Cause?.Indicator is { } i ? [i] : [])
             .Where(i => !indicators.Contains(i)).Select(i => $"{c.Id}: indicador '{i}' inexistente.")));
         if (groups is not null)
         {

@@ -2,6 +2,7 @@
   "crises": [
     {
       "id": "enchente",
+      "cause": { "kind": "zona_sem_drenagem", "chance": 0.12, "cooldown_weeks": 20, "text": "{zona} não tem obra de drenagem entregue; a chuva forte encheu as ruas." },
       "name": "Enchente",
       "text": "A chuva da madrugada fez o rio transbordar. Há famílias desalojadas e ruas debaixo d'água.",
       "months": [12, 1, 2, 3],
@@ -16,6 +17,7 @@
     },
     {
       "id": "dengue",
+      "cause": { "kind": "indicador_baixo", "chance": 0.08, "cooldown_weeks": 40, "indicator": "saude", "below": 45, "text": "O indicador de {indicador} do município caiu a {valor}: a rede de saúde não segurou o surto." },
       "name": "Epidemia de dengue",
       "text": "Os casos de dengue triplicaram em um mês e os postos estão lotados.",
       "months": [1, 2, 3, 4, 5],
@@ -30,6 +32,7 @@
     },
     {
       "id": "greve_professores",
+      "cause": { "kind": "negociacao_falhou", "chance": 1, "cooldown_weeks": 0, "text": "A {mesa} terminou sem acordo: a prefeitura ofereceu {oferta} e {categoria} pediam {pedido}." },
       "name": "Greve dos professores",
       "text": "Os professores da rede municipal pararam pedindo reposição salarial.",
       "months": [],
@@ -44,6 +47,7 @@
     },
     {
       "id": "greve_onibus",
+      "cause": { "kind": "negociacao_falhou", "chance": 1, "cooldown_weeks": 0, "text": "A {mesa}, mediada pela prefeitura, terminou sem acordo: a oferta ficou em {oferta} e {categoria} pediam {pedido}." },
       "name": "Greve no transporte coletivo",
       "text": "Motoristas e cobradores cruzaram os braços por salários atrasados pela empresa de ônibus.",
       "months": [],
@@ -58,6 +62,7 @@
     },
     {
       "id": "escandalo_secretario",
+      "cause": { "kind": "secretario", "chance": 0.01, "cooldown_weeks": 52, "text": "{pessoa}, titular de {secretaria}, contratava sem controle; a fama de pouca integridade já corria na prefeitura." },
       "name": "Escândalo na secretaria",
       "text": "Um jornal mostrou um secretário municipal contratando a empresa do cunhado sem licitação.",
       "months": [],
@@ -72,6 +77,7 @@
     },
     {
       "id": "queda_arrecadacao",
+      "cause": { "kind": "receita_em_queda", "chance": 0.15, "cooldown_weeks": 40, "text": "A receita corrente do município caiu {queda} neste ano." },
       "name": "Queda na arrecadação",
       "text": "Os repasses federais e o ICMS caíram com a economia. O caixa da prefeitura não fecha o mês.",
       "months": [],
@@ -86,6 +92,7 @@
     },
     {
       "id": "onda_assaltos",
+      "cause": { "kind": "indicador_baixo", "chance": 0.06, "cooldown_weeks": 40, "indicator": "seguranca", "below": 40, "text": "O indicador de {indicador} do município caiu a {valor}." },
       "name": "Onda de assaltos",
       "text": "Uma série de assaltos a ônibus e comércios virou manchete todos os dias.",
       "months": [],

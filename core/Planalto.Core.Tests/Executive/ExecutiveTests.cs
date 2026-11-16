@@ -119,7 +119,8 @@ public class ExecutiveTests
 
         Assert.Equal(ExecutiveFailure.OrcamentoInvalido, engine.SetAllocation(new Dictionary<string, double>(e.Allocation) { ["saude"] = 0.9 }));
 
-        allocation = new Dictionary<string, double>(e.Allocation) { ["educacao"] = 0.15, ["obras"] = e.Allocation["obras"] + (e.Allocation["educacao"] - 0.15) };
+        // O mínimo de 25% da educação incide sobre a base de impostos e transferências (cerca de 60% da receita): 10% do orçamento fica abaixo.
+        allocation = new Dictionary<string, double>(e.Allocation) { ["educacao"] = 0.10, ["obras"] = e.Allocation["obras"] + (e.Allocation["educacao"] - 0.10) };
         Assert.Null(engine.SetAllocation(allocation));
         Assert.Contains(engine.BelowMinimum, a => a.Id == "educacao");
         double image = e.Image;

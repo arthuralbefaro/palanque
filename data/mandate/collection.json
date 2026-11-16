@@ -1,0 +1,45 @@
+{
+  "note": "Cobrança do Livro de compromissos no mandato (GDD 17.14): promessas e dívidas registradas na campanha são cobradas por quem lembra (a pessoa a quem a promessa foi feita, ou a liderança da zona ou do grupo). A primeira cobrança vem nas primeiras semanas depois da posse; as seguintes, nas frações do prazo de 'cobrancas_no_prazo'. A promessa se cumpre pelos instrumentos: obra ou serviço entregue na zona com a mesma chave ('promessa_cumpre' para os pedidos de liderança; o campo 'obra' de data/campaign/promises.json para as promessas da plataforma), nomeação ('promessa_de_cargo'), o mandato presente na zona ('promessa_de_presenca') ou um projeto de lei no tema da liderança ('promessa_de_posicao'). Promessa vencida custa a relação, a presença na zona e o apoio de quem cobrou. Tudo aqui é parâmetro de jogo.",
+  "regras": {
+    "primeira_cobranca_semanas": { "min": 0, "max": 5 },
+    "cobrancas_no_prazo": [0.5, 0.85],
+    "divida_intervalo_semanas": 26,
+    "divida_cobrancas_maximas": 3,
+    "presenca_promessa_vencida": -3,
+    "imagem_promessa_vencida": -0.03,
+    "aprovacao_promessa_vencida": -3,
+    "presenca_promessa_cumprida": 2,
+    "imagem_promessa_cumprida": 0.015,
+    "prazo_minimo_semanas": 12
+  },
+  "promessa_cumpre": {
+    "obra_bairro": ["pavimentacao", "iluminacao"],
+    "obra_creche": ["creche"],
+    "obra_estrada": ["estrada"]
+  },
+  "promessa_de_cargo": ["vaga_gabinete", "cargo_equipe"],
+  "promessa_de_presenca": ["presenca_evento"],
+  "promessa_de_posicao": ["posicao_tema"],
+  "promessa_de_obra_na_zona": ["obra_na_zona"],
+  "lembrancas": {
+    "cobrou": { "peso": 1, "pontos": 0, "texto": "Cobrei: {promessa}" },
+    "cumpriu": { "peso": 3, "pontos": 14, "texto": "Cumpriu o prometido: {promessa}" },
+    "venceu": { "peso": -3, "pontos": -22, "texto": "Prometeu e não cumpriu: {promessa}" },
+    "divida_quitada": { "peso": 2, "pontos": 10, "texto": "Lembrou de quem ajudou na campanha" },
+    "divida_ignorada": { "peso": -2, "pontos": -14, "texto": "Ajudei na campanha e fui esquecido: {promessa}" },
+    "obra_anunciada": { "peso": 1, "pontos": 3, "texto": "Anunciou {obra} para {zona}" }
+  },
+  "textos": {
+    "cobranca_pessoa": "Cobrança de {nome} ({vez}ª vez): {promessa}. Prazo: {prazo}",
+    "cobranca_zona": "Cobrança de {nome}, em nome da zona ({vez}ª vez): {promessa}. Prazo: {prazo}",
+    "cobranca_grupo": "Cobrança de {nome}, em nome do grupo ({vez}ª vez): {promessa}. Prazo: {prazo}",
+    "cobranca_divida": "{nome} lembra você do que fez na campanha: {divida}",
+    "cumprida": "Promessa cumprida: {promessa}",
+    "vencida": "Promessa vencida: {promessa}. Quem cobrava não esquece",
+    "divida_quitada": "Dívida de campanha quitada com {nome}: {divida}",
+    "divida_esquecida": "{nome} desistiu de esperar: {divida}",
+    "lideranca_desafiante": "{nome} deixa de apoiar você em {zona} e passa a procurar um desafiante",
+    "quem_moradores": "moradores de {zona}",
+    "quem_grupo": "eleitores do grupo"
+  }
+}

@@ -2,6 +2,7 @@ using System.Globalization;
 using Planalto.Core.Campaign;
 using Planalto.Core.Elections;
 using Planalto.Core.Executive;
+using Planalto.Core.Governance;
 using Planalto.Core.Legislature;
 using Planalto.Core.State;
 using Calendar = Planalto.Core.State.Calendar;
@@ -42,8 +43,13 @@ public static class CareerFlow
     /// <param name="campaignContext">Contexto da campanha apurada.</param>
     /// <param name="legislatureContext">Contexto do mandato de vereador.</param>
     /// <param name="executiveContext">Contexto da prefeitura; obrigatório se o jogador foi eleito prefeito.</param>
+    /// <param name="governanceContext">
+    /// Com ele, o eleito toma posse com o governo da cidade montado (obras, secretários, gabinete, cobranças: GDD 17.14
+    /// e 17.15). Sem ele, o mandato roda só com os motores antigos.
+    /// </param>
     /// <param name="renewal">Renovação do mundo político (GDD 17.16): recebe os eleitos e os suplentes para a posse.</param>
-    public static void ConcludeElection(CampaignContext campaignContext, LegislatureContext legislatureContext, ExecutiveContext? executiveContext = null, Renewal.RenewalEngine? renewal = null)
+    public static void ConcludeElection(
+        CampaignContext campaignContext, LegislatureContext legislatureContext, ExecutiveContext? executiveContext = null, GovernanceContext? governanceContext = null, Renewal.RenewalEngine? renewal = null)
     {
         GameState state = campaignContext.State;
         CampaignState campaign = state.Campaign ?? throw new InvalidOperationException("Sem campanha para concluir.");
@@ -61,6 +67,12 @@ public static class CareerFlow
             : null;
         state.Campaign = null;
         state.Calendar.JumpTo(new DateOnly(outcome.Date.Year + 1, 1, 1));
+        GovernanceState? previous = state.Governance;
+        state.Governance = null;
+        if (governanceContext is not null && (state.Mandate is not null || state.Executive is not null))
+        {
+            state.Governance = GovernanceEngine.Start(governanceContext, campaign.Territory, previous);
+        }
     }
 
     /// <summary>
@@ -133,12 +145,21 @@ public static class CareerFlow
     /// <param name="legislature">Motor do mandato de vereador, se houver.</param>
     /// <param name="founding">Fundação de partido em curso, se houver.</param>
     /// <param name="executive">Motor da prefeitura, se houver.</param>
+    /// <param name="governance">
+    /// Governo da cidade (GDD 17.14 e 17.15): roda depois da semana do mandato, com as votações já feitas, e antes de
+    /// o calendário andar.
+    /// </param>
     /// <param name="world">O mundo que anda sozinho (indicadores e renovação); anda até a semana do calendário antes de tudo.</param>
     public static void AdvanceWeek(
-        GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null, ExecutiveEngine? executive = null, World.WorldEngine? world = null)
+        GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null, ExecutiveEngine? executive = null, GovernanceEngine? governance = null, World.WorldEngine? world = null)
     {
         world?.AdvanceTo(state.Calendar.WeekStart);
         founding?.Tick();
+        if (state.Governance is null)
+        {
+            governance = null;
+        }
+
         if (state.Campaign is not null)
         {
             if (campaign is null)
@@ -156,6 +177,7 @@ public static class CareerFlow
                 executive.ResolveWeek(automatic: true);
             }
 
+            governance?.ResolveWeek(automatic: true);
             campaign.AdvanceWeek();
             return;
         }
@@ -163,8 +185,10 @@ public static class CareerFlow
         if (state.Executive is not null)
         {
             ExecutiveEngine engine = executive ?? throw new InvalidOperationException("Prefeitura sem motor.");
-            engine.AdvanceWeek();
-            if (engine.Over)
+            engine.ResolveWeek(automatic: false);
+            governance?.ResolveWeek();
+            state.Calendar.AdvanceWeek();
+            if (state.Executive is not null && engine.Over)
             {
                 state.Executive = null;
             }
@@ -175,7 +199,9 @@ public static class CareerFlow
         if (state.Mandate is not null)
         {
             LegislatureEngine engine = legislature ?? throw new InvalidOperationException("Mandato em curso sem motor.");
-            engine.AdvanceWeek();
+            engine.ResolveWeek(automatic: false);
+            governance?.ResolveWeek();
+            state.Calendar.AdvanceWeek();
             if (engine.Over)
             {
                 // Mandato terminado sem disputa de reeleição (ex.: sem partido no prazo de filiação).
