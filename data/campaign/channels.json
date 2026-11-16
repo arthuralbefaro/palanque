@@ -27,26 +27,26 @@
     {
       "id": "rua", "nome": "Rua", "alvo": "zona",
       "descricao": "Carro de som, bandeiras e estrutura de comício numa zona. Rende presença ali e reforça caminhada e comício.",
-      "k_presenca": 1.0, "k_apoio": 0
+      "k_presenca": 0.9, "k_apoio": 0
     },
     {
       "id": "redes", "nome": "Redes", "alvo": "idade", "impulsionamento": true,
       "descricao": "Produção e impulsionamento pago de conteúdo para uma faixa de idade. Rende mais entre os mais jovens.",
-      "k_presenca": 4.5, "k_apoio": 0.036,
+      "k_presenca": 6.75, "k_apoio": 0.054,
       "equipe_funcao": "social_media", "equipe_efeito": "alcance",
-      "pre_campanha": { "teto": 150, "fator": 0.6 }
+      "pre_campanha": { "teto": 150, "fator": 0.4 }
     },
     {
       "id": "material", "nome": "Material gráfico", "alvo": "zona",
       "descricao": "Santinhos, adesivos e impressos numa zona. Presença menor, que dura, e sem ele os cabos rendem a metade.",
-      "k_presenca": 0.9, "k_apoio": 0,
+      "k_presenca": 1.08, "k_apoio": 0,
       "equipe_funcao": "marqueteiro", "equipe_efeito": "rendimento",
-      "pre_campanha": { "teto": 150, "fator": 0.6 }
+      "pre_campanha": { "teto": 150, "fator": 0.5 }
     },
     {
       "id": "cabos", "nome": "Cabos eleitorais", "alvo": "zona", "em_grupos": true,
       "descricao": "Gente contratada para pedir voto numa zona, em grupos de 5, até o limite da lei. Converte indecisos e segura a presença.",
-      "k_presenca": 1.0, "k_apoio": 0.12
+      "k_presenca": 0.72, "k_apoio": 0.084
     }
   ],
   "faixas_idade": [
