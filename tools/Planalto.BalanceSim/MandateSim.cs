@@ -104,7 +104,7 @@ public static class MandateSim
         report.AppendLine();
         report.AppendLine(string.Format(culture, "Robô que cumpre o mandato de vereador escolhendo, em cada um dos {0} turnos da semana, a opção de instrumento de maior ganho previsto (instrumento e alvo), a partir das previsões que o jogo mostra ao jogador. {1} mandatos por porte, em {2} cidades sorteadas por porte (semente {3}).", governance.Instruments.Regras.TurnosPorSemana, mandates, cities, seed));
         report.AppendLine();
-        report.AppendLine("Como o robô chega ao mandato: a campanha não é o objeto desta medição. Ela é jogada sem agenda, com a presença do candidato mantida em pelo menos 60 em todas as zonas para que ele se eleja (se não se eleger, a preparação é refeita com outra semente), e com até 3 promessas de obra feitas a zonas (para haver cobrança no mandato).");
+        report.AppendLine("Como o robô chega ao mandato: a campanha não é o objeto desta medição. Ela é jogada sem agenda, com a presença do candidato mantida em pelo menos 60 em todas as zonas para que ele se eleja (se não se eleger, a preparação é refeita com outra semente; depois de seis preparações sem eleição, o piso sobe para 75 e depois para 90, porque os rivais recalibrados na R3 são mais duros), e com até 3 promessas de obra feitas a zonas (para haver cobrança no mandato).");
         report.AppendLine();
         report.AppendLine(string.Format(culture, "Como o robô compara opções (juízo do robô, não regra do jogo): soma as linhas da previsão em pontos de presença na cidade. Presença na zona vale pela fatia da zona na população, tanto a de agora quanto a esperada depois (obra entregue); imagem vale {0:0} pontos por unidade; promessa cumprida, {1:0.0}; capital político, {2:0.00} por ponto; relação com o prefeito, {3:0.00} por ponto; relação com um colega, {4:0.00}; esqueleto no Livro, {5:0.0} por ponto de gravidade. No gabinete, nomeia primeiro quem tem vaga prometida; nas decisões (eventos e achados da fiscalização), escolhe a opção de maior valor pela mesma conta; inaugura toda obra pronta; vota pela orientação do partido.", ImageWeight, PromiseWeight, CapitalWeight, MayorWeight, RelationWeight, SkeletonWeight));
         report.AppendLine();
@@ -126,15 +126,17 @@ public static class MandateSim
                 Municipio m = chosen[i % chosen.Count];
                 try
                 {
-                    // A campanha de preparação pode não eleger o candidato: tenta outras sementes na mesma cidade.
-                    for (ulong attempt = 0; attempt < 6 && traces[i] is null; attempt++)
+                    // A campanha de preparação pode não eleger o candidato: tenta outras sementes na mesma cidade e,
+                    // a cada seis tentativas sem eleição, sobe o piso de presença (os rivais da R3 são mais duros).
+                    for (ulong attempt = 0; attempt < PreparationAttempts && traces[i] is null; attempt++)
                     {
-                        traces[i] = Play(content, legislature, executive, governance, linked, m, seed + (ulong)(1000 * (i + 1)) + attempt);
+                        double floor = PresenceFloors[(int)(attempt / 6)];
+                        traces[i] = Play(content, legislature, executive, governance, linked, m, seed + (ulong)(1000 * (i + 1)) + attempt, floor);
                     }
 
                     if (traces[i] is null)
                     {
-                        throw new InvalidOperationException("o candidato não se elegeu em 6 campanhas de preparação.");
+                        throw new InvalidOperationException($"o candidato não se elegeu em {PreparationAttempts} campanhas de preparação.");
                     }
                 }
                 catch (Exception ex)
@@ -241,7 +243,12 @@ public static class MandateSim
         return world;
     }
 
-    private static MandateTrace? Play(SimContent content, LegislatureContent legislature, ExecutiveContent executive, GovernanceContent governance, WorldContentSet linked, Municipio m, ulong seed)
+    /// <summary>Pisos de presença da campanha de preparação, seis tentativas cada.</summary>
+    private static readonly double[] PresenceFloors = [60, 75, 90];
+
+    private static readonly ulong PreparationAttempts = (ulong)(6 * PresenceFloors.Length);
+
+    private static MandateTrace? Play(SimContent content, LegislatureContent legislature, ExecutiveContent executive, GovernanceContent governance, WorldContentSet linked, Municipio m, ulong seed, double presenceFloor)
     {
         CampaignEngine campaign = content.NewCareer(m, seed, strongestParty: true);
         GameState state = campaign.Context.State;
@@ -267,7 +274,7 @@ public static class MandateSim
             double[] presence = race.Territory.Presence[RaceSetup.PlayerId];
             for (int z = 0; z < presence.Length; z++)
             {
-                presence[z] = Math.Max(presence[z], 60);
+                presence[z] = Math.Max(presence[z], presenceFloor);
             }
 
             ResolveCampaignPending(campaign);
