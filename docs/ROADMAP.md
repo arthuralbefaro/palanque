@@ -225,8 +225,13 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 **Protótipo** (entregue ao fim da `fase-r-final`):
 - Mantena (MG) e uma metrópole, com o mapa de base detalhado e os modos do jogo por cima.
 - Uma janela flutuante e o menu como cena.
-- 3 personagens em 3 expressões.
-- A cabeça é provisória, de base livre, e substituível pelo contrato técnico do ART_GUIDE (seção RV, "Cabeça substituível"), com a cena de teste de cabeça.
+- **Teste A/B de cabeça** (D-045, adendos), as duas pelo contrato técnico do ART_GUIDE (seção RV, "Cabeça substituível"), com a cena de teste de cabeça:
+  - **Cabeça A, base CC0:** a cabeça estilizada dos Human Base Meshes do Blender, adaptada ao contrato. Se a conversão exigir o Blender instalado, nada é instalado: fica a PENDENCIAS P-29 e o protótipo segue com a B.
+  - **Cabeça B, gerada por código:** formas suaves (cápsula, esferas, curvas) montadas no Godot ou por um gerador em `tools/`, sem pacote novo. Expressões por troca de peças ou textura do rosto, não por deformação. Estilo de boneco de desenho animado, não low-poly facetado.
+  - **Personagens:** para cada cabeça, os mesmos 3 personagens (pele clara, média e escura; gêneros e idades diferentes, um jovem e um idoso com grisalho e rugas pela Appearance), nas expressões neutra, sorriso e bravo, com cabelo e roupa trocáveis, cores por material e a cor do partido.
+  - **Prancha** em `docs/referencias/rv/`: A e B lado a lado, com os mesmos personagens e expressões, em retrato (512, 256 e 96 px, os tamanhos do cache) e em corpo inteiro na cena do menu, em 1366×768 e 1920×1080.
+  - **Autocrítica** de até 10 linhas no relatório da RV: o que ficou bom e ruim em cada uma, qual chega mais perto das referências com retoque, e onde só um artista resolveria. Nenhuma das duas é declarada boa o bastante: quem decide é o autor.
+  - **Verificação:** as duas cabeças carregam pelo mesmo código de personagem; trocar A por B não muda nada fora do nó da cabeça; o cache de retrato funciona nos três tamanhos; 60 FPS na cena do menu com os 6 personagens.
 
 **Critério de aprovação do protótipo** (o autor julga sem olhar o rosto):
 - composição das telas conforme as referências;
@@ -236,12 +241,12 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - 60 FPS com zoom e arraste;
 - mapa de base de uma metrópole pronto em menos de 3 segundos.
 
-**Critério do rosto** (só depois do teste pago do artista; não entra na aprovação do protótipo):
-- a cabeça de teste passa na cena de teste de cabeça (nomes, materiais, shape keys, orçamento);
+**Critério do rosto** (não entra na aprovação do protótipo; vale primeiro para as cabeças A e B do teste A/B e, se o autor reprovar as duas, para o teste pago do artista):
+- a cabeça passa na cena de teste de cabeça (nomes, materiais, expressões, orçamento);
 - as 3 expressões se distinguem nos retratos de 96 px e de 512 px;
 - a tintura funciona em todos os tons de pele do catálogo;
 - o estilo bate com as referências.
-Aprovado o teste, o contrato cobre as demais cabeças, as 8 expressões, os cabelos, as barbas e as roupas.
+Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se reprovar as duas, o briefing é usado; aprovado o teste do artista, o contrato cobre as demais cabeças, as 8 expressões, os cabelos, as barbas e as roupas.
 
 ## Fase 6 — Esfera estadual e federal
 > Só começa depois da Fase R aprovada. As esferas estadual e federal usam a tela central, o tempo corrente e os sistemas da seção 17 do GDD.

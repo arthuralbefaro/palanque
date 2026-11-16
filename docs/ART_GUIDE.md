@@ -217,7 +217,10 @@ O protótipo da RV usa uma cabeça provisória, montada de base livre CC0 (DECIS
 - **Expressões:** shape keys com nomes exatos. Peso 1 é a expressão inteira, e a neutra é a malha sem shape key. São as 8 expressões do GDD 3.6:
   - `expr_sorriso`, `expr_sorriso_largo`, `expr_preocupado`, `expr_bravo`, `expr_triste`, `expr_surpreso` e `expr_cansado`;
   - mais `piscar`, que se soma às demais.
-  A barba e as sobrancelhas separadas levam as shape keys da região que cobrem, com os mesmos nomes. O código liga a expressão do jogo à shape key pelo nome.
+  A barba e as sobrancelhas separadas levam as shape keys da região que cobrem, com os mesmos nomes. O código pede a expressão pelo nome; a cabeça declara num metadado (`modo_expressao`) como a realiza:
+  - `shape_keys`: por shape key com o nome, como acima. É o modo da cabeça do artista e da cabeça A do teste A/B.
+  - `pecas_do_rosto`: trocando peças ou a textura do rosto nos nós filhos `rosto_olhos`, `rosto_sobrancelhas` e `rosto_boca`, com uma variante por nome de expressão. É o modo da cabeça B do teste A/B.
+  O resto do personagem não sabe qual modo a cabeça usa: trocar uma cabeça por outra só mexe no nó da cabeça.
 - **Materiais tingíveis** (texturas em tons de cinza; o jogo multiplica pela cor da Appearance):
   - `pele` e `labios` (este derivado da pele);
   - `sobrancelha`, `cabelo` e `barba`, com a cor do cabelo. O grisalho vem do canal R das texturas `*_mascara`;
