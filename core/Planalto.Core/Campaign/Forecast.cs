@@ -30,15 +30,21 @@ public sealed record ForecastStage(IReadOnlyList<(double Chance, Effects Effects
 
 public static class Forecaster
 {
-    private sealed record Snapshot(double Recognition, double Image, decimal Money, IReadOnlyDictionary<string, double> Support);
+    /// <param name="Presence">Presença do jogador em cada zona (null quando a previsão não tem território).</param>
+    private sealed record Snapshot(double Recognition, double Image, decimal Money, IReadOnlyDictionary<string, double> Support, double[]? Presence = null);
 
     /// <summary>
     /// Enumera todas as combinações das etapas a partir do estado atual do candidato do jogador e devolve as faixas.
     /// A primeira etapa costuma ser a certa (chance 1); depois vêm teste de atributo e riscos.
     /// </summary>
-    public static Forecast Run(Candidate player, decimal money, double recognitionScale, IReadOnlyList<ForecastStage> stages)
+    /// <param name="territory">
+    /// Com o território, o reconhecimento é previsto como acontece: a mudança vale em cada zona (com o piso e o teto
+    /// de cada uma) e o da cidade é a média pela população (GDD 17.5).
+    /// </param>
+    public static Forecast Run(Candidate player, decimal money, double recognitionScale, IReadOnlyList<ForecastStage> stages, Territory.TerritoryState? territory = null)
     {
-        var start = new Snapshot(player.Recognition, player.Image, money, new Dictionary<string, double>(player.Support));
+        double[]? presence = territory is not null && territory.Presence.TryGetValue(player.Id, out double[]? p) ? [.. p] : null;
+        var start = new Snapshot(presence is null ? player.Recognition : Average(presence, territory!), player.Image, money, new Dictionary<string, double>(player.Support), presence);
         var results = new List<(double P, Snapshot S)>();
         Walk(start, 1, 0);
 
@@ -77,12 +83,18 @@ public static class Forecaster
 
             foreach (var (chance, effects, _) in stages[index].Branches.Where(b => b.Chance > 0))
             {
-                Walk(Apply(s, effects, recognitionScale), p * chance, index + 1);
+                Walk(Apply(s, effects, recognitionScale, territory), p * chance, index + 1);
             }
         }
     }
 
-    private static Snapshot Apply(Snapshot s, Effects e, double recognitionScale)
+    private static double Average(double[] presence, Territory.TerritoryState territory)
+    {
+        double pop = territory.Population.Sum(x => (double)x);
+        return pop <= 0 ? presence.Average() : presence.Select((v, i) => v * territory.Population[i]).Sum() / pop;
+    }
+
+    private static Snapshot Apply(Snapshot s, Effects e, double recognitionScale, Territory.TerritoryState? territory)
     {
         var support = new Dictionary<string, double>(s.Support);
         foreach (var (group, delta) in e.Support)
@@ -90,11 +102,13 @@ public static class Forecaster
             support[group] = Math.Clamp(support.GetValueOrDefault(group) + delta, 0, 1);
         }
 
+        double[]? presence = s.Presence?.Select(v => EffectApplier.Gain(v, e.Recognition * recognitionScale)).ToArray();
         return new Snapshot(
-            EffectApplier.Gain(s.Recognition, e.Recognition * recognitionScale),
+            presence is null ? EffectApplier.Gain(s.Recognition, e.Recognition * recognitionScale) : Average(presence, territory!),
             Math.Clamp(s.Image + e.Image, -1, 1),
             s.Money + e.Money,
-            support);
+            support,
+            presence);
     }
 
     public static ForecastStage Certain(Effects effects) => new([(1, effects, "")]);
@@ -115,6 +129,6 @@ public static class Forecaster
             stages.Add(Test(chance, test.Success, test.SuccessText, test.Failure, test.FailureText));
         }
 
-        return Run(ctx.State.Campaign!.Player, ctx.State.Player.Resources.Money, 1, stages);
+        return Run(ctx.State.Campaign!.Player, ctx.State.Player.Resources.Money, 1, stages, ctx.State.Campaign.Territory);
     }
 }

@@ -77,8 +77,10 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.ForaDoPrazo;
         }
 
+        // Turno já usado hoje (o compromisso aconteceu e saiu da lista de marcados) continua ocupado.
         if ((int)r.Turno + type.Turnos > 3 || TurnsOf(type, r.Turno).Any(t => Agenda.At(r.Date, t) is not null)
-            || Agenda.Scheduled.Any(c => c.Date == r.Date && TurnsOf(Commitments.Get(c.Type), c.Turno).Intersect(TurnsOf(type, r.Turno)).Any()))
+            || Agenda.Scheduled.Any(c => c.Date == r.Date && TurnsOf(Commitments.Get(c.Type), c.Turno).Intersect(TurnsOf(type, r.Turno)).Any())
+            || Agenda.Log.Any(x => x.Commitment.Date == r.Date && TurnsOf(Commitments.Get(x.Commitment.Type), x.Commitment.Turno).Intersect(TurnsOf(type, r.Turno)).Any()))
         {
             return ScheduleFailure.TurnoOcupado;
         }
@@ -156,7 +158,9 @@ public sealed partial class CampaignEngine
         if (type.ExigeZona && zone >= 0 && Rules.PortesComDeslocamento.Contains(Context.Municipio.Porte))
         {
             Zona here = Context.Zonas.Zonas[zone];
-            bool far = Agenda.Scheduled.Any(c => c.Date == r.Date && c.Turno < r.Turno && c.ZoneId is not null && c.ZoneId != r.ZoneId && !here.Vizinhas.Contains(c.ZoneId));
+            // Conta também o que já aconteceu hoje: na execução o compromisso anterior já saiu da lista de marcados.
+            bool far = Agenda.Scheduled.Concat(Agenda.Log.Select(x => x.Commitment))
+                .Any(c => c.Date == r.Date && c.Turno < r.Turno && c.ZoneId is not null && c.ZoneId != r.ZoneId && !here.Vizinhas.Contains(c.ZoneId));
             if (far)
             {
                 factors.Add(Factor("deslocamento", "Deslocamento entre zonas distantes no mesmo dia", 1 - Rules.DeslocamentoPerda));
@@ -324,6 +328,9 @@ public sealed partial class CampaignEngine
                 continue;
             }
 
+            // Cada compromisso acontece na data dele (a virada da semana executa os que restam): lembranças e feed
+            // gravam esse dia.
+            State.Time.Day = Math.Clamp(c.Date.DayNumber - State.Calendar.WeekStart.DayNumber, State.Time.Day, 6);
             results.Add(Run(c));
         }
 
