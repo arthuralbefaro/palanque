@@ -69,6 +69,12 @@ public sealed class GameState
 
     public int FormatVersion { get; init; } = CurrentFormatVersion;
 
+    /// <summary>
+    /// Versão da divisão em zonas com que a carreira foi criada (<see cref="Territory.ZonasPaths.Versao"/>). Save sem o
+    /// campo é anterior à versão 2; o carregamento recusa versão diferente da atual (ver <see cref="Save.SaveZoneCheck"/>).
+    /// </summary>
+    public int ZonasVersao { get; init; } = Territory.ZonasPaths.Versao;
+
     public required Calendar Calendar { get; init; }
 
     /// <summary>Dia da semana dentro do calendário (tempo corrente, GDD 17.4).</summary>

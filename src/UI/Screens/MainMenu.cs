@@ -38,14 +38,36 @@ public partial class MainMenu : Control
             menu.SetItemDisabled(0, true);
         }
 
-        menu.IndexPressed += i =>
-        {
-            if (saves.Load(existing[(int)i]) is null)
-            {
-                Autoload.Game.Instance.GoToCareer();
-            }
-        };
+        menu.IndexPressed += i => TryLoad(existing[(int)i]);
         AddChild(menu);
         menu.PopupCentered();
+    }
+
+    /// <summary>
+    /// Abre o save e segue para a carreira; se o save não abre (versão, divisão de zonas antiga, arquivo corrompido),
+    /// mostra o motivo e fica no menu. Devolve a mensagem de erro, ou null se abriu.
+    /// </summary>
+    public string? TryLoad(string slot)
+    {
+        string? error = Autoload.SaveManager.Instance.Load(slot);
+        if (error is null)
+        {
+            Autoload.Game.Instance.GoToCareer();
+            return null;
+        }
+
+        var dialog = new AcceptDialog
+        {
+            Name = "ErroAoCarregar",
+            Title = Tr("Não foi possível abrir o jogo salvo"),
+            DialogText = Tr(error),
+            OkButtonText = Tr("Voltar ao menu"),
+            DialogAutowrap = true,
+        };
+        dialog.Confirmed += dialog.QueueFree;
+        dialog.Canceled += dialog.QueueFree;
+        AddChild(dialog);
+        dialog.PopupCentered(new Vector2I(560, 0));
+        return error;
     }
 }

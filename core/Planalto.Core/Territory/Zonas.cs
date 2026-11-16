@@ -16,6 +16,12 @@ public sealed class ZonasUf : IValidatable
 
     public required string Metodo { get; init; }
 
+    /// <summary>
+    /// Versão da divisão em zonas (<see cref="ZonasPaths.Versao"/>) com que o arquivo foi gerado; arquivo sem o campo
+    /// é da primeira divisão.
+    /// </summary>
+    public int Versao { get; init; } = 1;
+
     public required List<ZonasMunicipio> Municipios { get; init; }
 
     public IEnumerable<string> Validate()
@@ -255,6 +261,14 @@ public sealed class GeoZona
 public static class ZonasPaths
 {
     public const string Directory = "zonas";
+
+    /// <summary>
+    /// Versão da divisão em zonas. Os ids ("código-número") são posições na ordem de população do município: quando o
+    /// modo "zonas" do importador muda a divisão, os ids passam a apontar para outras zonas, e o número sobe. O save
+    /// guarda a versão em que foi criado e não abre noutra (não há migração de ids). 1: zona rural sem divisão;
+    /// 2: zona rural dividida pelos distritos do IBGE.
+    /// </summary>
+    public const int Versao = 2;
 
     /// <summary>Teto de tamanho de data/geo/zonas/ no repositório (decisão do autor, GDD 17.20, item 2).</summary>
     public const long MaxGeoBytes = 30L * 1024 * 1024;

@@ -956,7 +956,7 @@ Também existem, no TSE (licença CC BY declarada): eleitorado por local de vota
 
 **Como as zonas são formadas** (novo modo `zonas` do DataImporter; os brutos ficam no cache, fora do Git):
 1. Setores urbanos e rurais nunca entram na mesma zona.
-2. Cada distrito fora da sede vira uma zona, ou é agrupado com o vizinho até o mínimo de população da zona.
+2. Cada distrito fora da sede vira uma zona, ou é agrupado com o vizinho até o mínimo de população da zona. Na parte RV (o mapa de base refeito), as localidades da Base Cartográfica Contínua 1:250.000 (BC250) do IBGE (vilas, povoados, lugarejos) poderão refinar a divisão da zona rural dentro de cada distrito e dar nome às zonas rurais que hoje levam nome gerado.
 3. Na sede, onde há bairros do IBGE, a zona é um grupo de bairros vizinhos e leva o nome do bairro mais populoso (`nome_fonte: "bairro_ibge"`).
 4. Onde não há bairros, os setores vizinhos são agrupados por contiguidade até equilibrar a população. O nome é o do distrito (`"distrito_ibge"`) ou descritivo, gerado pela posição em relação ao núcleo mais denso: "Centro", "Zona Norte", "Rural Leste" (`"gerado"`). Nome gerado é rótulo do jogo, não dado; a Ficha da zona diz isso.
 5. Contornos dissolvidos e simplificados pelo mesmo método da D-025; adjacência entre zonas gravada.
