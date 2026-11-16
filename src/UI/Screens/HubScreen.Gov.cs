@@ -650,10 +650,13 @@ public partial class HubScreen
         Heading(_left, Tr(area.Name ?? ""));
         GovHint(_area);
 
-        // Contas da última eleição (GDD 17.12): o andamento fica no resumo do mandato, da prefeitura e da entressafra.
-        if (_area == GovAreas[0].Id)
+        // Contas da última eleição (GDD 17.12): o andamento fica no resumo do mandato, da prefeitura e da entressafra;
+        // no alto quando há novidade na semana, e no fim do resumo no resto do tempo, para não empurrar a agenda.
+        bool accountsHere = _area == GovAreas[0].Id;
+        if (accountsHere && _game.AccountsNews.Count > 0)
         {
             AccountsCasePanel.BuildFromGame(_left);
+            accountsHere = false;
         }
 
         switch (_area)
@@ -675,6 +678,11 @@ public partial class HubScreen
             case "liderancas": BuildOffLeaders(); break;
             case "posicoes": BuildOffPositions(); break;
             default: BuildOffAgenda(); break;
+        }
+
+        if (accountsHere)
+        {
+            AccountsCasePanel.BuildFromGame(_left);
         }
 
         GovLog();
