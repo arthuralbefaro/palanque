@@ -1,0 +1,14 @@
+{
+  "note": "Território (GDD 17.5). Zonas por porte (o número dentro da faixa cresce com a posição do município entre os do mesmo porte, pela população); orçamento de vértices por zona na simplificação dos contornos (teto de 30 MB para data/geo/zonas/, decisão do autor); cobertura mínima de um bloco do perfil para a zona usar o próprio dado (regra de sigilo).",
+  "zonas_por_porte": {
+    "pequeno": { "min": 3, "max": 5 },
+    "medio": { "min": 5, "max": 8 },
+    "grande": { "min": 8, "max": 12 },
+    "metropole": { "min": 12, "max": 20 }
+  },
+  "vertices_por_zona": 34,
+  "tolerancia_inicial_graus": 0.0005,
+  "tolerancia_maxima_graus": 0.05,
+  "cobertura_minima": 0.8,
+  "distrito_dominante": 0.8
+}

@@ -1,0 +1,99 @@
+using Planalto.Core.Data;
+using Planalto.Core.Municipios;
+using Planalto.Core.Territory;
+using Planalto.Core.Tests.Campaign;
+using Planalto.Core.Tests.Parties;
+
+namespace Planalto.Core.Tests.Territory;
+
+/// <summary>Zonas geradas pelo importador (GDD 17.5): cobertura de todos os municípios, população, sigilo e tamanho.</summary>
+public class ZonasDataTests
+{
+    private static readonly Lazy<Dictionary<string, (ZonasUf Zonas, GeoZonasUf Geo)>> Files = new(() =>
+        CampaignKit.C.Municipios.All.Select(m => m.Uf).Distinct().ToDictionary(
+            uf => uf,
+            uf => (ZonasPaths.Load(TestContent.DataDirectory, uf).GetValueOrThrow(), ZonasPaths.LoadGeo(TestContent.DataDirectory, uf).GetValueOrThrow())));
+
+    private static TerritoryConfig Config => JsonData.LoadFile<TerritoryConfig>(Path.Combine(TestContent.DataDirectory, TerritoryConfig.File)).GetValueOrThrow();
+
+    [Fact]
+    public void Todo_municipio_tem_zonas_e_a_populacao_bate_com_o_Censo_sem_tolerancia()
+    {
+        var zonas = Files.Value.Values.SelectMany(f => f.Zonas.Municipios).ToDictionary(m => m.CodigoIbge);
+        foreach (Municipio m in CampaignKit.C.Municipios.All)
+        {
+            Assert.True(zonas.TryGetValue(m.CodigoIbge, out ZonasMunicipio? z), $"{m.CodigoIbge} sem zonas");
+            Assert.NotEmpty(z!.Zonas);
+            if (m.PerfilFonte == Municipio.PerfilFonteMunicipio)
+            {
+                Assert.Equal(m.Perfil.PopulacaoCenso, z.Populacao);
+            }
+        }
+
+        Assert.Equal(CampaignKit.C.Municipios.All.Count(), zonas.Count);
+    }
+
+    [Fact]
+    public void Numero_de_zonas_respeita_o_porte_e_urbano_nao_se_mistura_com_rural()
+    {
+        TerritoryConfig config = Config;
+        var porte = CampaignKit.C.Municipios.All.ToDictionary(m => m.CodigoIbge, m => m.Porte);
+        foreach (ZonasMunicipio m in Files.Value.Values.SelectMany(f => f.Zonas.Municipios))
+        {
+            var range = config.ZonasPorPorte[porte[m.CodigoIbge]];
+            Assert.True(m.Zonas.Count <= range.Max, $"{m.CodigoIbge}: {m.Zonas.Count} zonas, máximo {range.Max}");
+            Assert.All(m.Zonas, z => Assert.True(z.Situacao is Zona.Urbana or Zona.Rural));
+        }
+
+        // Quase todos chegam ao mínimo; só não chega quem tem menos setores que o mínimo.
+        double reached = Files.Value.Values.SelectMany(f => f.Zonas.Municipios).Count(m => m.Zonas.Count >= config.ZonasPorPorte[porte[m.CodigoIbge]].Min);
+        Assert.True(reached / porte.Count > 0.97, $"{reached} de {porte.Count} municípios no mínimo de zonas");
+    }
+
+    [Fact]
+    public void Regra_de_sigilo_cobertura_decide_a_fonte_do_perfil()
+    {
+        double minimum = Config.CoberturaMinima;
+        foreach (Zona z in Files.Value.Values.SelectMany(f => f.Zonas.Municipios).SelectMany(m => m.Zonas))
+        {
+            Assert.Empty(z.Perfil.Validate(z));
+            if (z.Perfil.IdadeFonte == PerfilZona.FonteZona)
+            {
+                Assert.True(z.Perfil.IdadeCobertura >= minimum, $"{z.Id}: idade própria com cobertura {z.Perfil.IdadeCobertura}");
+                Assert.True(z.Perfil.Idade.Values.Sum() <= z.Populacao, $"{z.Id}: faixas etárias acima da população");
+            }
+
+            if (z.Perfil.RendaFonte == PerfilZona.FonteZona)
+            {
+                Assert.True(z.Perfil.RendaCobertura >= minimum, $"{z.Id}: renda própria com cobertura {z.Perfil.RendaCobertura}");
+            }
+        }
+    }
+
+    [Fact]
+    public void Toda_zona_tem_contorno_e_os_contornos_cabem_no_teto()
+    {
+        long bytes = Directory.EnumerateFiles(ZonasPaths.GeoDirectory(TestContent.DataDirectory), "*.json").Sum(f => new FileInfo(f).Length);
+        Assert.True(bytes <= ZonasPaths.MaxGeoBytes, $"{bytes} bytes em data/geo/zonas/");
+        foreach (var (uf, (zonas, geo)) in Files.Value)
+        {
+            Assert.Empty(zonas.Validate());
+            Assert.Empty(geo.Validate());
+            var ids = geo.Zonas.Select(z => z.Id).ToHashSet(StringComparer.Ordinal);
+            Assert.All(zonas.Municipios.SelectMany(m => m.Zonas), z => Assert.Contains(z.Id, ids));
+        }
+    }
+
+    [Fact]
+    public void Vizinhanca_e_simetrica()
+    {
+        foreach (ZonasMunicipio m in Files.Value.Values.SelectMany(f => f.Zonas.Municipios))
+        {
+            var byId = m.Zonas.ToDictionary(z => z.Id);
+            foreach (Zona z in m.Zonas)
+            {
+                Assert.All(z.Vizinhas, v => Assert.Contains(z.Id, byId[v].Vizinhas));
+            }
+        }
+    }
+}

@@ -120,7 +120,7 @@ public static class GeoImport
         }
     }
 
-    private static List<GeoPolygon> Polygons(Geometry geometry, int code)
+    internal static List<GeoPolygon> Polygons(Geometry geometry, int code)
     {
         var parts = Enumerable.Range(0, geometry.NumGeometries)
             .Select(geometry.GetGeometryN)
