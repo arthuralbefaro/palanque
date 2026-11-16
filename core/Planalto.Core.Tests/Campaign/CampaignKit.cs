@@ -41,6 +41,8 @@ internal static class CampaignKit
 
         public LegislatureContent Legislature { get; }
 
+        public Planalto.Core.Debate.DebateContent Debate { get; } = JsonData.LoadFile<Planalto.Core.Debate.DebateContent>(Path.Combine(TestContent.DataDirectory, Planalto.Core.Debate.DebateContent.File)).GetValueOrThrow();
+
         public Planalto.Core.Executive.ExecutiveContent Executive { get; } = Planalto.Core.Executive.ExecutiveContent.LoadOrThrow(TestContent.DataDirectory);
 
         public PorteCatalog Portes { get; }
@@ -141,6 +143,7 @@ internal static class CampaignKit
             Themes = C.World.Parties.Themes,
             Events = C.Events,
             Portes = C.Portes,
+            Debate = C.Debate,
         };
     }
 }

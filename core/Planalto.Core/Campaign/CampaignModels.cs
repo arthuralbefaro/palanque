@@ -186,6 +186,12 @@ public sealed class CampaignState
 
     public Events.EventState Events { get; init; } = new();
 
+    /// <summary>Debate de TV marcado para esta semana (só na disputa de prefeito).</summary>
+    public Debate.DebateState? Debate { get; set; }
+
+    /// <summary>Datas de debate já realizadas ou recusadas.</summary>
+    public List<DateOnly> DebatesHeld { get; init; } = [];
+
     public Candidate Player => Candidates.First(c => c.IsPlayer);
 
     public IEnumerable<Candidate> ForOffice(Office office) => Candidates.Where(c => c.Office == office);

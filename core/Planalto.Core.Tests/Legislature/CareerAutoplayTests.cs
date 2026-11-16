@@ -138,6 +138,7 @@ public class CareerAutoplayTests
         while (state.Campaign!.Phase != CampaignPhase.Votacao)
         {
             Assert.True(++weeks < 60, "A campanha de reeleição não chegou à eleição.");
+            CampaignAutoplayTests.PlayDebate(campaign, policy);
             while (state.Campaign.Events.Pending.Count > 0)
             {
                 PendingEvent pending = state.Campaign.Events.Pending[0];

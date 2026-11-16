@@ -31,6 +31,9 @@ public sealed class CampaignContext
 
     public Events.EventContent? Events { get; init; }
 
+    /// <summary>Regras do debate; sem elas, não há debate na campanha.</summary>
+    public Debate.DebateContent? Debate { get; init; }
+
     public PorteCatalog? Portes { get; init; }
 
     public CampaignConfig Config => Campaign.Config;

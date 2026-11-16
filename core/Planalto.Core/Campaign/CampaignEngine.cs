@@ -166,6 +166,11 @@ public sealed class CampaignEngine(CampaignContext ctx)
             throw new InvalidOperationException("Há eventos esperando decisão.");
         }
 
+        if (Campaign.Debate is not null)
+        {
+            throw new InvalidOperationException("Há um debate marcado para esta semana.");
+        }
+
         if (Campaign.Phase is CampaignPhase.Votacao or CampaignPhase.Encerrada)
         {
             throw new InvalidOperationException("A semana da eleição se resolve na votação.");
@@ -200,6 +205,12 @@ public sealed class CampaignEngine(CampaignContext ctx)
         {
             EventEngine.Roll(Context, Rng);
         }
+
+        // Debate de prefeito na TV (GDD 5.7), nas semanas marcadas.
+        if (Context.Debate is { } debate && Debate.DebateEngine.ShouldSchedule(Context, debate))
+        {
+            Campaign.Debate = Debate.DebateEngine.Start(Context, debate, Rng);
+        }
     }
 
     /// <summary>Avança até a próxima semana com evento, até o início da campanha ou até a eleição.</summary>
@@ -209,7 +220,7 @@ public sealed class CampaignEngine(CampaignContext ctx)
         {
             AdvanceWeek();
         }
-        while (Campaign.Phase == CampaignPhase.PreCampanha && Campaign.Events.Pending.Count == 0);
+        while (Campaign.Phase == CampaignPhase.PreCampanha && Campaign.Events.Pending.Count == 0 && Campaign.Debate is null);
     }
 
     private void UpdatePhase()

@@ -101,6 +101,7 @@ public class CampaignAutoplayTests
     private static void ResolveEvents(CampaignEngine engine, Rng policy)
     {
         CampaignState campaign = engine.Context.State.Campaign!;
+        PlayDebate(engine, policy);
         while (campaign.Events.Pending.Count > 0)
         {
             PendingEvent pending = campaign.Events.Pending[0];
@@ -108,6 +109,24 @@ public class CampaignAutoplayTests
             var open = Enumerable.Range(0, definition.Choices.Count).Where(i => EventEngine.Blocked(engine.Context, definition.Choices[i]) is null).ToList();
             Assert.NotEmpty(open);
             EventEngine.Resolve(engine.Context, pending, policy.Pick(open), engine.Context.State.Rng);
+        }
+    }
+
+    /// <summary>Joga o debate marcado (se houver): carta sorteada da mão; ataques miram o primeiro rival.</summary>
+    internal static void PlayDebate(CampaignEngine engine, Rng policy)
+    {
+        CampaignState campaign = engine.Context.State.Campaign!;
+        while (campaign.Debate is { } debate)
+        {
+            if (debate.Finished)
+            {
+                Planalto.Core.Debate.DebateEngine.Close(campaign);
+                break;
+            }
+
+            string card = policy.Pick(debate.Hand);
+            string? target = engine.Context.Debate!.Card(card).Targeted ? debate.Participants[1] : null;
+            Planalto.Core.Debate.DebateEngine.Play(engine.Context, engine.Context.Debate!, card, target, engine.Context.State.Rng);
         }
     }
 

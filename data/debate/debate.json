@@ -1,0 +1,58 @@
+{
+  "rounds": 3,
+  "hand_size": 3,
+  "weeks_before_election": [5, 2],
+  "portes": ["medio", "grande", "metropole"],
+  "image_per_point": 0.012,
+  "exposure_recognition": 2.0,
+  "viral_chance": 0.15,
+  "viral_image": 0.05,
+  "decline_image": -0.04,
+  "topic_bonus": 0.5,
+  "hot_tempered_trait": "esquentado",
+  "hot_tempered_multiplier": 1.5,
+  "cards": [
+    {
+      "id": "proposta", "name": "Proposta",
+      "description": "Apresenta um plano concreto para o tema. Testa Gestão; rende mais quando o tema importa para quem assiste.",
+      "attribute": "gestao", "targeted": false, "blocks": false, "topic_sensitive": true,
+      "success": { "self": 3.0, "target": 0 }, "failure": { "self": 0.5, "target": 0 }
+    },
+    {
+      "id": "dado", "name": "Dado",
+      "description": "Cita números do município. Testa Gestão; um dado errado vira checagem e custa pontos.",
+      "attribute": "gestao", "targeted": false, "blocks": false, "topic_sensitive": true,
+      "success": { "self": 2.5, "target": 0 }, "failure": { "self": -1.0, "target": 0 }
+    },
+    {
+      "id": "ataque", "name": "Ataque",
+      "description": "Mira um adversário. Testa Carisma; acertando, ele perde pontos; errando, quem perde é você.",
+      "attribute": "carisma", "targeted": true, "blocks": false, "topic_sensitive": false,
+      "success": { "self": 1.0, "target": -3.0 }, "failure": { "self": -2.0, "target": 0 }
+    },
+    {
+      "id": "defesa", "name": "Defesa",
+      "description": "Prepara a resposta. Testa Articulação; reduz à metade os ataques sofridos nesta rodada.",
+      "attribute": "articulacao", "targeted": false, "blocks": true, "topic_sensitive": false,
+      "success": { "self": 1.0, "target": 0 }, "failure": { "self": 0, "target": 0 }
+    },
+    {
+      "id": "emocao", "name": "Emoção",
+      "description": "Conta uma história de vida. Testa Carisma; toca quem assiste, mas soa ensaiado se falhar.",
+      "attribute": "carisma", "targeted": false, "blocks": false, "topic_sensitive": false,
+      "success": { "self": 3.0, "target": 0 }, "failure": { "self": -1.0, "target": 0 }
+    },
+    {
+      "id": "evasiva", "name": "Evasiva",
+      "description": "Desvia da pergunta. Testa Oratória; ganha pouco e perde pouco.",
+      "attribute": "oratoria", "targeted": false, "blocks": false, "topic_sensitive": false,
+      "success": { "self": 0.8, "target": 0 }, "failure": { "self": 0.2, "target": 0 }
+    }
+  ],
+  "styles": [
+    { "id": "agressivo", "name": "Agressivo", "weights": { "ataque": 4, "defesa": 1, "emocao": 1, "proposta": 1, "dado": 1, "evasiva": 1 } },
+    { "id": "tecnico", "name": "Técnico", "weights": { "proposta": 3, "dado": 3, "defesa": 1, "ataque": 1, "emocao": 0.5, "evasiva": 1 } },
+    { "id": "emotivo", "name": "Emotivo", "weights": { "emocao": 4, "proposta": 1, "ataque": 1, "defesa": 1, "dado": 0.5, "evasiva": 1 } },
+    { "id": "equilibrado", "name": "Equilibrado", "weights": { "proposta": 2, "dado": 1.5, "ataque": 1.5, "defesa": 1.5, "emocao": 1.5, "evasiva": 1 } }
+  ]
+}
