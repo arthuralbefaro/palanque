@@ -55,6 +55,31 @@ public class AppearanceTests
         }
     }
 
+    /// <summary>Trocar o gênero na criação sorteia de novo com os pesos do gênero novo: é isto que o sorteio garante.</summary>
+    [Fact]
+    public void Sorteio_SegueOsPesosDoGeneroPedido()
+    {
+        const int draws = 3000;
+        Dictionary<Gender, List<Appearance>> byGender = Enum.GetValues<Gender>().ToDictionary(
+            g => g,
+            g =>
+            {
+                var rng = new Rng(7);
+                return Enumerable.Range(0, draws).Select(_ => AppearanceGenerator.Random(rng, Content, g, 30, "SP")).ToList();
+            });
+
+        foreach (var (gender, list) in byGender)
+        {
+            double beard = Content.Generator.Chance("beard", gender);
+            double earrings = Content.Generator.Chance("earrings", gender);
+            Assert.InRange(list.Count(a => a.Beard is not null) / (double)draws, Math.Max(0, beard - 0.04), beard + 0.04);
+            Assert.InRange(list.Count(a => a.Earrings is not null) / (double)draws, earrings - 0.04, earrings + 0.04);
+        }
+
+        Assert.DoesNotContain(byGender[Gender.Feminino], a => a.Beard is not null || a.Mustache is not null);
+        Assert.True(byGender[Gender.Feminino].Count(a => a.Earrings is not null) > 5 * byGender[Gender.Masculino].Count(a => a.Earrings is not null));
+    }
+
     [Fact]
     public void Sorteio_EDeterministicoPelaSemente()
     {

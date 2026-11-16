@@ -191,22 +191,15 @@ public partial class UiShot : Node
             await Frames(3);
             if (target == "creator17")
             {
-                // 17 anos com aniversário em dezembro: sem 18 anos no prazo do registro de 2028.
-                creator.SetAgeForTest(17, 12);
-                await Frames(3);
-                bool warned = creator.AgeWarningsForTest.Count > 0;
-                bool started = creator.TryStartCareer();
-                if (!warned || !started || game.State is null || game.Engine is not null || game.LastNavigation != Game.Scenes.OutOfOffice)
+                if (!await CheckCreatorSeventeen(creator, shot))
                 {
-                    Fail($"personagem de 17 anos: aviso {warned}, começou {started}, campanha {(game.Engine is null ? "nenhuma" : "aberta")}, tela {game.LastNavigation}.");
                     return;
                 }
+            }
 
-                if (Planalto.Core.Career.CareerFlow.NextEligibleElectionYear(game.State) != 2032)
-                {
-                    Fail("a primeira eleição possível deveria ser a de 2032.");
-                    return;
-                }
+            if (target == "creator" && !(await CheckCreatorColors(creator) && await CheckCreatorGender(creator) && await CheckCreatorBallot(creator, shot) && await CheckCreatorParty(creator)))
+            {
+                return;
             }
 
             if (target == "hub")
@@ -224,6 +217,10 @@ public partial class UiShot : Node
                 var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
                 AddChild(hub);
                 await Frames(5);
+                if (!await CheckImageStat(hub))
+                {
+                    return;
+                }
 
                 // Cada tipo de compromisso que não pede zona nem pessoa especial: marca pela tela, deixa o dia correr e
                 // confere o resultado explicado no feed (nunca só "feito").
@@ -340,19 +337,41 @@ public partial class UiShot : Node
     }
 
     /// <summary>
-    /// Nenhum controle cortado: em 1920x1080 e 1366x768, abre a criação de personagem (todas as abas), o Novo
-    /// Mundo e o hub, tira print e falha se algum controle visível passar dos limites da janela.
+    /// Nenhum controle cortado. Primeiro a janela real, como o jogo abre: com a moldura, dentro da área útil do
+    /// monitor (a tela menos a barra de tarefas), e com os botões do Novo Mundo e da criação dentro dela. Depois, em
+    /// 1920x1080 e 1366x768, abre a criação de personagem (todas as abas), o Novo Mundo e o hub, tira print e falha
+    /// se algum controle visível passar dos limites da janela.
     /// </summary>
     private async Task CheckLayout(string? shot)
     {
         Game game = Game.Instance;
         var problems = new List<string>();
+        await Frames(6);
+        if (UI.WindowFit.HasWindow)
+        {
+            GD.Print($"  janela ao abrir: modo {DisplayServer.WindowGetMode()}, com moldura {UI.WindowFit.Decorated}, área de desenho {DisplayServer.WindowGetSize()}, área útil do monitor {UI.WindowFit.Usable}");
+            if (UI.WindowFit.Problem() is { } misfit)
+            {
+                problems.Add($"Janela ao abrir: {misfit}");
+            }
+
+            await CheckRealWindow(problems, shot);
+        }
+
         foreach (Vector2I size in new[] { new Vector2I(1920, 1080), new Vector2I(1366, 768) })
         {
+            bool framed = UI.WindowFit.ExactForCapture(size);
             GetTree().Root.Size = size;
-            DisplayServer.WindowSetSize(size);
-            await Frames(4);
+            await Frames(6);
             string tag = $"{size.X}x{size.Y}";
+            if (framed && UI.WindowFit.Problem() is { } outside)
+            {
+                problems.Add($"Janela de {tag}: {outside}");
+            }
+            else if (!framed)
+            {
+                GD.Print($"  janela de {tag}: com a moldura não cabe na área útil deste monitor ({UI.WindowFit.Usable.Size}); conferida sem moldura, só a área de desenho");
+            }
 
             game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
             var world = GD.Load<PackedScene>(Game.Scenes.NewWorld).Instantiate<Control>();
@@ -514,8 +533,77 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print("Smoke layout: ok (1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas)");
+        GD.Print("Smoke layout: ok (janela real dentro da área útil do monitor, com os botões do Novo Mundo e da criação; 1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas)");
         GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Novo Mundo e criação (todas as abas) na janela como o jogo a abre: nada passa da área de desenho e todo botão
+    /// fora de lista rolável fica, na tela, dentro da área útil do monitor (não atrás da barra de tarefas).
+    /// </summary>
+    private async Task CheckRealWindow(List<string> problems, string? shot)
+    {
+        Game game = Game.Instance;
+        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        var world = GD.Load<PackedScene>(Game.Scenes.NewWorld).Instantiate<Control>();
+        AddChild(world);
+        await Frames(5);
+        problems.AddRange(Overflow(world, "Novo Mundo, janela real"));
+        problems.AddRange(OutsideUsable(world, "Novo Mundo, janela real"));
+        Save(shot, "_janela_real_novo_mundo");
+        RemoveChild(world);
+        world.QueueFree();
+
+        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        var creator = GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate<CharacterCreatorScreen>();
+        AddChild(creator);
+        await Frames(5);
+        var tabs = FindAll<TabContainer>(creator).First();
+        for (int tab = 0; tab < tabs.GetTabCount(); tab++)
+        {
+            tabs.CurrentTab = tab;
+            await Frames(4);
+            problems.AddRange(Overflow(creator, $"Criação, aba {tabs.GetTabTitle(tab)}, janela real"));
+            problems.AddRange(OutsideUsable(creator, $"Criação, aba {tabs.GetTabTitle(tab)}, janela real"));
+            Save(shot, $"_janela_real_criacao_{tab}");
+        }
+
+        RemoveChild(creator);
+        creator.QueueFree();
+        await Frames(2);
+    }
+
+    /// <summary>Botões visíveis (fora de lista rolável) cujo retângulo na tela sai da área útil do monitor.</summary>
+    private List<string> OutsideUsable(Node root, string where)
+    {
+        Rect2I usable = UI.WindowFit.Usable;
+        var problems = new List<string>();
+
+        // Do desenho (pontos lógicos) para a tela (pixels reais): a escala da janela e a posição da área de desenho.
+        Transform2D toWindow = GetViewport().GetFinalTransform();
+        Vector2 origin = DisplayServer.WindowGetPosition();
+        foreach (Button button in FindAll<Button>(root).Where(b => b.IsVisibleInTree() && b.Size.X > 0 && b.Size.Y > 0))
+        {
+            bool scrolls = false;
+            for (Node? up = button.GetParent(); up is not null && up != root; up = up.GetParent())
+            {
+                scrolls |= up is ScrollContainer or Window;
+            }
+
+            if (scrolls)
+            {
+                continue;
+            }
+
+            Rect2 inWindow = toWindow * button.GetGlobalRect();
+            var screen = new Rect2(inWindow.Position + origin, inWindow.Size);
+            if (screen.Position.X < usable.Position.X - 1 || screen.Position.Y < usable.Position.Y - 1 || screen.End.X > usable.End.X + 1 || screen.End.Y > usable.End.Y + 1)
+            {
+                problems.Add($"{where}: Button \"{button.Text}\" ocupa na tela {screen.Position} a {screen.End}, fora da área útil do monitor ({usable.Position} a {usable.End})");
+            }
+        }
+
+        return problems;
     }
 
     private void Save(string? shot, string suffix)
@@ -740,6 +828,11 @@ public partial class UiShot : Node
         {
             foreach (Control c in FindAll<Control>(root).Where(c => c.IsVisibleInTree()))
             {
+                if (InternalReference(c) is { } reference)
+                {
+                    problems.Add($"{where}: {reference}");
+                }
+
                 if (c is BaseButton or LineEdit or SpinBox or PanelContainer { MouseDefaultCursorShape: Control.CursorShape.PointingHand })
                 {
                     string tip = c.TooltipText;
@@ -883,6 +976,36 @@ public partial class UiShot : Node
             return;
         }
 
+        // Novo Mundo e criação do personagem (todas as abas): nenhum texto cita documento interno do projeto.
+        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        foreach (string scene in new[] { Game.Scenes.NewWorld, Game.Scenes.CharacterCreator })
+        {
+            var screen = GD.Load<PackedScene>(scene).Instantiate<Control>();
+            AddChild(screen);
+            await Frames(4);
+            var tabs = FindAll<TabContainer>(screen).FirstOrDefault();
+            for (int tab = 0; tab < (tabs?.GetTabCount() ?? 1); tab++)
+            {
+                if (tabs is not null)
+                {
+                    tabs.CurrentTab = tab;
+                    await Frames(2);
+                }
+
+                foreach (Control c in FindAll<Control>(screen).Where(c => c.IsVisibleInTree()))
+                {
+                    if (InternalReference(c) is { } reference)
+                    {
+                        problems.Add($"{screen.GetType().Name}, aba {tab + 1}: {reference}");
+                    }
+                }
+            }
+
+            RemoveChild(screen);
+            screen.QueueFree();
+            await Frames(2);
+        }
+
         Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
         await Frames(4);
         if (!Widgets.EncyclopediaDialog.IsOpen(GetTree().Root))
@@ -918,6 +1041,29 @@ public partial class UiShot : Node
 
         GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, {r3} telas da R3, Enciclopédia aberta com F1)");
         GetTree().Quit(0);
+    }
+
+    /// <summary>Texto ou tooltip do controle que cita documento interno do projeto; null se nenhum.</summary>
+    private static string? InternalReference(Control c)
+    {
+        string text = c switch
+        {
+            RichTextLabel rich => rich.GetParsedText(),
+            Label label => label.Text,
+            Button button => button.Text,
+            LineEdit line => line.Text + " | " + line.PlaceholderText,
+            TextEdit edit => edit.PlaceholderText,
+            _ => "",
+        };
+        if (c is OptionButton options)
+        {
+            text += " | " + string.Join(" | ", Enumerable.Range(0, options.ItemCount).Select(options.GetItemText));
+        }
+
+        string all = text + " | " + c.TooltipText;
+        return Core.Data.InternalReferenceLint.Find(all) is { } found
+            ? $"texto de tela cita documento interno (\"{found}\") em \"{all.Trim()[..Math.Min(80, all.Trim().Length)]}\""
+            : null;
     }
 
     private const int SmallCity = 3102803;

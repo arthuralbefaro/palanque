@@ -54,7 +54,7 @@ public partial class PortraitView : Control
         var offset = new Vector2((Size.X - side) / 2, (Size.Y - side) / 2);
         foreach (var (rect, spec) in _layers)
         {
-            rect.Position = offset;
+            rect.Position = offset + new Vector2((float)(spec.OffsetX / 1024 * side), (float)(spec.OffsetY / 1024 * side));
             rect.Size = new Vector2(side, side);
             rect.PivotOffset = new Vector2((float)(spec.PivotX / 1024 * side), (float)(spec.PivotY / 1024 * side));
             rect.Scale = new Vector2((float)spec.ScaleX, (float)spec.ScaleY);

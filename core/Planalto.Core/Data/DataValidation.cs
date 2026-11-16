@@ -88,6 +88,10 @@ public static class DataValidation
             dataDirectory,
             electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
             out _));
+        // Nenhum texto de jogo cita documento interno do projeto.
+        IReadOnlyList<string> references = InternalReferenceLint.Run(dataDirectory, out int texts);
+        reports.Add(new DataFileReport("lint: textos sem citar documento interno", texts, references));
+
         if (dataSet is not null)
         {
             reports.AddRange(ValidateGeo(dataDirectory, dataSet));

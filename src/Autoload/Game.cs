@@ -68,6 +68,10 @@ public partial class Game : Node
         Instance = this;
         DataDirectory = ProjectSettings.GlobalizePath("res://data");
 
+        // O jogo abre maximizado (project.godot); se abrir em janela comum maior que a área útil do monitor, a base
+        // da tela ficaria atrás da barra de tarefas.
+        UI.WindowFit.EnsureFits();
+
         // Fundo de todas as telas na cor do painel de fundo do tema (sem cor fixa no código).
         if (ThemeDB.GetProjectTheme()?.GetStylebox("panel", "BackgroundPanel") is StyleBoxFlat background)
         {
@@ -273,7 +277,8 @@ public partial class Game : Node
     {
         State = state;
 
-        // Quem não tem 18 anos no prazo do registro da primeira eleição começa fora da disputa (DECISOES D-036).
+        // O Core já abre o calendário no ano da primeira eleição que o personagem pode disputar; a conferência da
+        // idade fica só para um estado montado à mão com o calendário antes disso.
         int firstElection = Core.Campaign.RaceSetup.NextMunicipalYear(state.Calendar.Year);
         Engine = Core.Career.CareerFlow.MeetsAge(state, Core.Elections.Office.Vereador, firstElection)
             ? Core.Campaign.CampaignEngine.Start(ContextFor(state))

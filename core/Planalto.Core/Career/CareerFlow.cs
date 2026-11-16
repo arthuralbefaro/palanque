@@ -104,6 +104,32 @@ public static class CareerFlow
     public static bool MeetsAge(GameState state, Office office, int electionYear) =>
         CandidacyRulesConfig.Default.MeetsAge(state.Player.BirthDate, office, electionYear);
 
+    /// <summary>
+    /// Primeira eleição municipal, do ano inicial do mundo em diante, em que quem nasceu em
+    /// <paramref name="birthDate"/> já tem idade para vereador (18 anos no prazo do registro).
+    /// </summary>
+    public static int FirstEligibleElectionYear(DateOnly birthDate, int startYear, CandidacyRulesConfig? rules = null)
+    {
+        rules ??= CandidacyRulesConfig.Default;
+        int year = RaceSetup.NextMunicipalYear(startYear);
+        while (!rules.MeetsAge(birthDate, Office.Vereador, year))
+        {
+            year = RaceSetup.NextMunicipalYear(year + 1);
+        }
+
+        return year;
+    }
+
+    /// <summary>
+    /// Ano em que a carreira começa: o ano inicial do mundo, ou, para quem ainda não tem idade para a primeira
+    /// eleição, o ano da primeira eleição que pode disputar (a carreira nunca abre fora da disputa).
+    /// </summary>
+    public static int CareerStartYear(DateOnly birthDate, int startYear, CandidacyRulesConfig? rules = null)
+    {
+        int eligible = FirstEligibleElectionYear(birthDate, startYear, rules);
+        return eligible == RaceSetup.NextMunicipalYear(startYear) ? startYear : eligible;
+    }
+
     /// <summary>Primeira eleição municipal, a partir da atual, em que o jogador já tem idade para vereador.</summary>
     public static int NextEligibleElectionYear(GameState state)
     {

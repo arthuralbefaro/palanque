@@ -122,9 +122,28 @@ public class StartingAgeTests
         Assert.Empty(config.Validate());
     }
 
+    // 18 anos no registro (15/8): quem faz 18 até lá começa no ano inicial; quem faz depois começa na eleição seguinte.
+    [Theory]
+    [InlineData(2010, 8, 15, 2028, 2028)]
+    [InlineData(2010, 8, 16, 2028, 2032)]
+    [InlineData(2011, 1, 1, 2028, 2032)]
+    [InlineData(1993, 5, 20, 2028, 2028)]
+    [InlineData(2010, 8, 16, 2026, 2032)]
+    [InlineData(1993, 5, 20, 2026, 2026)]
+    public void A_carreira_comeca_no_ano_da_primeira_eleicao_que_o_personagem_pode_disputar(int year, int month, int day, int worldStart, int expected)
+    {
+        var birth = new DateOnly(year, month, day);
+
+        Assert.Equal(expected, CareerFlow.CareerStartYear(birth, worldStart));
+        Calendar calendar = NewGame.StartCalendar(worldStart, birth);
+        Assert.Equal(expected, calendar.Year);
+        Assert.Equal(1, calendar.Week);
+        Assert.True(CandidacyRulesConfig.Default.MeetsAge(birth, Office.Vereador, CareerFlow.FirstEligibleElectionYear(birth, worldStart)));
+    }
+
     [Fact]
     [Trait("Categoria", "Lento")]
-    public void Jogador_de_17_anos_espera_a_primeira_eleicao_em_que_e_elegivel_e_disputa_ela()
+    public void Jogador_de_17_anos_comeca_direto_na_pre_campanha_da_primeira_eleicao_em_que_e_elegivel_e_disputa_ela()
     {
         // Procura, de forma determinística, um jogador de 17 anos que ainda não tem 18 em 15/8/2028.
         WorldSetup world = WorldSetup.Create(CampaignKit.C.World, "brasil_2026", new Rng(21)).Setup!;
@@ -151,14 +170,23 @@ public class StartingAgeTests
             }
         }
 
+        Assert.Equal(17, player.AgeOn(Today));
         GameState state = NewGame.Create(world, player, 21);
-        Assert.False(CareerFlow.CanRun(state, 2028));
-        Assert.Equal(2032, CareerFlow.NextEligibleElectionYear(state));
 
-        state.Calendar.JumpTo(CareerFlow.CampaignOpens(2032));
-        Assert.True(CareerFlow.ShouldStartCampaign(state));
+        // O calendário já abre em 2032, com o personagem mais velho, filiado e apto a disputar.
+        Assert.Equal(2032, state.Calendar.Year);
+        Assert.Equal(1, state.Calendar.Week);
+        Assert.InRange(state.Player.AgeOn(state.Calendar.WeekStart), 20, 21);
+        Assert.Equal(state.Calendar.WeekStart, state.Player.AffiliatedOn);
+        Assert.Equal(2032, CareerFlow.NextEligibleElectionYear(state));
         Assert.True(CareerFlow.CanRun(state, 2032));
+        Assert.Equal(CareerMode.ForaDeMandato, CareerFlow.Mode(state));
+
         CampaignEngine campaign = CampaignEngine.Start(CampaignKit.Context(state));
+        Assert.Equal(CareerMode.Campanha, CareerFlow.Mode(state));
+        Assert.Equal(CampaignPhase.PreCampanha, state.Campaign!.Phase);
+        Assert.Equal(2032, state.Campaign.ElectionDate.Year);
+        Assert.Equal(Office.Vereador, state.Campaign.Player.Office);
         CampaignAutoplayTests.Play(campaign, 21);
         Assert.NotNull(state.Campaign!.Outcome);
     }

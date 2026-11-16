@@ -30,7 +30,11 @@ public partial class CharacterCreatorScreen : Control
     private WorldSetup _world = null!;
     private Rng _rng = null!;
     private Character _c = null!;
-    private readonly Stack<string> _undo = new();
+    private readonly Stack<(string Character, bool FaceEdited, bool WardrobeEdited)> _undo = new();
+
+    // O jogador mexeu à mão na aparência ou nas roupas: mudar o gênero pergunta antes de sortear de novo.
+    private bool _faceEdited;
+    private bool _wardrobeEdited;
     private List<string> _offeredTraits = [];
     private TabContainer _tabs = null!;
     private PortraitView _portrait = null!;
@@ -39,6 +43,10 @@ public partial class CharacterCreatorScreen : Control
     private VBoxContainer _status = null!;
     private Button _start = null!;
     private bool _ownParty;
+
+    // Dígitos do número de urna como o jogador digitou, enquanto não formam um número válido; null quando valem.
+    private string? _ballotDraft;
+    private Label? _ballotIssue;
 
     private PeopleContent People => _game.People;
 
@@ -94,7 +102,7 @@ public partial class CharacterCreatorScreen : Control
 
     private void Change(Action action)
     {
-        _undo.Push(JsonSerializer.Serialize(_c, JsonData.Options));
+        PushUndo();
         action();
         BuildTabs();
         RefreshPreview();
@@ -102,10 +110,12 @@ public partial class CharacterCreatorScreen : Control
 
     private void Edit(Action action)
     {
-        _undo.Push(JsonSerializer.Serialize(_c, JsonData.Options));
+        PushUndo();
         action();
         RefreshPreview();
     }
+
+    private void PushUndo() => _undo.Push((JsonSerializer.Serialize(_c, JsonData.Options), _faceEdited, _wardrobeEdited));
 
     private void Undo()
     {
@@ -114,12 +124,77 @@ public partial class CharacterCreatorScreen : Control
             return;
         }
 
-        _c = JsonSerializer.Deserialize<Character>(_undo.Pop(), JsonData.Options)!;
+        var (character, faceEdited, wardrobeEdited) = _undo.Pop();
+        _c = JsonSerializer.Deserialize<Character>(character, JsonData.Options)!;
+        _faceEdited = faceEdited;
+        _wardrobeEdited = wardrobeEdited;
+        _ballotDraft = null;
         BuildTabs();
         RefreshPreview();
     }
 
-    private void SetAppearance(Func<Appearance, Appearance> change) => Edit(() => _c.Appearance = change(_c.Appearance!));
+    private void SetAppearance(Func<Appearance, Appearance> change) => Edit(() =>
+    {
+        _c.Appearance = change(_c.Appearance!);
+        _faceEdited = true;
+    });
+
+    /// <summary>
+    /// Troca de gênero: a aparência e as roupas são sorteadas de novo com os pesos do gênero novo. Se o jogador já
+    /// editou alguma delas à mão, pergunta antes: sortear de novo ou manter o que ele fez.
+    /// </summary>
+    private void RequestGender(Gender gender)
+    {
+        if (gender == _c.Gender)
+        {
+            return;
+        }
+
+        if (!_faceEdited && !_wardrobeEdited)
+        {
+            Change(() => SetGender(gender, reroll: true));
+            return;
+        }
+
+        var dialog = new ConfirmationDialog
+        {
+            Name = "ConfirmarAparencia",
+            Title = Tr("Mudar o gênero"),
+            DialogText = Tr("Você já editou a aparência à mão. Sortear uma aparência nova, com os pesos do gênero escolhido, ou manter a que você fez?"),
+            OkButtonText = Tr("Sortear de novo"),
+            CancelButtonText = Tr("Manter a aparência"),
+            DialogAutowrap = true,
+            Exclusive = true,
+        };
+        bool answered = false;
+        void Answer(bool reroll)
+        {
+            if (answered)
+            {
+                return;
+            }
+
+            answered = true;
+            dialog.QueueFree();
+            Change(() => SetGender(gender, reroll));
+        }
+
+        dialog.Confirmed += () => Answer(true);
+        dialog.Canceled += () => Answer(false);
+        AddChild(dialog);
+        dialog.PopupCentered(new Vector2I(640, 0));
+    }
+
+    private void SetGender(Gender gender, bool reroll)
+    {
+        _c.Gender = gender;
+        if (reroll)
+        {
+            _c.Appearance = AppearanceGenerator.Random(_rng, People.Appearance, gender, _c.AgeOn(Today), _c.HomeUf);
+            _faceEdited = false;
+            _wardrobeEdited = false;
+        }
+    }
 
     private GameParty? CurrentPartyFromWorld()
     {
@@ -135,6 +210,7 @@ public partial class CharacterCreatorScreen : Control
     private CampaignIdentity NewCampaign()
     {
         GameParty? party = CurrentPartyFromWorld();
+        _ballotDraft = null;
         return new CampaignIdentity
         {
             BallotNumber = party is null ? null : $"{party.Number}{_rng.NextInt(1000):000}",
@@ -184,12 +260,14 @@ public partial class CharacterCreatorScreen : Control
             case 0:
                 var wardrobe = _c.Appearance!.Wardrobe;
                 _c.Appearance = AppearanceGenerator.Random(_rng, People.Appearance, _c.Gender, age, _c.HomeUf) with { Wardrobe = wardrobe };
+                _faceEdited = false;
                 break;
             case 1:
                 _c.Appearance = _c.Appearance! with
                 {
                     Wardrobe = Enum.GetValues<WardrobeContext>().ToDictionary(c => c, c => AppearanceGenerator.Outfit(_rng, People.Appearance, _c.Gender, c)),
                 };
+                _wardrobeEdited = false;
                 break;
             case 2:
                 Character fresh = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", _c.HomeUf!, _c.HomeMunicipio, Today, PartyId: _c.PartyId, Ages: People.Origins.StartingAge));
@@ -221,8 +299,8 @@ public partial class CharacterCreatorScreen : Control
         GameParty? party = CurrentPartyFromWorld();
         if (party is not null && _c.Campaign is not null)
         {
-            string suffix = _c.Campaign.BallotNumber is { Length: 5 } n ? n[2..] : $"{_rng.NextInt(1000):000}";
-            _c.Campaign.BallotNumber = $"{party.Number}{suffix}";
+            string suffix = CandidateNumbers.SuffixOf(_c.Campaign.BallotNumber, Office.Vereador);
+            _c.Campaign.BallotNumber = $"{party.Number}{(suffix.Length > 0 ? suffix : $"{_rng.NextInt(1000):000}")}";
         }
     }
 
@@ -367,6 +445,7 @@ public partial class CharacterCreatorScreen : Control
     {
         var wardrobe = new Dictionary<WardrobeContext, OutfitChoice>(_c.Appearance!.Wardrobe) { [context] = change(_c.Appearance.Wardrobe[context]) };
         _c.Appearance = _c.Appearance with { Wardrobe = wardrobe };
+        _wardrobeEdited = true;
     }
 
     private void BuildIdentityTab(VBoxContainer t)
@@ -379,7 +458,8 @@ public partial class CharacterCreatorScreen : Control
         Ui.Button(ballotRow, "Sugerir", () => Change(() =>
             _c.BallotName = PersonGenerator.BallotName(_rng, People, _c.CivilName.Split(' ')[0], _c.CivilName.Split(' ')[^1], _c.ProfessionId ?? "", _c.Gender)));
 
-        Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => Change(() => _c.Gender = Enum.Parse<Gender>(g)));
+        Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => RequestGender(Enum.Parse<Gender>(g))).Name = "Genero";
+        Ui.Label(t, "Mudar o gênero sorteia de novo a aparência e as roupas; se você já as editou, o jogo pergunta antes.", 16, Ui.Muted);
 
         AgeRange ages = People.Origins.StartingAge;
         HBoxContainer ageRow = Ui.Field(t, "Idade");
@@ -501,13 +581,24 @@ public partial class CharacterCreatorScreen : Control
         if (!rules.MeetsAge(_c.BirthDate, Office.Vereador, year))
         {
             DateOnly registration = rules.AgeReferenceDate(Office.Vereador, year, new DateOnly(year + 1, 1, 1));
-            yield return string.Format(Tr("Com essa idade, você não terá 18 anos no prazo do registro de candidatura ({0}) e não poderá disputar a eleição de {1}. A carreira começa fora da disputa, até a eleição seguinte."), registration.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), year);
+            yield return string.Format(
+                Tr("Com essa idade, você não terá 18 anos no prazo do registro de candidatura ({0}) e não poderá disputar a eleição de {1}. A carreira vai começar em {2}, direto na pré-campanha da eleição daquele ano, a primeira que você pode disputar, com você aos {3} anos."),
+                registration.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                year,
+                CareerStart.AddDays(6).Year,
+                _c.AgeOn(CareerStart));
         }
         else if (!rules.MeetsAge(_c.BirthDate, Office.Prefeito, year))
         {
             yield return string.Format(Tr("Na eleição de {0} você poderá disputar para vereador, mas ainda não terá a idade mínima para a prefeitura (21 anos na posse)."), year);
         }
     }
+
+    /// <summary>Segunda-feira em que a carreira começa (pelo Core): mais tarde para quem não tem idade para a primeira eleição.</summary>
+    private DateOnly CareerStart => NewGame.StartCalendar(_world.Options.StartYear, _c.BirthDate).WeekStart;
+
+    /// <summary>A carreira começa depois do ano inicial do mundo, porque o personagem ainda não pode disputar a primeira eleição.</summary>
+    private bool StartsLater => Planalto.Core.Career.CareerFlow.CareerStartYear(_c.BirthDate, _world.Options.StartYear) != _world.Options.StartYear;
 
     private void ReplaceBirth(DateOnly birth)
     {
@@ -523,10 +614,36 @@ public partial class CharacterCreatorScreen : Control
         GameParty? party = CurrentPartyFromWorld();
         HBoxContainer number = Ui.Field(t, "Número de urna");
         Ui.Value(number, party is null ? "--" : party.Number.ToString(CultureInfo.InvariantCulture), 22);
-        int suffix = id.BallotNumber is { Length: 5 } n ? int.Parse(n[2..], CultureInfo.InvariantCulture) : 0;
-        var digits = number.Add(new SpinBox { MinValue = 0, MaxValue = 999, Value = suffix, Prefix = "" });
-        digits.ValueChanged += v => Edit(() => id.BallotNumber = party is null ? null : $"{party.Number}{(int)v:000}");
-        Ui.Label(number, "Vereador: número do partido + 3 dígitos (GDD 16.2).", color: Ui.Muted);
+        int suffixDigits = CandidateNumberRulesConfig.Default.SuffixDigitsFor(Office.Vereador);
+        var digits = number.Add(new LineEdit
+        {
+            Name = "NumeroUrna",
+            Text = _ballotDraft ?? CandidateNumbers.SuffixOf(id.BallotNumber, Office.Vereador),
+            MaxLength = suffixDigits,
+            PlaceholderText = new string('0', suffixDigits),
+            Alignment = HorizontalAlignment.Center,
+            CustomMinimumSize = new Vector2(96, 0),
+            VirtualKeyboardType = LineEdit.VirtualKeyboardTypeEnum.Number,
+            Editable = party is not null,
+        });
+        digits.AddThemeFontSizeOverride("font_size", 22);
+        digits.TextChanged += typed =>
+        {
+            // Só algarismos entram no campo; o resto é conferido pelo Core.
+            string clean = new(typed.Where(char.IsAsciiDigit).ToArray());
+            if (clean != typed)
+            {
+                digits.Text = clean;
+                digits.CaretColumn = clean.Length;
+            }
+
+            Edit(() => TypeBallotSuffix(clean));
+        };
+        Ui.Label(number, "Vereador: número do partido + 3 algarismos, de 000 a 999.", color: Ui.Muted);
+        _ballotIssue = Ui.Paragraph(t, "", 760, 18);
+        _ballotIssue.Name = "NumeroUrnaMotivo";
+        _ballotIssue.AddThemeColorOverride("font_color", Ui.Warning);
+        ShowBallotIssue();
 
         HBoxContainer sloganRow = Ui.Field(t, "Slogan");
         var slogan = sloganRow.Add(new LineEdit { Text = id.Slogan, SizeFlagsHorizontal = SizeFlags.ExpandFill, MaxLength = 60 });
@@ -547,6 +664,62 @@ public partial class CharacterCreatorScreen : Control
         Ui.Options(Ui.Field(t, "Pose da foto"), People.Campaign.Poses.Select(p => (p.Id, p.Name)), id.PhotoPose, v => Edit(() => id.PhotoPose = v), translate: false);
         Ui.Options(Ui.Field(t, "Expressão da foto"), Enum.GetValues<Expression>().Select(e => (e.ToString(), ExpressionName(e))), id.PhotoExpression.ToString(), v => Edit(() => id.PhotoExpression = Enum.Parse<Expression>(v)));
         Ui.Options(Ui.Field(t, "Fundo da foto"), People.Appearance.Catalog.InCategory("background").Select(b => (b.Id, b.Name)), id.PhotoBackground, v => Edit(() => id.PhotoBackground = v), translate: false);
+    }
+
+    /// <summary>Aplica os dígitos digitados se formam um número de urna válido; senão guarda o rascunho e mantém o número anterior.</summary>
+    private void TypeBallotSuffix(string typed)
+    {
+        GameParty? party = CurrentPartyFromWorld();
+        if (party is null || _c.Campaign is null)
+        {
+            return;
+        }
+
+        if (CandidateNumbers.TryParseSuffix(typed, Office.Vereador, party.Number, OccupiedBallotSuffixes(), out CandidateNumber number) is null)
+        {
+            _c.Campaign.BallotNumber = number.Text;
+            _ballotDraft = null;
+        }
+        else
+        {
+            _ballotDraft = typed;
+        }
+    }
+
+    /// <summary>
+    /// Finais já ocupados no partido, na cidade, para vereador. Na criação ainda não há candidatura registrada: o Core
+    /// reserva primeiro o número do jogador e só depois sorteia, entre os livres, os dos colegas de chapa.
+    /// </summary>
+    private static IReadOnlyCollection<int> OccupiedBallotSuffixes() => [];
+
+    /// <summary>Motivo de o número de urna digitado não valer; null se vale.</summary>
+    private string? BallotProblem(bool detail = false)
+    {
+        GameParty? party = CurrentPartyFromWorld();
+        if (party is null || _c.Campaign is null)
+        {
+            return null;
+        }
+
+        string typed = _ballotDraft ?? CandidateNumbers.SuffixOf(_c.Campaign.BallotNumber, Office.Vereador);
+        return CandidateNumbers.TryParseSuffix(typed, Office.Vereador, party.Number, OccupiedBallotSuffixes(), out _) switch
+        {
+            null => null,
+            CandidateNumberIssue.JaEmUso => string.Format(Tr("Número de urna: {0}{1} já é de outra candidatura do {2}. Escolha outros 3 algarismos."), party.Number, typed, party.Sigla),
+            CandidateNumberIssue.NumeroDePartidoInvalido => Tr("Número de urna: o partido precisa de um número de 10 a 99."),
+            _ when detail => string.Format(Tr("Número de urna: digite exatamente 3 algarismos depois do {0} do partido (zeros à esquerda valem, como 007). Enquanto isso, o número continua {1}."), party.Number, _c.Campaign.BallotNumber),
+            _ => Tr("Número de urna: digite exatamente 3 algarismos (aba Campanha)."),
+        };
+    }
+
+    private void ShowBallotIssue()
+    {
+        if (_ballotIssue is not null && IsInstanceValid(_ballotIssue))
+        {
+            string? problem = BallotProblem(detail: true);
+            _ballotIssue.Text = problem ?? "";
+            _ballotIssue.Visible = problem is not null;
+        }
     }
 
     public static string ExpressionName(Expression e) => e switch
@@ -670,6 +843,7 @@ public partial class CharacterCreatorScreen : Control
             _materiais.Set(card);
         }
 
+        ShowBallotIssue();
         Ui.Clear(_status);
         var problems = Problems().ToList();
         foreach (string problem in problems)
@@ -677,6 +851,16 @@ public partial class CharacterCreatorScreen : Control
             Ui.Value(_status, "✕ " + problem).AddThemeColorOverride("font_color", Ui.Error);
         }
 
+        // Aviso que não bloqueia, à vista em qualquer aba: a carreira começa anos depois, com o personagem mais velho.
+        int startYear = CareerStart.AddDays(6).Year;
+        if (StartsLater)
+        {
+            Label notice = Ui.Paragraph(_status, string.Format(Tr("Atenção: sem 18 anos no registro da primeira eleição, a carreira começa em {0}, na pré-campanha, com você aos {1} anos."), startYear, _c.AgeOn(CareerStart)), 400);
+            notice.Name = "AvisoComecoTardio";
+            notice.AddThemeColorOverride("font_color", Ui.Warning);
+        }
+
+        _start.Text = StartsLater ? string.Format(Tr("Começar carreira em {0}"), startYear) : Tr("Começar carreira");
         _start.Disabled = problems.Count > 0;
     }
 
@@ -700,6 +884,11 @@ public partial class CharacterCreatorScreen : Control
         if (_c.PartyId is null || _world.Find(_c.PartyId) is null)
         {
             yield return Tr("Escolha um partido.");
+        }
+
+        if (BallotProblem() is { } ballot)
+        {
+            yield return ballot;
         }
 
         WorldValidationReport report = _world.Validate();
@@ -729,6 +918,26 @@ public partial class CharacterCreatorScreen : Control
         }
     }
 
+    /// <summary>Teste de fumaça: aparência e gênero do personagem em criação.</summary>
+    public Appearance AppearanceForTest => _c.Appearance!;
+
+    public Gender GenderForTest => _c.Gender;
+
+    /// <summary>Teste de fumaça: uma edição à mão na aparência, como o controle "Pintas" da aba Aparência.</summary>
+    public void EditAppearanceForTest() => SetAppearance(a => a with { Moles = !a.Moles });
+
+    /// <summary>Teste de fumaça: pendências que impedem começar a carreira, como aparecem na base da tela.</summary>
+    public IReadOnlyList<string> ProblemsForTest => Problems().ToList();
+
+    /// <summary>Teste de fumaça: o botão de começar está liberado.</summary>
+    public bool CanStartForTest => !_start.Disabled;
+
+    /// <summary>Teste de fumaça: partido do personagem em criação.</summary>
+    public string? PartyIdForTest => _c.PartyId;
+
+    /// <summary>Teste de fumaça: número de urna completo do personagem em criação.</summary>
+    public string? BallotNumberForTest => _c.Campaign?.BallotNumber;
+
     /// <summary>Começa a carreira se não houver pendência; devolve false caso contrário.</summary>
     public bool TryStartCareer()
     {
@@ -748,7 +957,7 @@ public partial class CharacterCreatorScreen : Control
         _game.PendingWorld = null;
         _game.StartCareer(state);
 
-        // Sem idade para a primeira eleição, a carreira começa fora da disputa (entressafra).
+        // Sem idade para a primeira eleição, o Core abre o calendário na pré-campanha da primeira que dá para disputar.
         _game.GoToCareer();
     }
 
@@ -778,7 +987,12 @@ public partial class CharacterCreatorScreen : Control
                 Appearance? loaded = JsonSerializer.Deserialize<Appearance>(FileAccess.GetFileAsString(path), JsonData.Options);
                 if (loaded is not null)
                 {
-                    Change(() => _c.Appearance = loaded);
+                    Change(() =>
+                    {
+                        _c.Appearance = loaded;
+                        _faceEdited = true;
+                        _wardrobeEdited = true;
+                    });
                 }
             }
             catch (JsonException)

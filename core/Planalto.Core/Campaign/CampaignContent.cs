@@ -10,9 +10,23 @@ public sealed class IntRange
     public required int Max { get; init; }
 }
 
+/// <summary>
+/// Faixa nomeada da régua de imagem (−1 a +1): vale de <see cref="From"/> até o começo da faixa seguinte. O nome
+/// completa a frase "como te veem: ...".
+/// </summary>
+public sealed class ImageBand
+{
+    public required double From { get; init; }
+
+    public required string Name { get; init; }
+}
+
 /// <summary>Conteúdo de data/campaign/config.json: números de balanceamento da campanha.</summary>
 public sealed class CampaignConfig : IValidatable
 {
+    /// <summary>Maior nome de faixa de imagem que cabe na barra de cima da tela central.</summary>
+    public const int ImageBandNameMax = 16;
+
     public required int PartiesInRace { get; init; }
 
     public required int NamedRivals { get; init; }
@@ -83,6 +97,38 @@ public sealed class CampaignConfig : IValidatable
 
     public required int CountSnapshots { get; init; }
 
+    /// <summary>Régua de imagem mostrada ao jogador no lugar do número cru: faixas em ordem crescente, a primeira em −1.</summary>
+    public required List<ImageBand> ImageScale { get; init; }
+
+    /// <summary>Índice da faixa em que a imagem (−1 a +1) cai.</summary>
+    public int ImageBandIndex(double image)
+    {
+        double value = Math.Clamp(image, -1, 1);
+        int index = 0;
+        for (int i = 1; i < ImageScale.Count; i++)
+        {
+            if (value >= ImageScale[i].From)
+            {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    public ImageBand ImageBandOf(double image) => ImageScale[ImageBandIndex(image)];
+
+    /// <summary>Limites da faixa: do começo dela até o começo da seguinte (ou +1 na última).</summary>
+    public (double From, double To) ImageBandRange(int index) =>
+        (ImageScale[index].From, index + 1 < ImageScale.Count ? ImageScale[index + 1].From : 1);
+
+    /// <summary>Lado da faixa na régua: −1 abaixo de zero, 0 a faixa que contém o zero, +1 acima.</summary>
+    public int ImageBandSide(int index)
+    {
+        var (from, to) = ImageBandRange(index);
+        return to <= 0 ? -1 : from > 0 ? 1 : 0;
+    }
+
     public DateOnly DateIn(int year, string monthDay) =>
         DateOnly.ParseExact($"{year}-{monthDay}", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
@@ -122,6 +168,31 @@ public sealed class CampaignConfig : IValidatable
         if (CountSnapshots < 2 || PublicPollEveryWeeks < 1 || ElectionNoiseSd < 0 || NpcActionEfficiency < 0)
         {
             yield return "count_snapshots >= 2, public_poll_every_weeks >= 1, ruído e eficiência não negativos.";
+        }
+
+        if (ImageScale is null || ImageScale.Count < 3 || ImageScale.Any(b => b is null))
+        {
+            yield return "image_scale: ao menos 3 faixas (abaixo de zero, em torno de zero e acima).";
+            yield break;
+        }
+
+        if (Math.Abs(ImageScale[0].From + 1) > 1e-9 || ImageScale.Zip(ImageScale.Skip(1)).Any(p => p.Second.From <= p.First.From) || ImageScale[^1].From >= 1)
+        {
+            yield return "image_scale: a primeira faixa começa em -1 e os começos sobem, todos abaixo de 1.";
+        }
+        else if (Enumerable.Range(0, ImageScale.Count).Count(i => ImageBandSide(i) == 0) != 1 || ImageBandSide(0) != -1 || ImageBandSide(ImageScale.Count - 1) != 1)
+        {
+            yield return "image_scale: uma única faixa contém o zero, com faixas abaixo e acima dela.";
+        }
+
+        foreach (ImageBand band in ImageScale.Where(b => string.IsNullOrWhiteSpace(b.Name) || b.Name.Length > ImageBandNameMax))
+        {
+            yield return $"image_scale: a faixa que começa em {band.From.ToString(System.Globalization.CultureInfo.InvariantCulture)} precisa de nome com até {ImageBandNameMax} caracteres.";
+        }
+
+        if (ImageScale.Select(b => b.Name).Distinct(StringComparer.OrdinalIgnoreCase).Count() != ImageScale.Count)
+        {
+            yield return "image_scale: nomes de faixa repetidos.";
         }
     }
 }

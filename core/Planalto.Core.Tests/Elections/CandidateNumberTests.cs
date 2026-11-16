@@ -57,6 +57,53 @@ public class CandidateNumberTests
     }
 
     [Theory]
+    [InlineData("000", "45000")]
+    [InlineData("111", "45111")]
+    [InlineData("007", "45007")]
+    [InlineData("999", "45999")]
+    [InlineData("120", "45120")]
+    public void TryParseSuffix_AceitaTresDigitosComZerosAEsquerdaERepetidos(string typed, string expected)
+    {
+        CandidateNumberIssue? issue = CandidateNumbers.TryParseSuffix(typed, Office.Vereador, 45, [], out CandidateNumber number);
+
+        Assert.Null(issue);
+        Assert.Equal(expected, number.Text);
+        Assert.Equal(typed, CandidateNumbers.SuffixOf(number.Text, Office.Vereador));
+    }
+
+    [Theory]
+    [InlineData("", CandidateNumberIssue.NaoNumerico)]
+    [InlineData(null, CandidateNumberIssue.NaoNumerico)]
+    [InlineData("1a3", CandidateNumberIssue.NaoNumerico)]
+    [InlineData(" 12", CandidateNumberIssue.NaoNumerico)]
+    [InlineData("-12", CandidateNumberIssue.NaoNumerico)]
+    [InlineData("１２３", CandidateNumberIssue.NaoNumerico)]
+    [InlineData("7", CandidateNumberIssue.QuantidadeDeDigitosErrada)]
+    [InlineData("12", CandidateNumberIssue.QuantidadeDeDigitosErrada)]
+    [InlineData("1234", CandidateNumberIssue.QuantidadeDeDigitosErrada)]
+    public void TryParseSuffix_RecusaOQueNaoSaoExatamenteTresAlgarismos(string? typed, CandidateNumberIssue expected)
+    {
+        Assert.Equal(expected, CandidateNumbers.TryParseSuffix(typed, Office.Vereador, 45, [], out _));
+    }
+
+    [Fact]
+    public void TryParseSuffix_RecusaNumeroJaOcupadoNoPartidoENumeroDePartidoInvalido()
+    {
+        var book = new CandidateNumberBook();
+        book.TryReserve(Cidade, Office.Vereador, 45, 7, out _);
+        book.TryReserve(Cidade, Office.Vereador, 46, 8, out _);
+        IReadOnlyCollection<int> occupied = book.UsedSuffixes(Cidade, Office.Vereador, 45);
+
+        Assert.Equal(CandidateNumberIssue.JaEmUso, CandidateNumbers.TryParseSuffix("007", Office.Vereador, 45, occupied, out _));
+        Assert.Null(CandidateNumbers.TryParseSuffix("008", Office.Vereador, 45, occupied, out CandidateNumber free));
+        Assert.Equal("45008", free.Text);
+        Assert.Empty(book.UsedSuffixes("outra cidade", Office.Vereador, 45));
+        Assert.Equal(CandidateNumberIssue.NumeroDePartidoInvalido, CandidateNumbers.TryParseSuffix("123", Office.Vereador, 9, [], out _));
+        Assert.Equal("", CandidateNumbers.SuffixOf("4512", Office.Vereador));
+        Assert.Equal("", CandidateNumbers.SuffixOf(null, Office.Vereador));
+    }
+
+    [Theory]
     [InlineData(9)]
     [InlineData(100)]
     [InlineData(0)]
