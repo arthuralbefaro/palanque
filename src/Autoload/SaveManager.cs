@@ -63,6 +63,13 @@ public partial class SaveManager : Node
         try
         {
             GameState state = GameStateSerializer.Deserialize(FileAccess.GetFileAsString(PathOf(slot)));
+            List<string> zonas = SaveZoneCheck.Problems(state, ZoneIdsOf);
+            if (zonas.Count > 0)
+            {
+                GD.Print($"Save {slot} recusado: {string.Join("; ", zonas.Take(5))}");
+                return SaveZoneCheck.Mensagem;
+            }
+
             Game.Instance.Resume(state);
             return null;
         }
@@ -70,6 +77,13 @@ public partial class SaveManager : Node
         {
             return ex.Message;
         }
+    }
+
+    /// <summary>Ids das zonas do município nos dados, na ordem do arquivo; null se o código não é de município.</summary>
+    private static IReadOnlyList<string>? ZoneIdsOf(int codigoIbge)
+    {
+        Core.Municipios.Municipio? m = Game.Instance.Municipios.All.FirstOrDefault(x => x.CodigoIbge == codigoIbge);
+        return m is null ? null : Game.Instance.ZonasDe(m).Zonas.Select(z => z.Id).ToList();
     }
 
     public IEnumerable<string> ManualSlots() => Enumerable.Range(1, Slots).Select(i => $"slot{i}");

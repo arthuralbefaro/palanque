@@ -28,6 +28,12 @@ public static class GameStateSerializer
             throw new SaveFormatException($"Versão de save {version} não suportada.");
         }
 
+        // Ids de zona não são migrados: save de outra divisão em zonas não abre (sem o campo, é da primeira).
+        if ((ReadInt(json, ZonasVersionProperty) ?? 1) != Territory.ZonasPaths.Versao)
+        {
+            throw new SaveFormatException(SaveZoneCheck.Mensagem);
+        }
+
         try
         {
             return JsonSerializer.Deserialize<GameState>(json, JsonData.Options)
@@ -39,23 +45,23 @@ public static class GameStateSerializer
         }
     }
 
-    private static int ReadVersion(string json)
+    private const string ZonasVersionProperty = "zonas_versao";
+
+    private static int ReadVersion(string json) =>
+        ReadInt(json, VersionProperty) ?? throw new SaveFormatException($"Save sem o campo '{VersionProperty}'.");
+
+    private static int? ReadInt(string json, string property)
     {
         try
         {
             using JsonDocument document = JsonDocument.Parse(json);
-            if (document.RootElement.ValueKind == JsonValueKind.Object
-                && document.RootElement.TryGetProperty(VersionProperty, out JsonElement element)
-                && element.TryGetInt32(out int version))
-            {
-                return version;
-            }
+            return document.RootElement.ValueKind == JsonValueKind.Object
+                && document.RootElement.TryGetProperty(property, out JsonElement element)
+                && element.TryGetInt32(out int value) ? value : null;
         }
         catch (JsonException ex)
         {
             throw new SaveFormatException($"Save corrompido: {ex.Message}", ex);
         }
-
-        throw new SaveFormatException($"Save sem o campo '{VersionProperty}'.");
     }
 }
