@@ -63,6 +63,12 @@ public partial class Game : Node
     /// <summary>Motor da prefeitura; null fora do mandato de prefeito.</summary>
     public Core.Executive.ExecutiveEngine? Prefeitura { get; private set; }
 
+    /// <summary>Conteúdo dos mandatos da R4 (obras, secretários, folha, instrumentos, cobrança, eventos de mandato).</summary>
+    public Core.Governance.GovernanceContent GovernanceContent { get; private set; } = null!;
+
+    /// <summary>Governo da cidade no mandato em curso (GDD 17.14 e 17.15); null fora de mandato ou em save antigo.</summary>
+    public Core.Governance.GovernanceEngine? Governo { get; private set; }
+
     public override void _Ready()
     {
         Instance = this;
@@ -94,6 +100,7 @@ public partial class Game : Node
             World.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal));
         Founding = JsonData.LoadFile<Core.Career.FoundingConfig>(Path.Combine(DataDirectory, Core.Career.FoundingConfig.File)).GetValueOrThrow();
         ExecutiveContent = Core.Executive.ExecutiveContent.LoadOrThrow(DataDirectory, Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal));
+        GovernanceContent = Core.Governance.GovernanceContent.LoadOrThrow(DataDirectory, ExecutiveContent, Campaign.Promises);
         Debate = JsonData.LoadFile<Core.Debate.DebateContent>(Path.Combine(DataDirectory, Core.Debate.DebateContent.File)).GetValueOrThrow();
         Encyclopedia = JsonData.LoadFile<Core.Encyclopedia.EncyclopediaContent>(Path.Combine(DataDirectory, Core.Encyclopedia.EncyclopediaContent.File)).GetValueOrThrow();
         Time = JsonData.LoadFile<Core.State.TimeConfig>(Path.Combine(DataDirectory, Core.State.TimeConfig.File)).GetValueOrThrow();
@@ -182,6 +189,27 @@ public partial class Game : Node
 
         return file;
     }
+
+    /// <summary>Contexto do governo da cidade (R4) no município em foco.</summary>
+    public Core.Governance.GovernanceContext GovernanceContextFor(GameState state)
+    {
+        Core.Campaign.CampaignContext campaign = ContextFor(state);
+        return new Core.Governance.GovernanceContext
+        {
+            State = state,
+            Municipio = campaign.Municipio,
+            Content = GovernanceContent,
+            Legislature = Legislature,
+            Executive = ExecutiveContent,
+            People = People,
+            Campaign = Campaign,
+            Zonas = campaign.Zonas,
+            Indicadores = IndicadoresDe(campaign.Municipio),
+        };
+    }
+
+    private Core.Governance.GovernanceEngine? NewGoverno(GameState state) =>
+        state.Governance is not null && (state.Mandate is not null || state.Executive is not null) ? new Core.Governance.GovernanceEngine(GovernanceContextFor(state)) : null;
 
     /// <summary>Contexto da prefeitura no município em foco.</summary>
     public Core.Executive.ExecutiveContext ExecutiveContextFor(GameState state)
@@ -278,6 +306,7 @@ public partial class Game : Node
             : null;
         Mandate = null;
         Prefeitura = null;
+        Governo = null;
         FoundingEngine = NewFoundingEngine(state);
     }
 
@@ -288,6 +317,7 @@ public partial class Game : Node
         Engine = state.Campaign is null ? null : Core.Campaign.CampaignEngine.Start(ContextFor(state));
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
+        Governo = NewGoverno(state);
         FoundingEngine = NewFoundingEngine(state);
     }
 
@@ -310,10 +340,15 @@ public partial class Game : Node
     {
         GameState state = State!;
         bool hadMandate = state.Mandate is not null || state.Executive is not null;
-        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura);
+        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo);
         if (state.Mandate is null)
         {
             Mandate = null;
+        }
+
+        if (state.Mandate is null && state.Executive is null)
+        {
+            Governo = null;
         }
 
         if (state.Executive is null)
@@ -327,6 +362,8 @@ public partial class Game : Node
             if (Core.Career.CareerFlow.CanRun(state, state.Calendar.Year))
             {
                 Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
+                // A presença por zona do mandato vai para a campanha de reeleição.
+                Core.Governance.GovernanceEngine.CarryToCampaign(state);
                 return WeekNote.CampanhaAberta;
             }
 
@@ -402,8 +439,9 @@ public partial class Game : Node
     public void ConcludeElection()
     {
         GameState state = State!;
-        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state));
+        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state), GovernanceContextFor(state));
         Engine = null;
+        Governo = NewGoverno(state);
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
     }
