@@ -27,6 +27,12 @@ Ano, endereço e data de download de cada fonte estão em `data/municipios/_font
 ### Zonas das cidades
 - **IBGE**, Censo Demográfico 2022: Malha de Setores Censitários (versão definitiva) e Agregados por Setores Censitários (básico, demografia e rendimento do responsável). Os setores são agrupados em zonas pelo DataImporter (`data/zonas/` e `data/geo/zonas/`); fonte, método e lacunas em `data/zonas/_fontes.json`.
 
+### Indicadores reais de partida
+- **Ministério da Saúde, DATASUS**: Sistema de Informações sobre Mortalidade (SIM, declarações de óbito por município de residência, 2022 a 2024), Sistema de Informações sobre Nascidos Vivos (SINASC, por município de residência, 2022 a 2024) e Cadastro Nacional de Estabelecimentos de Saúde (CNES, leitos, competência de setembro de 2026). Microdados do FTP do DATASUS, agregados por município pelo DataImporter.
+
+## Código de terceiros
+- **blast** (descompressor do formato "implode" da PKWare DCL), Copyright (C) 2003, 2012, 2013 Mark Adler, de `zlib/contrib/blast`, sob a licença zlib. Portado para C# e alterado em `tools/Planalto.DataImporter/Rd/Blast.cs` (o aviso da licença está no arquivo); usado só pelo importador, para ler os arquivos .dbc do DATASUS.
+
 ## Fontes tipográficas
 Todas sob a SIL Open Font License 1.1; a licença de cada uma está em `assets/fonts/`.
 - **Inter**, Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter).
