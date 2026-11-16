@@ -43,3 +43,24 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 ### P-09 · Mapa em cidade pequena (autocrítica visual, segunda rodada)
 - **O quê:** em cidade pequena, as zonas urbanas são minúsculas perto da zona rural; o enquadramento inicial aproxima o núcleo urbano, mas os rótulos de zonas vizinhas se sobrepõem ("Centro" e "Zona Nordeste" em Mesquita/MG) e, quando um partido lidera em todas as zonas, o modo Partido líder fica de uma cor só. Captura: `docs/referencias/r1/central_cidade_pequena_1920.png`.
 - **Para fechar:** rótulos com desvio de colisão; o modo "Minha força" da R2a (presença do jogador por zona) dá contraste mesmo quando o líder é o mesmo; considerar subdividir a zona rural em cidades pequenas com rural dominante.
+
+## RD — pendências
+
+### P-10 · Votação de 2024 por zona (GDD 17.20, item 6) não foi ligada ao cenário
+- **Falta:** levar às zonas a votação real de 2024 no cenário Brasil 2026. Os arquivos por seção do TSE estão no cache (`rd/tse_votacao_secao_2024_{UF}.zip`, 26 UFs, cerca de 3 GB) e cada local de votação já cai numa zona (`ZonasRdImport`), mas a soma por partido fictício exige passar pela correspondência partido real → fictício, que só existe dentro do pipeline do cenário.
+- **Provisório:** a força dos partidos em cada zona vem do modelo (afinidade dos segmentos repesada pelo perfil da zona), não da votação real de 2024 por zona.
+- **Para fechar:** somar a votação de vereador por seção em cada zona, converter pelo mesmo mapa do `ScenarioImport` e gravar em `data/parties/scenarios/brasil_2026/` (só ids fictícios).
+
+### P-11 · Eleitores por zona: onde se vota ou onde se mora · **a confirmar pelo autor**
+- **O quê:** o autor aprovou repartir os eleitores pelos locais de votação do TSE. Feito, o resultado mostra onde as pessoas votam, não onde moram: 4.344 zonas habitadas (8,6 milhões de moradores) não têm local de votação e ficam com zero eleitor, e zonas centrais ficam com várias vezes os seus moradores.
+- **Escolha conservadora:** o arquivo guarda o dado do TSE (`eleitores`, com a fonte), mas o modelo de voto reparte o eleitorado do município pela população de 16 anos ou mais de cada zona. A Ficha da zona pode mostrar os dois números.
+- **Como reverter:** `ZoneElectorateBuilder.ZoneVoters` (uma linha): voltar a usar `Zona.Eleitores`.
+
+### P-12 · Parâmetros de jogo novos que só o autor pode confirmar
+- `data/demography/config.json`: pesos de saúde e estresse no fator pessoal de mortalidade, curva depois dos 89 anos, 12 sorteios por ano (só o intervalo de 0,6 a 2,5 veio do GDD).
+- `data/indicators/definitions.json`: faixas plausíveis de cada indicador e mínimo de 300 nascidos vivos em 3 anos para a taxa de mortalidade infantil valer por município.
+- Homicídios: só agressão (X85 a Y09); intervenção legal (Y35 e Y36) fora.
+- População depois de 2070: segue a taxa de 2069 para 2070 da projeção da UF.
+
+### P-13 · Termos de uso das fontes não IBGE
+- **O quê:** a RD usa dados do Tesouro Nacional (licença ODbL declarada), TSE (CC BY declarada), INEP, DATASUS, MTE e Banco Central (dados abertos sem licença explícita localizada), sempre citando a fonte em `_fontes.json` e em `assets/CREDITS.md`, como o corujão autoriza. O autor confere os termos de cada uma antes do lançamento.
