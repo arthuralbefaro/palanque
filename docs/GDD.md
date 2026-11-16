@@ -592,7 +592,7 @@ O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimôni
 | Presidente | Rampa e palácio estilizados, carro aberto, multidão | Desfile, subida da rampa, faixa presidencial, discurso |
 
 - **Arquitetura:** estilizada e inspirada na arquitetura brasileira, sem réplicas de edifícios reais, coerente com o universo fictício do jogo.
-- **Estilo visual:** low-poly com cores chapadas e iluminação suave (estilo "diorama"), para combinar com a arte vetorial 2D e ser viável de produzir.
+- **Estilo visual:** 3D estilizado com formas suaves, proporções de desenho animado e iluminação suave (referências de estilo: Two Point Hospital, Overcooked, Planet Coaster); não é low-poly facetado. É o mesmo estilo dos retratos e personagens do jogo (decisão do autor de 16/11; a reescrita completa desta seção é entregue com a parte RV).
 - **Personagem 3D:** boneco estilizado parametrizado a partir de Appearance:
   - Tom de pele, cor de cabelo/barba, grisalho, cores da roupa e cor do partido aplicados por material.
   - 8–12 formatos de cabelo e 4–6 de barba em 3D, mapeados a partir dos estilos 2D (cada estilo 2D aponta para o formato 3D mais próximo em data/appearance/parts.json).
@@ -604,7 +604,7 @@ O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimôni
 - **Ordem de produção:** primeiro a posse presidencial e a de vereador (os dois extremos da escala); depois os demais cargos.
 
 ### 13.3 Assets 3D
-- Base: pacotes CC0 low-poly (Kenney, Quaternius) para pessoas, carros, árvores e mobiliário, adaptados.
+- Base: pacotes 3D estilizados CC0 ou CC BY para pessoas, carros, árvores e mobiliário, adaptados ao estilo de formas suaves; a pesquisa de bases, com licença, qualidade e cobertura, e o que exigiria um artista 3D, está em docs/PENDENCIAS.md.
 - Cenários de posse e bonecos parametrizáveis: modelagem própria ou por um modelador 3D seguindo docs/ART_GUIDE.md (seção 3D: escala, número de polígonos, nomes de materiais tingíveis).
 - A montagem das cenas, materiais, animações de câmera e a lógica de parametrização é feita no código do projeto; a modelagem de qualidade fica com assets ou com um artista.
 

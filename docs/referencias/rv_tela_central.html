@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Planalto — rascunho da tela central (RV)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Oswald:wght@500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#05070a;overflow:hidden}
+#wrap{position:absolute;overflow:hidden;background:#0d1117}
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;font-family:Inter,Arial,sans-serif;color:#e8edf3}
+.pn{position:absolute;background:rgba(14,19,27,.88);border:1px solid rgba(255,255,255,.09);border-radius:10px}
+.osw{font-family:Oswald,Arial Narrow,sans-serif}
+.lb{font-size:12px;color:#93a0b1}
+.bt{background:#1e2530;border:1px solid #2f3846;color:#e8edf3;border-radius:7px;font-size:13px;padding:5px 10px;cursor:pointer;font-family:inherit}
+.bt.on{background:#1d3557;border-color:#4c8df6;color:#fff}
+.zone{cursor:pointer}
+.mk{position:absolute;display:flex;align-items:center;gap:6px;font-size:12px;background:rgba(14,19,27,.9);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:3px 9px 3px 3px;pointer-events:none}
+.mk i{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+.row{display:flex;justify-content:space-between;align-items:center}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+<svg id="map" viewBox="0 0 1280 720" width="1280" height="720" style="position:absolute;left:0;top:0">
+<rect width="1280" height="720" fill="#1b2620"/>
+<g id="hills"></g><g id="fields"></g><g id="forest"></g>
+<path d="M0,505 C200,470 380,525 520,478 S700,452 820,500 S1050,565 1280,525" fill="none" stroke="#1f4d63" stroke-width="16"/>
+<path id="river" d="M0,505 C200,470 380,525 520,478 S700,452 820,500 S1050,565 1280,525" fill="none" stroke="#3b84a6" stroke-width="9"/>
+<ellipse cx="1010" cy="250" rx="46" ry="22" fill="#2f6f8f" stroke="#3b84a6" stroke-width="2"/>
+<g id="urban"></g>
+<g fill="none" stroke-linecap="round">
+<path d="M680,395 C560,330 470,240 360,60 L330,0" stroke="#1a1d22" stroke-width="7"/><path d="M680,395 C560,330 470,240 360,60 L330,0" stroke="#c9b46a" stroke-width="4"/>
+<path d="M680,395 C800,420 950,450 1280,430" stroke="#1a1d22" stroke-width="7"/><path d="M680,395 C800,420 950,450 1280,430" stroke="#c9b46a" stroke-width="4"/>
+<path d="M640,430 C600,540 520,620 470,720" stroke="#1a1d22" stroke-width="6"/><path d="M640,430 C600,540 520,620 470,720" stroke="#b3a37a" stroke-width="3" stroke-dasharray="7 4"/>
+<path d="M700,330 C760,250 900,180 1040,90" stroke="#b3a37a" stroke-width="2.5" stroke-dasharray="6 4"/>
+<path d="M560,300 C600,360 660,380 760,370" stroke="#d6dae0" stroke-width="2.5"/>
+<path d="M600,440 C640,400 700,360 780,330" stroke="#d6dae0" stroke-width="2.5"/>
+</g>
+<g font-family="Inter,sans-serif" font-size="11" fill="#c9cfd8" font-style="italic">
+<text x="582" y="318" transform="rotate(30 582 318)">Av. Brasil</text>
+<text x="700" y="350" transform="rotate(-24 700 350)">Rua da Matriz</text>
+<text x="420" y="160" transform="rotate(-58 420 160)" fill="#d9c98a">MG-217 · para Itabirinha do Norte</text>
+<text x="900" y="436" transform="rotate(-2 900 436)" fill="#d9c98a">Estrada da Barra Alegre</text>
+<text x="400" y="505" transform="rotate(-8 400 505)" fill="#8cc4dc">Rio São Mateus</text>
+<text x="985" y="285" fill="#8cc4dc">Lagoa Seca</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="12" fill="#e2e6ec">
+<circle cx="452" cy="136" r="4" fill="#e2e6ec"/><text x="460" y="140">Córrego Fundo</text>
+<circle cx="890" cy="572" r="4" fill="#e2e6ec"/><text x="898" y="576">Barra Alegre</text>
+<circle cx="520" cy="620" r="4" fill="#e2e6ec"/><text x="528" y="624">Santo Antônio do Pontal</text>
+</g>
+<g id="zones"></g><g id="zlabels"></g>
+<g transform="translate(372,560)"><rect width="80" height="5" fill="#e2e6ec"/><rect width="40" height="5" fill="#1b2620"/><text x="0" y="-5" font-size="11" fill="#c9cfd8" font-family="Inter">0</text><text x="66" y="-5" font-size="11" fill="#c9cfd8" font-family="Inter">1 km</text></g>
+</svg>
+
+<div class="pn" style="left:0;top:0;width:1280px;height:46px;border-radius:0;display:flex;align-items:center;gap:10px;padding:0 14px;box-sizing:border-box">
+<span class="osw" id="date" style="font-size:19px;min-width:150px">seg., 29 mar. 2032</span>
+<button class="bt" id="bpause" aria-label="Pausar"><i class="ti ti-player-pause"></i></button>
+<button class="bt sp on" data-s="1">1x</button><button class="bt sp" data-s="2">2x</button><button class="bt sp" data-s="4">4x</button>
+<span style="font-size:13px;color:#93a0b1;margin-left:8px"><span style="text-decoration:underline dotted;color:#c9d2de">Pré-campanha</span> · São Bento do Vale (MG) · 26 sem. até a eleição</span>
+<div style="margin-left:auto;display:flex;gap:22px;align-items:center">
+<div><div class="lb">Caixa</div><div style="font-size:15px;font-weight:500">R$ 12.000</div></div>
+<div><div class="lb">Conhecem você</div><div style="font-size:15px;font-weight:500">17%</div></div>
+<div><div class="lb">Imagem</div><div style="font-size:15px;font-weight:500;color:#3fb68b">+4 <span style="font-size:11px;color:#93a0b1">de −100 a 100</span></div></div>
+<button class="bt" aria-label="Enciclopédia"><i class="ti ti-help"></i></button>
+<button class="bt" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+</div></div>
+
+<div style="position:absolute;left:352px;top:58px;display:flex;gap:6px" id="modes">
+<button class="bt md on" data-m="forca">Minha força</button><button class="bt md" data-m="lider">Partido líder</button><button class="bt md" data-m="renda">Renda</button><button class="bt md" data-m="idosos">Idosos</button><button class="bt md" data-m="rival">Rival: Daniel A.</button>
+</div>
+
+<div class="pn" style="left:14px;top:58px;width:322px;height:506px;padding:14px;box-sizing:border-box;overflow:hidden">
+<div class="row"><span class="osw" id="zn" style="font-size:22px">Vila Nova</span><i class="ti ti-x" style="color:#93a0b1"></i></div>
+<div class="lb" id="zf">Zona urbana · nome do bairro pelo IBGE</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0">
+<div style="background:#1a212b;border-radius:7px;padding:6px 8px"><div class="lb">Habitantes</div><div id="zp" style="font-size:15px;font-weight:500">6.073</div></div>
+<div style="background:#1a212b;border-radius:7px;padding:6px 8px"><div class="lb">Eleitores</div><div id="ze" style="font-size:15px;font-weight:500">4.880</div></div>
+<div style="background:#1a212b;border-radius:7px;padding:6px 8px"><div class="lb">Renda med.</div><div id="zr" style="font-size:15px;font-weight:500">R$ 1.412</div></div>
+</div>
+<div style="background:#2a2412;border:1px solid #6b5520;border-radius:7px;padding:7px 9px;font-size:13px;color:#f0d79a"><i class="ti ti-alert-triangle"></i> <span id="zd">38% dos domicílios sem rede de esgoto</span></div>
+<div class="lb" style="margin:12px 0 5px">Presença na zona (quanto te conhecem aqui)</div>
+<div id="zbars"></div>
+<div class="lb" style="margin:12px 0 6px">Lideranças conhecidas</div>
+<div id="zlid"></div>
+<div class="lb" style="margin:10px 0 4px">O que você já fez aqui</div>
+<div id="zhist" style="font-size:12px;color:#c9d2de;line-height:1.6"></div>
+<div style="display:flex;gap:6px;margin-top:10px"><button class="bt" style="background:#4c8df6;border-color:#4c8df6;color:#0e1116;font-weight:500">Marcar compromisso aqui</button><button class="bt">Ver pessoas</button></div>
+</div>
+
+<div class="pn" style="left:944px;top:58px;width:322px;height:506px;padding:14px;box-sizing:border-box;overflow:hidden">
+<div class="row"><span class="osw" style="font-size:18px">Notícias</span><span class="lb">hoje</span></div>
+<div style="border-left:3px solid #e9b44c;padding-left:9px;margin:8px 0"><div class="lb">Rádio Vale (rádio local, linha governista) · 2 h</div><div style="font-size:13px;line-height:1.4">Seca deixa 40 famílias sem água no Córrego Fundo</div></div>
+<div style="border-left:3px solid #2f3846;padding-left:9px;margin:8px 0"><div class="lb">Gazeta do Vale (jornal, linha crítica) · ontem</div><div style="font-size:13px;line-height:1.4">Daniel A. vai a culto na Vila Nova e promete creche</div></div>
+<div style="border-left:3px solid #2f3846;padding-left:9px;margin:8px 0"><div class="lb">Portal Ipê (portal, independente) · sáb</div><div style="font-size:13px;line-height:1.4">Feira de sábado deve reunir 3 mil pessoas no Centro</div></div>
+<div class="osw" style="font-size:18px;margin-top:12px">Objetivos</div>
+<div style="margin:6px 0;font-size:13px">Liderar a presença na Vila Nova até a pesquisa de abril<div style="height:5px;background:#1a212b;border-radius:3px;margin-top:4px"><div style="width:55%;height:5px;background:#3fb68b;border-radius:3px"></div></div></div>
+<div style="margin:6px 0;font-size:13px">Trazer Seu Anselmo para o seu lado<div style="height:5px;background:#1a212b;border-radius:3px;margin-top:4px"><div style="width:38%;height:5px;background:#3fb68b;border-radius:3px"></div></div></div>
+<div class="osw" style="font-size:18px;margin-top:12px">Intenção de voto</div>
+<div class="lb" style="margin-bottom:4px">Prisma (instituto de pesquisa) · 22 mar · ±4 pts</div>
+<div id="poll" style="font-size:13px"></div>
+</div>
+
+<div class="pn" style="left:14px;top:576px;width:322px;height:130px;display:flex;gap:12px;padding:10px;box-sizing:border-box">
+<svg width="104" height="108" viewBox="0 0 104 108" style="background:#1a2633;border-radius:8px;flex:none">
+<polygon points="16,108 26,84 52,76 78,84 88,108" fill="#2f6e8f"/><polygon points="52,76 44,84 52,104 60,84" fill="#e8edf3"/><polygon points="52,84 49,90 52,104 55,90" fill="#1f8f7a"/>
+<polygon points="44,70 60,70 58,80 46,80" fill="#b8805a"/>
+<polygon points="32,40 52,24 72,40 70,62 52,74 34,62" fill="#d39a6e"/><polygon points="52,24 72,40 70,62 52,74" fill="#c18559"/>
+<polygon points="30,40 34,22 52,14 70,20 74,40 66,30 52,28 38,30" fill="#3a2a22"/>
+<rect x="40" y="44" width="7" height="4" rx="1" fill="#2a1d18"/><rect x="57" y="44" width="7" height="4" rx="1" fill="#2a1d18"/>
+<polygon points="51,48 49,58 54,58" fill="#b9784f"/><path d="M45,63 Q52,68 59,63" stroke="#7a3b2e" stroke-width="2.4" fill="none"/>
+</svg>
+<div style="flex:1"><div class="osw" style="font-size:17px">Arthur Albefaro</div><div class="lb">FRB · pré-candidato a vereador · 42000</div>
+<div style="display:flex;gap:14px;margin-top:8px"><div><div class="lb">Intenção</div><div style="font-size:18px;font-weight:500">5,4%</div></div><div><div class="lb">Estresse</div><div style="font-size:18px;font-weight:500">22</div></div></div>
+<div class="lb" style="margin-top:4px">3º na chapa · o partido faria 2 cadeiras</div></div>
+</div>
+
+<div class="pn" style="left:430px;top:602px;width:420px;height:44px;display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;border-color:#8a6a24;background:rgba(42,34,14,.92)">
+<i class="ti ti-alert-triangle" style="color:#e9b44c;font-size:18px"></i>
+<span style="font-size:13px;flex:1">Seu Anselmo quer resposta sobre a estrada · prazo: qui</span>
+<button class="bt" style="background:#e9b44c;border-color:#e9b44c;color:#2a220e;font-weight:500">Decidir</button></div>
+
+<div class="pn" style="left:400px;top:654px;width:480px;height:54px;display:flex;justify-content:space-around;align-items:center" id="rail"></div>
+
+<div class="pn" style="left:944px;top:576px;width:322px;height:130px;padding:10px;box-sizing:border-box;display:flex;gap:10px">
+<svg width="120" height="108" viewBox="0 0 120 108"><polygon points="10,40 30,12 66,8 96,22 112,48 100,80 70,100 40,96 16,74" fill="#1f2b38" stroke="#3a4a5c"/><polygon points="66,8 96,22 112,48 92,40 74,24" fill="#243446"/><circle cx="82" cy="46" r="5" fill="#e9b44c"/><circle cx="82" cy="46" r="10" fill="none" stroke="#e9b44c" stroke-width="1.5"/><rect x="62" y="30" width="40" height="32" fill="none" stroke="#e8edf3" stroke-width="1"/></svg>
+<div><div class="lb">Minas Gerais</div><div style="font-size:13px;margin-top:2px">São Bento do Vale</div><div class="lb" style="margin-top:8px" id="legt">Minha força</div><div id="leg" style="display:flex;gap:2px;margin-top:4px"></div><div class="lb" id="legs" style="margin-top:3px">0% a 40%</div></div>
+</div>
+<div id="mks"></div>
+</div></div>
+
+<script>
+var st=document.getElementById('stage'),wr=document.getElementById('wrap');
+function fit(){var s=Math.min(innerWidth/1280,innerHeight/720);wr.style.width=1280*s+'px';wr.style.height=720*s+'px';wr.style.left=(innerWidth-1280*s)/2+'px';wr.style.top=(innerHeight-720*s)/2+'px';st.style.transform='scale('+s+')'}
+fit();addEventListener('resize',fit);
+var S=7;function R(){S=(S*16807)%2147483647;return (S-1)/2147483646}
+var NS='http://www.w3.org/2000/svg';function E(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e}
+function blob(cx,cy,r,n){var p=[];for(var i=0;i<n;i++){var a=i/n*6.283,rr=r*(0.75+R()*0.45);p.push((cx+Math.cos(a)*rr*1.4).toFixed(1)+','+(cy+Math.sin(a)*rr).toFixed(1))}return p.join(' ')}
+var hg=document.getElementById('hills'),hc=['#1e2a21','#223026','#27362b','#2c3c30','#324335','#384a3a'];
+[[210,170,150],[1060,130,130],[960,640,140],[200,640,120],[440,80,90],[800,160,80]].forEach(function(h){for(var l=0;l<6;l++){var r=h[2]*(1-l*0.15);E('polygon',{points:blob(h[0]+8,h[1]+8,r,22),fill:'#141c17',opacity:0.5},hg);E('polygon',{points:blob(h[0]-l*3,h[1]-l*3,r,22),fill:hc[l]},hg)}});
+function inUrb(x,y,m){var dx=(x-680)/(205+m),dy=(y-400)/(135+m);return dx*dx+dy*dy<1}
+var fg=document.getElementById('fields'),fc=['#3d4a2c','#4b5733','#55603a','#3a4630','#5a5236','#46503a'];
+for(var i=0;i<95;i++){var x=R()*1280,y=R()*720;if(inUrb(x,y,60))continue;var w=30+R()*60,h=20+R()*40;E('rect',{x:x,y:y,width:w,height:h,fill:fc[i%6],stroke:'#28311f','stroke-width':1,transform:'rotate('+(R()*40-20)+' '+x+' '+y+')',opacity:0.85},fg)}
+var tg=document.getElementById('forest');
+for(var c=0;c<46;c++){var x=R()*1280,y=R()*720;if(inUrb(x,y,40))continue;var n=6+R()*12;for(var j=0;j<n;j++)E('circle',{cx:x+R()*40-20,cy:y+R()*30-15,r:3+R()*5,fill:j%2?'#1c3822':'#24452b'},tg)}
+var rv=document.getElementById('river'),L=rv.getTotalLength(),ry={};for(var s=0;s<=L;s+=3){var pt=rv.getPointAtLength(s);ry[Math.round(pt.x)]=pt.y}
+function riverY(x){for(var d=0;d<6;d++){if(ry[x+d]!==undefined)return ry[x+d];if(ry[x-d]!==undefined)return ry[x-d]}return 999}
+var ug=document.getElementById('urban');
+var base=[];for(var i=0;i<34;i++){var a=i/34*6.283,rr=(0.82+R()*0.22);base.push((680+Math.cos(a)*205*rr).toFixed(1)+','+(400+Math.sin(a)*135*rr).toFixed(1))}E('polygon',{points:base.join(' '),fill:'#757a82'},ug);
+var ang=-0.14,ca=Math.cos(ang),sa=Math.sin(ang);
+for(var gx=-230;gx<230;gx+=21){for(var gy=-160;gy<160;gy+=16){var x=680+gx*ca-gy*sa,y=400+gx*sa+gy*ca;if(!inUrb(x,y,-18-R()*30))continue;if(Math.abs(y-riverY(Math.round(x)))<15)continue;var g=R();E('rect',{x:x,y:y,width:17,height:12,fill:g<0.06?'#2e4a30':(g<0.5?'#3a3e45':'#43474e'),transform:'rotate('+(ang*57.3)+' '+x+' '+y+')'},ug)}}
+var Z=[
+{id:'sc',n:'São Cristóvão',f:'Zona urbana · nome do bairro pelo IBGE',pts:'520,270 690,250 760,300 690,340 590,350 540,320',lx:640,ly:296,p:'4.212',e:'3.390',r:'R$ 1.640',d:'21% dos domicílios sem rede de esgoto',forca:22,lider:'UDC',renda:2,idosos:3,rival:18,you:22,dan:18,bru:9,lid:[['Pastor Elias','liderança religiosa',-4],['Sr. Wilson','comerciante',8]],h:['Caminhada · sex 20 mar · +1,4 de presença']},
+{id:'ct',n:'Centro',f:'Zona urbana · nome do jogo (sem bairro oficial)',pts:'590,350 690,340 715,395 680,440 600,435 575,395',lx:645,ly:394,p:'2.945',e:'2.410',r:'R$ 1.980',d:'12% dos domicílios sem rede de esgoto',forca:31,lider:'FRB',renda:3,idosos:4,rival:12,you:31,dan:12,bru:14,lid:[['Padre Lauro','liderança religiosa',20],['Dona Neusa','associação comercial',15]],h:['Caminhada · ter 24 mar · +2,1 de presença','Comício marcado · sáb 4 abr, 18 h']},
+{id:'vn',n:'Vila Nova',f:'Zona urbana · nome do bairro pelo IBGE',pts:'690,340 760,300 845,335 860,430 780,480 680,440 715,395',lx:785,ly:392,p:'6.073',e:'4.880',r:'R$ 1.412',d:'38% dos domicílios sem rede de esgoto',forca:14,lider:'UDC',renda:1,idosos:2,rival:34,you:14,dan:34,bru:11,lid:[['Pastora Rute','liderança religiosa',12],['Dona Cida','associação de moradores',34]],h:['Visita a Dona Cida · sáb 21 mar','Caminhada · qua 25 mar · +1,8 de presença']},
+{id:'bv',n:'Bela Vista',f:'Zona urbana · nome do bairro pelo IBGE',pts:'540,320 590,350 575,395 600,435 680,440 780,480 700,525 560,505 495,440 505,360',lx:590,ly:478,p:'3.531',e:'2.870',r:'R$ 1.310',d:'44% dos domicílios sem rede de esgoto',forca:9,lider:'PSN',renda:1,idosos:2,rival:15,you:9,dan:15,bru:27,lid:[['Mestre Jairo','escola de capoeira',5]],h:['Nenhum compromisso ainda']},
+{id:'rn',n:'Rural Norte',f:'Zona rural · nome do distrito pelo IBGE',pts:'0,46 1280,46 1280,330 845,335 760,300 690,250 520,270 540,320 505,360 0,360',lx:560,ly:200,p:'2.384',e:'1.990',r:'R$ 980',d:'71% dos domicílios sem rede de esgoto',forca:26,lider:'FRB',renda:1,idosos:5,rival:6,you:26,dan:6,bru:8,lid:[['Seu Anselmo','associação rural',38]],h:['Visita a Seu Anselmo · seg 16 mar']},
+{id:'rs',n:'Rural Sul',f:'Zona rural · nome do jogo',pts:'0,360 505,360 495,440 560,505 700,525 780,480 860,430 845,335 1280,330 1280,720 0,720',lx:760,ly:578,p:'2.000',e:'1.650',r:'R$ 1.020',d:'66% dos domicílios sem rede de esgoto',forca:4,lider:'MTP',renda:1,idosos:4,rival:9,you:4,dan:9,bru:6,lid:[['Sindicato rural','sindicato',0]],h:['Nenhum compromisso ainda']}];
+var PC={FRB:'#2fb3a0',UDC:'#4c7fd6',PSN:'#e08a3c',MTP:'#c9554e'};
+var RAMP={forca:['#173a35','#1f5a50','#24806f','#2fb3a0','#62d9c4'],renda:['#3a2a12','#5a4018','#8a6220','#c08a35','#e6b863'],idosos:['#2a2340','#3d3466','#574c94','#7f77dd','#afa9ec'],rival:['#3a1f1a','#5c2a20','#8a3a2a','#c4553f','#f0997b']};
+var mode='forca',sel='vn',zg=document.getElementById('zones'),lg=document.getElementById('zlabels'),poly={};
+Z.forEach(function(z){poly[z.id]=E('polygon',{points:z.pts,class:'zone','stroke-width':1.5,stroke:'#e8edf3','stroke-dasharray':'5 4'},zg);poly[z.id].addEventListener('click',function(){sel=z.id;draw()});var t=E('text',{x:z.lx,y:z.ly,'text-anchor':'middle','font-family':'Oswald,sans-serif','font-size':z.id[0]=='r'?17:15,fill:'#fff',stroke:'#0d1117','stroke-width':3,'paint-order':'stroke','pointer-events':'none'},lg);t.textContent=z.n;z.t2=E('text',{x:z.lx,y:z.ly+16,'text-anchor':'middle','font-family':'Inter,sans-serif','font-size':12,fill:'#e8edf3',stroke:'#0d1117','stroke-width':3,'paint-order':'stroke','pointer-events':'none'},lg)});
+function col(z){if(mode=='lider')return PC[z.lider];var v=mode=='forca'?z.forca/8:mode=='rival'?z.rival/8:z[mode];return RAMP[mode][Math.max(0,Math.min(4,Math.floor(v)))]}
+function val(z){return mode=='forca'?z.forca+'%':mode=='rival'?z.rival+'%':mode=='lider'?z.lider:mode=='renda'?z.r:['muito poucos','poucos','média','muitos','muitíssimos'][z.idosos-1]}
+function draw(){Z.forEach(function(z){var p=poly[z.id];p.setAttribute('fill',col(z));p.setAttribute('fill-opacity',z.id[0]=='r'?0.3:0.45);p.setAttribute('stroke-width',z.id==sel?3.5:1.5);p.setAttribute('stroke-dasharray',z.id==sel?'':'5 4');z.t2.textContent=val(z)});
+var z=Z.filter(function(q){return q.id==sel})[0];
+['zn','zf','zp','ze','zr','zd'].forEach(function(k,i){document.getElementById(k).textContent=[z.n,z.f,z.p,z.e,z.r,z.d][i]});
+document.getElementById('zbars').innerHTML=[['Você (FRB)',z.you,PC.FRB],['Daniel A. (UDC)',z.dan,PC.UDC],['Bruna C. (PSN)',z.bru,PC.PSN]].map(function(b){return '<div class="row" style="font-size:12px;margin:3px 0"><span style="width:110px">'+b[0]+'</span><div style="flex:1;height:7px;background:#1a212b;border-radius:3px;margin:0 8px"><div style="width:'+b[1]*2.2+'%;height:7px;background:'+b[2]+';border-radius:3px"></div></div><span style="width:30px;text-align:right">'+b[1]+'</span></div>'}).join('');
+document.getElementById('zlid').innerHTML=z.lid.map(function(l){var c=l[2]>=0?'#3fb68b':'#e5645a';return '<div class="row" style="background:#1a212b;border-radius:7px;padding:5px 8px;margin:4px 0"><div style="display:flex;gap:8px;align-items:center"><div style="width:26px;height:26px;border-radius:50%;background:#3a4656;display:flex;align-items:center;justify-content:center"><i class="ti ti-user" style="font-size:15px"></i></div><div><div style="font-size:13px">'+l[0]+'</div><div class="lb" style="font-size:11px">'+l[1]+'</div></div></div><span style="font-size:13px;color:'+c+'">'+(l[2]>0?'+':'')+l[2]+'</span></div>'}).join('');
+document.getElementById('zhist').innerHTML=z.h.map(function(h){return '· '+h}).join('<br>');
+var lt={forca:'Minha força',lider:'Partido líder',renda:'Renda mediana',idosos:'Pessoas com 60+',rival:'Força de Daniel A.'}[mode];document.getElementById('legt').textContent=lt;
+document.getElementById('leg').innerHTML=(mode=='lider'?Object.keys(PC).map(function(k){return '<span style="background:'+PC[k]+';color:#0e1116;font-size:11px;padding:1px 4px;border-radius:3px">'+k+'</span>'}):RAMP[mode].map(function(c){return '<span style="width:24px;height:8px;background:'+c+'"></span>'})).join('');
+document.getElementById('legs').textContent=mode=='lider'?'mais forte = mais opaco':mode=='renda'?'R$ 900 a R$ 2.000':mode=='idosos'?'menos a mais':'0% a 40%';
+document.querySelectorAll('.md').forEach(function(b){b.classList.toggle('on',b.dataset.m==mode)})}
+document.querySelectorAll('.md').forEach(function(b){b.addEventListener('click',function(){mode=b.dataset.m;draw()})});
+document.getElementById('poll').innerHTML=[['Daniel A.','UDC',9.8],['Bruna C.','PSN',7.1],['Arthur A. (você)','FRB',5.4],['Josué M.','MTP',4.9],['Tânia R.','UDC',4.2]].map(function(p){var me=p[0].indexOf('você')>0;return '<div class="row" style="padding:3px 6px;border-radius:5px;'+(me?'background:#1d3557;':'')+'"><span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+PC[p[1]]+';margin-right:6px"></span>'+p[0]+' <span class="lb">'+p[1]+'</span></span><span style="font-weight:500">'+p[2].toFixed(1).replace('.',',')+'%</span></div>'}).join('');
+document.getElementById('rail').innerHTML=[['ti-speakerphone','Campanha'],['ti-users','Pessoas',2],['ti-calendar','Agenda'],['ti-map-2','Território'],['ti-cash','Finanças'],['ti-news','Mídia',1],['ti-building-bank','Partido']].map(function(r,i){return '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;position:relative;padding:4px 8px;border-radius:7px;'+(i==3?'background:#1d3557;':'')+'"><i class="ti '+r[0]+'" style="font-size:20px"></i><span style="font-size:11px;color:#c9d2de">'+r[1]+'</span>'+(r[2]?'<span style="position:absolute;top:0;right:4px;background:#e9b44c;color:#2a220e;font-size:11px;border-radius:7px;padding:0 4px">'+r[2]+'</span>':'')+'</div>'}).join('');
+document.getElementById('mks').innerHTML=[[606,350,'ti-speakerphone','#4c8df6','Comício · sáb 18 h'],[800,428,'ti-user','#4c7fd6','Daniel A. em campo'],[560,505,'ti-barrier-block','#e9b44c','Creche · 40%'],[430,170,'ti-droplet','#e5645a','Seca · 40 famílias'],[402,108,'ti-users','#2fb3a0','Seu Anselmo']].map(function(m){return '<div class="mk" style="left:'+m[0]+'px;top:'+m[1]+'px"><i class="ti '+m[2]+'" style="background:'+m[3]+';color:#0e1116"></i>'+m[4]+'</div>'}).join('');
+draw();
+var d=new Date(2032,2,29),play=false,spd=1,tm=null,dn=['dom.','seg.','ter.','qua.','qui.','sex.','sáb.'],mn=['jan.','fev.','mar.','abr.','mai.','jun.','jul.','ago.','set.','out.','nov.','dez.'];
+function tick(){d.setDate(d.getDate()+1);document.getElementById('date').textContent=dn[d.getDay()]+', '+d.getDate()+' '+mn[d.getMonth()]+' '+d.getFullYear()}
+function run(){clearInterval(tm);if(play)tm=setInterval(tick,2000/spd)}
+var bp=document.getElementById('bpause');
+bp.addEventListener('click',function(){play=!play;bp.innerHTML='<i class="ti '+(play?'ti-player-pause':'ti-player-play')+'"></i>';bp.classList.toggle('on',!play);run()});
+bp.classList.add('on');bp.innerHTML='<i class="ti ti-player-play"></i>';
+document.querySelectorAll('.sp').forEach(function(b){b.addEventListener('click',function(){spd=+b.dataset.s;document.querySelectorAll('.sp').forEach(function(x){x.classList.toggle('on',x==b)});if(!play){play=true;bp.classList.remove('on');bp.innerHTML='<i class="ti ti-player-pause"></i>'}run()})});
+</script>
+</body>
+</html>

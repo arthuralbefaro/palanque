@@ -109,7 +109,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 10. **Fluxo de desenvolvimento.**
 11. **Riscos e cuidados.**
 12. **Municípios:** todos, com fontes oficiais, vagas reais de vereador, porte (pequeno até 20 mil, médio até 100 mil, grande até 500 mil, metrópole) e simulação por nível de detalhe (detalhado no município em foco, agregado no resto).
-13. **2.5D e 3D:** mapa do estado e do país extrudado; posses em 3D low-poly, sempre puláveis.
+13. **2.5D e 3D:** mapa do estado e do país extrudado; posses em 3D estilizado de formas suaves (o mesmo estilo dos retratos novos, parte RV), sempre puláveis.
 14. **Partidos:** 16 famílias ideológicas simétricas; partido criado pelo jogador, no início ou fundado durante a carreira pela Lei dos Partidos.
 15. **Eventos:** meta de 600 ou mais em 12 categorias, com condições, raridade, cooldown, cadeias e variáveis.
 16. **Novo Mundo:** predefinições de quantidade de partidos; urna jogável no dia da eleição; cenário "Brasil 2026", que espelha bancadas, prefeitos e força local reais com nomes fictícios.
