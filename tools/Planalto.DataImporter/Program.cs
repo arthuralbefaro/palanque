@@ -32,16 +32,23 @@ var cache = new SourceCache(cacheDirectory, http);
 // Modo "rd" (dados reais de partida, GDD 17.17): "rd siconfi-baixar" enche o cache do SICONFI (demorado, retomável).
 if (args.Length > 1 && args[0] == "rd" && args[1] == "siconfi-baixar")
 {
-    return await Planalto.DataImporter.Rd.SiconfiDownload.RunAsync(cache, http);
+    return await Planalto.DataImporter.Rd.SiconfiDownload.RunAsync(cache, http, args.Length > 2 && int.TryParse(args[2], out int paralelas) ? paralelas : 3);
+}
+
+// "rd mortalidade": tábuas de mortalidade e população projetada por UF (data/demography/).
+if (args.Length > 1 && args[0] == "rd" && args[1] == "mortalidade")
+{
+    return await Planalto.DataImporter.Rd.MortalityImport.RunAsync(cache, dataDirectory);
 }
 
 // Modos "cenario" (Brasil 2026, GDD 16.4) e "aparencia" (cor ou raça por UF, GDD 3.8).
-if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas")
+if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas" or "zonas-rd")
 {
     try
     {
         return args[0] switch
         {
+            "zonas-rd" => await Planalto.DataImporter.Rd.ZonasRdImport.RunAsync(cache, dataDirectory),
             "cenario" => await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory),
             "aparencia" => await Planalto.DataImporter.Appearance.CorRacaImport.RunAsync(cache, dataDirectory),
             "geo" => await Planalto.DataImporter.Geo.GeoImport.RunAsync(cache, dataDirectory),

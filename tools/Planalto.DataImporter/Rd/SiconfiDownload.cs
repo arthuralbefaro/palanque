@@ -42,7 +42,8 @@ public static class SiconfiDownload
             : "&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF")
         + string.Create(CultureInfo.InvariantCulture, $"&no_anexo=RGF-Anexo%2001&co_esfera={(estado ? "E" : "M")}&co_poder=E&id_ente={ente}");
 
-    public static async Task<int> RunAsync(SourceCache cache, HttpClient http)
+    /// <param name="paralelas">Chamadas simultâneas (padrão 3); a API responde devagar e recusa quando há chamadas demais.</param>
+    public static async Task<int> RunAsync(SourceCache cache, HttpClient http, int paralelas = Paralelas)
     {
         CachedFile localidades = await cache.GetAsync("ibge_localidades_municipios.json", Ibge.LocalidadesUrl);
         List<IbgeMunicipio> municipios = Ibge.ReadLocalidades(localidades.Path);
@@ -55,7 +56,7 @@ public static class SiconfiDownload
 
         int done = 0;
         var falhas = new List<string>();
-        using var gate = new SemaphoreSlim(Paralelas);
+        using var gate = new SemaphoreSlim(Math.Clamp(paralelas, 1, 16));
         var tasks = entes.Select(async e =>
         {
             await gate.WaitAsync();
