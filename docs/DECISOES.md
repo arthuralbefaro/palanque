@@ -339,3 +339,9 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Motivo:** "Planalto" já é o nome de um simulador político brasileiro ativo (planalto.fun).
 - **Alcance:** só o que o jogador vê: título da janela, menu, créditos, textos do jogo e página de loja. O código, a solução, os namespaces, os projetos e as pastas continuam como Planalto.
 - **Quando:** na parte RV, junto com o menu como cena (ROADMAP, parte RV), com teste: nenhum texto visível ao jogador contém "Planalto" como nome do jogo; "Palácio do Planalto" como lugar continua permitido.
+
+## D-047 — Autoria com colaboradores convidados
+- **Data:** 2026-11-16 · Decisão do autor, ao abrir um repositório privado no GitHub para dividir o projeto com amigos.
+- **Decisão:** os commits do autor e os feitos pelo assistente continuam só em nome de Arthur Albefaro, sem menção a IA. Colaboradores convidados pelo autor assinam os próprios commits com o próprio nome. O hook `.githooks/commit-msg` continua apagando linhas de atribuição a IA de qualquer commit; quem clona ativa o hook com `git config core.hooksPath .githooks` (nesta máquina ele está configurado com caminho absoluto para a cópia principal).
+- **Não muda:** o assistente não é autor de nada; nunca altera `user.name`/`user.email` nem usa `--author`; nunca faz push sem pedido. Os créditos do jogo continuam como estão (CLAUDE.md); incluir colaboradores neles é decisão à parte.
+- **Onde:** CLAUDE.md, seção Autoria.

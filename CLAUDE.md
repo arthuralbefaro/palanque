@@ -3,12 +3,13 @@
 ## Contexto
 Simulador de carreira política brasileira em Godot 4.7.2 .NET (C#).
 Antes de qualquer tarefa, leia docs/GDD.md e docs/ROADMAP.md.
-Dono do projeto e único autor: Arthur Albefaro.
+Dono do projeto: Arthur Albefaro. Colaboradores convidados por ele podem contribuir em nome próprio (ver Autoria).
 
 ## AUTORIA — REGRA ABSOLUTA
 - Você NÃO é autor, coautor ou colaborador de nada neste repositório.
 - Commits: nunca adicione "Co-Authored-By", "Generated with Claude Code", "Claude-Session", links para claude.ai/claude.com/anthropic.com, emojis de robô ou qualquer menção a IA, Claude ou Anthropic na mensagem.
-- Nunca altere git config user.name / user.email nem use --author. O autor é sempre o configurado no repositório (Arthur Albefaro).
+- Nunca altere git config user.name / user.email nem use --author. Os commits do autor e os feitos nesta máquina pelo assistente saem sempre em nome de Arthur Albefaro, sem menção a IA.
+- Colaboradores convidados pelo autor assinam os próprios commits com o próprio nome. As regras desta seção sobre IA valem para eles também, e o hook `.githooks/commit-msg` apaga linhas de atribuição a IA de qualquer commit. Quem clona o repositório ativa o hook com `git config core.hooksPath .githooks`.
 - Nunca desative, contorne ou edite os hooks em .githooks/ nem use --no-verify.
 - Código, comentários, documentação, README, CREDITS, telas de créditos do jogo, metadados de export, nomes de arquivos: nenhuma menção a IA, Claude, Anthropic ou "gerado automaticamente".
 - Pull requests e issues: mesmas regras, sem rodapé de atribuição.
