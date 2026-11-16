@@ -34,6 +34,41 @@ public class ZonasDataTests
     }
 
     [Fact]
+    public void Eleitores_das_zonas_somam_o_eleitorado_do_municipio_sem_tolerancia()
+    {
+        var zonas = Files.Value.Values.SelectMany(f => f.Zonas.Municipios).ToDictionary(m => m.CodigoIbge);
+        foreach (Municipio m in CampaignKit.C.Municipios.All)
+        {
+            ZonasMunicipio z = zonas[m.CodigoIbge];
+            Assert.All(z.Zonas, zona => Assert.True(zona.Eleitores is >= 0 && zona.EleitoresFonte is Zona.EleitoresLocais or Zona.EleitoresPopulacao, $"{zona.Id} sem eleitores"));
+            Assert.Equal(m.Eleitorado, z.Zonas.Sum(zona => zona.Eleitores!.Value));
+        }
+    }
+
+    [Fact]
+    public void Religiao_e_escolaridade_por_zona_so_onde_ha_duas_ou_mais_areas_de_ponderacao()
+    {
+        int comAmostra = 0;
+        foreach (ZonasMunicipio m in Files.Value.Values.SelectMany(f => f.Zonas.Municipios))
+        {
+            foreach (Zona z in m.Zonas.Where(z => z.Perfil.Religiao is not null))
+            {
+                comAmostra++;
+                Assert.NotNull(z.Perfil.Escolaridade);
+                Assert.Equal(PerfilCategorias.Religiao.Count, z.Perfil.Religiao!.Count);
+                Assert.Equal(PerfilCategorias.Escolaridade.Count, z.Perfil.Escolaridade!.Count);
+                Assert.All(z.Perfil.Religiao, v => Assert.True(v >= 0));
+
+                // Religião conta pessoas de 10 anos ou mais: não pode passar da população da zona (com folga do
+                // arredondamento da amostra, que o IBGE estima e arredonda por área).
+                Assert.True(z.Perfil.Religiao.Sum() <= z.Populacao * 1.25 + 50, $"{z.Id}: religião {z.Perfil.Religiao.Sum()} > população {z.Populacao}");
+            }
+        }
+
+        Assert.True(comAmostra > 10_000, $"{comAmostra} zonas com religião e escolaridade próprias");
+    }
+
+    [Fact]
     public void Numero_de_zonas_respeita_o_porte_e_urbano_nao_se_mistura_com_rural()
     {
         TerritoryConfig config = Config;

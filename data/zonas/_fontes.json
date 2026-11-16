@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-11-16T04:44:54.1993975+00:00",
+  "gerado_em": "2026-11-16T07:44:02.4469587+00:00",
   "fontes": [
     {
       "campo": "contornos",
@@ -38,6 +38,8 @@
   },
   "contornos_bytes": 21536297,
   "teto_bytes": 31457280,
+  "atributos_bytes": 17543864,
+  "teto_atributos_bytes": 20971520,
   "zonas": 28135,
   "regra_de_sigilo": "População e domicílios do agregado básico (sem supressão). Idade e renda: células com \"X\" ou setor sem linha não são estimados; cada bloco soma só os setores publicados, e a zona com cobertura abaixo de 80% usa o perfil do município.",
   "lacunas": [
@@ -1464,5 +1466,32 @@
     "1721109-01 idade (cobertura 26%)",
     "1721109-04 idade (cobertura 24%)",
     "1721208-02 idade (cobertura 56%)"
-  ]
+  ],
+  "zonas_rd": {
+    "gerado_em": "2026-11-16T07:45:53.96273+00:00",
+    "fontes": [
+      {
+        "campo": "perfil.religiao, perfil.escolaridade",
+        "fonte": "IBGE, Censo Demográfico 2022, resultados da amostra por áreas de ponderação (tabelas Tab4_1 e Tab2_2) e composição das áreas de ponderação",
+        "ano": 2022,
+        "url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Microdados_e_Areas_de_Ponderacao/Areas_de_Ponderacao/tabelas_xlsx_20261106.zip; https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Microdados_e_Areas_de_Ponderacao/Documentacao/%c3%81reas%20de%20pondera%c3%a7%c3%a3o/Composi%c3%a7%c3%a3o%20das%20%c3%81reas%20de%20Pondera%c3%a7%c3%a3o.xlsx",
+        "baixado_em": "2026-11-16T07:09:38.1239067+00:00"
+      },
+      {
+        "campo": "eleitores",
+        "fonte": "TSE, eleitorado por local de votação, eleições de 2024 (1º turno), reescalado para o eleitorado atual do município",
+        "ano": 2024,
+        "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/eleitorado_locais_votacao/eleitorado_local_votacao_2024.zip",
+        "baixado_em": "2026-11-16T07:09:51.7220092+00:00"
+      }
+    ],
+    "metodo": "Religião (10 anos ou mais) e nível de instrução (25 anos ou mais): só nos municípios com duas ou mais áreas de ponderação; cada área é repartida entre as zonas pela população dos setores em comum; zona com menos de 80% da população em setores com área usa o perfil do município (campos ausentes). Eleitores: cada local de votação com coordenada conta na zona que o contém (ou na de centro mais próximo, se cair fora de todos os contornos simplificados); os eleitores de locais sem coordenada, ou com coordenada fora do município, são repartidos pela população de 16 anos ou mais; o resultado é reescalado, pelo método dos maiores restos, para o eleitorado atual do município.",
+    "zonas_com_religiao_e_escolaridade": 16592,
+    "municipios_com_duas_ou_mais_areas": 2577,
+    "setores_da_composicao_sem_zona": 0,
+    "municipios_com_eleitores_por_locais": 5361,
+    "eleitores2024_localizados": 148590725,
+    "eleitores2024_sem_coordenada": 7321955,
+    "eleitores2024_com_coordenada_fora_do_municipio": 191523
+  }
 }

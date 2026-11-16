@@ -115,7 +115,22 @@ public sealed class Zona
 
     public required PerfilZona Perfil { get; init; }
 
+    /// <summary>
+    /// Eleitores da zona (modo "zonas-rd" do importador, GDD 17.5): o eleitorado atual do município repartido pelos
+    /// locais de votação do TSE que caem em cada zona. A soma das zonas é igual ao eleitorado do município. Null
+    /// enquanto o passo não foi rodado: aí vale a repartição pela população de 16 anos ou mais.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public long? Eleitores { get; init; }
+
+    /// <summary>"locais_votacao" ou "populacao_16_mais" (município sem local de votação com coordenada).</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? EleitoresFonte { get; init; }
+
     public bool IsRural => Situacao == Rural;
+
+    public const string EleitoresLocais = "locais_votacao";
+    public const string EleitoresPopulacao = "populacao_16_mais";
 }
 
 /// <summary>
@@ -142,8 +157,40 @@ public sealed class PerfilZona
 
     public required string RendaFonte { get; init; }
 
+    /// <summary>
+    /// Religião (pessoas de 10 anos ou mais) pelas áreas de ponderação do Censo 2022, nas chaves de
+    /// <see cref="PerfilCategorias.Religiao"/>: cada área é repartida entre as zonas pela população dos setores em
+    /// comum. Null nos municípios com uma só área de ponderação: vale o perfil do município (GDD 17.5).
+    /// </summary>
+    /// Gravada como lista, na ordem de <see cref="PerfilCategorias.Religiao"/>, para o arquivo caber no teto.
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<long>? Religiao { get; init; }
+
+    /// <summary>Nível de instrução (pessoas de 25 anos ou mais), na ordem de <see cref="PerfilCategorias.Escolaridade"/>; mesma regra de <see cref="Religiao"/>.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<long>? Escolaridade { get; init; }
+
+    /// <summary>Religião por categoria do Censo, ou null se a zona usa o perfil do município.</summary>
+    public Dictionary<string, long>? ReligiaoPorCategoria() => Named(PerfilCategorias.Religiao, Religiao);
+
+    /// <summary>Nível de instrução por categoria do Censo, ou null se a zona usa o perfil do município.</summary>
+    public Dictionary<string, long>? EscolaridadePorCategoria() => Named(PerfilCategorias.Escolaridade, Escolaridade);
+
+    private static Dictionary<string, long>? Named(IReadOnlyList<string> keys, List<long>? values) =>
+        values is null || values.Count != keys.Count ? null : keys.Select((k, i) => (k, v: values[i])).ToDictionary(p => p.k, p => p.v, StringComparer.Ordinal);
+
     public IEnumerable<string> Validate(Zona zona)
     {
+        if (Religiao is not null && Religiao.Count != PerfilCategorias.Religiao.Count)
+        {
+            yield return $"{zona.Id}: religião sem todas as categorias.";
+        }
+
+        if (Escolaridade is not null && Escolaridade.Count != PerfilCategorias.Escolaridade.Count)
+        {
+            yield return $"{zona.Id}: escolaridade sem todas as categorias.";
+        }
+
         if (IdadeCobertura is < 0 or > 1 || RendaCobertura is < 0 or > 1)
         {
             yield return $"{zona.Id}: cobertura fora de 0 a 1.";

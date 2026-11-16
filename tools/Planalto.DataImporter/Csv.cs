@@ -64,6 +64,12 @@ public static class Csv
                 continue;
             }
 
+            // Campo entre aspas com quebra de linha dentro (acontece em endereços): a linha continua na seguinte.
+            while (line.Count(c => c == '"') % 2 == 1 && reader.ReadLine() is { } next)
+            {
+                line += " " + next;
+            }
+
             string[] fields = SplitLine(line);
             if (fields.Length != header.Length)
             {

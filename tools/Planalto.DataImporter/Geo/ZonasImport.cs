@@ -117,6 +117,7 @@ public static class ZonasImport
         var zonasFiles = new SortedDictionary<string, ZonasUf>(StringComparer.Ordinal);
         var geoJson = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var lacunas = new List<string>();
+        var setorZona = new List<string> { "setor;zona;populacao" };
         var tolerancias = new List<double>();
         string source = $"IBGE, Malha de Setores Censitários e Agregados por Setores do Censo Demográfico 2022 ({MalhaUrl}; {AgregadosUrl}; {RendaUrl})";
         string method = Method(config);
@@ -144,7 +145,7 @@ public static class ZonasImport
                     throw new ImportException($"{m.CodigoIbge}: setor sem polígono na malha ({list.First(s => s.Geometry is null).Code}).");
                 }
 
-                var (zonas, geo, tolerance) = BuildMunicipio(m, list, targets[m.CodigoIbge], config, lacunas);
+                var (zonas, geo, tolerance) = BuildMunicipio(m, list, targets[m.CodigoIbge], config, lacunas, setorZona);
                 tolerancias.Add(tolerance);
                 ufMunicipios.Add(new ZonasMunicipio { CodigoIbge = m.CodigoIbge, Zonas = zonas });
                 ufGeo.AddRange(geo);
@@ -218,9 +219,16 @@ public static class ZonasImport
         }
 
         await File.WriteAllTextAsync(Path.Combine(dataDirectory, ZonasPaths.Directory, "_fontes.json"), fontesJson, new UTF8Encoding(false));
+
+        // De-para setor → zona, só no cache: o modo "zonas-rd" usa para levar às zonas os dados que o IBGE publica
+        // por área de ponderação (grupos de setores).
+        await File.WriteAllLinesAsync(SetorZonaFile(cache), setorZona, new UTF8Encoding(false));
         Console.WriteLine($"Gravado: data/zonas/ e data/geo/zonas/ ({lacunas.Count} blocos de perfil substituídos pelo do município).");
         return 0;
     }
+
+    /// <summary>Arquivo do cache com a zona de cada setor (setor;zona;populacao), gerado por este modo.</summary>
+    public static string SetorZonaFile(SourceCache cache) => Path.Combine(cache.Directory, CacheFolder, "setor_zona.csv");
 
     public static string Method(TerritoryConfig c) =>
         string.Create(CultureInfo.InvariantCulture, $"Setores agrupados por município, sem misturar urbanos e rurais; urbanos partem dos bairros do IBGE onde existem. ")
@@ -324,7 +332,7 @@ public static class ZonasImport
         return result;
     }
 
-    private static (List<Zona> Zonas, List<GeoZona> Geo, double Tolerance) BuildMunicipio(Municipio m, List<Setor> setores, int target, TerritoryConfig config, List<string> lacunas)
+    private static (List<Zona> Zonas, List<GeoZona> Geo, double Tolerance) BuildMunicipio(Municipio m, List<Setor> setores, int target, TerritoryConfig config, List<string> lacunas, List<string> setorZona)
     {
         List<HashSet<int>> adjacency = Adjacency(setores);
 
@@ -391,6 +399,7 @@ public static class ZonasImport
         {
             Cluster c = final[i];
             string id = zoneOf[c.Id];
+            setorZona.AddRange(c.Setores.Select(s => $"{s.Code};{id};{s.Pop}"));
             Geometry reduced = GeometryPrecisionReducer.Reduce(simplified[i], reducer);
             if (reduced.IsEmpty)
             {
@@ -672,7 +681,7 @@ public static class ZonasImport
     }
 
     /// <summary>Um município por linha, como em data/municipios/.</summary>
-    private static string SerializeZonas(ZonasUf file, JsonSerializerOptions options)
+    public static string SerializeZonas(ZonasUf file, JsonSerializerOptions options)
     {
         var compact = new JsonSerializerOptions(options) { WriteIndented = false };
         var sb = new StringBuilder("{\n");
