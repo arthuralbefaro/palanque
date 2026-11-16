@@ -130,6 +130,7 @@ public static class RaceSetup
                 Number = party.Number.ToString(CultureInfo.InvariantCulture),
                 Recognition = config.BulkRecognition * recognitionScale,
                 IsBulk = true,
+                Drive = config.BulkDrive,
             });
         }
 
@@ -159,7 +160,7 @@ public static class RaceSetup
                     Recognition = (rng.NextInt(config.NpcRecognition.Min, config.NpcRecognition.Max + 1) + (incumbent ? config.IncumbentRecognitionBonus : 0)) * recognitionScale,
                     Incumbent = incumbent,
                     CharacterId = npc.Id,
-                    Drive = rng.NextDouble(0.3, 0.9),
+                    Drive = rng.NextDouble(config.NpcDrive.Min, config.NpcDrive.Max),
                 });
             }
         }
@@ -231,7 +232,7 @@ public static class RaceSetup
                 Recognition = (rng.NextInt(config.MayorRecognition.Min, config.MayorRecognition.Max + 1) + (incumbent ? config.IncumbentRecognitionBonus : 0)) * Math.Min(1, recognitionScale * 1.5),
                 Incumbent = incumbent,
                 CharacterId = npc.Id,
-                Drive = rng.NextDouble(0.5, 1.0),
+                Drive = rng.NextDouble(config.MayorDrive.Min, config.MayorDrive.Max),
             });
         }
 

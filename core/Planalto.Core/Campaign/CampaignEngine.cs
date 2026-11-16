@@ -227,7 +227,10 @@ public sealed class CampaignEngine(CampaignContext ctx)
         }
     }
 
-    /// <summary>Turno dos rivais: ações sorteadas pelo empenho, com eficiência menor que a do jogador.</summary>
+    /// <summary>
+    /// Turno dos rivais: ações sorteadas pelo empenho, com eficiência menor que a do jogador. O candidato coletivo
+    /// de cada partido também age (só reconhecimento e imagem; os apoios ficam com os nomeados).
+    /// </summary>
     private void NpcTurn()
     {
         CampaignConfig config = Context.Config;
@@ -237,15 +240,23 @@ public sealed class CampaignEngine(CampaignContext ctx)
             return;
         }
 
-        foreach (Candidate npc in Campaign.Candidates.Where(c => !c.IsPlayer && !c.IsBulk))
+        double effort = config.NpcEffortByPorte.GetValueOrDefault(Context.Municipio.Porte, 1);
+        foreach (Candidate npc in Campaign.Candidates.Where(c => !c.IsPlayer))
         {
-            int count = (int)Math.Round(Rng.NextInt(config.NpcActionsPerWeek.Min, config.NpcActionsPerWeek.Max + 1) * npc.Drive);
+            // Arredondamento estocástico: o empenho fracionário vira uma ação a mais com a probabilidade da fração.
+            double expected = Rng.NextInt(config.NpcActionsPerWeek.Min, config.NpcActionsPerWeek.Max + 1) * npc.Drive * effort;
+            int count = (int)Math.Floor(expected) + (Rng.NextDouble() < expected - Math.Floor(expected) ? 1 : 0);
             for (int i = 0; i < count; i++)
             {
                 CampaignActionDefinition action = Rng.Pick(actions);
                 double gain = action.Effects.Recognition * config.NpcActionEfficiency * RecognitionScale;
                 npc.Recognition = EffectApplier.Gain(npc.Recognition, gain);
                 npc.Image = Math.Clamp(npc.Image + (action.Effects.Image * config.NpcActionEfficiency), -1, 1);
+                if (npc.IsBulk)
+                {
+                    continue;
+                }
+
                 ActionTarget? target = action.Targets.Count > 0 ? Rng.Pick(action.Targets) : null;
                 foreach (var (group, delta) in action.Effects.Support.Concat(target is null ? [] : [new KeyValuePair<string, double>(target.Group, target.Support)]))
                 {

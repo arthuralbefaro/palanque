@@ -50,6 +50,24 @@ public sealed class CampaignConfig : IValidatable
 
     public required double NpcActionEfficiency { get; init; }
 
+    /// <summary>Empenho dos rivais a vereador (multiplica as ações por semana), sorteado por rival.</summary>
+    public required Parties.DoubleRange NpcDrive { get; init; }
+
+    /// <summary>
+    /// Empenho do candidato coletivo de cada partido: ele representa candidatos anônimos que também fazem
+    /// campanha, então ganha reconhecimento no turno dos rivais.
+    /// </summary>
+    public required double BulkDrive { get; init; }
+
+    /// <summary>
+    /// Multiplicador das ações semanais dos rivais por porte: em cidades maiores as campanhas têm equipe e
+    /// estrutura, enquanto a energia do jogador é a de uma pessoa.
+    /// </summary>
+    public required Dictionary<string, double> NpcEffortByPorte { get; init; }
+
+    /// <summary>Empenho dos candidatos a prefeito.</summary>
+    public required Parties.DoubleRange MayorDrive { get; init; }
+
     public required Dictionary<string, double> PorteCostMultiplier { get; init; }
 
     public required Dictionary<string, double> PorteRecognitionMultiplier { get; init; }
@@ -87,6 +105,11 @@ public sealed class CampaignConfig : IValidatable
             {
                 yield return $"falta o multiplicador do porte '{porte}'.";
             }
+        }
+
+        if (NpcDrive.Min < 0 || NpcDrive.Max < NpcDrive.Min || MayorDrive.Min < 0 || MayorDrive.Max < MayorDrive.Min || BulkDrive < 0)
+        {
+            yield return "npc_drive e mayor_drive: mínimo >= 0 e máximo >= mínimo; bulk_drive >= 0.";
         }
 
         if (CountSnapshots < 2 || PublicPollEveryWeeks < 1 || ElectionNoiseSd < 0 || NpcActionEfficiency < 0)

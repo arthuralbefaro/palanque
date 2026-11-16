@@ -54,12 +54,21 @@ internal static class CampaignKit
     public static Municipio Municipio(int ibge) => C.Municipios.All.Single(m => m.CodigoIbge == ibge);
 
     /// <summary>Carreira nova no município, com a predefinição pedida, pronta para a campanha.</summary>
-    public static CampaignEngine NewCareer(int ibge, ulong seed, string preset = "brasil_2026")
+    /// <param name="strongestParty">Filia o jogador ao partido mais forte da cidade, como a aba Partido sugere.</param>
+    public static CampaignEngine NewCareer(int ibge, ulong seed, string preset = "brasil_2026", bool strongestParty = false)
     {
         Municipio m = Municipio(ibge);
         WorldSetup world = WorldSetup.Create(C.World, preset, new Rng(seed)).Setup!;
         var rng = new Rng(seed + 1);
-        Character player = PersonGenerator.Generate(rng, C.People, new PersonRequest(RaceSetup.PlayerId, m.Uf, m.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), PartyId: rng.Pick(world.Parties).Id));
+        string partyId = rng.Pick(world.Parties).Id;
+        if (strongestParty)
+        {
+            var parties = CampaignContext.ElectoralParties(world.Parties.Select(GameParty.From), C.World.Parties.Generator.SizeShareWeights);
+            MunicipalScenario? local = world.Preset.Scenario == "brasil_2026" ? C.Brasil2026.Municipio(ibge) : null;
+            partyId = CampaignContext.PartyStrength(seed, ibge, C.Electorate, parties, local).MaxBy(s => s.Value).Key;
+        }
+
+        Character player = PersonGenerator.Generate(rng, C.People, new PersonRequest(RaceSetup.PlayerId, m.Uf, m.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), PartyId: partyId));
         GameParty party = GameParty.From(world.Find(player.PartyId!)!);
         player.Campaign = new CampaignIdentity
         {
