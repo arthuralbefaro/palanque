@@ -109,5 +109,8 @@ public sealed class GameState
     /// <summary>Fundação de partido em curso ou concluída (GDD 14.2 B).</summary>
     public Career.PartyFoundingState? Founding { get; set; }
 
+    /// <summary>Indicadores do município em foco em unidade real, com o modelo de evolução (GDD 17.17); null em saves anteriores.</summary>
+    public Indicators.MunicipalIndicatorsState? Indicators { get; set; }
+
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }

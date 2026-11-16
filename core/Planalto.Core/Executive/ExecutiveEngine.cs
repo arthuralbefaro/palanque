@@ -29,6 +29,12 @@ public sealed class ExecutiveContext
     /// </summary>
     public Indicators.IndicadoresMunicipio? Indicadores { get; init; }
 
+    /// <summary>
+    /// Evolução dos indicadores reais (GDD 17.17). Com ela e com <see cref="GameState.Indicators"/> no estado, os
+    /// indicadores da prefeitura passam a ser a escala de jogo derivada dos valores reais; sem ela, vale a regra da D-031.
+    /// </summary>
+    public Indicators.IndicatorEvolution? IndicatorEvolution { get; init; }
+
     public ExecutiveConfig Config => Content.Config;
 }
 
@@ -50,7 +56,7 @@ public sealed record EnactResult(bool Ok, ExecutiveFailure? Failure, bool Approv
 /// atraso, políticas (por decreto ou com lei votada na Câmara), coalizão por secretarias, aprovação ponderada pelos
 /// grupos de eleitores e crises. Toda aleatoriedade vem do Rng do estado.
 /// </summary>
-public sealed class ExecutiveEngine
+public sealed partial class ExecutiveEngine
 {
     private readonly Dictionary<string, double> _groupShares;
 
@@ -110,7 +116,7 @@ public sealed class ExecutiveEngine
         }
 
         Candidate player = campaign.Player;
-        return new ExecutiveState
+        var executive = new ExecutiveState
         {
             Municipio = campaign.Municipio,
             Start = new DateOnly(year + 1, 1, 1),
@@ -126,6 +132,8 @@ public sealed class ExecutiveEngine
             Support = new Dictionary<string, double>(player.Support, StringComparer.Ordinal),
             EnergyLeft = config.WeeklyEnergy,
         };
+        LinkRealIndicators(ctx, executive);
+        return executive;
     }
 
     // ---------------------------------------------------------------- orçamento e indicadores
@@ -439,6 +447,11 @@ public sealed class ExecutiveEngine
     private void Shift(string indicator, double delta)
     {
         ExecutiveState e = Executive;
+        if (ShiftReal(indicator, delta))
+        {
+            return;
+        }
+
         if (e.Indicators.ContainsKey(indicator))
         {
             e.Indicators[indicator] = Math.Clamp(e.Indicators[indicator] + delta, Config.IndicatorBounds.Min, Config.IndicatorBounds.Max);
@@ -498,9 +511,12 @@ public sealed class ExecutiveEngine
             e.News.Add(new ExecutiveNews(Week, ExecutiveNewsKind.PoliticaEmVigor, Context.Content.Policies.Find(p.PolicyId)!.Name));
         }
 
-        foreach (var (indicator, target) in Targets())
+        if (!StepRealIndicators())
         {
-            e.Indicators[indicator] += Config.IndicatorSpeedPerWeek * (target - e.Indicators[indicator]);
+            foreach (var (indicator, target) in Targets())
+            {
+                e.Indicators[indicator] += Config.IndicatorSpeedPerWeek * (target - e.Indicators[indicator]);
+            }
         }
 
         if (BelowMinimum.Any() && !e.MinimumViolatedThisYear)

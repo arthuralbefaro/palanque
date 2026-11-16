@@ -81,6 +81,8 @@ public static class DataValidation
             reports.AddRange(Indicators.IndicadoresContent.Validate(dataDirectory, dataSet));
         }
 
+        reports.AddRange(Indicators.IndicatorContent.Validate(dataDirectory));
+
         return reports;
     }
 

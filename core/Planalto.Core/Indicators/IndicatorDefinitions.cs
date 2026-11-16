@@ -19,6 +19,15 @@ public sealed class RealIndicatorDefinition
     public required decimal Max { get; init; }
 
     public required string Fonte { get; init; }
+
+    /// <summary>Como a unidade real vira a escala de jogo: <see cref="IndicatorScale.Linear"/> ou <see cref="IndicatorScale.Log"/>.</summary>
+    public required string Escala { get; init; }
+
+    /// <summary>Limite plausível inferior da evolução simulada, na unidade real (percentil 1 dos valores de partida).</summary>
+    public required double Piso { get; init; }
+
+    /// <summary>Limite plausível superior da evolução simulada, na unidade real (percentil 99 dos valores de partida).</summary>
+    public required double Teto { get; init; }
 }
 
 /// <summary>data/indicators/definitions.json: unidade, sentido e faixa plausível de cada indicador real (GDD 17.17).</summary>
@@ -37,8 +46,11 @@ public sealed class IndicatorDefinitions : IValidatable
     public const string ReceitaPerCapita = "receita_per_capita";
     public const string PibPerCapita = "pib_per_capita";
 
+    /// <summary>Índice do jogo, sem fonte oficial (GDD 17.20, item 19): não vem de data/indicadores_reais/.</summary>
+    public const string ProtecaoSocial = "protecao_social";
+
     public static readonly IReadOnlyList<string> Ids =
-        [Ideb, MortalidadeInfantil, Leitos, Homicidios, RedeAgua, RedeEsgoto, EmpregoFormal, PessoalRcl, ReceitaPerCapita, PibPerCapita];
+        [Ideb, MortalidadeInfantil, Leitos, Homicidios, RedeAgua, RedeEsgoto, EmpregoFormal, PessoalRcl, ReceitaPerCapita, PibPerCapita, ProtecaoSocial];
 
     public required string Note { get; init; }
 
@@ -47,6 +59,8 @@ public sealed class IndicatorDefinitions : IValidatable
     public required List<RealIndicatorDefinition> Indicadores { get; init; }
 
     public RealIndicatorDefinition Get(string id) => Indicadores.First(i => i.Id == id);
+
+    public RealIndicatorDefinition? Find(string id) => Indicadores.FirstOrDefault(i => i.Id == id);
 
     public IEnumerable<string> Validate()
     {
@@ -63,6 +77,24 @@ public sealed class IndicatorDefinitions : IValidatable
         foreach (RealIndicatorDefinition i in Indicadores.Where(i => i.Min >= i.Max))
         {
             yield return $"indicador '{i.Id}': min deve ser menor que max.";
+        }
+
+        foreach (RealIndicatorDefinition i in Indicadores)
+        {
+            if (i.Escala is not (IndicatorScale.Linear or IndicatorScale.Log))
+            {
+                yield return $"indicador '{i.Id}': escala '{i.Escala}' desconhecida.";
+            }
+
+            if (!(i.Piso < i.Teto) || i.Piso < (double)i.Min || i.Teto > (double)i.Max)
+            {
+                yield return $"indicador '{i.Id}': piso menor que teto, os dois dentro de min e max.";
+            }
+
+            if (i.Escala == IndicatorScale.Log && i.Piso <= 0)
+            {
+                yield return $"indicador '{i.Id}': escala log exige piso positivo.";
+            }
         }
 
         if (MinNascidosMortalidadeInfantil <= 0)

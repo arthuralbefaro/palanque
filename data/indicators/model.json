@@ -1,0 +1,28 @@
+{
+  "note": "Parâmetros de jogo do modelo de evolução dos indicadores (GDD 17.17); não são dados. A conta é feita na escala de jogo (0 = pior limite plausível, 100 = melhor; ver definitions.json) e o save guarda a unidade real. Por semana: valor = valor + velocidade_semanal × (alvo − valor) + choque, limitado ao piso e ao teto; alvo = partida + tendência + pressões (orçamento, políticas, obras) + contexto. tendencia_anual: inclinação inicial em pontos por ano, que perde força em linha reta até zerar em anos_tendencia; no IDEB ela vem das três últimas edições publicadas do município, limitada a tendencia_max_anual. sensibilidade_ciclo: pontos no alvo por ponto percentual do hiato do ciclo econômico (data/economy/cycle.json). vizinhos: pontos no alvo por ponto de variação do outro indicador desde a partida. choque: sorteio semanal, com desvio em pontos. preenchimento: regra da lacuna (mediana_porte_uf = mediana dos municípios do mesmo porte na UF, ou da UF inteira se forem menos que min_municipios_referencia; valor_fixo = 'valor'), sempre marcada como estimativa. julgamento: a nota que o eleitor dá a um indicador é neutro + peso_variacao × (variação desde o início do mandato) + peso_comparacao × (diferença para a mediana do mesmo porte na UF), nunca o nível absoluto (GDD 17.20, item 20). jogo: de que indicadores reais se compõe cada indicador da prefeitura (D-031), com peso.",
+  "anos_tendencia": 12,
+  "min_municipios_referencia": 5,
+  "julgamento": { "neutro": 50, "peso_variacao": 1.0, "peso_comparacao": 0.25 },
+  "indicadores": {
+    "ideb": { "velocidade_semanal": 0.010, "tendencia_anual": 0.5, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.004, "choque_desvio": 1.0, "sensibilidade_ciclo": 0.0, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "mortalidade_infantil": { "velocidade_semanal": 0.020, "tendencia_anual": 0.6, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.010, "choque_desvio": 2.0, "sensibilidade_ciclo": 0.0, "vizinhos": { "rede_esgoto": 0.10 }, "preenchimento": "mediana_porte_uf" },
+    "leitos": { "velocidade_semanal": 0.015, "tendencia_anual": 0.0, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.004, "choque_desvio": 1.5, "sensibilidade_ciclo": 0.0, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "homicidios": { "velocidade_semanal": 0.025, "tendencia_anual": 0.0, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.015, "choque_desvio": 3.0, "sensibilidade_ciclo": 0.3, "vizinhos": { "emprego_formal": 0.15 }, "preenchimento": "mediana_porte_uf" },
+    "rede_agua": { "velocidade_semanal": 0.008, "tendencia_anual": 0.4, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.002, "choque_desvio": 0.8, "sensibilidade_ciclo": 0.0, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "rede_esgoto": { "velocidade_semanal": 0.008, "tendencia_anual": 0.5, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.002, "choque_desvio": 0.8, "sensibilidade_ciclo": 0.0, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "emprego_formal": { "velocidade_semanal": 0.030, "tendencia_anual": 0.2, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.012, "choque_desvio": 2.5, "sensibilidade_ciclo": 2.0, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "pessoal_rcl": { "velocidade_semanal": 0.050, "tendencia_anual": 0.0, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.008, "choque_desvio": 2.0, "sensibilidade_ciclo": 1.0, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "receita_per_capita": { "velocidade_semanal": 0.030, "tendencia_anual": 0.3, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.006, "choque_desvio": 1.5, "sensibilidade_ciclo": 1.5, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "pib_per_capita": { "velocidade_semanal": 0.020, "tendencia_anual": 0.3, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.006, "choque_desvio": 1.5, "sensibilidade_ciclo": 2.5, "vizinhos": {}, "preenchimento": "mediana_porte_uf" },
+    "protecao_social": { "velocidade_semanal": 0.030, "tendencia_anual": 0.0, "tendencia_max_anual": 2.0, "choque_chance_semanal": 0.006, "choque_desvio": 2.0, "sensibilidade_ciclo": 0.5, "vizinhos": { "emprego_formal": 0.10 }, "preenchimento": "valor_fixo", "valor": 50 }
+  },
+  "jogo": {
+    "educacao": { "ideb": 1.0 },
+    "saude": { "mortalidade_infantil": 0.6, "leitos": 0.4 },
+    "seguranca": { "homicidios": 1.0 },
+    "infraestrutura": { "rede_esgoto": 0.6, "rede_agua": 0.4 },
+    "emprego": { "emprego_formal": 1.0 },
+    "social": { "protecao_social": 1.0 },
+    "contas": { "pessoal_rcl": 1.0 }
+  }
+}
