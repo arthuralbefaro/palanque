@@ -85,5 +85,11 @@ public sealed class GameState
     /// <summary>Campanha em curso; null fora de campanha.</summary>
     public Campaign.CampaignState? Campaign { get; set; }
 
+    /// <summary>Mandato em curso; null fora de mandato (GDD 5.8).</summary>
+    public Legislature.MandateState? Mandate { get; set; }
+
+    /// <summary>Câmara e prefeitura do município em foco depois da última eleição jogada.</summary>
+    public Legislature.LocalPolitics? Local { get; set; }
+
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }

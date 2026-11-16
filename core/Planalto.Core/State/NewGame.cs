@@ -18,10 +18,12 @@ public static class NewGame
             throw new ArgumentException("O personagem precisa estar filiado a um partido do mundo.", nameof(player));
         }
 
-        // Começa na semana ISO 1 do ano inicial (DECISOES D-019).
+        // Começa na semana ISO 1 do ano inicial (DECISOES D-019), já filiado (antes do prazo de abril).
+        Calendar calendar = Calendar.FromIsoWeek(world.Options.StartYear, 1);
+        player.AffiliatedOn ??= calendar.WeekStart;
         return new GameState
         {
-            Calendar = Calendar.FromIsoWeek(world.Options.StartYear, 1),
+            Calendar = calendar,
             Rng = new Rng(seed),
             Player = player,
             World = new WorldState

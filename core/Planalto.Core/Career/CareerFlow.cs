@@ -1,0 +1,128 @@
+using System.Globalization;
+using Planalto.Core.Campaign;
+using Planalto.Core.Legislature;
+using Planalto.Core.State;
+using Calendar = Planalto.Core.State.Calendar;
+
+namespace Planalto.Core.Career;
+
+/// <summary>Em que momento da carreira o jogador está (decide o que o hub mostra).</summary>
+public enum CareerMode
+{
+    /// <summary>Campanha sem mandato (a primeira, ou depois de uma derrota).</summary>
+    Campanha,
+
+    /// <summary>Campanha de reeleição: o mandato segue sozinho em segundo plano.</summary>
+    CampanhaEmMandato,
+
+    Mandato,
+
+    ForaDeMandato,
+}
+
+/// <summary>
+/// Costura da carreira (GDD 6.2): campanha → apuração → posse ou derrota → mandato → nova campanha no ano
+/// da eleição seguinte. Sem textos: a interface decide como mostrar cada passo.
+/// </summary>
+public static class CareerFlow
+{
+    public static CareerMode Mode(GameState state) => state.Campaign is not null
+        ? state.Mandate is not null ? CareerMode.CampanhaEmMandato : CareerMode.Campanha
+        : state.Mandate is not null ? CareerMode.Mandato : CareerMode.ForaDeMandato;
+
+    /// <summary>
+    /// Depois da apuração: grava a política local, dá posse (se eleito) em 1º de janeiro ou encerra o mandato
+    /// anterior, leva o reconhecimento da campanha para os recursos do personagem e salta o calendário até a posse.
+    /// </summary>
+    public static void ConcludeElection(CampaignContext campaignContext, LegislatureContext legislatureContext)
+    {
+        GameState state = campaignContext.State;
+        CampaignState campaign = state.Campaign ?? throw new InvalidOperationException("Sem campanha para concluir.");
+        ElectionOutcome outcome = campaign.Outcome ?? throw new InvalidOperationException("A eleição ainda não foi apurada.");
+
+        ChamberSetup.RecordLocalPolitics(legislatureContext, campaign, state.Rng);
+        string constituency = campaign.Municipio.ToString(CultureInfo.InvariantCulture);
+        state.Player.Resources.SetRecognition(constituency, (int)Math.Round(campaign.Player.Recognition));
+
+        state.Mandate = outcome.PlayerElected ? ChamberSetup.StartMandate(legislatureContext, campaign, state.Rng) : null;
+        state.Campaign = null;
+        state.Calendar.JumpTo(new DateOnly(outcome.Date.Year + 1, 1, 1));
+    }
+
+    /// <summary>
+    /// Abertura da pré-campanha numa eleição seguinte à primeira: o prazo de filiação (6 meses antes), depois do
+    /// qual o partido de cada um está definido. A primeira campanha da carreira começa direto na criação.
+    /// </summary>
+    public static DateOnly CampaignOpens(int year) => Calendar.ElectionFor(year).PartyAffiliationDeadline;
+
+    /// <summary>Ano de eleição municipal, já no prazo de filiação e antes da propaganda, sem campanha criada.</summary>
+    public static bool ShouldStartCampaign(GameState state)
+    {
+        int year = state.Calendar.Year;
+        return state.Campaign is null
+            && Calendar.ElectionKindOf(year) == ElectionKind.Municipal
+            && state.Calendar.WeekEnd >= CampaignOpens(year)
+            && state.Calendar.WeekStart < Calendar.ElectionFor(year).CampaignStart;
+    }
+
+    /// <summary>Próximo ano de eleição municipal em que ainda dá para fazer campanha.</summary>
+    public static int NextMunicipalElectionYear(GameState state)
+    {
+        int year = RaceSetup.NextMunicipalYear(state.Calendar.Year);
+        if (state.Calendar.WeekStart >= Calendar.ElectionFor(year).CampaignStart)
+        {
+            year = RaceSetup.NextMunicipalYear(year + 1);
+        }
+
+        return year;
+    }
+
+    /// <summary>Fora de mandato: salta para a abertura da pré-campanha da próxima eleição municipal.</summary>
+    public static void SkipToNextElection(GameState state)
+    {
+        if (state.Mandate is not null || state.Campaign is not null)
+        {
+            throw new InvalidOperationException("Só dá para pular o tempo fora de mandato e de campanha.");
+        }
+
+        state.Calendar.JumpTo(CampaignOpens(NextMunicipalElectionYear(state)));
+    }
+
+    /// <summary>
+    /// Uma semana da carreira: na campanha de reeleição o mandato vota sozinho (seguindo a orientação) e a
+    /// campanha avança; no mandato, só ele; fora de mandato, só o calendário.
+    /// </summary>
+    public static void AdvanceWeek(GameState state, CampaignEngine? campaign, LegislatureEngine? legislature)
+    {
+        if (state.Campaign is not null)
+        {
+            if (campaign is null)
+            {
+                throw new InvalidOperationException("Campanha em curso sem motor.");
+            }
+
+            if (state.Mandate is not null && legislature is not null && !legislature.Over)
+            {
+                legislature.ResolveWeek(automatic: legislature.Context.Config.AutoVoteInCampaign);
+            }
+
+            campaign.AdvanceWeek();
+            return;
+        }
+
+        if (state.Mandate is not null)
+        {
+            LegislatureEngine engine = legislature ?? throw new InvalidOperationException("Mandato em curso sem motor.");
+            engine.AdvanceWeek();
+            if (engine.Over)
+            {
+                // Mandato terminado sem disputa de reeleição (ex.: sem partido no prazo de filiação).
+                state.Mandate = null;
+            }
+
+            return;
+        }
+
+        state.Calendar.AdvanceWeek();
+    }
+}

@@ -46,6 +46,18 @@ public sealed class Calendar
 
     public void AdvanceWeek() => WeekStart = WeekStart.AddDays(7);
 
+    /// <summary>Salta para a semana que contém a data (só para a frente: posse, entressafra).</summary>
+    public void JumpTo(DateOnly date)
+    {
+        DateOnly monday = ForDate(date).WeekStart;
+        if (monday < WeekStart)
+        {
+            throw new ArgumentException("O calendário só salta para a frente.", nameof(date));
+        }
+
+        WeekStart = monday;
+    }
+
     public bool Contains(DateOnly date) => date >= WeekStart && date <= WeekEnd;
 
     /// <summary>Tipo de eleição do ano, ou null se o ano não tem eleição.</summary>

@@ -40,6 +40,9 @@ public sealed class Character
 
     public string? PartyId { get; set; }
 
+    /// <summary>Data da filiação ao partido atual (prazo de 6 meses, Lei 9.504, art. 9º); null se anterior ao jogo.</summary>
+    public DateOnly? AffiliatedOn { get; set; }
+
     public string? Biography { get; set; }
 
     public CampaignIdentity? Campaign { get; set; }

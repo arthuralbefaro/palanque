@@ -96,6 +96,10 @@ public static class RaceSetup
         var candidates = new List<Candidate>();
         GameParty PartyOf(string id) => state.Party(id)!;
 
+        // Câmara e prefeitura de uma eleição já jogada aqui: os incumbentes vêm dela, não do cenário.
+        Legislature.LocalPolitics? played = state.Local?.Municipio == m.CodigoIbge ? state.Local : null;
+        Legislature.MandateState? mandate = state.Mandate?.Municipio == m.CodigoIbge ? state.Mandate : null;
+
         // Jogador.
         GameParty playerParty = PartyOf(player.PartyId!);
         int playerSuffix = player.Campaign?.BallotNumber is { Length: 5 } n ? int.Parse(n[2..], CultureInfo.InvariantCulture) : rng.NextInt(1000);
@@ -110,7 +114,10 @@ public static class RaceSetup
             BirthDate = player.BirthDate,
             Gender = player.Gender,
             Number = playerNumber.Text,
-            Recognition = player.Resources.GetRecognition(constituency),
+            Recognition = mandate?.Recognition ?? player.Resources.GetRecognition(constituency),
+            Image = mandate?.Image ?? played?.PlayerImage ?? 0,
+            Support = new Dictionary<string, double>(mandate?.Support ?? played?.PlayerSupport ?? [], StringComparer.Ordinal),
+            Incumbent = played?.Councillors.Contains(PlayerId) == true,
             Money = player.Resources.Money,
             IsPlayer = true,
         });
@@ -141,11 +148,18 @@ public static class RaceSetup
         foreach (string partyId in inRace)
         {
             GameParty party = PartyOf(partyId);
-            int incumbentSeats = ctx.Local?.Camara.GetValueOrDefault(partyId) ?? 0;
-            for (int i = 0; i < rivalsPerParty[partyId]; i++)
+            int incumbentSeats = played is null ? ctx.Local?.Camara.GetValueOrDefault(partyId) ?? 0 : 0;
+            var sitting = played?.Councillors
+                .Where(id => id != PlayerId)
+                .Select(id => state.Npcs.FirstOrDefault(n => n.Id == id))
+                .Where(n => n is not null && n.PartyId == partyId)
+                .Select(n => n!)
+                .ToList() ?? [];
+            for (int i = 0; i < Math.Max(rivalsPerParty[partyId], sitting.Count); i++)
             {
-                Character npc = NewNpc(ctx, rng, ref serial, partyId, age: null);
-                bool incumbent = i < incumbentSeats;
+                // Vereadores em exercício disputam a reeleição antes de surgirem nomes novos.
+                Character npc = i < sitting.Count ? sitting[i] : NewNpc(ctx, rng, ref serial, partyId, age: null);
+                bool incumbent = i < sitting.Count || i < incumbentSeats;
                 CandidateNumber number = numbers.ReserveRandom(rng, constituency, Office.Vereador, party.Number)!.Value;
                 candidates.Add(new Candidate
                 {
@@ -205,8 +219,13 @@ public static class RaceSetup
             : ctx.Electorate.PartyStrength.ToDictionary(p => p.Key, p => p.Value);
         var parties = strength.OrderByDescending(p => p.Value).Select(p => p.Key).Where(p => ctx.State.Party(p) is not null).Take(count).ToList();
 
-        // O prefeito em exercício disputa a reeleição, salvo se já está no 2º mandato (D-007).
-        string? incumbentParty = ctx.Local is { Prefeito: not null, PrefeitoReeleito: false } local ? local.Prefeito : null;
+        // O prefeito em exercício disputa a reeleição, salvo se já está no 2º mandato (D-007). Depois de uma
+        // eleição jogada no município, o prefeito em exercício é o NPC eleito nela.
+        Legislature.LocalPolitics? played = ctx.State.Local?.Municipio == ctx.Municipio.CodigoIbge ? ctx.State.Local : null;
+        string? incumbentParty = played is not null
+            ? played.MayorReelected ? null : played.MayorPartyId
+            : ctx.Local is { Prefeito: not null, PrefeitoReeleito: false } local ? local.Prefeito : null;
+        Character? sittingMayor = played?.MayorId is { } mayorId && !played.MayorReelected ? ctx.State.Npcs.FirstOrDefault(n => n.Id == mayorId) : null;
         if (incumbentParty is not null && !parties.Contains(incumbentParty) && ctx.State.Party(incumbentParty) is not null)
         {
             parties[^1] = incumbentParty;
@@ -216,9 +235,9 @@ public static class RaceSetup
         foreach (string partyId in parties)
         {
             GameParty party = ctx.State.Party(partyId)!;
-            Character npc = NewNpc(ctx, rng, ref serial, partyId, age: rng.NextInt(35, 66));
-            numbers.TryReserve(constituency, Office.Prefeito, party.Number, 0, out CandidateNumber number);
             bool incumbent = partyId == incumbentParty;
+            Character npc = incumbent && sittingMayor is not null ? sittingMayor : NewNpc(ctx, rng, ref serial, partyId, age: rng.NextInt(35, 66));
+            numbers.TryReserve(constituency, Office.Prefeito, party.Number, 0, out CandidateNumber number);
             result.Add(new Candidate
             {
                 Id = npc.Id,
