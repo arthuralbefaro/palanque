@@ -89,7 +89,7 @@ Cada peça tem cor primária e secundária; a cor do partido pode ser aplicada c
 | Nome civil | Livre |
 | Nome de urna | Livre (ex.: "Zé da Saúde", "Dra. Ana") |
 | Gênero e pronomes | Masculino, feminino, não binário; pronomes usados em todos os textos |
-| Data de nascimento | Define idade inicial (17 a 45 anos). Para disputar vereador é preciso ter 18 anos completos no prazo do registro de candidatura, 15 de agosto (Lei 9.504/1997, art. 11, § 2º); quem não tiver começa fora da disputa e a criação avisa qual é a primeira eleição possível. NPCs são gerados entre 25 e 45 anos |
+| Data de nascimento | Define idade inicial (17 a 45 anos). Para disputar vereador é preciso ter 18 anos completos no prazo do registro de candidatura, 15 de agosto (Lei 9.504/1997, art. 11, § 2º); quem não tiver começa direto na pré-campanha da primeira eleição que pode disputar, com a idade correspondente, e a criação avisa antes de confirmar (decisão do autor, 16/11). NPCs são gerados entre 25 e 45 anos |
 | Estado e cidade natal | Lista de cidades jogáveis; dá bônus de reconhecimento local |
 | Origem social | Periferia, classe média, família rica, zona rural, família de políticos (cada uma muda recursos iniciais e eventos) |
 | Profissão anterior | Médico(a), advogado(a), professor(a), pastor(a)/líder religioso(a), sindicalista, empresário(a), policial, jornalista, influenciador(a), atleta, agricultor(a), servidor(a) público(a) e estudante — cada uma com bônus de atributo, contatos e eventos exclusivos e com idade mínima (formação e registro profissional; ex.: médico(a) a partir de 25, estudante a partir de 17). Profissão indisponível na idade aparece desativada, com a idade mínima |

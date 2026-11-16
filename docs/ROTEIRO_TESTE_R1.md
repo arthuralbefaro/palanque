@@ -11,7 +11,7 @@
 2. Profissões acima da idade aparecem desativadas com "(a partir de N anos)"; **Estudante** está disponível.
 3. Estado civil e filhos: com 17 anos, casamento e filhos acima do teto ficam desativados.
 4. Na pré-visualização, no lugar do outdoor, agora há **adesivo**, **bandeira** e **peça para redes**. Passe o mouse em cada um.
-5. Volte para uma idade de 30 a 45 para o resto do roteiro (com 17 anos a carreira começa fora da disputa até 2032).
+5. Volte para uma idade de 30 a 45 para o resto do roteiro (com 17 anos a carreira começa direto na pré-campanha de 2032, e a criação avisa).
 
 ## 2. Dez segundos (princípio i)
 1. Escolha uma cidade média que você conheça e comece.

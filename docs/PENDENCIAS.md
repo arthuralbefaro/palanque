@@ -229,3 +229,15 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 ### P-26 · Par do porte pequeno medido de novo depois do mapa (pedido do autor)
 - Com a divisão rural por distritos, 200 campanhas no porte pequeno: par (tipo, zona) **30,2%** (antes 30,5%); tipo 27,8%; canal 33,1%; partido mais forte eleito em 73 de 100, sorteado em 19 de 100. Como previsto, a mudança das zonas não move o par: ele é a entrevista no veículo de maior alcance. Nenhum parâmetro foi alterado por causa dele. **A decidir pelo autor:** cansaço da entrevista por veículo, mais veículos na cidade pequena, ou aceitar.
 - **Achado na integração:** com as zonas novas, o robô da R3 encontrou uma previsão errada: a perda de imagem prevista para quem ataca ignorava o limite de −1; perto do piso a perda real era menor que a prevista. Corrigido no Core (`fix(campanha)`).
+
+### P-24 · Itens 1 a 8 e encaixes dos retratos — **feitos** (branch `r1-teste`, integrado depois da `fase-r3`)
+- **1, gênero:** sorteia de novo com os pesos do gênero novo; se a aparência foi editada à mão, pergunta antes.
+- **2, número de urna:** campo de 3 algarismos validado no Core (`CandidateNumbers.TryParseSuffix`). Na criação a lista de ocupados é vazia de fato (o Core reserva primeiro o número do jogador e depois sorteia os dos colegas); a checagem existe e está testada.
+- **3, documento interno:** havia um caso ("(GDD 16.2)"); o DataValidator ganhou o lint "textos sem citar documento interno" e o alvo `explicacao` confere as telas.
+- **4, barra de tarefas:** causa reproduzida (janela de 1920×1080 com moldura num monitor com área útil de 1920×1020); o jogo abre maximizado e o alvo `layout` confere a janela real contra a área útil.
+- **5, partido:** não havia troca de partido; o mais provável é que a tela central da `fase-r1` abrisse no modo "Partido líder" com a sigla do líder da zona sem título. Agora o partido aparece na linha da candidatura e "(seu partido)" na legenda.
+- **6, imagem:** faixa nomeada com régua de 5 casas; o número só no tooltip. Faixas em `data/campaign/config.json` (`image_scale`: −1, −0,25, −0,05, +0,05, +0,25), escolhidas pelo tamanho dos efeitos de evento; **a revisar pelo autor**.
+- **7, cores do logotipo:** a amostra do seletor não tinha espaço (margens do tema); afetava todos os seletores da criação. Corrigido; a bandeira da pré-visualização também mostrava o nome na cor do fundo.
+- **8, 17 anos:** começa na pré-campanha da primeira eleição que pode disputar (D-036 alterada). O calendário só salta: a eleição anterior não é simulada.
+- **Retratos 2D:** encaixes de brinco, orelha e cabelo corrigidos sem redesenhar a arte (`fit` e `lobe_y` em `parts.json`).
+- **Sobrou:** Mandato e Prefeitura nas telas antigas ainda mostravam "Imagem +0.00" (somem na R4); as cores do logotipo não acompanham a troca de partido depois de sorteadas (só pelo botão "Cores do partido").
