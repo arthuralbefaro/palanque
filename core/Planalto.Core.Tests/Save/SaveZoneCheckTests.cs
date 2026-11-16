@@ -101,6 +101,46 @@ public class SaveZoneCheckTests
     }
 
     [Fact]
+    public void Save_do_mandato_grava_a_versao_e_confere_as_zonas_do_governo()
+    {
+        GameState state = Planalto.Core.Tests.Governance.GovKit.Councillor().State;
+        string json = GameStateSerializer.Serialize(state);
+        Assert.Contains($"\"zonas_versao\": {ZonasPaths.Versao}", json);
+
+        GameState loaded = GameStateSerializer.Deserialize(json);
+        int city = loaded.Governance!.Municipio;
+        Assert.Empty(SaveZoneCheck.Problems(loaded, ZonesOf));
+
+        // Dados regenerados sem mudar a versão: os mesmos ids noutra ordem desalinham os vetores do governo.
+        var swapped = ZonesOf(city)!.Reverse().ToList();
+        Assert.Contains(SaveZoneCheck.Problems(loaded, ibge => ibge == city ? swapped : ZonesOf(ibge)), p => p.Contains("do governo", StringComparison.Ordinal));
+
+        loaded.Governance.BaseZones.Add(loaded.Governance.Zones.Count + 2);
+        Assert.Contains(SaveZoneCheck.Problems(loaded, ZonesOf), p => p.StartsWith("base do mandato", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Save_da_entressafra_confere_a_lista_e_os_vetores_de_zona()
+    {
+        GameState state = GameStateSerializer.Deserialize(GameStateSerializer.Serialize(Planalto.Core.Tests.Governance.GovKit.Councillor().State));
+        state.Mandate = null;
+        state.Governance = null;
+        IReadOnlyList<string> zones = ZonesOf(state.FocusMunicipio)!;
+        state.OffSeason = new Planalto.Core.Career.OffSeasonState
+        {
+            Municipio = state.FocusMunicipio,
+            Since = state.Calendar.WeekStart,
+            Zones = zones.ToList(),
+            ZonePopulation = zones.Select(_ => 100L).ToList(),
+            Presence = zones.Select(_ => 10.0).ToList(),
+        };
+        Assert.Empty(SaveZoneCheck.Problems(state, ZonesOf));
+
+        state.OffSeason.Presence.RemoveAt(0);
+        Assert.Contains(SaveZoneCheck.Problems(state, ZonesOf), p => p.StartsWith("vetores da entressafra", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void Carreira_sem_campanha_nao_tem_problema_de_zona()
     {
         CampaignEngine engine = CampaignKit.NewCareer(Mantena, 9);
