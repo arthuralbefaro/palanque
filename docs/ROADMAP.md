@@ -203,6 +203,20 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
   - BalanceSim de mandato: nenhum instrumento é a melhor escolha em mais de 40% das semanas.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R4.md
 
+## RV — Redefinição visual
+
+> Decidida pelo autor em 16/11 (DECISOES D-041, adendos; entram como D-043, personagens 3D estilizados de formas suaves, e D-044, mapa 2D detalhado e fiel ao lugar real com a interface em janelas flutuantes). Não começa durante a Fase R. Os itens, os testes e as metas de desempenho desta parte são escritos na entrega do fim da `fase-r-final`; as metas já fixadas pelo autor são 60 FPS com zoom e arraste e mapa de base de uma metrópole pronto em menos de 3 segundos.
+
+**Referências de composição e de conteúdo** (não de estilo; o código delas não entra no jogo):
+- `docs/referencias/rv_tela_central.html`: a tela central sobre o mapa da cidade, com o mundo ocupando a tela inteira, janelas semitransparentes flutuando sobre ele e a interface nas bordas.
+- `docs/referencias/rv_cenas.html`: quatro cenas das telas fora do jogo, trocadas pelos botões do topo ou pelas teclas 1 a 4:
+  1. **Menu:** o comitê de campanha à noite, com o menu sobre a cena.
+  2. **Criação de personagem:** um estúdio de foto, com o santinho impresso ao lado.
+  3. **Urna:** a seção eleitoral, com mesários e fila.
+  4. **Apuração:** uma transmissão de TV, com a Câmara se enchendo e o comitê comemorando no canto.
+- Os dois arquivos foram desenhados pelo autor com um consultor. Valem como referência de **composição e de conteúdo** de cada tela, **não de estilo**: o estilo final é 3D estilizado de formas suaves. O código deles não entra no jogo.
+- Referência de interface: Geopolitical Simulator. Referências de estilo dos personagens e cenários: Two Point Hospital, Overcooked, Planet Coaster.
+
 ## Fase 6 — Esfera estadual e federal
 > Só começa depois da Fase R aprovada. As esferas estadual e federal usam a tela central, o tempo corrente e os sistemas da seção 17 do GDD.
 - [ ] 27 estados

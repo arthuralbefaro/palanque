@@ -178,3 +178,15 @@ O projeto usa tela base de 1920×1080 com `stretch = canvas_items` e `aspect = e
 7. **Janela menor que 1280×720 não é suportada:** o jogo avisa e oferece tela cheia.
 8. **Verificação automática** (entra na R1, junto ao teste de fumaça da interface): para cada tela e cada área do trilho, em 1366×768, 1920×1080, 1280×800 e 2560×1080, com escala de 100% e de 130%, o teste percorre todos os controles visíveis e reprova se (a) o retângulo de algum controle sai do retângulo do pai ou da janela; (b) o texto de algum rótulo sem quebra nem reticências mede mais que a largura do rótulo; (c) algum rótulo com reticências não tem tooltip; (d) algum controle clicável mede menos de 44 px lógicos; (e) algum texto usa tamanho menor que 18. O teste roda com os textos mais longos de `data/` (o maior nome de município, de partido, de pessoa gerada e a maior manchete).
 9. **Verificação pelo autor:** cada roteiro de teste da Fase R começa abrindo o jogo em 1366×768 e em 1920×1080 e pede captura de qualquer texto cortado.
+
+## Redefinição visual (parte RV) — referências, ainda como proposta
+
+A parte RV troca o visual de todas as telas (DECISOES D-041, adendos; as decisões do autor entram como D-043 e D-044). Até o autor aprovar a reescrita deste guia, o resto dele continua valendo. Referências guardadas no repositório:
+- `docs/referencias/rv_tela_central.html`: a tela central sobre o mapa da cidade, com o mundo ocupando a tela inteira, janelas semitransparentes flutuando sobre ele e a interface nas bordas.
+- `docs/referencias/rv_cenas.html`: quatro cenas das telas fora do jogo, trocadas pelos botões do topo ou pelas teclas 1 a 4:
+  1. **Menu:** o comitê de campanha à noite, com o menu sobre a cena.
+  2. **Criação de personagem:** um estúdio de foto, com o santinho impresso ao lado.
+  3. **Urna:** a seção eleitoral, com mesários e fila.
+  4. **Apuração:** uma transmissão de TV, com a Câmara se enchendo e o comitê comemorando no canto.
+- Os dois arquivos foram desenhados pelo autor com um consultor. Valem como referência de **composição e de conteúdo** de cada tela, **não de estilo**: o estilo final é 3D estilizado de formas suaves. O código deles não entra no jogo.
+- Referência de interface: Geopolitical Simulator. Referências de estilo dos personagens e cenários: Two Point Hospital, Overcooked, Planet Coaster.

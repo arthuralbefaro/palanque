@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Planalto — cenas (RV)</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#05070a;overflow:hidden;font-family:Manrope,Arial,sans-serif}
+#nav{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9;display:flex;gap:6px;background:rgba(0,0,0,.55);padding:6px;border-radius:12px}
+#nav button{background:#1e2530;border:1px solid #2f3846;color:#e8edf3;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:13px;cursor:pointer}
+#nav button.on{background:#e9b44c;color:#1a1408;border-color:#e9b44c}
+#wrap{position:absolute;overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;color:#efe6d4}
+.big{font-family:'Big Shoulders Display',Impact,sans-serif}
+.pn{position:absolute;background:rgba(10,14,20,.86);border:1px solid rgba(233,180,76,.25);border-radius:16px;box-sizing:border-box}
+.lb{font-size:12px;color:#a99d86}
+.mi{display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:10px;font-size:19px;cursor:pointer}
+.mi:hover{background:rgba(233,180,76,.12)}
+.mi i{font-size:22px;color:#e9b44c}
+.bt{background:#1e2530;border:1px solid #3a4250;color:#efe6d4;border-radius:8px;padding:6px 11px;font-family:inherit;font-size:13px;cursor:pointer}
+.bt.on{background:rgba(233,180,76,.18);border-color:#e9b44c}
+.gold{background:#e9b44c;border-color:#e9b44c;color:#1a1408;font-weight:600}
+[data-a]{cursor:pointer}
+</style>
+</head>
+<body>
+<div id="nav"></div>
+<div id="wrap"><div id="st"></div></div>
+<script>
+const SK=['#f3d2b8','#e8b896','#d8a47c','#c48a5e','#a86e46','#8a5636','#6a4028','#4a2c1c'];
+const HC=['#2a1d16','#4a3022','#7a4a28','#b07a3e','#dcb46a','#9a9a9a'];
+const SH=['#eef1f4','#2f6e8f','#1f8f7a','#7c2f30','#3a3d44'];
+const st=document.getElementById('st'),wr=document.getElementById('wrap');
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);wr.style.width=1280*s+'px';wr.style.height=720*s+'px';wr.style.left=(innerWidth-1280*s)/2+'px';wr.style.top=(innerHeight-720*s)/2+'px';st.style.transform='scale('+s+')'}
+fit();addEventListener('resize',fit);
+function sh(hex,f){const n=parseInt(hex.slice(1),16);const r=Math.min(255,Math.round((n>>16)*f)),g=Math.min(255,Math.round((n>>8&255)*f)),b=Math.min(255,Math.round((n&255)*f));return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+
+function person(o){
+const s=o.skin||'#d39a6e',s2=sh(s,.88),h=o.hair||'#2a1d16',c=o.shirt||'#eef1f4',c2=sh(c,.86),p=o.pants||'#2c3440',hs=o.hs||0,e=o.e||0;
+const mouth=['M50,70 Q62,78 74,70','M52,72 L72,72','M50,75 Q62,68 74,75','M56,70 Q62,63 68,70 Q62,80 56,70'][e];
+let hb='',hf='';
+if(hs==0)hf=`<path d="M30,48 Q26,10 62,10 Q100,10 96,46 Q90,28 74,26 Q60,34 40,30 Q34,38 30,48 Z" fill="${h}"/>`;
+if(hs==1){hb=`<path d="M26,50 Q22,6 62,6 Q102,6 98,50 L102,124 Q90,132 82,112 L42,112 Q34,132 22,124 Z" fill="${h}"/>`;hf=`<path d="M30,46 Q30,12 62,12 Q94,12 94,46 Q84,26 62,24 Q42,26 30,46 Z" fill="${h}"/>`}
+if(hs==2){hb=`<circle cx="62" cy="6" r="13" fill="${h}"/>`;hf=`<path d="M30,46 Q28,12 62,12 Q96,12 94,46 Q86,26 62,24 Q40,26 30,46 Z" fill="${h}"/>`}
+if(hs==3)hf=`<path d="M30,54 Q29,40 35,32 L38,56 Z M94,54 Q95,40 89,32 L86,56 Z" fill="${h}"/>`;
+if(hs==4)hf=`<g fill="${h}">${[[34,34,10],[46,20,11],[62,15,12],[78,20,11],[90,34,10],[30,48,7],[94,48,7]].map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="${q[2]}"/>`).join('')}</g>`;
+const la=`<path d="M22,106 Q6,140 10,176 L26,180 Q28,146 40,124 Z" fill="${c}"/><path d="M10,174 Q8,206 16,224 L28,222 Q24,200 26,178 Z" fill="${s}"/><ellipse cx="22" cy="226" rx="9" ry="8" fill="${s}"/>`;
+let arms;
+if(o.pose=='paper')arms=la+`<path d="M102,106 Q120,138 112,166 L98,164 Q102,140 92,124 Z" fill="${c2}"/><path d="M112,164 Q104,186 86,196 L80,186 Q94,178 98,164 Z" fill="${s2}"/><path d="M58,178 L96,172 L102,214 L64,220 Z" fill="#fbf8f0"/><path d="M58,178 L96,172 L97,180 L59,186 Z" fill="#1f8f7a"/><ellipse cx="82" cy="192" rx="9" ry="8" fill="${s2}"/>`;
+else if(o.pose=='up')arms=la+`<path d="M100,108 Q124,88 126,58 L112,54 Q110,82 90,102 Z" fill="${c2}"/><path d="M126,60 Q130,32 122,14 L110,18 Q116,38 112,56 Z" fill="${s2}"/><ellipse cx="116" cy="12" rx="9" ry="9" fill="${s2}"/>`;
+else arms=la+`<path d="M102,106 Q118,140 114,176 L98,180 Q96,146 84,124 Z" fill="${c2}"/><path d="M114,174 Q116,206 108,224 L96,222 Q100,200 98,178 Z" fill="${s2}"/><ellipse cx="102" cy="226" rx="9" ry="8" fill="${s2}"/>`;
+const tie=o.tie?`<path d="M58,100 L66,100 L68,150 L62,160 L56,150 Z" fill="${o.tie}"/>`:'';
+const gl=o.g?`<g fill="none" stroke="#1a1a1a" stroke-width="2.5"><circle cx="50" cy="52" r="9"/><circle cx="74" cy="52" r="9"/><path d="M59,52 L65,52"/></g>`:'';
+const by=e==2?40:42;
+return `<g transform="translate(${o.x||0},${o.y||0}) scale(${o.k||1})">${hb}<path d="M28,240 L58,240 L56,370 L32,370 Z" fill="${p}"/><path d="M64,240 L96,240 L92,370 L68,370 Z" fill="${sh(p,.85)}"/><path d="M22,368 Q40,360 58,366 L60,382 L20,382 Z" fill="#1a1410"/><path d="M66,366 Q84,360 100,368 L102,382 L64,382 Z" fill="#1a1410"/><rect x="24" y="230" width="76" height="12" rx="3" fill="#3a2a20"/><path d="M22,104 Q60,90 102,104 L104,234 L20,234 Z" fill="${c}"/><path d="M62,96 Q90,98 102,104 L104,234 L62,234 Z" fill="${c2}"/>${arms}<path d="M46,96 L62,120 L78,96 Z" fill="${s}"/>${tie}<path d="M50,78 L74,78 L72,100 L52,100 Z" fill="${s2}"/><ellipse cx="30" cy="54" rx="5" ry="8" fill="${s2}"/><ellipse cx="94" cy="54" rx="5" ry="8" fill="${s2}"/><ellipse cx="62" cy="50" rx="32" ry="36" fill="${s}"/><path d="M62,14 Q94,16 94,50 Q94,72 78,84 Q90,58 84,42 Z" fill="${s2}" opacity=".7"/>${hf}<ellipse cx="50" cy="52" rx="3.5" ry="4.5" fill="#22170f"/><ellipse cx="74" cy="52" rx="3.5" ry="4.5" fill="#22170f"/><path d="M44,${by} Q50,39 56,42" stroke="${h}" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M68,42 Q74,39 80,${by}" stroke="${h}" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M60,58 Q62,64 66,62" stroke="${sh(s,.75)}" stroke-width="2" fill="none"/><path d="${mouth}" stroke="#7a3b2e" stroke-width="3" fill="${e==3?'#7a3b2e':'none'}" stroke-linecap="round"/>${gl}</g>`}
+function bust(o,x,y,w){return `<svg x="${x}" y="${y}" width="${w}" height="${w*1.25}" viewBox="8 0 108 135">${person(Object.assign({},o,{x:0,y:0,k:1}))}</svg>`}
+function bustHtml(o,w,bg){return `<svg width="${w}" height="${w*1.25}" viewBox="8 0 108 135" style="background:${bg||'transparent'};border-radius:8px;display:block">${person(Object.assign({},o,{x:0,y:0,k:1}))}</svg>`}
+function hemi(cols,W,H){const n=cols.length,rows=Math.max(2,Math.min(8,Math.round(Math.sqrt(n/1.6))));const rad=[];let sum=0;for(let r=0;r<rows;r++){const rr=H*0.42+(H*0.5)*(r/(rows-1));rad.push(rr);sum+=rr}const cnt=rad.map(x=>Math.max(1,Math.round(n*x/sum)));cnt[rows-1]+=n-cnt.reduce((a,b)=>a+b,0);const pts=[];rad.forEach((rr,i)=>{for(let j=0;j<cnt[i];j++){const a=Math.PI*(cnt[i]==1?0.5:j/(cnt[i]-1));pts.push([a,rr])}});pts.sort((a,b)=>b[0]-a[0]);const dot=Math.max(3,Math.min(14,H*0.55/rows/2.1));return pts.map((p,i)=>`<circle cx="${(W/2+Math.cos(p[0])*p[1]).toFixed(1)}" cy="${(H-6-Math.sin(p[0])*p[1]).toFixed(1)}" r="${dot.toFixed(1)}" fill="${cols[i]}"/>`).join('')}
+
+const ME={skin:SK[3],hair:HC[0],hs:0,e:0,g:0,shirt:SH[0]};
+const S={scr:0,urna:'',fim:0,apu:58};
+
+function menu(){return `<svg width="1280" height="720" viewBox="0 0 1280 720" style="position:absolute;left:0;top:0">
+<rect width="1280" height="720" fill="#1b2730"/>
+<g stroke="#16212a" stroke-width="2"><line x1="460" y1="0" x2="460" y2="420"/><line x1="560" y1="0" x2="560" y2="420"/><line x1="660" y1="0" x2="660" y2="420"/><line x1="760" y1="0" x2="760" y2="420"/><line x1="1250" y1="0" x2="1250" y2="420"/></g>
+<rect x="0" y="420" width="1280" height="145" fill="#22323b"/><rect x="0" y="412" width="1280" height="12" rx="3" fill="#3a2c22"/>
+<rect x="0" y="560" width="1280" height="160" fill="#3a281c"/>
+<g stroke="#2e1f16" stroke-width="2"><line x1="0" y1="600" x2="1280" y2="600"/><line x1="0" y1="645" x2="1280" y2="645"/><line x1="0" y1="690" x2="1280" y2="690"/><line x1="200" y1="560" x2="170" y2="600"/><line x1="520" y1="600" x2="500" y2="645"/><line x1="860" y1="560" x2="850" y2="600"/><line x1="1100" y1="645" x2="1090" y2="690"/><line x1="340" y1="645" x2="330" y2="690"/></g>
+<polygon points="880,560 1160,560 1260,720 760,720" fill="#c9d8f0" opacity=".05"/>
+<rect x="830" y="56" width="380" height="372" rx="6" fill="#5c3d27"/><rect x="846" y="72" width="348" height="340" fill="#0f1b33"/>
+<g fill="#f6efd8"><circle cx="880" cy="100" r="1.6"/><circle cx="930" cy="130" r="1.2"/><circle cx="975" cy="92" r="1.4"/><circle cx="1050" cy="140" r="1.2"/><circle cx="1090" cy="96" r="1.5"/><circle cx="1170" cy="160" r="1.2"/><circle cx="905" cy="180" r="1.1"/><circle cx="1150" cy="210" r="1.1"/></g>
+<circle cx="1130" cy="125" r="26" fill="#f3e7c4"/><circle cx="1140" cy="118" r="22" fill="#0f1b33" opacity=".25"/>
+<path d="M846,300 Q900,268 960,290 T1080,280 T1194,270 L1194,412 L846,412 Z" fill="#162944"/><path d="M846,340 Q930,318 1010,336 T1194,325 L1194,412 L846,412 Z" fill="#1b3150"/>
+<g fill="#22385a"><rect x="860" y="335" width="44" height="40" rx="3"/><rect x="912" y="320" width="36" height="55" rx="3"/><rect x="1035" y="330" width="50" height="45" rx="3"/><rect x="1092" y="315" width="40" height="60" rx="3"/><rect x="1140" y="338" width="44" height="37" rx="3"/></g>
+<path d="M985,375 L985,262 Q999,232 1013,262 L1013,375 Z" fill="#26406a"/><circle cx="999" cy="282" r="7" fill="#f5c46a"/>
+<g fill="#f5c46a"><rect x="868" y="345" width="7" height="8" rx="1"/><rect x="886" y="358" width="7" height="8" rx="1"/><rect x="920" y="332" width="6" height="8" rx="1"/><rect x="932" y="352" width="6" height="8" rx="1"/><rect x="1045" y="342" width="7" height="8" rx="1"/><rect x="1065" y="356" width="7" height="8" rx="1"/><rect x="1100" y="328" width="6" height="8" rx="1"/><rect x="1115" y="348" width="6" height="8" rx="1"/><rect x="1150" y="350" width="7" height="8" rx="1"/></g>
+<rect x="1014" y="72" width="12" height="340" fill="#5c3d27"/><rect x="846" y="236" width="348" height="12" fill="#5c3d27"/>
+<path d="M812,44 Q840,44 850,60 Q842,240 868,430 L812,430 Z" fill="#7c2f30"/><path d="M830,60 Q836,240 852,430 L840,430 Q822,240 822,60 Z" fill="#652528"/>
+<path d="M1228,44 Q1200,44 1190,60 Q1198,240 1172,430 L1228,430 Z" fill="#7c2f30"/><path d="M1210,60 Q1204,240 1188,430 L1200,430 Q1218,240 1218,60 Z" fill="#652528"/>
+<rect x="800" y="38" width="440" height="10" rx="5" fill="#3a2c22"/>
+<rect x="486" y="84" width="300" height="214" rx="4" fill="#3a2c22"/><rect x="496" y="94" width="280" height="194" fill="#e6d8b4"/>
+<path d="M496,190 Q560,170 610,196 T700,186 T776,200" fill="none" stroke="#7fb3c9" stroke-width="5"/>
+<path d="M600,94 Q590,150 620,200 Q650,240 640,288" fill="none" stroke="#c9b48a" stroke-width="3" stroke-dasharray="6 4"/>
+<path d="M610,150 Q650,130 700,150 Q720,190 690,220 Q640,230 615,205 Z" fill="#2f9a8a" opacity=".45"/><path d="M520,110 Q580,100 600,140 Q590,170 540,176 Q512,150 520,110 Z" fill="#4a7ae0" opacity=".35"/><path d="M700,210 Q760,205 768,250 Q740,280 700,270 Z" fill="#d8901a" opacity=".4"/>
+<g stroke="#b23a3a" stroke-width="1.2" fill="none"><path d="M650,176 L720,128"/><path d="M560,140 L520,250"/></g>
+<rect x="712" y="112" width="52" height="30" fill="#fbf6e9"/><rect x="504" y="244" width="54" height="32" fill="#fbf6e9"/>
+<g fill="#c94141"><circle cx="650" cy="176" r="6"/><circle cx="560" cy="140" r="6"/><circle cx="728" cy="236" r="6"/></g><g fill="#2f9a8a"><circle cx="718" cy="126" r="5"/><circle cx="522" cy="252" r="5"/></g>
+<rect x="486" y="318" width="96" height="128" rx="3" fill="#1f8f7a"/>${bust(ME,498,322,72)}
+<text x="534" y="438" text-anchor="middle" font-family="Big Shoulders Display" font-size="22" font-weight="800" fill="#fff">42000</text>
+<g transform="translate(300,330)"><rect x="0" y="0" width="120" height="74" rx="6" fill="#2b2c30"/><rect x="8" y="8" width="104" height="56" rx="4" fill="#244266"/>${bust({skin:SK[2],hair:HC[1],hs:1,shirt:'#7c2f30'},38,10,44)}<rect x="8" y="50" width="104" height="14" fill="#c0283a"/><rect x="40" y="74" width="40" height="8" fill="#2b2c30"/></g>
+<path d="M420,465 L1150,465 L1180,500 L392,500 Z" fill="#7a5233"/><rect x="392" y="500" width="788" height="66" fill="#5a3c25"/>
+<rect x="410" y="566" width="20" height="90" fill="#4a3120"/><rect x="1142" y="566" width="20" height="90" fill="#4a3120"/>
+<path d="M560,506 L940,506 L940,556 Q750,566 560,556 Z" fill="#1f8f7a"/>
+<text x="630" y="545" font-family="Big Shoulders Display" font-weight="800" font-size="36" fill="#ffffff">42000</text>
+<text x="742" y="541" font-family="Manrope" font-size="17" fill="#d9f2ec">Trabalho que se vê</text>
+<polygon points="508,396 548,396 690,500 380,500" fill="#ffd98a" opacity=".13"/>
+<path d="M478,465 Q476,440 500,420 L526,396" fill="none" stroke="#2a2a2a" stroke-width="5" stroke-linecap="round"/><ellipse cx="478" cy="466" rx="26" ry="6" fill="#2a2a2a"/>
+<path d="M506,380 Q528,368 552,388 L556,398 L500,398 Z" fill="#2f6e5a"/><ellipse cx="528" cy="398" rx="18" ry="4" fill="#ffe3a0"/>
+<path d="M590,472 L640,468 L644,486 L594,490 Z" fill="#f3f1ea"/><path d="M612,476 L660,470 L666,488 L618,494 Z" fill="#1f8f7a"/><path d="M640,480 L690,478 L692,496 L642,498 Z" fill="#f3f1ea"/><path d="M672,470 L716,474 L712,492 L668,488 Z" fill="#1f8f7a"/><path d="M700,482 L748,484 L746,500 L698,498 Z" fill="#f3f1ea"/>
+<path d="M770,474 L840,470 L846,500 L772,502 Z" fill="#b08a5a"/><path d="M778,476 L834,473 L838,497 L780,499 Z" fill="#f7f3e8"/><rect x="796" y="466" width="22" height="7" rx="2" fill="#888"/>
+<rect x="870" y="420" width="96" height="50" rx="10" fill="#8a3a2a"/><rect x="878" y="428" width="50" height="34" rx="6" fill="#5e261c"/><g stroke="#3f1913" stroke-width="2"><line x1="882" y1="434" x2="924" y2="434"/><line x1="882" y1="441" x2="924" y2="441"/><line x1="882" y1="448" x2="924" y2="448"/><line x1="882" y1="455" x2="924" y2="455"/></g><circle cx="946" cy="436" r="8" fill="#f5c46a"/><circle cx="946" cy="456" r="5" fill="#d9c08a"/><line x1="958" y1="420" x2="990" y2="370" stroke="#bbb" stroke-width="2"/>
+<rect x="990" y="440" width="30" height="30" rx="5" fill="#ece5d6"/><path d="M1020,446 Q1034,452 1020,462" fill="none" stroke="#ece5d6" stroke-width="4"/><g fill="none" stroke="#c9c2b4" stroke-width="2" opacity=".7"><path d="M998,432 Q992,420 1000,410 Q1008,400 1002,390"/><path d="M1010,432 Q1016,420 1008,408"/></g>
+<ellipse cx="1140" cy="698" rx="80" ry="12" fill="#1f150e" opacity=".55"/>
+${person(Object.assign({},ME,{x:1078,y:318,pose:'paper'}))}
+<g transform="translate(250,560)"><rect x="0" y="40" width="120" height="78" rx="4" fill="#9a7448"/><rect x="0" y="40" width="120" height="16" fill="#86633c"/><path d="M14,40 L30,14 L104,22 L96,40 Z" fill="#f3f1ea"/><path d="M30,40 L42,20 L90,26 L82,40 Z" fill="#1f8f7a"/></g>
+</svg>
+<div class="pn" style="left:40px;top:40px;width:400px;height:640px;padding:30px 26px">
+<div class="big" style="font-size:84px;font-weight:800;line-height:.9;color:#f3e7c4;letter-spacing:1px">PLANALTO</div>
+<div style="font-size:15px;color:#c9bca2;margin:8px 0 24px">Da Câmara de Vereadores ao Palácio do Planalto</div>
+<div data-a="go:3" style="background:rgba(233,180,76,.1);border:1px solid rgba(233,180,76,.5);border-radius:12px;padding:14px 16px">
+<div style="font-size:12px;color:#e9b44c;letter-spacing:.5px">CONTINUAR CARREIRA</div>
+<div style="font-size:21px;color:#f6efe0;font-weight:600;margin-top:4px">Arthur Albefaro</div>
+<div style="font-size:14px;color:#d8ccb4">Vereador · São Bento do Vale (MG)</div>
+<div class="lb">outubro de 2032 · salvo há 2 horas</div></div>
+<div style="margin-top:20px">
+<div class="mi" data-a="go:1"><i class="ti ti-plus"></i><div>Nova carreira<div class="lb" style="font-size:13px">Escolha o mundo, o político e a cidade</div></div></div>
+<div class="mi"><i class="ti ti-folder"></i><div>Carregar<div class="lb" style="font-size:13px">3 carreiras salvas</div></div></div>
+<div class="mi"><i class="ti ti-book"></i><div>Enciclopédia<div class="lb" style="font-size:13px">As regras eleitorais reais, explicadas</div></div></div>
+<div class="mi"><i class="ti ti-settings"></i><div>Opções</div></div>
+<div class="mi"><i class="ti ti-logout"></i><div>Sair</div></div></div></div>`}
+
+function santinho(){return `<div style="background:#fbf8f0;border-radius:6px;overflow:hidden;color:#1a1a1a;width:240px">
+<div style="background:#1f8f7a;height:150px;display:flex;justify-content:center;align-items:flex-end">${bustHtml(ME,120)}</div>
+<div style="padding:12px 16px"><div class="big" style="font-size:58px;font-weight:800;color:#1f8f7a;line-height:.9">42000</div>
+<div style="font-size:19px;font-weight:600;margin-top:4px">Arthur Albefaro</div>
+<div style="font-size:13px;color:#555">Vereador · FRB</div>
+<div style="font-size:14px;font-style:italic;margin-top:8px;color:#1f8f7a">Trabalho que se vê.</div></div></div>`}
+
+function criacao(){const sw=(arr,key)=>arr.map((c,i)=>`<span data-a="${key}:${i}" style="display:inline-block;width:30px;height:30px;border-radius:50%;background:${c};margin:0 5px 5px 0;border:3px solid ${ME[key=='skin'?'skin':key=='hair'?'hair':'shirt']==c?'#e9b44c':'transparent'}"></span>`).join('');
+return `<svg width="1280" height="720" viewBox="0 0 1280 720" style="position:absolute;left:0;top:0">
+<rect width="1280" height="720" fill="#24272e"/><rect y="610" width="1280" height="110" fill="#1b1d22"/>
+<g stroke="#2c3038" stroke-width="2"><line x1="0" y1="640" x2="1280" y2="640"/><line x1="0" y1="680" x2="1280" y2="680"/></g>
+<rect x="400" y="20" width="520" height="16" rx="8" fill="#444851"/>
+<path d="M410,30 L910,30 L910,560 Q910,640 990,654 L330,654 Q410,640 410,560 Z" fill="#1f8f7a"/>
+<path d="M410,560 Q410,640 330,654 L990,654 Q910,640 910,560 Z" fill="#1a7a68"/>
+<ellipse cx="660" cy="640" rx="120" ry="14" fill="#0e4a40" opacity=".55"/>
+<polygon points="330,180 340,250 600,600 410,600" fill="#fff3cf" opacity=".06"/>
+<polygon points="990,180 980,250 720,600 910,600" fill="#fff3cf" opacity=".05"/>
+<line x1="300" y1="250" x2="300" y2="650" stroke="#555" stroke-width="5"/><line x1="300" y1="650" x2="260" y2="690" stroke="#555" stroke-width="4"/><line x1="300" y1="650" x2="340" y2="690" stroke="#555" stroke-width="4"/>
+<path d="M240,150 L340,130 L350,250 L250,262 Z" fill="#3a3d44"/><path d="M252,160 L334,144 L342,242 L260,252 Z" fill="#fffbe8"/>
+<line x1="1010" y1="250" x2="1010" y2="650" stroke="#555" stroke-width="5"/>
+<path d="M960,130 L1060,150 L1050,262 L950,250 Z" fill="#3a3d44"/><path d="M966,144 L1048,160 L1040,252 L958,242 Z" fill="#fffbe8"/>
+${person(Object.assign({},ME,{x:596,y:236,k:1.05}))}
+<g transform="translate(150,520)"><line x1="70" y1="40" x2="20" y2="200" stroke="#2a2b2f" stroke-width="6"/><line x1="70" y1="40" x2="80" y2="200" stroke="#2a2b2f" stroke-width="6"/><line x1="70" y1="40" x2="130" y2="200" stroke="#2a2b2f" stroke-width="6"/><rect x="30" y="0" width="92" height="56" rx="10" fill="#17181b"/><rect x="118" y="12" width="34" height="32" rx="4" fill="#202227"/><circle cx="135" cy="28" r="11" fill="#2f4a66"/><rect x="50" y="-12" width="30" height="14" rx="3" fill="#2a2b2f"/></g>
+</svg>
+<div class="pn" style="left:30px;top:40px;width:330px;height:470px;padding:18px">
+<div class="big" style="font-size:30px;font-weight:700;color:#f3e7c4">Estúdio do santinho</div>
+<div class="lb" style="margin-bottom:12px">Aparência não muda votos nem atributos</div>
+<div style="font-size:14px;margin-bottom:6px">Tom de pele</div>${sw(SK,'skin')}
+<div style="font-size:14px;margin:8px 0 6px">Cabelo</div>
+<div style="display:flex;gap:6px;margin-bottom:6px">${[0,1,2,3,4].map(i=>`<div data-a="hs:${i}" style="border-radius:8px;border:2px solid ${ME.hs==i?'#e9b44c':'#3a4250'};background:#1a212b">${bustHtml(Object.assign({},ME,{hs:i}),46)}</div>`).join('')}</div>
+${sw(HC,'hair')}
+<div style="font-size:14px;margin:8px 0 6px">Roupa</div>${sw(SH,'shirt')}
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${['Sorriso','Sério','Preocupado','Surpreso'].map((x,i)=>`<span class="bt ${ME.e==i?'on':''}" data-a="e:${i}">${x}</span>`).join('')}<span class="bt ${ME.g?'on':''}" data-a="g">Óculos</span><span class="bt" data-a="rand"><i class="ti ti-dice-5"></i></span></div>
+</div>
+<div style="position:absolute;left:1000px;top:60px;transform:rotate(3deg)">${santinho()}</div>
+<div class="lb" style="position:absolute;left:1010px;top:470px;width:230px;text-align:center">O santinho sai da impressora conforme você muda</div>
+<button class="bt gold" style="position:absolute;right:40px;bottom:30px;padding:12px 20px;font-size:15px" data-a="go:2">Continuar: escolher a cidade</button>`}
+
+function urnaTela(){const d=S.urna,full=d.length==5;let boxes='';for(let i=0;i<5;i++)boxes+=`<span style="width:34px;height:44px;border:2px solid #222;display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-right:4px;background:#fff;color:#111">${d[i]||''}</span>`;
+if(S.fim)return `<div class="big" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:96px;color:#111;font-weight:800">FIM</div>`;
+return `<div style="font-size:13px;color:#333">SEU VOTO PARA</div><div class="big" style="font-size:30px;color:#111;font-weight:700;margin:2px 0 12px">VEREADOR</div><div style="display:flex;gap:10px"><div><div style="font-size:13px;color:#333;margin-bottom:4px">Número:</div>${boxes}${full?`<div style="font-size:13px;color:#111;margin-top:12px;line-height:1.6">Nome: <b>Arthur Albefaro</b><br>Partido: FRB</div>`:''}</div>${full?`<div style="margin-left:auto;border:1px solid #aaa">${bustHtml(ME,78,'#dde3ea')}</div>`:''}</div>${full?`<div style="position:absolute;left:0;right:0;bottom:0;border-top:2px solid #222;padding:6px 10px;font-size:11px;color:#111">Aperte: <b>CONFIRMA</b> para confirmar · <b>CORRIGE</b> para reiniciar</div>`:''}`}
+function urna(){const keys=[1,2,3,4,5,6,7,8,9,'',0,''].map(k=>k===''?'<span></span>':`<span data-a="key:${k}" style="height:46px;border-radius:6px;background:#16181c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid #333">${k}</span>`).join('');
+return `<svg width="1280" height="720" viewBox="0 0 1280 720" style="position:absolute;left:0;top:0">
+<rect width="1280" height="720" fill="#a9c4b4"/><rect y="380" width="1280" height="220" fill="#5f8a74"/><rect y="372" width="1280" height="10" fill="#4e7562"/>
+<rect y="600" width="1280" height="120" fill="#cdbb98"/><g stroke="#b8a582" stroke-width="2"><line x1="0" y1="640" x2="700" y2="640"/><line x1="0" y1="685" x2="700" y2="685"/><line x1="120" y1="600" x2="100" y2="720"/><line x1="300" y1="600" x2="290" y2="720"/><line x1="480" y1="600" x2="480" y2="720"/><line x1="640" y1="600" x2="660" y2="720"/></g>
+<rect x="50" y="60" width="220" height="200" rx="4" fill="#f4f2ec"/><rect x="62" y="72" width="196" height="176" fill="#cfe6f5"/><ellipse cx="200" cy="200" rx="70" ry="50" fill="#7fae6e"/><ellipse cx="120" cy="230" rx="60" ry="36" fill="#6a9a5c"/><rect x="157" y="72" width="6" height="176" fill="#f4f2ec"/><rect x="62" y="157" width="196" height="6" fill="#f4f2ec"/>
+<polygon points="62,248 258,248 330,600 120,600" fill="#fffbe0" opacity=".12"/>
+<rect x="320" y="60" width="340" height="170" rx="4" fill="#7a5a3a"/><rect x="332" y="72" width="316" height="146" fill="#2f4a3c"/>
+<text x="352" y="118" font-family="Manrope" font-size="26" fill="#e8efe9">Seção 0147</text><text x="352" y="152" font-family="Manrope" font-size="18" fill="#c9d6cc">Zona eleitoral 098</text><text x="352" y="196" font-family="Manrope" font-size="15" fill="#aebfb2">Votação das 8 h às 17 h</text>
+<circle cx="290" cy="320" r="24" fill="#f4f2ec" stroke="#4e7562" stroke-width="3"/><line x1="290" y1="320" x2="290" y2="304" stroke="#333" stroke-width="3"/><line x1="290" y1="320" x2="302" y2="324" stroke="#333" stroke-width="2"/>
+${person({x:150,y:296,k:.72,skin:SK[5],hair:HC[0],hs:4,shirt:'#d8901a',e:1})}
+${person({x:300,y:296,k:.72,skin:SK[1],hair:HC[5],hs:3,shirt:'#4a7ae0',e:0,g:1})}
+<rect x="110" y="438" width="350" height="16" rx="3" fill="#8a6644"/><rect x="120" y="454" width="330" height="86" fill="#6e4f33"/><rect x="130" y="540" width="14" height="70" fill="#5a3f28"/><rect x="426" y="540" width="14" height="70" fill="#5a3f28"/>
+<rect x="190" y="424" width="70" height="16" rx="2" fill="#f2efe6"/><rect x="290" y="426" width="60" height="12" rx="2" fill="#2f6e8f"/><rect x="380" y="420" width="40" height="18" rx="2" fill="#e6e1d4"/>
+${person({x:500,y:300,k:.82,skin:SK[6],hair:HC[0],hs:2,shirt:'#7c2f30',pants:'#3a3d44',e:1})}
+${person({x:600,y:318,k:.78,skin:SK[2],hair:HC[2],hs:0,shirt:'#5ab08a',e:0})}
+<rect x="690" y="0" width="590" height="720" fill="#2a2622"/>
+<path d="M700,60 L1270,60 L1270,660 L700,660 Z" fill="#c8b48a"/><path d="M700,60 L760,110 L760,610 L700,660 Z" fill="#b29c70"/><path d="M1270,60 L1210,110 L1210,610 L1270,660 Z" fill="#b29c70"/><rect x="760" y="110" width="450" height="500" fill="#d8c69c"/>
+<rect x="772" y="150" width="426" height="380" rx="14" fill="#d9dad5" stroke="#9a9b96" stroke-width="2"/>
+</svg>
+<div style="position:absolute;left:788px;top:166px;width:250px;height:330px;background:#f4f6f8;border:3px solid #444;border-radius:4px;padding:14px;box-sizing:border-box">${urnaTela()}</div>
+<div style="position:absolute;left:1050px;top:166px;width:134px;height:348px;background:#2a2c30;border-radius:8px;padding:10px;box-sizing:border-box"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${keys}</div>
+<div style="display:flex;flex-direction:column;gap:5px;margin-top:8px"><span data-a="branco" style="height:24px;border-radius:5px;background:#fff;color:#111;font-size:11px;display:flex;align-items:center;justify-content:center">BRANCO</span><span data-a="corrige" style="height:24px;border-radius:5px;background:#e07a2a;color:#111;font-size:11px;display:flex;align-items:center;justify-content:center">CORRIGE</span><span data-a="confirma" style="height:30px;border-radius:5px;background:#3a9a4a;color:#111;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center">CONFIRMA</span></div></div>
+<div style="position:absolute;left:600px;top:250px;background:#fff;color:#222;font-size:13px;padding:6px 10px;border-radius:10px">Próximo!</div>
+<div class="lb" style="position:absolute;left:772px;top:620px;width:426px;text-align:center;color:#3a3020">Digite 42000 e confirme · Enter confirma, Backspace corrige</div>`}
+
+function apuracao(){const p=S.apu,f=p/100;
+const C=[['Daniel A.','UDC','#4a7ae0',1912,{skin:SK[2],hair:HC[0],hs:0,shirt:'#4a7ae0',e:0}],['Bruna C.','PSN','#d8901a',1544,{skin:SK[4],hair:HC[2],hs:1,shirt:'#d8901a',e:0}],['Arthur Albefaro','FRB','#1f8f7a',1309,Object.assign({},ME,{shirt:'#1f8f7a'})],['Josué M.','MTP','#c0283a',1102,{skin:SK[6],hair:HC[0],hs:3,shirt:'#c0283a',e:1}],['Tânia R.','UDC','#4a7ae0',988,{skin:SK[1],hair:HC[4],hs:2,shirt:'#4a7ae0',e:1}]];
+const won=p>=80;
+const rows=C.map(c=>{const me=c[0].startsWith('Arthur');const v=Math.round(c[3]*f*(me?(1+Math.max(0,f-.55)*.6):1));return [c,v,me]}).sort((a,b)=>b[1]-a[1]);
+const seatsC=['#4a7ae0','#4a7ae0','#4a7ae0','#d8901a','#d8901a','#1f8f7a','#1f8f7a','#c0283a','#c0283a','#5ab08a','#8a8ae8'];const filled=Math.round(11*Math.min(1,f*1.05));
+return `<svg width="1280" height="720" viewBox="0 0 1280 720" style="position:absolute;left:0;top:0">
+<rect width="1280" height="720" fill="#0e1830"/><rect y="560" width="1280" height="160" fill="#0a1222"/>
+<g fill="#1a2846"><rect x="0" y="0" width="1280" height="10"/></g><rect x="60" y="20" width="1160" height="14" rx="4" fill="#2a3346"/>
+<g>${[140,320,500,780,960,1140].map(x=>`<circle cx="${x}" cy="40" r="10" fill="#f6e7c0"/><polygon points="${x-8},46 ${x+8},46 ${x+80},560 ${x-80},560" fill="#f6e7c0" opacity=".035"/>`).join('')}</g>
+<rect x="200" y="62" width="880" height="350" rx="10" fill="#12223f" stroke="#2f4670" stroke-width="3"/>
+<path d="M300,470 Q640,428 980,470 L1000,566 Q640,526 280,566 Z" fill="#1d3557"/><path d="M300,470 Q640,428 980,470 L984,484 Q640,444 296,484 Z" fill="#2f4a78"/>
+<rect x="560" y="500" width="160" height="34" rx="6" fill="#c0283a"/><text x="640" y="523" text-anchor="middle" font-family="Big Shoulders Display" font-weight="700" font-size="20" fill="#fff">TV VALE · ELEIÇÕES</text>
+<polygon points="200,560 1080,560 1180,720 100,720" fill="#1d3557" opacity=".12"/>
+</svg>
+<div style="position:absolute;left:220px;top:76px;width:520px">
+<div class="big" style="font-size:26px;font-weight:700;color:#f3e7c4;margin-bottom:8px">Vereador · São Bento do Vale</div>
+${rows.map(([c,v,me])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;padding:4px 8px;border-radius:8px;${me?'background:rgba(31,143,122,.25);border:1px solid #1f8f7a':''}">${bustHtml(c[4],38,'#1a2a48')}<div style="width:150px"><div style="font-size:15px;color:#fff">${c[0]}</div><div class="lb" style="color:#9fb0cc">${c[1]}</div></div><div style="flex:1;height:14px;background:#0b1630;border-radius:7px"><div style="width:${Math.min(100,v/19.12)}%;height:14px;background:${c[2]};border-radius:7px"></div></div><div style="width:60px;text-align:right;font-size:19px;font-weight:600;color:#fff">${v.toLocaleString('pt-BR')}</div></div>`).join('')}</div>
+<div style="position:absolute;left:770px;top:84px;width:290px;text-align:center"><div style="font-size:15px;color:#c9d6ec">Câmara Municipal · 11 cadeiras</div><svg width="290" height="160" viewBox="0 0 290 160">${hemi(seatsC.map((c,i)=>i<filled?c:'#22324f'),290,160)}</svg><div class="lb" style="color:#9fb0cc">Quociente eleitoral: 1.731 votos</div></div>
+${person({x:430,y:296,k:.58,skin:SK[3],hair:HC[0],hs:1,shirt:'#7c2f30',e:0})}
+${person({x:740,y:296,k:.58,skin:SK[1],hair:HC[1],hs:0,shirt:'#2b2c30',tie:'#c0283a',e:won?3:1})}
+<div style="position:absolute;left:0;top:600px;width:1280px;height:70px;background:#0a1428;display:flex;align-items:center;gap:16px;padding:0 30px;box-sizing:border-box">
+<span style="background:#c0283a;color:#fff;font-weight:600;font-size:14px;padding:5px 10px;border-radius:5px">AO VIVO</span>
+<span class="big" style="font-size:30px;font-weight:700;color:#fff">Apuração · vereador</span>
+<div style="margin-left:auto;text-align:right"><div style="font-size:16px;color:#fff">${p.toFixed(1).replace('.',',')}% das seções apuradas</div><div style="width:260px;height:8px;background:#1a2846;border-radius:4px;margin-top:4px"><div style="width:${p}%;height:8px;background:#e9b44c;border-radius:4px"></div></div></div></div>
+<div style="position:absolute;left:0;top:670px;width:1280px;height:50px;background:#c0283a;display:flex;align-items:center;gap:40px;padding:0 30px;box-sizing:border-box;white-space:nowrap;overflow:hidden;color:#fff;font-size:15px"><span><b>Prefeito</b> · Marta S. (UDC) 48,2% · Rui F. (PSN) 39,5%</span><span>Comparecimento 81,4% · brancos 3,1% · nulos 4,6%</span><span>Rádio Vale: virada na Vila Nova mexe na Câmara</span></div>
+<div style="position:absolute;left:1030px;top:410px;width:230px;height:180px;border:3px solid #fff;border-radius:6px;overflow:hidden;background:#3a281c">
+<svg width="230" height="180" viewBox="0 0 230 180"><rect width="230" height="180" fill="#4a3424"/><rect x="0" y="0" width="230" height="36" fill="#1f8f7a"/><text x="115" y="27" text-anchor="middle" font-family="Big Shoulders Display" font-weight="800" font-size="24" fill="#fff">42000</text>
+${person({x:20,y:52,k:.36,skin:SK[5],hair:HC[0],hs:4,shirt:'#1f8f7a',pose:won?'up':'down',e:won?3:2})}
+${person(Object.assign({},ME,{x:86,y:46,k:.4,shirt:'#1f8f7a',pose:won?'up':'down',e:won?3:2}))}
+${person({x:156,y:52,k:.36,skin:SK[1],hair:HC[3],hs:1,shirt:'#eef1f4',pose:won?'up':'down',e:won?0:1})}</svg>
+<div style="position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:2px 6px;border-radius:4px">Comitê de Arthur Albefaro</div>
+${won?'<div class="big" style="position:absolute;right:8px;top:44px;background:#e9b44c;color:#1a1408;font-size:24px;font-weight:800;padding:2px 10px;border-radius:5px">ELEITO</div>':''}</div>
+<button class="bt gold" style="position:absolute;left:40px;top:520px;padding:10px 18px;font-size:15px" data-a="apu">${p>=100?'Recomeçar':'Próxima parcial'}</button>`}
+
+const SCR=[['1 · Menu',menu],['2 · Criação',criacao],['3 · Urna',urna],['4 · Apuração',apuracao]];
+function render(){st.innerHTML=SCR[S.scr][1]();document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('on',i==S.scr))}
+document.getElementById('nav').innerHTML=SCR.map((x,i)=>`<button data-i="${i}">${x[0]}</button>`).join('');
+document.getElementById('nav').onclick=e=>{const b=e.target.closest('button');if(b){S.scr=+b.dataset.i;render()}};
+function act(k,v){
+if(k=='go'){S.scr=+v;if(S.scr>3)S.scr=3}
+else if(k=='skin')ME.skin=SK[v];else if(k=='hair')ME.hair=HC[v];else if(k=='shirt')ME.shirt=SH[v];else if(k=='hs')ME.hs=+v;else if(k=='e')ME.e=+v;else if(k=='g')ME.g=!ME.g;
+else if(k=='rand'){ME.skin=SK[Math.floor(Math.random()*8)];ME.hair=HC[Math.floor(Math.random()*6)];ME.hs=Math.floor(Math.random()*5);ME.shirt=SH[Math.floor(Math.random()*5)];ME.g=Math.random()<.3}
+else if(k=='key'){if(S.fim){S.fim=0;S.urna=''}if(S.urna.length<5)S.urna+=v}
+else if(k=='corrige'){S.urna='';S.fim=0}else if(k=='branco'){S.urna='';S.fim=1}else if(k=='confirma'){if(S.urna.length==5)S.fim=1}
+else if(k=='apu'){S.apu=S.apu>=100?58:Math.min(100,+(S.apu+8.4).toFixed(1))}
+render()}
+st.onclick=e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a.split(':');act(a[0],a[1])};
+addEventListener('keydown',e=>{if(e.key>='1'&&e.key<='4'&&S.scr!=2){S.scr=+e.key-1;render();return}
+if(S.scr==2){if(/^[0-9]$/.test(e.key))act('key',e.key);else if(e.key=='Enter')act('confirma');else if(e.key=='Backspace')act('corrige')}});
+render();
+</script>
+</body>
+</html>
