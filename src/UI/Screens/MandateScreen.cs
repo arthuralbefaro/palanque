@@ -100,6 +100,7 @@ public partial class MandateScreen : Control
 
     private void BuildNotices()
     {
+        AccountsCasePanel.BuildFromGame(_root);
         if (_engine.InRecess)
         {
             Ui.Label(_root, "Recesso parlamentar: sem sessões nesta semana. O gabinete continua aberto.", 16, Ui.Muted);

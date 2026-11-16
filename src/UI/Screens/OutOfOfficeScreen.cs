@@ -56,6 +56,7 @@ public partial class OutOfOfficeScreen : Control
         Ui.Button(bar, "Salvar", () => { SaveManager.Instance.Autosave(); _message = Tr("Jogo salvo."); Refresh(); });
         Ui.Button(bar, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); });
 
+        AccountsCasePanel.BuildFromGame(_root);
         int year = CareerFlow.NextEligibleElectionYear(State);
         DateOnly opens = CareerFlow.CampaignOpens(year);
         Ui.Value(_root, string.Format(Tr("Próxima eleição municipal: {0}"), Calendar.ElectionFor(year).FirstRound.ToString("dd/MM/yyyy", PtBr)), 30);

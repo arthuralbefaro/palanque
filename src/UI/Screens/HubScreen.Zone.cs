@@ -194,6 +194,7 @@ public partial class HubScreen
         ("renda", "Renda", "Rendimento médio do responsável pelo domicílio (Censo 2022), em 5 faixas da própria cidade."),
         ("idade", "Idosos", "Parte dos eleitores com 60 anos ou mais (Censo 2022), em 5 faixas da própria cidade."),
         ("situacao", "Urbana/rural", "Zonas urbanas e rurais pelo Censo 2022."),
+        ("disputa", "Disputa", "Onde a eleição está apertada: a diferença de presença entre os dois primeiros da sua disputa em cada zona, em 5 faixas; quanto mais clara, mais disputada. As etiquetas mostram os rivais vistos na semana (clique numa para abrir a ficha) e o tema em alta."),
         ("verba", "Verba", "Onde está a sua verba semanal nos canais de zona (Rua, Material gráfico e Cabos eleitorais), em 5 faixas; com um canal aberto no painel, só a verba dele. O tooltip de cada zona compara com a verba dos rivais."),
     ];
 
@@ -255,6 +256,10 @@ public partial class HubScreen
                 ChannelDefinition? only = MapChannel;
                 LegendTitle(only is null ? Tr("Sua verba por semana (canais de zona)") : string.Format(Tr("Sua verba por semana: {0}"), only.Nome));
                 Bands(_zonas.Zonas.Select(z => (z.Id, (double?)(double)(only is null ? ZoneChannels.Sum(c => _engine.Budget.PlanOf(c.Id, z.Id)) : _engine.Budget.PlanOf(only.Id, z.Id)))), Palette.Verba, v => string.Create(PtBr, $"R$ {v:N0}"), colors);
+                break;
+            case "disputa":
+                LegendTitle(Tr("Diferença de presença entre os dois primeiros (menor: mais disputada)"));
+                Bands(_engine.ZoneContests().Select(c => (c.ZoneId, (double?)c.Margin)), t => Palette.Disputa(1 - t), v => v.ToString("0.0", PtBr), colors);
                 break;
             case "situacao":
                 LegendTitle(Tr("Situação (Censo 2022)"));
@@ -371,7 +376,9 @@ public partial class HubScreen
         {
             if (Campaign.Find(sighting.Key.CandidateId!) is { } rival)
             {
-                markers.Add(new ZoneMapView.Marker(sighting.Key.ZoneId!, PartyColor(rival.PartyId), null, PartySigla(rival.PartyId)));
+                // No modo Disputa a etiqueta leva o primeiro nome; nos demais, a sigla. Clicar abre a ficha do rival.
+                markers.Add(new ZoneMapView.Marker(sighting.Key.ZoneId!, PartyColor(rival.PartyId), null, _mapMode == "disputa" ? rival.Name.Split(' ')[0] : PartySigla(rival.PartyId),
+                    _engine.RivalSheetOf(rival.Id) is null ? null : rival.Id));
             }
         }
 
@@ -389,7 +396,19 @@ public partial class HubScreen
             markers.Clear();
         }
 
-        foreach (ChannelAllocation a in _engine.Budget.Plan.Where(a => a.Amount > 0 && Channels.Find(a.ChannelId) is { Alvo: ChannelDefinition.AlvoZona }))
+        // Modo Disputa: só os rivais vistos e o tema em alta de cada zona.
+        bool contestMode = _mapMode == "disputa";
+        var hotThemes = _engine.HotThemes();
+        if (contestMode)
+        {
+            markers.RemoveAll(m => m.Id is null);
+            foreach (HotThemeView hot in hotThemes)
+            {
+                markers.AddRange(hot.Zones.Where(z => _map.Zonas.ContainsKey(z)).Select(z => new ZoneMapView.Marker(z, Palette.Atencao, Palette.Icon("jornal"), null)));
+            }
+        }
+
+        foreach (ChannelAllocation a in _engine.Budget.Plan.Where(a => !contestMode && a.Amount > 0 && Channels.Find(a.ChannelId) is { Alvo: ChannelDefinition.AlvoZona }))
         {
             if (a.ChannelId == ChannelDefinition.Cabos)
             {
@@ -412,6 +431,17 @@ public partial class HubScreen
         {
             Chip(chips, Palette.Verba(0.55), Tr("etiqueta: canal com verba sua na zona"), Palette.Icon("marcador"));
             Chip(chips, Palette.Acao, Tr("cabos contratados"), Palette.Icon("pessoas"));
+            return;
+        }
+
+        if (contestMode)
+        {
+            Chip(chips, Palette.Texto2, Tr("etiqueta: rival visto na semana (clique: ficha)"), Palette.Icon("marcador"));
+            foreach (HotThemeView hot in hotThemes)
+            {
+                Chip(chips, Palette.Atencao, string.Format(Tr("tema em alta: {0}"), hot.ThemeName), Palette.Icon("jornal"));
+            }
+
             return;
         }
 
@@ -492,6 +522,13 @@ public partial class HubScreen
         here.AddRange(Agenda.CityEvents.Where(e => e.ZoneId == id && e.Date == _engine.Today).Select(e => string.Format(Tr("hoje: {0} ({1})"), e.Nome, TurnoName(e.Turno))));
         here.AddRange(RivalSightings().Where(f => f.ZoneId == id).Select(f => f.Text));
         here.AddRange(_engine.City.Leaders.Where(l => l.Known && l.Zones[0] == id).Select(l => $"{LeaderLabel(l)}: {SideText(l)}"));
+        here.AddRange(_engine.HotThemes().Where(h => h.Zones.Contains(id)).Select(h => string.Format(PtBr, Tr("tema em alta até {0:dd/MM}: {1} (falar dele rende {2})"), h.Until, h.ThemeName, Percent(1 + h.Bonus))));
+        if (_mapMode == "disputa" && _engine.ZoneContests().FirstOrDefault(c => c.ZoneId == id) is { LeaderId: not null } contest)
+        {
+            here.Insert(0, contest.RunnerUpId is null
+                ? string.Format(PtBr, Tr("lidera a presença: {0}, com {1:0.0}"), PersonLabel(contest.LeaderId), contest.LeaderPresence)
+                : string.Format(PtBr, Tr("lidera a presença: {0}, com {1:0.0}; {2:0.0} à frente de {3}"), PersonLabel(contest.LeaderId), contest.LeaderPresence, contest.Margin, PersonLabel(contest.RunnerUpId)));
+        }
         // Verba própria e dos rivais em cada canal de zona: sempre no modo Verba; nos outros, só onde você gasta.
         var budget = ZoneChannels
             .Select(c => (c.Nome, Own: _engine.Budget.PlanOf(c.Id, id), Rival: _engine.RivalBudget(c.Id, id)))

@@ -60,6 +60,7 @@ public partial class ExecutiveScreen : Control
     {
         Ui.Clear(_root);
         BuildTopBar();
+        AccountsCasePanel.BuildFromGame(_root);
         HBoxContainer body = Ui.Row(_root, 18);
         body.SizeFlagsVertical = SizeFlags.ExpandFill;
         var leftScroll = body.Add(new ScrollContainer { CustomMinimumSize = new Vector2(520, 0), HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled });

@@ -25,6 +25,9 @@ public static class Palette
     /// <summary>Escala sequencial do modo Minha força (5 faixas, de #1B2A2A a #2FD0A5).</summary>
     public static Color Forca(double t) => new Color("#1B2A2A").Lerp(new Color("#2FD0A5"), (float)Math.Clamp(t, 0, 1));
 
+    /// <summary>Escala sequencial do modo Disputa (5 faixas, de #241F2E a #C59BF5): nunca a mesma de "Minha força" nem a do Perfil.</summary>
+    public static Color Disputa(double t) => new Color("#241F2E").Lerp(new Color("#C59BF5"), (float)Math.Clamp(t, 0, 1));
+
     /// <summary>Escala sequencial do modo Verba (5 faixas, do painel à cor de ação: a mesma cor da barra de verba).</summary>
     public static Color Verba(double t) => new Color("#1B2230").Lerp(Acao, (float)Math.Clamp(t, 0, 1));
 

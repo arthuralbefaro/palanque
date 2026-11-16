@@ -35,6 +35,9 @@ public partial class HubScreen
 
         /// <summary>Tema de que o candidato vai falar (entrevista, gravação, comício).</summary>
         public string? Tema { get; set; }
+
+        /// <summary>Veículo escolhido para a entrevista (GDD 17.13); null deixa a produção escolher.</summary>
+        public string? OutletId { get; set; }
     }
 
     private int _weekOffset;
@@ -56,7 +59,8 @@ public partial class HubScreen
             : null;
         bool delegated = d.Delegado && type.Delegavel;
         string? theme = !delegated && _engine.SpeaksOfThemes(type.Id) ? d.Tema : null;
-        return new CommitmentRequest(d.Type, zone, d.Date, d.Turno, type.EscolhePublico ? d.Publico : CommitmentType.PublicoGeral, person, type.SoEvento ? d.CityEventId : null, Delegado: delegated, Tema: theme);
+        string? outlet = !delegated && type.Id == CommitmentCatalog.Entrevista && d.OutletId is not null && _engine.City.Outlet(d.OutletId) is not null ? d.OutletId : null;
+        return new CommitmentRequest(d.Type, zone, d.Date, d.Turno, type.EscolhePublico ? d.Publico : CommitmentType.PublicoGeral, person, type.SoEvento ? d.CityEventId : null, Delegado: delegated, Tema: theme, OutletId: outlet);
     }
 
     /// <summary>"Caminhada em Centro", "Visita a Fulana (presidente de associação rural)".</summary>
@@ -377,10 +381,15 @@ public partial class HubScreen
     // ------------------------------------------------------------------ marcação
 
     /// <summary>Abre a marcação num dia e turno, já com o que se sabe (zona, evento da cidade, liderança a visitar).</summary>
-    private void StartSchedule(DateOnly date, Turno turno, string? zoneId = null, CityEventInstance? cityEvent = null, string? visit = null)
+    private void StartSchedule(DateOnly date, Turno turno, string? zoneId = null, CityEventInstance? cityEvent = null, string? visit = null, string? outlet = null)
     {
         _draft = new Draft { Date = date, Turno = turno };
-        if (cityEvent is not null)
+        if (outlet is not null)
+        {
+            _draft.Type = CommitmentCatalog.Entrevista;
+            _draft.OutletId = outlet;
+        }
+        else if (cityEvent is not null)
         {
             _draft.Type = CommitmentCatalog.EventoCidade;
             _draft.CityEventId = cityEvent.Id;
@@ -557,12 +566,23 @@ public partial class HubScreen
         }
 
         DelegateControls(d, type);
+        OutletControls(d, type);
         ThemeControls(d, type);
 
         // Previsão antes de confirmar (princípio f).
         CommitmentRequest request = RequestOf(d);
         CommitmentForecast forecast = _engine.Forecast(request);
         ForecastBlock(_left, request, forecast);
+        string? brokenPact = _engine.PactBrokenBy(request);
+        if (brokenPact is not null)
+        {
+            // Marcar ato de rua numa zona fechada quebra o pacto: o jogo avisa antes (GDD 17.11).
+            MemoryDefinition broken = _engine.Context.Campaign.Rivals.Memory("pacto_quebrado");
+            PanelContainer warn = Card(_left, Palette.CartaoAlto, Palette.Negativo, 10);
+            warn.Name = "QuebraPacto";
+            Glossary.Rich(warn, string.Format(Tr("Este compromisso quebra o seu pacto com {0}: {1} é zona fechada pelo acordo. A quebra vira notícia e fica na memória (\"{2}\", {3} de relação), sem se apagar."),
+                PersonLabel(brokenPact), ZoneName(request.ZoneId), broken.Texto, Signed(broken.Pontos, "0")), 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+        }
 
         HBoxContainer row = Ui.Row(_left, 8);
         string tip = Palette.Tip(
@@ -589,12 +609,56 @@ public partial class HubScreen
             confirm.Disabled = true;
             confirm.TooltipText = Palette.Blocked(FailureText(blocked, request), tip);
         }
+        else if (brokenPact is not null)
+        {
+            Palette.Danger(confirm);
+            confirm.TooltipText = Palette.Tip(
+                string.Format(Tr("Marca {0} para {1}, {2}, e quebra o pacto com {3}."), type.Nome, DayShort(d.Date), TurnoName(d.Turno), _engine.NameOf(brokenPact)),
+                ForecastSummary(request, forecast) + ". " + Tr("O pacto acaba quando o compromisso acontecer; a quebra vira notícia."),
+                CostText(type));
+        }
         else
         {
             Palette.Primary(confirm);
         }
 
         Ui.Button(row, "Cancelar", Back, Palette.Tip(Tr("Fecha a marcação sem marcar nada."), Tr("o turno continua livre."), Tr("nada."))).Name = "Cancelar";
+    }
+
+    /// <summary>Veículo da entrevista (GDD 17.13): o crítico pergunta mais duro e convence mais; o amigo é seguro e convence pouco.</summary>
+    private void OutletControls(Draft d, CommitmentType type)
+    {
+        if (type.Id != CommitmentCatalog.Entrevista || (d.Delegado && type.Delegavel))
+        {
+            return;
+        }
+
+        var outlets = _engine.Outlets();
+        if (outlets.Count == 0)
+        {
+            d.OutletId = null;
+            return;
+        }
+
+        if (d.OutletId is not null && outlets.All(o => o.Outlet.Id != d.OutletId))
+        {
+            d.OutletId = null;
+        }
+
+        FieldLabel("Veículo");
+        var items = new List<(string Id, string Text)> { ("", Tr("Sem escolher veículo")) };
+        items.AddRange(outlets.Select(o => (o.Outlet.Id, string.Format(PtBr, Tr("{0} · {1} · alcança {2:P0}"), o.Outlet.Name, StanceText(o.Stance), o.ReachShare))));
+        var options = Ui.Options(_left, items, d.OutletId ?? "", id => { d.OutletId = id.Length == 0 ? null : id; Refresh(); }, translate: false);
+        options.Name = "Veiculo";
+        options.ClipText = true;
+        options.TooltipText = Palette.Tip(
+            Tr("O veículo que faz a entrevista."),
+            Tr("veículo crítico a você pergunta mais duro (chance menor de se sair bem) e quem ouve dá mais crédito; veículo amigo é seguro e convence pouco. O alcance do veículo e a relação com o jornalista entram na previsão abaixo."),
+            Tr("nada a mais; o jornalista lembra da entrevista."));
+        if (d.OutletId is not null && outlets.FirstOrDefault(o => o.Outlet.Id == d.OutletId) is { } chosen)
+        {
+            Glossary.Rich(_left, string.Format(Tr("{0}. Com você: {1}. Jornalista: {2} (relação {3})."), chosen.Label, StanceText(chosen.Stance), chosen.JournalistName, Signed(chosen.JournalistRelation, "0")));
+        }
     }
 
     private void FieldLabel(string text) => Glossary.Rich(_left, Tr(text), 18, Palette.Texto3);
@@ -657,7 +721,9 @@ public partial class HubScreen
 
         FieldLabel("Tema de que você vai falar");
         var items = new List<(string Id, string Text)> { ("", Tr("Nenhum tema em especial")) };
-        items.AddRange(themes.Select(t => (t.Id, string.Format(PtBr, Tr("{0} · conhecida {1:P0}{2}"), t.Name, _engine.KnownOf(t.Id), Platform.Flags.Contains(t.Id) ? " · " + Tr("bandeira") : ""))));
+        string? zoneOfTalk = type.ExigeZona ? d.ZoneId : null;
+        items.AddRange(themes.Select(t => (t.Id, string.Format(PtBr, Tr("{0}{3} · conhecida {1:P0}{2}"), t.Name, _engine.KnownOf(t.Id), Platform.Flags.Contains(t.Id) ? " · " + Tr("bandeira") : "",
+            _engine.HotThemeOn(t.Id, zoneOfTalk, d.Date) is not null ? " · " + Tr("em alta") : ""))));
         var options = Ui.Options(_left, items, d.Tema ?? "", id => { d.Tema = id.Length == 0 ? null : id; Refresh(); }, translate: false);
         options.Name = "Tema";
         options.ClipText = true;
@@ -868,7 +934,15 @@ public partial class HubScreen
                 Glossary.Rich(warn, string.Format(PtBr, Tr("Cansaço: {0}: rende {1:P0}."), fatigue.Text, fatigue.Multiplier), 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
             }
 
-            var others = f.Factors.Where(x => x.Id is not ("cansaco" or "delegado")).ToList();
+            if (f.Factors.FirstOrDefault(x => x.Id == "tema_em_alta") is { } hotTheme)
+            {
+                // Tema em alta (GDD 17.13): o melhor assunto da semana depende do noticiário.
+                PanelContainer hot = Card(col, Palette.CartaoAlto, Palette.Positivo, 10);
+                hot.Name = "TemaEmAlta";
+                Glossary.Rich(hot, string.Format(Tr("{0}: rende {1} nesta semana."), hotTheme.Text, Percent(hotTheme.Multiplier)), 18, Palette.Texto, Palette.Weight(Palette.Inter, 600));
+            }
+
+            var others = f.Factors.Where(x => x.Id is not ("cansaco" or "delegado" or "tema_em_alta")).ToList();
             if (f.Factors.Count > 0)
             {
                 Glossary.Rich(col, string.Format(PtBr, Tr("Rendimento: {0:P0} do valor de base, antes da sorte do dia (de {1:P0} a {2:P0})."), f.Yield, Catalog.Regras.Sorte.Min, Catalog.Regras.Sorte.Max));
