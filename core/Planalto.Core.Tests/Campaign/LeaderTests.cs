@@ -316,7 +316,8 @@ public class LeaderTests
         LeaderCatalog catalog = engine.Context.Campaign.Leaders;
         List<Leader> promised = state.City!.Leaders.Where(l => l.RequestMet && catalog.Request(l.RequestId).Kind != LeaderRequestDefinition.Dinheiro).ToList();
         Assert.True(promised.Count >= 3, $"Só {promised.Count} promessas na campanha inteira.");
-        Assert.Equal(promised.Count, state.Ledger.Promises.Count);
+        // (Os eventos também podem pôr promessas no Livro; aqui contam as feitas ao aceitar um pedido de liderança.)
+        Assert.Equal(promised.Count, state.Ledger.Promises.Count(p => promised.Any(l => l.PromiseId == p.Id)));
         foreach (Leader leader in promised)
         {
             Promise promise = Assert.Single(state.Ledger.Promises, p => p.Id == leader.PromiseId);

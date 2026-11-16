@@ -304,6 +304,19 @@ public sealed class CityState
     /// <summary>Candidatos a cada função da equipe e quem está contratado (GDD 17.7).</summary>
     public List<StaffMember> Staff { get; init; } = [];
 
+    /// <summary>Veículos de mídia local (GDD 17.13).</summary>
+    public List<Media.Outlet> Outlets { get; init; } = [];
+
+    /// <summary>Doadores pessoa física (GDD 17.12).</summary>
+    public List<Donor> Donors { get; init; } = [];
+
+    /// <summary>Dirigente local de cada partido (partido → pessoa): decide a cota do fundo eleitoral.</summary>
+    public Dictionary<string, string> Bosses { get; init; } = [];
+
+    public Media.Outlet? Outlet(string id) => Outlets.FirstOrDefault(o => o.Id == id);
+
+    public Donor? Donor(string personId) => Donors.FirstOrDefault(d => d.PersonId == personId);
+
     public People.Person? Person(string id) => People.FirstOrDefault(p => p.Id == id);
 
     public Leader? Leader(string personId) => Leaders.FirstOrDefault(l => l.PersonId == personId);

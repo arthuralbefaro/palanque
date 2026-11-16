@@ -286,7 +286,7 @@ public class ClockAndForecastTests
 
                 p.Recognition = ctx.State.Campaign.Territory.Recognition(p.Id);
                 p.Image = 0;
-                forecast = Forecaster.ForChoice(ctx, e.Choices[choice]);
+                forecast = Forecaster.ForChoice(ctx, e.Choices[choice], pending);
                 double recognition = p.Recognition, image = p.Image;
                 decimal money = ctx.State.Player.Resources.Money;
                 EventEngine.Resolve(ctx, pending, choice, ctx.State.Rng);

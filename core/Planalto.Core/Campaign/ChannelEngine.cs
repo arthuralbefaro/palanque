@@ -62,45 +62,6 @@ public sealed partial class CampaignEngine
     private decimal RuaBudgetOn(DateOnly date, string zoneId) =>
         date <= State.Calendar.WeekEnd ? Budget.ActiveOf(ChannelDefinition.Rua, zoneId) : Budget.PlanOf(ChannelDefinition.Rua, zoneId);
 
-    /// <summary>
-    /// Verba semanal dos rivais no canal e alvo (estimativa que o jogador vê): cada rival nomeado da mesma disputa
-    /// reparte a verba pelos canais e a concentra nos seus redutos; nas redes, pelas faixas de idade. Antes da
-    /// campanha oficial só gastam, e pouco, nos canais que a pré-campanha permite.
-    /// </summary>
-    public decimal RivalBudget(string channelId, string targetId)
-    {
-        if (Channels.Find(channelId) is not { } c)
-        {
-            return 0;
-        }
-
-        double phase = !BeforeOfficialCampaign ? 1 : c.PreCampanha is null ? 0 : ChannelRules.RivalPreCampanha;
-        double total = Budget.RivalExtra.GetValueOrDefault(BudgetState.Key(channelId, targetId));
-        if (phase > 0)
-        {
-            int zone = c.Alvo == ChannelDefinition.AlvoZona ? Territory.IndexOf(targetId) : -1;
-            double bandShare = Channels.Band(targetId) is { } band ? band.Peso / Channels.FaixasIdade.Sum(b => b.Peso) : 0;
-            foreach (Candidate rival in Campaign.ForOffice(Campaign.Player.Office).Where(x => !x.IsPlayer && !x.IsBulk))
-            {
-                double budget = (double)ChannelRules.RivalVerba * CostScale * rival.Drive * ChannelRules.RivalReparte.GetValueOrDefault(c.Id) * phase;
-                if (c.Alvo == ChannelDefinition.AlvoIdade)
-                {
-                    total += budget * bandShare;
-                }
-                else if (!Territory.Redutos.TryGetValue(rival.Id, out List<int>? redutos))
-                {
-                    total += budget / Territory.Zones.Count;
-                }
-                else if (redutos.Contains(zone))
-                {
-                    total += budget / redutos.Count;
-                }
-            }
-        }
-
-        return Math.Round((decimal)total);
-    }
-
     /// <summary>A verba como o canal a aceita: cabos são contratados em grupos inteiros.</summary>
     public decimal NormalizeAllocation(string channelId, decimal amount) =>
         Channels.Find(channelId) is { EmGrupos: true } ? Math.Floor(Math.Max(0, amount) / CabosGroupCost) * CabosGroupCost : Math.Max(0, Math.Round(amount));
@@ -219,6 +180,7 @@ public sealed partial class CampaignEngine
         Campaign.Player.Money = State.Player.Resources.Money;
         Budget.Spent += amount;
         Team.RegisteredSpending += amount;
+        RegisterSpending(amount);
     }
 
     /// <summary>As duas contas do efeito e os fatores do canal no alvo, para uma verba semanal.</summary>
@@ -573,7 +535,7 @@ public sealed partial class CampaignEngine
 
                 if (State.Player.Resources.Money < a.Amount)
                 {
-                    Agenda.AddFeed(new FeedItem(Today, "verba", Texts.Fill(Channels.Texto("sem_caixa"), ("canal", c.Nome), ("alvo", TargetName(c, a.TargetId))), c.Alvo == ChannelDefinition.AlvoZona ? a.TargetId : null, null, RaceSetup.PlayerId));
+                    EmitFeed(Today, "verba", Texts.Fill(Channels.Texto("sem_caixa"), ("canal", c.Nome), ("alvo", TargetName(c, a.TargetId))), c.Alvo == ChannelDefinition.AlvoZona ? a.TargetId : null, null, RaceSetup.PlayerId);
                     continue;
                 }
 
@@ -597,7 +559,7 @@ public sealed partial class CampaignEngine
             Candidate? rival = Campaign.ForOffice(Campaign.Player.Office).Where(x => !x.IsPlayer && !x.IsBulk).MaxBy(x => Territory.PresenceOf(x.Id, zone));
             if (rival is not null)
             {
-                Agenda.AddFeed(new FeedItem(Today, "cabos", Texts.Fill(Channels.Texto("cabos_dispensados"), ("alvo", ZoneName(old.TargetId)), ("rival", rival.Name)), old.TargetId, null, rival.Id));
+                EmitFeed(Today, "cabos", Texts.Fill(Channels.Texto("cabos_dispensados"), ("alvo", ZoneName(old.TargetId)), ("rival", rival.Name)), old.TargetId, null, rival.Id);
             }
         }
     }

@@ -4,18 +4,24 @@ using Planalto.Core.Elections;
 namespace Planalto.Core.Campaign;
 
 /// <summary>
-/// Regras de lei dos canais pagos de campanha, com o padrão da lei vigente e o artigo citado.
-/// ATENÇÃO: os artigos abaixo foram citados de memória. A conferência item por item no texto oficial é tarefa da R3
-/// (ROADMAP); até lá <see cref="ConferidoNoTextoOficial"/> fica falso.
+/// Regras de lei dos canais pagos de campanha, com o padrão da lei vigente e o artigo citado. Conferidas no texto
+/// oficial em 16/11/2026 (docs/referencias/LEIS_CONFERIDAS.md): art. 100-A (cabos), art. 57-C (impulsionamento),
+/// arts. 44 e 39, §§ 6º e 8º (gastos vedados).
 /// </summary>
 public sealed class ChannelLawConfig
 {
     public static ChannelLawConfig Default { get; } = new();
 
     /// <summary>Os números e artigos deste objeto já foram conferidos no texto oficial.</summary>
-    public bool ConferidoNoTextoOficial { get; init; }
+    public bool ConferidoNoTextoOficial { get; init; } = true;
 
-    public string Conferencia { get; init; } = "Artigos citados de memória; a conferência no texto oficial é da R3.";
+    public string Conferencia { get; init; } = "Conferido no texto compilado do Planalto em 16/11/2026 (docs/referencias/LEIS_CONFERIDAS.md).";
+
+    /// <summary>
+    /// As frações de deputado federal (70% do limite do município de maior eleitorado do estado) e estadual (50% do
+    /// federal), que entram no teto do vereador, constam da segunda leitura do art. 100-A, § 1º (16/11/2026).
+    /// </summary>
+    public bool FracoesDeDeputadoConferidas { get; init; } = true;
 
     // ---- Contratação de pessoal de rua (cabos eleitorais)
 
@@ -45,11 +51,14 @@ public sealed class ChannelLawConfig
     /// <summary>Vereador: teto como fração do limite do deputado estadual (§ 1º, VI, parte final).</summary>
     public double TetoVereadorSobreDeputadoEstadual { get; init; } = 0.8;
 
+    /// <summary>Fração de contratação: despreza-se abaixo de 0,5 e arredonda-se para 1 a partir daí (art. 100-A, § 2º).</summary>
+    private static int Arredonda(double valor) => (int)Math.Round(valor, MidpointRounding.AwayFromZero);
+
     /// <summary>Limite do município (caput): contratações para uma candidatura a prefeito.</summary>
     public int LimiteMunicipio(long eleitorado) =>
         eleitorado <= EleitoradoFaixaBase
-            ? (int)Math.Floor(eleitorado * FracaoAteFaixaBase)
-            : (int)Math.Floor(EleitoradoFaixaBase * FracaoAteFaixaBase) + (int)((eleitorado - EleitoradoFaixaBase) / EleitoresPorContratacaoExtra);
+            ? Arredonda(eleitorado * FracaoAteFaixaBase)
+            : Arredonda(EleitoradoFaixaBase * FracaoAteFaixaBase) + Arredonda((eleitorado - EleitoradoFaixaBase) / (double)EleitoresPorContratacaoExtra);
 
     /// <summary>
     /// Máximo de pessoas contratadas para rua por uma candidatura no município. O teto do vereador depende do
@@ -57,15 +66,18 @@ public sealed class ChannelLawConfig
     /// </summary>
     public int LimiteCabos(Office office, long eleitorado, long? maiorEleitoradoDaUf = null)
     {
-        int limit = (int)Math.Floor(LimiteMunicipio(eleitorado) * FracaoPorCargo.GetValueOrDefault(office, 1.0));
+        int limit = Arredonda(LimiteMunicipio(eleitorado) * FracaoPorCargo.GetValueOrDefault(office, 1.0));
         if (office == Office.Vereador && maiorEleitoradoDaUf is { } maior)
         {
-            double deputadoEstadual = Math.Floor(Math.Floor(LimiteMunicipio(maior) * FracaoDeputadoFederal) * FracaoDeputadoEstadual);
-            limit = Math.Min(limit, (int)Math.Floor(deputadoEstadual * TetoVereadorSobreDeputadoEstadual));
+            int deputadoEstadual = Arredonda(Arredonda(LimiteMunicipio(maior) * FracaoDeputadoFederal) * FracaoDeputadoEstadual);
+            limit = Math.Min(limit, Arredonda(deputadoEstadual * TetoVereadorSobreDeputadoEstadual));
         }
 
         return Math.Max(0, limit);
     }
+
+    /// <summary>Fora do limite (§ 6º): militância não remunerada, apoio administrativo, fiscais e advogados.</summary>
+    public IReadOnlyList<string> ForaDoLimite { get; init; } = ["militancia_nao_remunerada", "apoio_administrativo_e_operacional", "fiscais", "delegados", "advogados"];
 
     // ---- Impulsionamento de conteúdo na internet
 
@@ -79,6 +91,18 @@ public sealed class ChannelLawConfig
 
     /// <summary>Impulsionamento é propaganda eleitoral: só a partir do início oficial da campanha (art. 36).</summary>
     public bool ImpulsionamentoSoNaCampanha { get; init; } = true;
+
+    /// <summary>O provedor contratado tem de estar estabelecido no país (art. 57-C, § 3º).</summary>
+    public bool ImpulsionamentoProvedorNoPais { get; init; } = true;
+
+    /// <summary>Multa: de R$ 5.000 a R$ 30.000, ou o dobro do gasto, se maior (art. 57-C, § 2º).</summary>
+    public decimal ImpulsionamentoMultaMinima { get; init; } = 5_000m;
+
+    public decimal ImpulsionamentoMultaMaxima { get; init; } = 30_000m;
+
+    public decimal ImpulsionamentoMultaMultiploDoGasto { get; init; } = 2m;
+
+    public decimal ImpulsionamentoMultaMaximaPara(decimal gasto) => Math.Max(ImpulsionamentoMultaMaxima, gasto * ImpulsionamentoMultaMultiploDoGasto);
 
     // ---- Gastos vedados
 

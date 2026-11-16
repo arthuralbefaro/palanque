@@ -24,6 +24,7 @@ public enum PersonRole
     Secretario,
     Vereador,
     Dirigente,
+    DonoDeVeiculo,
 }
 
 /// <summary>O que a pessoa quer: um tema, uma zona ou um objetivo próprio.</summary>

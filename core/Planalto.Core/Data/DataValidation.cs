@@ -17,7 +17,7 @@ public static class DataValidation
     {
         var reports = new List<DataFileReport>
         {
-            Check<TraitCatalog>(dataDirectory, "traits.json", catalog => catalog.Traits.Count, out _),
+            Check<TraitCatalog>(dataDirectory, "traits.json", catalog => catalog.Traits.Count, out TraitCatalog? traits),
             Check<ProfessionCatalog>(dataDirectory, "professions.json", catalog => catalog.Professions.Count, out _),
             Check<State.TimeConfig>(dataDirectory, State.TimeConfig.File, c => c.Pausas.Count, out _),
             Check<Territory.TerritoryConfig>(dataDirectory, Territory.TerritoryConfig.File, c => c.ZonasPorPorte.Count, out _),
@@ -65,6 +65,19 @@ public static class DataValidation
         {
             // Lint das decisões (GDD 17.1, princípio e): ganho e custo de naturezas diferentes em toda opção.
             reports.Add(new DataFileReport("lint: decisões com ganho e custo", Campaign.DecisionLint.Count(campaign, events), [.. Campaign.DecisionLint.Run(campaign, events)]));
+
+            // Lint de rastro (princípio d): escolha relevante sem entrada no Livro nem lembrança em alguém reprova.
+            reports.Add(new DataFileReport("lint: rastro das escolhas relevantes", events.Events.Sum(e => e.Choices.Count(c => c.Relevant)), [.. Campaign.DecisionLint.Trace(events)]));
+            if (traits is not null)
+            {
+                reports.Add(new DataFileReport("lint: eventos", events.Events.Count, [.. Events.EventLint.Run(events, portes, traits).Errors]));
+            }
+
+            // Referências entre os arquivos da R3: temas, grupos de eleitores, compromissos e canais citados existem.
+            reports.Add(new DataFileReport("campanha: referências da R3", 1, [.. Campaign.CampaignContent.CrossCheck(
+                campaign,
+                world?.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal),
+                electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal))]));
         }
         reports.AddRange(Legislature.LegislatureContent.Load(
             dataDirectory,

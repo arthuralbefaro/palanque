@@ -50,10 +50,94 @@ public sealed class Effects
     /// <summary>Mudança na relação com o NPC envolvido (-100 a 100).</summary>
     public int Relation { get; init; }
 
+    /// <summary>Lembranças gravadas nas pessoas do save que o evento envolve (GDD 17.1, princípio d).</summary>
+    public List<MemoryEffect> Memories { get; init; } = [];
+
+    /// <summary>Promessa que entra no Livro de compromissos, feita a uma pessoa do evento.</summary>
+    public PromiseEffect? Promise { get; init; }
+
+    /// <summary>Dívida que entra no Livro, com uma pessoa do evento.</summary>
+    public DebtEffect? Debt { get; init; }
+
+    /// <summary>Papéis (das pessoas do evento) que ficam sabendo do esqueleto de <see cref="AddSkeleton"/>.</summary>
+    public List<string> SkeletonKnownBy { get; init; } = [];
+
+    /// <summary>Presença na zona do evento (pontos na cidade inteira, como os compromissos).</summary>
+    public double ZonePresence { get; init; }
+
+    /// <summary>Desmarca o compromisso desse tipo marcado para a semana (ex.: o comício adiado).</summary>
+    public string? CancelCommitment { get; init; }
+
+    /// <summary>Fato que a escolha emite (vira notícia conforme a visibilidade).</summary>
+    public FactEffect? Fact { get; init; }
+
+    /// <summary>A escolha deixa rastro: entrada no Livro ou lembrança em alguém.</summary>
+    public bool LeavesTrace => AddSkeleton is not null || Memories.Count > 0 || Promise is not null || Debt is not null;
+
     public static Effects None { get; } = new();
 }
 
 public sealed record Skeleton(string Type, int Severity, DateOnly Created = default);
+
+/// <summary>Papéis das pessoas e lugares do save que um evento pode envolver (variáveis {papel.nome}).</summary>
+public static class EventRole
+{
+    public const string Rival = "rival";
+    public const string Lideranca = "lideranca";
+    public const string Jornalista = "jornalista";
+    public const string Doador = "doador";
+    public const string Colega = "colega";
+    public const string Dirigente = "dirigente";
+    public const string Equipe = "equipe";
+
+    public static readonly IReadOnlyList<string> People = [Rival, Lideranca, Jornalista, Doador, Colega, Dirigente, Equipe];
+}
+
+/// <summary>Lembrança que uma escolha de evento grava numa pessoa do save.</summary>
+public sealed class MemoryEffect
+{
+    /// <summary>Papel da pessoa no evento (<see cref="EventRole"/>).</summary>
+    public required string Quem { get; init; }
+
+    /// <summary>Chave estável do fato.</summary>
+    public required string Fato { get; init; }
+
+    /// <summary>−3 a 3.</summary>
+    public required int Peso { get; init; }
+
+    public required int Pontos { get; init; }
+
+    public required string Texto { get; init; }
+}
+
+public sealed class PromiseEffect
+{
+    public required string Para { get; init; }
+
+    /// <summary>Tipo do que foi prometido (obra, presenca, posicao…).</summary>
+    public required string Objeto { get; init; }
+
+    public required string Texto { get; init; }
+
+    /// <summary>Semanas depois da posse para cumprir (0 = antes da eleição).</summary>
+    public int PrazoSemanas { get; init; }
+}
+
+public sealed class DebtEffect
+{
+    public required string Para { get; init; }
+
+    public required string Texto { get; init; }
+}
+
+public sealed class FactEffect
+{
+    public required string Tipo { get; init; }
+
+    public required string Texto { get; init; }
+
+    public int Visibilidade { get; init; } = 1;
+}
 
 public sealed record ScheduledEvent(string Event, int DelayWeeks);
 
@@ -193,6 +277,20 @@ public sealed class CampaignState
 
     /// <summary>Objetivos ativos e o histórico da campanha (GDD 17.2, peça 6).</summary>
     public ObjectiveState Objectives { get; init; } = new();
+
+    /// <summary>Fatos emitidos pelos sistemas (GDD 17.2, peça 5).</summary>
+    public FactLog Facts { get; init; } = new();
+
+    public WorldClock World { get; init; } = new();
+
+    /// <summary>Notícias, temas em alta, anúncios e pautas (GDD 17.13).</summary>
+    public Media.MediaState Media { get; init; } = new();
+
+    /// <summary>Rivais com perfil, plano e verba; pactos, ataques e reações (GDD 17.11).</summary>
+    public RivalsState Rivals { get; init; } = new();
+
+    /// <summary>Dinheiro da campanha: fontes, gasto e ofertas de doação (GDD 17.12).</summary>
+    public FinanceState Finance { get; init; } = new();
 
     public List<Headline> Headlines { get; init; } = [];
 

@@ -4,7 +4,8 @@ using Planalto.Core.Municipios;
 
 namespace Planalto.Core.Events;
 
-public sealed record LintReport(IReadOnlyList<string> Errors, IReadOnlyList<string> Warnings, IReadOnlyDictionary<string, (int Count, int Target)> Distribution);
+/// <param name="SemRastro">Escolhas marcadas como "sem_rastro", com o motivo de cada uma.</param>
+public sealed record LintReport(IReadOnlyList<string> Errors, IReadOnlyList<string> Warnings, IReadOnlyDictionary<string, (int Count, int Target)> Distribution, IReadOnlyList<string>? SemRastro = null);
 
 /// <summary>
 /// Verificações do conteúdo de eventos (GDD 15.5): referências, variáveis inexistentes, cadeias quebradas,
@@ -30,6 +31,123 @@ public static partial class EventLint
     };
 
     private static readonly string[] Regioes = ["N", "NE", "CO", "SE", "S"];
+
+    /// <summary>Limite do rótulo de uma escolha (ART_GUIDE, Interface).</summary>
+    public const int MaxLabel = 40;
+
+    /// <summary>Tamanho mínimo do motivo de uma escolha marcada como "sem_rastro".</summary>
+    public const int MinSemRastro = 15;
+
+    /// <summary>Categorias em que um evento de morte pode estar (GDD 17.16): nunca entre os cômicos nem nas festas.</summary>
+    public static readonly IReadOnlyList<string> DeathCategories = ["vida_pessoal", "bastidores", "campanha", "mandato_legislativo", "mandato_executivo"];
+
+    /// <summary>Palavras que indicam que o texto fala de morte: o evento tem de estar marcado como luto.</summary>
+    private static readonly string[] DeathWords = ["morte", "morreu", "morrer", "faleceu", "falecimento", "falecid", "velório", "velorio", "enterro", "sepultamento", "óbito", "obito", "luto"];
+
+    private static readonly string[] HumorWords = ["kkk", "haha", "rsrs", "piada", "engraçad", "hilári", "hilari", "cômic", "comic", "risada", "meme", "brincadeira"];
+
+    private static readonly string[] SensationalWords = ["brutal", "horrív", "horriv", "chocante", "macabr", "sangrent", "sangue", "terrível", "terrivel", "trágico fim", "escândalo", "escandalo", "bomba", "urgente", "assustador"];
+
+    private static readonly string[] MockeryWords = ["zomb", "ironiz", "deboch", "comemor", "bem feito", "já vai tarde", "ja vai tarde", "atacar a memória", "atacar a memoria", "ridiculariz", "tirar proveito"];
+
+    /// <summary>O texto fala de morte (para saber quais textos passam pelas regras de luto).</summary>
+    public static bool MentionsDeath(string text)
+    {
+        string lower = text.ToLowerInvariant();
+        return DeathWords.Any(w => System.Text.RegularExpressions.Regex.IsMatch(lower, $@"(?<![\p{{L}}]){System.Text.RegularExpressions.Regex.Escape(w)}"));
+    }
+
+    /// <summary>
+    /// Regras de texto de morte (GDD 17.16, "morte tratada com seriedade"): sóbrio (sem exclamação nem palavra em
+    /// caixa alta), sem humor, sem causa sensacionalista e sem zombar do morto. Serve a todo texto de morte de data/:
+    /// abertura, resultado e rótulo de escolha de evento, manchete e texto de luto. Devolve os problemas encontrados.
+    /// </summary>
+    public static IReadOnlyList<string> CheckDeathText(string text)
+    {
+        var errors = new List<string>();
+        string lower = text.ToLowerInvariant();
+        if (text.Contains('!', StringComparison.Ordinal))
+        {
+            errors.Add("texto de morte com exclamação: o tom é sóbrio.");
+        }
+
+        if (text.Split([' ', ',', '.', ';', ':', '(', ')', '"'], StringSplitOptions.RemoveEmptyEntries).Any(w => w.Length >= 4 && w.All(char.IsLetter) && w.ToUpperInvariant() == w))
+        {
+            errors.Add("texto de morte com palavra em caixa alta: o tom é sóbrio.");
+        }
+
+        foreach (string word in HumorWords.Where(w => lower.Contains(w, StringComparison.Ordinal)))
+        {
+            errors.Add($"texto de morte com humor ('{word}').");
+        }
+
+        foreach (string word in SensationalWords.Where(w => lower.Contains(w, StringComparison.Ordinal)))
+        {
+            errors.Add($"texto de morte com causa ou tom sensacionalista ('{word}').");
+        }
+
+        foreach (string word in MockeryWords.Where(w => lower.Contains(w, StringComparison.Ordinal)))
+        {
+            errors.Add($"texto de morte que zomba do morto ou tira proveito ('{word}').");
+        }
+
+        return errors;
+    }
+
+    /// <summary>As regras de morte num evento inteiro: categoria e tom de todos os textos, inclusive os rótulos das escolhas.</summary>
+    public static IReadOnlyList<string> CheckDeathEvent(EventDefinition e)
+    {
+        var errors = new List<string>();
+        List<string> texts = Texts(e).ToList();
+        bool mentions = texts.Any(MentionsDeath);
+        if (mentions && !e.Luto)
+        {
+            errors.Add("fala de morte sem estar marcado como 'luto'.");
+        }
+
+        if (!e.Luto)
+        {
+            return errors;
+        }
+
+        if (!DeathCategories.Contains(e.Category))
+        {
+            errors.Add($"evento de luto na categoria '{e.Category}'; as permitidas são {string.Join(", ", DeathCategories)}.");
+        }
+
+        foreach (string text in texts)
+        {
+            errors.AddRange(CheckDeathText(text));
+        }
+
+        return errors;
+    }
+
+    /// <summary>
+    /// Regra de rastro em todo evento (GDD 17.1, princípio d): cada escolha grava uma lembrança em alguém ou uma
+    /// entrada no Livro, qualquer que seja o desfecho, ou traz a marca "sem_rastro" com o motivo.
+    /// </summary>
+    public static IEnumerable<string> CheckTrace(EventDefinition e)
+    {
+        for (int i = 0; i < e.Choices.Count; i++)
+        {
+            EventChoice choice = e.Choices[i];
+            bool traced = choice.Effects.LeavesTrace || (choice.Test is { } test && test.Success.LeavesTrace && test.Failure.LeavesTrace);
+            string where = $"{e.Id}, escolha {i + 1}";
+            if (choice.SemRastro is null && !traced)
+            {
+                yield return $"{where}: sem rastro (nem lembrança em alguém, nem entrada no Livro) e sem a marca 'sem_rastro' com o motivo.";
+            }
+            else if (choice.SemRastro is not null && choice.SemRastro.Trim().Length < MinSemRastro)
+            {
+                yield return $"{where}: 'sem_rastro' precisa dizer o motivo.";
+            }
+            else if (choice.SemRastro is not null && (traced || choice.Relevant))
+            {
+                yield return $"{where}: 'sem_rastro' numa escolha relevante ou que deixa rastro.";
+            }
+        }
+    }
 
     public static LintReport Run(EventContent content, PorteCatalog portes, TraitCatalog traits)
     {
@@ -62,6 +180,56 @@ public static partial class EventLint
                 {
                     errors.Add($"{where}: chaves desbalanceadas em \"{text}\".");
                 }
+            }
+
+            errors.AddRange(CheckTrace(e));
+            errors.AddRange(CheckDeathEvent(e).Select(error => $"{where}: {error}"));
+
+            // A energia semanal saiu com a agenda (GDD 17.6): evento não mexe mais nela; o custo de tempo é estresse.
+            if (AllEffects(e).Any(fx => fx.Energy != 0))
+            {
+                errors.Add($"{where}: usa 'energy', que não existe mais; use 'stress'.");
+            }
+
+            foreach (Campaign.Effects fx in AllEffects(e))
+            {
+                foreach (Campaign.MemoryEffect memory in fx.Memories)
+                {
+                    if (!Campaign.EventRole.People.Contains(memory.Quem) || memory.Peso is < -3 or > 3 || memory.Peso == 0 || string.IsNullOrWhiteSpace(memory.Texto) || Math.Sign(memory.Pontos) != Math.Sign(memory.Peso))
+                    {
+                        errors.Add($"{where}: lembrança '{memory.Fato}' inválida (papel conhecido, peso de −3 a 3, pontos com o mesmo sinal e texto).");
+                    }
+                }
+
+                if (fx.Promise is { } promise && promise.Para != "zona" && !Campaign.EventRole.People.Contains(promise.Para))
+                {
+                    errors.Add($"{where}: promessa para '{promise.Para}', que não é um papel do evento.");
+                }
+
+                if (fx.Debt is { } debt && !Campaign.EventRole.People.Contains(debt.Para))
+                {
+                    errors.Add($"{where}: dívida com '{debt.Para}', que não é um papel do evento.");
+                }
+
+                foreach (string role in fx.SkeletonKnownBy.Where(r => !Campaign.EventRole.People.Contains(r)))
+                {
+                    errors.Add($"{where}: esqueleto conhecido por '{role}', que não é um papel do evento.");
+                }
+            }
+
+            foreach (EventChoice choice in e.Choices.Where(ch => ch.Label.Length > MaxLabel))
+            {
+                errors.Add($"{where}: rótulo de escolha com mais de {MaxLabel} caracteres: \"{choice.Label}\".");
+            }
+
+            if (e.Conditions.Trigger is not null && e.ChainOnly)
+            {
+                errors.Add($"{where}: evento dinâmico (disparado por fato) não pode ser só de cadeia.");
+            }
+
+            if (e.Conditions.ZoneKind is not (null or "urbana" or "rural") || e.Conditions.OutletKind is not (null or "emissora" or "escrita" or "rede"))
+            {
+                errors.Add($"{where}: zone_kind ou outlet_kind desconhecido.");
             }
 
             foreach (Campaign.ScheduledEvent s in AllEffects(e).SelectMany(fx => fx.Schedule))
@@ -112,8 +280,13 @@ public static partial class EventLint
             }
         }
 
+        // Troca (princípio e): em toda escolha relevante, ganho e custo de naturezas diferentes, sustentados pelos efeitos.
+        errors.AddRange(Campaign.DecisionLint.Events(content));
+
+        List<string> untraced = events.SelectMany(e => e.Choices.Select((c, i) => (e, c, i))).Where(x => x.c.SemRastro is not null)
+            .Select(x => $"{x.e.Id}, escolha {x.i + 1} (\"{x.c.Label}\"): {x.c.SemRastro}").ToList();
         var distribution = Targets.ToDictionary(t => t.Key, t => (events.Count(e => e.Category == t.Key), t.Value), StringComparer.Ordinal);
-        return new LintReport(errors, warnings, distribution);
+        return new LintReport(errors.Distinct().ToList(), warnings, distribution, untraced);
     }
 
     private static IEnumerable<Campaign.Effects> AllEffects(EventDefinition e) =>

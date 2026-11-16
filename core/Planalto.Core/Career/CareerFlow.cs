@@ -56,6 +56,26 @@ public static class CareerFlow
             : null;
         state.Campaign = null;
         state.Calendar.JumpTo(new DateOnly(outcome.Date.Year + 1, 1, 1));
+
+        // Entre a eleição e a posse: prestação de contas final e, havendo irregularidade grave e denúncia, a
+        // representação do art. 30-A, aberta em até 15 dias da diplomação (GDD 17.12).
+        AccountsWeek(state, campaignContext.Campaign.Finance, campaignContext.FinanceLaw);
+    }
+
+    /// <summary>
+    /// Uma semana do processo de contas da última eleição (julgamento e representação). Se o diploma for cassado, o
+    /// mandato em curso termina. Devolve as manchetes do que aconteceu. O laço semanal do mandato chama isto.
+    /// </summary>
+    public static List<Headline> AccountsWeek(GameState state, FinanceCatalog content, CampaignFinanceLawConfig law, Rng? rng = null)
+    {
+        List<Headline> news = AccountsEngine.Advance(state, content, law, state.Calendar.WeekStart, rng ?? state.Rng);
+        if (state.Accounts is { MandateLost: true } && (state.Mandate is not null || state.Executive is not null))
+        {
+            state.Mandate = null;
+            state.Executive = null;
+        }
+
+        return news;
     }
 
     /// <summary>

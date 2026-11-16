@@ -1,0 +1,190 @@
+{
+  "note": "Ataques e respostas (GDD 17.11 e 17.13). O dano é imagem que o alvo perde e que se apaga em 4 semanas se o ataque for bem respondido, em 26 se não. Prazo de resposta do jogador: 48 horas. Todos os números são de balanceamento, salvo o prazo e as semanas, que vêm do GDD.",
+  "regras": {
+    "sorte": {
+      "min": 0.8,
+      "max": 1.2
+    },
+    "prazo_resposta_horas": 48,
+    "semanas_respondido": 4,
+    "semanas_sem_resposta": 26,
+    "respondido_fator": 0.4,
+    "rejeicao": 0.015,
+    "multa_processo": 2000,
+    "processo_imagem": 0.03,
+    "prova_base": 0.75,
+    "prova_por_gravidade": 0.25,
+    "boato_chance_falso": 0.6,
+    "boato_fator": 0.7,
+    "boato_falso_bonus": 0.2,
+    "chance_boato": 0.35,
+    "direito_de_resposta_imagem": 0.02
+  },
+  "tipos": [
+    {
+      "id": "incoerencia",
+      "nome": "Por incoerência",
+      "descricao": "Mostra que o rival disse uma coisa e fez outra. Com prova (um ponto fraco descoberto) pega mais; sem prova, há risco de processo.",
+      "dano": 0.06,
+      "usa_prova": true,
+      "sem_prova_fator": 0.6,
+      "risco_processo": 0.15,
+      "fato": "{ator} diz que {alvo} se contradiz: {assunto}"
+    },
+    {
+      "id": "esqueleto",
+      "nome": "Por esqueleto",
+      "descricao": "Traz a público uma irregularidade do rival. Com prova pega muito; sem prova, o risco de processo é alto.",
+      "dano": 0.09,
+      "usa_prova": true,
+      "sem_prova_fator": 0.5,
+      "risco_processo": 0.35,
+      "fato": "{ator} acusa {alvo}: {assunto}"
+    },
+    {
+      "id": "tema",
+      "nome": "Por tema",
+      "descricao": "Critica a posição do rival num tema. É crítica política: pega menos e não dá processo.",
+      "dano": 0.035,
+      "usa_prova": false,
+      "fato": "{ator} critica {alvo}: {assunto}"
+    }
+  ],
+  "canais": [
+    {
+      "id": "redes",
+      "nome": "Nas redes",
+      "fator": 0.8,
+      "custo": 200,
+      "visibilidade": 1
+    },
+    {
+      "id": "imprensa",
+      "nome": "Por um veículo",
+      "fator": 1.2,
+      "custo": 0,
+      "exige_veiculo": true,
+      "visibilidade": 2
+    },
+    {
+      "id": "palanque",
+      "nome": "No palanque",
+      "fator": 1.0,
+      "custo": 0,
+      "so_campanha": true,
+      "visibilidade": 2
+    }
+  ],
+  "respostas": [
+    {
+      "id": "mesmo_veiculo",
+      "nome": "Responder no mesmo espaço",
+      "nome_boato": "Desmentir no mesmo espaço",
+      "descricao": "Você responde onde o ataque saiu (teste de Oratória). Se for bem, o ataque se apaga em 4 semanas; se for mal, o assunto ganha sobrevida.",
+      "teste": "oratoria",
+      "bonus": 0,
+      "custo": 0,
+      "sobrevida": 0.2,
+      "troca": {
+        "ganho": [
+          "posicao"
+        ],
+        "custo": [
+          "risco"
+        ]
+      }
+    },
+    {
+      "id": "outro_canal",
+      "nome": "Responder por outro canal",
+      "nome_boato": "Desmentir com vídeo e documentos",
+      "descricao": "Um vídeo seu nas redes sobre o assunto (teste de Carisma). Custa a gravação; erra menos feio que a resposta direta.",
+      "teste": "carisma",
+      "bonus": -0.05,
+      "custo": 300,
+      "sobrevida": 0.1,
+      "troca": {
+        "ganho": [
+          "posicao"
+        ],
+        "custo": [
+          "dinheiro",
+          "risco"
+        ]
+      }
+    },
+    {
+      "id": "direito_resposta",
+      "nome": "Pedir direito de resposta",
+      "nome_boato": "Processar quem espalhou",
+      "descricao": "O advogado da campanha pede à Justiça Eleitoral; o resultado sai em 2 a 4 dias, com a chance dele.",
+      "advogado": true,
+      "dias": {
+        "min": 2,
+        "max": 4
+      },
+      "custo": 500,
+      "troca": {
+        "ganho": [
+          "posicao"
+        ],
+        "custo": [
+          "dinheiro",
+          "tempo"
+        ]
+      }
+    },
+    {
+      "id": "contra_ataque",
+      "nome": "Contra-atacar",
+      "descricao": "Você ataca de volta pelo mesmo canal, com a prova que tiver ou por tema. O ataque contra você continua de pé.",
+      "troca": {
+        "ganho": [
+          "posicao"
+        ],
+        "custo": [
+          "relacao",
+          "risco"
+        ]
+      }
+    },
+    {
+      "id": "silencio",
+      "nome": "Ficar em silêncio",
+      "nome_boato": "Ignorar o boato",
+      "descricao": "Não dá sobrevida ao assunto, mas fica a versão de quem atacou: o ataque leva 26 semanas para se apagar.",
+      "troca": {
+        "ganho": [
+          "tempo"
+        ],
+        "custo": [
+          "posicao"
+        ]
+      }
+    }
+  ],
+  "textos": {
+    "explica_dano": "Ataque a {rival} ({tipo}, {canal}): tira de {min} a {max} pontos de imagem dele, que se apagam em até {semanas} semanas, ou em 4 se ele responder bem.",
+    "explica_rejeicao": "Quem ataca perde {valor} ponto de imagem entre quem rejeita campanha negativa.",
+    "explica_custo": "Custo: {valor}.",
+    "explica_sem_prova": "Sem prova: {chance} de processo, com multa de {multa} e o ataque derrubado.",
+    "explica_com_prova": "Com prova: {prova}.",
+    "explica_pacto": "Você tem um pacto com {rival}: atacar o quebra, grava uma lembrança que não se apaga e vira notícia.",
+    "processo": "O rival processa, o ataque cai e você paga multa.",
+    "processo_resultado": "{rival} processou e a Justiça Eleitoral derrubou o ataque",
+    "resposta_explica": "{resposta}: o ataque de {rival} tira hoje {dano} pontos da sua imagem. Bem respondido, some em {respondido} semanas; sem resposta, em {sem_resposta}.",
+    "resposta_prazo": "Prazo para responder: até {prazo}.",
+    "resposta_boa": "A resposta convenceu.",
+    "resposta_ruim": "A resposta não convenceu e deu sobrevida ao assunto.",
+    "resposta_pedida": "Direito de resposta pedido; o resultado sai em {data}.",
+    "resposta_silencio": "Você não respondeu.",
+    "resposta_contra": "Você respondeu com um ataque.",
+    "direito_concedido": "Direito de resposta concedido.",
+    "direito_negado": "Direito de resposta negado.",
+    "boato": "uma mensagem sem autor circula nas redes",
+    "assunto_incoerencia": "mudou de posição em {tema}",
+    "assunto_esqueleto": "há uma irregularidade a explicar",
+    "assunto_tema": "a posição em {tema}",
+    "prazo_vencido": "O prazo de 48 horas para responder ao ataque venceu"
+  }
+}

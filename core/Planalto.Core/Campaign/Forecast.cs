@@ -41,7 +41,9 @@ public static class Forecaster
     /// Com o território, o reconhecimento é previsto como acontece: a mudança vale em cada zona (com o piso e o teto
     /// de cada uma) e o da cidade é a média pela população (GDD 17.5).
     /// </param>
-    public static Forecast Run(Candidate player, decimal money, double recognitionScale, IReadOnlyList<ForecastStage> stages, Territory.TerritoryState? territory = null)
+    /// <param name="zone">Zona em que vale a presença de zona dos efeitos (evento com lugar); −1 se não há.</param>
+    /// <param name="zoneFactor">Quanto 1 ponto de presença de zona vale ali (escala do porte × alcance da zona).</param>
+    public static Forecast Run(Candidate player, decimal money, double recognitionScale, IReadOnlyList<ForecastStage> stages, Territory.TerritoryState? territory = null, int zone = -1, double zoneFactor = 0)
     {
         double[]? presence = territory is not null && territory.Presence.TryGetValue(player.Id, out double[]? p) ? [.. p] : null;
         var start = new Snapshot(presence is null ? player.Recognition : Average(presence, territory!), player.Image, money, new Dictionary<string, double>(player.Support), presence);
@@ -83,7 +85,7 @@ public static class Forecaster
 
             foreach (var (chance, effects, _) in stages[index].Branches.Where(b => b.Chance > 0))
             {
-                Walk(Apply(s, effects, recognitionScale, territory), p * chance, index + 1);
+                Walk(Apply(s, effects, recognitionScale, territory, zone, zoneFactor), p * chance, index + 1);
             }
         }
     }
@@ -94,7 +96,7 @@ public static class Forecaster
         return pop <= 0 ? presence.Average() : presence.Select((v, i) => v * territory.Population[i]).Sum() / pop;
     }
 
-    private static Snapshot Apply(Snapshot s, Effects e, double recognitionScale, Territory.TerritoryState? territory)
+    private static Snapshot Apply(Snapshot s, Effects e, double recognitionScale, Territory.TerritoryState? territory, int zone, double zoneFactor)
     {
         var support = new Dictionary<string, double>(s.Support);
         foreach (var (group, delta) in e.Support)
@@ -103,6 +105,11 @@ public static class Forecaster
         }
 
         double[]? presence = s.Presence?.Select(v => EffectApplier.Gain(v, e.Recognition * recognitionScale)).ToArray();
+        if (presence is not null && zone >= 0 && zone < presence.Length && Math.Abs(e.ZonePresence) > 1e-12)
+        {
+            presence[zone] = EffectApplier.Gain(presence[zone], e.ZonePresence * zoneFactor);
+        }
+
         return new Snapshot(
             presence is null ? EffectApplier.Gain(s.Recognition, e.Recognition * recognitionScale) : Average(presence, territory!),
             Math.Clamp(s.Image + e.Image, -1, 1),
@@ -120,7 +127,8 @@ public static class Forecaster
     public static ForecastStage Risk(double chance, Effects effects, string text) => new([(chance, effects, text), (1 - chance, Effects.None, "")]);
 
     /// <summary>Previsão de uma escolha de evento: efeitos certos mais o teste, se houver.</summary>
-    public static Forecast ForChoice(CampaignContext ctx, EventChoice choice)
+    /// <param name="pending">O evento em curso: dá a zona em que vale a presença de zona dos efeitos.</param>
+    public static Forecast ForChoice(CampaignContext ctx, EventChoice choice, PendingEvent? pending = null)
     {
         var stages = new List<ForecastStage> { Certain(choice.Effects) };
         if (choice.Test is { } test)
@@ -129,6 +137,7 @@ public static class Forecaster
             stages.Add(Test(chance, test.Success, test.SuccessText, test.Failure, test.FailureText));
         }
 
-        return Run(ctx.State.Campaign!.Player, ctx.State.Player.Resources.Money, 1, stages, ctx.State.Campaign.Territory);
+        var (zone, factor) = EffectApplier.EventZone(ctx, pending);
+        return Run(ctx.State.Campaign!.Player, ctx.State.Player.Resources.Money, 1, stages, ctx.State.Campaign.Territory, zone, factor);
     }
 }

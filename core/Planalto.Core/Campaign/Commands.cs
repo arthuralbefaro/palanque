@@ -19,6 +19,12 @@ public enum CommandFailure
     BandeirasDemais,
     DecisaoPendente,
     ForaDaCampanha,
+    JaFeito,
+    PrazoVencido,
+    SemAdvogado,
+    SemProva,
+    VeiculoInvalido,
+    PactoEmVigor,
 }
 
 /// <summary>

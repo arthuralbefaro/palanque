@@ -35,6 +35,12 @@ internal sealed record RobotOptions
     /// faz promessas, delega compromissos, trata de temas nas falas e fixa ou dispensa objetivos.
     /// </summary>
     public bool R2b { get; init; }
+
+    /// <summary>
+    /// Joga também os sistemas da R3: responde a ofertas de doação e a ataques, ataca, propõe pacto, investiga,
+    /// sugere pauta, anuncia e dá entrevista em veículo; confere a previsão de cada comando.
+    /// </summary>
+    public bool R3 { get; init; }
 }
 
 /// <summary>
@@ -84,6 +90,11 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
         if (_options.R2b)
         {
             PlayR2b();
+        }
+
+        if (_options.R3)
+        {
+            PlayR3();
         }
 
         PlanWeek();
@@ -316,6 +327,132 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
             DateOnly day = Engine.Today.AddDays(_policy.NextInt(0, 7 - State.Time.Day));
             var request = new CommitmentRequest("caminhada", _policy.Pick(Engine.Territory.Zones), day, (Turno)_policy.NextInt(3), Delegado: true);
             Count("delegar", Affordable("caminhada") && Engine.Schedule(request).Failure is null);
+        }
+    }
+
+    /// <summary>Uma semana de decisões da R3, sorteadas pela política do robô; cada resultado é conferido contra a previsão.</summary>
+    private void PlayR3()
+    {
+        if (Campaign.Phase is not (CampaignPhase.PreCampanha or CampaignPhase.Campanha))
+        {
+            return;
+        }
+
+        foreach (DonorOffer offer in Engine.Finance.Offers.ToList())
+        {
+            List<DonationAnswer> answers = Enum.GetValues<DonationAnswer>().Where(a => Engine.CanAnswerDonation(offer.Id, a) is null).ToList();
+            DonationAnswer answer = _policy.Pick(answers);
+            CommandForecast forecast = Engine.ForecastDonation(offer.Id, answer);
+            Assert.NotEmpty(forecast.Explanation);
+            DonationResult result = Engine.AnswerDonation(offer.Id, answer).Result!;
+            Assert.True(forecast.Contains("money", null, (double)result.Money));
+            Assert.True(forecast.Contains("risk", null, result.RiskAfter - result.RiskBefore));
+            Count($"doacao_{answer}", true);
+        }
+
+        foreach (PendingAttackView pending in Engine.PendingAttacks())
+        {
+            var options = pending.Options.Where(o => o.Blocked is null).ToList();
+            if (options.Count == 0 || _policy.Chance(0.2))
+            {
+                // Às vezes deixa o prazo de 48 horas vencer.
+                continue;
+            }
+
+            AttackResponse option = _policy.Pick(options).Response;
+            CommandForecast forecast = Engine.ForecastResponse(pending.Attack.Id, option.Id);
+            Assert.NotEmpty(forecast.Explanation);
+            ResponseResult result = Engine.RespondToAttack(pending.Attack.Id, option.Id).Result!;
+            Assert.True(forecast.Contains("attack_damage", pending.Attack.Id, result.DamageAfter), $"{option.Id}: dano {result.DamageAfter}");
+            Assert.True(forecast.Contains("money", null, (double)result.Money), $"{option.Id}: dinheiro {result.Money}, previsto {forecast.Line("money")}");
+            Count($"resposta_{option.Id}", true);
+        }
+
+        List<string> themeIds = Engine.Context.Themes.Themes.Select(t => t.Id).ToList();
+        List<Candidate> sameOffice = Campaign.ForOffice(Campaign.Player.Office).Where(c => !c.IsPlayer && !c.IsBulk).ToList();
+        List<Candidate> named = Campaign.Candidates.Where(c => !c.IsPlayer && !c.IsBulk).ToList();
+        AttackCatalog attacks = Engine.Context.Campaign.Attacks;
+        if (sameOffice.Count > 0 && _policy.Chance(0.06))
+        {
+            Candidate rival = _policy.Pick(sameOffice);
+            AttackChannel channel = _policy.Pick(attacks.Canais);
+            RivalWeakness? weakness = Campaign.Rivals.Record(rival.Id)?.Weaknesses.FirstOrDefault(w => w.Known);
+            var request = new AttackRequest(rival.Id, weakness?.Type ?? _policy.Pick(attacks.Tipos).Id, channel.Id, weakness?.Id, _policy.Pick(themeIds), channel.ExigeVeiculo ? _policy.Pick(Engine.City.Outlets).Id : null);
+            CommandForecast forecast = Engine.ForecastAttack(request);
+            Assert.NotEmpty(forecast.Explanation);
+            if (forecast.Blocked is null)
+            {
+                AttackResult result = Engine.AttackRival(request).Result!;
+                Assert.True(forecast.Contains("rival_image", rival.Id, result.RivalImage));
+                Assert.True(forecast.Contains("image", null, result.Image));
+                Assert.True(forecast.Contains("money", null, (double)result.Money));
+                Count("ataque", true);
+            }
+        }
+
+        if (named.Count > 0 && _policy.Chance(0.05))
+        {
+            Candidate rival = _policy.Pick(named);
+            PactKind kind = rival.Office == Campaign.Player.Office ? PactKind.NaoAgressao : PactKind.Dobradinha;
+            CommandForecast forecast = Engine.ForecastPact(rival.Id, kind);
+            Assert.NotEmpty(forecast.Explanation);
+            if (forecast.Blocked is null)
+            {
+                PactResult result = Engine.ProposePact(rival.Id, kind).Result!;
+                Assert.True(forecast.Contains("relation", rival.Id, result.Memory.Pontos));
+                Count(result.Accepted ? "pacto" : "pacto_recusado", true);
+            }
+        }
+
+        if (sameOffice.Count > 0 && _policy.Chance(0.05))
+        {
+            Candidate rival = _policy.Pick(sameOffice);
+            CommandForecast forecast = Engine.ForecastInvestigation(rival.Id);
+            Assert.NotEmpty(forecast.Explanation);
+            if (forecast.Blocked is null)
+            {
+                InvestigationResult result = Engine.Investigate(rival.Id).Result!;
+                Assert.True(forecast.Contains("money", null, (double)result.Money));
+                Count("investigar", true);
+            }
+        }
+
+        IReadOnlyList<Fact> stories = Engine.StoryCandidates();
+        if (stories.Count > 0 && _policy.Chance(0.2))
+        {
+            Fact fact = _policy.Pick(stories);
+            string outlet = _policy.Pick(Engine.City.Outlets).Id;
+            CommandForecast forecast = Engine.ForecastStory(outlet, fact.Id);
+            Assert.NotEmpty(forecast.Explanation);
+            if (forecast.Blocked is null)
+            {
+                StoryResult result = Engine.SuggestStory(outlet, fact.Id).Result!;
+                Assert.True(forecast.Contains(fact.ActorId == RaceSetup.PlayerId ? "image" : "rival_image", fact.ActorId == RaceSetup.PlayerId ? null : fact.ActorId, result.ImageDelta));
+                Count("pauta", true);
+            }
+        }
+
+        foreach (Planalto.Core.Media.Outlet outlet in Engine.City.Outlets)
+        {
+            if (Engine.CanAdvertise(outlet.Id) is null && _policy.Chance(0.3))
+            {
+                CommandForecast forecast = Engine.ForecastAd(outlet.Id);
+                Assert.NotEmpty(forecast.Explanation);
+                AdResult result = Engine.Advertise(outlet.Id).Result!;
+                Assert.All(result.Presence, p => Assert.True(forecast.Contains("presence", p.Key, p.Value)));
+                Count("anuncio", true);
+            }
+        }
+
+        if (_policy.Chance(0.4))
+        {
+            var (date, turno) = Engine.NextFreeSlot();
+            var request = new CommitmentRequest(CommitmentCatalog.Entrevista, null, date, turno, OutletId: _policy.Pick(Engine.City.Outlets).Id, Tema: _policy.Chance(0.5) ? _policy.Pick(themeIds) : null);
+            if (Engine.CanSchedule(request) is null)
+            {
+                Assert.NotEmpty(Engine.Forecast(request).Factors);
+                Count("entrevista_veiculo", Engine.Schedule(request).Failure is null);
+            }
         }
     }
 

@@ -3,182 +3,656 @@
     {
       "id": "campanha_comicio_chuva",
       "category": "campanha",
-      "phases": ["campanha"],
+      "phases": [
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 6,
+      "conditions": {
+        "needs_commitment": "comicio"
+      },
       "title": "Chuva no comício",
       "variants": [
         "Uma chuva forte desaba sobre {municipio.nome} uma hora antes do seu comício. A equipe pergunta o que fazer.",
-        "O céu fechou sobre a praça onde seria o seu comício. Metade da plateia já procura abrigo."
+        "O céu fechou sobre a praça onde será o seu comício. Metade da plateia já procura abrigo."
       ],
       "choices": [
         {
           "label": "Manter o comício debaixo de chuva",
-          "test": { "attribute": "carisma", "success_text": "Você falou molhado e animado; a cena circulou bem.", "success": { "recognition": 4, "image": 0.05 }, "failure_text": "A praça esvaziou e as fotos mostraram poucas pessoas.", "failure": { "image": -0.04 } }
+          "test": {
+            "attribute": "carisma",
+            "success_text": "Você falou molhado e animado; a cena circulou bem.",
+            "success": {
+              "recognition": 4,
+              "image": 0.05
+            },
+            "failure_text": "A praça esvaziou e as fotos mostraram poucas pessoas.",
+            "failure": {
+              "image": -0.04
+            }
+          },
+          "sem_rastro": "Acaso de campanha, sem pessoa do save nem compromisso."
         },
-        { "label": "Adiar para a semana que vem", "effects": { "energy": 15, "recognition": -1 }, "result": "O comício ficou para depois; parte do público não volta." },
-        { "label": "Transmitir ao vivo de um salão", "effects": { "money": -800, "recognition": 2, "support": { "idade_18_34": 0.02 } }, "result": "A transmissão alcançou quem ficou em casa." }
+        {
+          "label": "Adiar e desmarcar o comício",
+          "effects": {
+            "cancel_commitment": "comicio",
+            "stress": -4,
+            "recognition": -1
+          },
+          "result": "O comício saiu da agenda; parte do público não volta.",
+          "sem_rastro": "Acaso de campanha, sem pessoa do save nem compromisso."
+        },
+        {
+          "label": "Trocar por transmissão de um salão",
+          "effects": {
+            "cancel_commitment": "comicio",
+            "money": -800,
+            "recognition": 2,
+            "support": {
+              "idade_18_34": 0.02
+            }
+          },
+          "result": "A transmissão alcançou quem ficou em casa.",
+          "sem_rastro": "Acaso de campanha, sem pessoa do save nem compromisso."
+        }
       ]
     },
     {
       "id": "campanha_apoio_lider_local",
       "category": "campanha",
-      "phases": ["pre_campanha", "campanha"],
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 10,
-      "conditions": { "not_flag": "promessa_lider" },
-      "title": "Apoio de liderança comunitária",
+      "conditions": {
+        "not_flag": "promessa_lider"
+      },
+      "title": "Apoio com preço",
       "variants": [
-        "Uma liderança comunitária respeitada em {municipio.nome} oferece apoio à sua candidatura, mas quer o compromisso de uma praça reformada no bairro.",
-        "A presidente da associação de um bairro populoso diz que pode levar votos para você, desde que a quadra do bairro entre nas suas prioridades."
+        "{lideranca.nome} ({lideranca.papel}) oferece apoio à sua candidatura, mas quer o compromisso de uma praça reformada em {zona.nome}.",
+        "{lideranca.nome} ({lideranca.papel}) diz que pode levar votos de {zona.nome} para você, desde que a praça do bairro entre nas suas prioridades."
       ],
       "choices": [
-        { "relevant": true, "gain": ["relacao"], "cost": ["risco"], "label": "Prometer a reforma", "effects": { "support": { "baixa": 0.06 }, "set_flags": ["promessa_lider"], "schedule": [{ "event": "campanha_cobranca_lider", "delay_weeks": 6 }] }, "result": "O bairro passa a falar bem de você." },
         {
-          "label": "Aceitar o apoio sem prometer nada concreto",
-          "test": { "attribute": "articulacao", "success_text": "A liderança aceitou seu compromisso genérico de diálogo.", "success": { "support": { "baixa": 0.04 } }, "failure_text": "A liderança achou a conversa vaga e esfriou.", "failure": { "support": { "baixa": -0.01 } } }
+          "relevant": true,
+          "gain": [
+            "relacao"
+          ],
+          "cost": [
+            "risco"
+          ],
+          "label": "Prometer a reforma",
+          "effects": {
+            "support": {
+              "baixa": 0.06
+            },
+            "set_flags": [
+              "promessa_lider"
+            ],
+            "promise": {
+              "para": "lideranca",
+              "objeto": "obra",
+              "texto": "Reformar a praça de {zona.nome}",
+              "prazo_semanas": 104
+            },
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "promessa",
+                "peso": 3,
+                "pontos": 12,
+                "texto": "Prometeu a reforma da praça"
+              }
+            ],
+            "schedule": [
+              {
+                "event": "campanha_cobranca_lider",
+                "delay_weeks": 6
+              }
+            ]
+          },
+          "result": "O bairro passa a falar bem de você. A promessa está no Livro."
         },
-        { "label": "Recusar com educação", "effects": { "image": 0.01 }, "result": "Você manteve a agenda livre de compromissos." }
+        {
+          "label": "Aceitar o apoio sem prometer nada",
+          "test": {
+            "attribute": "articulacao",
+            "success_text": "{lideranca.nome} aceitou o seu compromisso de diálogo.",
+            "success": {
+              "support": {
+                "baixa": 0.04
+              },
+              "memories": [
+                {
+                  "quem": "lideranca",
+                  "fato": "visita_sem_compromisso",
+                  "peso": 1,
+                  "pontos": 4,
+                  "texto": "Conversou e não se comprometeu com a praça"
+                }
+              ]
+            },
+            "failure_text": "{lideranca.nome} achou a conversa vaga e esfriou.",
+            "failure": {
+              "support": {
+                "baixa": -0.01
+              },
+              "memories": [
+                {
+                  "quem": "lideranca",
+                  "fato": "conversa_vaga",
+                  "peso": -1,
+                  "pontos": -3,
+                  "texto": "Ficou em conversa vaga sobre a praça"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "label": "Recusar com educação",
+          "effects": {
+            "image": 0.01,
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "recusa",
+                "peso": -1,
+                "pontos": -2,
+                "texto": "Recusou o apoio com condição"
+              }
+            ]
+          },
+          "result": "Você manteve a agenda livre de compromissos."
+        }
       ]
     },
     {
       "id": "campanha_cobranca_lider",
       "category": "campanha",
-      "phases": ["pre_campanha", "campanha"],
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 0,
       "chain_only": true,
       "title": "A cobrança da liderança",
-      "variants": ["A liderança comunitária que prometeu apoio cobra um gesto concreto: quer você no bairro com a planta da praça reformada."],
+      "variants": [
+        "{lideranca.nome} cobra um gesto concreto: quer você em {zona.nome} com a planta da praça reformada."
+      ],
       "choices": [
-        { "label": "Ir ao bairro e apresentar um projeto", "effects": { "energy": -20, "money": -1500, "support": { "baixa": 0.05 }, "clear_flags": ["promessa_lider"] }, "result": "O bairro saiu da reunião confiante." },
-        { "label": "Pedir mais tempo", "effects": { "support": { "baixa": -0.03 }, "image": -0.02 }, "result": "A paciência do bairro diminuiu." },
-        { "label": "Dizer que não pode prometer obra", "effects": { "support": { "baixa": -0.06 }, "image": 0.02, "clear_flags": ["promessa_lider"] }, "result": "Alguns valorizaram a franqueza; o bairro, não." }
+        {
+          "label": "Ir ao bairro e apresentar um projeto",
+          "effects": {
+            "stress": 5,
+            "money": -1500,
+            "support": {
+              "baixa": 0.05
+            },
+            "clear_flags": [
+              "promessa_lider"
+            ],
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "projeto_praca",
+                "peso": 2,
+                "pontos": 8,
+                "texto": "Apresentou o projeto da praça no bairro"
+              }
+            ]
+          },
+          "result": "O bairro saiu da reunião confiante."
+        },
+        {
+          "label": "Pedir mais tempo",
+          "effects": {
+            "support": {
+              "baixa": -0.03
+            },
+            "image": -0.02,
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "pediu_tempo",
+                "peso": -1,
+                "pontos": -5,
+                "texto": "Pediu mais tempo para a praça"
+              }
+            ]
+          },
+          "result": "A paciência do bairro diminuiu."
+        },
+        {
+          "label": "Dizer que não pode prometer obra",
+          "effects": {
+            "support": {
+              "baixa": -0.06
+            },
+            "image": 0.02,
+            "clear_flags": [
+              "promessa_lider"
+            ],
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "voltou_atras",
+                "peso": -2,
+                "pontos": -12,
+                "texto": "Voltou atrás na promessa da praça"
+              }
+            ]
+          },
+          "result": "Alguns valorizaram a franqueza; o bairro, não."
+        }
       ]
     },
     {
       "id": "campanha_debate_associacao",
       "category": "campanha",
-      "phases": ["campanha"],
+      "phases": [
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 8,
       "title": "Debate na associação de moradores",
-      "variants": ["A associação de moradores organiza um debate entre candidatos a vereador em {municipio.nome}. Você foi convidad{jogador.o}."],
+      "variants": [
+        "A associação de moradores de {zona.nome} organiza um debate entre candidatos a vereador. Você foi convidad{jogador.o}."
+      ],
       "choices": [
         {
           "label": "Participar e defender suas propostas",
-          "test": { "attribute": "oratoria", "success_text": "Você saiu do debate como uma das melhores falas da noite.", "success": { "recognition": 3, "image": 0.05, "support": { "baixa": 0.03 } }, "failure_text": "Uma pergunta difícil te pegou desprevenid{jogador.o}.", "failure": { "image": -0.03 } }
+          "test": {
+            "attribute": "oratoria",
+            "success_text": "Você saiu do debate como uma das melhores falas da noite.",
+            "success": {
+              "zone_presence": 1.0,
+              "image": 0.05,
+              "support": {
+                "baixa": 0.03
+              }
+            },
+            "failure_text": "Uma pergunta difícil te pegou desprevenid{jogador.o}.",
+            "failure": {
+              "image": -0.03
+            }
+          },
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
         },
-        { "label": "Mandar um representante", "effects": { "image": -0.02 }, "result": "Sua cadeira vazia foi notada." }
+        {
+          "label": "Mandar um representante",
+          "effects": {
+            "image": -0.02
+          },
+          "result": "Sua cadeira vazia foi notada.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        }
       ]
     },
     {
       "id": "campanha_feira_livre",
       "category": "campanha",
-      "phases": ["pre_campanha", "campanha"],
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 6,
-      "title": "Domingo na feira",
+      "title": "Dia de feira",
       "variants": [
-        "A feira livre de domingo está cheia. Os feirantes reconhecem você de longe.",
-        "Você passa pela feira livre do centro de {municipio.nome} e uma barraca de pastel puxa conversa."
+        "A feira livre de {zona.nome} está cheia. Os feirantes reconhecem você de longe.",
+        "Você passa pela feira livre de {zona.nome} e uma barraca de pastel puxa conversa."
       ],
       "choices": [
-        { "label": "Conversar com os feirantes e comprar no comércio local", "effects": { "money": -100, "recognition": 2, "support": { "baixa": 0.02, "media": 0.02 } }, "result": "Boa conversa, boa foto, nenhum discurso." },
-        { "label": "Entregar santinhos e seguir", "effects": { "recognition": 1 }, "result": "Rápido e sem novidade." }
+        {
+          "label": "Conversar e comprar nas barracas",
+          "effects": {
+            "money": -100,
+            "zone_presence": 0.6,
+            "support": {
+              "baixa": 0.02,
+              "media": 0.02
+            }
+          },
+          "result": "Boa conversa, boa foto, nenhum discurso.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "label": "Entregar santinhos e seguir",
+          "effects": {
+            "zone_presence": 0.2
+          },
+          "result": "Rápido e sem novidade.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        }
       ]
     },
     {
       "id": "campanha_carreata",
       "category": "campanha",
-      "phases": ["campanha"],
+      "phases": [
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 8,
       "title": "Proposta de carreata",
-      "variants": ["Apoiadores propõem uma carreata no sábado pelos bairros de {municipio.nome}. Custa combustível, som e organização."],
+      "variants": [
+        "Apoiadores de {zona.nome} oferecem os carros para uma carreata no sábado. Custa combustível e som; a lei permite carreata até as 22h da véspera da eleição."
+      ],
       "choices": [
-        { "label": "Fazer a carreata", "effects": { "money": -2500, "energy": -15, "recognition": 4 }, "result": "Buzinas e bandeiras atravessaram a cidade." },
-        { "label": "Trocar por caminhadas nos bairros", "effects": { "energy": -20, "support": { "baixa": 0.03 } }, "result": "Menos barulho, mais aperto de mão." },
-        { "label": "Recusar", "effects": {}, "result": "A ideia ficou para outra campanha." }
+        {
+          "label": "Fazer a carreata",
+          "effects": {
+            "money": -2500,
+            "stress": 4,
+            "recognition": 2,
+            "zone_presence": 1.5
+          },
+          "result": "Buzinas e bandeiras atravessaram a zona.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "label": "Pedir que distribuam material",
+          "effects": {
+            "money": -600,
+            "zone_presence": 0.8
+          },
+          "result": "Menos barulho, mais papel na mão do eleitor.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "label": "Agradecer e recusar",
+          "effects": {},
+          "result": "A ideia ficou para outra hora.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        }
       ]
     },
     {
       "id": "campanha_santinho_errado",
       "category": "campanha",
-      "phases": ["campanha"],
+      "phases": [
+        "campanha"
+      ],
       "rarity": "incomum",
       "cooldown_weeks": 20,
       "unique": true,
       "title": "Erro no santinho",
-      "variants": ["A gráfica entregou cinco mil santinhos com um dígito trocado no seu número. A distribuição começa amanhã."],
+      "variants": [
+        "A gráfica entregou cinco mil santinhos com um dígito trocado no seu número. A distribuição começa amanhã."
+      ],
       "choices": [
-        { "label": "Reimprimir tudo", "effects": { "money": -2000 }, "result": "Prejuízo no caixa, número certo na rua." },
-        { "label": "Corrigir à mão com a equipe", "effects": { "energy": -25, "image": 0.01 }, "result": "Uma noite inteira de canetas, mas o número está certo." },
-        { "label": "Distribuir assim mesmo", "effects": { "image": -0.06, "recognition": -2 }, "result": "Eleitores comentam que não sabem qual é o seu número." }
+        {
+          "label": "Reimprimir tudo",
+          "effects": {
+            "money": -2000
+          },
+          "result": "Prejuízo no caixa, número certo na rua.",
+          "sem_rastro": "Acaso de campanha, sem pessoa do save nem compromisso."
+        },
+        {
+          "label": "Corrigir à mão com a equipe",
+          "effects": {
+            "stress": 6,
+            "image": 0.01
+          },
+          "result": "Uma noite inteira de canetas, mas o número está certo.",
+          "sem_rastro": "Acaso de campanha, sem pessoa do save nem compromisso."
+        },
+        {
+          "label": "Distribuir assim mesmo",
+          "effects": {
+            "image": -0.06,
+            "recognition": -2
+          },
+          "result": "Eleitores comentam que não sabem qual é o seu número.",
+          "sem_rastro": "Acaso de campanha, sem pessoa do save nem compromisso."
+        }
       ]
     },
     {
       "id": "campanha_estrada_rural",
       "category": "campanha",
-      "phases": ["pre_campanha", "campanha"],
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 12,
-      "conditions": { "porte": ["pequeno", "medio"] },
+      "conditions": {
+        "porte": [
+          "pequeno",
+          "medio"
+        ],
+        "zone_kind": "rural"
+      },
       "title": "Estrada de terra",
-      "variants": ["Produtores da zona rural de {municipio.nome} pedem que você veja de perto a estrada que fica intransitável na chuva."],
+      "variants": [
+        "Produtores de {zona.nome} pedem que você veja de perto a estrada que fica intransitável na chuva."
+      ],
       "choices": [
-        { "label": "Visitar a estrada com os produtores", "effects": { "energy": -20, "support": { "rural": 0.07 } }, "result": "A visita virou assunto nas comunidades rurais." },
-        { "label": "Prometer um projeto de manutenção", "effects": { "support": { "rural": 0.04 }, "set_flags": ["promessa_estrada"] }, "result": "A promessa foi anotada." },
-        { "label": "Explicar que a obra é do Executivo", "effects": { "support": { "rural": -0.02 }, "image": 0.01 }, "result": "Correto, mas pouco popular." }
+        {
+          "label": "Visitar a estrada com os produtores",
+          "effects": {
+            "stress": 5,
+            "support": {
+              "rural": 0.07
+            },
+            "zone_presence": 0.8
+          },
+          "result": "A visita virou assunto nas comunidades rurais.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "relevant": true,
+          "gain": [
+            "relacao"
+          ],
+          "cost": [
+            "risco"
+          ],
+          "label": "Prometer um projeto de manutenção",
+          "effects": {
+            "support": {
+              "rural": 0.04
+            },
+            "set_flags": [
+              "promessa_estrada"
+            ],
+            "promise": {
+              "para": "zona",
+              "objeto": "obra",
+              "texto": "Apresentar um projeto de manutenção da estrada de {zona.nome}",
+              "prazo_semanas": 52
+            }
+          },
+          "result": "A promessa foi para o Livro de compromissos."
+        },
+        {
+          "label": "Explicar que a obra é do Executivo",
+          "effects": {
+            "support": {
+              "rural": -0.02
+            },
+            "image": 0.01
+          },
+          "result": "Correto, mas pouco popular.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        }
       ]
     },
     {
       "id": "campanha_comerciantes_seguranca",
       "category": "campanha",
-      "phases": ["pre_campanha", "campanha"],
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 12,
+      "conditions": {
+        "zone_kind": "urbana"
+      },
       "title": "Comerciantes pedem segurança",
-      "variants": ["A associação comercial de {municipio.nome} reclama de furtos no centro e quer saber sua posição."],
+      "variants": [
+        "Comerciantes de {zona.nome} reclamam de furtos e querem saber a sua posição."
+      ],
       "choices": [
-        { "label": "Defender mais policiamento", "effects": { "support": { "alta": 0.04, "media": 0.03 } }, "result": "Os comerciantes gostaram da resposta." },
-        { "label": "Propor iluminação e programas para jovens", "effects": { "support": { "baixa": 0.03, "idade_18_34": 0.02 } }, "result": "Parte dos comerciantes achou a resposta lenta demais." },
-        { "label": "Prometer estudar o assunto", "effects": { "image": -0.01 }, "result": "Resposta morna para uma plateia preocupada." }
+        {
+          "label": "Defender mais policiamento",
+          "effects": {
+            "support": {
+              "alta": 0.04,
+              "media": 0.03
+            }
+          },
+          "result": "Os comerciantes gostaram da resposta.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "label": "Propor iluminação e ações para jovens",
+          "effects": {
+            "support": {
+              "baixa": 0.03,
+              "idade_18_34": 0.02
+            }
+          },
+          "result": "Parte dos comerciantes achou a resposta lenta demais.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "label": "Prometer estudar o assunto",
+          "effects": {
+            "image": -0.01
+          },
+          "result": "Resposta morna para uma plateia preocupada.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        }
       ]
     },
     {
       "id": "campanha_estudantes_transporte",
       "category": "campanha",
-      "phases": ["campanha"],
+      "phases": [
+        "campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 12,
       "title": "Estudantes cobram o transporte",
-      "variants": ["Estudantes interrompem sua caminhada para cobrar posição sobre o preço da passagem."],
+      "variants": [
+        "Estudantes param você na rua para cobrar posição sobre o preço da passagem."
+      ],
       "choices": [
-        { "label": "Apoiar a pauta dos estudantes", "effects": { "support": { "idade_16_17": 0.05, "idade_18_34": 0.04 }, "image": 0.01 }, "result": "O vídeo da conversa circulou entre os jovens." },
         {
-          "label": "Propor mediar uma mesa com a empresa e a prefeitura",
-          "test": { "attribute": "articulacao", "success_text": "A proposta de mediação foi bem recebida.", "success": { "support": { "idade_18_34": 0.03, "media": 0.02 } }, "failure_text": "Os estudantes acharam a resposta evasiva.", "failure": { "image": -0.02 } }
+          "label": "Apoiar a pauta dos estudantes",
+          "effects": {
+            "support": {
+              "idade_16_17": 0.05,
+              "idade_18_34": 0.04
+            },
+            "image": 0.01
+          },
+          "result": "O vídeo da conversa circulou entre os jovens.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
         },
-        { "label": "Evitar o tema", "effects": { "image": -0.03 }, "result": "A esquiva virou meme no grêmio estudantil." }
+        {
+          "label": "Propor mesa com a empresa e a prefeitura",
+          "test": {
+            "attribute": "articulacao",
+            "success_text": "A proposta de mediação foi bem recebida.",
+            "success": {
+              "support": {
+                "idade_18_34": 0.03,
+                "media": 0.02
+              }
+            },
+            "failure_text": "Os estudantes acharam a resposta evasiva.",
+            "failure": {
+              "image": -0.02
+            }
+          },
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        },
+        {
+          "label": "Evitar o tema",
+          "effects": {
+            "image": -0.03
+          },
+          "result": "A esquiva virou meme no grêmio estudantil.",
+          "sem_rastro": "Ato de rua sem compromisso assumido: o efeito é a presença e o apoio na zona."
+        }
       ]
     },
     {
       "id": "campanha_convencao",
       "category": "campanha",
-      "phases": ["pre_campanha"],
+      "phases": [
+        "pre_campanha"
+      ],
       "rarity": "comum",
       "cooldown_weeks": 0,
       "unique": true,
-      "conditions": { "weeks_to_election_lt": 12 },
+      "conditions": {
+        "weeks_to_election_lt": 12
+      },
       "title": "Convenção do {partido.sigla}",
-      "variants": ["A convenção do {partido.sigla} em {municipio.nome} vai homologar as candidaturas a vereador. Você terá cinco minutos ao microfone."],
+      "variants": [
+        "A convenção do {partido.sigla} em {municipio.nome}, conduzida por {dirigente.nome}, vai homologar as candidaturas a vereador. Você terá cinco minutos ao microfone."
+      ],
       "choices": [
         {
           "label": "Fazer um discurso de mobilização",
-          "test": { "attribute": "oratoria", "success_text": "O plenário da convenção aplaudiu de pé.", "success": { "political_capital": 3, "recognition": 2 }, "failure_text": "O discurso não empolgou; a convenção seguiu morna.", "failure": { "political_capital": -1 } }
+          "test": {
+            "attribute": "oratoria",
+            "success_text": "O plenário da convenção aplaudiu de pé.",
+            "success": {
+              "political_capital": 3,
+              "recognition": 2,
+              "memories": [
+                {
+                  "quem": "dirigente",
+                  "fato": "convencao",
+                  "peso": 1,
+                  "pontos": 4,
+                  "texto": "Fez um bom discurso na convenção"
+                }
+              ]
+            },
+            "failure_text": "O discurso não empolgou; a convenção seguiu morna.",
+            "failure": {
+              "political_capital": -1,
+              "memories": [
+                {
+                  "quem": "dirigente",
+                  "fato": "convencao",
+                  "peso": -1,
+                  "pontos": -2,
+                  "texto": "Fez um discurso morno na convenção"
+                }
+              ]
+            }
+          }
         },
-        { "label": "Agradecer e ceder o tempo a colegas", "effects": { "political_capital": 2 }, "result": "A direção do partido gostou do gesto." }
+        {
+          "label": "Agradecer e ceder o tempo a colegas",
+          "effects": {
+            "political_capital": 2,
+            "memories": [
+              {
+                "quem": "dirigente",
+                "fato": "convencao",
+                "peso": 1,
+                "pontos": 3,
+                "texto": "Cedeu o tempo aos colegas na convenção"
+              }
+            ]
+          },
+          "result": "A direção do partido gostou do gesto."
+        }
       ]
     }
   ]

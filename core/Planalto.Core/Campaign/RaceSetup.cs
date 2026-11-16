@@ -45,11 +45,23 @@ public sealed class CampaignContext
     /// <summary>Regras de lei dos canais pagos (limite de cabos, impulsionamento, gastos vedados).</summary>
     public ChannelLawConfig ChannelLaw { get; init; } = ChannelLawConfig.Default;
 
+    /// <summary>Regras de lei do dinheiro de campanha (doações, limite de gastos, representação).</summary>
+    public CampaignFinanceLawConfig FinanceLaw { get; init; } = CampaignFinanceLawConfig.Default;
+
+    /// <summary>Regras de lei da propaganda (imprensa escrita, horário gratuito, atos de rua).</summary>
+    public PropagandaLawConfig PropagandaLaw { get; init; } = PropagandaLawConfig.Default;
+
     /// <summary>
     /// Eleitorado do município com mais eleitores da UF: o teto de cabos do vereador depende dele (art. 100-A, § 1º,
     /// VI). Sem o número, vale só a fração do cargo.
     /// </summary>
     public long? MaiorEleitoradoUf { get; init; }
+
+    /// <summary>
+    /// Bancada de cada partido na Câmara dos Deputados resultante da última eleição geral: divide o horário eleitoral
+    /// gratuito (art. 47). Sem ela, o tempo é repartido por igual entre os partidos da disputa.
+    /// </summary>
+    public IReadOnlyDictionary<string, int>? CamaraSeats { get; init; }
 
     /// <summary>Zonas do município em foco (data/zonas/, GDD 17.5).</summary>
     public required Territory.ZonasMunicipio Zonas { get; init; }
@@ -238,6 +250,7 @@ public static class RaceSetup
         // A cidade com gente (lideranças) nasce quando o município entra em foco e fica no estado do jogo.
         CityBuilder.Ensure(ctx, campaignState, rng);
         StaffBuilder.Ensure(ctx, campaignState);
+        WorldBuilder.Ensure(ctx, campaignState, rng);
 
         // Prefeito em exercício no 1º mandato: começa candidato à reeleição (pode trocar na pré-campanha).
         if (played?.MayorId == PlayerId && !played.MayorReelected)

@@ -92,6 +92,11 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.ForaDoPrazo;
         }
 
+        if (r.OutletId is not null && (type.Id != CommitmentCatalog.Entrevista || City.Outlet(r.OutletId) is null || r.Delegado))
+        {
+            return ScheduleFailure.VeiculoInvalido;
+        }
+
         // Tema tratado: só nos compromissos em que o candidato fala (entrevista, gravação, comício), e em pessoa.
         if (r.Tema is not null && (r.Delegado || ThemeGainBase(r.Type, r.Tema) <= 0))
         {
@@ -168,10 +173,19 @@ public sealed partial class CampaignEngine
     }
 
     /// <summary>Parte certa do rendimento: os fatores (sem a sorte) e as bases já no porte da cidade.</summary>
-    private (List<YieldFactor> Factors, double Yield) Plan(CommitmentRequest r)
+    /// <param name="hot">Tema em alta já travado quando o compromisso foi marcado; null = conferir agora.</param>
+    private (List<YieldFactor> Factors, double Yield) Plan(CommitmentRequest r, bool? hot = null)
     {
         CommitmentType type = Commitments.Get(r.Type);
         var factors = new List<YieldFactor>();
+        InterviewFactors(r, factors);
+
+        // Ocasião (GDD 17.6 e 17.13): tratar do tema que está em alta no noticiário rende mais.
+        if (r.Tema is not null && (hot ?? HotThemeOn(r.Tema, r.ZoneId, r.Date) is not null))
+        {
+            factors.Add(Factor("tema_em_alta", Texts.Fill(OutletContent.Texto("fator_tema_em_alta"), ("tema", ThemeName(r.Tema))), 1 + MediaRules.TemaEmAltaBonus));
+        }
+
         int zone = r.ZoneId is null ? -1 : Territory.IndexOf(r.ZoneId);
         if (type.ExigeZona && zone >= 0 && (type.Presenca > 0 || type.Apoio > 0))
         {
@@ -257,9 +271,9 @@ public sealed partial class CampaignEngine
         return type.Estresse + (extra * Rules.EstresseTurnoExtra);
     }
 
-    private double TestChance(ActionTest test)
+    private double TestChance(ActionTest test, CommitmentRequest r)
     {
-        double chance = State.Player.Attributes.Get(test.Attribute) / 100.0;
+        double chance = (State.Player.Attributes.Get(test.Attribute) / 100.0) + InterviewChanceShift(r);
         if (State.Player.Resources.Stress > Rules.EstresseLimite)
         {
             chance -= Rules.EstressePenalidade;
@@ -313,7 +327,7 @@ public sealed partial class CampaignEngine
         var outcomes = new List<ForecastOutcome>();
         if (type.Teste is { } test)
         {
-            double chance = TestChance(test);
+            double chance = TestChance(test, r);
             outcomes.Add(new ForecastOutcome(chance, test.SuccessText));
             outcomes.Add(new ForecastOutcome(1 - chance, test.FailureText));
             imageMin += Math.Min(test.Success.Image, test.Failure.Image);
@@ -406,6 +420,8 @@ public sealed partial class CampaignEngine
             InviteId = r.InviteId,
             Delegado = r.Delegado,
             Tema = r.Tema,
+            OutletId = r.OutletId,
+            TemaEmAlta = r.Tema is not null && HotThemeOn(r.Tema, r.ZoneId, r.Date) is not null,
         };
         Agenda.Scheduled.Add(commitment);
         if (r.InviteId is not null && Agenda.Invites.FirstOrDefault(i => i.Id == r.InviteId) is { } invite)
@@ -471,7 +487,7 @@ public sealed partial class CampaignEngine
     {
         CommitmentType type = Commitments.Get(c.Type);
         CommitmentRequest request = RequestOf(c);
-        var (factors, yield) = Plan(request);
+        var (factors, yield) = Plan(request, c.TemaEmAlta);
         int stress = StressOf(type, request);
         var luckRange = LuckRange(Rules.Sorte);
         double luck = Rng.NextDouble(luckRange.Min, luckRange.Max);
@@ -523,7 +539,7 @@ public sealed partial class CampaignEngine
         string text = "";
         if (type.Teste is { } test)
         {
-            bool passed = Rng.Chance(TestChance(test));
+            bool passed = Rng.Chance(TestChance(test, request));
             image += passed ? test.Success.Image : test.Failure.Image;
             text = passed ? test.SuccessText : test.FailureText;
         }
@@ -539,6 +555,8 @@ public sealed partial class CampaignEngine
         Character player = State.Player;
         player.Resources.Money += money;
         Campaign.Player.Money = player.Resources.Money;
+        RegisterSpending(-money);
+        RegisterReceipt(FinanceCatalog.Jantar, money);
         player.Resources.Stress = Math.Max(0, player.Resources.Stress + stress);
         Campaign.Player.Image = Math.Clamp(Campaign.Player.Image + image, -1, 1);
         Campaign.Player.Recognition = Territory.Recognition(RaceSetup.PlayerId);
@@ -596,7 +614,7 @@ public sealed partial class CampaignEngine
             {
                 Leader found = Rng.Pick(unknown);
                 found.Known = true;
-                Agenda.AddFeed(new FeedItem(c.Date, "descoberta", LeaderText("descoberta", found), c.ZoneId, found.PersonId));
+                EmitFeed(c.Date, "descoberta", LeaderText("descoberta", found), c.ZoneId, found.PersonId);
             }
         }
 
@@ -620,7 +638,14 @@ public sealed partial class CampaignEngine
             Agenda.Log.RemoveRange(0, Agenda.Log.Count - AgendaState.MaxLog);
         }
 
-        Agenda.AddFeed(new FeedItem(c.Date, "compromisso", type.Nome, c.ZoneId, c.PersonId, RaceSetup.PlayerId));
+        Fact fact = Emit(FactKind.Compromisso, type.Nome, RaceSetup.PlayerId, c.ZoneId, c.PersonId, c.Tema, sub: type.Id, date: c.Date);
+        AfterInterview(c, fact);
+        if (PactBrokenBy(request) is { } brokenWith)
+        {
+            // Ato de rua numa zona que o pacto fechou: o pacto está quebrado.
+            BreakPact(brokenWith);
+        }
+
         return result;
     }
 
@@ -703,7 +728,7 @@ public sealed partial class CampaignEngine
     }
 
     private static CommitmentRequest RequestOf(Commitment c) =>
-        new(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId, c.Delegado, c.Tema);
+        new(c.Type, c.ZoneId, c.Date, c.Turno, c.Publico, c.PersonId, c.CityEventId, c.InviteId, c.Delegado, c.Tema, c.OutletId);
 
     /// <summary>Delegações que o coordenador faz por semana (pela qualidade); 0 sem coordenador.</summary>
     public int DelegationsPerWeek => (int)Math.Round(StaffEffect(StaffRole.Coordenador, StaffRole.Delegacoes));
