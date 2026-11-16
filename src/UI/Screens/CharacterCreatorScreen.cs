@@ -635,6 +635,16 @@ public partial class CharacterCreatorScreen : Control
     /// <summary>Sorteia tudo (usado também pelo teste de fumaça da UI).</summary>
     public void RandomizeEverything() => Change(RandomizeAll);
 
+    /// <summary>Teste de fumaça: filia ao partido mais forte da cidade escolhida, como a aba Partido sugere.</summary>
+    public void ChooseStrongestPartyForTest()
+    {
+        if (LocalStrength() is { } local && !_ownParty)
+        {
+            _c.PartyId = local.MaxBy(s => s.Value).Key;
+            ApplyPartyNumber();
+        }
+    }
+
     /// <summary>Começa a carreira se não houver pendência; devolve false caso contrário.</summary>
     public bool TryStartCareer()
     {

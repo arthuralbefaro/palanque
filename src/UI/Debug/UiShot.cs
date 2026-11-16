@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map|mandate [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -40,6 +40,12 @@ public partial class UiShot : Node
 
             GD.Print("Smoke picker: ok");
             GetTree().Quit(0);
+            return;
+        }
+
+        if (target == "mandate")
+        {
+            await PlayMandate(shot);
             return;
         }
 
@@ -141,6 +147,168 @@ public partial class UiShot : Node
         }
 
         GD.Print("Smoke map: ok");
+        GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Carreira depois da urna, pela UI: posse, semanas de mandato com votos e ações, fundação de partido,
+    /// save/load, troca de partido fora da janela (perde o mandato), entressafra e abertura da próxima campanha.
+    /// </summary>
+    private async Task PlayMandate(string? shot)
+    {
+        Game game = Game.Instance;
+        var creator = (CharacterCreatorScreen)GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate();
+        AddChild(creator);
+        await Frames(3);
+        creator.ChooseStrongestPartyForTest();
+        creator.TryStartCareer();
+        RemoveChild(creator);
+        creator.QueueFree();
+        var engine = game.Engine!;
+        var campaign = game.State!.Campaign!;
+        while (campaign.Phase != Core.Campaign.CampaignPhase.Votacao)
+        {
+            while (campaign.Events.Pending.Count > 0)
+            {
+                var pending = campaign.Events.Pending[0];
+                var definition = game.Events.Find(pending.EventId)!;
+                Core.Events.EventEngine.Resolve(engine.Context, pending, Enumerable.Range(0, definition.Choices.Count).First(i => Core.Events.EventEngine.Blocked(engine.Context, definition.Choices[i]) is null), game.State.Rng);
+            }
+
+            game.AdvanceWeek();
+        }
+
+        // Só neste teste: garante a eleição para exercitar o mandato.
+        campaign.Player.Recognition = 100;
+        campaign.Player.Image = 1;
+        engine.CastPlayerVote(new Core.Campaign.UrnaVote(Core.Elections.Office.Vereador, campaign.Player.Number, false));
+        engine.ResolveElection();
+        var night = GD.Load<PackedScene>(Game.Scenes.ElectionNight).Instantiate();
+        AddChild(night);
+        await Frames(3);
+        if (!campaign.Outcome!.PlayerElected)
+        {
+            GD.PushError("Smoke: o jogador não se elegeu nem com reconhecimento máximo.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        game.ConcludeElection();
+        game.GoToCareer();
+        night.QueueFree();
+        if (game.LastNavigation != Game.Scenes.Mandate || game.Mandate is null)
+        {
+            GD.PushError("Smoke: a posse não levou à tela do mandato.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        Node? screen = null;
+        int voted = 0;
+        for (int week = 0; week < 30; week++)
+        {
+            foreach (var bill in game.Mandate!.Pauta.ToList())
+            {
+                game.Mandate.CastVote(bill.Id, week % 3 == 0 ? Core.Legislature.VoteChoice.Nao : Core.Legislature.VoteChoice.Sim);
+                voted++;
+            }
+
+            if (week % 10 == 9)
+            {
+                screen?.QueueFree();
+                screen = GD.Load<PackedScene>(Game.Scenes.Mandate).Instantiate();
+                AddChild(screen);
+                await Frames(3);
+                if (shot is not null && week == 19)
+                {
+                    GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_mandato.png"));
+                }
+            }
+
+            game.Mandate.Execute("tribuna", null);
+            if (week == 5)
+            {
+                game.Mandate.Execute("propor_projeto", game.Mandate.ProposableBills().First().Id);
+            }
+
+            game.AdvanceWeek();
+        }
+
+        screen?.QueueFree();
+        if (voted == 0 || game.State!.Mandate!.Bills.Count(b => b.Decided is not null) == 0)
+        {
+            GD.PushError("Smoke: nenhuma votação em 30 semanas de mandato.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        // Fundação de partido pelo diálogo.
+        game.State.Player.Resources.PoliticalCapital = 50;
+        game.State.Player.Resources.Money = 100_000;
+        bool closed = false;
+        var dialog = new Widgets.FoundingDialog(() => closed = true);
+        AddChild(dialog);
+        await Frames(3);
+        var draft = game.FoundingEngine!.Propose(new Rng(5), game.State.Parties[0].FamilyId);
+        if (game.FoundingEngine.Start(draft) is { } failure)
+        {
+            GD.PushError($"Smoke: a fundação não começou ({failure}).");
+            GetTree().Quit(1);
+            return;
+        }
+
+        dialog.QueueFree();
+        var center = new CenterContainer();
+        AddChild(center);
+        center.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+        center.Size = GetViewport().GetVisibleRect().Size;
+        dialog = new Widgets.FoundingDialog(() => closed = true);
+        center.AddChild(dialog);
+        await Frames(3);
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_fundacao.png"));
+        }
+
+        center.QueueFree();
+        SaveManager.Instance.Save("smoke_mandato");
+        if (SaveManager.Instance.Load("smoke_mandato") is { } error || game.Mandate is null || game.State!.Founding is null)
+        {
+            GD.PushError("Smoke: save/load do mandato falhou.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        // Troca de partido fora da janela: o mandato acaba e a carreira vai para a entressafra.
+        game.JoinParty(game.State.Parties.First(p => p.Id != game.State.Player.PartyId).Id);
+        game.GoToCareer();
+        if (game.State.Mandate is not null || game.LastNavigation != Game.Scenes.OutOfOffice)
+        {
+            GD.PushError("Smoke: trocar de partido fora da janela não encerrou o mandato.");
+            GetTree().Quit(1);
+            return;
+        }
+
+        var outOfOffice = GD.Load<PackedScene>(Game.Scenes.OutOfOffice).Instantiate();
+        AddChild(outOfOffice);
+        await Frames(3);
+        if (shot is not null)
+        {
+            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_entressafra.png"));
+        }
+
+        outOfOffice.QueueFree();
+        Game.WeekNote note = game.SkipToNextElection();
+        if (note != Game.WeekNote.CampanhaAberta || game.Engine is null)
+        {
+            GD.PushError($"Smoke: a próxima campanha não abriu ({note}).");
+            GetTree().Quit(1);
+            return;
+        }
+
+        AddChild(GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate());
+        await Frames(3);
+        GD.Print($"Smoke mandate: ok ({voted} votos, {game.State.Calendar.WeekStart:yyyy-MM-dd}, fundação {game.State.Founding?.Stage}, aberto {closed})");
         GetTree().Quit(0);
     }
 
