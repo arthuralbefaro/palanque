@@ -1,0 +1,248 @@
+{
+  "note": "Doadores e prestação de contas (GDD 17.12). As regras de lei (teto de doação, recursos próprios, financiamento coletivo, representação) estão em CampaignFinanceLawConfig, com o padrão do texto conferido. Aqui ficam só números de balanceamento.",
+  "lacuna": "LACUNA REGISTRADA: a tabela de limites de gastos por cargo e município do TSE (Lei 9.504, arts. 18 e 18-C) não pôde ser baixada, porque o site do TSE bloqueou o acesso automatizado. Até o autor pôr o arquivo no cache do importador, o limite abaixo é SUBSTITUIÇÃO MARCADA: valor por eleitor, com piso e teto, por porte. É parâmetro de jogo, na escala de dinheiro do jogo, e não reproduz a tabela oficial.",
+  "limite_vereador": {
+    "pequeno": {
+      "por_eleitor": 8.0,
+      "piso": 50000,
+      "teto": 90000
+    },
+    "medio": {
+      "por_eleitor": 2.8,
+      "piso": 100000,
+      "teto": 200000
+    },
+    "grande": {
+      "por_eleitor": 1.2,
+      "piso": 200000,
+      "teto": 450000
+    },
+    "metropole": {
+      "por_eleitor": 0.35,
+      "piso": 450000,
+      "teto": 1200000
+    }
+  },
+  "limite_prefeito_fator": 4,
+  "regras": {
+    "doadores_por_porte": {
+      "pequeno": {
+        "min": 4,
+        "max": 6
+      },
+      "medio": {
+        "min": 5,
+        "max": 8
+      },
+      "grande": {
+        "min": 7,
+        "max": 10
+      },
+      "metropole": {
+        "min": 9,
+        "max": 12
+      }
+    },
+    "renda_anual": {
+      "min": 15000,
+      "max": 80000
+    },
+    "chance_oferta_semanal": 0.025,
+    "chance_oferta_por_relacao": 0.001,
+    "oferta_fracao_do_teto": {
+      "min": 0.2,
+      "max": 0.5
+    },
+    "chance_acima_do_teto": 0.1,
+    "acima_do_teto_fator": 1.5,
+    "chance_por_fora": 0.3,
+    "por_fora_fracao_do_limite": {
+      "min": 0.1,
+      "max": 0.25
+    },
+    "oficial_no_lugar_do_por_fora": 0.3,
+    "oferta_prazo_dias": 7,
+    "max_ofertas_abertas": 2,
+    "fundo_base": 6000,
+    "fundo_piso": 0.1,
+    "fundo_peso_relacao": 0.3,
+    "fundo_peso_viabilidade": 0.4,
+    "fundo_peso_linha": 0.2,
+    "coletivo_semanal": 400,
+    "diplomacao": "12-18",
+    "risco_por_percentual": {
+      "caixa_dois": 1.5,
+      "gasto_nao_declarado": 1.5,
+      "doacao_acima_limite": 1.0,
+      "recursos_proprios_acima": 0.2,
+      "gasto_acima_limite": 1.0
+    },
+    "risco_por_gravidade": {
+      "erro_contabil": 4,
+      "caixa_dois": 10,
+      "gasto_nao_declarado": 8,
+      "doacao_acima_limite": 5,
+      "recursos_proprios_acima": 5,
+      "gasto_acima_limite": 5
+    },
+    "risco_ressalvas": 15,
+    "risco_desaprovacao": 40,
+    "julgamento_semanas": {
+      "min": 8,
+      "max": 20
+    },
+    "esqueleto_base": 0.01,
+    "relacao_hostil": -20,
+    "lealdade_hostil": 40,
+    "exposicao_por_cargo": {
+      "vereador": 1,
+      "prefeito": 2
+    },
+    "exposicao_por_fatia": 5,
+    "esqueleto_imagem": 0.04,
+    "parcial_chance_por_risco": 0.005,
+    "grave_fracao_do_limite": 0.1,
+    "denuncia_imprensa": 0.8,
+    "denuncia_por_hostil": 0.2,
+    "denuncia_se_exposto": 0.3,
+    "cassacao_base": 0.25,
+    "cassacao_por_fracao": 0.4,
+    "cassacao_maxima": 0.75,
+    "representacao_semanas": {
+      "min": 20,
+      "max": 80
+    },
+    "gravidade_passo": 0.1
+  },
+  "pedidos": [
+    {
+      "id": "obra_zona",
+      "texto": "quer prioridade para uma obra em {zona}",
+      "weight": 2
+    },
+    {
+      "id": "indicacao",
+      "texto": "quer indicar um nome para um cargo de confiança",
+      "weight": 1.5
+    },
+    {
+      "id": "pauta_tema",
+      "texto": "quer que você defenda a pauta dele em {tema}",
+      "weight": 2
+    },
+    {
+      "id": "porta_aberta",
+      "texto": "quer ser recebido quando precisar",
+      "weight": 2
+    },
+    {
+      "id": "regularizacao",
+      "texto": "quer resolver uma pendência de terreno em {zona}",
+      "weight": 1
+    }
+  ],
+  "textos": {
+    "oferta_oficial": "{nome} oferece {valor} para a campanha, com recibo; {pedido}",
+    "oferta_por_fora": "{nome} oferece {valor} \"por fora\", sem recibo; {pedido}",
+    "explica_oficial": "Doação de {nome} com recibo: {valor}.",
+    "explica_teto": "{artigo}: a pessoa física doa até 10% dos rendimentos brutos do ano anterior. Teto de quem doa: {teto}; ainda livre: {resta}.",
+    "explica_acima": "Passa do teto legal em {excesso}: vira irregularidade nas contas, com multa de até {multa} ({artigo}, § 3º).",
+    "explica_por_fora": "Dinheiro \"por fora\" de {nome}: {valor}, sem registro ({fracao} do limite de gastos). Vira esqueleto.",
+    "explica_quem_sabe": "Quem fica sabendo: {quem}.",
+    "explica_divida": "{nome} {pedido}: fica como dívida no Livro, e ele cobra no mandato.",
+    "explica_recusa": "Você recusa a oferta de {nome}.",
+    "divida_livro": "Doação de {nome}, que {pedido}",
+    "esqueleto_por_fora": "Dinheiro \"por fora\" de {nome} na campanha",
+    "esqueleto_acima": "Doação de {nome} acima do teto legal",
+    "esqueleto_proprios": "Recursos próprios acima de 10% do limite de gastos",
+    "esqueleto_limite": "Gasto declarado acima do limite do cargo",
+    "fundo": "{nome}, da direção do partido, liberou {valor} do fundo eleitoral para a sua campanha",
+    "fundo_divida": "Cota do fundo eleitoral liberada por {nome}: você deve fidelidade à direção",
+    "fundo_explica": "{nome} decide a sua cota do fundo: hoje daria {valor}. Pesam a relação com ele ({relacao}), a sua viabilidade ({viabilidade} dos votos do mais votado da chapa) e a distância da linha do partido ({linha}).",
+    "coletivo_liberado": "Com o registro da candidatura, o financiamento coletivo retido foi liberado: {valor}",
+    "coletivo_semana": "Financiamento coletivo da semana",
+    "parcial": "Prestação de contas parcial entregue: {arrecadado} arrecadados, {gasto} gastos",
+    "parcial_jornalista": "{nome}, de {veiculo}, passou a olhar as contas da sua campanha",
+    "veio_a_tona": "Veio à tona: {texto}",
+    "prestacao_final": "Prestação de contas final entregue à Justiça Eleitoral",
+    "aprovadas": "Contas da campanha aprovadas",
+    "ressalvas": "Contas da campanha aprovadas com ressalvas",
+    "desaprovadas": "Contas da campanha desaprovadas",
+    "representacao": "Representação por captação ou gasto ilícito de campanha é aberta (art. 30-A)",
+    "cassado": "Justiça Eleitoral cassa o diploma por captação ilícita de recursos",
+    "absolvido": "Representação por captação ilícita é julgada improcedente",
+    "irregularidade_caixa_dois": "Dinheiro \"por fora\"",
+    "irregularidade_gasto_nao_declarado": "Gasto não declarado",
+    "irregularidade_erro_contabil": "Erro contábil",
+    "irregularidade_doacao_acima_limite": "Doação acima do teto",
+    "irregularidade_recursos_proprios_acima": "Recursos próprios acima do permitido",
+    "irregularidade_gasto_acima_limite": "Gasto acima do limite"
+  },
+  "lembrancas": {
+    "doacao_aceita": {
+      "peso": 2,
+      "pontos": 8,
+      "texto": "Você aceitou a doação dele"
+    },
+    "doacao_por_fora": {
+      "peso": 2,
+      "pontos": 10,
+      "texto": "Você aceitou o dinheiro dele por fora"
+    },
+    "doacao_recusada": {
+      "peso": -1,
+      "pontos": -3,
+      "texto": "Você recusou a oferta dele"
+    },
+    "oferta_ignorada": {
+      "peso": -1,
+      "pontos": -2,
+      "texto": "Você deixou a oferta dele sem resposta"
+    },
+    "fundo": {
+      "peso": 1,
+      "pontos": 2,
+      "texto": "Liberou a sua cota do fundo eleitoral"
+    }
+  },
+  "respostas": {
+    "oficial": {
+      "ganho": [
+        "dinheiro",
+        "relacao"
+      ],
+      "custo": [
+        "posicao"
+      ]
+    },
+    "oficial_integral": {
+      "ganho": [
+        "dinheiro",
+        "relacao"
+      ],
+      "custo": [
+        "risco",
+        "posicao"
+      ]
+    },
+    "por_fora": {
+      "ganho": [
+        "dinheiro",
+        "relacao"
+      ],
+      "custo": [
+        "risco",
+        "posicao"
+      ]
+    },
+    "recusar": {
+      "ganho": [
+        "posicao"
+      ],
+      "custo": [
+        "dinheiro",
+        "relacao"
+      ]
+    }
+  }
+}

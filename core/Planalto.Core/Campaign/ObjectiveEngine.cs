@@ -115,7 +115,7 @@ public sealed partial class CampaignEngine
         if (status is ObjectiveStatus.Cumprido or ObjectiveStatus.Vencido)
         {
             string key = status == ObjectiveStatus.Cumprido ? "cumprido" : "vencido";
-            Agenda.AddFeed(new FeedItem(Today, "objetivo", Texts.Fill(ObjectiveContent.Texto(key), ("texto", o.Text)), o.Kind == ObjectiveType.PresencaZona ? o.TargetId : null, o.BeneficiaryId, RaceSetup.PlayerId));
+            EmitFeed(Today, "objetivo", Texts.Fill(ObjectiveContent.Texto(key), ("texto", o.Text)), o.Kind == ObjectiveType.PresencaZona ? o.TargetId : null, o.BeneficiaryId, RaceSetup.PlayerId);
         }
     }
 
@@ -180,7 +180,7 @@ public sealed partial class CampaignEngine
             return;
         }
 
-        VoteProjection? projection = null;
+        VoteProjection? projection = _weekProjection;
         foreach (Objective o in Objectives.Active.ToList())
         {
             Measurement m = Measure(o, ref projection);

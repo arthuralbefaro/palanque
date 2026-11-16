@@ -141,6 +141,7 @@ public sealed class CommitmentCatalog : IValidatable
     public const string Reuniao = "reuniao";
     public const string EventoCidade = "evento_cidade";
     public const string Descanso = "descanso";
+    public const string Entrevista = "entrevista";
 
     public required string Note { get; init; }
 
@@ -227,10 +228,16 @@ public sealed class Commitment
 
     /// <summary>Tema tratado (entrevista, gravação, comício): torna a posição do candidato mais conhecida.</summary>
     public string? Tema { get; init; }
+
+    /// <summary>Veículo em que a entrevista acontece (GDD 17.13).</summary>
+    public string? OutletId { get; init; }
+
+    /// <summary>O tema tratado estava em alta quando o compromisso foi marcado (o bônus fica travado).</summary>
+    public bool TemaEmAlta { get; init; }
 }
 
 /// <summary>O que se pede ao marcar: os mesmos campos do compromisso, sem id.</summary>
-public sealed record CommitmentRequest(string Type, string? ZoneId, DateOnly Date, Turno Turno, string Publico = CommitmentType.PublicoGeral, string? PersonId = null, string? CityEventId = null, string? InviteId = null, bool Delegado = false, string? Tema = null);
+public sealed record CommitmentRequest(string Type, string? ZoneId, DateOnly Date, Turno Turno, string Publico = CommitmentType.PublicoGeral, string? PersonId = null, string? CityEventId = null, string? InviteId = null, bool Delegado = false, string? Tema = null, string? OutletId = null);
 
 /// <summary>Um fator do rendimento, com o nome que a tela mostra e o multiplicador ("terceira caminhada no Centro em duas semanas", 0,45).</summary>
 public sealed record YieldFactor(string Id, string Text, double Multiplier);
@@ -252,6 +259,7 @@ public enum ScheduleFailure
     SemDelegacao,
     SemVerbaDeRua,
     TemaInvalido,
+    VeiculoInvalido,
 }
 
 /// <summary>
@@ -350,13 +358,14 @@ public sealed class Invite
 }
 
 /// <summary>Uma linha do feed: o que aconteceu, onde e com quem (o fato de origem das notícias da R3).</summary>
-public sealed record FeedItem(DateOnly Date, string Kind, string Text, string? ZoneId = null, string? PersonId = null, string? CandidateId = null);
+/// <param name="FactId">Fato de origem (GDD 17.2, peça 5); null só em linhas de saves anteriores à R3.</param>
+public sealed record FeedItem(DateOnly Date, string Kind, string Text, string? ZoneId = null, string? PersonId = null, string? CandidateId = null, string? FactId = null);
 
 /// <summary>Agenda da campanha (GDD 17.6): compromissos marcados, eventos da cidade, convites, cansaço e chuva prevista.</summary>
 public sealed class AgendaState
 {
     public const int MaxLog = 80;
-    public const int MaxFeed = 200;
+    public const int MaxFeed = 400;
 
     public List<Commitment> Scheduled { get; init; } = [];
 

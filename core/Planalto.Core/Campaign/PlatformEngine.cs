@@ -394,7 +394,7 @@ public sealed partial class CampaignEngine
         Platform.Known[theme] = Math.Clamp(known + (PlatformRules.ConhecidaPorMudanca * (1 - known)), 0, 1);
         var stated = new StatedPosition(theme, value, Today, PlatformContent.Texto("anuncio"));
         State.Ledger.Positions.Add(stated);
-        Agenda.AddFeed(new FeedItem(Today, "posicao", Texts.Fill(PlatformContent.Texto("feed_posicao"), ("tema", definition.Name), ("posicao", PositionLabel(definition, value))), null, null, RaceSetup.PlayerId));
+        EmitFeed(Today, "posicao", Texts.Fill(PlatformContent.Texto("feed_posicao"), ("tema", definition.Name), ("posicao", PositionLabel(definition, value))), null, null, RaceSetup.PlayerId);
         FulfilPosition(theme);
         RefreshSupport();
         return (null, new PositionResult(change, imageDelta, remembered, stated));
@@ -565,7 +565,7 @@ public sealed partial class CampaignEngine
 
         string text = PromiseText(definition, toKind, toId);
         Promise promise = State.Ledger.AddPromise(toKind, toId, definition.Id, Texts.Fill(PromiseContent.Texto("livro"), ("promessa", text)), zone >= 0 ? toId : null, Today, PromiseDeadline(definition));
-        Agenda.AddFeed(new FeedItem(Today, "promessa", Texts.Fill(PromiseContent.Texto("feed"), ("promessa", text)), zone >= 0 ? toId : null, null, RaceSetup.PlayerId));
+        EmitFeed(Today, "promessa", Texts.Fill(PromiseContent.Texto("feed"), ("promessa", text)), zone >= 0 ? toId : null, null, RaceSetup.PlayerId);
         RefreshSupport();
         return (null, new PromiseResult(promise, gained, Credibility));
     }

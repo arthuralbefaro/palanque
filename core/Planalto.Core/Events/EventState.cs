@@ -18,9 +18,22 @@ public sealed class PendingEvent
 
     /// <summary>Variáveis resolvidas, para os textos dos resultados.</summary>
     public required Dictionary<string, string> Variables { get; init; }
+
+    /// <summary>Pessoas do save que o evento envolve (papel → id): liderança, jornalista, doador, colega, dirigente.</summary>
+    public Dictionary<string, string> People { get; init; } = [];
+
+    public string? ZoneId { get; init; }
+
+    public string? OutletId { get; init; }
+
+    public string? Theme { get; init; }
+
+    /// <summary>Fato que disparou o evento (eventos dinâmicos, GDD 15.4).</summary>
+    public string? FactId { get; init; }
 }
 
-public sealed record DueEvent(string EventId, DateOnly Due);
+/// <param name="People">Pessoas do evento que agendou a continuação: a cadeia volta com as mesmas.</param>
+public sealed record DueEvent(string EventId, DateOnly Due, Dictionary<string, string>? People = null, string? RivalId = null, string? ZoneId = null);
 
 /// <summary>Memória do motor de eventos (GDD 15.3): histórico, cooldowns, flags, cadeias e esqueletos.</summary>
 public sealed class EventState

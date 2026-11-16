@@ -31,6 +31,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
     {
         ctx.State.Campaign ??= RaceSetup.Create(ctx, ctx.State.Rng);
         StaffBuilder.Ensure(ctx, ctx.State.Campaign);
+        WorldBuilder.Ensure(ctx, ctx.State.Campaign, ctx.State.Rng);
         var engine = new CampaignEngine(ctx);
         engine.UpdatePhase();
         if (ctx.State.Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
@@ -39,6 +40,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         }
 
         engine.RefreshSupport();
+        engine.RivalsWeekStart();
         engine.EnsureObjectives();
         return engine;
     }
@@ -62,7 +64,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         // A pesquisa é da disputa do jogador (vereador ou prefeito).
         Office office = Campaign.Player.Office;
         var candidates = Campaign.ForOffice(office).Where(c => !c.IsBulk).Select(ToVote).ToList();
-        VoteProjection truth = Project(office, noise: null);
+        VoteProjection truth = _weekProjection ?? Project(office, noise: null);
         var byId = Campaign.ForOffice(office).Select(ToVote).ToDictionary(c => c.Id);
         PollResult poll = Polling.Run(truth, byId, pollster, WeeksToElection, Context.ElectorateContent.VoteModel, Rng);
         var record = new PollRecord(
@@ -97,6 +99,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         List<CommitmentResult> results = RunToday();
         if (!DecisionPending)
         {
+            WorldDay(Today);
             Clock.AdvanceDay(State, AdvanceWeek);
         }
 
@@ -125,10 +128,18 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
             throw new InvalidOperationException("A semana da eleição se resolve na votação.");
         }
 
-        RunUntil(State.Calendar.WeekEnd);
-        if (Agenda.PendingRequest is not null)
+        // Dia a dia até o domingo: os compromissos do jogador e depois o mundo (rivais, mídia, prazos), na mesma
+        // ordem do avanço por dia, para sete dias seguidos darem o mesmo que uma semana.
+        for (DateOnly day = Today; day <= State.Calendar.WeekEnd; day = day.AddDays(1))
         {
-            throw new InvalidOperationException("Há um pedido de liderança esperando resposta.");
+            RunUntil(day);
+            if (Agenda.PendingRequest is not null)
+            {
+                throw new InvalidOperationException("Há um pedido de liderança esperando resposta.");
+            }
+
+            State.Time.Day = day.DayNumber - State.Calendar.WeekStart.DayNumber;
+            WorldDay(day);
         }
 
         // A virada acontece no domingo, em qualquer dia que tenha sido pedida: convites vencidos, deriva das
@@ -169,13 +180,29 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         ExpireInvites();
         StaffWeekEnd();
         PlatformWeek();
+        PactsWeek();
         DateOnly next = State.Calendar.WeekStart.AddDays(7);
         LeadersWeek(next);
+        MediaWeek(next);
         State.Ledger.Expire(next);
         State.Calendar.AdvanceWeek();
         State.Time.Day = 0;
         UpdatePhase();
         ChannelsWeekStart();
+        try
+        {
+            WeekStart(config);
+        }
+        finally
+        {
+            _weekProjection = null;
+        }
+    }
+
+    /// <summary>A semana que entra: planos dos rivais, dinheiro, agenda, equipe, objetivos, pesquisa pública, eventos e debate.</summary>
+    private void WeekStart(CampaignConfig config)
+    {
+        FinanceWeek(RivalsWeekStart());
         if (Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
         {
             AgendaWeek(State.Calendar.WeekStart);
@@ -188,6 +215,8 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
             var publicPollsters = Context.ElectorateContent.Pollsters.Pollsters.Where(p => !p.Internal).ToList();
             PollRecord poll = RunPoll(Rng.Pick(publicPollsters));
             Campaign.Headlines.Add(new Headline(State.Calendar.WeekStart, $"poll:{poll.PollsterId}", "pesquisa"));
+            PollTriggers(poll);
+            Emit(FactKind.Pesquisa, Texts.Fill(OutletContent.Texto("pesquisa_fato"), ("instituto", Context.ElectorateContent.Pollsters.Get(poll.PollsterId).Name)), sub: poll.PollsterId, feed: false);
         }
 
         if (Campaign.Phase is CampaignPhase.PreCampanha or CampaignPhase.Campanha)
@@ -230,9 +259,9 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
     }
 
     /// <summary>
-    /// Turno dos rivais (até a R3 dar plano a cada um): o número de saídas da semana vem do empenho e do porte, e
-    /// cada saída rende presença numa zona. Rival nomeado a vereador vai mais aos seus redutos; candidatos a prefeito
-    /// e o candidato coletivo de cada partido se espalham pela cidade. A primeira saída de cada rival vira fato no feed.
+    /// Turno do candidato coletivo de cada partido (os candidatos sem nome próprio): não tem plano; o número de
+    /// saídas da semana vem do empenho e do porte, espalhadas pela cidade. Os rivais nomeados agem em dias, pelo
+    /// plano de cada um (GDD 17.11, RivalEngine).
     /// </summary>
     private void NpcTurn()
     {
@@ -247,7 +276,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         double basePresence = Commitments.Get("caminhada").Presenca * config.NpcActionEfficiency * RecognitionScale;
         double effort = config.NpcEffortByPorte.GetValueOrDefault(Context.Municipio.Porte, 1);
         var zones = Enumerable.Range(0, t.Zones.Count).ToList();
-        foreach (Candidate npc in Campaign.Candidates.Where(c => !c.IsPlayer))
+        foreach (Candidate npc in Campaign.Candidates.Where(c => c.IsBulk))
         {
             // Arredondamento estocástico: o empenho fracionário vira uma saída a mais com a probabilidade da fração.
             double expected = Rng.NextInt(config.NpcActionsPerWeek.Min, config.NpcActionsPerWeek.Max + 1) * npc.Drive * effort;
@@ -265,11 +294,6 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
                 int zone = Rng.PickWeighted(zones, z => Math.Max(1, t.Population[z]) * (redutos.Contains(z) ? config.NpcRedutoWeight : 1));
                 List<int> neighbors = Context.Zonas.Zonas[zone].Vizinhas.Select(t.IndexOf).Where(z => z >= 0).ToList();
                 t.Gain(npc.Id, zone, basePresence * Reach(zone), sim.Transbordo, neighbors);
-                if (i == 0)
-                {
-                    DateOnly day = State.Calendar.WeekStart.AddDays(Rng.NextInt(0, 7));
-                    Agenda.AddFeed(new FeedItem(day, "rival_zona", $"{npc.Name} fez campanha em {ZoneName(t.Zones[zone])}", t.Zones[zone], null, npc.Id));
-                }
             }
 
             npc.Image = Math.Clamp(npc.Image + (count * config.NpcImagePerAction), -1, 1);
@@ -283,7 +307,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         PartyId = c.PartyId,
         Position = c.Position,
         Recognition = c.Recognition / 100,
-        Image = c.Image,
+        Image = Math.Clamp(c.Image - AttackPenalty(c.Id), -1, 1),
         Support = c.Support,
         Multiplicity = c.Multiplicity,
         Themes = c.IsPlayer ? PerceivedThemes() : NoThemes,
@@ -329,12 +353,12 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         };
         Campaign.Outcome = outcome;
         Campaign.Phase = CampaignPhase.Encerrada;
+        OpenAccountsCase(outcome.PlayerElected);
         return outcome;
     }
 
     private OfficeOutcome ResolveVereador(Dictionary<string, List<long>> bulkVotes)
     {
-        CampaignConfig config = Context.Config;
         VoteProjection projection = Project(Office.Vereador, Rng);
         var votes = projection.Votes.ToDictionary(v => v.Key, v => (long)Math.Round(v.Value), StringComparer.Ordinal);
         long blank = (long)Math.Round(projection.BlankNull * 0.5);
@@ -342,34 +366,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         var legend = new Dictionary<string, long>(StringComparer.Ordinal);
         ApplyPlayerVote(Office.Vereador, votes, legend, ref blank, ref nul);
 
-        var lists = new List<PartyList>();
-        foreach (var group in Campaign.ForOffice(Office.Vereador).GroupBy(c => c.PartyId))
-        {
-            var candidates = new List<CandidateVotes>();
-            long partyTotal = group.Sum(c => votes[c.Id]);
-            long legendVotes = (long)Math.Round(partyTotal * config.LegendVoteShare) + legend.GetValueOrDefault(group.Key);
-            foreach (Candidate c in group)
-            {
-                if (c.IsBulk)
-                {
-                    // O coletivo vira candidatos anônimos com votos decrescentes; parte vai para a legenda.
-                    long pool = Math.Max(0, votes[c.Id] - (long)Math.Round(partyTotal * config.LegendVoteShare));
-                    List<long> split = Split(pool, config.BulkCandidatesPerParty);
-                    bulkVotes[c.PartyId] = split;
-                    for (int i = 0; i < split.Count; i++)
-                    {
-                        candidates.Add(new CandidateVotes($"{c.Id}_{i + 1}", split[i], new DateOnly(1980, 1, 1).AddDays(i)));
-                    }
-                }
-                else
-                {
-                    candidates.Add(new CandidateVotes(c.Id, votes[c.Id], c.BirthDate));
-                }
-            }
-
-            lists.Add(new PartyList(group.Key, legendVotes, candidates));
-        }
-
+        List<PartyList> lists = SlateLists(votes, legend, bulkVotes);
         ProportionalResult result = ElectionRules.Proportional(Context.SeatsIn(Campaign.ElectionDate.Year), lists);
         var nominal = lists.SelectMany(l => l.Candidates).ToDictionary(c => c.CandidateId, c => c.Votes, StringComparer.Ordinal);
         return new OfficeOutcome

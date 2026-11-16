@@ -1,0 +1,356 @@
+{
+  "events": [
+    {
+      "id": "campanha_din_lideranca_perdida",
+      "category": "campanha",
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
+      "rarity": "comum",
+      "cooldown_weeks": 6,
+      "conditions": {
+        "trigger": "lideranca_perdida",
+        "chance": 0.6
+      },
+      "title": "Aliado vai embora",
+      "variants": [
+        "{lideranca.nome} ({lideranca.papel}), de {zona.nome}, deixou de apoiar você. Ainda dá para ir atrás."
+      ],
+      "choices": [
+        {
+          "label": "Ir pessoalmente conversar",
+          "effects": {
+            "stress": 3
+          },
+          "test": {
+            "attribute": "articulacao",
+            "success_text": "A conversa reabriu a porta.",
+            "success": {
+              "memories": [
+                {
+                  "quem": "lideranca",
+                  "fato": "foi_atras",
+                  "peso": 2,
+                  "pontos": 10,
+                  "texto": "Foi atrás quando o apoio esfriou"
+                }
+              ]
+            },
+            "failure_text": "A conversa não mudou nada.",
+            "failure": {
+              "memories": [
+                {
+                  "quem": "lideranca",
+                  "fato": "foi_atras",
+                  "peso": -1,
+                  "pontos": -3,
+                  "texto": "Apareceu tarde demais"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "label": "Mandar recado pela equipe",
+          "effects": {
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "recado",
+                "peso": 1,
+                "pontos": 2,
+                "texto": "Mandou recado quando o apoio esfriou"
+              }
+            ]
+          },
+          "result": "O recado chegou."
+        },
+        {
+          "label": "Deixar ir",
+          "effects": {
+            "memories": [
+              {
+                "quem": "lideranca",
+                "fato": "deixou_ir",
+                "peso": -1,
+                "pontos": -4,
+                "texto": "Não fez nada quando o apoio esfriou"
+              }
+            ]
+          },
+          "result": "Você seguiu a agenda."
+        }
+      ]
+    },
+    {
+      "id": "campanha_din_tema_em_alta",
+      "category": "campanha",
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
+      "rarity": "comum",
+      "cooldown_weeks": 8,
+      "conditions": {
+        "trigger": "tema_em_alta",
+        "chance": 0.5
+      },
+      "title": "A cidade só fala disso",
+      "variants": [
+        "O noticiário da semana pôs {tema.nome} na boca do povo. {jornalista.nome}, de {veiculo.nome}, liga pedindo uma declaração sua."
+      ],
+      "choices": [
+        {
+          "label": "Dar a declaração",
+          "test": {
+            "attribute": "oratoria",
+            "success_text": "A sua fala entrou bem no noticiário.",
+            "success": {
+              "image": 0.03,
+              "recognition": 1,
+              "memories": [
+                {
+                  "quem": "jornalista",
+                  "fato": "declaracao",
+                  "peso": 1,
+                  "pontos": 3,
+                  "texto": "Deu declaração quando o tema estava em alta"
+                }
+              ]
+            },
+            "failure_text": "A declaração saiu confusa.",
+            "failure": {
+              "image": -0.02,
+              "memories": [
+                {
+                  "quem": "jornalista",
+                  "fato": "declaracao",
+                  "peso": -1,
+                  "pontos": -1,
+                  "texto": "Deu uma declaração confusa"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "label": "Não comentar",
+          "effects": {
+            "memories": [
+              {
+                "quem": "jornalista",
+                "fato": "sem_comentario",
+                "peso": -1,
+                "pontos": -2,
+                "texto": "Não quis comentar o assunto da semana"
+              }
+            ]
+          },
+          "result": "O assunto seguiu sem você."
+        }
+      ]
+    },
+    {
+      "id": "campanha_din_rival_no_reduto",
+      "category": "campanha",
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
+      "rarity": "comum",
+      "cooldown_weeks": 8,
+      "conditions": {
+        "trigger": "plano_rival:reduto",
+        "chance": 0.5,
+        "needs_rival": true
+      },
+      "portrait": "rival",
+      "title": "O rival reage",
+      "variants": [
+        "{rival.nome} ({rival.partido}) voltou a campanha para {zona.nome}, onde você cresceu. A equipe pergunta como responder."
+      ],
+      "choices": [
+        {
+          "label": "Reforçar a presença na zona",
+          "effects": {
+            "money": -500,
+            "zone_presence": 1.0,
+            "memories": [
+              {
+                "quem": "rival",
+                "fato": "reduto",
+                "peso": -1,
+                "pontos": -3,
+                "texto": "Reforçou a campanha no reduto dele"
+              }
+            ]
+          },
+          "result": "Você respondeu na rua."
+        },
+        {
+          "label": "Procurar o rival para conversar",
+          "effects": {
+            "memories": [
+              {
+                "quem": "rival",
+                "fato": "conversa",
+                "peso": 1,
+                "pontos": 5,
+                "texto": "Procurou conversa quando as campanhas se cruzaram"
+              }
+            ]
+          },
+          "result": "A conversa foi cordial."
+        },
+        {
+          "label": "Seguir o plano",
+          "effects": {},
+          "result": "Você manteve a agenda.",
+          "sem_rastro": "Nada muda entre as campanhas: você só mantém a agenda."
+        }
+      ]
+    },
+    {
+      "id": "campanha_din_esqueleto",
+      "category": "campanha",
+      "phases": [
+        "pre_campanha",
+        "campanha"
+      ],
+      "rarity": "comum",
+      "cooldown_weeks": 4,
+      "conditions": {
+        "trigger": "esqueleto",
+        "chance": 1
+      },
+      "title": "O caso veio à tona",
+      "variants": [
+        "{jornalista.nome}, de {veiculo.nome}, quer a sua versão sobre o que veio à tona."
+      ],
+      "choices": [
+        {
+          "label": "Dar entrevista e explicar",
+          "test": {
+            "attribute": "integridade",
+            "success_text": "A explicação convenceu.",
+            "success": {
+              "image": 0.04,
+              "memories": [
+                {
+                  "quem": "jornalista",
+                  "fato": "explicou",
+                  "peso": 2,
+                  "pontos": 6,
+                  "texto": "Deu a cara e explicou o caso"
+                }
+              ]
+            },
+            "failure_text": "A explicação piorou as coisas.",
+            "failure": {
+              "image": -0.05,
+              "memories": [
+                {
+                  "quem": "jornalista",
+                  "fato": "explicou",
+                  "peso": -1,
+                  "pontos": -2,
+                  "texto": "A explicação não convenceu"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "label": "Soltar nota e não falar mais",
+          "effects": {
+            "image": -0.02,
+            "memories": [
+              {
+                "quem": "jornalista",
+                "fato": "nota",
+                "peso": -1,
+                "pontos": -2,
+                "texto": "Respondeu só por nota"
+              }
+            ]
+          },
+          "result": "A nota saiu no pé da matéria."
+        },
+        {
+          "label": "Atacar quem denunciou",
+          "effects": {
+            "image": -0.03,
+            "memories": [
+              {
+                "quem": "jornalista",
+                "fato": "atacou_imprensa",
+                "peso": -2,
+                "pontos": -8,
+                "texto": "Atacou quem perguntava sobre o caso"
+              }
+            ]
+          },
+          "result": "O tom subiu e o assunto durou mais."
+        }
+      ]
+    },
+    {
+      "id": "campanha_din_rival_cai",
+      "category": "campanha",
+      "phases": [
+        "campanha"
+      ],
+      "rarity": "comum",
+      "cooldown_weeks": 8,
+      "conditions": {
+        "trigger": "pesquisa:queda",
+        "chance": 0.7,
+        "needs_rival": true
+      },
+      "portrait": "rival",
+      "title": "Apoiadores soltos",
+      "variants": [
+        "{rival.nome} ({rival.partido}) caiu na pesquisa e apoiadores dele estão soltos. Dá para ir atrás deles."
+      ],
+      "choices": [
+        {
+          "label": "Procurar os apoiadores dele",
+          "effects": {
+            "stress": 3,
+            "support": {
+              "baixa": 0.03,
+              "media": 0.02
+            },
+            "relation": -10,
+            "memories": [
+              {
+                "quem": "rival",
+                "fato": "avancou_na_base",
+                "peso": -2,
+                "pontos": -10,
+                "texto": "Foi atrás dos apoiadores dele quando ele caiu"
+              }
+            ]
+          },
+          "result": "Alguns vieram conversar."
+        },
+        {
+          "label": "Não mexer nisso",
+          "effects": {
+            "memories": [
+              {
+                "quem": "rival",
+                "fato": "respeitou_a_base",
+                "peso": 1,
+                "pontos": 3,
+                "texto": "Não avançou sobre a base dele na queda"
+              }
+            ]
+          },
+          "result": "Você deixou passar."
+        }
+      ]
+    }
+  ]
+}

@@ -230,12 +230,20 @@ public static class DecisionLint
             for (int i = 0; i < e.Choices.Count; i++)
             {
                 EventChoice choice = e.Choices[i];
+                string where = $"evento '{e.Id}', escolha {i + 1}";
+                List<Effects> branches = choice.Test is null ? [choice.Effects] : [choice.Effects, choice.Test.Success, choice.Test.Failure];
                 if (!choice.Relevant)
                 {
+                    // O que fica depois do evento (Livro ou cadeia) não pode passar por escolha comum: tem de ser marcado
+                    // como relevante, para cair no lint de troca e de rastro.
+                    if (branches.Any(fx => fx.AddSkeleton is not null || fx.Promise is not null || fx.Debt is not null || fx.Schedule.Count > 0))
+                    {
+                        yield return $"{where}: escolha com consequência que fica (Livro ou cadeia) não está marcada como relevante.";
+                    }
+
                     continue;
                 }
 
-                string where = $"evento '{e.Id}', escolha {i + 1}";
                 foreach (string error in DecisionNature.Check(choice.Gain, choice.Cost, where))
                 {
                     yield return error;
@@ -248,15 +256,15 @@ public static class DecisionLint
                 {
                     Add(fx.Money > 0, gains, DecisionNature.Dinheiro);
                     Add(fx.Money < 0, costs, DecisionNature.Dinheiro);
-                    Add(fx.Relation > 0 || fx.Support.Values.Any(v => v > 0), gains, DecisionNature.Relacao);
-                    Add(fx.Relation < 0 || fx.Support.Values.Any(v => v < 0), costs, DecisionNature.Relacao);
-                    Add(fx.Recognition > 0, gains, DecisionNature.Zona);
-                    Add(fx.Recognition < 0, costs, DecisionNature.Zona);
+                    Add(fx.Relation > 0 || fx.Support.Values.Any(v => v > 0) || fx.Memories.Any(m => m.Pontos > 0), gains, DecisionNature.Relacao);
+                    Add(fx.Relation < 0 || fx.Support.Values.Any(v => v < 0) || fx.Memories.Any(m => m.Pontos < 0), costs, DecisionNature.Relacao);
+                    Add(fx.Recognition > 0 || fx.ZonePresence > 0, gains, DecisionNature.Zona);
+                    Add(fx.Recognition < 0 || fx.ZonePresence < 0, costs, DecisionNature.Zona);
                     Add(fx.Image > 0, gains, DecisionNature.Posicao);
                     Add(fx.Image < 0, costs, DecisionNature.Posicao);
                     Add(fx.Energy > 0 || fx.Stress < 0, gains, DecisionNature.Tempo);
-                    Add(fx.Energy < 0 || fx.Stress > 0, costs, DecisionNature.Tempo);
-                    Add(fx.AddSkeleton is not null || fx.Schedule.Count > 0, costs, DecisionNature.Risco);
+                    Add(fx.Energy < 0 || fx.Stress > 0 || fx.CancelCommitment is not null, costs, DecisionNature.Tempo);
+                    Add(fx.AddSkeleton is not null || fx.Schedule.Count > 0 || fx.Promise is not null || fx.Debt is not null, costs, DecisionNature.Risco);
                 }
 
                 Add(choice.Test is not null, costs, DecisionNature.Risco);
@@ -270,10 +278,38 @@ public static class DecisionLint
                     yield return $"{where}: custo '{nature}' declarado sem efeito que o sustente.";
                 }
 
-                // Princípio d: escolha relevante grava no Livro (esqueleto) ou abre uma cadeia que volta depois.
-                if (!all.Any(fx => fx.AddSkeleton is not null || fx.Schedule.Count > 0))
+                foreach (string error in Trace(choice, where))
                 {
-                    yield return $"{where}: escolha relevante sem rastro (nem entrada no Livro, nem cadeia).";
+                    yield return error;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Lint de rastro (GDD 17.1, princípio d): a escolha relevante grava uma entrada no Livro de compromissos
+    /// (esqueleto, promessa ou dívida) ou uma lembrança em alguém, qualquer que seja o desfecho sorteado. Agendar uma
+    /// continuação não basta: o que fica tem de estar no save.
+    /// </summary>
+    public static IEnumerable<string> Trace(EventChoice choice, string where)
+    {
+        bool traced = choice.Effects.LeavesTrace || (choice.Test is { } test && test.Success.LeavesTrace && test.Failure.LeavesTrace);
+        if (choice.Relevant && !traced)
+        {
+            yield return $"{where}: escolha relevante sem rastro (nem entrada no Livro, nem lembrança em alguém).";
+        }
+    }
+
+    /// <summary>O lint de rastro em todos os eventos (para o validador e os testes).</summary>
+    public static IEnumerable<string> Trace(EventContent events)
+    {
+        foreach (EventDefinition e in events.Events)
+        {
+            for (int i = 0; i < e.Choices.Count; i++)
+            {
+                foreach (string error in Trace(e.Choices[i], $"evento '{e.Id}', escolha {i + 1}"))
+                {
+                    yield return error;
                 }
             }
         }
