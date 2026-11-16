@@ -254,6 +254,12 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
             IReadOnlyList<ChannelTarget> targets = Engine.ChannelTargets(channel.Id);
             string target = _policy.Pick(targets).Id;
             decimal amount = _policy.Chance(0.15) ? 0 : Engine.ChannelStep * _policy.NextInt(1, 12);
+            if (Engine.BeforeOfficialCampaign && Engine.PreCampaignCap(channel.Id) is { } cap)
+            {
+                // Na pré-campanha só cabe o teto (sem impulsionamento, material institucional).
+                amount = Math.Min(amount, cap);
+            }
+
             if (State.Player.Resources.Money < amount * 3)
             {
                 continue;

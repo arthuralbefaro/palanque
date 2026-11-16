@@ -375,7 +375,8 @@ public class ChannelTests
         Assert.Equal(start, without.Territory.Presence[RaceSetup.PlayerId][z], 9);
         StaffTests.Week(with);
         StaffTests.Week(without);
-        double held = start - with.Territory.Presence[RaceSetup.PlayerId][z];
+        double gained = with.Budget.LastResults.Single(r => r.ChannelId == ChannelDefinition.Cabos).Presence.GetValueOrDefault(zone);
+        double held = start + gained - with.Territory.Presence[RaceSetup.PlayerId][z];
         double lost = start - without.Territory.Presence[RaceSetup.PlayerId][z];
         Assert.True(lost > 0);
         Assert.Equal(lost * rules.CabosFatorDecaimento, held, 6);
@@ -469,6 +470,50 @@ public class ChannelTests
         StaffTests.Week(engine);
         Assert.Empty(engine.Budget.LastResults);
         Assert.Equal(CommandFailure.SemDinheiro, engine.CanAllocate(ChannelDefinition.Rua, zone, verba));
+    }
+
+    [Fact]
+    public void Verba_repetida_no_mesmo_canal_e_alvo_satura_e_recupera_com_o_tempo()
+    {
+        // Na pré-campanha (há semanas de sobra para ver a saturação subir e passar), com material institucional.
+        CampaignEngine engine = Fresh("medio", 47);
+        ChannelRules rules = engine.Context.Campaign.Channels.Regras;
+        string zone = engine.Territory.Zones[0];
+        string other = engine.Territory.Zones[1];
+        decimal verba = engine.PreCampaignCap(ChannelDefinition.Material)!.Value;
+        string band = engine.ChannelTargets(ChannelDefinition.Redes)[0].Id;
+        double Saturation(string channel, string target) =>
+            engine.ForecastChannel(channel, target, verba).Factors.FirstOrDefault(f => f.Id == "saturacao")?.Multiplier ?? 1;
+
+        Assert.Equal(1, Saturation(ChannelDefinition.Material, zone));
+        Assert.Null(engine.SetAllocation(ChannelDefinition.Material, zone, verba));
+        StaffTests.Week(engine);
+
+        // Uma semana de verba: a próxima no mesmo canal e alvo rende menos, e a previsão mostra o fator (princípio g).
+        double once = 1 / (1 + rules.SaturacaoFator);
+        Assert.Equal(once, Saturation(ChannelDefinition.Material, zone), 9);
+        Assert.Equal(once, engine.ChannelSaturationYield(ChannelDefinition.Material, zone), 9);
+        Assert.Equal(1, Saturation(ChannelDefinition.Redes, band));
+        Assert.Equal(1, Saturation(ChannelDefinition.Material, other));
+
+        // Segunda semana seguida: satura mais. E o resultado traz o fator com que a verba rendeu.
+        StaffTests.Week(engine);
+        Assert.Contains(Assert.Single(engine.Budget.LastResults).Factors, f => f.Id == "saturacao" && Math.Abs(f.Multiplier - once) < 1e-9);
+        double twice = 1 / (1 + (rules.SaturacaoFator * (2 - rules.SaturacaoDecaimentoSemanal)));
+        Assert.Equal(twice, Saturation(ChannelDefinition.Material, zone), 9);
+        Assert.True(twice < once);
+
+        // Sem verba ali, a saturação passa.
+        Assert.Null(engine.SetAllocation(ChannelDefinition.Material, zone, 0));
+        StaffTests.Week(engine);
+        int guard = 0;
+        while (Saturation(ChannelDefinition.Material, zone) < 1)
+        {
+            Assert.True(++guard < 20);
+            StaffTests.Week(engine);
+        }
+
+        Assert.Empty(engine.Budget.Saturation);
     }
 
     [Fact]

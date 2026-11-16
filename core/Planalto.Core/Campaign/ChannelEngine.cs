@@ -244,6 +244,12 @@ public sealed partial class CampaignEngine
             factors.Add(Factor("faixa", Channels.Texto("fator_faixa"), band.Peso));
         }
 
+        double saturation = Budget.Saturation.GetValueOrDefault(BudgetState.Key(c.Id, targetId));
+        if (saturation > 0 && ChannelRules.SaturacaoFator > 0)
+        {
+            factors.Add(Factor("saturacao", Channels.Texto("fator_saturacao"), 1 / (1 + (ChannelRules.SaturacaoFator * saturation))));
+        }
+
         if (BeforeOfficialCampaign && c.PreCampanha is { } pre)
         {
             factors.Add(Factor("pre_campanha", Channels.Texto("fator_pre_campanha"), pre.Fator));
@@ -290,9 +296,7 @@ public sealed partial class CampaignEngine
         else if (c.KPresenca > 0 && band is not null)
         {
             // Nas redes a presença vale para a cidade inteira, na proporção dos eleitores da faixa.
-            double voters = Context.Electorate.Segments.Sum(s => s.Voters);
-            double inBand = Context.Electorate.Segments.Where(s => band.Grupos.Any(s.Has)).Sum(s => s.Voters);
-            double amount = c.KPresenca * effect * luck * RecognitionScale * (voters <= 0 ? 0 : inBand / voters);
+            double amount = c.KPresenca * effect * luck * RecognitionScale * BandShare(band);
             for (int z = 0; z < own.Length; z++)
             {
                 presence[t.Zones[z]] = EffectApplier.Gain(own[z], amount) - own[z];
@@ -318,6 +322,21 @@ public sealed partial class CampaignEngine
         }
 
         return (presence, support);
+    }
+
+    private readonly Dictionary<string, double> _bandShare = new(StringComparer.Ordinal);
+
+    /// <summary>Fração dos eleitores da cidade que está na faixa de idade (o eleitorado não muda durante a campanha).</summary>
+    private double BandShare(AgeBand band)
+    {
+        if (!_bandShare.TryGetValue(band.Id, out double share))
+        {
+            double voters = Context.Electorate.Segments.Sum(s => s.Voters);
+            double inBand = Context.Electorate.Segments.Where(s => band.Grupos.Any(s.Has)).Sum(s => s.Voters);
+            _bandShare[band.Id] = share = voters <= 0 ? 0 : inBand / voters;
+        }
+
+        return share;
     }
 
     private double CityAverage(Dictionary<string, double> byZone)
@@ -418,6 +437,7 @@ public sealed partial class CampaignEngine
         Budget.LastResults.Clear();
         if (!CampaignRunning)
         {
+            Budget.Saturation.Clear();
             return;
         }
 
@@ -462,9 +482,10 @@ public sealed partial class CampaignEngine
                 own[z] = Math.Clamp(own[z] + delta, 0, 100);
             }
 
-            if (zone >= 0 && result.Presence.Count > 0)
+            if (zone >= 0 && result.Presence.Count > 0 && !definitions[i].EmGrupos)
             {
-                // Material e som na rua contam como presença da semana: a zona não decai nesta virada.
+                // Material e som na rua contam como presença da semana: a zona não decai nesta virada. Os cabos só
+                // seguram a presença (metade do decaimento).
                 Territory.MarkActive(RaceSetup.PlayerId, zone);
             }
 
@@ -475,12 +496,36 @@ public sealed partial class CampaignEngine
             }
         }
 
+        // Saturação (princípio g): o que já saturou esfria um pouco, e o que teve verba nesta semana satura mais.
+        foreach (string key in Budget.Saturation.Keys.ToList())
+        {
+            double value = Budget.Saturation[key] - ChannelRules.SaturacaoDecaimentoSemanal;
+            if (value <= 0)
+            {
+                Budget.Saturation.Remove(key);
+            }
+            else
+            {
+                Budget.Saturation[key] = value;
+            }
+        }
+
+        foreach (ChannelResult result in Budget.LastResults)
+        {
+            string key = BudgetState.Key(result.ChannelId, result.TargetId);
+            Budget.Saturation[key] = Budget.Saturation.GetValueOrDefault(key) + 1;
+        }
+
         if (Budget.LastResults.Count > 0)
         {
             Campaign.Player.Recognition = Territory.Recognition(RaceSetup.PlayerId);
             RefreshSupport();
         }
     }
+
+    /// <summary>Quanto renderia hoje a verba no canal e alvo só pela saturação já acumulada (1 = sem saturação).</summary>
+    public double ChannelSaturationYield(string channelId, string targetId) =>
+        1 / (1 + (ChannelRules.SaturacaoFator * Budget.Saturation.GetValueOrDefault(BudgetState.Key(channelId, targetId))));
 
     /// <summary>Com cabos pagos na zona, a presença do jogador ali cai só uma fração do que cairia.</summary>
     private void HoldPresenceWithCabos(double[] before)

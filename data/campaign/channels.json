@@ -1,13 +1,13 @@
 {
   "note": "Verba por canal (GDD 17.8). Efeito = √(verba ÷ escala do porte) × (verba própria ÷ verba total do canal no alvo)^expoente_disputa; a presença e o apoio que ele rende saem de 'k_presenca' e 'k_apoio' de cada canal. Valores em reais no porte médio, escalados pelo custo do porte. Rádio, TV, outdoor e brinde não são canal: a lei veda o gasto (ver ChannelLawConfig no Core, com os artigos; a conferência dos artigos no texto oficial é da R3). Tudo aqui é parâmetro de jogo, ajustado pelo BalanceSim.",
   "regras": {
-    "escala": 2000,
+    "escala": 1000,
     "expoente_disputa": 0.5,
     "sorte": { "min": 0.9, "max": 1.1 },
     "passo": 100,
     "apoio_teto": 0.1,
     "cabos_por_grupo": 5,
-    "cabos_custo_grupo": 300,
+    "cabos_custo_grupo": 100,
     "cabos_fator_decaimento": 0.5,
     "cabos_sem_material": 0.5,
     "lideranca_contraria_influencia": 4,
@@ -15,36 +15,38 @@
     "rua_fator_rural": 0.6,
     "rua_bonus_agenda": 0.25,
     "rua_multiplica": ["caminhada", "comicio"],
-    "comicio_verba_rua": 1500,
-    "rival_verba": 600,
+    "comicio_verba_rua": 800,
+    "rival_verba": 300,
     "rival_reparte": { "rua": 0.35, "material": 0.25, "cabos": 0.25, "redes": 0.15 },
     "rival_pre_campanha": 0.25,
-    "rival_extra_decaimento": 0.5
+    "rival_extra_decaimento": 0.5,
+    "saturacao_fator": 0.8,
+    "saturacao_decaimento_semanal": 0.34
   },
   "canais": [
     {
       "id": "rua", "nome": "Rua", "alvo": "zona",
       "descricao": "Carro de som, bandeiras e estrutura de comício numa zona. Rende presença ali e reforça caminhada e comício.",
-      "k_presenca": 1.2, "k_apoio": 0
+      "k_presenca": 1.0, "k_apoio": 0
     },
     {
       "id": "redes", "nome": "Redes", "alvo": "idade", "impulsionamento": true,
       "descricao": "Produção e impulsionamento pago de conteúdo para uma faixa de idade. Rende mais entre os mais jovens.",
-      "k_presenca": 1.0, "k_apoio": 0.008,
+      "k_presenca": 4.5, "k_apoio": 0.036,
       "equipe_funcao": "social_media", "equipe_efeito": "alcance",
-      "pre_campanha": { "teto": 300, "fator": 0.6 }
+      "pre_campanha": { "teto": 150, "fator": 0.6 }
     },
     {
       "id": "material", "nome": "Material gráfico", "alvo": "zona",
       "descricao": "Santinhos, adesivos e impressos numa zona. Presença menor, que dura, e sem ele os cabos rendem a metade.",
       "k_presenca": 0.9, "k_apoio": 0,
       "equipe_funcao": "marqueteiro", "equipe_efeito": "rendimento",
-      "pre_campanha": { "teto": 300, "fator": 0.6 }
+      "pre_campanha": { "teto": 150, "fator": 0.6 }
     },
     {
       "id": "cabos", "nome": "Cabos eleitorais", "alvo": "zona", "em_grupos": true,
       "descricao": "Gente contratada para pedir voto numa zona, em grupos de 5, até o limite da lei. Converte indecisos e segura a presença.",
-      "k_presenca": 0, "k_apoio": 0.012
+      "k_presenca": 1.0, "k_apoio": 0.12
     }
   ],
   "faixas_idade": [
@@ -67,6 +69,7 @@
     "fator_sem_material": "Cabos sem material gráfico na zona",
     "fator_lideranca_contraria": "{nome} ({papel}) trabalha contra você na zona",
     "fator_verba_rua": "Verba de Rua na zona",
+    "fator_saturacao": "Verba repetida no mesmo canal e alvo: o efeito satura",
     "sem_estrutura": "Sem verba de Rua na zona: comício sem estrutura",
     "cabos_seguram": "Os cabos seguram a presença em {alvo}: ela cai pela metade do normal.",
     "cabos_limite": "Limite legal de cabos para a sua candidatura: {limite} pessoas (você tem {atual}).",

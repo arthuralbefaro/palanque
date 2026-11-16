@@ -4,7 +4,7 @@
     "vagas_por_porte": { "pequeno": 3, "medio": 4, "grande": 5, "metropole": 6 },
     "candidatos_por_funcao": { "min": 2, "max": 4 },
     "semanas_para_conhecer": 4,
-    "salario_por_qualidade": [250, 400, 700, 1000, 1500],
+    "salario_por_qualidade": [125, 200, 350, 500, 750],
     "salario_variacao": { "min": 0.85, "max": 1.15 },
     "lealdade_minima_inicial": 20,
     "lealdade_conselho": 2,
@@ -20,7 +20,7 @@
     "funcoes_que_sabem": ["coordenador", "tesoureiro"],
     "delegacao_rendimento": 0.5,
     "delegacao_pontos_visita": 1,
-    "viral_imagem": -0.03,
+    "viral_imagem": -0.015,
     "gravidade_erro_contabil": 1
   },
   "funcoes": [

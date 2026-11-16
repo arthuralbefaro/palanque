@@ -210,6 +210,15 @@ public sealed class ChannelRules
 
     /// <summary>Quanto sobra, a cada semana, da verba a mais que um rival ganhou (cabos dispensados pelo jogador).</summary>
     public required double RivalExtraDecaimento { get; init; }
+
+    /// <summary>
+    /// Saturação (princípio g): cada semana de verba no mesmo canal e alvo soma 1; o efeito é multiplicado por
+    /// 1 ÷ (1 + fator × saturação).
+    /// </summary>
+    public required double SaturacaoFator { get; init; }
+
+    /// <summary>Quanto a saturação de cada canal e alvo cai por semana.</summary>
+    public required double SaturacaoDecaimentoSemanal { get; init; }
 }
 
 /// <summary>data/campaign/channels.json.</summary>
@@ -238,7 +247,7 @@ public sealed class ChannelCatalog : IValidatable
     public static readonly IReadOnlyList<string> TextKeys =
     [
         "conta_retorno", "conta_disputa", "efeito", "presenca", "presenca_cidade", "apoio", "apoio_zona", "cobranca", "fator_rural", "fator_faixa",
-        "fator_pre_campanha", "fator_sem_material", "fator_lideranca_contraria", "fator_verba_rua", "sem_estrutura", "cabos_seguram", "cabos_limite",
+        "fator_pre_campanha", "fator_sem_material", "fator_lideranca_contraria", "fator_verba_rua", "fator_saturacao", "sem_estrutura", "cabos_seguram", "cabos_limite",
         "cabos_dispensados", "sem_caixa", "resultado",
     ];
 
@@ -292,7 +301,8 @@ public sealed class ChannelCatalog : IValidatable
         ChannelRules r = Regras;
         if (r.Escala <= 0 || r.ExpoenteDisputa is <= 0 or > 1 || r.Sorte.Min <= 0 || r.Sorte.Max < r.Sorte.Min || r.Passo <= 0 || r.ApoioTeto is <= 0 or > 1
             || r.CabosPorGrupo < 1 || r.CabosCustoGrupo <= 0 || r.CabosFatorDecaimento is < 0 or > 1 || r.CabosSemMaterial is <= 0 or > 1
-            || r.RuaFatorRural <= 0 || r.ComicioVerbaRua < 0 || r.RivalVerba < 0 || r.RivalExtraDecaimento is < 0 or >= 1)
+            || r.RuaFatorRural <= 0 || r.ComicioVerbaRua < 0 || r.RivalVerba < 0 || r.RivalExtraDecaimento is < 0 or >= 1
+            || r.SaturacaoFator < 0 || r.SaturacaoDecaimentoSemanal <= 0)
         {
             yield return "regras: valores fora do intervalo.";
         }
@@ -363,6 +373,9 @@ public sealed class BudgetState
     public Dictionary<string, double> RivalExtra { get; init; } = [];
 
     public List<ChannelResult> LastResults { get; init; } = [];
+
+    /// <summary>Saturação por "canal|alvo": semanas seguidas de verba no mesmo lugar rendem cada vez menos.</summary>
+    public Dictionary<string, double> Saturation { get; init; } = [];
 
     public decimal Spent { get; set; }
 

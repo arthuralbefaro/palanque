@@ -57,7 +57,7 @@ public sealed partial class CampaignEngine
 
     // ------------------------------------------------------------------ bandeiras e fala
 
-    /// <summary>Define as bandeiras (até o máximo). Enfatizar um tema é assumir a posição nele.</summary>
+    /// <summary>Define as bandeiras (até o máximo): os temas em que a posição fica conhecida mais depressa.</summary>
     public CommandFailure? SetFlags(IReadOnlyList<string> themes)
     {
         List<string> distinct = themes.Distinct(StringComparer.Ordinal).ToList();
@@ -73,11 +73,6 @@ public sealed partial class CampaignEngine
 
         Platform.Flags.Clear();
         Platform.Flags.AddRange(distinct);
-        foreach (string theme in distinct)
-        {
-            Platform.Positions.TryAdd(theme, PositionOf(theme));
-        }
-
         return null;
     }
 
@@ -99,9 +94,10 @@ public sealed partial class CampaignEngine
     /// </summary>
     private double SpeakOf(string theme, CommitmentType type, string? zoneId)
     {
+        // Enquanto o jogador não escolhe outra, a posição dita é a do partido: ficar conhecida não muda o voto de
+        // ninguém (o eleitor já presumia a mesma coisa), mas passa a custar caro mudar depois.
         double gain = ThemeGain(type.Id, theme);
         int position = PositionOf(theme);
-        Platform.Positions[theme] = position;
         Platform.Known[theme] = Math.Clamp(KnownOf(theme) + gain, 0, 1);
         string where = zoneId is null
             ? Texts.Fill(PlatformContent.Texto("fala"), ("compromisso", type.Nome))

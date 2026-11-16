@@ -117,7 +117,10 @@ public class PlatformTests
         }
 
         Assert.InRange(engine.KnownOf(theme), 0.3, 1);
-        Assert.True(engine.Platform.Positions.ContainsKey(theme));
+
+        // Falar da posição padrão (a do partido) não muda o que o eleitorado enxerga.
+        Assert.False(engine.Platform.Positions.ContainsKey(theme));
+        Assert.Equal(engine.PartyPosition(theme), engine.PerceivedPosition(theme), 12);
 
         // Sem tema, a mesma entrevista não mexe na posição conhecida.
         double before = engine.KnownOf(theme);
@@ -297,8 +300,7 @@ public class PlatformTests
         Assert.Equal(plain * rules.BandeiraBonus, engine.ThemeGain("entrevista", "saude"), 9);
         Assert.Equal(engine.ThemeGain("entrevista", "impostos"), plain, 9);
 
-        // Enfatizar é assumir a posição, e o tema fica conhecido aos poucos mesmo sem fala.
-        Assert.True(engine.Platform.Positions.ContainsKey("saude"));
+        // O tema de bandeira fica conhecido aos poucos mesmo sem fala.
         StaffTests.Week(engine);
         Assert.Equal(rules.BandeiraGanhoSemanal, engine.KnownOf("saude"), 9);
         Assert.Equal(0, engine.KnownOf("impostos"));
