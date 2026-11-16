@@ -52,13 +52,13 @@ public partial class NewWorldScreen : Control
         _options = Ui.Row(screen, 16);
         BuildOptions();
 
-        // Cabeçalho e linhas rolam juntos na horizontal: as linhas são mais largas que telas menores.
-        var scroll = screen.Add(new ScrollContainer { SizeFlagsVertical = SizeFlags.ExpandFill, SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        // A tabela cabe na largura da tela (sem rolagem horizontal); só rola na vertical.
+        var scroll = screen.Add(new ScrollContainer { SizeFlagsVertical = SizeFlags.ExpandFill, SizeFlagsHorizontal = SizeFlags.ExpandFill, HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled });
         VBoxContainer table = Ui.Column(scroll, 4);
         HBoxContainer header = Ui.Row(table, 6);
         foreach (var (text, width) in Columns)
         {
-            Label l = Ui.Label(header, text, color: Ui.Muted);
+            Label l = Ui.Label(header, text, 16, Ui.Muted);
             l.CustomMinimumSize = new Vector2(width, 0);
         }
 
@@ -75,7 +75,7 @@ public partial class NewWorldScreen : Control
 
     private static readonly (string Text, int Width)[] Columns =
     [
-        ("Logo", 48), ("Sigla", 150), ("Nome", 330), ("Número", 130), ("Família", 270), ("Posição", 150), ("Tamanho", 180), ("Cores e logotipo", 260), ("Cúpula", 210), ("", 200),
+        ("Logo", 44), ("Sigla", 144), ("Nome", 270), ("Número", 150), ("Família", 240), ("Posição", 152), ("Tamanho", 182), ("Cores e logotipo", 250), ("Cúpula", 194), ("", 108),
     ];
 
     private void ChangePreset(string presetId)
@@ -156,51 +156,67 @@ public partial class NewWorldScreen : Control
 
         void Tools(HBoxContainer cell, PartyField field)
         {
-            Ui.Button(cell, "S", () => { _setup.RandomizeField(party.Id, field, _rng); Rebuild(); }, "Sortear este campo");
-            var lockBox = cell.Add(new CheckBox { ButtonPressed = party.IsLocked(field), TooltipText = Tr("Travar antes do sorteio geral") });
-            lockBox.Toggled += on => party.SetLocked(field, on);
+            Ui.IconButton(cell, Ui.Icons.Sortear, "Sortear só este campo", () => { _setup.RandomizeField(party.Id, field, _rng); Rebuild(); });
+            bool locked = party.IsLocked(field);
+            Ui.IconButton(cell, locked ? Ui.Icons.Travado : Ui.Icons.Destravado, locked ? "Travado: o sorteio geral não mexe neste campo. Clique para destravar." : "Travar este campo antes do sorteio geral", () =>
+            {
+                party.SetLocked(field, !party.IsLocked(field));
+                Rebuild();
+            });
         }
 
-        HBoxContainer sigla = Cell(150);
-        var siglaEdit = sigla.Add(new LineEdit { Text = party.Sigla, CustomMinimumSize = new Vector2(90, 0), MaxLength = 12 });
+        HBoxContainer sigla = Cell(144);
+        var siglaEdit = Ui.Compact(sigla.Add(new LineEdit { Text = party.Sigla, MaxLength = 12 }), 70);
         siglaEdit.TextChanged += t => { party.Sigla = t; RefreshIssues(); };
         Tools(sigla, PartyField.Sigla);
 
-        HBoxContainer name = Cell(330);
-        var nameEdit = name.Add(new LineEdit { Text = party.Name, CustomMinimumSize = new Vector2(270, 0) });
+        HBoxContainer name = Cell(270);
+        var nameEdit = Ui.Compact(name.Add(new LineEdit { Text = party.Name }), 196);
         nameEdit.TextChanged += t => { party.Name = t; RefreshIssues(); };
         Tools(name, PartyField.Name);
 
-        HBoxContainer number = Cell(130);
-        var numberEdit = number.Add(new SpinBox { MinValue = 10, MaxValue = 99, Value = party.Number, CustomMinimumSize = new Vector2(80, 0) });
+        HBoxContainer number = Cell(150);
+        var numberEdit = Ui.Compact(number.Add(new SpinBox { MinValue = 10, MaxValue = 99, Value = party.Number }), 76);
         numberEdit.ValueChanged += v => { party.Number = (int)v; RefreshIssues(); };
         Tools(number, PartyField.Number);
 
-        HBoxContainer family = Cell(270);
-        Ui.Options(family, _game.World.Parties.Families.Families.Select(f => (f.Id, f.Name)), party.FamilyId, f => { party.FamilyId = f; RefreshIssues(); });
+        HBoxContainer family = Cell(240);
+        Small(Ui.Options(family, _game.World.Parties.Families.Families.Select(f => (f.Id, f.Name)), party.FamilyId, f => { party.FamilyId = f; RefreshIssues(); }), 166);
         Tools(family, PartyField.Family);
 
-        HBoxContainer position = Cell(150);
-        Ui.Value(position, $"{party.Position.Economic:+0;-0;0} / {party.Position.Social:+0;-0;0}").TooltipText = Tr("Econômico / Costumes");
+        HBoxContainer position = Cell(152);
+        Label positionLabel = Ui.Value(position, $"{party.Position.Economic:+0;-0;0} / {party.Position.Social:+0;-0;0}", 16);
+        positionLabel.TooltipText = Tr("Econômico / Costumes");
+        positionLabel.CustomMinimumSize = new Vector2(78, 0);
         Tools(position, PartyField.Position);
 
-        HBoxContainer size = Cell(180);
-        Ui.Options(size, Enum.GetValues<PartySize>().Select(s => (s.ToString(), WorldTexts.Size(s))), party.Size.ToString(), s => { party.Size = Enum.Parse<PartySize>(s); RefreshIssues(); }, translate: false);
+        HBoxContainer size = Cell(182);
+        Small(Ui.Options(size, Enum.GetValues<PartySize>().Select(s => (s.ToString(), WorldTexts.Size(s))), party.Size.ToString(), s => { party.Size = Enum.Parse<PartySize>(s); RefreshIssues(); }, translate: false), 108);
         Tools(size, PartyField.Size);
 
-        HBoxContainer visual = Cell(260);
-        Ui.ColorPicker(visual, party.Colors.Primary, c => { party.Colors = party.Colors with { Primary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); RefreshIssues(); });
-        Ui.ColorPicker(visual, party.Colors.Secondary, c => { party.Colors = party.Colors with { Secondary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); });
-        Ui.Options(visual, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), party.LogoIcon, i => { party.LogoIcon = i; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); });
+        HBoxContainer visual = Cell(250);
+        Ui.Compact(Ui.ColorPicker(visual, party.Colors.Primary, c => { party.Colors = party.Colors with { Primary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); RefreshIssues(); }), 30);
+        Ui.Compact(Ui.ColorPicker(visual, party.Colors.Secondary, c => { party.Colors = party.Colors with { Secondary = c }; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); }), 30);
+        Small(Ui.Options(visual, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), party.LogoIcon, i => { party.LogoIcon = i; badge.Set(party.LogoIcon, party.Colors.Primary, party.Colors.Secondary); }), 104);
         Tools(visual, PartyField.Visual);
 
-        HBoxContainer leadership = Cell(210);
-        Ui.Options(leadership, Enum.GetValues<LeadershipStyle>().Select(l => (l.ToString(), WorldTexts.Leadership(l))), party.Leadership.ToString(), l => party.Leadership = Enum.Parse<LeadershipStyle>(l), translate: false);
+        HBoxContainer leadership = Cell(194);
+        Small(Ui.Options(leadership, Enum.GetValues<LeadershipStyle>().Select(l => (l.ToString(), WorldTexts.Leadership(l))), party.Leadership.ToString(), l => party.Leadership = Enum.Parse<LeadershipStyle>(l), translate: false), 120);
         Tools(leadership, PartyField.Leadership);
 
-        Ui.Button(row, "Sortear linha", () => { _setup.RandomizeParty(party.Id, _rng); Rebuild(); });
-        _structural.Add(Ui.Button(row, "Duplicar", () => { _setup.DuplicateParty(party.Id, _rng); Rebuild(); }));
-        _structural.Add(Ui.Button(row, "Remover", () => { _setup.RemoveParty(party.Id); Rebuild(); }));
+        Ui.IconButton(row, Ui.Icons.Sortear, "Sortear a linha inteira (campos travados ficam)", () => { _setup.RandomizeParty(party.Id, _rng); Rebuild(); });
+        _structural.Add(Ui.IconButton(row, Ui.Icons.Duplicar, "Duplicar este partido", () => { _setup.DuplicateParty(party.Id, _rng); Rebuild(); }));
+        _structural.Add(Ui.IconButton(row, Ui.Icons.Remover, "Remover este partido", () => { _setup.RemoveParty(party.Id); Rebuild(); }));
+    }
+
+    /// <summary>Lista suspensa compacta: fonte menor, largura fixa e texto cortado com reticências no próprio botão.</summary>
+    private static OptionButton Small(OptionButton options, int width)
+    {
+        Ui.Compact(options, width);
+        options.ClipText = true;
+        options.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+        options.TooltipText = options.Selected >= 0 ? options.GetItemText(options.Selected) : "";
+        return options;
     }
 
     private void RefreshIssues()

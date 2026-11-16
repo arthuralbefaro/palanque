@@ -62,6 +62,68 @@ public static class Ui
         return button;
     }
 
+    /// <summary>Ícones de interface (assets/icons/ui), sempre com tooltip explicando a ação.</summary>
+    public static class Icons
+    {
+        public const string Sortear = "res://assets/icons/ui/dado.svg";
+        public const string Travado = "res://assets/icons/ui/cadeado.svg";
+        public const string Destravado = "res://assets/icons/ui/cadeado_aberto.svg";
+        public const string Duplicar = "res://assets/icons/ui/copiar.svg";
+        public const string Remover = "res://assets/icons/ui/lixeira.svg";
+    }
+
+    /// <summary>
+    /// Versão compacta de um controle para tabelas densas: fonte 16 e margens internas pequenas (o tema tem
+    /// margens para texto grande). Vale para botões, listas, campos de texto e seletores de cor.
+    /// </summary>
+    public static T Compact<T>(T control, int width = 0)
+        where T : Control
+    {
+        Control target = control is SpinBox spin ? spin.GetLineEdit() : control;
+        target.AddThemeFontSizeOverride("font_size", 16);
+        foreach (string state in new[] { "normal", "hover", "pressed", "disabled", "focus", "read_only" })
+        {
+            if (target.HasThemeStylebox(state) && target.GetThemeStylebox(state)?.Duplicate() is StyleBox style)
+            {
+                style.ContentMarginLeft = style.ContentMarginRight = 6;
+                style.ContentMarginTop = style.ContentMarginBottom = 3;
+                target.AddThemeStyleboxOverride(state, style);
+            }
+        }
+
+        if (width > 0)
+        {
+            control.CustomMinimumSize = new Vector2(width, control.CustomMinimumSize.Y);
+        }
+
+        return control;
+    }
+
+    /// <summary>Botão só com ícone; o tooltip diz o que ele faz.</summary>
+    public static Button IconButton(Node parent, string icon, string tooltip, Action onPressed)
+    {
+        var button = parent.Add(new Button
+        {
+            Icon = GD.Load<Texture2D>(icon),
+            TooltipText = TranslationServer.Translate(tooltip),
+            CustomMinimumSize = new Vector2(34, 34),
+            IconAlignment = HorizontalAlignment.Center,
+        });
+
+        // O estilo do tema tem margens para texto grande; o botão de ícone usa a mesma cara com margem pequena.
+        foreach (string state in new[] { "normal", "hover", "pressed", "disabled", "focus" })
+        {
+            if (button.GetThemeStylebox(state)?.Duplicate() is StyleBox style)
+            {
+                style.ContentMarginLeft = style.ContentMarginRight = style.ContentMarginTop = style.ContentMarginBottom = 3;
+                button.AddThemeStyleboxOverride(state, style);
+            }
+        }
+
+        button.Pressed += onPressed;
+        return button;
+    }
+
     public static HBoxContainer Row(Node parent, int separation = 8)
     {
         var row = parent.Add(new HBoxContainer());
