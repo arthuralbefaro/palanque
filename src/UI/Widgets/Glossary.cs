@@ -14,6 +14,14 @@ public static class Glossary
 {
     public const string MetaPrefix = "termo:";
 
+    /// <summary>Texto sem links: nomes próprios (zona, pessoa), que não são termos mesmo quando contêm um.</summary>
+    public static RichTextLabel Plain(Node parent, string text, int size = 18, Color? color = null, Font? font = null)
+    {
+        RichTextLabel label = Rich(parent, "", size, color, font);
+        label.Text = Escape(text);
+        return label;
+    }
+
     public static RichTextLabel Rich(Node parent, string text, int size = 18, Color? color = null, Font? font = null)
     {
         var label = new RichTextLabel
