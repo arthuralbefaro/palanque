@@ -66,6 +66,7 @@ public class ZoneElectorateTests
 
     [Theory]
     [MemberData(nameof(Cities))]
+    [Trait("Categoria", "Lento")]
     public void Projecao_por_zona_somada_e_a_da_cidade(int ibge)
     {
         CampaignEngine engine = CampaignKit.NewCareer(ibge, 52);

@@ -73,6 +73,7 @@ public class PlatformTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Falar_do_tema_torna_a_posicao_conhecida_e_entra_no_Livro()
     {
         CampaignEngine engine = ChannelTests.InCampaign("medio", 53);
@@ -174,6 +175,7 @@ public class PlatformTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Mudanca_de_posicao_tem_previsao_por_grupo_e_por_zona_e_o_resultado_cai_na_faixa()
     {
         foreach (ulong seed in new ulong[] { 55, 56, 57 })
@@ -340,6 +342,7 @@ public class PlatformTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Toda_posicao_agrada_um_publico_e_desagrada_outro()
     {
         for (ulong seed = 70; seed < 90; seed++)
@@ -374,6 +377,7 @@ public class PlatformTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Promessa_local_da_apoio_imediato_tem_previsao_e_entra_no_Livro()
     {
         foreach (ulong seed in new ulong[] { 61, 62, 63 })

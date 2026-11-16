@@ -37,6 +37,7 @@ public class DebateTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Debate_e_marcado_na_campanha_de_prefeito_e_trava_a_semana()
     {
         CampaignEngine engine = UntilDebate(3);
@@ -53,6 +54,7 @@ public class DebateTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Rodadas_terminam_o_debate_e_mexem_na_imagem_dos_participantes()
     {
         CampaignEngine engine = UntilDebate(4);
@@ -82,6 +84,7 @@ public class DebateTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Recusar_o_debate_custa_imagem_e_ataque_exige_alvo()
     {
         CampaignEngine engine = UntilDebate(5);
@@ -102,6 +105,7 @@ public class DebateTests
     [Theory]
     [InlineData(6UL)]
     [InlineData(7UL)]
+    [Trait("Categoria", "Lento")]
     public void Campanha_de_prefeito_com_debates_ate_a_apuracao(ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(MediumTown(), seed, strongestParty: true);

@@ -9,6 +9,7 @@ namespace Planalto.Core.Tests.Legislature;
 public class PartyAffiliationTests
 {
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Trocar_de_partido_fora_da_janela_custa_o_mandato()
     {
         var (state, _) = LegislatureTests.ElectedCouncillor();
@@ -25,6 +26,7 @@ public class PartyAffiliationTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Na_janela_partidaria_a_troca_preserva_o_mandato()
     {
         var (state, _) = LegislatureTests.ElectedCouncillor();
@@ -47,6 +49,7 @@ public class PartyAffiliationTests
         state.Calendar.JumpTo(Calendar.ElectionFor(year).PartyAffiliationDeadline.AddDays(-14));
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Vereador_eleito_em_2028_perde_o_mandato_ao_trocar_na_janela_de_2030()
     {
         var (state, _) = LegislatureTests.ElectedCouncillor();
@@ -59,6 +62,7 @@ public class PartyAffiliationTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Vereador_eleito_em_2028_mantem_o_mandato_ao_trocar_na_janela_de_2032()
     {
         var (state, _) = LegislatureTests.ElectedCouncillor();
@@ -73,6 +77,7 @@ public class PartyAffiliationTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Deputado_federal_mantem_o_mandato_so_na_janela_do_ultimo_ano()
     {
         var (state, _) = LegislatureTests.ElectedCouncillor();
@@ -109,6 +114,7 @@ public class PartyAffiliationTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Expulso_se_filia_sem_perder_o_mandato_e_quem_se_filia_tarde_nao_disputa()
     {
         var (state, _) = LegislatureTests.ElectedCouncillor();

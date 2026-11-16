@@ -60,6 +60,7 @@ public class LeaderTests
 
     [Theory]
     [MemberData(nameof(Cities))]
+    [Trait("Categoria", "Lento")]
     public void Toda_lideranca_tem_nome_aparencia_interesse_e_lembrancas_e_a_quantidade_segue_o_porte(int ibge, ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(ibge, seed);
@@ -203,6 +204,7 @@ public class LeaderTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Lideranca_sem_contato_por_oito_semanas_perde_relacao()
     {
         CampaignEngine engine = Fresh(3106200, 85);
@@ -305,6 +307,7 @@ public class LeaderTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Toda_promessa_aceita_esta_no_Livro_e_sobrevive_ao_save_e_a_passagem_para_o_mandato()
     {
         // Campanha inteira aceitando todo pedido: cada promessa feita a uma liderança tem de estar no Livro.

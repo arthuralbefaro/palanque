@@ -14,6 +14,7 @@ public class ClockAndForecastTests
     private static TimeConfig Time => JsonData.LoadFile<TimeConfig>(Path.Combine(TestContent.DataDirectory, TimeConfig.File)).GetValueOrThrow();
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Sete_dias_produzem_o_mesmo_estado_que_uma_semana()
     {
         // Sem compromisso marcado, sete chamadas de AdvanceDay são uma semana do motor: mesma semente, mesmo estado.
@@ -43,6 +44,7 @@ public class ClockAndForecastTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Semana_fechada_no_meio_executa_o_que_resta_na_data_de_cada_compromisso()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3106200, 36);
@@ -110,6 +112,7 @@ public class ClockAndForecastTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Resultado_de_cada_compromisso_cai_na_faixa_prevista_em_mil_execucoes()
     {
         CampaignEngine engine = InCampaign(2927408, 33);
@@ -214,6 +217,7 @@ public class ClockAndForecastTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Previsao_mostra_os_desfechos_sorteados_com_a_chance()
     {
         CampaignEngine engine = InCampaign(2927408, 34);
@@ -256,6 +260,7 @@ public class ClockAndForecastTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Escolha_de_evento_cai_na_faixa_prevista()
     {
         CampaignEngine engine = CampaignKit.NewCareer(3550308, 35);

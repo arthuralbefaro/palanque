@@ -79,6 +79,7 @@ public class StartingAgeTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Familia_sempre_coerente_com_a_idade_em_10_mil_sorteios()
     {
         FamilyConfig config = People.Family;
@@ -122,6 +123,7 @@ public class StartingAgeTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Jogador_de_17_anos_espera_a_primeira_eleicao_em_que_e_elegivel_e_disputa_ela()
     {
         // Procura, de forma determinística, um jogador de 17 anos que ainda não tem 18 em 15/8/2028.

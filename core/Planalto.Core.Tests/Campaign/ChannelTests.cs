@@ -76,6 +76,7 @@ public class ChannelTests
         engine.Territory.Zones.First(z => engine.RivalBudget(channel, z) > 0);
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Dobrar_a_verba_de_um_canal_rende_entre_35_e_45_por_cento_a_mais()
     {
         CampaignEngine engine = WithFreeZone("grande", 31);
@@ -101,6 +102,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Verba_de_rival_no_mesmo_canal_e_zona_reduz_o_efeito()
     {
         CampaignEngine engine = WithFreeZone("grande", 32);
@@ -129,6 +131,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Rivais_gastam_nas_zonas_alvo_do_plano_de_cada_um()
     {
         CampaignEngine engine = InCampaign("grande", 33);
@@ -147,6 +150,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Na_pre_campanha_so_redes_sem_impulsionamento_e_material_institucional()
     {
         CampaignEngine engine = Fresh("medio", 34);
@@ -241,6 +245,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Contratar_cabos_acima_do_limite_legal_e_barrado()
     {
         foreach (string porte in new[] { "pequeno", "medio", "grande" })
@@ -277,6 +282,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Cabos_sao_contratados_em_grupos_e_ocupam_uma_vaga_da_equipe()
     {
         CampaignEngine engine = InCampaign("medio", 37);
@@ -306,6 +312,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Nenhum_gasto_possivel_com_radio_TV_outdoor_ou_brinde()
     {
         ChannelLawConfig law = ChannelLawConfig.Default;
@@ -348,6 +355,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Comicio_exige_verba_de_Rua_na_zona_e_a_Rua_reforca_a_caminhada()
     {
         CampaignEngine engine = InCampaign("medio", 39);
@@ -374,6 +382,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Cabos_seguram_a_presenca_e_rendem_metade_sem_material_grafico()
     {
         CampaignEngine with = InCampaign("medio", 40);
@@ -408,6 +417,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Previsao_de_cada_canal_tem_faixa_e_explicacao_e_o_resultado_cai_nela()
     {
         foreach (ulong seed in new ulong[] { 41, 42, 43 })
@@ -462,6 +472,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void A_verba_e_cobrada_toda_segunda_e_o_que_o_caixa_nao_paga_nao_rende()
     {
         CampaignEngine engine = InCampaign("medio", 44);
@@ -500,6 +511,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Verba_repetida_no_mesmo_canal_e_alvo_satura_e_recupera_com_o_tempo()
     {
         // Na pré-campanha (há semanas de sobra para ver a saturação subir e passar), com material institucional.
@@ -544,6 +556,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Cabos_dispensados_vao_para_um_rival_da_zona()
     {
         CampaignEngine engine = InCampaign("medio", 45);
@@ -564,6 +577,7 @@ public class ChannelTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Verba_vai_e_volta_pelo_save_e_as_faixas_de_idade_existem_no_eleitorado()
     {
         var groups = CampaignKit.C.Electorate.Segments.Dimensions.Single(d => d.Id == "idade").Groups.Select(g => g.Id).Order().ToList();

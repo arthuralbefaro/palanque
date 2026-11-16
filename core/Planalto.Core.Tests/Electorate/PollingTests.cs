@@ -29,6 +29,7 @@ public class PollingTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void PesquisaInterna_SemViesConvergeParaAIntencaoReal()
     {
         var (truth, candidates) = Truth();
@@ -57,6 +58,7 @@ public class PollingTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void VieseDeCasa_FavoreceOLadoDoInstituto()
     {
         MunicipalElectorate electorate = F.Build(F.SaoPaulo);
@@ -81,6 +83,7 @@ public class PollingTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void PesquisaPublica_SomaCemENaoDetalhaGrupos()
     {
         var (truth, candidates) = Truth();

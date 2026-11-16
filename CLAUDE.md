@@ -49,6 +49,9 @@ Dono do projeto e único autor: Arthur Albefaro.
 ## Verificação obrigatória (antes de dar qualquer tarefa como concluída)
 - dotnet build Planalto.sln
 - dotnet test core/Planalto.Core.Tests
+  - A cada commit, só os testes rápidos: `dotnet test core/Planalto.Core.Tests --filter "Categoria!=Lento"` (menos de 1 minuto).
+  - Antes de cada tag, a suíte inteira (`dotnet test core/Planalto.Core.Tests`) e o BalanceSim (`dotnet run --project tools/Planalto.BalanceSim`).
+  - Teste novo que passe de 2 segundos (carreira ou campanha inteira, muitos anos, muitas sementes, balanceamento) nasce com `[Trait("Categoria", "Lento")]`.
 - dotnet run --project tools/Planalto.DataValidator
 - godot --headless --build-solutions --quit
 - Se o DataImporter mudou: dotnet test tools/Planalto.DataImporter.Tests (precisa do cache preenchido)

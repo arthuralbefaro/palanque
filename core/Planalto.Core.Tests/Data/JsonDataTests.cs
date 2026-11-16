@@ -10,6 +10,7 @@ public class JsonDataTests
         ?? throw new InvalidOperationException("Pasta data/ não encontrada a partir dos testes.");
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void ArquivosDoProjeto_SaoValidos()
     {
         IReadOnlyList<DataFileReport> reports = DataValidation.ValidateAll(DataDirectory);

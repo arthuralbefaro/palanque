@@ -22,6 +22,7 @@ public class CampaignBalanceTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Sem_campanha_nao_se_elege_nem_com_o_partido_mais_forte()
     {
         foreach (int ibge in Cities())
@@ -33,6 +34,7 @@ public class CampaignBalanceTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Campanha_ativa_no_partido_mais_forte_elege_na_maior_parte_das_vezes()
     {
         var cities = Cities();

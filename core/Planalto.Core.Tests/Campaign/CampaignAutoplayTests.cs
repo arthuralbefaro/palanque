@@ -40,6 +40,7 @@ public class CampaignAutoplayTests
 
     [Theory]
     [MemberData(nameof(Cases))]
+    [Trait("Categoria", "Lento")]
     public void CampanhaInteira_SemTravamentoNemEstadoInvalido(int ibge, ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(ibge, seed);
@@ -51,6 +52,7 @@ public class CampaignAutoplayTests
     [Theory]
     [InlineData(3106200, 41UL)]
     [InlineData(1100015, 42UL)]
+    [Trait("Categoria", "Lento")]
     public void CampanhaInteira_ComAgendaCheia(int ibge, ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(ibge, seed);
@@ -61,6 +63,7 @@ public class CampaignAutoplayTests
     [Theory]
     [InlineData(3304557, 5UL)]
     [InlineData(2927408, 6UL)]
+    [Trait("Categoria", "Lento")]
     public void CampanhaInteira_EmMundoSorteado(int ibge, ulong seed)
     {
         CampaignEngine engine = CampaignKit.NewCareer(ibge, seed, "multipartidario_moderado");

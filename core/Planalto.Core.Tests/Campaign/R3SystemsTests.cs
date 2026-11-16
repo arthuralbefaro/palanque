@@ -41,6 +41,7 @@ public class R3SystemsTests
     // ------------------------------------------------------------------ mídia
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Veiculos_por_porte_com_nome_que_diz_o_que_e_e_fora_da_lista_de_bloqueio()
     {
         MediaContent media = CampaignKit.C.Campaign.Media;
@@ -90,6 +91,7 @@ public class R3SystemsTests
         Assert.Equal(blocked, CampaignKit.C.Campaign.Media.Blocklist.Blocks(name));
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Nenhuma_noticia_sem_fato_o_tom_segue_a_linha_e_boato_vem_marcado()
     {
         int total = 0;
@@ -183,6 +185,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Entrevista_em_veiculo_critico_e_mais_dificil_e_convence_mais()
     {
         MediaRules rules = CampaignKit.C.Campaign.Media.Outlets.Regras;
@@ -235,6 +238,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Sugerir_pauta_e_anunciar_tem_previsao_com_faixa_e_o_resultado_cai_nela()
     {
         int pitches = 0;
@@ -320,6 +324,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Horario_gratuito_so_onde_ha_emissora_no_periodo_da_lei_e_pelo_tempo_do_partido()
     {
         CampaignEngine engine = CampaignKit.NewCareer(City("grande"), 171, strongestParty: true);
@@ -365,6 +370,7 @@ public class R3SystemsTests
     // ------------------------------------------------------------------ ataques, respostas e pactos
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Atacar_tem_previsao_com_faixa_explicacao_e_o_resultado_cai_nela()
     {
         AttackCatalog attacks = CampaignKit.C.Campaign.Attacks;
@@ -452,6 +458,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Responder_a_ataque_tem_prazo_de_48_horas_e_bem_respondido_some_em_4_semanas()
     {
         AttackCatalog catalog = CampaignKit.C.Campaign.Attacks;
@@ -638,6 +645,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Investigar_revela_ponto_fraco_que_vira_prova()
     {
         int found = 0;
@@ -781,6 +789,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Limite_de_gastos_e_substituicao_marcada_e_gasto_proprio_e_acima_do_limite_viram_irregularidade()
     {
         FinanceCatalog catalog = CampaignKit.C.Campaign.Finance;
@@ -817,6 +826,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Fundo_eleitoral_coletivo_e_prestacao_parcial_chegam_nas_datas()
     {
         CampaignEngine engine = CampaignKit.NewCareer(City("medio"), 341, strongestParty: true);
@@ -868,6 +878,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Esqueleto_vem_a_tona_pela_formula_base_gravidade_quem_sabe_e_exposicao()
     {
         CampaignEngine engine = CampaignKit.NewCareer(City("medio"), 351);
@@ -986,6 +997,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void A_apuracao_abre_o_processo_de_contas_com_o_que_a_campanha_fez()
     {
         CampaignEngine engine = CampaignKit.NewCareer(City("pequeno"), 371, strongestParty: true);
@@ -1016,6 +1028,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Depois_da_posse_o_processo_de_contas_segue_e_a_cassacao_encerra_o_mandato()
     {
         CampaignEngine engine = CampaignKit.NewCareer(City("pequeno"), 375, strongestParty: true);
@@ -1172,6 +1185,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Evento_de_chuva_so_com_comicio_marcado_e_eventos_dinamicos_disparam_por_fato()
     {
         CampaignEngine engine = Rich("medio", 391);
@@ -1240,6 +1254,7 @@ public class R3SystemsTests
 
     [Theory]
     [MemberData(nameof(PorPorte))]
+    [Trait("Categoria", "Lento")]
     public void Campanha_inteira_com_os_sistemas_da_R3_e_save_e_load_no_meio_termina_igual(int ibge, ulong seed)
     {
         var options = new RobotOptions { R2b = true, R3 = true, Answer = LeaderAnswer.Aceitar };
@@ -1291,6 +1306,7 @@ public class R3SystemsTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void O_robo_da_R3_usa_todos_os_comandos_novos_ao_longo_das_campanhas()
     {
         var used = new Dictionary<string, int>(StringComparer.Ordinal);
