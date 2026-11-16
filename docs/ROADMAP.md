@@ -217,6 +217,32 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - Os dois arquivos foram desenhados pelo autor com um consultor. Valem como referência de **composição e de conteúdo** de cada tela, **não de estilo**: o estilo final é 3D estilizado de formas suaves. O código deles não entra no jogo.
 - Referência de interface: Geopolitical Simulator. Referências de estilo dos personagens e cenários: Two Point Hospital, Overcooked, Planet Coaster.
 
+**Bases e artista (DECISOES D-045):**
+- Bases livres CC0 para cenários, animações, corpos e multidão: KayKit e os Human Base Meshes do Blender; o MPFB só como referência.
+- Quaternius fora até a confirmação da licença por escrito.
+- Artista 3D só para cabeça, expressões e roupas, depois do protótipo aprovado e de um teste pago (`docs/BRIEFING_ARTISTA_3D.md`).
+
+**Protótipo** (entregue ao fim da `fase-r-final`):
+- Mantena (MG) e uma metrópole, com o mapa de base detalhado e os modos do jogo por cima.
+- Uma janela flutuante e o menu como cena.
+- 3 personagens em 3 expressões.
+- A cabeça é provisória, de base livre, e substituível pelo contrato técnico do ART_GUIDE (seção RV, "Cabeça substituível"), com a cena de teste de cabeça.
+
+**Critério de aprovação do protótipo** (o autor julga sem olhar o rosto):
+- composição das telas conforme as referências;
+- câmera: enquadramentos e zoom da cidade inteira até a rua;
+- cor;
+- menu como cena;
+- 60 FPS com zoom e arraste;
+- mapa de base de uma metrópole pronto em menos de 3 segundos.
+
+**Critério do rosto** (só depois do teste pago do artista; não entra na aprovação do protótipo):
+- a cabeça de teste passa na cena de teste de cabeça (nomes, materiais, shape keys, orçamento);
+- as 3 expressões se distinguem nos retratos de 96 px e de 512 px;
+- a tintura funciona em todos os tons de pele do catálogo;
+- o estilo bate com as referências.
+Aprovado o teste, o contrato cobre as demais cabeças, as 8 expressões, os cabelos, as barbas e as roupas.
+
 ## Fase 6 — Esfera estadual e federal
 > Só começa depois da Fase R aprovada. As esferas estadual e federal usam a tela central, o tempo corrente e os sistemas da seção 17 do GDD.
 - [ ] 27 estados

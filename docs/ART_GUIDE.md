@@ -190,3 +190,32 @@ A parte RV troca o visual de todas as telas (DECISOES D-041, adendos; as decisõ
   4. **Apuração:** uma transmissão de TV, com a Câmara se enchendo e o comitê comemorando no canto.
 - Os dois arquivos foram desenhados pelo autor com um consultor. Valem como referência de **composição e de conteúdo** de cada tela, **não de estilo**: o estilo final é 3D estilizado de formas suaves. O código deles não entra no jogo.
 - Referência de interface: Geopolitical Simulator. Referências de estilo dos personagens e cenários: Two Point Hospital, Overcooked, Planet Coaster.
+
+### Cabeça substituível (contrato técnico, proposta)
+
+O protótipo da RV usa uma cabeça provisória, montada de base livre CC0 (DECISOES D-045). Depois ela é trocada pela do artista sem mudar código. As duas seguem este contrato, o mesmo de `docs/BRIEFING_ARTISTA_3D.md`.
+
+- **Arquivos:** glTF 2.0 binário, um por peça: `cabeca_<id>.glb`, `cabelo_<id>.glb`, `barba_<id>.glb`.
+- **Eixos e escala:** Y para cima, frente para +Z, 1 unidade = 1 m. Corpo de referência de 1,60 m e cabeça de cerca de 0,30 m, do queixo ao topo do crânio.
+- **Origem:** no nó `encaixe_pescoco`, na base do pescoço, preso ao osso da cabeça do corpo. O pescoço desce 3 cm abaixo do encaixe.
+- **Pontos de troca** (nós vazios, filhos da raiz):
+  - `encaixe_cabelo`;
+  - `encaixe_oculos`;
+  - `encaixe_brinco_e` e `encaixe_brinco_d`.
+  Cabelo, barba, óculos e brincos se prendem por eles, rígidos e sem pesos de pele.
+- **Malhas:**
+  - `cabeca`, com as sobrancelhas, ou `sobrancelhas` à parte;
+  - `olho_e` e `olho_d`, com origem no centro de rotação;
+  - `dentes` e `lingua`;
+  - `cabelo` e `barba`, em arquivos próprios.
+- **Expressões:** shape keys com nomes exatos. Peso 1 é a expressão inteira, e a neutra é a malha sem shape key. São as 8 expressões do GDD 3.6:
+  - `expr_sorriso`, `expr_sorriso_largo`, `expr_preocupado`, `expr_bravo`, `expr_triste`, `expr_surpreso` e `expr_cansado`;
+  - mais `piscar`, que se soma às demais.
+  A barba e as sobrancelhas separadas levam as shape keys da região que cobrem, com os mesmos nomes. O código liga a expressão do jogo à shape key pelo nome.
+- **Materiais tingíveis** (texturas em tons de cinza; o jogo multiplica pela cor da Appearance):
+  - `pele` e `labios` (este derivado da pele);
+  - `sobrancelha`, `cabelo` e `barba`, com a cor do cabelo. O grisalho vem do canal R das texturas `*_mascara`;
+  - `iris`.
+  Não tingíveis: `esclera`, `dentes` e `lingua`. Rugas e marcas ficam em `pele_detalhe`, com a intensidade dada pela idade.
+- **Orçamento:** cabeça com olhos, dentes e língua até 8.000 triângulos; cabelo até 6.000; barba até 2.000. Texturas PNG até 2048 px, UV sem sobreposição.
+- **Cena de teste de cabeça** (faz parte do protótipo): carrega qualquer `cabeca_*.glb` e confere nomes, materiais, shape keys e orçamento. Aplica as 8 expressões, 6 tons de pele e 2 cores de cabelo, e grava retratos de 96 px e 512 px. Toda cabeça nova passa por ela antes de ser aceita.
