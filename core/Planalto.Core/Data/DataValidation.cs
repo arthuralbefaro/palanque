@@ -44,12 +44,17 @@ public static class DataValidation
             reports.Add(new DataFileReport(scenario, loaded?.States.Values.Sum(s => s.Municipios.Count) ?? 0, scenarioErrors));
         }
 
-        reports.AddRange(Electorate.ElectorateContent.Load(dataDirectory, world?.Parties.Themes, dataSet, out _));
+        reports.AddRange(Electorate.ElectorateContent.Load(dataDirectory, world?.Parties.Themes, dataSet, out Electorate.ElectorateContent? electorate));
         var people = PeopleContent.Load(dataDirectory, out _);
         reports.AddRange(people.Where(r => !reports.Any(x => x.File == r.File)));
         reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
         reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out _));
         reports.AddRange(Events.EventContent.Load(dataDirectory, out _));
+        reports.AddRange(Legislature.LegislatureContent.Load(
+            dataDirectory,
+            electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
+            world?.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal),
+            out _));
         if (dataSet is not null)
         {
             reports.AddRange(ValidateGeo(dataDirectory, dataSet));

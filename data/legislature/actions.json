@@ -1,0 +1,94 @@
+{
+  "actions": [
+    {
+      "id": "tribuna",
+      "kind": "geral",
+      "name": "Discurso na tribuna",
+      "description": "Ocupar a tribuna no grande expediente. Teste de Oratória: um bom discurso vira corte nas redes; um tropeço também.",
+      "energy": 15,
+      "capital": 0,
+      "effects": { "recognition": 1.5 },
+      "test": {
+        "attribute": "oratoria",
+        "success_text": "O discurso rendeu aplausos na galeria e circulou nos grupos da cidade.",
+        "success": { "image": 0.04, "recognition": 1 },
+        "failure_text": "Você se enrolou nos números e um colega fez piada no aparte.",
+        "failure": { "image": -0.03 }
+      }
+    },
+    {
+      "id": "gabinete_itinerante",
+      "kind": "geral",
+      "name": "Gabinete itinerante",
+      "description": "Atender moradores num bairro, num templo ou numa associação: ouvir pedidos e encaminhar à prefeitura.",
+      "energy": 25,
+      "capital": 0,
+      "effects": { "recognition": 1.0 },
+      "targets": [
+        { "id": "igreja_catolica", "name": "Paróquia", "group": "catolica", "support": 0.05 },
+        { "id": "igreja_evangelica", "name": "Igreja evangélica", "group": "evangelica", "support": 0.05 },
+        { "id": "terreiro_centro", "name": "Terreiro ou centro espírita", "group": "outras", "support": 0.05 },
+        { "id": "sindicato", "name": "Sindicato", "group": "media", "support": 0.05 },
+        { "id": "associacao_bairro", "name": "Associação de moradores", "group": "baixa", "support": 0.05 },
+        { "id": "associacao_rural", "name": "Associação rural", "group": "rural", "support": 0.05 },
+        { "id": "universidade", "name": "Faculdade", "group": "medio_superior", "support": 0.05 },
+        { "id": "clube_idosos", "name": "Centro de convivência de idosos", "group": "idade_60_69", "support": 0.05 }
+      ]
+    },
+    {
+      "id": "articular",
+      "kind": "articular",
+      "name": "Articular com um colega",
+      "description": "Café, almoço ou conversa no corredor: melhora a relação com um vereador e abre espaço para acordos.",
+      "energy": 20,
+      "capital": 0,
+      "relation": 10,
+      "effects": {}
+    },
+    {
+      "id": "fiscalizar",
+      "kind": "geral",
+      "name": "Fiscalizar a prefeitura",
+      "description": "Pedido de informação, visita surpresa a uma obra ou a um posto de saúde. A imprensa gosta; o prefeito, não.",
+      "energy": 25,
+      "capital": 0,
+      "relation_mayor": -6,
+      "effects": { "recognition": 2.0, "image": 0.03 }
+    },
+    {
+      "id": "propor_projeto",
+      "kind": "propor",
+      "name": "Protocolar projeto de lei",
+      "description": "Apresentar um projeto. Ele passa pelas comissões antes de chegar ao plenário, e pode ser arquivado no caminho.",
+      "energy": 30,
+      "capital": 2,
+      "effects": { "recognition": 1.0 }
+    },
+    {
+      "id": "pedir_urgencia",
+      "kind": "urgencia",
+      "name": "Pedir urgência para um projeto seu",
+      "description": "Gasta capital político para levar um projeto seu direto ao plenário na semana seguinte.",
+      "energy": 10,
+      "capital": 5,
+      "effects": {}
+    },
+    {
+      "id": "emenda",
+      "kind": "emenda",
+      "name": "Indicar emenda ao orçamento",
+      "description": "Destinar uma emenda impositiva a uma área. Há poucas por ano; quem recebe lembra.",
+      "energy": 10,
+      "capital": 0,
+      "effects": { "recognition": 1.5 },
+      "targets": [
+        { "id": "saude_bairro", "name": "Reforma de posto de saúde", "group": "baixa", "support": 0.06 },
+        { "id": "escola", "name": "Equipamentos para escola", "group": "idade_18_34", "support": 0.06 },
+        { "id": "estrada_rural", "name": "Cascalhamento de estrada rural", "group": "rural", "support": 0.06 },
+        { "id": "praca", "name": "Revitalização de praça", "group": "urbana", "support": 0.05 },
+        { "id": "centro_idoso", "name": "Centro dia do idoso", "group": "idade_70_mais", "support": 0.06 },
+        { "id": "entidade_religiosa", "name": "Convênio com entidade assistencial religiosa", "group": "evangelica", "support": 0.06 }
+      ]
+    }
+  ]
+}

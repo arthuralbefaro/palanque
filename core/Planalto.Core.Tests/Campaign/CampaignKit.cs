@@ -3,6 +3,7 @@ using Planalto.Core.Characters;
 using Planalto.Core.Data;
 using Planalto.Core.Electorate;
 using Planalto.Core.Events;
+using Planalto.Core.Legislature;
 using Planalto.Core.Municipios;
 using Planalto.Core.Scenarios;
 using Planalto.Core.State;
@@ -32,7 +33,13 @@ internal static class CampaignKit
             Campaign = CampaignContent.LoadOrThrow(dir);
             Events = EventContent.LoadOrThrow(dir);
             Brasil2026 = Brasil2026Scenario.Load(dir, Municipios, World.Parties).Scenario!;
+            Legislature = LegislatureContent.LoadOrThrow(
+                dir,
+                Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
+                World.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal));
         }
+
+        public LegislatureContent Legislature { get; }
 
         public PorteCatalog Portes { get; }
 
@@ -84,6 +91,21 @@ internal static class CampaignKit
         };
         GameState state = NewGame.Create(world, player, seed);
         return CampaignEngine.Start(Context(state));
+    }
+
+    /// <summary>Contexto do mandato no município em foco, com o mesmo eleitorado da campanha.</summary>
+    public static LegislatureContext LegislatureContext(GameState state)
+    {
+        CampaignContext campaign = Context(state);
+        return new LegislatureContext
+        {
+            State = state,
+            Municipio = campaign.Municipio,
+            Content = C.Legislature,
+            People = C.People,
+            Electorate = campaign.Electorate,
+            RecognitionScale = C.Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
+        };
     }
 
     public static CampaignContext Context(GameState state)

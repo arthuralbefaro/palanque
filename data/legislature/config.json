@@ -1,0 +1,62 @@
+{
+  "weekly_energy": 100,
+  "recess_months": [1, 7],
+  "plenary_per_week": { "min": 1, "max": 3 },
+  "committee_weeks": { "min": 3, "max": 8 },
+  "executive_bills_per_week": 0.35,
+  "npc_bills_per_week": 0.45,
+  "committee_pass_chance": 0.75,
+  "committee_pass_per_relation": 0.002,
+  "committee_member_bonus": 0.1,
+  "vote": {
+    "ideology_weight": 3.0,
+    "orientation_weight": 2.2,
+    "government_weight": 1.6,
+    "relation_weight": 1.0,
+    "neutral_distance": 70,
+    "noise_sd": 0.7,
+    "abstain_band": 0.25,
+    "orientation_threshold": 0.2
+  },
+  "discipline": { "rigida": 1.0, "moderada": 0.7, "frouxa": 0.4 },
+  "base": { "max_distance": 90, "majority_margin": 1 },
+  "fidelity": {
+    "start": 80,
+    "loss_per_defiance": 12,
+    "loss_per_abstention": 5,
+    "gain_per_follow": 2,
+    "warning_below": 55,
+    "sanction_below": 35,
+    "expulsion_below": 12
+  },
+  "relations": {
+    "mayor_with": 3,
+    "mayor_against": -5,
+    "author_with": 4,
+    "author_against": -4,
+    "drift_per_week": 0.5
+  },
+  "capital": {
+    "start": 10,
+    "own_bill_approved": 8,
+    "with_government_in_base": 1,
+    "propose_cost": 2,
+    "urgency_cost": 5
+  },
+  "public": {
+    "support_per_point": 0.012,
+    "image_per_point": 0.006,
+    "own_bill_multiplier": 2.0,
+    "support_decay_per_week": 0.003,
+    "recognition_decay_per_week": 0.15
+  },
+  "absence": { "image": -0.01, "fidelity": -3 },
+  "emendas_per_year": 2,
+  "committees": [
+    { "id": "ccj", "name": "Comissão de Constituição e Justiça", "themes": ["transparencia", "seguranca", "armas"] },
+    { "id": "financas", "name": "Comissão de Finanças e Orçamento", "themes": ["impostos", "privatizacoes", "programas_sociais"] },
+    { "id": "educacao_saude", "name": "Comissão de Educação, Saúde e Assistência", "themes": ["educacao", "saude"] },
+    { "id": "obras_ambiente", "name": "Comissão de Obras, Meio Ambiente e Desenvolvimento Rural", "themes": ["meio_ambiente", "agronegocio"] }
+  ],
+  "auto_vote_in_campaign": true
+}
