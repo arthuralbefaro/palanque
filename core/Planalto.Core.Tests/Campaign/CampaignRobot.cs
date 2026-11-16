@@ -383,9 +383,9 @@ internal sealed class CampaignRobot(CampaignEngine engine, ulong seed, RobotOpti
             if (forecast.Blocked is null)
             {
                 AttackResult result = Engine.AttackRival(request).Result!;
-                Assert.True(forecast.Contains("rival_image", rival.Id, result.RivalImage));
-                Assert.True(forecast.Contains("image", null, result.Image));
-                Assert.True(forecast.Contains("money", null, (double)result.Money));
+                Assert.True(forecast.Contains("rival_image", rival.Id, result.RivalImage), $"ataque: imagem do rival {result.RivalImage}, previsto {forecast.Line("rival_image", rival.Id)}");
+                Assert.True(forecast.Contains("image", null, result.Image), $"ataque: imagem {result.Image}, previsto {forecast.Line("image")}, imagem atual {Campaign.Player.Image}");
+                Assert.True(forecast.Contains("money", null, (double)result.Money), $"ataque: dinheiro {result.Money}, previsto {forecast.Line("money")}, processo {result.Sued}, bloqueio {forecast.Blocked}");
                 Count("ataque", true);
             }
         }

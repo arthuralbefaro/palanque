@@ -821,10 +821,16 @@ public sealed partial class CampaignEngine
         double sue = parts.Type.UsaProva && !proof ? parts.Type.RiscoProcesso : 0;
         decimal cost = AttackCost(parts.Channel.Id);
         decimal fine = sue > 0 ? ScaledMoney(rules.MultaProcesso) : 0;
+
+        // A imagem de quem ataca fica entre −1 e +1 (o comando limita): perto do piso, a perda é menor que a regra.
+        double image = Campaign.Player.Image;
+        double rejected = Math.Clamp(image - rules.Rejeicao, -1, 1);
+        double afterRejection = rejected - image;
+        double afterSuit = Math.Clamp(rejected - rules.ProcessoImagem, -1, 1) - image;
         var lines = new List<ForecastLine>
         {
             new("rival_image", parts.Rival.Id, -high, sue > 0 ? 0 : -low, -(1 - sue) * mid),
-            new("image", null, -rules.Rejeicao - (sue > 0 ? rules.ProcessoImagem : 0), -rules.Rejeicao, -rules.Rejeicao - (sue * rules.ProcessoImagem)),
+            new("image", null, sue > 0 ? afterSuit : afterRejection, afterRejection, ((1 - sue) * afterRejection) + (sue * afterSuit)),
             new("money", null, -(double)(cost + fine), -(double)cost, -(double)cost - (sue * (double)fine)),
         };
         var outcomes = new List<ForecastOutcome>();
