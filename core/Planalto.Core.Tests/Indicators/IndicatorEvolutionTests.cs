@@ -154,6 +154,7 @@ public class IndicatorEvolutionTests(ITestOutputHelper output)
 
     /// <summary>40 anos, semana a semana, em 8 municípios e 5 sementes, sem prefeito (só tendência, ciclo e choques) e com governos que vêm e vão.</summary>
     [Theory]
+    [Trait("Categoria", "Lento")]
     [InlineData(false)]
     [InlineData(true)]
     public void Evolucao_fica_dentro_dos_limites_plausiveis_em_40_anos(bool comPressoes)

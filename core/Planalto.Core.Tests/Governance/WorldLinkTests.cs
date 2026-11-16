@@ -889,6 +889,7 @@ public class WorldLinkTests
     // ---------------------------------------------------------------- Mesa: sem recondução
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Mesa_nao_reconduz_o_presidente_ao_mesmo_cargo_na_eleicao_seguinte()
     {
         GovKit.Council c = GovKit.Councillor();
@@ -921,6 +922,7 @@ public class WorldLinkTests
     /// semana, a posse e os 4 anos de mandato, sem erro; com save e load no meio, as duas linhas terminam iguais.
     /// </summary>
     [Theory]
+    [Trait("Categoria", "Lento")]
     [InlineData(3UL, false, 70)]
     [InlineData(4UL, false, 120)]
     [InlineData(5UL, false, 95)]

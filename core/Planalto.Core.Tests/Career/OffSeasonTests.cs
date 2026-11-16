@@ -61,6 +61,7 @@ public class OffSeasonTests
     }
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Caminhada_tem_previsao_com_faixa_resultado_dentro_dela_e_cansaco_na_repeticao()
     {
         int inside = 0, runs = 0;

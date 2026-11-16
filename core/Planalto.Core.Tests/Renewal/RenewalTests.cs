@@ -624,6 +624,7 @@ public class RenewalTests(ITestOutputHelper output)
     // ---------------------------------------------------------------- com o jogador num cargo
 
     [Fact]
+    [Trait("Categoria", "Lento")]
     public void Com_o_jogador_vereador_a_camara_do_mandato_acompanha_a_sucessao()
     {
         var (state, legislature) = LegislatureTests.ElectedCouncillor();

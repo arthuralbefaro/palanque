@@ -250,6 +250,7 @@ public class MandateCareerTests
 
     /// <summary>Save e load no meio do mandato terminando igual.</summary>
     [Theory]
+    [Trait("Categoria", "Lento")]
     [InlineData(3UL, 60)]
     [InlineData(4UL, 110)]
     public void Save_e_load_no_meio_do_mandato_terminam_iguais(ulong seed, int saveAt)
