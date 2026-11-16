@@ -17,7 +17,7 @@ namespace Planalto.Core.Tests.Governance;
 public class MandateCareerTests
 {
     /// <summary>Um mandatário automático: usa os instrumentos de maior presença prevista, nomeia o gabinete e responde ao que aparece.</summary>
-    private static void PlayWeek(GovKit.Council c, Rng policy)
+    internal static void PlayWeek(GovKit.Council c, Rng policy)
     {
         GovernanceState g = c.G;
         if (c.State.Player.PartyId is null)

@@ -13,6 +13,9 @@ public enum CivicRole
     Suplente,
     Lideranca,
     Equipe,
+
+    /// <summary>Secretário municipal ou assessor de gabinete do governo acompanhado de perto (GDD 17.14 e 17.15).</summary>
+    Governo,
 }
 
 /// <summary>Como alguém saiu da política local (GDD 17.16, "Saídas").</summary>

@@ -117,6 +117,12 @@ public sealed class WorkRules
 
     /// <summary>Semanas de atraso a partir das quais a obra vira notícia.</summary>
     public required int AtrasoQueViraNoticia { get; init; }
+
+    /// <summary>Semanas em que uma obra entregue segue empurrando o indicador real da área (GDD 17.17: efeito e prazo declarados).</summary>
+    public required int IndicadorSemanasObra { get; init; }
+
+    /// <summary>O mesmo, para um serviço em vigor.</summary>
+    public required int IndicadorSemanasServico { get; init; }
 }
 
 public sealed class WorkCatalog : IValidatable
@@ -165,7 +171,7 @@ public sealed class WorkCatalog : IValidatable
         if (r.NpcChanceNovaObra is <= 0 or > 1 || r.NpcChanceObraAposCrise is < 0 or > 1 || r.ChanceAtrasoSemanal is < 0 or > 1 || r.AtrasoSemanas.Min < 1 || r.AtrasoSemanas.Max < r.AtrasoSemanas.Min
             || r.MesesDeChuva.Any(m => m is < 1 or > 12) || r.ChuvaFatorAtraso < 1 || r.SemanasParaEntregaSemCerimonia < 1 || r.PrestigioSemCerimonia is < 0 or > 1
             || r.Transbordo is < 0 or > 1 || r.FracaoInvestimento is <= 0 or > 1 || r.SemanasParaModalidadePadrao < 1 || r.ChanceLiberacaoEmenda is < 0 or > 1
-            || r.SemanasLiberacaoObrigatoria < 1 || r.AprovacaoPorPrestigio < 0 || r.AtrasoQueViraNoticia < 1)
+            || r.SemanasLiberacaoObrigatoria < 1 || r.AprovacaoPorPrestigio < 0 || r.AtrasoQueViraNoticia < 1 || r.IndicadorSemanasObra < 1 || r.IndicadorSemanasServico < 1)
         {
             yield return "regras: valores fora do intervalo.";
         }
@@ -1102,7 +1108,7 @@ public sealed class ChamberCatalog : IValidatable
 
     public static readonly IReadOnlyList<string> TextKeys =
     [
-        "mesa_eleita", "mesa_eleita_jogador", "mesa_derrota_jogador", "cpi_aberta", "cpi_sem_assinaturas", "cpi_semana", "cpi_arquivada", "cpi_indiciou", "cassacao_pedido",
+        "mesa_eleita", "mesa_eleita_jogador", "mesa_derrota_jogador", "mesa_sem_reconducao", "cpi_aberta", "cpi_sem_assinaturas", "cpi_semana", "cpi_arquivada", "cpi_indiciou", "cassacao_pedido",
         "cassacao_aprovada", "cassacao_rejeitada", "vice_assume", "cassado_jogador", "previsao_mesa", "previsao_cpi", "previsao_cpi_assinaturas", "previsao_cassacao",
         "cpi_motivo_obra", "cpi_motivo_escandalo",
     ];
@@ -1248,7 +1254,8 @@ public sealed class TermTextCatalog : IValidatable
         "alvo_voto", "funcao_na_zona", "papel_secretario", "papel_vereador", "papel_vereador_sem_partido", "papel_empresa", "comissao_passa", "comissao_arquiva",
         "como_cargo", "como_presenca", "como_posicao", "como_voto", "como_obra", "como_obra_qualquer", "onde_cidade", "onde_zona", "noticia_crise",
         "noticia_crise_resposta", "noticia_decisao", "noticia_decisao_resposta", "promessa_de_evento", "semana_obra", "semana_folha", "semana_aprovacao",
-        "semana_presenca", "semana_camara",
+        "semana_presenca", "semana_camara", "ind_obra", "mundo_acordo_herdado", "mundo_promessa_herdada", "mundo_promessa_extinta", "mundo_divida_extinta",
+        "mundo_secretaria_vaga", "mundo_assessor_saiu", "mundo_mesa", "mundo_novo_prefeito",
     ];
 
     public required string Note { get; init; }

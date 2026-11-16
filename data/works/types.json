@@ -19,7 +19,9 @@
     "liberacao_por_relacao": 0.2,
     "semanas_liberacao_obrigatoria": 30,
     "aprovacao_por_prestigio": 0.6,
-    "atraso_que_vira_noticia": 6
+    "atraso_que_vira_noticia": 6,
+    "indicador_semanas_obra": 416,
+    "indicador_semanas_servico": 156
   },
   "tipos": [
     { "id": "posto_saude", "nome": "Posto de saúde", "cumpre": ["saude"], "secretaria": "saude", "situacao": "qualquer", "engenharia": true, "servico": false, "pequena": false, "emenda": true, "custo": 650000, "projeto_semanas": { "min": 4, "max": 8 }, "execucao_semanas": { "min": 20, "max": 36 }, "prestigio": 9, "folha": 0.0015, "indicador": "saude", "indicador_pontos": 1.5 },

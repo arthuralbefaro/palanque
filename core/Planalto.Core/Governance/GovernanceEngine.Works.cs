@@ -374,7 +374,8 @@ public sealed partial class GovernanceEngine
             }
         }
 
-        if (type.Indicador is { } indicator && Exec is { } e && e.Indicators.ContainsKey(indicator))
+        // Com os indicadores reais, a entrega vira pressão no indicador da área, com prazo; sem eles, vale o salto na nota.
+        if (!PushIndicator(work, type, staffed) && type.Indicador is { } indicator && Exec is { } e && e.Indicators.ContainsKey(indicator))
         {
             BoundsConfig bounds = Context.Executive.Config.IndicatorBounds;
             e.Indicators[indicator] = Math.Clamp(e.Indicators[indicator] + (type.IndicadorPontos * (staffed ? 1 : 0.5)), bounds.Min, bounds.Max);

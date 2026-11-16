@@ -280,7 +280,27 @@ public sealed partial class RenewalEngine
             list.AddRange(city.Staff.Where(s => !s.Left).Select(s => (s.PersonId, CivicRole.Equipe)));
         }
 
+        // Secretários no cargo e assessores nomeados do governo da cidade: envelhecem e morrem como todo mundo. O que
+        // a saída deles muda no governo (pasta vaga, gabinete) é o governo que resolve.
+        foreach (string id in GovernmentPeople())
+        {
+            if (list.All(x => x.Item1 != id))
+            {
+                list.Add((id, CivicRole.Governo));
+            }
+        }
+
         return list.Where(x => x.Item1 != RaceSetup.PlayerId).ToList();
+    }
+
+    private IEnumerable<string> GovernmentPeople()
+    {
+        if (State.Governance is not { } g || g.Municipio != Municipio.CodigoIbge || g.PlayerRemoved)
+        {
+            return [];
+        }
+
+        return g.Secretaries.Where(s => s.SecretariaId is not null && !s.Left).Select(s => s.PersonId).Concat(g.Cabinet.Select(a => a.PersonId)).ToList();
     }
 
     private bool HasRole(string id, CivicRole role)
@@ -293,6 +313,7 @@ public sealed partial class RenewalEngine
             CivicRole.VicePrefeito => r.ViceId == id,
             CivicRole.Suplente => r.Suplentes.Values.Any(l => l.Contains(id)),
             CivicRole.Lideranca => City?.Leader(id) is not null,
+            CivicRole.Governo => GovernmentPeople().Contains(id),
             _ => City?.Staff.Any(s => s.PersonId == id && !s.Left) == true,
         };
     }
@@ -306,6 +327,7 @@ public sealed partial class RenewalEngine
         CivicRole.VicePrefeito => "vice_prefeito",
         CivicRole.Suplente => "suplente",
         CivicRole.Lideranca => "lideranca",
+        CivicRole.Governo => "governo",
         _ => "equipe",
     };
 

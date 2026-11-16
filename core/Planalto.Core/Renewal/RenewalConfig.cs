@@ -143,11 +143,11 @@ public sealed class RenewalConfig : IValidatable
 {
     public const string File = "demography/renewal.json";
 
-    public static readonly IReadOnlyList<string> Papeis = ["vereador", "prefeito", "vice_prefeito", "suplente", "lideranca", "equipe"];
+    public static readonly IReadOnlyList<string> Papeis = ["vereador", "prefeito", "vice_prefeito", "suplente", "lideranca", "equipe", "governo"];
 
     public static readonly IReadOnlyList<string> TextKeys =
     [
-        "morte_vereador", "morte_prefeito", "morte_vice_prefeito", "morte_suplente", "morte_lideranca", "morte_equipe", "lembranca_luto",
+        "morte_vereador", "morte_prefeito", "morte_vice_prefeito", "morte_suplente", "morte_lideranca", "morte_equipe", "morte_governo", "lembranca_luto",
         "posse_suplente", "posse_vice", "interino", "interino_ate_o_fim", "eleicao_direta_convocada", "eleicao_indireta_convocada",
         "eleicao_direta_resultado", "eleicao_indireta_resultado", "renuncia_vereador", "renuncia_prefeito", "renuncia_vice_prefeito",
         "cassacao_vereador", "cassacao_prefeito", "cassacao_vice_prefeito", "justica_eleitoral", "investidura", "aposentadoria", "desistencia",

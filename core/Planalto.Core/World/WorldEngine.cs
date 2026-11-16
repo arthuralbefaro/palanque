@@ -42,11 +42,44 @@ public sealed class WorldEngine
         return State.Indicators;
     }
 
+    /// <summary>Primeiro dia do mandato municipal em curso em <paramref name="date"/> (1º de janeiro depois da eleição).</summary>
+    private static DateOnly TermStart(DateOnly date)
+    {
+        int year = date.Year;
+        while (Calendar.ElectionKindOf(year - 1) != ElectionKind.Municipal)
+        {
+            year--;
+        }
+
+        return new DateOnly(year, 1, 1);
+    }
+
     /// <summary>Leva o mundo até a semana do calendário: primeiro os indicadores, depois a política.</summary>
     public void AdvanceTo(DateOnly date)
     {
         if (Indicators is not null && State.Indicators is { } indicators && indicators.Municipio == Indicators.Municipio.CodigoIbge)
         {
+            if (State.Executive is null)
+            {
+                // Sem o jogador na Prefeitura, o orçamento e as políticas do governo dele não seguem empurrando os indicadores.
+                indicators.Pressoes.RemoveAll(p => p.Ate is null
+                    && (p.Origem.StartsWith(Executive.ExecutiveEngine.BudgetOrigin, StringComparison.Ordinal) || p.Origem.StartsWith(Executive.ExecutiveEngine.PolicyOrigin, StringComparison.Ordinal)));
+            }
+
+            if (State.Governance?.Municipio != indicators.Municipio)
+            {
+                // Sem governo acompanhado de perto, não há secretário conhecido: a velocidade volta à do modelo.
+                indicators.VelocidadeFator.Clear();
+            }
+
+            if (Renewal is null && State.Executive is null && TermStart(date) is var term && indicators.MandatoDesde < term)
+            {
+                // Posse sem o jogador na Prefeitura e sem a renovação ligada (que marcaria a posse): a variação que o
+                // eleitor julga recomeça no primeiro dia do mandato.
+                Indicators.AdvanceTo(indicators, term);
+                IndicatorEvolution.MarkMandateStart(indicators, term);
+            }
+
             Indicators.AdvanceTo(indicators, date);
         }
 

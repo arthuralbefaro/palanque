@@ -50,21 +50,37 @@ public sealed class GovernanceContext
     public ElectionConductLawConfig ElectionConduct { get; init; } = ElectionConductLawConfig.Default;
 
     /// <summary>
-    /// Gancho da vacância: chamado quando a Câmara cassa o prefeito (o NPC ou o jogador). Quem cuida de sucessão e
-    /// vacância (substituição pela regra real) liga aqui e devolve true; sem ninguém ligado, ou devolvendo false, o
-    /// vice assume, como padrão provisório. O registro fica em <see cref="GovernanceState.Vacancies"/> de todo jeito.
+    /// Evolução dos indicadores reais (GDD 17.17). Com ela e com <see cref="GameState.Indicators"/> no estado, obra
+    /// entregue, serviço e crise empurram o indicador real, e as crises com causa e a receita leem dele também quando o
+    /// prefeito é NPC. Sem ela, vale o comportamento sem indicadores reais.
+    /// </summary>
+    public Indicators.IndicatorEvolution? IndicatorEvolution { get; init; }
+
+    /// <summary>
+    /// Renovação do mundo político (GDD 17.16). Com ela e com <see cref="GameState.Renewal"/> no estado, a cassação
+    /// segue a regra de sucessão (vice, suplente, nova eleição) e a morte ou a saída de vereador, secretário, assessor
+    /// ou liderança chega ao governo (<see cref="GovernanceEngine.SyncWithWorld"/>). Sem ela, vale o vice provisório.
+    /// </summary>
+    public Renewal.RenewalEngine? Renewal { get; init; }
+
+    /// <summary>
+    /// Gancho da vacância: chamado quando a Câmara cassa o prefeito (o NPC ou o jogador). Tem precedência sobre
+    /// <see cref="Renewal"/>. Quem cuida de sucessão e vacância liga aqui e devolve true; sem ninguém ligado, ou
+    /// devolvendo false, o vice assume, como padrão provisório. O registro fica em <see cref="GovernanceState.Vacancies"/>
+    /// de todo jeito.
     /// </summary>
     public Func<OfficeVacancy, bool>? OnVacancy { get; init; }
 
     /// <summary>
-    /// Ponto de extensão para o modelo de evolução dos indicadores (GDD 17.17): crescimento nominal da receita no
-    /// ano. Sem ele, o crescimento é sorteado na faixa de data/executive/personnel.json.
+    /// Ponto de extensão: crescimento nominal da receita no ano; tem precedência sobre <see cref="IndicatorEvolution"/>.
+    /// Sem um nem outro, o crescimento é sorteado na faixa de data/executive/personnel.json.
     /// </summary>
     public Func<int, double>? RevenueGrowth { get; init; }
 
     /// <summary>
-    /// Ponto de extensão: indicador do município na escala de jogo (0 a 100) quando o jogador não é o prefeito. Sem
-    /// ele, as crises que dependem de indicador só acontecem com o jogador na prefeitura.
+    /// Ponto de extensão: indicador do município na escala de jogo (0 a 100) quando o jogador não é o prefeito; tem
+    /// precedência sobre <see cref="IndicatorEvolution"/>. Sem um nem outro, as crises que dependem de indicador só
+    /// acontecem com o jogador na prefeitura.
     /// </summary>
     public Func<string, double?>? Indicator { get; init; }
 }
@@ -231,7 +247,12 @@ public sealed partial class GovernanceEngine(GovernanceContext ctx)
         double share = fromRgf ? (double)financas!.PessoalPctRcl!.Value / 100 : rng.NextDouble(payrollRange.Min, payrollRange.Max);
         double taxBase = ctx.Executive.Config.TaxBaseShare.GetValueOrDefault(ctx.Municipio.Porte, 1);
 
-        Character vice = NewCharacter(ctx, rng, 35, 70, mayor ? state.Player.PartyId : state.Mandate!.MayorPartyId);
+        // Com a renovação do mundo ligada, o vice é o eleito de lá (o que toma posse, se a posse ainda não aconteceu);
+        // sem ela, o governo gera um nome provisório.
+        Renewal.RenewalState? world = ctx.Renewal is not null && state.Renewal is { } renewal && renewal.Municipio == ctx.Municipio.CodigoIbge ? renewal : null;
+        string viceId = world is not null
+            ? (world.Eleitos is { } slate ? slate.ViceId : world.ViceId) ?? ""
+            : NewCharacter(ctx, rng, 35, 70, mayor ? state.Player.PartyId : state.Mandate!.MayorPartyId).Id;
         var g = new GovernanceState
         {
             Municipio = ctx.Municipio.CodigoIbge,
@@ -245,7 +266,9 @@ public sealed partial class GovernanceEngine(GovernanceContext ctx)
             BaseZones = presence.Select((v, i) => (v, i)).OrderByDescending(x => x.v).ThenBy(x => x.i).Take(Math.Min(rules.ZonasDaBase, zonas.Count)).Select(x => x.i).ToList(),
             ZoneApproval = previous is not null && previous.ZoneApproval.Count == zonas.Count ? [.. previous.ZoneApproval] : zonas.Select(_ => 0.0).ToList(),
             MayorApproval = rng.NextDouble(secretaryRules.AprovacaoInicialNpc.Min, secretaryRules.AprovacaoInicialNpc.Max),
-            ViceId = vice.Id,
+            ViceId = viceId,
+            RenewalSeen = world is null ? 0 : world.NextEventId - 1,
+            MayorSeenId = mayor ? null : state.Mandate!.MayorId,
             GovernorRelation = rng.NextDouble(ctx.Content.Agreements.Regras.RelacaoGovernadorInicial.Min, ctx.Content.Agreements.Regras.RelacaoGovernadorInicial.Max),
             Mesa = new MesaState { NextElection = start },
             Payroll = new PayrollState { Share = share, FromRgf = fromRgf },
@@ -324,6 +347,7 @@ public sealed partial class GovernanceEngine(GovernanceContext ctx)
         }
 
         int feedBefore = g.Feed.Count;
+        SyncWithWorld();
         FiscalYear();
         MesaWeek();
         WorksWeek(automatic);
@@ -393,6 +417,8 @@ public sealed partial class GovernanceEngine(GovernanceContext ctx)
                 g.AreaSpeed[indicator] = g.AreaSpeed.TryGetValue(indicator, out double current) ? (current + factor) / 2 : factor;
             }
         }
+
+        PushSpeedFactors();
     }
 
     /// <summary>Virada do ano fiscal: a receita cresce, a folha tem o crescimento vegetativo e o investimento do ano zera.</summary>
@@ -405,7 +431,7 @@ public sealed partial class GovernanceEngine(GovernanceContext ctx)
         }
 
         PersonnelRules rules = Content.Personnel.Regras;
-        double growth = Context.RevenueGrowth?.Invoke(Week.Year) ?? Rng.NextDouble(rules.RclCrescimentoAnual.Min, rules.RclCrescimentoAnual.Max);
+        double growth = RevenueGrowthOf(Week.Year);
         g.Fiscal.Year = Week.Year;
         g.Fiscal.Growth = growth;
         g.Fiscal.Rcl *= (decimal)(1 + growth);

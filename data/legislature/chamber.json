@@ -32,6 +32,7 @@
   "textos": {
     "mesa_eleita": "{nome} ({partido}) vence a eleição da Mesa e preside a Câmara: {sim} a {nao}",
     "mesa_eleita_jogador": "Você vence a eleição da Mesa e preside a Câmara: {sim} a {nao}",
+    "mesa_sem_reconducao": "Você preside a Câmara e não pode ser reconduzido ao mesmo cargo na eleição seguinte da Mesa ({artigo})",
     "mesa_derrota_jogador": "Você perdeu a disputa da Mesa: {nome} vence por {nao} a {sim}",
     "cpi_aberta": "CPI instalada: {assunto}. {assinaturas} assinaturas; relatório por volta de {data}",
     "cpi_sem_assinaturas": "O pedido de CPI não reuniu assinaturas: {tem} das {precisa} necessárias",

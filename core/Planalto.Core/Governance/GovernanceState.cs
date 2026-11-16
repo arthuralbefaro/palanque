@@ -274,7 +274,14 @@ public sealed class VoteDeal
     /// <summary>Projeto (mandato de vereador) ou política (prefeitura).</summary>
     public required string SubjectId { get; init; }
 
-    public required string MemberId { get; init; }
+    /// <summary>O vereador do acordo. Muda quando ele deixa a cadeira e o suplente herda o acordo (GDD 17.16).</summary>
+    public required string MemberId { get; set; }
+
+    /// <summary>Com quem o acordo foi fechado, quando passou a um sucessor.</summary>
+    public string? OriginalMemberId { get; set; }
+
+    /// <summary>O vereador deixou a cadeira sem sucessor: o acordo e a promessa dele se extinguiram.</summary>
+    public bool Extinct { get; set; }
 
     /// <summary>+1 para SIM, −1 para NÃO.</summary>
     public required int Side { get; init; }
@@ -493,6 +500,18 @@ public sealed class OfficeVacancy
 
     /// <summary>A sucessão foi resolvida pelo sistema de vacância (true) ou pelo padrão provisório: o vice assume (false).</summary>
     public bool Handled { get; set; }
+
+    /// <summary>O que a regra de substituição determinou, quando a renovação do mundo resolveu a vaga.</summary>
+    public Renewal.SuccessionOutcome? Outcome { get; set; }
+
+    /// <summary>Quem assumiu (vice ou suplente), quando alguém assumiu.</summary>
+    public string? SuccessorId { get; set; }
+
+    /// <summary>Dispositivo que fundamenta o desfecho.</summary>
+    public string? Rule { get; set; }
+
+    /// <summary>Data da nova eleição, quando a regra manda fazer uma.</summary>
+    public DateOnly? ElectionOn { get; set; }
 }
 
 public sealed class MesaState
@@ -631,7 +650,17 @@ public sealed class GovernanceState
     /// <summary>Bônus na chance de o projeto do jogador sair da comissão (assessor legislativo, presidência da Câmara).</summary>
     public double CommitteeBonus { get; set; }
 
+    /// <summary>
+    /// Vice-prefeito. Com a renovação do mundo ligada (GDD 17.16), é o vice eleito de <see cref="Renewal.RenewalState"/>
+    /// (vazio se o cargo está vago) e a sucessão segue a regra de lá; sem ela, é um nome provisório do próprio governo.
+    /// </summary>
     public required string ViceId { get; init; }
+
+    /// <summary>Último fato da renovação do mundo já levado ao governo (id de <see cref="Renewal.RenewalEvent"/>).</summary>
+    public int RenewalSeen { get; set; }
+
+    /// <summary>Prefeito que o governo conhecia na última semana (mandato de vereador), para notar a troca.</summary>
+    public string? MayorSeenId { get; set; }
 
     /// <summary>Relação com o governador (−100 a 100), para os convênios.</summary>
     public double GovernorRelation { get; set; }

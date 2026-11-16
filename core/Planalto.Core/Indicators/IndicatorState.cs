@@ -153,6 +153,12 @@ public sealed class MunicipalIndicatorsState
 
     public int NextPressureId { get; set; } = 1;
 
+    /// <summary>
+    /// Multiplicador da velocidade de cada indicador real (id → fator; sem entrada = 1). É por onde a competência do
+    /// secretário da pasta acelera ou atrasa o indicador da área (GDD 17.15). A referência de comparação não o usa.
+    /// </summary>
+    public Dictionary<string, double> VelocidadeFator { get; init; } = [];
+
     public IndicatorValue Get(string id) => Indicadores.First(i => i.Id == id);
 
     public IndicatorValue? Find(string id) => Indicadores.FirstOrDefault(i => i.Id == id);

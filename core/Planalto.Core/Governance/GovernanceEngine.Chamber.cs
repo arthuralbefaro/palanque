@@ -18,9 +18,13 @@ public sealed partial class GovernanceEngine
     private (ChamberMember? Government, ChamberMember? Opposition) MesaCandidates()
     {
         GovernanceState g = G;
-        ChamberMember? government = Members.Where(m => InBase(m.PartyId) && !m.IsPlayer).OrderByDescending(m => m.Votes).ThenBy(m => m.Id, StringComparer.Ordinal).FirstOrDefault();
-        ChamberMember? opposition = Members.Where(m => !InBase(m.PartyId) && !m.IsPlayer).OrderByDescending(m => m.Votes).ThenBy(m => m.Id, StringComparer.Ordinal).FirstOrDefault();
-        if (g.Mesa.PlayerRunning && Role == GovRole.Vereador && Mandate is { } mandate)
+
+        // Quem preside não é reconduzido ao mesmo cargo na eleição seguinte (CF, art. 57, § 4º, por simetria). A Mesa
+        // de uma legislatura nova começa sem essa trava: o governo recomeça a cada posse.
+        string? barred = Context.ChamberRules.VedadaReconducaoAoMesmoCargo ? g.Mesa.PresidentId : null;
+        ChamberMember? government = Members.Where(m => InBase(m.PartyId) && !m.IsPlayer && m.Id != barred).OrderByDescending(m => m.Votes).ThenBy(m => m.Id, StringComparer.Ordinal).FirstOrDefault();
+        ChamberMember? opposition = Members.Where(m => !InBase(m.PartyId) && !m.IsPlayer && m.Id != barred).OrderByDescending(m => m.Votes).ThenBy(m => m.Id, StringComparer.Ordinal).FirstOrDefault();
+        if (g.Mesa.PlayerRunning && barred != RaceSetup.PlayerId && Role == GovRole.Vereador && Mandate is { } mandate)
         {
             if (mandate.InBase(mandate.Player.PartyId))
             {
@@ -129,6 +133,11 @@ public sealed partial class GovernanceEngine
         if (g.Mesa.PlayerRunning)
         {
             return GovForecast.Block(GovFailure.JaFeito, "");
+        }
+
+        if (Context.ChamberRules.VedadaReconducaoAoMesmoCargo && g.Mesa.PresidentId == RaceSetup.PlayerId)
+        {
+            return GovForecast.Block(GovFailure.LimiteLegal, Fill(Content.Chamber.Texto("mesa_sem_reconducao"), ("artigo", Context.ChamberRules.ArtigoMesa)));
         }
 
         ChamberRules rules = ChamberGameRules;
@@ -427,7 +436,8 @@ public sealed partial class GovernanceEngine
             News("cpi", Fill(Content.Chamber.Texto("cassado_jogador"), ("placar", count)));
             g.PlayerRemoved = true;
             State.Executive = null;
-            vacancy.Handled = Context.OnVacancy?.Invoke(vacancy) == true;
+            vacancy.Handled = ResolveVacancy(vacancy);
+            RelayWorldNews();
             return;
         }
 
@@ -435,9 +445,16 @@ public sealed partial class GovernanceEngine
         g.MayorRemoved = true;
         g.MayorApproval = 50;
         News("cpi", Fill(Content.Chamber.Texto("cassacao_aprovada"), ("prefeito", old), ("placar", count)));
-        vacancy.Handled = Context.OnVacancy?.Invoke(vacancy) == true;
+        vacancy.Handled = ResolveVacancy(vacancy);
         if (vacancy.Handled)
         {
+            AfterMayorVacancy(vacancy, cpi.ByPlayer);
+            return;
+        }
+
+        if (g.ViceId.Length == 0)
+        {
+            // Sem vice e sem ninguém que resolva a sucessão: o governo segue sem a troca, só com o registro da vaga.
             return;
         }
 

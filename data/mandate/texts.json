@@ -81,6 +81,15 @@
     "semana_folha": "A folha da prefeitura está em {folha} da receita corrente líquida: {faixa}",
     "semana_aprovacao": "Nas ruas, a aprovação de {prefeito} anda em torno de {aprovacao}%",
     "semana_presenca": "Em {zona}, cerca de {presenca}% dos moradores lembram do seu mandato",
-    "semana_camara": "A Câmara tem {projetos} projeto(s) em tramitação; preside a Mesa {presidente}"
+    "semana_camara": "A Câmara tem {projetos} projeto(s) em tramitação; preside a Mesa {presidente}",
+    "ind_obra": "{obra} em {zona}",
+    "mundo_acordo_herdado": "{nome} assumiu a cadeira de {antecessor} e herda o acordo de voto: a promessa ({promessa}) agora é cobrada por {nome}",
+    "mundo_promessa_herdada": "A promessa feita a {antecessor} ({promessa}) passa a ser cobrada por {nome}",
+    "mundo_promessa_extinta": "A promessa feita a {nome} ({promessa}) se extingue: não há mais quem a cobre",
+    "mundo_divida_extinta": "A dívida com {nome} ({divida}) se extingue: não há mais a quem pagar",
+    "mundo_secretaria_vaga": "A pasta de {secretaria} está sem titular: {nome} não está mais no cargo",
+    "mundo_assessor_saiu": "{nome} não faz mais parte do gabinete; a vaga está aberta",
+    "mundo_mesa": "{nome} passa a presidir a Câmara pelo resto do mandato da Mesa",
+    "mundo_novo_prefeito": "{nome} está à frente da Prefeitura; a relação do seu mandato com o governo recomeça"
   }
 }

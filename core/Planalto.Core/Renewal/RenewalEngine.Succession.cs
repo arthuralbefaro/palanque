@@ -25,7 +25,7 @@ public sealed partial class RenewalEngine
         }
 
         // O papel de maior peso dá o texto da notícia; todos os papéis são tratados.
-        CivicRole main = new[] { CivicRole.Prefeito, CivicRole.VicePrefeito, CivicRole.Vereador, CivicRole.Suplente, CivicRole.Lideranca, CivicRole.Equipe }
+        CivicRole main = new[] { CivicRole.Prefeito, CivicRole.VicePrefeito, CivicRole.Vereador, CivicRole.Suplente, CivicRole.Lideranca, CivicRole.Governo, CivicRole.Equipe }
             .FirstOrDefault(role => HasRole(personId, role), CivicRole.Equipe);
         RenewalEvent death = Record(date, RenewalEventKind.Morte, "morte_" + RoleKey(main), personId, main, VacancyCause.Morte, seat: r.SeatOf(personId)?.Numero);
         Mourn(personId, date, death);

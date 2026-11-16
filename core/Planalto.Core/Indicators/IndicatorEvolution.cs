@@ -140,6 +140,25 @@ public sealed class IndicatorEvolution
         }
     }
 
+    /// <summary>
+    /// Define o multiplicador de velocidade dos indicadores reais que compõem um indicador da prefeitura; 1 retira o
+    /// multiplicador.
+    /// </summary>
+    public void SetGameSpeedFactor(MunicipalIndicatorsState state, string gameIndicatorId, double fator)
+    {
+        foreach (string id in Components(gameIndicatorId))
+        {
+            if (Math.Abs(fator - 1) < 1e-12)
+            {
+                state.VelocidadeFator.Remove(id);
+            }
+            else
+            {
+                state.VelocidadeFator[id] = Math.Max(0, fator);
+            }
+        }
+    }
+
     /// <summary>Indicadores reais que compõem um indicador da prefeitura; vazio se não houver mapa.</summary>
     public IEnumerable<string> Components(string gameIndicatorId) =>
         Model.Jogo.TryGetValue(gameIndicatorId, out Dictionary<string, double>? parts) ? parts.Keys : [];
@@ -195,7 +214,8 @@ public sealed class IndicatorEvolution
             RealIndicatorDefinition d = Definitions.Get(v.Id);
             IndicatorModelEntry e = Model.Of(v.Id);
             var (g, g0) = gameBefore[v.Id];
-            double speed = e.VelocidadeSemanal;
+            double baseSpeed = e.VelocidadeSemanal;
+            double speed = Math.Clamp(baseSpeed * state.VelocidadeFator.GetValueOrDefault(v.Id, 1), 0, 1);
             double cycle = e.SensibilidadeCiclo * state.Ciclo.Hiato;
             var factors = new List<(string Tipo, string Origem, string Texto, double Pontos)>
             {
@@ -242,7 +262,7 @@ public sealed class IndicatorEvolution
             // A referência de comparação anda só pela tendência do modelo e pelo ciclo: não tem prefeito nem choque.
             double r = IndicatorScale.ToGame(d, v.Referencia);
             double r0 = IndicatorScale.ToGame(d, v.ReferenciaPartida);
-            double next = r + (speed * (r0 + (e.TendenciaAnual * trendShape) + cycle - r));
+            double next = r + (baseSpeed * (r0 + (e.TendenciaAnual * trendShape) + cycle - r));
             var (rMin, rMax) = IndicatorScale.Bounds(d, v.ReferenciaPartida);
             v.Referencia = Math.Clamp(IndicatorScale.FromGame(d, next), rMin, rMax);
         }

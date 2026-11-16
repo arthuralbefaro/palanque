@@ -969,7 +969,7 @@ public sealed partial class GovernanceEngine
             Fill(Content.Secretaries.Texto("escandalo_causa"), ("obra", WorkName(work)), ("zona", ZoneName(work.ZoneId)), ("empresa", CompanyName(work))), 1);
     }
 
-    private double? IndicatorValue(string id) => Exec is { } e && e.Indicators.TryGetValue(id, out double v) ? v : Context.Indicator?.Invoke(id);
+    private double? IndicatorValue(string id) => IndicatorOf(id);
 
     private void CrisesWeek(bool automatic)
     {
@@ -1053,6 +1053,9 @@ public sealed partial class GovernanceEngine
                 record.Presented = true;
                 int zone = record.ZoneId is null ? -1 : g.IndexOf(record.ZoneId);
                 ShiftZoneApproval(zone, -SecretaryRules.CriseZonaDano * record.Severity);
+
+                // Com os indicadores reais, o choque fica neles (e a nota da prefeitura é relida deles na semana seguinte).
+                ShockIndicators(record, crisis);
                 if (Exec is { } e)
                 {
                     BoundsConfig bounds = Context.Executive.Config.IndicatorBounds;

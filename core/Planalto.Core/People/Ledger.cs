@@ -6,6 +6,12 @@ public enum PromiseState
     Cumprida,
     Quebrada,
     Vencida,
+
+    /// <summary>
+    /// Extinta sem culpa de ninguém: a pessoa a quem foi feita morreu ou deixou a cidade e não há sucessor que a cobre
+    /// (GDD 17.16). Não conta como cumprida nem como quebrada.
+    /// </summary>
+    Extinta,
 }
 
 /// <summary>Promessa do jogador: a quem, o quê, onde e até quando (GDD 17.2, peça 4).</summary>
@@ -20,8 +26,11 @@ public sealed class Promise
     /// <summary>"pessoa", "zona" ou "grupo".</summary>
     public required string ToKind { get; init; }
 
-    /// <summary>Id da pessoa, da zona ou do grupo de eleitores.</summary>
-    public required string ToId { get; init; }
+    /// <summary>Id da pessoa, da zona ou do grupo de eleitores. Muda quando a cobrança passa ao sucessor de quem saiu (GDD 17.16).</summary>
+    public required string ToId { get; set; }
+
+    /// <summary>A quem a promessa foi feita, quando a cobrança passou a um sucessor.</summary>
+    public string? OriginalToId { get; set; }
 
     /// <summary>Tipo do que foi prometido (id do catálogo de pedidos: obra, vaga, posição, presença…).</summary>
     public required string Object { get; init; }
@@ -53,6 +62,9 @@ public sealed class Debt
     public required DateOnly Made { get; init; }
 
     public bool Settled { get; set; }
+
+    /// <summary>Encerrada sem pagamento porque o credor morreu ou deixou a cidade (GDD 17.16); fica também como <see cref="Settled"/>.</summary>
+    public bool Extinct { get; set; }
 }
 
 /// <summary>Posição assumida em público: tema, valor, quando e onde foi dito.</summary>
