@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json;
 
 namespace Planalto.DataImporter;
@@ -38,9 +39,8 @@ public sealed class SourceCache(string directory, HttpClient http)
 
     public async Task<CachedFile> GetAsync(string fileName, string url)
     {
+        // O nome pode trazer subpasta ("rd/DOSP2024.dbc").
         string path = Path.Combine(Directory, fileName);
-
-        // O nome pode trazer subpasta ("rd/arquivo.xlsx").
         System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         string metaPath = path + ".meta.json";
 
@@ -58,18 +58,23 @@ public sealed class SourceCache(string directory, HttpClient http)
         string partial = path + ".part";
         try
         {
-            using HttpResponseMessage response = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-            if (!response.IsSuccessStatusCode)
+            if (url.StartsWith("ftp://", StringComparison.OrdinalIgnoreCase))
             {
-                throw new DownloadBlockedException(url, fileName, path, $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}");
+                await DownloadFtpAsync(url, partial);
             }
-
-            await using (FileStream output = File.Create(partial))
+            else
             {
+                using HttpResponseMessage response = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new DownloadBlockedException(url, fileName, path, $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}");
+                }
+
+                await using FileStream output = File.Create(partial);
                 await response.Content.CopyToAsync(output);
             }
         }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or IOException)
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or IOException or WebException)
         {
             File.Delete(partial);
             throw new DownloadBlockedException(url, fileName, path, ex.Message);
@@ -84,5 +89,26 @@ public sealed class SourceCache(string directory, HttpClient http)
         var downloaded = new Meta(url, DateTimeOffset.UtcNow, new FileInfo(path).Length);
         await File.WriteAllTextAsync(metaPath, JsonSerializer.Serialize(downloaded, MetaOptions));
         return new CachedFile(path, url, downloaded.DownloadedAt);
+    }
+
+    /// <summary>Download anônimo por FTP (DATASUS), em modo binário e passivo.</summary>
+    private static async Task DownloadFtpAsync(string url, string partial)
+    {
+        // O HttpClient não fala FTP e o .NET não tem outro cliente FTP embutido; FtpWebRequest está marcado
+        // como obsoleto (SYSLIB0014), mas segue funcionando e evita um pacote novo só para isso.
+#pragma warning disable SYSLIB0014
+        var request = (FtpWebRequest)WebRequest.Create(url);
+#pragma warning restore SYSLIB0014
+        request.Method = WebRequestMethods.Ftp.DownloadFile;
+        request.UseBinary = true;
+        request.UsePassive = true;
+        request.KeepAlive = false;
+        request.Timeout = (int)TimeSpan.FromMinutes(2).TotalMilliseconds;
+        request.ReadWriteTimeout = (int)TimeSpan.FromMinutes(5).TotalMilliseconds;
+
+        using WebResponse response = await request.GetResponseAsync();
+        await using Stream input = response.GetResponseStream();
+        await using FileStream output = File.Create(partial);
+        await input.CopyToAsync(output);
     }
 }
