@@ -3,7 +3,7 @@ using Planalto.Core.Municipios;
 
 namespace Planalto.Core.Indicators;
 
-public sealed class IndicatorDefinition
+public sealed class RealIndicatorDefinition
 {
     public required string Id { get; init; }
 
@@ -44,9 +44,9 @@ public sealed class IndicatorDefinitions : IValidatable
 
     public required int MinNascidosMortalidadeInfantil { get; init; }
 
-    public required List<IndicatorDefinition> Indicadores { get; init; }
+    public required List<RealIndicatorDefinition> Indicadores { get; init; }
 
-    public IndicatorDefinition Get(string id) => Indicadores.First(i => i.Id == id);
+    public RealIndicatorDefinition Get(string id) => Indicadores.First(i => i.Id == id);
 
     public IEnumerable<string> Validate()
     {
@@ -60,7 +60,7 @@ public sealed class IndicatorDefinitions : IValidatable
             yield return $"indicador '{id}' ausente.";
         }
 
-        foreach (IndicatorDefinition i in Indicadores.Where(i => i.Min >= i.Max))
+        foreach (RealIndicatorDefinition i in Indicadores.Where(i => i.Min >= i.Max))
         {
             yield return $"indicador '{i.Id}': min deve ser menor que max.";
         }
