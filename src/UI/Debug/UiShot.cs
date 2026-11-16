@@ -670,6 +670,11 @@ public partial class UiShot : Node
         {
             foreach (Control c in FindAll<Control>(root).Where(c => c.IsVisibleInTree()))
             {
+                if (InternalReference(c) is { } reference)
+                {
+                    problems.Add($"{where}: {reference}");
+                }
+
                 if (c is BaseButton or LineEdit or SpinBox or PanelContainer { MouseDefaultCursorShape: Control.CursorShape.PointingHand })
                 {
                     string tip = c.TooltipText;
@@ -799,6 +804,36 @@ public partial class UiShot : Node
             return;
         }
 
+        // Novo Mundo e criação do personagem (todas as abas): nenhum texto cita documento interno do projeto.
+        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        foreach (string scene in new[] { Game.Scenes.NewWorld, Game.Scenes.CharacterCreator })
+        {
+            var screen = GD.Load<PackedScene>(scene).Instantiate<Control>();
+            AddChild(screen);
+            await Frames(4);
+            var tabs = FindAll<TabContainer>(screen).FirstOrDefault();
+            for (int tab = 0; tab < (tabs?.GetTabCount() ?? 1); tab++)
+            {
+                if (tabs is not null)
+                {
+                    tabs.CurrentTab = tab;
+                    await Frames(2);
+                }
+
+                foreach (Control c in FindAll<Control>(screen).Where(c => c.IsVisibleInTree()))
+                {
+                    if (InternalReference(c) is { } reference)
+                    {
+                        problems.Add($"{screen.GetType().Name}, aba {tab + 1}: {reference}");
+                    }
+                }
+            }
+
+            RemoveChild(screen);
+            screen.QueueFree();
+            await Frames(2);
+        }
+
         Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
         await Frames(4);
         if (!Widgets.EncyclopediaDialog.IsOpen(GetTree().Root))
@@ -834,6 +869,29 @@ public partial class UiShot : Node
 
         GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, Enciclopédia aberta com F1)");
         GetTree().Quit(0);
+    }
+
+    /// <summary>Texto ou tooltip do controle que cita documento interno do projeto; null se nenhum.</summary>
+    private static string? InternalReference(Control c)
+    {
+        string text = c switch
+        {
+            RichTextLabel rich => rich.GetParsedText(),
+            Label label => label.Text,
+            Button button => button.Text,
+            LineEdit line => line.Text + " | " + line.PlaceholderText,
+            TextEdit edit => edit.PlaceholderText,
+            _ => "",
+        };
+        if (c is OptionButton options)
+        {
+            text += " | " + string.Join(" | ", Enumerable.Range(0, options.ItemCount).Select(options.GetItemText));
+        }
+
+        string all = text + " | " + c.TooltipText;
+        return Core.Data.InternalReferenceLint.Find(all) is { } found
+            ? $"texto de tela cita documento interno (\"{found}\") em \"{all.Trim()[..Math.Min(80, all.Trim().Length)]}\""
+            : null;
     }
 
     private const int SmallCity = 3102803;

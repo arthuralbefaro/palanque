@@ -526,7 +526,7 @@ public partial class CharacterCreatorScreen : Control
         int suffix = id.BallotNumber is { Length: 5 } n ? int.Parse(n[2..], CultureInfo.InvariantCulture) : 0;
         var digits = number.Add(new SpinBox { MinValue = 0, MaxValue = 999, Value = suffix, Prefix = "" });
         digits.ValueChanged += v => Edit(() => id.BallotNumber = party is null ? null : $"{party.Number}{(int)v:000}");
-        Ui.Label(number, "Vereador: número do partido + 3 dígitos (GDD 16.2).", color: Ui.Muted);
+        Ui.Label(number, "Vereador: número do partido + 3 dígitos.", color: Ui.Muted);
 
         HBoxContainer sloganRow = Ui.Field(t, "Slogan");
         var slogan = sloganRow.Add(new LineEdit { Text = id.Slogan, SizeFlagsHorizontal = SizeFlags.ExpandFill, MaxLength = 60 });
