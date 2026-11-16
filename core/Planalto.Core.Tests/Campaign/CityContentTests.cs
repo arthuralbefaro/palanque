@@ -247,7 +247,9 @@ public class CityContentTests
 
         string json = GameStateSerializer.Serialize(state);
         GameState loaded = GameStateSerializer.Deserialize(json);
-        Assert.Equal(json, GameStateSerializer.Serialize(loaded));
+
+        // A ordem das chaves dos dicionários pode mudar entre gravar e carregar; o conteúdo, não.
+        Assert.Equal(CampaignKit.Canonical(state), CampaignKit.Canonical(loaded));
 
         // Campo a campo, o que é novo: território, agenda, cidade e Livro.
         CampaignState a = state.Campaign!;
@@ -287,7 +289,9 @@ public class CityContentTests
 
         // O jogo carregado segue igual ao que não foi salvo: mesma resposta, mesmos dias, mesmo estado.
         CampaignEngine resumed = CampaignEngine.Start(CampaignKit.Context(loaded));
-        Assert.Equal(json, GameStateSerializer.Serialize(loaded));
+
+        // A ordem das chaves dos dicionários pode mudar entre gravar e carregar; o conteúdo, não.
+        Assert.Equal(CampaignKit.Canonical(state), CampaignKit.Canonical(loaded));
         foreach (CampaignEngine e in new[] { engine, resumed })
         {
             e.AnswerLeader(LeaderAnswer.Aceitar);
@@ -297,7 +301,7 @@ public class CityContentTests
             }
         }
 
-        Assert.Equal(GameStateSerializer.Serialize(state), GameStateSerializer.Serialize(loaded));
+        Assert.Equal(CampaignKit.Canonical(state), CampaignKit.Canonical(loaded));
     }
 
     /// <summary>Um município de cada porte, três sementes: campanha do começo à apuração trocando o motor pelo do save no meio.</summary>

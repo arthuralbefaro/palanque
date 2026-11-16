@@ -155,10 +155,14 @@ public sealed partial class CampaignEngine
             .Replace("{rival}", rivalId is null ? "" : NameOf(rivalId), StringComparison.Ordinal)
             .Replace("{pedido}", leader.RequestText, StringComparison.Ordinal);
 
-    private Memory RememberLeader(Leader leader, string fact, int peso, int pontos, string? text = null)
+    private Memory RememberLeader(Leader leader, string fact, int peso, int pontos, string? text = null, bool contact = true)
     {
         Person person = City.Person(leader.PersonId)!;
-        person.LastContact = Today;
+        if (contact)
+        {
+            person.LastContact = Today;
+        }
+
         return person.Remember(Today, fact, peso, pontos, text ?? LeaderText(fact, leader), PeopleConfig);
     }
 
@@ -405,7 +409,7 @@ public sealed partial class CampaignEngine
         invite.Answered = true;
         if (City.Leader(invite.FromPersonId) is { } leader)
         {
-            RememberLeader(leader, "convite_recusado", -1, LeaderRules.PontosConviteRecusado);
+            RememberLeader(leader, "convite_recusado", -1, LeaderRules.PontosConviteRecusado, contact: false);
             Realign(leader);
             RefreshSupport();
         }

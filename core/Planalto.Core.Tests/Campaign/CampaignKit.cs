@@ -145,7 +145,12 @@ internal static class CampaignKit
     {
         static System.Text.Json.Nodes.JsonNode? Sort(System.Text.Json.Nodes.JsonNode? node) => node switch
         {
-            System.Text.Json.Nodes.JsonObject o => new System.Text.Json.Nodes.JsonObject(o.OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => KeyValuePair.Create(p.Key, Sort(p.Value)))),
+            // "flags" é um conjunto (HashSet): a ordem dos itens não faz parte do estado.
+            System.Text.Json.Nodes.JsonObject o => new System.Text.Json.Nodes.JsonObject(o.OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => KeyValuePair.Create(
+                p.Key,
+                p.Key == "flags" && p.Value is System.Text.Json.Nodes.JsonArray set
+                    ? new System.Text.Json.Nodes.JsonArray(set.Select(x => x!.GetValue<string>()).Order(StringComparer.Ordinal).Select(x => (System.Text.Json.Nodes.JsonNode?)System.Text.Json.Nodes.JsonValue.Create(x)).ToArray())
+                    : Sort(p.Value)))),
             System.Text.Json.Nodes.JsonArray a => new System.Text.Json.Nodes.JsonArray(a.Select(Sort).ToArray()),
             null => null,
             _ => node.DeepClone(),

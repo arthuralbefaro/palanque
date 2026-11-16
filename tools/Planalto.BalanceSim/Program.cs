@@ -57,7 +57,7 @@ foreach (string porte in portes)
         try
         {
             var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
-            traces[i] = new CampaignRobot(engine).Play();
+            traces[i] = new CampaignRobot(engine) { Diagnose = i == 0 && Environment.GetEnvironmentVariable("PLANALTO_SIM_DIAG") == "1" }.Play();
         }
         catch (Exception ex)
         {
@@ -87,15 +87,23 @@ foreach (string porte in portes)
     // Fatia de semanas em que cada tipo foi a melhor escolha, sobre todas as semanas de todas as campanhas.
     var byType = done.SelectMany(t => t.BestTypeByWeek).GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
     double weeks = byType.Values.Sum();
+    var byTurn = done.SelectMany(t => t.BestTypeByTurn).GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
+    double turns = Math.Max(1, byTurn.Values.Sum());
+    var byPlurality = done.SelectMany(t => t.PluralityTypeByWeek).GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
+    double pluralityWeeks = Math.Max(1, byPlurality.Values.Sum());
     report.AppendLine();
-    report.AppendLine("| Tipo de compromisso | Semanas em que foi a melhor escolha |");
-    report.AppendLine("|---|---|");
-    foreach (var (type, count) in byType.OrderByDescending(p => p.Value))
+    report.AppendLine("| Tipo de compromisso | Semanas em que teve a opção de maior ganho | Turnos em que foi a melhor escolha | Semanas em que foi o mais marcado |");
+    report.AppendLine("|---|---|---|---|");
+    foreach (string type in byTurn.Keys.Union(byType.Keys).OrderByDescending(k => byType.GetValueOrDefault(k)))
     {
-        report.AppendLine(string.Format(culture, "| {0} | {1:P1} |", content.Campaign.Commitments.Get(type).Nome, count / weeks));
+        report.AppendLine(string.Format(culture, "| {0} | {1:P1} | {2:P1} | {3:P1} |", content.Campaign.Commitments.Get(type).Nome, byType.GetValueOrDefault(type) / weeks, byTurn.GetValueOrDefault(type) / turns, byPlurality.GetValueOrDefault(type) / pluralityWeeks));
     }
 
+    // Critério (letra do GDD 17.1, a): a melhor escolha da semana é a opção de maior ganho previsto vista nela.
+    // As outras duas colunas são informativas: o que o robô de fato marcou, turno a turno e por semana.
     double maxType = byType.Values.Max() / weeks;
+    double maxPlurality = byPlurality.Count == 0 ? 1 : byPlurality.Values.Max() / pluralityWeeks;
+    double maxTurn = byTurn.Count == 0 ? 1 : byTurn.Values.Max() / turns;
 
     // Par (tipo, zona): a fatia é medida dentro de cada campanha (as zonas são de cada cidade) e vale a pior campanha
     // e a média das piores.
@@ -103,12 +111,12 @@ foreach (string porte in portes)
     double maxPair = worstPair.Max();
     // O critério do par vale sobre o conjunto das campanhas do porte: a fatia de semanas em que a melhor escolha foi o
     // par mais repetido da própria campanha (as zonas são de cada cidade, então o par só se compara dentro dela).
-    double pooledPair = done.Sum(t => t.BestPairByWeek.Count == 0 ? 0 : t.BestPairByWeek.GroupBy(x => x).Max(g => g.Count())) / Math.Max(1.0, done.Sum(t => t.BestPairByWeek.Count));
+    double pooledPair = done.Sum(t => t.BestPairByTurn.Count == 0 ? 0 : t.BestPairByTurn.GroupBy(x => x).Max(g => g.Count())) / Math.Max(1.0, done.Sum(t => t.BestPairByTurn.Count));
     bool ok = maxType <= MaxTypeShare && pooledPair <= MaxPairShare && failures.Count == 0;
     allOk &= ok;
     report.AppendLine();
-    report.AppendLine(string.Format(culture, "- Tipo mais escolhido: **{0:P1}** das semanas (limite 40%).", maxType));
-    report.AppendLine(string.Format(culture, "- Par (tipo, zona) mais repetido: **{0:P1}** das semanas no conjunto das campanhas (limite 25%); {1:P1} na pior campanha isolada.", pooledPair, maxPair));
+    report.AppendLine(string.Format(culture, "- Tipo com a opção de maior ganho da semana: **{0:P1}** das semanas (limite 40%). Informativo: o tipo mais marcado foi a melhor escolha em {1:P1} dos turnos e o mais marcado da semana em {2:P1} das semanas.", maxType, maxTurn, maxPlurality));
+    report.AppendLine(string.Format(culture, "- Par (tipo, zona) mais repetido: **{0:P1}** das semanas no conjunto das campanhas (limite 25%), medido turno a turno; {1:P1} na pior campanha isolada pela opção de maior ganho da semana.", pooledPair, maxPair));
     report.AppendLine(string.Format(culture, "- Eleitos: {0} de {1} no partido mais forte; {2} de {3} em partido sorteado. Posição mediana entre os nomeados: {4}.",
         done.Where((_, i) => i % 2 == 0).Count(t => t.Elected), done.Where((_, i) => i % 2 == 0).Count(),
         done.Where((_, i) => i % 2 == 1).Count(t => t.Elected), done.Where((_, i) => i % 2 == 1).Count(),

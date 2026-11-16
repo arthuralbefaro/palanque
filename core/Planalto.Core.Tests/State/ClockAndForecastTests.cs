@@ -158,7 +158,8 @@ public class ClockAndForecastTests
             if (type.EscolhePublico)
             {
                 // Reunião exige uma liderança conhecida daquele público na zona: usa a zona e o público de uma delas.
-                Leader host = engine.City.Leaders[i / types.Count % engine.City.Leaders.Count];
+                List<Leader> hosts = engine.City.Leaders.Where(l => engine.Context.ZoneElectorates[engine.Territory.IndexOf(l.Zones[0])].VotersIn(l.Publico) > 0).ToList();
+                Leader host = hosts[i / types.Count % hosts.Count];
                 zone = host.Zones[0];
                 z = engine.Territory.IndexOf(zone);
                 publico = host.Publico;

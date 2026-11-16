@@ -17,6 +17,14 @@ public sealed class CampaignTrace
     /// <summary>Par (tipo, zona) de maior ganho previsto em cada semana.</summary>
     public List<string> BestPairByWeek { get; } = [];
 
+    /// <summary>A melhor escolha de cada turno livre (o que o robô marcou), sem as escolhas forçadas.</summary>
+    public List<string> BestTypeByTurn { get; } = [];
+
+    public List<string> BestPairByTurn { get; } = [];
+
+    /// <summary>Tipo mais marcado em cada semana.</summary>
+    public List<string> PluralityTypeByWeek { get; } = [];
+
     public int Commitments { get; set; }
 
     /// <summary>Turnos avaliados e, deles, os de escolha forçada (arrecadar sem caixa, descansar com estresse alto).</summary>
@@ -115,6 +123,8 @@ public sealed class CampaignRobot(CampaignEngine engine)
 
     private RobotOption? _weekBest;
 
+    public bool Diagnose { get; init; }
+
     /// <summary>Fecha a estatística da semana: o tipo e o par (tipo, lugar) da melhor opção vista nela.</summary>
     private void CloseWeek()
     {
@@ -127,7 +137,15 @@ public sealed class CampaignRobot(CampaignEngine engine)
         }
 
         _weekBest = null;
+        if (_weekTypes.Count > 0)
+        {
+            // Tipo mais marcado na semana (empate: o que apareceu primeiro).
+            Trace.PluralityTypeByWeek.Add(_weekTypes.GroupBy(x => x).OrderByDescending(g => g.Count()).First().Key);
+            _weekTypes.Clear();
+        }
     }
+
+    private readonly List<string> _weekTypes = [];
 
     private void PlanDay(DateOnly today, bool firstOfWeek)
     {
@@ -159,6 +177,11 @@ public sealed class CampaignRobot(CampaignEngine engine)
 
             RobotOption best = options.MaxBy(o => o.VotesPerTurn)!;
             bool forced = best.VotesPerTurn >= Forced;
+            if (Diagnose && firstOfWeek && slot == 0 && !forced)
+            {
+                // Diagnóstico (variável de ambiente PLANALTO_SIM_DIAG): a melhor opção de cada tipo no primeiro turno da semana.
+                Console.WriteLine($"{today:dd/MM} " + string.Join("  ", options.GroupBy(o => o.Request.Type).Select(g => g.MaxBy(o => o.VotesPerTurn)!).OrderByDescending(o => o.VotesPerTurn).Select(o => $"{o.Request.Type}@{o.Request.ZoneId?[^2..] ?? "-"}={o.VotesPerTurn:0.0}")));
+            }
             if (forced)
             {
                 Trace.ForcedTurns++;
@@ -173,6 +196,14 @@ public sealed class CampaignRobot(CampaignEngine engine)
             }
 
             Trace.Turns++;
+            if (!forced)
+            {
+                string turnPlace = best.Request.ZoneId
+                    ?? (best.Request.PersonId is { } visited && _engine.City.Leader(visited) is { } visitedLeader ? visitedLeader.Zones[0] : "-");
+                Trace.BestTypeByTurn.Add(best.Request.Type);
+                Trace.BestPairByTurn.Add($"{best.Request.Type}|{turnPlace}");
+                _weekTypes.Add(best.Request.Type);
+            }
 
             if (_engine.Schedule(best.Request).Failure is null)
             {

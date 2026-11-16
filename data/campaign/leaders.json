@@ -8,7 +8,7 @@
       "metropole": { "min": 24, "max": 30 }
     },
     "semanas_sem_contato": 8,
-    "apoio_por_influencia": 0.065,
+    "apoio_por_influencia": 0.09,
     "pontos_visita": 4,
     "pontos_visita_sem_compromisso": 1,
     "pontos_promessa": 22,
@@ -24,8 +24,8 @@
     "limiar_alinhamento": 25,
     "favor_decaimento": 0.6,
     "chance_convite": 0.08,
-    "conhecidas_no_inicio": 0.25,
-    "chance_descoberta": 0.5,
+    "conhecidas_no_inicio": 0.4,
+    "chance_descoberta": 0.8,
     "gravidade_dinheiro": 2
   },
   "tipos": [

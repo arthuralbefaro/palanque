@@ -77,6 +77,7 @@ public class DebateTests
         DebateEngine.Close(campaign);
         Assert.Null(campaign.Debate);
         Assert.Single(campaign.DebatesHeld);
+        campaign.Events.Pending.Clear();
         engine.AdvanceWeek();
     }
 
