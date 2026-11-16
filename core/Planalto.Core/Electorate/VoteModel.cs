@@ -92,41 +92,73 @@ public static class VoteModel
             throw new ArgumentException("Sem candidatos.", nameof(candidates));
         }
 
-        var themePositions = candidates.ToDictionary(c => c.Id, c => ThemePositions(c, themes, config), StringComparer.Ordinal);
-        var multiplicity = candidates.ToDictionary(c => c.Id, c => Math.Max(1, c.Multiplicity), StringComparer.Ordinal);
+        // As contas são as de Utility, na mesma ordem, com os temas de cada candidato num vetor (pelo índice do
+        // catálogo) em vez de dicionário: o resultado é o mesmo, bit a bit, e a projeção sai várias vezes mais rápida.
+        int n = candidates.Count;
+        var positions = new double[n][];
+        var multiplicity = new double[n];
+        var awareness = new double[n];
+        var noiseOf = new double[n];
+        var points = new AxisPoint[n];
+        for (int i = 0; i < n; i++)
+        {
+            VoteCandidate c = candidates[i];
+            Dictionary<string, double> byTheme = ThemePositions(c, themes, config);
+            positions[i] = themes.Themes.Select(t => byTheme[t.Id]).ToArray();
+            multiplicity[i] = Math.Max(1, c.Multiplicity);
 
-        // Conjunto de consideração (vale para todos os segmentos): quem não é conhecido quase não recebe voto.
-        var awareness = candidates.ToDictionary(
-            c => c.Id,
-            c => config.Awareness.Exponent == 0 ? 1 : Math.Pow(Math.Clamp(c.Recognition, config.Awareness.Floor, 1), config.Awareness.Exponent),
-            StringComparer.Ordinal);
+            // Conjunto de consideração (vale para todos os segmentos): quem não é conhecido quase não recebe voto.
+            awareness[i] = config.Awareness.Exponent == 0 ? 1 : Math.Pow(Math.Clamp(c.Recognition, config.Awareness.Floor, 1), config.Awareness.Exponent);
+            noiseOf[i] = noise[c.Id];
+            points[i] = AxisPoint.From(c.Position);
+        }
 
         var intentions = new List<SegmentIntention>();
-        var votes = candidates.ToDictionary(c => c.Id, _ => 0.0, StringComparer.Ordinal);
+        var totals = new double[n];
+        var utilities = new double[n];
+        var exp = new double[n];
         double blankNull = 0;
         double abstention = 0;
 
         foreach (Segment segment in segments)
         {
             double maxAffinity = segment.Affinity.Count == 0 ? 0 : segment.Affinity.Values.Max();
-            var utilities = candidates.ToDictionary(
-                c => c.Id,
-                c => Utility(segment, c, themePositions[c.Id], maxAffinity, config) + noise[c.Id],
-                StringComparer.Ordinal);
+            Segment.ThemeRow row = segment.ThemeRowFor(themes);
+            for (int i = 0; i < n; i++)
+            {
+                utilities[i] = Utility(segment, row, candidates[i], points[i], positions[i], maxAffinity, config) + noiseOf[i];
+            }
 
-            double best = utilities.Values.Max();
-            var exp = utilities.ToDictionary(u => u.Key, u => Math.Exp((u.Value - best) / config.Temperature) * multiplicity[u.Key] * awareness[u.Key], StringComparer.Ordinal);
-            double sum = exp.Values.Sum();
-            var shares = exp.ToDictionary(e => e.Key, e => e.Value / sum, StringComparer.Ordinal);
+            double best = utilities[0];
+            for (int i = 1; i < n; i++)
+            {
+                if (utilities[i] > best)
+                {
+                    best = utilities[i];
+                }
+            }
+
+            double sum = 0;
+            for (int i = 0; i < n; i++)
+            {
+                exp[i] = Math.Exp((utilities[i] - best) / config.Temperature) * multiplicity[i] * awareness[i];
+                sum += exp[i];
+            }
+
+            var shares = new Dictionary<string, double>(n, StringComparer.Ordinal);
+            for (int i = 0; i < n; i++)
+            {
+                shares[candidates[i].Id] = exp[i] / sum;
+            }
 
             // Brancos e nulos crescem quando nem o melhor candidato agrada ao segmento.
             double satisfaction = Math.Clamp(best / config.Weights.Total, 0, 1);
             double bn = Math.Clamp(config.BlankNullBase + (config.BlankNullLowUtility * (1 - satisfaction)), 0, config.BlankNullMax);
 
             double voters = segment.Voters * segment.Turnout;
-            foreach (var (id, share) in shares)
+            for (int i = 0; i < n; i++)
             {
-                votes[id] += voters * (1 - bn) * share;
+                totals[i] += voters * (1 - bn) * (exp[i] / sum);
             }
 
             blankNull += voters * bn;
@@ -134,7 +166,38 @@ public static class VoteModel
             intentions.Add(new SegmentIntention(segment, shares, bn, segment.Turnout));
         }
 
+        var votes = new Dictionary<string, double>(n, StringComparer.Ordinal);
+        for (int i = 0; i < n; i++)
+        {
+            votes[candidates[i].Id] = totals[i];
+        }
+
         return new VoteProjection { Segments = intentions, Votes = votes, BlankNull = blankNull, Abstention = abstention };
+    }
+
+    /// <summary>A mesma conta de <see cref="Utility(Segment, VoteCandidate, IReadOnlyDictionary{string, double}, double, VoteModelConfig)"/>, com os temas em vetor.</summary>
+    private static double Utility(Segment segment, Segment.ThemeRow row, VoteCandidate candidate, AxisPoint point, double[] themePositions, double maxAffinity, VoteModelConfig config)
+    {
+        VoteWeights w = config.Weights;
+        double proximity = 1 - (segment.Ideology.DistanceTo(point) / MaxDistance);
+
+        double themes = 0;
+        for (int k = 0; k < row.Index.Length; k++)
+        {
+            double position = row.Index[k] >= 0 ? themePositions[row.Index[k]] : 0;
+            double distance = Math.Abs(position - row.Preference[k]);
+            themes += row.Priority[k] * (1 - (distance / (ThemeDefinition.MaxPosition - ThemeDefinition.MinPosition)));
+        }
+
+        double party = maxAffinity <= 0 ? 0 : segment.Affinity.GetValueOrDefault(candidate.PartyId) / maxAffinity;
+        double support = candidate.Support.Count == 0 ? 0 : Math.Min(1, segment.Groups.Values.Sum(g => candidate.Support.GetValueOrDefault(g)));
+
+        return (w.Ideology * proximity)
+            + (w.Themes * themes)
+            + (w.Recognition * Math.Clamp(candidate.Recognition, 0, 1))
+            + (w.Image * Math.Clamp(candidate.Image, -1, 1))
+            + (w.Party * party)
+            + (w.Support * support);
     }
 
     public static double Utility(Segment segment, VoteCandidate candidate, IReadOnlyDictionary<string, double> themePositions, double maxAffinity, VoteModelConfig config)
