@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|rivais|midia|contas [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -32,6 +32,9 @@ public partial class UiShot : Node
         string? shot = args.FirstOrDefault(a => a.StartsWith("--screenshot=", StringComparison.Ordinal))?.Split('=', 2)[1];
         Game game = Game.Instance;
         game.SuppressNavigation = true;
+
+        // O ponteiro do mouse de quem roda o teste pode estar sobre a janela: sem isto, o tooltip do controle sob ele entra nas capturas.
+        ProjectSettings.SetSetting("gui/timers/tooltip_delay_sec", 3600.0);
         game.PendingSeed = 2028;
         game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
 
@@ -95,6 +98,24 @@ public partial class UiShot : Node
         if (target == "objetivos")
         {
             await PlayObjectives(shot);
+            return;
+        }
+
+        if (target == "rivais")
+        {
+            await PlayRivals(shot);
+            return;
+        }
+
+        if (target == "midia")
+        {
+            await PlayMedia(shot);
+            return;
+        }
+
+        if (target == "contas")
+        {
+            await PlayAccounts(shot);
             return;
         }
 
@@ -422,8 +443,9 @@ public partial class UiShot : Node
                 hub.Refresh();
                 await Frames(2);
 
-                // Telas da R2b: os três blocos, Equipe, decisão da equipe, Verba, Plataforma e a coluna com Objetivos.
-                await VisitCampaignPanels(hub, (where, suffix) =>
+                // Telas da R2b (os três blocos, Equipe, decisão da equipe, Verba, Plataforma e a coluna com Objetivos) e
+                // da R3 (rivais, chapa, ataque, Mídia, veículo, Contas, oferta, modo Disputa e cartão de evento).
+                Func<string, string?, Task> measure = (where, suffix) =>
                 {
                     problems.AddRange(Overflow(hub, $"Hub {label}, {where}, {tag}"));
                     if (hub.LeftPanelWidth > 401)
@@ -441,13 +463,20 @@ public partial class UiShot : Node
                         problems.Add($"Hub {label}, {tag}: o cartão da decisão da equipe mede {staffCard.Size.Y:0} de altura (máximo 640)");
                     }
 
+                    if (Named<Control>(hub, "CartaoEvento") is { } eventCard && eventCard.Size.Y > 640 + 1)
+                    {
+                        problems.Add($"Hub {label}, {tag}: o cartão do evento mede {eventCard.Size.Y:0} de altura (máximo 640)");
+                    }
+
                     if (suffix is not null)
                     {
                         Save(shot, $"_{suffix}_{label}_{tag}");
                     }
 
                     return Task.CompletedTask;
-                });
+                };
+                await VisitCampaignPanels(hub, measure);
+                await VisitR3Panels(hub, measure);
                 RemoveChild(hub);
                 hub.QueueFree();
             }
@@ -469,7 +498,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print("Smoke layout: ok (1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido e as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos)");
+        GD.Print("Smoke layout: ok (1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas)");
         GetTree().Quit(0);
     }
 
@@ -521,11 +550,12 @@ public partial class UiShot : Node
             Rect2 frame = scroll.GetGlobalRect();
             foreach (Control inside in FindAll<Control>(scroll).Where(c => c.IsVisibleInTree() && c.Size.X > 0 && c is not ScrollBar))
             {
-                // Filho de controle que recorta o conteúdo (camadas do retrato) não aparece fora dele.
+                // Filho de controle que recorta o conteúdo (camadas do retrato) não aparece fora dele; o que está numa
+                // janela própria (o tooltip que o Godot abre sob o ponteiro do mouse) tem coordenadas dela e não conta.
                 bool clipped = false;
                 for (Node? up = inside.GetParent(); up is not null && up != scroll; up = up.GetParent())
                 {
-                    clipped |= up is Control { ClipContents: true };
+                    clipped |= up is Control { ClipContents: true } or Window;
                 }
 
                 if (clipped)
@@ -604,7 +634,14 @@ public partial class UiShot : Node
                     return;
                 }
 
-                var buttons = FindAll<Button>(dialog).ToList();
+                // Só as escolhas: o cartão também tem os nomes clicáveis de quem está envolvido.
+                var buttons = FindAll<Button>(dialog).Where(b => b.Name.ToString().StartsWith("Escolha_", StringComparison.Ordinal)).ToList();
+                if (buttons.Count != definition.Choices.Count)
+                {
+                    Fail($"o evento {definition.Id} mostra {buttons.Count} escolhas; a definição tem {definition.Choices.Count}.");
+                    return;
+                }
+
                 if (buttons[choice].Disabled)
                 {
                     blocked++;
@@ -624,6 +661,23 @@ public partial class UiShot : Node
 
                 await Click(proceed);
                 await Frames(3);
+
+                // Evento dinâmico disparado pelo fato desta escolha (GDD 15.4): é outro cartão, que tem a própria volta
+                // neste teste. Aqui ele precisa ter aberto no lugar do primeiro; resolve-se pelo Core e a conferência segue.
+                while (campaign.Events.Pending.FirstOrDefault() is { FactId: not null } chained)
+                {
+                    if (!hub.EventOpen)
+                    {
+                        Fail($"{definition.Id}, opção {choice + 1}: o evento em cadeia {chained.EventId} ficou pendente sem cartão.");
+                        return;
+                    }
+
+                    var next = game.Events.Find(chained.EventId)!;
+                    Core.Events.EventEngine.Resolve(engine.Context, chained, Enumerable.Range(0, next.Choices.Count).First(i => Core.Events.EventEngine.Blocked(engine.Context, next.Choices[i]) is null), game.State.Rng);
+                    hub.Refresh();
+                    await Frames(3);
+                }
+
                 if (hub.EventOpen || campaign.Events.Pending.Count > 0)
                 {
                     Fail($"{definition.Id}, opção {choice + 1}: o fundo do evento continuou na tela.");
@@ -799,6 +853,20 @@ public partial class UiShot : Node
             return;
         }
 
+        // Telas da R3: Pessoas com a chapa, ficha do rival, atacar, Mídia, veículos, ataque com prazo, Contas, oferta, modo Disputa e evento.
+        int r3 = 0;
+        await VisitR3Panels(hub, (where, _) =>
+        {
+            r3++;
+            Check(hub, where);
+            return Task.CompletedTask;
+        });
+        if (r3 < 18)
+        {
+            Fail($"o teste de explicação só passou por {r3} telas da R3 (esperado: 18 ou mais).");
+            return;
+        }
+
         Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
         await Frames(4);
         if (!Widgets.EncyclopediaDialog.IsOpen(GetTree().Root))
@@ -832,7 +900,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, Enciclopédia aberta com F1)");
+        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, {r3} telas da R3, Enciclopédia aberta com F1)");
         GetTree().Quit(0);
     }
 
