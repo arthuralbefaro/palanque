@@ -148,6 +148,7 @@ Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Si
 - **Estimativa** (não é número do IBGE): o país inteiro daria de 305 a 415 MB nesse JSON; só os municípios com até 1.000 faces (2.853 deles), de 32 a 44 MB; só os com até 500 faces (1.441), de 10 a 13 MB. Com 17 MB de zonas já no repositório e o teto de 20 MB (D-037), **não cabe**. Caberia apenas um recorte dos menores municípios com compactação mais agressiva (não medida), ou os dados fora do repositório, baixados por município.
 - **Licença:** não confirmada. As listagens dizem "Todos os arquivos aqui disponíveis são públicos"; a ficha do produto só traz ressalvas de qualidade e isenção de responsabilidade; as páginas do ibge.gov.br recusaram a leitura automática. O autor confere os termos antes de qualquer uso.
 - **Não confirmado:** se há versão definitiva mais nova; a fração de faces fora da sede; a taxa de simplificação fora de Roraima.
+- **Atualização (16/11, quarta rodada):** o autor decidiu usar as ruas no mapa novo (redefinição visual, DECISOES D-041, adendo). A pesquisa completa de fontes e tamanhos (faces, BC250, elevação) e a forma de guardar ou gerar o mapa de base são entregues ao fim da `fase-r-final`; a licença continua a conferir.
 - **A decidir pelo autor:** (a) não usar e manter as zonas; (b) usar só nas cidades pequenas, com teto próprio de tamanho; (c) baixar por município, fora do Git. Nada muda até a decisão.
 
 ## R3 — pendências
