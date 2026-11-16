@@ -220,7 +220,7 @@ public partial class HubScreen
 
         Glossary.Rich(col, hostile.Count == 0
             ? Tr("Ninguém que sabe está contra você hoje: não deve vir à tona. Relação ou lealdade baixa muda isso.")
-            : string.Format(PtBr, Tr("Podem falar (relação ou lealdade baixa): {0}. Chance de vir à tona nesta semana: {1:P1}."), string.Join(", ", hostile.Select(_engine.NameOf)), _engine.SurfaceChance(s)), 18, hostile.Count == 0 ? Palette.Texto2 : Palette.Texto).Name = "ChanceDeVirATona";
+            : string.Format(PtBr, Tr("Chance de vir à tona nesta semana: {1:P1}. Podem falar, por relação ou lealdade baixa: {0}"), string.Join(", ", hostile.Select(_engine.NameOf)), _engine.SurfaceChance(s)), 18, hostile.Count == 0 ? Palette.Texto2 : Palette.Texto).Name = "ChanceDeVirATona";
     }
 
     private void IrregularityCard(IrregularityView i)
