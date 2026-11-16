@@ -111,7 +111,7 @@ Em janela mais larga que 16:9, o mapa cresce e os painéis mantêm 400. Em janel
 - Desenho próprio em SVG, grade de 24 × 24, traço de 2 px, pontas e cantos arredondados, sem preenchimento, cor herdada do tema. Guardados em `assets/icons/ui/`.
 - Pacote de terceiros só com licença CC0 ou CC BY (GDD 11), com crédito. Qualquer outra licença é decisão do autor.
 - Todo ícone sem rótulo ao lado tem tooltip com o nome.
-- Trilho, de cima para baixo: megafone (Campanha ou Mandato), pessoas (Equipe e Lideranças), calendário (Agenda), barras (Pesquisas e Território), cédula (Finanças), jornal (Mídia), prédio (Partido e Câmara).
+- Trilho, de cima para baixo: megafone (Campanha ou Mandato), pessoas (Equipe, Lideranças e Rivais), calendário (Agenda), barras (Pesquisas e Território), cédula (Finanças), jornal (Mídia), prédio (Partido e Câmara).
 - Tipos de liderança e de canal têm ícone próprio e genérico (templo é uma casa com frontão, sem símbolo de religião específica; sindicato é uma engrenagem; associação de moradores é um grupo de casas; empresarial é uma maleta; rural é uma espiga).
 - Edifícios e símbolos oficiais sempre estilizados, sem brasões nem réplicas (regra de neutralidade).
 
