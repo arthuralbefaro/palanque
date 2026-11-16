@@ -25,3 +25,9 @@ Balanceamento D-026 (conjunto de consideração no voto, rivais e coletivos ativ
 ## Fase 4 — Mandato legislativo (2026-11-15)
 Mandato de vereador no Core (ChamberSetup e LegislatureEngine: Câmara com NPCs, base do prefeito, lideranças, comissões, pauta semanal, voto NPC, quóruns, fidelidade com advertência, sanção e expulsão, relações, capital político, emendas e projetos próprios), transição da carreira (CareerFlow: posse, reeleição com incumbentes do mandato, entressafra; PartyAffiliation: prazo de filiação e janela partidária) e fundação de partido (PartyFoundingEngine). Telas novas: mandato, entressafra e diálogo de fundação; a apuração leva à posse.
 36 projetos municipais e 7 ações de gabinete em data/. 413 testes no Core, incluindo carreiras inteiras jogadas sozinhas (mandato de 4 anos e reeleição, 3 sementes); smoke da UI em 7 fluxos. Pendente para depois: eventos de mandato, eleição da Mesa e CPIs (D-027).
+
+## Resumo da noite (modo corujão, 2026-11-15)
+- **Concluído:** Fase 3 inteira (UI da campanha, urna, apuração, save/load, mapa 2.5D, balanceamento D-026, roteiro em docs/ROTEIRO_TESTE_FASE3.md) e Fase 4 inteira (mandato, transição, filiação, fundação de partido). Decisões D-021 a D-029.
+- **Testes:** 413 no Core, 28 no importador; teste de fumaça da UI em 7 fluxos (newworld, creator, hub, picker, campaign, map, mandate), rodado sem janela e com janela.
+- **Pendências:** nenhuma em docs/PENDENCIAS.md (nada bloqueou). Uma exceção "Handle is not initialized", vista uma vez numa rodada com janela, não se repetiu em 5 rodadas; o timer da urna ganhou proteção contra tela já liberada.
+- **Por onde retomar:** jogar o roteiro da Fase 3 (agora a apuração leva à posse e ao mandato); depois, Fase 5 (prefeito: orçamento, indicadores, políticas, coalizão e minigame de debate). Itens adiados do mandato: eventos de mandato, eleição da Mesa e CPIs.
