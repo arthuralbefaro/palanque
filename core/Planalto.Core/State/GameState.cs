@@ -30,6 +30,9 @@ public sealed class GameParty
 
     public PartyCharter? Charter { get; set; }
 
+    /// <summary>Registro no TSE de um partido fundado durante a carreira; null para os que já existiam.</summary>
+    public DateOnly? RegisteredOn { get; set; }
+
     public static GameParty From(PartyDraft draft) => new()
     {
         Id = draft.Id,
@@ -90,6 +93,9 @@ public sealed class GameState
 
     /// <summary>Câmara e prefeitura do município em foco depois da última eleição jogada.</summary>
     public Legislature.LocalPolitics? Local { get; set; }
+
+    /// <summary>Fundação de partido em curso ou concluída (GDD 14.2 B).</summary>
+    public Career.PartyFoundingState? Founding { get; set; }
 
     public GameParty? Party(string? id) => Parties.FirstOrDefault(p => p.Id == id);
 }

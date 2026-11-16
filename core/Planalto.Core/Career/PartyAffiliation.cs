@@ -68,8 +68,15 @@ public static class PartyAffiliation
         mandate.News.Add(new MandateNews(state.Calendar.WeekStart, MandateNewsKind.MudancaDePartido, state.Party(partyId)!.Sigla));
     }
 
-    /// <summary>Pode disputar a eleição do ano: filiado até o prazo de filiação.</summary>
-    public static bool CanRun(GameState state, int electionYear) =>
-        state.Player.PartyId is not null
-        && (state.Player.AffiliatedOn is null || state.Player.AffiliatedOn <= Calendar.ElectionFor(electionYear).PartyAffiliationDeadline);
+    /// <summary>
+    /// Pode disputar a eleição do ano: filiado até o prazo de filiação, a um partido registrado no TSE até 6 meses
+    /// antes da eleição (Lei 9.504, art. 4º; o mesmo prazo, na prática).
+    /// </summary>
+    public static bool CanRun(GameState state, int electionYear)
+    {
+        DateOnly deadline = Calendar.ElectionFor(electionYear).PartyAffiliationDeadline;
+        return state.Party(state.Player.PartyId) is { } party
+            && (party.RegisteredOn is null || party.RegisteredOn <= deadline)
+            && (state.Player.AffiliatedOn is null || state.Player.AffiliatedOn <= deadline);
+    }
 }

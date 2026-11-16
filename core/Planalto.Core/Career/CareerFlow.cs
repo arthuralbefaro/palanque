@@ -92,8 +92,9 @@ public static class CareerFlow
     /// Uma semana da carreira: na campanha de reeleição o mandato vota sozinho (seguindo a orientação) e a
     /// campanha avança; no mandato, só ele; fora de mandato, só o calendário.
     /// </summary>
-    public static void AdvanceWeek(GameState state, CampaignEngine? campaign, LegislatureEngine? legislature)
+    public static void AdvanceWeek(GameState state, CampaignEngine? campaign, LegislatureEngine? legislature, PartyFoundingEngine? founding = null)
     {
+        founding?.Tick();
         if (state.Campaign is not null)
         {
             if (campaign is null)

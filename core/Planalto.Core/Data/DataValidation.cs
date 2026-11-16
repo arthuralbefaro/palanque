@@ -20,6 +20,7 @@ public static class DataValidation
             Check<TraitCatalog>(dataDirectory, "traits.json", catalog => catalog.Traits.Count, out _),
             Check<ProfessionCatalog>(dataDirectory, "professions.json", catalog => catalog.Professions.Count, out _),
             Check<PorteCatalog>(dataDirectory, "portes.json", catalog => catalog.Portes.Count, out PorteCatalog? portes),
+            Check<Career.FoundingConfig>(dataDirectory, Career.FoundingConfig.File, config => config.Intensities.Count, out _),
         };
 
         reports.AddRange(WorldContent.Load(dataDirectory, out WorldContent? world));
