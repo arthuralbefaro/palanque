@@ -488,6 +488,19 @@ public partial class CharacterCreatorScreen : Control
         _ => "Cansada",
     };
 
+    /// <summary>Força dos partidos no município escolhido, a mesma que a campanha vai usar (semente do mundo).</summary>
+    private IReadOnlyDictionary<string, double>? LocalStrength()
+    {
+        if (_c.HomeMunicipio is not int ibge)
+        {
+            return null;
+        }
+
+        var parties = Planalto.Core.Campaign.CampaignContext.ElectoralParties(_world.Parties.Select(GameParty.From), _game.World.Parties.Generator.SizeShareWeights);
+        var local = _world.Preset.Scenario == "brasil_2026" ? _game.Brasil2026?.Municipio(ibge) : null;
+        return Planalto.Core.Campaign.CampaignContext.PartyStrength(_game.PendingSeed, ibge, _game.Electorate, parties, local);
+    }
+
     private void BuildPartyTab(VBoxContainer t)
     {
         HBoxContainer mode = Ui.Row(t);
@@ -517,13 +530,21 @@ public partial class CharacterCreatorScreen : Control
 
         if (!_ownParty)
         {
-            foreach (PartyDraft p in _world.Parties)
+            // Força de cada partido na cidade escolhida: sem ela, a campanha de vereador fica muito difícil.
+            IReadOnlyDictionary<string, double>? local = LocalStrength();
+            if (local is not null)
+            {
+                Ui.Label(t, string.Format(Tr("Ordenados pela força na cidade ({0}). Partido sem força local torna a eleição muito difícil."), HomeName()), 16, Ui.Muted);
+            }
+
+            foreach (PartyDraft p in local is null ? _world.Parties : _world.Parties.OrderByDescending(p => local.GetValueOrDefault(p.Id)).ToList())
             {
                 HBoxContainer row = Ui.Row(t, 10);
                 var badge = row.Add(new PartyBadge(36));
                 badge.Set(p.LogoIcon, p.Colors.Primary, p.Colors.Secondary);
                 string family = _game.World.Parties.Families.Find(p.FamilyId)?.Name ?? p.FamilyId;
-                var choose = row.Add(new CheckBox { Text = $"{p.Number} · {p.Sigla} — {p.Name} · {family} · {WorldTexts.Size(p.Size)}", ButtonPressed = p.Id == _c.PartyId });
+                string strength = local is null ? "" : string.Format(System.Globalization.CultureInfo.GetCultureInfo("pt-BR"), " · {0} {1:0.0}%", Tr("força local"), local.GetValueOrDefault(p.Id) * 100);
+                var choose = row.Add(new CheckBox { Text = $"{p.Number} · {p.Sigla} — {p.Name} · {family} · {WorldTexts.Size(p.Size)}{strength}", ButtonPressed = p.Id == _c.PartyId });
                 choose.Pressed += () => Change(() => { _c.PartyId = p.Id; ApplyPartyNumber(); });
             }
 

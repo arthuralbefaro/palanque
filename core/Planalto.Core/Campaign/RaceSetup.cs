@@ -37,17 +37,29 @@ public sealed class CampaignContext
 
     /// <summary>Eleitorado do município pelo mesmo procedimento em qualquer momento (determinístico pela semente do mundo).</summary>
     public static MunicipalElectorate BuildElectorate(GameState state, Municipio municipio, ElectorateContent electorate, ThemeCatalog themes, IReadOnlyDictionary<Parties.PartySize, int> sizeWeights, MunicipalScenario? local) =>
-        ElectorateBuilder.Build(municipio, electorate.Segments, electorate.VoteModel, themes, ElectoralParties(state, sizeWeights), local?.ForcaVereador, ElectorateRng(state, municipio.CodigoIbge));
+        ElectorateBuilder.Build(municipio, electorate.Segments, electorate.VoteModel, themes, ElectoralParties(state, sizeWeights), local?.ForcaVereador, ElectorateRng(WorldSeed(state), municipio.CodigoIbge));
 
     /// <summary>Força dos partidos no município, idêntica à de <see cref="BuildElectorate"/>, sem montar os segmentos.</summary>
     public static IReadOnlyDictionary<string, double> PartyStrength(GameState state, int codigoIbge, ElectorateContent electorate, IReadOnlyList<ElectoralParty> parties, MunicipalScenario? local) =>
-        ElectorateBuilder.Strength(parties, electorate.VoteModel, local?.ForcaVereador, ElectorateRng(state, codigoIbge)).Strength;
+        PartyStrength(WorldSeed(state), codigoIbge, electorate, parties, local);
+
+    /// <summary>
+    /// A mesma força antes de a carreira existir (criação de personagem), a partir da semente que o mundo vai
+    /// receber em <see cref="NewGame.Create"/>.
+    /// </summary>
+    public static IReadOnlyDictionary<string, double> PartyStrength(ulong worldSeed, int codigoIbge, ElectorateContent electorate, IReadOnlyList<ElectoralParty> parties, MunicipalScenario? local) =>
+        ElectorateBuilder.Strength(parties, electorate.VoteModel, local?.ForcaVereador, ElectorateRng(worldSeed, codigoIbge)).Strength;
 
     public static List<ElectoralParty> ElectoralParties(GameState state, IReadOnlyDictionary<Parties.PartySize, int> sizeWeights) =>
-        state.Parties.Select(p => new ElectoralParty(p.Id, p.Position, sizeWeights[p.Size])).ToList();
+        ElectoralParties(state.Parties, sizeWeights);
+
+    public static List<ElectoralParty> ElectoralParties(IEnumerable<GameParty> parties, IReadOnlyDictionary<Parties.PartySize, int> sizeWeights) =>
+        parties.Select(p => new ElectoralParty(p.Id, p.Position, sizeWeights[p.Size])).ToList();
+
+    private static ulong WorldSeed(GameState state) => state.World?.Seed ?? 1;
 
     /// <summary>O eleitorado de cada município tem semente própria, derivada da semente do mundo.</summary>
-    private static Rng ElectorateRng(GameState state, int codigoIbge) => new((state.World?.Seed ?? 1) ^ (ulong)codigoIbge);
+    private static Rng ElectorateRng(ulong worldSeed, int codigoIbge) => new(worldSeed ^ (ulong)codigoIbge);
 }
 
 /// <summary>
