@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 08:27, depois de: R2a concluída com pendências (tag fase-r2a); R2b em desenvolvimento.
+Atualizado em 2026-11-16 10:42, depois de: R2b concluída com pendências (tag fase-r2b); R3 em desenvolvimento.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -208,7 +208,12 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - pessoa com memória, Livro de compromissos, lideranças com pedido;
   - BalanceSim: o critério "nenhum tipo é o melhor em mais de 40% das semanas" passa em cidade pequena (30%) e média (34%) e não passa em grande (41%) e metrópole (60%).
   - 581 testes no Core, 15 alvos de fumaça com janela.
-- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`.
+- **R2b feita, com pendências (tag `fase-r2b`):**
+  - equipe de cinco funções com conselho, decisões e delegação; verba em quatro canais com disputa e saturação; plataforma com posição conhecida, bandeiras e promessas; objetivos na coluna direita;
+  - lei dos canais em `ChannelLawConfig` (cabos, impulsionamento, vedações); verbetes de propaganda reescritos pelo texto conferido;
+  - BalanceSim: decisões com troca passam; canal de verba fora em três portes, par fora no pequeno, tipo fora na metrópole (P-20); o caixa não comporta equipe e verba antes dos doadores (P-21).
+  - 673 testes no Core, 19 alvos de fumaça com janela.
+- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -251,6 +256,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
 - D-037: respostas do autor às pendências da R1; teto de 20 MB em `data/zonas/`; corujão estendido à Fase R inteira.
 - D-038: escolhas da RD (finanças do DF pelo ente estadual, RAIS de estabelecimentos, homicídios por agressão, declarações implausíveis descartadas, eleitores por zona pela moradia).
+- D-040: escolhas da R2b (equipe sem função vale o pior padrão, delegação a 50%, verba cobrada toda segunda, pré-campanha com teto, incoerência em 52 semanas, 7 tipos de objetivo).
 - D-039: escolhas da R2a (presença de partida, alcance pela fatia da cidade, reunião só com liderança do público, evento dividindo cansaço com a caminhada, dificuldade dos rivais, como o BalanceSim mede a "melhor escolha da semana").
 - D-036: idade inicial de 17 a 45 anos (NPCs 25 a 45), 18 anos aferidos em 15/8 para vereador, profissões com idade mínima, Estudante, família coerente com a idade.
 
@@ -287,6 +293,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 - **Do autor:** jogar os roteiros da R1 e da RD (tags `fase-r1` e `fase-rd`); o corujão segue sem esperar (D-037).
 - **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3.
+- **Novas, da R2b:** P-20 (BalanceSim fora em parte dos portes), P-21 (caixa não comporta equipe e verba), P-22 (o que depende da R3), P-23 (sobras da interface).
 - **Novas, da R2a:** P-15 (princípio a não passa em cidade grande e metrópole), P-16 (lint de rastro e eventos antigos), P-17 (números de jogo ainda no código), P-18 (caixa aperta nas cidades maiores), P-19 (sobras da interface; quintil ou intervalo no mapa).
 - **Novas, da RD:** P-10 (votação de 2024 por zona não ligada), P-11 (eleitores por zona: onde se vota ou onde se mora), P-12 (parâmetros de jogo novos), P-13 (termos de uso das fontes não IBGE), P-14 (transferências e CAGED).
 - **Do autor, com resposta:**

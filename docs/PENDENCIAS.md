@@ -99,7 +99,7 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - As capturas de `docs/referencias/r2a/` e parte do roteiro foram feitas antes da última calibração: os números de presença e a regra da reunião (agora só com liderança do público na zona) podem diferir do texto.
 - Sem ficha de rival, sem seta nas dicas, sem as animações do ART_GUIDE, seção 8.
 
-## R2b — pendências (Core; a interface está em andamento)
+## R2b — com pendências
 
 ### P-20 · BalanceSim da R2b fora do critério em parte dos portes
 - **Medido** (`docs/balance/r2b.md`, 48 campanhas por porte): tipo de compromisso em 27,0% (pequeno), 35,9% (médio), 36,3% (grande) e **60,6% (metrópole)**; par (tipo, zona) em **29,8% (pequeno)**, 18,1%, 14,2% e 12,8%; canal de verba mais repetido em **45,0% (pequeno, Cabos)**, **49,0% (médio, Rua)**, **49,5% (grande, Rua)** e 39,2% (metrópole); decisões com troca por semana entre 1,8 e 2,4 (critério: 1 ou mais, passa).
@@ -114,3 +114,12 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 ### P-22 · O que ficou para a R3 por depender dela
 - Opinião do marqueteiro, do tesoureiro e do advogado; agenda dos rivais vista na véspera; ação do advogado; "posição fora da faixa do partido esfria a direção"; rivais que se posicionam e atacam contradições; tema em alta.
 - A plataforma não atravessa eleições (o Livro guarda as posições assumidas, mas o estado da plataforma nasce de novo a cada campanha).
+
+### P-23 · Sobras da interface da R2b
+- **Resolvido da P-19:** a célula da agenda mostra "Caminhada" inteiro; há "Repetir a semana anterior"; o estresse acima do limite ganhou cartão de aviso. O resto da P-19 continua (quintis, legenda grande, pausa e faixa em cor de atenção ao mesmo tempo, fichas com mais de três blocos, sem ficha de rival, sem seta nas dicas, sem animações).
+- **Fora do ART_GUIDE:** a área Campanha rola na primeira visita (com a dica aberta); o bloco de Objetivos ocupa cerca de 410 px (o guia pede 176) e corta a linha de origem (inteira no tooltip); as opções do cartão de decisão têm 3 linhas (o guia pede 2); a previsão de mudança de posição pede bastante rolagem no painel de 400 px.
+- **Capturas** por porte são de pré-campanha, com Rua e Cabos fechados; os dois canais abertos só aparecem em `verba_resultado_1920.png` e `comicio_sem_rua_1920.png`.
+- **Textos do Core a acertar:** a previsão das opções da equipe usa hífen em "-10" e cita o salário mesmo quando ele não muda; a linha "Na cidade" da previsão de posição dá "de −0,01 a −0,01" para vereador.
+- **Saturação:** a mesma verba no mesmo alvo por 33 semanas chegou a −94%; conferir no BalanceSim da R3 se a curva não está dura demais.
+- **A interface foi num commit só** (as telas se cruzam em `HubScreen.cs`), e não um por funcionalidade.
+- **Lei dos cabos (art. 100-A):** o arredondamento do texto (despreza abaixo de 0,5 e arredonda para 1 a partir daí) e as frações de deputado ainda não estão conferidos no objeto de configuração; entra na conferência da R3.

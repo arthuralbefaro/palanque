@@ -136,13 +136,13 @@ Primeira metade da antiga R2. Termina, para e espera o autor.
   - Campanha inteira jogada sozinha em 3 sementes por porte, do prazo de filiação à apuração, sem erro.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R2A.md
 
-### R2b — Equipe, verba, plataforma e objetivos
+### R2b — Equipe, verba, plataforma e objetivos · **com pendências (tag fase-r2b)**
 Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e espera o autor.
-- [ ] Equipe (17.7): funções, candidatos com vínculos, qualidade em faixa, conselho da semana, eventos próprios; delegação de compromissos na agenda
-- [ ] Verba por canal (17.8): quatro canais pagos (Rua, Redes com impulsionamento, Material gráfico, Cabos) com alvo, retorno decrescente e disputa de canal por zona; o comício passa a depender do canal Rua. Rádio e TV não são canal de verba: presença conquistada por entrevista e horário gratuito
-- [ ] Plataforma (17.9): posições, bandeiras, posição conhecida, promessas locais, custo de mudar, credibilidade
-- [ ] Gerador de objetivos (17.2, peça 6) e painel de Objetivos
-- [ ] BalanceSim ampliado: o robô passa a repartir verba, contratar e posicionar
+- [x] Equipe (17.7): funções, candidatos com vínculos, qualidade em faixa, conselho da semana, eventos próprios; delegação de compromissos na agenda
+- [x] Verba por canal (17.8): quatro canais pagos (Rua, Redes com impulsionamento, Material gráfico, Cabos) com alvo, retorno decrescente e disputa de canal por zona; o comício passa a depender do canal Rua. Rádio e TV não são canal de verba: presença conquistada por entrevista e horário gratuito
+- [x] Plataforma (17.9): posições, bandeiras, posição conhecida, promessas locais, custo de mudar, credibilidade
+- [x] Gerador de objetivos (17.2, peça 6) e painel de Objetivos
+- [x] BalanceSim ampliado: o robô passa a repartir verba, contratar e posicionar (`docs/balance/r2b.md`) — **fora do critério no canal de verba em três portes, no par (tipo, zona) do porte pequeno e no tipo de compromisso da metrópole: PENDENCIAS P-20**
 - **Princípios que passa a cumprir:** h; c para a equipe; d para posições e promessas de plataforma; completa a, e e f na campanha.
 - **Testes automáticos:**
   - BalanceSim rodado de novo com os sistemas desta parte: os limites de 40% e 25% do princípio a continuam valendo; nenhum canal de verba é o melhor destino em mais de 40% das semanas; média de 1 ou mais decisões com troca por semana.

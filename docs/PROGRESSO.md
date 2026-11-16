@@ -2,26 +2,77 @@
 
 ## Relatório para o autor (atualizado a cada parte)
 
-**Estado em 2026-11-16, depois da R2a.** Este bloco é reescrito ao fim de cada parte.
+**Estado em 2026-11-16, depois da R2b.** Este bloco é reescrito ao fim de cada parte.
 
-- **Tags prontas:** `fase-r1`, `fase-rd` e `fase-r2a`, as três com pendências.
-- **Por qual tag começar a testar:** `fase-r2a`, com `docs/ROTEIRO_TESTE_R2A.md` (20 minutos). É a primeira em que o jogo muda de verdade: mapa em "Minha força", agenda por dia e turno, lideranças com pedido e o Livro. Os roteiros da R1 e da RD continuam valendo para o que é delas (tela, tempo, tooltips; conferência de números).
-- **Em andamento:** R2b (equipe, verba por canal, plataforma, objetivos).
+- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a` e `fase-r2b`, as quatro com pendências.
+- **Por qual tag começar a testar:** `fase-r2b`, com `docs/ROTEIRO_TESTE_R2B.md` (20 minutos). Ela contém tudo da R2a (mapa em "Minha força", agenda, lideranças, Livro) e acrescenta equipe, verba por canal, plataforma e objetivos. Se quiser ver a agenda sem os sistemas novos, `fase-r2a` com o roteiro dela. Os roteiros da R1 e da RD valem para o que é delas (tela, tempo, tooltips; conferência de números).
+- **Em andamento:** R3 (rivais com estratégia, mídia local, contas e doadores).
 - **Pendências que precisam de você** (docs/PENDENCIAS.md):
   - **P-11:** eleitores por zona, onde se vota ou onde se mora (escolhi onde se mora).
   - **P-12:** parâmetros de jogo novos da RD (mortalidade, faixas plausíveis, 300 nascidos vivos, homicídios só por agressão).
   - **P-13:** termos de uso das fontes que não são do IBGE.
-  - **P-15:** o princípio a não passa em cidade grande (41,4%) e metrópole (59,8%): a caminhada ganha por margem mínima quase toda semana. Decidir se o critério vale como "opção de maior ganho da semana" (como medi) e se o retorno de abrir zona nova deve cair.
-  - **P-19:** no mapa "Minha força", faixas por quintil (ART_GUIDE) ou por intervalo de valor (o relato 1 pede o mapa "quase todo cinza" no começo).
+  - **P-15 e P-20:** o princípio a não fecha. Com a R2b, o tipo de compromisso passa em três portes e falha na metrópole (60,6%); o canal de verba falha em três portes (45% a 49,5%); o par (tipo, zona) falha no porte pequeno (29,8%, e o par é a entrevista, que não tem zona). Decidir se o critério vale como medi ("opção de maior ganho da semana") e se a entrevista conta como par.
+  - **P-21:** o caixa não comporta equipe e verba antes dos doadores (o robô passa de 15% a 61% dos turnos arrecadando); salários e verba estão pela metade do GDD até a R3.
+  - **P-19 e P-23:** no mapa "Minha força", quintil ou intervalo de valor; o que na tela ficou fora do ART_GUIDE.
   - **P-10 e P-14:** o que ficou de fora da RD (votação de 2024 por zona; transferências e CAGED).
-- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038 e D-039):
+- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038, D-039 e D-040):
   1. Reunião com apoiadores só onde há liderança conhecida daquele público na zona; apoio de conversa com teto.
   2. Evento da cidade divide o cansaço com a caminhada; o bônus de 50% vale só para o público do evento.
-  3. Alcance de um turno numa zona limitado a 10 vezes a base (um turno a pé não cobre uma zona de metrópole como cobre a de cidade pequena).
+  3. Alcance de um turno numa zona limitado a 10 vezes a base.
   4. Pedido de dinheiro de liderança, se aceito, é gasto irregular e vira esqueleto; o jogo avisa e não julga.
-  5. Dificuldade: eficiência dos rivais em 0,5 e empenho 5,0 na metrópole, para manter os dois extremos da D-026.
+  5. Dificuldade: eficiência dos rivais em 0,5 e empenho 5,0 na metrópole.
   6. Energia dos eventos antigos convertida em estresse (4 para 1).
-  7. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos; marca "(artigo a conferir)" em dois verbetes a mais.
+  7. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos.
+  8. Equipe: sem marqueteiro o rendimento é 1,0 (um marqueteiro ruim é pior que nenhum); compromisso delegado rende 50% e quem recebe lembra.
+  9. Verba: aumento sai na hora e a redução vale na segunda; na pré-campanha só Redes sem impulsionamento e material institucional, com teto e 60% do efeito.
+  10. Plataforma: a incoerência conta as mudanças de todos os temas em 52 semanas; posição que o eleitor não conhece vale a do partido.
+  11. Vazamento de quem é demitido acontece sem decisão do jogador (aparece na previsão de demitir).
+
+## R2b — Equipe, verba, plataforma e objetivos (2026-11-16, com pendências)
+
+**O que entrou**
+- **Equipe:** cinco funções (coordenação, marketing, redes, tesouraria, jurídico), candidatos com retrato, vínculo, qualidade em faixa, salário e lealdade; previsão antes de contratar e de demitir, com quem vai lembrar (inclusive o parente preterido); conselho da semana do coordenador; brigas e pedidos da equipe como decisão no cartão; demitido de lealdade baixa que conhece esqueleto pode vazar.
+- **Delegar:** "Mandar representante" na marcação; rende 50%, não ocupa o turno, e quem recebe lembra que você não foi.
+- **Verba por canal:** Rua, Redes, Material gráfico e Cabos, cada um com alvo, retorno decrescente (dobrar rende cerca de 41% a mais), disputa com a verba dos rivais no mesmo alvo e saturação; o comício depende da verba de Rua; modo "Verba" no mapa; resultado da semana passada explicado.
+- **Lei em configuração:** limite de cabos pelo eleitorado (art. 100-A), impulsionamento só identificado e só na campanha (art. 57-C), nenhum gasto possível com rádio, TV, outdoor ou brinde. Os verbetes de pré-campanha, horário eleitoral e propaganda foram reescritos pelo texto conferido (`docs/referencias/LEIS_CONFERIDAS.md`) e perderam a marca "a conferir".
+- **Plataforma:** posição em 10 temas, até 3 bandeiras, posição conhecida pelo eleitor (falar do tema em entrevista, gravação e comício aumenta), custo de mudar com incoerência, promessas a zona ou grupo com credibilidade; tudo entra no Livro.
+- **Objetivos:** de 1 a 3 na coluna da direita, de 7 tipos, com condição, medida de hoje, prazo e origem; fixar e dispensar; o cumprido vira cartão no feed.
+- **Da P-19:** "Repetir a semana anterior", aviso de estresse acima do limite e a célula da agenda sem corte.
+- **BalanceSim ampliado:** o robô contrata, reparte verba, se posiciona, promete e delega.
+
+**Números dos testes**
+- 673 testes no Core (eram 581 na R2a); 76 no importador; DataValidator limpo, com o lint de decisões (ganho e custo de naturezas diferentes); build do Godot limpo.
+- 19 alvos de fumaça com janela, todos passando: os 15 anteriores mais `equipe`, `verba`, `plataforma` e `objetivos`.
+- Capturas em 1366×768 e 1920×1080 em `docs/referencias/r2b/` (29 arquivos), examinadas em duas rodadas de correção.
+- Dobrar a verba de um canal rende entre 35% e 45% a mais; verba de rival no mesmo canal e zona reduz o efeito (testes do Core).
+- Em qualquer dia há de 1 a 3 objetivos; 6 tipos ou mais em toda campanha simulada (o princípio h pede 4).
+- Campanha inteira jogada sozinha em 3 sementes por porte, sem erro.
+
+**BalanceSim** (48 campanhas por porte em 8 cidades; entre parênteses, a R2a)
+
+| Porte | Tipo de compromisso (até 40%) | Par tipo e zona (até 25%) | Canal de verba (até 40%) | Decisões com troca por semana (1 ou mais) | Eleito no partido mais forte | Turnos forçados |
+|---|---|---|---|---|---|---|
+| Pequeno | 27,0% (30,2%) | **29,8%** (22,6%) | **45,0%**, Cabos | 2,37 | 22 de 24 (20) | 15,3% (7,7%) |
+| Médio | 35,9% (34,1%) | 18,1% (15,5%) | **49,0%**, Rua | 2,20 | 24 de 24 (24) | 54,9% (32,3%) |
+| Grande | 36,3% (41,4%) | 14,2% (12,6%) | **49,5%**, Rua | 1,98 | 23 de 24 (24) | 54,8% (38,4%) |
+| Metrópole | **60,6%** (59,8%) | 12,8% (11,5%) | 39,2%, Rua | 1,82 | 9 de 24 (16) | 60,9% (48,8%) |
+
+Passa: decisões com troca em todos os portes; tipo de compromisso em pequeno, médio e grande (o grande passou a fechar: 41,4% → 36,3%). Não passa: canal de verba em três portes, par no pequeno, tipo na metrópole (P-20). De novo 48 campanhas por porte, não 200.
+
+**As 5 coisas de que menos gostei no meu próprio trabalho**
+1. **O dinheiro não fecha.** Com folha e verba o robô passa mais da metade dos turnos arrecadando nas cidades médias e maiores, mesmo com os preços pela metade do GDD. Só os doadores da R3 resolvem, e até lá a R2b é jogada com caixa apertado demais.
+2. **A verba tem um canal dominante.** Cabos (pequeno) e Rua (médio e grande) são o melhor destino em quase metade das semanas da campanha oficial; três rodadas de ajuste não bastaram.
+3. **Os números são pequenos e pouco palpáveis.** A previsão fala em "+0,5 ponto de apoio" e "+0,43 de presença"; para vereador, mudar de posição dá "de −0,01 a −0,01" na cidade. Falta traduzir em votos.
+4. **O painel de 400 px não comporta as previsões.** Verba, mudança de posição e Campanha (na primeira visita) pedem rolagem; os Objetivos tomam o dobro da altura do guia.
+5. **A equipe ainda fala pouco.** Só o coordenador aconselha; marqueteiro, tesoureiro e advogado não opinam, e o jogo não pausa para apresentar os candidatos a coordenador como no relato 1.
+
+**Autocrítica de imersão (GDD 17.21)**
+- **Relato 1, já acontece:** três objetivos na coluna; candidatos com faixa de qualidade, salário, lealdade e vínculo; a previsão avisa que o parente preterido vai lembrar.
+- **Relato 1, falta:** a pausa que apresenta os nomes do coordenador (hoje só um objetivo empurra); ano e grau no vínculo; o preterido em Pessoas; a rádio, o tema em alta e o anúncio do prefeito (R3); o mapa "quase todo cinza".
+- **Relato 2, já acontece:** "a sua fatia rende X%" contra a verba dos rivais; cabos onde só você está; o Livro com as datas das posições; comício que depende da Rua.
+- **Relato 2, falta:** barra do limite de gastos, tesoureiro e coordenadora discutindo o gasto, alguém usando a mudança de posição contra você, direito de resposta, painel da chapa (quase tudo R3).
+- **Relato 4, já acontece:** a briga entre coordenadora e tesoureiro, com o cartão e a lealdade nova; a previsão por zona antes de mudar de posição; "X% conhecem a sua posição"; o objetivo cumprido que sai e dá lugar a outro.
+- **Relato 4, falta:** reação da direção do partido à posição; veículo na entrevista; financiamento coletivo e doadores (R3).
 
 ## R2a — Território, agenda, lideranças e Livro de compromissos (2026-11-16, com pendências)
 
