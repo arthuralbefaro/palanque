@@ -10,7 +10,7 @@ Os dados dos municípios em `data/municipios/` vêm de fontes oficiais e públic
   - API de Localidades: lista de municípios, UF, região, microrregião e região geográfica imediata.
   - Estimativas da População (SIDRA, tabela 6579).
   - Censo Demográfico 2022 (SIDRA, tabelas 10211, 9514, 10296, 10198 e 10061): situação do domicílio, idade, rendimento, religião e nível de instrução.
-  - Malha Municipal 2025: coordenadas (centroide ou ponto interior) e área dos municípios.
+  - Malha Municipal 2025: coordenadas (centroide ou ponto interior) e área dos municípios; contornos simplificados do mapa 2.5D (data/geo/).
 - **TSE — Tribunal Superior Eleitoral**, Portal de Dados Abertos
   - Perfil do eleitorado (atual).
   - Códigos oficiais de UF e municípios segundo o TSE e o IBGE.

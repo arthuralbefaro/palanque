@@ -50,7 +50,29 @@ public static class DataValidation
         reports.AddRange(AppearanceContent.Load(dataDirectory, out _));
         reports.AddRange(Campaign.CampaignContent.Load(dataDirectory, out _));
         reports.AddRange(Events.EventContent.Load(dataDirectory, out _));
+        if (dataSet is not null)
+        {
+            reports.AddRange(ValidateGeo(dataDirectory, dataSet));
+        }
+
         return reports;
+    }
+
+    /// <summary>Um contorno por UF em data/geo/, cobrindo todos os municípios da UF (GDD 13.1).</summary>
+    private static IEnumerable<DataFileReport> ValidateGeo(string dataDirectory, MunicipiosDataSet dataSet)
+    {
+        foreach (string uf in dataSet.All.Select(m => m.Uf).Distinct().Order(StringComparer.Ordinal))
+        {
+            string file = $"{Geo.GeoPaths.Directory}/{uf}.json";
+            DataLoadResult<Geo.GeoUf> result = Geo.GeoContent.Load(dataDirectory, uf);
+            if (result.Value is null || !result.IsValid)
+            {
+                yield return new DataFileReport(file, 0, result.Errors);
+                continue;
+            }
+
+            yield return new DataFileReport(file, result.Value.Municipios.Count, Geo.GeoContent.Validate(result.Value, dataSet, uf).ToList());
+        }
     }
 
     private static DataFileReport Check<T>(string dataDirectory, string file, Func<T, int> count, out T? value)
