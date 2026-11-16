@@ -362,7 +362,7 @@ public sealed class CampaignEngine(CampaignContext ctx)
             lists.Add(new PartyList(group.Key, legendVotes, candidates));
         }
 
-        ProportionalResult result = ElectionRules.Proportional(Context.Municipio.VagasVereador, lists);
+        ProportionalResult result = ElectionRules.Proportional(Context.SeatsIn(Campaign.ElectionDate.Year), lists);
         var nominal = lists.SelectMany(l => l.Candidates).ToDictionary(c => c.CandidateId, c => c.Votes, StringComparer.Ordinal);
         return new OfficeOutcome
         {

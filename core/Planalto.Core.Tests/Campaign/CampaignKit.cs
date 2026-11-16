@@ -41,6 +41,10 @@ internal static class CampaignKit
 
         public LegislatureContent Legislature { get; }
 
+        public PopulationProjection Projection => PopulationProjection.From(
+            Municipios,
+            JsonData.LoadFile<PopulationProjectionConfig>(Path.Combine(TestContent.DataDirectory, PopulationProjectionConfig.File)).GetValueOrThrow());
+
         public Planalto.Core.Debate.DebateContent Debate { get; } = JsonData.LoadFile<Planalto.Core.Debate.DebateContent>(Path.Combine(TestContent.DataDirectory, Planalto.Core.Debate.DebateContent.File)).GetValueOrThrow();
 
         public Planalto.Core.Executive.ExecutiveContent Executive { get; } = Planalto.Core.Executive.ExecutiveContent.LoadOrThrow(TestContent.DataDirectory);
@@ -144,6 +148,7 @@ internal static class CampaignKit
             Events = C.Events,
             Portes = C.Portes,
             Debate = C.Debate,
+            Projection = C.Projection,
         };
     }
 }

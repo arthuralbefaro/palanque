@@ -156,8 +156,10 @@ public class CampaignAutoplayTests
         Municipio m = engine.Context.Municipio;
         ElectionOutcome outcome = c.Outcome!;
         Assert.Equal(CampaignPhase.Encerrada, c.Phase);
-        Assert.True(outcome.Vereador.Elected.Count <= m.VagasVereador);
-        Assert.True(outcome.Vereador.Elected.Count >= m.VagasVereador - 2, "Vagas demais sem preencher.");
+        int seats = engine.Context.SeatsIn(c.ElectionDate.Year);
+        Assert.True(seats <= m.VagasVereador);
+        Assert.True(outcome.Vereador.Elected.Count <= seats);
+        Assert.True(outcome.Vereador.Elected.Count >= seats - 2, "Vagas demais sem preencher.");
         Assert.Equal(outcome.Vereador.Elected.Count, outcome.Vereador.SeatsByParty.Values.Sum());
         Assert.Single(outcome.Prefeito.Elected);
         Assert.All(outcome.Vereador.Votes.Values, v => Assert.True(v >= 0));

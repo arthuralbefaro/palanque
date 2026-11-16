@@ -1,0 +1,5 @@
+{
+  "note": "Projeção da população dos municípios: taxa anual geométrica entre o Censo 2022 (perfil.populacao_censo) e a estimativa do IBGE em data/municipios/, limitada a esta faixa para evitar extrapolar casos atípicos (municípios recém-criados, revisões de limites). As vagas de cada eleição são o mínimo entre as vagas atuais e o teto da CF, art. 29, IV, com a população do ano anterior à eleição.",
+  "min_annual_growth": -0.03,
+  "max_annual_growth": 0.05
+}

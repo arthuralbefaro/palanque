@@ -95,7 +95,11 @@ public partial class Game : Node
         Founding = JsonData.LoadFile<Core.Career.FoundingConfig>(Path.Combine(DataDirectory, Core.Career.FoundingConfig.File)).GetValueOrThrow();
         ExecutiveContent = Core.Executive.ExecutiveContent.LoadOrThrow(DataDirectory, Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal));
         Debate = JsonData.LoadFile<Core.Debate.DebateContent>(Path.Combine(DataDirectory, Core.Debate.DebateContent.File)).GetValueOrThrow();
+        Projection = PopulationProjection.From(Municipios, JsonData.LoadFile<PopulationProjectionConfig>(Path.Combine(DataDirectory, PopulationProjectionConfig.File)).GetValueOrThrow());
     }
+
+    /// <summary>Projeção da população e das vagas de vereador a cada eleição.</summary>
+    public PopulationProjection Projection { get; private set; } = null!;
 
     /// <summary>Contexto da simulação detalhada do município em foco (GDD 12.5).</summary>
     public Core.Campaign.CampaignContext ContextFor(GameState state)
@@ -115,6 +119,7 @@ public partial class Game : Node
             Events = Events,
             Portes = Portes,
             Debate = Debate,
+            Projection = Projection,
         };
     }
 

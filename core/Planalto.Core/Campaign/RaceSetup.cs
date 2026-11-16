@@ -34,6 +34,12 @@ public sealed class CampaignContext
     /// <summary>Regras do debate; sem elas, não há debate na campanha.</summary>
     public Debate.DebateContent? Debate { get; init; }
 
+    /// <summary>Projeção da população; sem ela, as vagas são as de data/municipios/.</summary>
+    public PopulationProjection? Projection { get; init; }
+
+    /// <summary>Vagas de vereador na eleição do ano (Fase 6: população projetada e teto do art. 29, IV).</summary>
+    public int SeatsIn(int electionYear) => Projection?.Seats(Municipio, electionYear) ?? Municipio.VagasVereador;
+
     public PorteCatalog? Portes { get; init; }
 
     public CampaignConfig Config => Campaign.Config;
@@ -192,7 +198,7 @@ public static class RaceSetup
         foreach (Candidate bulk in candidates.Where(c => c.IsBulk))
         {
             int named = candidates.Count(c => !c.IsBulk && c.PartyId == bulk.PartyId);
-            bulk.Multiplicity = Math.Max(1, m.VagasVereador + 1 - named);
+            bulk.Multiplicity = Math.Max(1, ctx.SeatsIn(year) + 1 - named);
         }
 
         candidates.AddRange(MayorCandidates(ctx, rng, ref serial, numbers, constituency, recognitionScale));
@@ -283,7 +289,7 @@ public static class RaceSetup
         }
 
         // A lista de vereadores do partido mudou: o coletivo representa os que sobraram.
-        int seats = ctx.Municipio.VagasVereador;
+        int seats = ctx.SeatsIn(campaign.ElectionDate.Year);
         foreach (Candidate bulk in campaign.Candidates.Where(c => c.IsBulk))
         {
             int named = campaign.Candidates.Count(c => !c.IsBulk && c.Office == Office.Vereador && c.PartyId == bulk.PartyId);
