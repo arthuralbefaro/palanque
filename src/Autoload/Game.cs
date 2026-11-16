@@ -140,6 +140,8 @@ public partial class Game : Node
             Projection = Projection,
             Zonas = ZonasDe(m),
             MaiorEleitoradoUf = MaiorEleitoradoDaUf(m.Uf),
+            // Bancada na Câmara dos Deputados: divide o horário eleitoral gratuito (art. 47). Só o cenário Brasil 2026 a tem.
+            CamaraSeats = state.World?.ScenarioId == "brasil_2026" ? Brasil2026?.National.Camara.ByParty : null,
         };
     }
 
@@ -311,6 +313,10 @@ public partial class Game : Node
         GameState state = State!;
         bool hadMandate = state.Mandate is not null || state.Executive is not null;
         Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura);
+
+        // Contas da última eleição (GDD 17.12): prestação final, julgamento e representação andam por data, no
+        // mandato e fora dele; se o diploma for cassado, o mandato termina aqui.
+        AccountsNews = Core.Career.CareerFlow.AccountsWeek(state, Campaign.Finance, Core.Elections.CampaignFinanceLawConfig.Default);
         if (state.Mandate is null)
         {
             Mandate = null;
@@ -335,6 +341,9 @@ public partial class Game : Node
 
         return note;
     }
+
+    /// <summary>O que o processo de contas da última eleição trouxe na semana que acabou de virar (a tela avisa e pausa).</summary>
+    public IReadOnlyList<Core.Campaign.Headline> AccountsNews { get; private set; } = [];
 
     /// <summary>O que um dia de jogo trouxe: os compromissos concluídos, se a semana virou e o aviso da carreira.</summary>
     public sealed record DayReport(IReadOnlyList<Core.Campaign.CommitmentResult> Results, bool WeekTurned, WeekNote Note, bool Stopped);
@@ -386,7 +395,7 @@ public partial class Game : Node
         {
             note = AdvanceWeek();
         }
-        while ((note == WeekNote.Nenhuma || (note == WeekNote.SemIdade && SkipBlockedWindow())) && ++guard < 6 * 53);
+        while (AccountsNews.Count == 0 && (note == WeekNote.Nenhuma || (note == WeekNote.SemIdade && SkipBlockedWindow())) && ++guard < 6 * 53);
         return note;
     }
 
@@ -403,6 +412,9 @@ public partial class Game : Node
     {
         GameState state = State!;
         Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state));
+
+        // Entre a eleição e a posse o processo de contas já andou (prestação final; representação, se houver): a tela seguinte avisa.
+        AccountsNews = state.Accounts?.Log.ToList() ?? [];
         Engine = null;
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
