@@ -729,6 +729,12 @@ public partial class CharacterCreatorScreen : Control
         }
     }
 
+    /// <summary>Teste de fumaça: partido do personagem em criação.</summary>
+    public string? PartyIdForTest => _c.PartyId;
+
+    /// <summary>Teste de fumaça: número de urna completo do personagem em criação.</summary>
+    public string? BallotNumberForTest => _c.Campaign?.BallotNumber;
+
     /// <summary>Começa a carreira se não houver pendência; devolve false caso contrário.</summary>
     public bool TryStartCareer()
     {

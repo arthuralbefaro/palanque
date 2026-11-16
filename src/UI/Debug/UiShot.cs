@@ -172,6 +172,11 @@ public partial class UiShot : Node
                 }
             }
 
+            if (target == "creator" && !await CheckCreatorParty(creator))
+            {
+                return;
+            }
+
             if (target == "hub")
             {
                 bool started = creator.TryStartCareer();

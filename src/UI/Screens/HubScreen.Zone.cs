@@ -247,7 +247,7 @@ public partial class HubScreen
 
                 foreach (string leader in colors.Keys.Select(id => _zoneParties[id].MaxBy(s => s.Value).Key).Distinct())
                 {
-                    LegendRow(PartyColor(leader), PartySigla(leader));
+                    LegendRow(PartyColor(leader), leader == Campaign.Player.PartyId ? $"{PartySigla(leader)} ({Tr("seu partido")})" : PartySigla(leader));
                 }
 
                 break;

@@ -784,7 +784,7 @@ public partial class HubScreen : Control
     {
         Office office = Campaign.Player.Office;
         string current = _game.People.Offices.Name(office, State.Player.Gender);
-        Glossary.Rich(_left, string.Format(Tr("Candidatura: {0} · número {1}"), current, Campaign.Player.Number), 18, Palette.Texto);
+        Glossary.Rich(_left, string.Format(Tr("Candidatura: {0} · {1} · número {2}"), current, PartySigla(Campaign.Player.PartyId), Campaign.Player.Number), 18, Palette.Texto);
         if (State.Mandate is not null)
         {
             Glossary.Rich(_left, Tr("Campanha de reeleição: durante a campanha, seu mandato vota seguindo a orientação do partido."));
