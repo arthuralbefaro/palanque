@@ -61,8 +61,8 @@ public class MalhaTests
     {
         string dataDirectory = DataPaths.FindDataDirectory(AppContext.BaseDirectory)
             ?? throw new InvalidOperationException("Pasta data/ não encontrada.");
-        string shp = Path.Combine(Directory.GetParent(dataDirectory)!.FullName,
-            "tools", "Planalto.DataImporter", "cache", $"BR_Municipios_{Malha.Ano}", $"BR_Municipios_{Malha.Ano}.shp");
+        string shp = Path.Combine(SourceCache.Locate(Directory.GetParent(dataDirectory)!.FullName),
+            $"BR_Municipios_{Malha.Ano}", $"BR_Municipios_{Malha.Ano}.shp");
         Assert.True(File.Exists(shp), $"Malha não encontrada em {shp}. Rode o Planalto.DataImporter para preencher o cache.");
 
         PorteCatalog portes = JsonData.LoadFile<PorteCatalog>(Path.Combine(dataDirectory, "portes.json")).GetValueOrThrow();

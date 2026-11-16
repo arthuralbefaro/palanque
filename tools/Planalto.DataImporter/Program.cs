@@ -21,13 +21,19 @@ if (dataDirectory is null)
 }
 
 string root = Directory.GetParent(dataDirectory)!.FullName;
-string cacheDirectory = Path.Combine(root, "tools", "Planalto.DataImporter", "cache");
+string cacheDirectory = SourceCache.Locate(root);
 
 PorteCatalog portes = JsonData.LoadFile<PorteCatalog>(Path.Combine(dataDirectory, "portes.json")).GetValueOrThrow();
 
 using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(15) };
 http.DefaultRequestHeaders.UserAgent.ParseAdd("Planalto.DataImporter/1.0");
 var cache = new SourceCache(cacheDirectory, http);
+
+// Modo "rd" (dados reais de partida, GDD 17.17): "rd siconfi-baixar" enche o cache do SICONFI (demorado, retomável).
+if (args.Length > 1 && args[0] == "rd" && args[1] == "siconfi-baixar")
+{
+    return await Planalto.DataImporter.Rd.SiconfiDownload.RunAsync(cache, http);
+}
 
 // Modos "cenario" (Brasil 2026, GDD 16.4) e "aparencia" (cor ou raça por UF, GDD 3.8).
 if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas")

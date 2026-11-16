@@ -27,6 +27,15 @@ public sealed class SourceCache(string directory, HttpClient http)
 
     public string Directory { get; } = directory;
 
+    /// <summary>
+    /// Pasta do cache: tools/Planalto.DataImporter/cache na raiz do repositório, ou a da variável de ambiente
+    /// PLANALTO_CACHE (para rodar o importador de outra cópia de trabalho sem baixar tudo de novo).
+    /// </summary>
+    public static string Locate(string repositoryRoot) =>
+        Environment.GetEnvironmentVariable("PLANALTO_CACHE") is { Length: > 0 } custom
+            ? custom
+            : Path.Combine(repositoryRoot, "tools", "Planalto.DataImporter", "cache");
+
     public async Task<CachedFile> GetAsync(string fileName, string url)
     {
         System.IO.Directory.CreateDirectory(Directory);
