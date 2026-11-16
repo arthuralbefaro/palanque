@@ -321,6 +321,14 @@ public partial class HubScreen
                 _notice = new Notice(line);
             }
 
+            // Contas da eleição anterior: prestação, julgamento ou representação com novidade nesta semana.
+            if (line is null && _game.AccountsNews.Count > 0 && Clock.ShouldPause(_game.Time, Clock.DecisaoImediata, Settings.PauseOverrides))
+            {
+                _running = false;
+                _notice = new Notice(string.Join(". ", _game.AccountsNews.Select(h => h.Text)) + ".", "Ver as contas", () => { _notice = null; OpenGovArea(GovAreas[0].Id); },
+                    Palette.Tip(Tr("Abre o resumo, com o andamento das contas."), Tr("mostra a prestação de contas final, o julgamento das contas da eleição anterior e a representação, se houver."), Tr("nada.")));
+            }
+
             if (State.Campaign is not null || Kind != before)
             {
                 // Mudou o momento da carreira: a tela se refaz no modo novo (em jogo, a cena é recarregada).
@@ -636,6 +644,13 @@ public partial class HubScreen
         var area = GovAreas.FirstOrDefault(a => a.Id == _area);
         Heading(_left, Tr(area.Name ?? ""));
         GovHint(_area);
+
+        // Contas da última eleição (GDD 17.12): o andamento fica no resumo do mandato, da prefeitura e da entressafra.
+        if (_area == GovAreas[0].Id)
+        {
+            AccountsCasePanel.BuildFromGame(_left);
+        }
+
         switch (_area)
         {
             case "mandato": BuildCouncilArea(); break;
