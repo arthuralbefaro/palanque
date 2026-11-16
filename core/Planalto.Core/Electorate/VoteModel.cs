@@ -56,7 +56,8 @@ public sealed class VoteProjection
 
 /// <summary>
 /// Utilidade = a·proximidade ideológica + b·afinidade de temas + c·reconhecimento + d·imagem
-/// + e·força do partido no segmento + f·apoios + ruído; intenção = softmax (GDD 5.3, DECISOES D-014).
+/// + e·força do partido no segmento + f·apoios + ruído; intenção = softmax (GDD 5.3, DECISOES D-014),
+/// ponderado pelo conjunto de consideração (reconhecimento, DECISOES D-026).
 /// </summary>
 public static class VoteModel
 {
@@ -80,6 +81,12 @@ public static class VoteModel
         var themePositions = candidates.ToDictionary(c => c.Id, c => ThemePositions(c, themes, config), StringComparer.Ordinal);
         var multiplicity = candidates.ToDictionary(c => c.Id, c => Math.Max(1, c.Multiplicity), StringComparer.Ordinal);
 
+        // Conjunto de consideração (vale para todos os segmentos): quem não é conhecido quase não recebe voto.
+        var awareness = candidates.ToDictionary(
+            c => c.Id,
+            c => config.Awareness.Exponent == 0 ? 1 : Math.Pow(Math.Clamp(c.Recognition, config.Awareness.Floor, 1), config.Awareness.Exponent),
+            StringComparer.Ordinal);
+
         var intentions = new List<SegmentIntention>();
         var votes = candidates.ToDictionary(c => c.Id, _ => 0.0, StringComparer.Ordinal);
         double blankNull = 0;
@@ -94,7 +101,7 @@ public static class VoteModel
                 StringComparer.Ordinal);
 
             double best = utilities.Values.Max();
-            var exp = utilities.ToDictionary(u => u.Key, u => Math.Exp((u.Value - best) / config.Temperature) * multiplicity[u.Key], StringComparer.Ordinal);
+            var exp = utilities.ToDictionary(u => u.Key, u => Math.Exp((u.Value - best) / config.Temperature) * multiplicity[u.Key] * awareness[u.Key], StringComparer.Ordinal);
             double sum = exp.Values.Sum();
             var shares = exp.ToDictionary(e => e.Key, e => e.Value / sum, StringComparer.Ordinal);
 

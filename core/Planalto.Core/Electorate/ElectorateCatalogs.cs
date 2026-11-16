@@ -216,8 +216,19 @@ public sealed class VoteModelConfig : IValidatable
 
     public required PollConfig Poll { get; init; }
 
+    /// <summary>
+    /// Conjunto de consideração: o eleitor só vota em quem conhece. A fatia de cada candidato é multiplicada por
+    /// max(reconhecimento, piso) elevado ao expoente (0 desliga). Com reconhecimento igual para todos, o fator se cancela.
+    /// </summary>
+    public required AwarenessConfig Awareness { get; init; }
+
     public IEnumerable<string> Validate()
     {
+        if (Awareness is null || Awareness.Exponent < 0 || Awareness.Floor is <= 0 or > 1)
+        {
+            yield return "awareness: expoente não negativo e piso em (0, 1].";
+        }
+
         if (Weights is null || new[] { Weights.Ideology, Weights.Themes, Weights.Recognition, Weights.Image, Weights.Party, Weights.Support }.Any(w => w < 0) || Weights.Total <= 0)
         {
             yield return "weights: pesos não negativos com soma positiva.";
@@ -326,4 +337,12 @@ public sealed class PollsterCatalog : IValidatable
             yield return "falta a pesquisa interna.";
         }
     }
+}
+
+public sealed class AwarenessConfig
+{
+    public required double Exponent { get; init; }
+
+    /// <summary>Reconhecimento mínimo considerado: santinhos e a própria urna fazem alguém conhecer qualquer nome.</summary>
+    public required double Floor { get; init; }
 }

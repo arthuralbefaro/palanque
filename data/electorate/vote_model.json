@@ -1,6 +1,7 @@
 {
   "weights": { "ideology": 1.5, "themes": 1.5, "recognition": 2.5, "image": 1.5, "party": 2.0, "support": 1.0 },
   "temperature": 1.3,
+  "awareness": { "exponent": 1, "floor": 0.02 },
   "noise_sd": 0.08,
   "base_turnout": 0.80,
   "facultative_turnout_factor": 0.45,
