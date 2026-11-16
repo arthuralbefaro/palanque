@@ -112,7 +112,7 @@ public partial class HubScreen
             string author = bill.AuthorId == Bill.MayorAuthor ? Tr("a Prefeitura") : bill.AuthorId == RaceSetup.PlayerId ? Tr("você") : MemberLabel(bill.AuthorId);
             Glossary.Rich(col, string.Format(Tr("Autoria: {0}. Quórum: {1}. {2}"), author, MandateTexts.Quorum(template.Quorum), template.Summary));
             Glossary.Rich(col, string.Format(Tr("Contagem hoje: {0}. {1}"), GovernanceQueries.CountText(gov, count),
-                count.MissingToApprove > 0 ? string.Format(Tr("Faltam {0} para aprovar."), count.MissingToApprove) : Tr("Aprovaria.")), 18, Palette.Texto);
+                count.MissingToApprove > 0 ? string.Format(Tr(count.MissingToApprove == 1 ? "Falta {0} voto para aprovar." : "Faltam {0} votos para aprovar."), count.MissingToApprove) : Tr("Aprovaria.")), 18, Palette.Texto);
             int orientation = engine.PlayerOrientation(bill);
             Glossary.Rich(col, mandate.Player.PartyId is null ? Tr("Sem partido: você vota livre.")
                 : string.Format(Tr("Orientação do {0}: {1}. Seu voto, se nada mudar: {2}."), GovPartyOf(mandate.Player.PartyId), MandateTexts.Orientation(orientation), VoteName(planned)));
@@ -193,7 +193,7 @@ public partial class HubScreen
         GovBackButton();
         NameTitle(_left, count.Title, 22);
         Glossary.Rich(_left, string.Format(Tr("Contagem nominal hoje: {0}. Quórum: {1}. {2}"), GovernanceQueries.CountText(gov, count), MandateTexts.Quorum(count.Quorum),
-            count.MissingToApprove > 0 ? string.Format(Tr("Faltam {0} votos para aprovar."), count.MissingToApprove) : Tr("Com estes votos, aprova.")), 18, Palette.Texto);
+            count.MissingToApprove > 0 ? string.Format(Tr(count.MissingToApprove == 1 ? "Falta {0} voto para aprovar." : "Faltam {0} votos para aprovar."), count.MissingToApprove) : Tr("Com estes votos, aprova.")), 18, Palette.Texto);
         Glossary.Rich(_left, Tr("A contagem é uma estimativa: cada vereador tem uma chance de votar sim, e indeciso é quem está perto do meio."), 18, Palette.Texto3);
 
         int side = 1;
@@ -219,7 +219,10 @@ public partial class HubScreen
             var text = Ui.Column(top, 2);
             text.SizeFlagsHorizontal = SizeFlags.ExpandFill;
             Glossary.Plain(text, string.Format(Tr("{0} (vereador, {1})"), line.Name, GovPartyOf(line.PartyId)), 18, Palette.Texto, Palette.Weight(Palette.Inter, 500));
-            Glossary.Rich(text, string.Format(PtBr, Tr("Chance de votar sim: {0:P0}. {1}"), line.YesProbability, line.Reason.TrimEnd('.') + "."));
+            // O motivo do indeciso costuma ser o próprio pedido, que vem logo abaixo: não se repete.
+            bool sameAsRequest = line.RequestText is not null && line.Reason.Contains(line.RequestText.TrimEnd('.'), StringComparison.OrdinalIgnoreCase);
+            string why = sameAsRequest || line.Reason.Length == 0 ? "" : " " + char.ToUpper(line.Reason[0], PtBr) + line.Reason[1..].TrimEnd('.') + ".";
+            Glossary.Rich(text, string.Format(PtBr, Tr("Chance de votar sim: {0:P0}.{1}"), line.YesProbability, why));
             if (line.RequestText is null)
             {
                 Glossary.Rich(col, Tr("Não tem pedido a fazer agora."));

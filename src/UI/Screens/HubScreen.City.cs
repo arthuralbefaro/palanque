@@ -860,7 +860,7 @@ public partial class HubScreen
 
         if (policy.RequiresLaw && gov.CountPolicy(policy.Id) is { } count)
         {
-            Glossary.Rich(_left, string.Format(Tr("Contagem hoje: {0}. {1}"), GovernanceQueries.CountText(gov, count), count.MissingToApprove > 0 ? string.Format(Tr("Faltam {0} votos."), count.MissingToApprove) : Tr("Aprovaria.")), 18, Palette.Texto);
+            Glossary.Rich(_left, string.Format(Tr("Contagem hoje: {0}. {1}"), GovernanceQueries.CountText(gov, count), count.MissingToApprove > 0 ? string.Format(Tr(count.MissingToApprove == 1 ? "Falta {0} voto." : "Faltam {0} votos."), count.MissingToApprove) : Tr("Aprovaria.")), 18, Palette.Texto);
             Ui.Button(_left, "Ver a contagem nominal", () => { _govMember = null; OpenGov("contagem", policy.Id); },
                 Palette.Tip(Tr("Abre a contagem de votos desta política."), Tr("mostra quem vota como, por quê, e o pedido de cada indeciso, com a opção de fechar acordo antes de mandar o projeto."), Tr("nada."))).Name = "VerContagem";
         }
