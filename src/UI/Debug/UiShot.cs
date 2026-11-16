@@ -735,6 +735,13 @@ public partial class UiShot : Node
 
                 await Click(proceed);
                 await Frames(3);
+                if (IsInstanceValid(dialog) && dialog.IsInsideTree() && !dialog.IsQueuedForDeletion() && IsInstanceValid(proceed) && proceed.IsInsideTree())
+                {
+                    // O clique se perdeu (a janela mudou de tamanho ou de foco entre apertar e soltar): uma segunda tentativa.
+                    await Frames(3);
+                    await Click(proceed);
+                    await Frames(3);
+                }
 
                 // A escolha pode gerar um fato que puxa outro evento na hora (cadeia): ele abre no lugar do primeiro.
                 // O teste é do primeiro; o encadeado é respondido pelo Core e o cartão dele tem de sair também.
@@ -767,7 +774,16 @@ public partial class UiShot : Node
                 await Click(map);
                 if (game.LastNavigation != Game.Scenes.Map)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}).");
+                    // Uma segunda tentativa, com o botão medido de novo: um fundo que ficou na tela barra as duas.
+                    await Frames(3);
+                    map = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
+                    game.ResetNavigationForTest();
+                    await Click(map);
+                }
+
+                if (game.LastNavigation != Game.Scenes.Map)
+                {
+                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}, navegação registrada: {game.LastNavigation ?? "nenhuma"}).");
                     return;
                 }
 
