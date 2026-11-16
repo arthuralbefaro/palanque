@@ -62,5 +62,10 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - Homicídios: só agressão (X85 a Y09); intervenção legal (Y35 e Y36) fora.
 - População depois de 2070: segue a taxa de 2069 para 2070 da projeção da UF.
 
+### P-14 · Transferências (FPM e FPE) e saldo do CAGED não importados
+- **Falta:** as transferências constitucionais (Tesouro Transparente, CSV mensal) e o saldo de emprego formal do Novo CAGED, que o GDD 17.17 lista como fonte da inclinação inicial.
+- **Provisório:** a receita corrente do SICONFI já inclui as transferências recebidas; o emprego formal tem o estoque da RAIS 2025, sem a inclinação.
+- **Para fechar:** dois leitores novos no modo `rd` (as colunas do CSV do Tesouro precisam ser conferidas) e os campos correspondentes em `data/indicadores_reais/`. Entra junto com o modelo de evolução da R4, que é quem usa a inclinação.
+
 ### P-13 · Termos de uso das fontes não IBGE
 - **O quê:** a RD usa dados do Tesouro Nacional (licença ODbL declarada), TSE (CC BY declarada), INEP, DATASUS, MTE e Banco Central (dados abertos sem licença explícita localizada), sempre citando a fonte em `_fontes.json` e em `assets/CREDITS.md`, como o corujão autoriza. O autor confere os termos de cada uma antes do lançamento.

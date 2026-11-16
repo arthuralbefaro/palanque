@@ -172,15 +172,15 @@ Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e esp
   - Nenhum nome de veículo coincide com a lista de bloqueio.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R3.md
 
-### RD — Dados reais de partida
+### RD — Dados reais de partida · **com pendências (tag fase-rd)**
 Entra antes da R4, que usa os indicadores. Só importação e validação; nada muda na tela além dos números.
-- [ ] Importador: economia municipal, finanças municipais e estaduais, indicadores sociais e séries nacionais das fontes da tabela do GDD 17.17, com ano, endereço e data em `_fontes.json` e crédito em `assets/CREDITS.md`
-- [ ] Lacunas registradas com a regra de substituição de cada indicador (GDD 17.17)
-- [ ] Receita real por município no lugar da receita por habitante estimada da D-031
-- [ ] Tábuas de mortalidade do IBGE em `data/demography/`: por UF (Projeções da População 2024), com a tábua completa do Brasil de 2024 como reserva e como perfil para a idade simples (GDD 17.16); teste: a probabilidade recomposta de cada faixa etária é igual à publicada
-- [ ] Religião e escolaridade por área de ponderação (municípios com duas ou mais) e eleitorado e votação de 2024 por zona pelos locais de votação do TSE (aprovados, GDD 17.20)
-- [ ] População: municípios reescalados para acompanhar as Projeções da População 2024 por UF
-- [ ] Antes de começar: o autor confere os termos de uso das fontes desta parte (GDD 17.20, item 7)
+- [ ] Importador: economia municipal, finanças municipais e estaduais, indicadores sociais e séries nacionais das fontes da tabela do GDD 17.17, com ano, endereço e data em `_fontes.json` e crédito em `assets/CREDITS.md` — **feito para PIB, emprego formal (RAIS), finanças (SICONFI), IDEB, mortalidade infantil, leitos, homicídios, saneamento, desocupação e séries nacionais; faltam as transferências (FPM e FPE) e o saldo do CAGED (PENDENCIAS P-14)**
+- [x] Lacunas registradas com a regra de substituição de cada indicador (GDD 17.17)
+- [x] Receita real por município no lugar da receita por habitante estimada da D-031
+- [x] Tábuas de mortalidade do IBGE em `data/demography/`: por UF (Projeções da População 2024), com a tábua completa do Brasil de 2024 como reserva e como perfil para a idade simples (GDD 17.16); teste: a probabilidade recomposta de cada faixa etária é igual à publicada
+- [ ] Religião e escolaridade por área de ponderação (municípios com duas ou mais) e eleitorado e votação de 2024 por zona pelos locais de votação do TSE (aprovados, GDD 17.20) — **religião, escolaridade e eleitorado feitos; a votação de 2024 por zona não (PENDENCIAS P-10); o uso do eleitorado por local de votação no modelo de voto está a confirmar (P-11)**
+- [x] População: municípios reescalados para acompanhar as Projeções da População 2024 por UF
+- [x] Antes de começar: o autor confere os termos de uso das fontes desta parte (GDD 17.20, item 7) — IBGE aceito com citação (D-037); as demais fontes rodaram citadas, como o corujão autoriza, e ficam para conferência (PENDENCIAS P-13)
 - **Princípios que passa a cumprir:** dá base a b e f na R4.
 - **Testes automáticos:** todo município tem valor ou lacuna registrada para cada indicador; totais por UF iguais aos oficiais onde a fonte publica total; nenhum valor fora da faixa plausível declarada em `data/`; nenhum número escrito à mão (todo campo com fonte em `_fontes.json`); DataValidator cobrindo os arquivos novos.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_RD.md

@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 01:53, depois de: R1 concluída com pendências (tag fase-r1); corujão parado antes da RD, com o Relatório da manhã no topo do PROGRESSO.md.
+Atualizado em 2026-11-16 08:20, depois de: RD concluída com pendências (tag fase-rd); R2a pronta num branch, entrando na main; R2b em desenvolvimento.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -196,7 +196,13 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - tela central com mapa 2D das zonas, tempo por dia, previsão antes do clique, Enciclopédia (F1), dicas e tooltips em três partes;
   - material de campanha permitido no lugar do outdoor.
   Faltam: mandato e prefeitura na tela central, tooltips nas outras telas, tela de Opções das pausas, ajustes do mapa em cidade pequena. Ainda não começaram: RD, R2a, R2b, R3, R4.
-- **Tags:** `fase-r1`.
+- **RD feita, com pendências (tag `fase-rd`):**
+  - indicadores reais de partida de todos os municípios (PIB, emprego formal, finanças do SICONFI, IDEB, mortalidade infantil, homicídios, leitos, saneamento), com 2.681 lacunas registradas e a regra de cada uma;
+  - economia nacional de partida, tábuas de mortalidade por UF, projeção da população por UF;
+  - eleitores, religião e escolaridade por zona;
+  - receita real na prefeitura; números oficiais do município em F1 → Este mundo.
+  Faltam: votação de 2024 por zona, transferências (FPM, FPE) e saldo do CAGED.
+- **Tags:** `fase-r1`, `fase-rd`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -237,6 +243,8 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-033: população projetada e vagas de vereador pelo teto constitucional a cada eleição.
 - D-034: Fase R criada a partir da auditoria; regras do Core mantidas.
 - D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
+- D-037: respostas do autor às pendências da R1; teto de 20 MB em `data/zonas/`; corujão estendido à Fase R inteira.
+- D-038: escolhas da RD (finanças do DF pelo ente estadual, RAIS de estabelecimentos, homicídios por agressão, declarações implausíveis descartadas, eleitores por zona pela moradia).
 - D-036: idade inicial de 17 a 45 anos (NPCs 25 a 45), 18 anos aferidos em 15/8 para vereador, profissões com idade mínima, Estudante, família coerente com a idade.
 
 **Decisões do GDD 17.20, com a escolha do autor:**
@@ -270,7 +278,9 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 ## 8. Pendências
 
-- **Do autor, de manhã:** jogar o roteiro da R1 (tag `fase-r1`).
+- **Do autor:** jogar os roteiros da R1 e da RD (tags `fase-r1` e `fase-rd`); o corujão segue sem esperar (D-037).
+- **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3.
+- **Novas, da RD:** P-10 (votação de 2024 por zona não ligada), P-11 (eleitores por zona: onde se vota ou onde se mora), P-12 (parâmetros de jogo novos), P-13 (termos de uso das fontes não IBGE), P-14 (transferências e CAGED).
 - **Do autor, com resposta:**
   - P-04: artigos de lei citados de memória nos tooltips do material de campanha;
   - P-05: a intenção por zona estimada (a da cidade repesada por idade e situação) basta até a R2a?;

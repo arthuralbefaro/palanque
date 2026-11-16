@@ -2,25 +2,53 @@
 
 ## Relatório para o autor (atualizado a cada parte)
 
-**Estado em 2026-11-16, durante a RD.** Este bloco é reescrito ao fim de cada parte.
+**Estado em 2026-11-16, depois da RD.** Este bloco é reescrito ao fim de cada parte.
 
-- **Tags prontas:** `fase-r1` (com pendências). A RD está em andamento; ainda sem tag.
-- **Por qual tag começar a testar:** `fase-r1`, com `docs/ROTEIRO_TESTE_R1.md`.
-- **Respostas do autor registradas (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3, com a marca "(artigo a conferir)" nos verbetes e tooltips.
-- **RD, o que já está na main:** teto de 20 MB em `data/zonas/`; leitores de .xlsx e de .dbc (DATASUS) sem pacote novo; download por FTP; tábuas de mortalidade por UF e população projetada por UF em `data/demography/`, com a projeção municipal reescalada pela UF (adendo da D-033); baixador do SICONFI.
-- **RD, em andamento (não commitado ou rodando):**
-  - download do SICONFI para o cache (um ente por chamada, 5.598 entes; `dotnet run --project tools/Planalto.DataImporter -- rd siconfi-baixar 8`, retomável);
-  - montagem de `data/indicadores_reais/` (`Rd/RdImport.cs`: PIB, RAIS, SICONFI, IDEB, saúde, saneamento) e de `data/economy/start.json`;
-  - modo `zonas-rd` (`Rd/ZonasRdImport.cs`): eleitores por zona pelos locais de votação e religião e escolaridade pelas áreas de ponderação; depende do de-para setor → zona que o modo `zonas` passou a gravar no cache (reexecução em andamento);
-  - agregação de SIM, SINASC e CNES (`Rd/SaudeImport.cs`), em outra cópia de trabalho.
-- **Pendências que precisam do autor:** ver a lista ao fim deste bloco quando a RD fechar.
-- **Decisões conservadoras tomadas sozinho, a revisar:**
-  1. Marca "a conferir" também nos verbetes "Pré-campanha" (art. 36-A) e "Horário eleitoral gratuito" (arts. 44 e 47), além dos citados na P-04.
-  2. Parâmetros de jogo de `data/demography/config.json` (pesos de saúde e estresse no fator pessoal, curva depois dos 89 anos, 12 sorteios por ano): só o intervalo de 0,6 a 2,5 veio do GDD.
-  3. Depois de 2070, a população da UF segue a taxa de 2069 para 2070 (adendo da D-033).
-  4. O Distrito Federal entra nas finanças pelo ente estadual 53 do SICONFI (não há declaração municipal de Brasília).
-  5. Votação de 2024 por zona (GDD 17.20, item 6): os arquivos por seção estão no cache (26 UFs), mas a ligação ao cenário Brasil 2026 ainda não foi feita; se não couber na RD, vira pendência.
-  6. Faixas plausíveis de `data/indicators/definitions.json` e mínimo de 300 nascidos vivos em 3 anos para a taxa de mortalidade infantil valer por município.
+- **Tags prontas:** `fase-r1` (com pendências) e `fase-rd` (com pendências).
+- **Por qual tag começar a testar:** `fase-r1`, com `docs/ROTEIRO_TESTE_R1.md`; depois `fase-rd`, com `docs/ROTEIRO_TESTE_RD.md` (parte de dados: 20 minutos, quase tudo é conferência de números).
+- **Em andamento:** R2a (Core, testes, interface e BalanceSim prontos no branch `r2a`, entrando na main em seguida) e R2b (Core em desenvolvimento).
+- **Pendências que precisam de você** (docs/PENDENCIAS.md):
+  - **P-11:** eleitores por zona. O dado do TSE diz onde se vota, não onde se mora; 4.344 zonas habitadas ficariam sem eleitor. Guardei o dado do TSE no arquivo, mas o modelo de voto reparte os eleitores pela população de 16 anos ou mais. Confirmar ou reverter.
+  - **P-12:** parâmetros de jogo novos (fator pessoal de mortalidade, curva depois dos 89 anos, faixas plausíveis dos indicadores, mínimo de 300 nascidos vivos, homicídios só por agressão).
+  - **P-13:** termos de uso das fontes que não são do IBGE (Tesouro, TSE, INEP, DATASUS, MTE, Banco Central), todas citadas.
+  - **P-10 e P-14:** o que ficou de fora da RD (votação de 2024 por zona; transferências FPM e FPE e saldo do CAGED). Dizer se entram antes da Fase 6 ou junto com a R4.
+- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038):
+  1. Marca "(artigo a conferir)" também nos verbetes "Pré-campanha" e "Horário eleitoral gratuito".
+  2. Declaração ao Tesouro com valor fora da faixa plausível é descartada e registrada como lacuna (26 casos, como despesa com pessoal de 805% da receita); nenhum número é corrigido.
+  3. Brasília usa as finanças do ente estadual (53) e o IDEB da rede distrital.
+  4. Emprego formal pelos microdados de estabelecimentos da RAIS (mesmo estoque, arquivo 30 vezes menor).
+  5. O limite de chamadas do SICONFI obriga a 1 chamada por segundo: o download completo leva cerca de 5 horas e é retomável.
+  6. Religião e escolaridade por zona gravadas como listas, para `data/zonas/` caber no teto de 20 MB (16,8 MB).
+  7. Depois de 2070, a população da UF segue a taxa de 2069 para 2070.
+
+## RD — Dados reais de partida (2026-11-16, com pendências)
+
+**O que entrou**
+- **Indicadores reais** de todos os municípios em `data/indicadores_reais/` (6,3 MB): PIB e valor adicionado por setor (IBGE, 2023), emprego formal (RAIS 2025), finanças (SICONFI: receita corrente, despesa por função, RCL e despesa com pessoal), IDEB dos anos iniciais (INEP 2025, com a série), mortalidade infantil, homicídios e leitos (SIM, SINASC e CNES), saneamento (Censo 2022). Contexto das UFs em `_ufs.json` e economia nacional em `data/economy/start.json`.
+- **Lacunas registradas:** 2.681, cada uma com a regra aplicada (2.323 de mortalidade infantil pela região imediata; 251 de IDEB; 70 de finanças; 35 de despesa com pessoal; 1 de PIB e 1 de saneamento, do município criado depois do Censo).
+- **Receita real na prefeitura:** `ExecutiveEngine.AnnualRevenue` usa a receita corrente declarada; sem dado, vale a estimativa da D-031.
+- **Mortalidade e população:** tábuas por UF e Brasil em `data/demography/` (a probabilidade recomposta de cada faixa é igual à publicada) e projeção municipal reescalada pela projeção de cada UF.
+- **Zonas:** eleitores pelos locais de votação do TSE em 5.361 municípios e religião e escolaridade pelas áreas de ponderação em 16.592 zonas; teto de 20 MB em `data/zonas/` (16,8 MB).
+- **Importador:** leitor de .xlsx, leitor de .dbc do DATASUS (descompressão "implode" portada do zlib/contrib/blast), download por FTP, baixador retomável do SICONFI, tudo sem pacote novo. Brutos só no cache (cerca de 9 GB).
+- **Na tela:** F1 → Este mundo mostra os números oficiais de partida do município em foco, com unidade, fonte, ano e a marca de substituição.
+
+**Números dos testes**
+- 496 testes no Core (eram 455), 76 no importador (eram 28); DataValidator limpo (108 arquivos); build do Godot limpo.
+- 12 alvos de fumaça com janela, todos passando. A RD não acrescenta alvo.
+- Finanças: declaradas em 5.504 de 5.571 municípios; 56 pelo exercício anterior; 11 estimadas pela mediana do porte na UF.
+- Totais por UF: a soma do PIB dos municípios confere com o total da UF (diferença só de arredondamento) e a dos domicílios é igual, sem tolerância.
+- Conferência de leitura: tábua do Brasil aos 40, 60 e 80 anos igual aos seis valores do GDD; Selic 13,75%, câmbio R$ 5,6518 e dívida de 82,95% e 70,00% do PIB, como no GDD.
+
+**BalanceSim:** não se aplica à RD (só dados).
+
+**As 5 coisas de que menos gostei no meu próprio trabalho**
+1. **Os números ainda não mudam o jogo.** Só a receita da prefeitura usa o dado real; os indicadores continuam de 0 a 100 até a R4.
+2. **Eleitores por zona saíram do jeito aprovado e não servem ao modelo** (P-11): local de votação não é moradia. Tive de escolher sozinho o que entra no voto.
+3. **Três itens ficaram de fora:** votação de 2024 por zona (P-10), transferências e CAGED (P-14).
+4. **Mortalidade infantil pela região imediata em 2.323 municípios** (42%): a regra dos 300 nascidos vivos é minha e esconde a taxa própria de muita cidade pequena.
+5. **Não há captura de tela desta parte** e o cartão da Enciclopédia é uma lista corrida de números, sem a ficha de município que o roteiro antigo previa.
+
+**Autocrítica de imersão (GDD 17.21):** a RD não acrescenta nada aos relatos; ela dá a base do relato 3 (folha em % da receita corrente líquida, receita real, obras) que a R4 vai usar.
 
 ## Relatório da manhã (corujão da Fase R, 2026-11-16) — R1
 
