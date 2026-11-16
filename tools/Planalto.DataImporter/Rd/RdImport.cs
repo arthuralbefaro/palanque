@@ -20,7 +20,7 @@ public sealed record SaudeInput(
     IReadOnlyList<(string Campo, string Fonte, string Url, DateTimeOffset BaixadoEm)> Fontes);
 
 /// <summary>IDEB dos anos iniciais da rede municipal: município (7 dígitos) → edição → nota publicada.</summary>
-public sealed record IdebInput(int Edicao, IReadOnlyDictionary<int, Dictionary<int, decimal>> PorMunicipio, CachedFile File);
+public sealed record IdebInput(int Edicao, IReadOnlyDictionary<int, Dictionary<int, decimal>> PorMunicipio, IReadOnlyDictionary<int, Dictionary<int, decimal>> RedeEstadual, CachedFile File);
 
 /// <summary>
 /// Modo "rd" do importador (GDD 17.17): monta data/indicadores_reais/{UF}.json, _ufs.json e _fontes.json e
@@ -139,8 +139,25 @@ public static class RdImport
                 continue;
             }
 
-            if (SiconfiRead.Read(cache.Directory, ente) is { } f)
+            // Declaração com receita por habitante fora da faixa plausível é erro evidente de preenchimento: descartada.
+            RealIndicatorDefinition receitaDef = definitions.Get(IndicatorDefinitions.ReceitaPerCapita);
+            var descartadas = new List<(int Exercicio, decimal Receita)>();
+            FinancasEnte? f = SiconfiRead.Read(cache.Directory, ente, r => m.Populacao <= 0 || (r / m.Populacao >= receitaDef.Min && r / m.Populacao <= receitaDef.Max), descartadas);
+            foreach (var (exercicio, receita) in descartadas)
             {
+                lacunas.Add(new Lacuna(m.CodigoIbge, m.Nome, m.Uf, "financas", string.Format(CultureInfo.InvariantCulture, "DCA de {0} descartada: receita corrente declarada de R$ {1:0.00} dá um valor por habitante fora da faixa plausível", exercicio, receita)));
+            }
+
+            if (f is not null)
+            {
+                // O mesmo vale para a despesa com pessoal em % da RCL: fora da faixa, fica sem o percentual.
+                RealIndicatorDefinition pessoalDef = definitions.Get(IndicatorDefinitions.PessoalRcl);
+                if (f.PessoalPctRcl is decimal pct && (pct < pessoalDef.Min || pct > pessoalDef.Max))
+                {
+                    lacunas.Add(new Lacuna(m.CodigoIbge, m.Nome, m.Uf, "financas.pessoal_pct_rcl", string.Format(CultureInfo.InvariantCulture, "RGF de {0} descartado: despesa com pessoal declarada de {1:0.##}% da RCL, fora da faixa plausível", f.RgfExercicio, pct)));
+                    f = new FinancasEnte { Fonte = f.Fonte, Exercicio = f.Exercicio, ReceitaCorrente = f.ReceitaCorrente, DespesaPorFuncao = f.DespesaPorFuncao };
+                }
+
                 financas[m.CodigoIbge] = f;
             }
         }
@@ -210,7 +227,7 @@ public static class RdImport
                 Gap("financas", $"sem DCA de {SiconfiDownload.Exercicios[0]}; usa a de {fin.Exercicio}");
             }
 
-            if (fin.PessoalPctRcl is null)
+            if (fin.PessoalPctRcl is null && !lacunas.Any(l => l.CodigoIbge == m.CodigoIbge && l.Indicador == "financas.pessoal_pct_rcl"))
             {
                 Gap("financas.pessoal_pct_rcl", "sem RGF do Executivo no SICONFI nos exercícios lidos; fica sem o percentual");
             }
@@ -227,11 +244,21 @@ public static class RdImport
                 idebM = new IdebMunicipal { Fonte = IdebMunicipal.EdicaoAnterior, Ano = ano, Valor = serie[ano], Serie = serie };
                 Gap("ideb", $"sem nota da rede municipal em {ideb.Edicao}; usa a edição de {ano}");
             }
-            else
+            else if (idebUf[m.Uf] is decimal media)
             {
-                decimal media = idebUf[m.Uf] ?? throw new ImportException($"IDEB: nenhuma nota municipal em {m.Uf}.");
                 idebM = new IdebMunicipal { Fonte = IdebMunicipal.DaUf, Ano = ideb.Edicao, Valor = media, Serie = serie };
                 Gap("ideb", $"sem nota da rede municipal em nenhuma edição; usa a média da rede municipal em {m.Uf}");
+            }
+            else if (ideb.RedeEstadual.TryGetValue(m.CodigoIbge, out Dictionary<int, decimal>? estadual) && estadual.Count > 0)
+            {
+                // UF sem rede municipal (o Distrito Federal): a rede pública local é a publicada como estadual.
+                int ano = estadual.ContainsKey(ideb.Edicao) ? ideb.Edicao : estadual.Keys.Max();
+                idebM = new IdebMunicipal { Fonte = IdebMunicipal.RedeEstadual, Ano = ano, Valor = estadual[ano], Serie = estadual };
+                Gap("ideb", "a UF não tem rede municipal; usa a nota da rede estadual (distrital) do próprio município");
+            }
+            else
+            {
+                throw new ImportException($"IDEB: nenhuma nota municipal nem estadual para {m.CodigoIbge} ({m.Uf}).");
             }
 
             long obitos = saude.ObitosInfantis.GetValueOrDefault(six);
@@ -321,7 +348,7 @@ public static class RdImport
             Financas = SiconfiRead.Read(cache.Directory, ufIds[uf]),
             Desocupacao = SidraRd.Number(desocupacao[ufIds[uf].ToString(CultureInfo.InvariantCulture)]) ?? throw new ImportException($"Desocupação de {uf} ausente."),
             DesocupacaoPeriodo = int.Parse(DesocupacaoPeriodo, CultureInfo.InvariantCulture),
-            IdebMedioRedeMunicipal = idebUf[uf] ?? 0,
+            IdebMedioRedeMunicipal = idebUf[uf] ?? files[uf].Average(i => i.Ideb.Valor),
         }).ToList();
 
         var options = new JsonSerializerOptions(JsonData.Options) { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
@@ -360,7 +387,7 @@ public static class RdImport
             Regras = new
             {
                 Financas = $"DCA do exercício mais recente entre {string.Join(", ", SiconfiDownload.Exercicios)}; sem nenhuma, mediana por habitante dos municípios do mesmo porte na UF (ou, sem nenhum, do mesmo porte no país), marcada como estimativa. O Distrito Federal declara como ente estadual ({DistritoFederalUf}).",
-                Ideb = "Nota da rede municipal na edição mais recente; sem ela, a edição anterior mais recente; sem nenhuma, a média simples da rede municipal na UF.",
+                Ideb = "Nota da rede municipal na edição mais recente; sem ela, a edição anterior mais recente; sem nenhuma, a média simples da rede municipal na UF; na UF sem rede municipal (Distrito Federal), a nota da rede estadual do próprio município.",
                 MortalidadeInfantil = $"Óbitos de menores de 1 ano por mil nascidos vivos, por município de residência, na soma de {saude.Anos.Min()} a {saude.Anos.Max()}; com menos de {definitions.MinNascidosMortalidadeInfantil} nascidos vivos no período, a taxa da região geográfica imediata.",
                 Homicidios = $"Óbitos por agressão (CID-10, X85 a Y09), por município de residência, soma de {saude.Anos.Min()} a {saude.Anos.Max()}.",
                 Emprego = "Soma dos vínculos ativos em 31/12 dos estabelecimentos do município; município sem estabelecimento na RAIS: zero.",

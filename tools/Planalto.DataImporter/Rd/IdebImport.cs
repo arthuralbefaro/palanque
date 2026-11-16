@@ -15,6 +15,7 @@ public static partial class IdebImport
     public const string Url = "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2025.zip";
     public const string CacheName = "rd/ideb_anos_iniciais_municipios_2025.zip";
     private const string Rede = "Municipal";
+    private const string RedeEstadual = "Estadual";
 
     public static async Task<IdebInput> ReadAsync(SourceCache cache)
     {
@@ -35,6 +36,7 @@ public static partial class IdebImport
         buffer.Position = 0;
 
         var result = new Dictionary<int, Dictionary<int, decimal>>();
+        var estadual = new Dictionary<int, Dictionary<int, decimal>>();
         int codeColumn = -1;
         int redeColumn = -1;
         var yearColumns = new List<(int Column, int Year)>();
@@ -64,7 +66,7 @@ public static partial class IdebImport
                 continue;
             }
 
-            if (row.Length <= redeColumn || row[redeColumn] != Rede || !int.TryParse(row[codeColumn], NumberStyles.Integer, CultureInfo.InvariantCulture, out int code))
+            if (row.Length <= redeColumn || row[redeColumn] is not (Rede or RedeEstadual) || !int.TryParse(row[codeColumn], NumberStyles.Integer, CultureInfo.InvariantCulture, out int code))
             {
                 continue;
             }
@@ -80,7 +82,7 @@ public static partial class IdebImport
 
             if (serie.Count > 0)
             {
-                result[code] = serie;
+                (row[redeColumn] == Rede ? result : estadual)[code] = serie;
             }
         }
 
@@ -89,7 +91,7 @@ public static partial class IdebImport
             throw new ImportException("IDEB: linha de cabeçalho (SG_UF) não encontrada.");
         }
 
-        return new IdebInput(Edicao, result, file);
+        return new IdebInput(Edicao, result, estadual, file);
     }
 
     [GeneratedRegex(@"^VL_OBSERVADO_(\d{4})$", RegexOptions.CultureInvariant)]

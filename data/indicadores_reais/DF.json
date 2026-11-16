@@ -1,0 +1,6 @@
+{
+  "uf": "DF",
+  "municipios": [
+    {"codigo_ibge":5300108,"pib":{"ano":2023,"valor_mil":365669108,"agropecuaria_mil":0,"industria_mil":0,"servicos_mil":0,"administracao_publica_mil":0},"emprego":{"ano":2025,"vinculos":1851678},"financas":{"fonte":"declarado","exercicio":2025,"receita_corrente":38828745673.71,"despesa_por_funcao":{"01":1213364151.14,"02":50099.11,"03":581111379.89,"04":3802346958.77,"06":1707115713.59,"08":1181221902.94,"09":6466674984.47,"10":6275197925.81,"11":367606996.05,"12":7898024128.29,"13":456335034.19,"14":325885056.97,"15":3351513285.3,"16":143356943.21,"17":298170571.43,"18":258352256.11,"19":252161793.29,"20":231112396.26,"23":192391721.88,"24":3470208.55,"25":3108.07,"26":2774874540.24,"27":374991965.36,"28":2279677565.97},"receita_corrente_liquida":39201192140.12,"pessoal_pct_rcl":41.46,"rgf_exercicio":2025},"ideb":{"fonte":"rede_estadual","ano":2025,"valor":6,"serie":{"2005":4.5,"2007":4.8,"2009":5.4,"2011":5.4,"2013":5.6,"2015":5.6,"2017":6,"2019":6.1,"2021":5.9,"2023":5.9,"2025":6}},"saude":{"anos":[2022,2023,2024],"obitos_infantis":1097,"nascidos_vivos":104761,"mortalidade_infantil":10.47,"mortalidade_infantil_fonte":"municipio","obitos_agressao":959,"leitos_competencia":2609,"leitos":10643},"saneamento":{"domicilios":988191,"rede_agua":929825,"rede_esgoto":851994}}
+  ]
+}

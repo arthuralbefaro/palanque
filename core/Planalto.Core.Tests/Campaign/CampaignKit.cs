@@ -117,7 +117,7 @@ internal static class CampaignKit
     }
 
     /// <summary>Contexto da prefeitura no município em foco.</summary>
-    public static Planalto.Core.Executive.ExecutiveContext ExecutiveContext(GameState state)
+    public static Planalto.Core.Executive.ExecutiveContext ExecutiveContext(GameState state, Planalto.Core.Indicators.IndicadoresMunicipio? indicadores = null)
     {
         CampaignContext campaign = Context(state);
         return new Planalto.Core.Executive.ExecutiveContext
@@ -128,6 +128,7 @@ internal static class CampaignKit
             Legislature = C.Legislature.Config,
             Electorate = campaign.Electorate,
             RecognitionScale = C.Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
+            Indicadores = indicadores,
         };
     }
 

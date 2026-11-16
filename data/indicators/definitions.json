@@ -4,7 +4,7 @@
   "indicadores": [
     { "id": "ideb", "nome": "IDEB anos iniciais (rede municipal)", "unidade": "nota de 0 a 10", "maior_melhor": true, "min": 0, "max": 10, "fonte": "INEP" },
     { "id": "mortalidade_infantil", "nome": "Mortalidade infantil", "unidade": "óbitos de menores de 1 ano por mil nascidos vivos", "maior_melhor": false, "min": 0, "max": 100, "fonte": "Ministério da Saúde, SIM e SINASC" },
-    { "id": "leitos", "nome": "Leitos", "unidade": "leitos por mil habitantes", "maior_melhor": true, "min": 0, "max": 60, "fonte": "Ministério da Saúde, CNES" },
+    { "id": "leitos", "nome": "Leitos", "unidade": "leitos por mil habitantes", "maior_melhor": true, "min": 0, "max": 120, "fonte": "Ministério da Saúde, CNES" },
     { "id": "homicidios", "nome": "Homicídios", "unidade": "óbitos por agressão por 100 mil habitantes ao ano", "maior_melhor": false, "min": 0, "max": 250, "fonte": "Ministério da Saúde, SIM" },
     { "id": "rede_agua", "nome": "Domicílios ligados à rede de água", "unidade": "% dos domicílios", "maior_melhor": true, "min": 0, "max": 100, "fonte": "IBGE, Censo 2022" },
     { "id": "rede_esgoto", "nome": "Domicílios ligados à rede de esgoto", "unidade": "% dos domicílios", "maior_melhor": true, "min": 0, "max": 100, "fonte": "IBGE, Censo 2022" },

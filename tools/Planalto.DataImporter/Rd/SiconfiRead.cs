@@ -13,7 +13,11 @@ public static partial class SiconfiRead
     private const string ColunaEmpenhadas = "Despesas Empenhadas";
 
     /// <summary>Finanças do ente no exercício mais recente com DCA entregue; null se não há DCA em nenhum dos exercícios.</summary>
-    public static FinancasEnte? Read(string cacheDirectory, int ente)
+    /// <param name="receitaPlausivel">
+    /// Confere a receita corrente declarada; a DCA reprovada é descartada (declaração com erro evidente) e vale a do
+    /// exercício anterior. Os exercícios descartados e o valor declarado voltam em <paramref name="descartadas"/>.
+    /// </param>
+    public static FinancasEnte? Read(string cacheDirectory, int ente, Func<decimal, bool>? receitaPlausivel = null, List<(int Exercicio, decimal Receita)>? descartadas = null)
     {
         foreach (int ano in SiconfiDownload.Exercicios)
         {
@@ -28,6 +32,12 @@ public static partial class SiconfiRead
             Dictionary<string, decimal> funcoes = DespesaPorFuncao(despesas);
             if (receitaCorrente is not > 0 || funcoes.Count == 0)
             {
+                continue;
+            }
+
+            if (receitaPlausivel is not null && !receitaPlausivel(receitaCorrente.Value))
+            {
+                descartadas?.Add((ano, receitaCorrente.Value));
                 continue;
             }
 

@@ -3,6 +3,7 @@ using Godot;
 using Planalto.Autoload;
 using Planalto.Core.Campaign;
 using Planalto.Core.Encyclopedia;
+using Planalto.Core.Indicators;
 using Planalto.Core.State;
 using Planalto.UI.Theme;
 
@@ -159,6 +160,7 @@ public partial class EncyclopediaDialog : PanelContainer
             return;
         }
 
+        BuildIndicators(game, state);
         foreach (GameParty p in state.Parties.Where(p => Matches(p.Name + p.Sigla)).OrderBy(p => p.Number))
         {
             string family = game.World.Parties.Families.Families.FirstOrDefault(f => f.Id == p.FamilyId)?.Name ?? p.FamilyId;
@@ -180,6 +182,53 @@ public partial class EncyclopediaDialog : PanelContainer
                     string.Format(CultureInfo.GetCultureInfo("pt-BR"), Tr("Número {0}. Reconhecimento na cidade: {1:0}%. {2}Pessoa fictícia."), c.Number, c.Recognition, c.Incumbent ? Tr("Tem mandato hoje. ") : ""));
             }
         }
+    }
+
+    /// <summary>
+    /// Números oficiais de partida do município em foco (GDD 17.17): valor na unidade real, fonte e ano, e a marca de
+    /// quando o valor é substituição. O jogo só mostra o dado e a fonte, sem juízo sobre a cidade.
+    /// </summary>
+    private void BuildIndicators(Game game, GameState state)
+    {
+        Core.Municipios.Municipio? m = game.Municipios.All.FirstOrDefault(x => x.CodigoIbge == state.FocusMunicipio);
+        if (m is null || game.IndicadoresDe(m) is not { } i || game.RealIndicators is not { } definitions || !Matches(m.Nome + Tr("indicadores números reais")))
+        {
+            return;
+        }
+
+        var culture = CultureInfo.GetCultureInfo("pt-BR");
+        Dictionary<string, decimal> values = IndicatorDefinitions.RealValues(i, m);
+        string anos = i.Saude.Anos.Count == 0 ? "" : $"{i.Saude.Anos.Min()}-{i.Saude.Anos.Max()}";
+        var years = new Dictionary<string, string>
+        {
+            [IndicatorDefinitions.Ideb] = i.Ideb.Ano.ToString(culture) + i.Ideb.Fonte switch
+            {
+                IdebMunicipal.EdicaoAnterior => Tr(", edição anterior"),
+                IdebMunicipal.DaUf => Tr(", média da rede municipal no estado"),
+                IdebMunicipal.RedeEstadual => Tr(", rede distrital"),
+                _ => "",
+            },
+            [IndicatorDefinitions.MortalidadeInfantil] = anos + (i.Saude.MortalidadeInfantilFonte == SaudeMunicipal.DaRegiaoImediata ? Tr(", taxa da região imediata") : ""),
+            [IndicatorDefinitions.Homicidios] = anos,
+            [IndicatorDefinitions.Leitos] = $"{i.Saude.LeitosCompetencia % 100:00}/20{i.Saude.LeitosCompetencia / 100:00}",
+            [IndicatorDefinitions.RedeAgua] = "2022",
+            [IndicatorDefinitions.RedeEsgoto] = "2022",
+            [IndicatorDefinitions.EmpregoFormal] = i.Emprego.Ano.ToString(culture),
+            [IndicatorDefinitions.PessoalRcl] = (i.Financas.RgfExercicio ?? i.Financas.Exercicio).ToString(culture),
+            [IndicatorDefinitions.ReceitaPerCapita] = i.Financas.Exercicio.ToString(culture) + (i.Financas.Fonte == FinancasEnte.Estimativa ? Tr(", estimativa pelos municípios do mesmo porte") : ""),
+            [IndicatorDefinitions.PibPerCapita] = i.Pib?.Ano.ToString(culture) ?? "",
+        };
+
+        var lines = new List<string>();
+        foreach (RealIndicatorDefinition d in definitions.Indicadores.Where(d => values.ContainsKey(d.Id)))
+        {
+            lines.Add(string.Format(culture, "{0}: {1:#,0.##} ({2}; {3}, {4})", d.Nome, values[d.Id], d.Unidade, d.Fonte, years.GetValueOrDefault(d.Id, "")));
+        }
+
+        lines.Add(string.Format(culture, Tr("Receita corrente da prefeitura: R$ {0:#,0} ({1}, {2})."), i.Financas.ReceitaCorrente, "Tesouro Nacional, SICONFI", i.Financas.Exercicio));
+        Entry(
+            string.Format(Tr("{0} ({1}): números oficiais de partida"), m.Nome, m.Uf),
+            string.Join(". ", lines) + " " + Tr("São o ponto de partida; a partir do primeiro dia, tudo evolui pela simulação."));
     }
 
     private void BuildCareer(Game game)

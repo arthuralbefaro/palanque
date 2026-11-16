@@ -157,6 +157,12 @@ public partial class Game : Node
         };
     }
 
+    private Core.Indicators.IndicatorDefinitions? _realIndicators;
+
+    /// <summary>Unidade, fonte e faixa de cada indicador real (data/indicators/definitions.json); null se o arquivo faltar.</summary>
+    public Core.Indicators.IndicatorDefinitions? RealIndicators =>
+        _realIndicators ??= JsonData.LoadFile<Core.Indicators.IndicatorDefinitions>(Path.Combine(DataDirectory, Core.Indicators.IndicatorDefinitions.File)).Value;
+
     private readonly Dictionary<string, Core.Indicators.IndicadoresUfFile?> _indicadores = [];
 
     /// <summary>Ponto de partida oficial do município (data/indicadores_reais/, GDD 17.17); null se o arquivo da UF faltar.</summary>

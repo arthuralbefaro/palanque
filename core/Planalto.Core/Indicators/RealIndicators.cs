@@ -67,6 +67,9 @@ public sealed class IdebMunicipal
     public const string EdicaoAnterior = "edicao_anterior";
     public const string DaUf = "uf";
 
+    /// <summary>UF sem rede municipal (Distrito Federal): nota da rede estadual do próprio município.</summary>
+    public const string RedeEstadual = "rede_estadual";
+
     public required string Fonte { get; init; }
 
     public required int Ano { get; init; }
@@ -158,7 +161,7 @@ public sealed class IndicadoresUfFile : IValidatable
                 yield return $"{m.CodigoIbge}: fonte de finanças '{m.Financas.Fonte}' desconhecida.";
             }
 
-            if (m.Ideb.Fonte is not (IdebMunicipal.DoMunicipio or IdebMunicipal.EdicaoAnterior or IdebMunicipal.DaUf))
+            if (m.Ideb.Fonte is not (IdebMunicipal.DoMunicipio or IdebMunicipal.EdicaoAnterior or IdebMunicipal.DaUf or IdebMunicipal.RedeEstadual))
             {
                 yield return $"{m.CodigoIbge}: fonte de IDEB '{m.Ideb.Fonte}' desconhecida.";
             }
