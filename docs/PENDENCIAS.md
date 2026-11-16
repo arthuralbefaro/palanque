@@ -98,3 +98,19 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - Marcar uma semana cheia custa 3 ou mais cliques por compromisso, sem atalho de repetir; o estresse chega a 100 sem a tela mostrar consequência.
 - As capturas de `docs/referencias/r2a/` e parte do roteiro foram feitas antes da última calibração: os números de presença e a regra da reunião (agora só com liderança do público na zona) podem diferir do texto.
 - Sem ficha de rival, sem seta nas dicas, sem as animações do ART_GUIDE, seção 8.
+
+## R2b — pendências (Core; a interface está em andamento)
+
+### P-20 · BalanceSim da R2b fora do critério em parte dos portes
+- **Medido** (`docs/balance/r2b.md`, 48 campanhas por porte): tipo de compromisso em 27,0% (pequeno), 35,9% (médio), 36,3% (grande) e **60,6% (metrópole)**; par (tipo, zona) em **29,8% (pequeno)**, 18,1%, 14,2% e 12,8%; canal de verba mais repetido em **45,0% (pequeno, Cabos)**, **49,0% (médio, Rua)**, **49,5% (grande, Rua)** e 39,2% (metrópole); decisões com troca por semana entre 1,8 e 2,4 (critério: 1 ou mais, passa).
+- **O que foi ajustado** (3 rodadas): rendimento por real igualado entre canais; cabos dão presença; salários e escala da verba pela metade; saturação da verba repetida.
+- **Por quê:** os canais rendem quase o mesmo por real e o robô gasta quase tudo na pré-campanha, em Redes e Material; sobra pouco para Rua e Cabos na campanha oficial.
+- **Para fechar:** rodar de novo com os doadores da R3 (o caixa muda tudo) e dar ao robô a regra de guardar caixa para a campanha oficial.
+
+### P-21 · O caixa não comporta equipe e verba antes dos doadores
+- **Medido:** com folha e verba, o robô passa de 15% (pequeno) a 61% (metrópole) dos turnos arrecadando e se elege menos na metrópole (9 de 24 contra 16 de 24 na R2a), com os preços já pela metade.
+- **Para fechar:** os doadores, o fundo do partido e o financiamento coletivo da R3; depois, voltar os salários ao valor do GDD.
+
+### P-22 · O que ficou para a R3 por depender dela
+- Opinião do marqueteiro, do tesoureiro e do advogado; agenda dos rivais vista na véspera; ação do advogado; "posição fora da faixa do partido esfria a direção"; rivais que se posicionam e atacam contradições; tema em alta.
+- A plataforma não atravessa eleições (o Livro guarda as posições assumidas, mas o estado da plataforma nasce de novo a cada campanha).

@@ -264,3 +264,16 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Dificuldade:** eficiência dos rivais em 0,5 e empenho por porte de 1,05, 1,1, 2,0 e 5,0, para manter os dois extremos da D-026 (parado nunca se elege; ativo no partido mais forte se elege na maior parte das vezes).
 - **Critério do princípio a no BalanceSim:** "melhor escolha da semana" = a opção de maior ganho previsto por turno vista na semana; o par (tipo, zona) é medido turno a turno no conjunto das campanhas, porque as zonas são de cada cidade. O relatório mostra também o que o robô de fato marcou.
 - **Como reverter:** todos os números estão em `data/campaign/commitments.json`, `leaders.json`, `config.json`, `data/territory/config.json` e `data/world/city_events.json`.
+
+## D-040 — Escolhas da R2b (equipe, verba, plataforma, objetivos)
+- **Data:** 2026-11-16 · **Fase:** R2b · Tomadas no corujão, onde o GDD era vago. Cada uma se reverte no arquivo ou método citado.
+- **Equipe:** sem marqueteiro ou social media o rendimento é 1,0 (qualidade 1 ou 2 fica abaixo de "ninguém"); sem advogado ou tesoureiro vale o pior padrão (`sem` em `staff.json`). O salário pedido segue a faixa mostrada, não a qualidade real. A rede de cabos ocupa uma vaga da equipe quando há verba de cabos. Erro contábil só em semana com gasto e vira esqueleto `erro_contabil`. Salários pela metade do exemplo do GDD (R$ 900 vira cerca de R$ 425 no porte médio), porque o caixa não comporta antes dos doadores da R3.
+- **Delegação:** compromisso delegado não ocupa turno nem dá estresse, rende 50% e quem recebe lembra; delegáveis: caminhada, reunião, visita e evento (`delegavel` em `commitments.json`).
+- **Conselho da semana:** "seguido" é ter 2 compromissos na zona aconselhada na semana (`conselho_compromissos_minimos`).
+- **Vazamento:** o demitido com lealdade baixa põe o rival na lista de quem sabe do esqueleto e a imagem cai; a exposição pública é da R3.
+- **Verba:** o aumento sai na hora e a redução vale na segunda; tudo é cobrado toda segunda e rende no fim da semana. Os canais abrem em 16 de agosto (a data, não a semana). Na pré-campanha há teto por canal e alvo, com rendimento de 60%. **Saturação** da verba repetida no mesmo canal e alvo: regra nova, fora do GDD 17.8 (`saturacao_fator`). O custo fixo do comício saiu: ele passa a exigir verba de Rua na zona.
+- **Plataforma:** a posição própria só nasce quando o jogador a define; falar do tema aumenta a posição conhecida e registra no Livro. A incoerência conta as mudanças de todos os temas em 52 semanas. A credibilidade conta todas as promessas do Livro. O pedido "defender em público a pauta" se cumpre ao falar do tema.
+- **Objetivos:** 7 tipos; proposta não fixada sai em 3 semanas; nunca dois do mesmo tipo.
+- **Gravação para as redes** tem risco de viral negativo mesmo sem social media (`risco_viral`).
+- **Lint de decisões:** as naturezas de ganho e custo são declaradas nos dados e conferidas contra os efeitos.
+- **Lei:** `ChannelLawConfig` (cabos, art. 100-A; impulsionamento, art. 57-C; vedados: rádio e TV, outdoor, brinde) nasceu com os números de memória e a marca de não conferido; a conferência no texto oficial está em `docs/referencias/LEIS_CONFERIDAS.md` e a marca sai na R3.
