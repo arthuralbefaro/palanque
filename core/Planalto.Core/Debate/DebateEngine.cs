@@ -289,7 +289,8 @@ public static class DebateEngine
         {
             Candidate candidate = campaign.Find(id)!;
             candidate.Image = Math.Clamp(candidate.Image + ((debate.Scores[id] - mean) * content.ImagePerPoint), -1, 1);
-            candidate.Recognition = EffectApplier.Gain(candidate.Recognition, content.ExposureRecognition * scale);
+            campaign.Territory.GainEverywhere(id, content.ExposureRecognition * scale);
+            candidate.Recognition = campaign.Territory.Recognition(id);
 
             // Corte viral: um ataque ou uma emoção que deu muito certo (ou muito errado) circula depois do debate.
             var striking = debate.Log.Where(p => p.ParticipantId == id && p.CardId is "ataque" or "emocao").ToList();

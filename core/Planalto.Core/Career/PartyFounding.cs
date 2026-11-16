@@ -365,13 +365,14 @@ public sealed class PartyFoundingEngine
         return taken;
     }
 
-    private int EnergyAvailable() => _state.Campaign?.EnergyLeft ?? _state.Mandate?.EnergyLeft ?? int.MaxValue;
+    // Na campanha não há mais energia semanal (GDD 17.6): o esforço da fundação pesa no estresse.
+    private int EnergyAvailable() => _state.Campaign is not null ? int.MaxValue : _state.Mandate?.EnergyLeft ?? int.MaxValue;
 
     private void SpendEnergy(int energy)
     {
-        if (_state.Campaign is { } campaign)
+        if (_state.Campaign is not null)
         {
-            campaign.EnergyLeft -= energy;
+            _state.Player.Resources.Stress += (int)Math.Round(energy / 4.0);
         }
         else if (_state.Mandate is { } mandate)
         {

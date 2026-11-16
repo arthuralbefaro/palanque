@@ -1,0 +1,19 @@
+{
+  "note": "Eventos da cidade (GDD 17.6): só existem no dia e na zona. 'chance_semanal' é a chance de o evento acontecer numa semana; nos eventos com 'religiao' ela é multiplicada pela fatia daquela religião no município (Censo 2022) e por 'religioso_escala', então os eventos religiosos seguem a composição da cidade. Nomes genéricos, sem instituição real.",
+  "religioso_escala": 1.6,
+  "tipos": [
+    { "id": "feira", "nome": "Feira livre", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 5, "turno": "manha", "situacao": "urbana", "publico": "geral", "chance_semanal": 0.7 },
+    { "id": "feira_produtor", "nome": "Feira do produtor", "portes": ["pequeno", "medio", "grande"], "dia_semana": 2, "turno": "manha", "situacao": "rural", "publico": "geral", "chance_semanal": 0.35 },
+    { "id": "assembleia_sindicato", "nome": "Assembleia de sindicato", "portes": ["medio", "grande", "metropole"], "dia_semana": 3, "turno": "noite", "situacao": "urbana", "publico": "media", "chance_semanal": 0.25 },
+    { "id": "reuniao_moradores", "nome": "Reunião da associação de moradores", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 1, "turno": "noite", "situacao": "urbana", "publico": "baixa", "chance_semanal": 0.35 },
+    { "id": "assembleia_rural", "nome": "Assembleia da associação rural", "portes": ["pequeno", "medio"], "dia_semana": 5, "turno": "tarde", "situacao": "rural", "publico": "geral", "chance_semanal": 0.3 },
+    { "id": "jogo", "nome": "Jogo do time da cidade", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 6, "turno": "tarde", "situacao": "urbana", "publico": "idade_18_34", "chance_semanal": 0.35 },
+    { "id": "baile_idosos", "nome": "Encontro da terceira idade", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 3, "turno": "tarde", "situacao": "urbana", "publico": "idade_60_69", "chance_semanal": 0.25 },
+    { "id": "festa_junina", "nome": "Festa junina", "portes": ["pequeno", "medio", "grande", "metropole"], "meses": [6, 7], "dia_semana": 5, "turno": "noite", "situacao": "qualquer", "publico": "geral", "chance_semanal": 0.6 },
+    { "id": "formatura", "nome": "Formatura do ensino médio", "portes": ["pequeno", "medio", "grande", "metropole"], "meses": [12], "dia_semana": 4, "turno": "noite", "situacao": "urbana", "publico": "idade_16_17", "chance_semanal": 0.5 },
+    { "id": "encontro_empresarial", "nome": "Encontro da associação comercial", "portes": ["medio", "grande", "metropole"], "dia_semana": 1, "turno": "manha", "situacao": "urbana", "publico": "alta", "chance_semanal": 0.25 },
+    { "id": "celebracao_catolica", "nome": "Festa da paróquia", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 6, "turno": "manha", "situacao": "qualquer", "publico": "catolica", "chance_semanal": 0.5, "religiao": "catolica" },
+    { "id": "celebracao_evangelica", "nome": "Encontro de igrejas evangélicas", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 6, "turno": "noite", "situacao": "qualquer", "publico": "evangelica", "chance_semanal": 0.5, "religiao": "evangelica" },
+    { "id": "celebracao_outras", "nome": "Celebração de comunidade religiosa", "portes": ["pequeno", "medio", "grande", "metropole"], "dia_semana": 5, "turno": "noite", "situacao": "qualquer", "publico": "outras", "chance_semanal": 0.5, "religiao": "outras" }
+  ]
+}

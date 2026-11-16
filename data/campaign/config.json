@@ -1,5 +1,4 @@
 {
-  "weekly_energy": 100,
   "parties_in_race": 6,
   "named_rivals": 10,
   "bulk_candidates_per_party": 8,
@@ -17,6 +16,9 @@
   "convention_date": "07-27",
   "npc_actions_per_week": { "min": 2, "max": 4 },
   "npc_action_efficiency": 0.8,
+  "npc_reduto_weight": 4,
+  "npc_spread_factor": 0.6,
+  "npc_image_per_action": 0.002,
   "npc_drive": { "min": 0.5, "max": 1.2 },
   "mayor_drive": { "min": 0.5, "max": 1.0 },
   "bulk_drive": 0.8,

@@ -10,5 +10,22 @@
   "tolerancia_inicial_graus": 0.0005,
   "tolerancia_maxima_graus": 0.05,
   "cobertura_minima": 0.8,
-  "distrito_dominante": 0.8
+  "distrito_dominante": 0.8,
+  "simulacao": {
+    "decaimento_semanal": 0.6,
+    "transbordo": 0.15,
+    "renda_expoente": 1.5,
+    "demanda_peso": 0.15,
+    "zona_natal_fator": 4,
+    "reduto_fator": 2.5,
+    "idade_destaque": 3,
+    "renda_baixa_razao": 0.85,
+    "demandas": [
+      { "id": "renda", "nome": "Emprego e renda", "regra": "renda_baixa", "tema": "programas_sociais", "texto": "Renda média do responsável pelo domicílio: {valor} (cidade: {cidade})" },
+      { "id": "estrada", "nome": "Estradas e produção rural", "regra": "rural", "tema": "agronegocio", "texto": "Zona rural: {valor} habitantes por km² (cidade: {cidade})" },
+      { "id": "saude_idosos", "nome": "Saúde", "regra": "idosos", "tema": "saude", "texto": "Moradores com 60 anos ou mais: {valor} (cidade: {cidade})" },
+      { "id": "creche_escola", "nome": "Creche e escola", "regra": "jovens", "tema": "educacao", "texto": "Moradores com menos de 20 anos: {valor} (cidade: {cidade})" },
+      { "id": "seguranca", "nome": "Segurança", "regra": "padrao", "tema": "seguranca", "texto": "Zona urbana: {valor} habitantes por km² (cidade: {cidade})" }
+    ]
+  }
 }
