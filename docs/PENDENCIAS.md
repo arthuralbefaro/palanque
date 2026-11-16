@@ -204,3 +204,24 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 
 ### P-31 · Objetivos do mandato além das promessas do Livro
 - No mandato, os objetivos são só as promessas mais urgentes do Livro, sem o gerador da campanha (GDD 17.2, peça 6), sem fixar nem dispensar. Decidido pelo autor em 16/11: fica como pendência da R4.
+
+## R3 — fechamento (tag fase-r3)
+
+### P-26 · Atualização com 200 campanhas por porte (docs/balance/r3.md)
+- **Passa agora:** tipo de compromisso nos quatro portes (27,9%, 27,2%, 27,6%, 36,9%), o que fecha a parte de tipo da P-15 e da P-20; **canal de verba nos quatro portes** (Rua 33,6%, Redes 30,2%, Redes 37,0%, Redes 29,1%), o que fecha a parte de canal da P-20; decisões com troca (2,73 a 2,93 por semana); contas (limpas 0,00%; "por fora" acima de 30% do limite, 36,2%, dentro de 25% a 40%); sem campanha, nunca eleito (0 em 400).
+- **Não passa:**
+  - **Par (tipo, zona) no porte pequeno: 30,5%** (critério 25%). Não é zona: é a entrevista no veículo de maior alcance (rádio comunitária 13,9 pontos, página de notícias 6,3, entrevista sem veículo 5,4). A mudança das zonas (branch `mapa-pequeno`) sozinha não deve movê-lo; o que o move é o número de veículos por cidade, o alcance deles ou um cansaço da entrevista por veículo, que hoje não existe. Medir de novo depois da integração do mapa, como o autor pediu, antes de mexer em parâmetro. A `fase-r3` sai com esta pendência (autorizado pelo autor).
+  - **Régua da D-026:** partido mais forte eleito em 76%, 84%, 52% e 53% (régua: 96%, 96%, 67%, 58%); partido sorteado em 19%, 30%, 11% e 15% (régua: 13%, 13%, 8%, 0%). Os dois andam juntos: o que derruba o sorteado derruba quase o mesmo o mais forte. Só nas campanhas limpas o sorteado fica em 12%, 20%, 8% e 0%. A régua foi medida em 2026-11-15 com um robô que sorteava ações; o de hoje escolhe a melhor opção e usa equipe, verba e doadores.
+- **A decidir pelo autor:** se a régua da D-026 continua valendo para o robô atual; e, se sim, qual alavanca usar: empenho do candidato coletivo por porte, peso do partido no modelo de voto (mexe na D-015) ou número de partidos na disputa.
+- **Também:** o robô simples do `CampaignBalanceTests` ficou no limite do teste (3 de 7 cidades); rivais mais duros o quebram.
+
+### P-32 · Sobras da interface da R3
+- Mídia e Contas pedem bastante rolagem no painel de 400 px; o cartão das contas destoa das telas antigas do mandato (que somem na R4).
+- Em cidade pequena a chapa é quase toda "outro nome da lista"; no modo Disputa a etiqueta usa a primeira palavra do nome ("Sargento", "Dra."); legenda larga; tema em alta na cidade inteira põe um ícone em cada zona.
+- Textos do Core com gênero fixo nas previsões ("ele não ataca você", "o jornalista achou").
+- Duas escalas de imagem (barra de −1 a +1, previsões de ataque em pontos); uma faixa de decisão só para ataque, oferta e aviso; rivais não propõem pacto nem dobradinha; o contra-ataque não nomeia a prova; o tesoureiro não avisa do limite; o prazo do ataque conta em dias (o Core devolve 72 horas no dia do ataque para um prazo de 48).
+- Sem tela de Opções: as pausas novas (`ataque`, `decisao_com_prazo`) só se configuram em `data/time.json` (vai com a P-03, na `fase-r-final`).
+
+### P-33 · Ambiente compartilhado dos testes de fumaça (corrigido em parte)
+- Até o commit `c898e4e`, rodadas de fumaça de vários agentes gravavam no mesmo `user://`; agora cada rodada usa `user://smoke/<perfil>/`. **As rodadas da R4 anteriores à correção gravaram na pasta real do jogo** (`%APPDATA%\Godot\app_userdata\Planalto\saves`: `autosave.json` de 16/11 15h37 e cinco `smoke*.json`); se o autor tinha um autosave ali, ele pode ter sido trocado. Nada foi apagado.
+- Alvos com falha intermitente sob carga (`agenda`, `lideranca`, `verba`, `eventos`), todos depois de um clique simulado; com a máquina livre, `eventos` passou 10 de 10 seguidas. Endurecer o clique do UiShot depois da integração da R4.

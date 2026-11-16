@@ -155,13 +155,13 @@ Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e esp
   - Campanha inteira jogada sozinha em 3 sementes por porte, sem erro.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R2B.md
 
-### R3 — Rivais com estratégia, mídia local e doadores
-- [ ] Rivais (17.11): perfil, plano semanal, gatilhos, resposta a ataque, alianças, pactos, painel da chapa
-- [ ] Mídia local (17.13): veículos, linha editorial, feed a partir de fatos, tema em alta, entrevista, pauta, resposta a ataque com prazo, boato
-- [ ] Doadores e prestação de contas (17.12): fontes, limite, painel Contas, risco, julgamento, representação; esqueletos com "quem sabe" e chance de vir à tona
-- [ ] Eventos atuais (32) ligados a pessoas, zonas e fatos do save; eventos dinâmicos disparados por fatos (GDD 15.4)
-- [ ] Conferir, item por item e no texto oficial, os artigos de campanha citados de memória no GDD 17.20 (Lei 9.504, arts. 18-C, 22-A, 23, 30-A, 39, 43, 44, 57-C, 77 e 100-A; doação de empresas), registrar o resultado no DECISOES com o artigo e a data da consulta, e só então criar os objetos de configuração. O que não puder ser conferido fica marcado e vai ao autor
-- [ ] Rádio e TV como presença conquistada: horário eleitoral gratuito com o tempo do partido (D-010) e o rendimento do marqueteiro
+### R3 — Rivais com estratégia, mídia local e doadores · **com pendências (tag fase-r3)**
+- [x] Rivais (17.11): perfil, plano semanal, gatilhos, resposta a ataque, alianças, pactos, painel da chapa
+- [x] Mídia local (17.13): veículos, linha editorial, feed a partir de fatos, tema em alta, entrevista, pauta, resposta a ataque com prazo, boato
+- [x] Doadores e prestação de contas (17.12): fontes, limite, painel Contas, risco, julgamento, representação; esqueletos com "quem sabe" e chance de vir à tona
+- [x] Eventos atuais (32) ligados a pessoas, zonas e fatos do save; eventos dinâmicos disparados por fatos (GDD 15.4)
+- [x] Conferir, item por item e no texto oficial, os artigos de campanha citados de memória no GDD 17.20 (Lei 9.504, arts. 18-C, 22-A, 23, 30-A, 39, 43, 44, 57-C, 77 e 100-A; doação de empresas), registrar o resultado no DECISOES com o artigo e a data da consulta, e só então criar os objetos de configuração. O que não puder ser conferido fica marcado e vai ao autor
+- [x] Rádio e TV como presença conquistada: horário eleitoral gratuito com o tempo do partido (D-010) e o rendimento do marqueteiro
 - **Princípios que passa a cumprir:** b, c (rivais, doadores, jornalistas), d (contas e esqueletos).
 - **Testes automáticos:**
   - Campanha de 40 semanas sem comando do jogador: 3 ou mais notícias por semana que não citam o jogador; liderança muda em 1 ou mais zonas; presença de rival muda em mais da metade das zonas.
@@ -174,11 +174,11 @@ Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e esp
 
 ### RD — Dados reais de partida · **com pendências (tag fase-rd)**
 Entra antes da R4, que usa os indicadores. Só importação e validação; nada muda na tela além dos números.
-- [ ] Importador: economia municipal, finanças municipais e estaduais, indicadores sociais e séries nacionais das fontes da tabela do GDD 17.17, com ano, endereço e data em `_fontes.json` e crédito em `assets/CREDITS.md` — **feito para PIB, emprego formal (RAIS), finanças (SICONFI), IDEB, mortalidade infantil, leitos, homicídios, saneamento, desocupação e séries nacionais; faltam as transferências (FPM e FPE) e o saldo do CAGED (PENDENCIAS P-14)**
+- [x] Importador: economia municipal, finanças municipais e estaduais, indicadores sociais e séries nacionais das fontes da tabela do GDD 17.17, com ano, endereço e data em `_fontes.json` e crédito em `assets/CREDITS.md` — **feito para PIB, emprego formal (RAIS), finanças (SICONFI), IDEB, mortalidade infantil, leitos, homicídios, saneamento, desocupação e séries nacionais; faltam as transferências (FPM e FPE) e o saldo do CAGED (PENDENCIAS P-14)**
 - [x] Lacunas registradas com a regra de substituição de cada indicador (GDD 17.17)
 - [x] Receita real por município no lugar da receita por habitante estimada da D-031
 - [x] Tábuas de mortalidade do IBGE em `data/demography/`: por UF (Projeções da População 2024), com a tábua completa do Brasil de 2024 como reserva e como perfil para a idade simples (GDD 17.16); teste: a probabilidade recomposta de cada faixa etária é igual à publicada
-- [ ] Religião e escolaridade por área de ponderação (municípios com duas ou mais) e eleitorado e votação de 2024 por zona pelos locais de votação do TSE (aprovados, GDD 17.20) — **religião, escolaridade e eleitorado feitos; a votação de 2024 por zona não (PENDENCIAS P-10); o uso do eleitorado por local de votação no modelo de voto está a confirmar (P-11)**
+- [x] Religião e escolaridade por área de ponderação (municípios com duas ou mais) e eleitorado e votação de 2024 por zona pelos locais de votação do TSE (aprovados, GDD 17.20) — **religião, escolaridade e eleitorado feitos; a votação de 2024 por zona não (PENDENCIAS P-10); o uso do eleitorado por local de votação no modelo de voto está a confirmar (P-11)**
 - [x] População: municípios reescalados para acompanhar as Projeções da População 2024 por UF
 - [x] Antes de começar: o autor confere os termos de uso das fontes desta parte (GDD 17.20, item 7) — **cumprido pela D-037:** IBGE aceito com citação (D-037); as demais fontes rodaram citadas, como o corujão autoriza, e ficam para conferência (PENDENCIAS P-13)
 - **Princípios que passa a cumprir:** dá base a b e f na R4.

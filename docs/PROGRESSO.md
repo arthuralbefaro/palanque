@@ -2,31 +2,74 @@
 
 ## Relatório para o autor (atualizado a cada parte)
 
-**Estado em 2026-11-16, depois da R2b.** Este bloco é reescrito ao fim de cada parte.
+**Estado em 2026-11-16, depois da R3.** Este bloco é reescrito ao fim de cada parte.
 
-- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a` e `fase-r2b`, as quatro com pendências.
-- **Por qual tag começar a testar:** `fase-r2b`, com `docs/ROTEIRO_TESTE_R2B.md` (20 minutos). Ela contém tudo da R2a (mapa em "Minha força", agenda, lideranças, Livro) e acrescenta equipe, verba por canal, plataforma e objetivos. Se quiser ver a agenda sem os sistemas novos, `fase-r2a` com o roteiro dela. Os roteiros da R1 e da RD valem para o que é delas (tela, tempo, tooltips; conferência de números).
-- **Em andamento:** R3 (rivais com estratégia, mídia local, contas e doadores).
+- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b` e `fase-r3`, todas com pendências.
+- **Por qual tag começar a testar:** `fase-r3`, com `docs/ROTEIRO_TESTE_R3.md` (20 minutos). Contém tudo das anteriores e acrescenta rivais com plano, mídia local, ataques com prazo, doadores e contas. Comece uma carreira nova.
+- **BalanceSim de cada tag** (critério do princípio a: tipo de compromisso e canal de verba até 40% das semanas, par tipo e zona até 25%):
+
+| Tag | Campanhas por porte | Tipo (pequeno / médio / grande / metrópole) | Par | Canal de verba | Outros critérios |
+|---|---|---|---|---|---|
+| `fase-r1`, `fase-rd` | — | sem BalanceSim | — | — | — |
+| `fase-r2a` | 48 | 30,2% / 34,1% / **41,4%** / **59,8%** | 22,6% / 15,5% / 12,6% / 11,5% | (não existia) | — |
+| `fase-r2b` | 48 | 27,0% / 35,9% / 36,3% / **60,6%** | **29,8%** / 18,1% / 14,2% / 12,8% | **45,0%** / **49,0%** / **49,5%** / 39,2% | decisões com troca 1,8 a 2,4 por semana (passa) |
+| `fase-r3` | **200** | 27,9% / 27,2% / 27,6% / 36,9% | **30,5%** / 22,6% / 19,0% / 17,5% | 33,6% / 30,2% / 37,0% / 29,1% | decisões com troca 2,7 a 2,9 (passa); contas: limpa 0,00%, "por fora" 36,2% (passa); sem campanha nunca eleito (passa); régua da D-026 **não fecha** (P-26) |
+
+  Em negrito, fora do critério. O par do porte pequeno na `fase-r3` é a entrevista no veículo de maior alcance, não uma zona; a tag saiu com ele pendente, como autorizado.
+- **Em andamento:** integração do mapa de cidade pequena (rural por distritos; muda os ids de zona, e saves antigos são recusados com aviso), das correções do seu teste da `fase-r1` (itens 1 a 8 e encaixes dos retratos) e da R4 (mandato, prefeitura e entressafra na tela central). Depois, a `fase-r4` e a `fase-r-final`.
+- **Atenção:** rodadas de fumaça da R4 anteriores ao perfil isolado gravaram na pasta real do jogo (`%APPDATA%\Godot\app_userdata\Planalto\saves`); se você tinha um autosave seu ali, ele pode ter sido trocado (P-33). Nada foi apagado.
 - **Pendências que precisam de você** (docs/PENDENCIAS.md):
-  - **P-11:** eleitores por zona, onde se vota ou onde se mora (escolhi onde se mora).
-  - **P-12:** parâmetros de jogo novos da RD (mortalidade, faixas plausíveis, 300 nascidos vivos, homicídios só por agressão).
-  - **P-13:** termos de uso das fontes que não são do IBGE.
-  - **P-15 e P-20:** o princípio a não fecha. Com a R2b, o tipo de compromisso passa em três portes e falha na metrópole (60,6%); o canal de verba falha em três portes (45% a 49,5%); o par (tipo, zona) falha no porte pequeno (29,8%, e o par é a entrevista, que não tem zona). Decidir se o critério vale como medi ("opção de maior ganho da semana") e se a entrevista conta como par.
-  - **P-21:** o caixa não comporta equipe e verba antes dos doadores (o robô passa de 15% a 61% dos turnos arrecadando); salários e verba estão pela metade do GDD até a R3.
-  - **P-19 e P-23:** no mapa "Minha força", quintil ou intervalo de valor; o que na tela ficou fora do ART_GUIDE.
-  - **P-10 e P-14:** o que ficou de fora da RD (votação de 2024 por zona; transferências e CAGED).
-- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038, D-039 e D-040):
-  1. Reunião com apoiadores só onde há liderança conhecida daquele público na zona; apoio de conversa com teto.
-  2. Evento da cidade divide o cansaço com a caminhada; o bônus de 50% vale só para o público do evento.
-  3. Alcance de um turno numa zona limitado a 10 vezes a base.
-  4. Pedido de dinheiro de liderança, se aceito, é gasto irregular e vira esqueleto; o jogo avisa e não julga.
-  5. Dificuldade: eficiência dos rivais em 0,5 e empenho 5,0 na metrópole.
-  6. Energia dos eventos antigos convertida em estresse (4 para 1).
-  7. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos.
-  8. Equipe: sem marqueteiro o rendimento é 1,0 (um marqueteiro ruim é pior que nenhum); compromisso delegado rende 50% e quem recebe lembra.
-  9. Verba: aumento sai na hora e a redução vale na segunda; na pré-campanha só Redes sem impulsionamento e material institucional, com teto e 60% do efeito.
-  10. Plataforma: a incoerência conta as mudanças de todos os temas em 52 semanas; posição que o eleitor não conhece vale a do partido.
-  11. Vazamento de quem é demitido acontece sem decisão do jogador (aparece na previsão de demitir).
+  - **P-26:** a régua de dificuldade da D-026 vale para o robô atual? Se sim, qual alavanca usar.
+  - **P-27:** tabela de limites de gastos do TSE (baixar à mão), acórdãos não lidos, 15 meses (Constituição) ou 9 meses (Código Eleitoral) para vaga de vereador sem suplente, lista de bloqueio de veículos escrita de memória.
+  - **P-25:** ruas do IBGE no mapa (agora parte da RV) e a licença; **P-29:** instalar o Blender, se quiser a cabeça A do teste A/B.
+  - **P-11, P-12, P-13:** eleitores por zona onde se mora; parâmetros novos da RD; termos das fontes que não são do IBGE.
+  - **P-19, P-23, P-32:** quintil ou intervalo no mapa; o que ficou fora do ART_GUIDE nas telas.
+  - **P-10 e P-14:** votação de 2024 por zona; transferências e CAGED.
+- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038 a D-042 e D-048):
+  1. Reunião com apoiadores só onde há liderança conhecida daquele público; apoio de conversa com teto.
+  2. Evento da cidade divide o cansaço com a caminhada; alcance de um turno limitado a 10 vezes a base.
+  3. Pedido de dinheiro de liderança aceito vira esqueleto; o jogo avisa e não julga.
+  4. Equipe: sem marqueteiro o rendimento é 1,0; delegado rende 50% e quem recebe lembra.
+  5. Verba: na pré-campanha só Redes sem impulsionamento e material institucional, com teto.
+  6. Plataforma: incoerência conta as mudanças em 52 semanas; posição desconhecida vale a do partido.
+  7. Ataque: o dano é penalidade separada da imagem; responder não pausa (vencido o prazo, vale o silêncio); prazo de 48 horas do GDD, com os do art. 58 no objeto de lei.
+  8. Tema em alta só com fatos sem autor; notícia mexe pouco na imagem; verba dos rivais só disputa o canal.
+  9. Recursos próprios acima de 10% do limite viram irregularidade.
+  10. Balanceamento da R3: canais e rivais recalibrados (D-048); a régua da D-026 não fechou.
+  11. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos.
+
+## R3 — Rivais com estratégia, mídia local e doadores (2026-11-16, com pendências)
+
+**O que entrou**
+- **Rivais:** perfil, plano semanal com zonas-alvo e postura, gatilhos (pesquisa, entrada no reduto, ataque, perda de liderança), resposta a ataque pelo temperamento, pactos e dobradinha, ficha do rival com plano percebido e confiança da leitura, painel da chapa ("Quem puxa quem"); atacar, investigar e propor pacto com previsão.
+- **Mídia local:** veículos fictícios com tipo, linha, dono e jornalista; feed a partir de fatos, com tom pela linha e marca de boato; tema em alta; entrevista num veículo escolhido; sugerir pauta; anúncio na imprensa escrita com o limite do art. 43 (rádio e TV bloqueados pelo art. 44); horário eleitoral gratuito com o tempo do partido.
+- **Ataques contra você, com prazo:** cartão, faixa com a contagem e cinco respostas com previsão (direito de resposta só com advogado).
+- **Doadores e contas:** fontes (fundo do partido, pessoa física com teto de 10% da renda, recursos próprios, financiamento coletivo desde 15 de maio, "por fora"), limite de gastos, painel Contas com risco e fatores, esqueletos com "quem sabe" e chance de vir à tona, prazos de prestação, julgamento depois da eleição e representação que pode cassar o diploma.
+- **Eventos:** os 32 eventos reescritos e ligados a pessoas, zonas e fatos; 5 eventos dinâmicos disparados por fatos; o cartão mostra pessoas, zona e veículo como links. O EventLint cobra rastro (lembrança ou Livro), troca e texto de morte; o CONTENT_GUIDE ganhou as variáveis de zona, liderança, pessoa e veículo e essas regras.
+- **Lei conferida no texto oficial** (três leituras; `docs/referencias/LEIS_CONFERIDAS.md`) antes de virar configuração: `CampaignFinanceLawConfig`, `PropagandaLawConfig`, `ChannelLawConfig` conferido.
+- **Mapa:** modo Disputa, etiquetas clicáveis dos rivais, tema em alta por zona. **Enciclopédia:** 24 verbetes e 3 artigos.
+- **Testes de fumaça com perfil isolado** (`--perfil`, `user://smoke/<perfil>/`) e o alvo `perfil`.
+
+**Números dos testes**
+- 778 testes no Core (673 na R2b), dos quais os rápidos rodam em cerca de 10 s; 76 no importador; DataValidator e EventLint limpos; build do Godot limpo.
+- 23 alvos de fumaça com janela, todos com código 0 na mesma rodada, com `--perfil=main`: os 19 anteriores mais `rivais`, `midia`, `contas` e `perfil`.
+- Capturas em 1366×768 e 1920×1080 em `docs/referencias/r3/` (46 arquivos), examinadas em duas rodadas.
+- Campanha de 40 semanas sem comando (princípio b), resposta a ataque em até 14 dias, nenhuma notícia sem fato, boato sempre marcado, nenhum nome de veículo na lista de bloqueio: testes do Core.
+
+**BalanceSim** (200 campanhas por porte, 10 cidades; `docs/balance/r3.md`): tabela no Relatório acima. Canal de verba e tipo de compromisso passam nos quatro portes pela primeira vez; contas e "sem campanha nunca" passam; o par do porte pequeno (entrevista) e a régua de dificuldade da D-026 não fecham (P-26).
+
+**As 5 coisas de que menos gostei no meu próprio trabalho**
+1. **A dificuldade não bate com a régua.** O partido mais forte se elege menos do que devia e o sorteado, mais; não achei alavanca que mexa num sem mexer no outro.
+2. **O par do porte pequeno é sempre a entrevista na rádio comunitária.** Em cidade pequena, com dois veículos, a melhor jogada da semana se repete.
+3. **Textos com gênero fixo** nas previsões ("ele não ataca você") com candidatas e jornalistas mulheres na tela.
+4. **Uma faixa de decisão para tudo:** com dois prazos abertos (ataque e oferta), a tela mostra um.
+5. **Testes de fumaça frágeis sob carga:** quatro alvos falharam de forma intermitente logo depois de cliques simulados quando vários agentes rodavam juntos; com a máquina livre passam, mas o clique precisa ficar mais firme.
+
+**Autocrítica de imersão (GDD 17.21)**
+- **Relato 1, já acontece:** veículo com nome e linha noticiando fato da cidade; tema em alta com +30% na previsão e no mapa; marcador do rival que abre a ficha. **Falta:** o tema em alta raramente aparece na semana 2 (precisa de uma semana de notícias); cidade pequena tem só dois veículos.
+- **Relato 2, já acontece:** "faltam N votos" no painel da chapa; ataque com prazo e chance por opção; direito de resposta pelo advogado; barra do limite de gastos. **Falta:** tesoureiro e coordenadora disputando o limite; dobradinha oferecida pela candidata a prefeita com conflito de agenda; a prova nomeada no contra-ataque.
+- **Relato 4, já acontece:** financiamento coletivo com a data; oferta "por fora" recusável com previsão; entrevista num veículo escolhido sobre um tema. **Falta:** o pedido da liderança amarrado a um veículo ("diga isso na Rádio Vale").
+- **Relato 3** (prefeitura em crise) é da R4.
 
 ## R2b — Equipe, verba, plataforma e objetivos (2026-11-16, com pendências)
 

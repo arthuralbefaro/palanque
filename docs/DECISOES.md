@@ -345,3 +345,11 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Decisão:** os commits do autor e os feitos pelo assistente continuam só em nome de Arthur Albefaro, sem menção a IA. Colaboradores convidados pelo autor assinam os próprios commits com o próprio nome. O hook `.githooks/commit-msg` continua apagando linhas de atribuição a IA de qualquer commit; quem clona ativa o hook com `git config core.hooksPath .githooks` (nesta máquina ele está configurado com caminho absoluto para a cópia principal).
 - **Não muda:** o assistente não é autor de nada; nunca altera `user.name`/`user.email` nem usa `--author`; nunca faz push sem pedido. Os créditos do jogo continuam como estão (CLAUDE.md); incluir colaboradores neles é decisão à parte.
 - **Onde:** CLAUDE.md, seção Autoria.
+
+## D-048 — Balanceamento da R3 com 200 campanhas por porte
+- **Data:** 2026-11-16 · **Fase:** R3 · Tomadas no corujão, a partir do diagnóstico pedido pelo autor.
+- **Diagnóstico do canal** (antes): o retorno por real era igual nos quatro canais; Cabos venciam porque davam a mesma presença da Rua e mais o apoio da zona inteira, mesmo rendendo a metade sem material; Redes e Material chegavam saturados à campanha oficial porque o robô gastava neles de 74% a 78% da verba na pré-campanha; o limite de cabos do art. 100-A vale para o robô e nunca o prendeu.
+- **Ajuste:** Rua `k_presenca` 1,0 → 0,9; Redes `k_presenca` 4,5 → 6,75, `k_apoio` 0,036 → 0,054, fator de pré-campanha 0,6 → 0,4; Material `k_presenca` 0,9 → 1,08, fator de pré-campanha 0,6 → 0,5 (a pré-campanha rende o mesmo que antes); Cabos `k_presenca` 1,0 → 0,72, `k_apoio` 0,12 → 0,084; rivais: `npc_action_efficiency` 0,5 → 0,65, `bulk_drive` 0,8 → 1,2, `npc_effort_by_porte` de 1,05/1,1/2,0/5,0 para 0,95/1,4/3,5/4,4. Nenhuma regra de lei nem dado de município mudou.
+- **Também:** a projeção do modelo de voto passou a guardar os temas em vetores (mesmas contas, mesma ordem, relatório idêntico), o que deixou o robô cerca de 5 vezes mais rápido; testes lentos com a categoria `Lento` (569 rápidos em cerca de 10 s; 203 lentos).
+- **Resultado e o que não fechou:** ver PENDENCIAS P-26.
+- **Como reverter:** `data/campaign/channels.json` e `data/campaign/config.json`.

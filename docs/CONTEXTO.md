@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 10:42, depois de: R2b concluída com pendências (tag fase-r2b); R3 em desenvolvimento.
+Atualizado em 2026-11-16 19:09, depois de: R3 concluída com pendências (tag fase-r3); integração do mapa de cidade pequena, das correções da fase-r1 e da R4 em andamento.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -213,7 +213,12 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - lei dos canais em `ChannelLawConfig` (cabos, impulsionamento, vedações); verbetes de propaganda reescritos pelo texto conferido;
   - BalanceSim: decisões com troca passam; canal de verba fora em três portes, par fora no pequeno, tipo fora na metrópole (P-20); o caixa não comporta equipe e verba antes dos doadores (P-21).
   - 673 testes no Core, 19 alvos de fumaça com janela.
-- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`.
+- **R3 feita, com pendências (tag `fase-r3`):**
+  - rivais com plano, gatilhos, ataques, pactos e painel da chapa; mídia local com veículos, linha, tema em alta, pauta e horário gratuito; ataques contra o jogador com prazo; doadores, limite de gastos, contas, esqueletos e representação;
+  - 32 eventos ligados a pessoas, zonas e fatos; EventLint cobra rastro, troca e texto de morte; lei de campanha conferida no texto oficial (`docs/referencias/LEIS_CONFERIDAS.md`);
+  - BalanceSim com 200 campanhas: tipo e canal passam nos quatro portes; par do porte pequeno (entrevista) e régua da D-026 não fecham (P-26);
+  - testes de fumaça com perfil isolado (`--perfil`); testes lentos com a categoria `Lento`.
+- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -256,6 +261,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
 - D-037: respostas do autor às pendências da R1; teto de 20 MB em `data/zonas/`; corujão estendido à Fase R inteira.
 - D-038: escolhas da RD (finanças do DF pelo ente estadual, RAIS de estabelecimentos, homicídios por agressão, declarações implausíveis descartadas, eleitores por zona pela moradia).
+- D-042 e D-048: escolhas da R3 e o balanceamento com 200 campanhas; D-041 e D-045 a D-047: respostas do autor (integração, retratos e mapa da RV, artista, nome "Palanque", autoria com colaboradores); D-043 e D-044 ficam reservados para as decisões de visual, entregues ao fim da `fase-r-final`.
 - D-040: escolhas da R2b (equipe sem função vale o pior padrão, delegação a 50%, verba cobrada toda segunda, pré-campanha com teto, incoerência em 52 semanas, 7 tipos de objetivo).
 - D-039: escolhas da R2a (presença de partida, alcance pela fatia da cidade, reunião só com liderança do público, evento dividindo cansaço com a caminhada, dificuldade dos rivais, como o BalanceSim mede a "melhor escolha da semana").
 - D-036: idade inicial de 17 a 45 anos (NPCs 25 a 45), 18 anos aferidos em 15/8 para vereador, profissões com idade mínima, Estudante, família coerente com a idade.
@@ -293,6 +299,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 - **Do autor:** jogar os roteiros da R1 e da RD (tags `fase-r1` e `fase-rd`); o corujão segue sem esperar (D-037).
 - **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3.
+- **Novas, da R3:** P-26 (BalanceSim: par do pequeno e régua da D-026), P-27 (o que ficou para o autor: tabela do TSE, acórdãos, 15 ou 9 meses, lista de veículos), P-32 (sobras da interface), P-33 (ambiente compartilhado dos testes de fumaça).
 - **Novas, da R2b:** P-20 (BalanceSim fora em parte dos portes), P-21 (caixa não comporta equipe e verba), P-22 (o que depende da R3), P-23 (sobras da interface).
 - **Novas, da R2a:** P-15 (princípio a não passa em cidade grande e metrópole), P-16 (lint de rastro e eventos antigos), P-17 (números de jogo ainda no código), P-18 (caixa aperta nas cidades maiores), P-19 (sobras da interface; quintil ou intervalo no mapa).
 - **Novas, da RD:** P-10 (votação de 2024 por zona não ligada), P-11 (eleitores por zona: onde se vota ou onde se mora), P-12 (parâmetros de jogo novos), P-13 (termos de uso das fontes não IBGE), P-14 (transferências e CAGED).
