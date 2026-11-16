@@ -201,14 +201,48 @@ public class LawConfigTests
     }
 
     [Fact]
-    public void Regras_da_Camara_ainda_nao_conferidas_ficam_marcadas()
+    public void Regras_da_Camara_conferem_com_o_texto_oficial()
     {
         ChamberRulesConfig rules = ChamberRulesConfig.Default;
-        Assert.False(rules.ConferidoNoTextoOficial);
+        Assert.True(rules.ConferidoNoTextoOficial);
+        Assert.Contains("terceira leitura", rules.Conferencia);
+
+        // CF, art. 58, § 3º: CPI por um terço dos membros.
+        Assert.Contains("art. 58, § 3º", rules.ArtigoCpi);
+        Assert.Equal(1.0 / 3.0, rules.AssinaturasCpi, 12);
         Assert.Equal(3, rules.AssinaturasNecessarias(9));
         Assert.Equal(4, rules.AssinaturasNecessarias(11));
+        Assert.Equal(19, rules.AssinaturasNecessarias(55));
+
+        // CF, art. 57, § 4º: Mesa de dois anos, sem recondução ao mesmo cargo na eleição seguinte.
+        Assert.Contains("art. 57, § 4º", rules.ArtigoMesa);
+        Assert.Equal(2, rules.MandatoDaMesaAnos);
+        Assert.True(rules.VedadaReconducaoAoMesmoCargo);
+
+        // DL 201/1967, art. 5º: qualquer eleitor denuncia; maioria dos presentes recebe; comissão de três sorteados;
+        // dois terços dos membros cassam; 90 dias para concluir.
+        Assert.Contains("Decreto-Lei 201/1967, art. 5º", rules.ArtigoRito);
+        Assert.Contains("art. 5º, VI", rules.ArtigoCassacao);
+        Assert.Contains("art. 4º", rules.ArtigoInfracoes);
+        Assert.Equal(10, rules.InfracoesPoliticoAdministrativas);
+        Assert.True(rules.DenunciaPorQualquerEleitor);
+        Assert.Equal(5, rules.VotosParaReceberDenuncia(9));
+        Assert.Equal(5, rules.VotosParaReceberDenuncia(8));
+        Assert.Equal(4, rules.VotosParaReceberDenuncia(7));
+        Assert.Equal(3, rules.MembrosDaComissaoProcessante);
         Assert.Equal(6, rules.VotosParaCassar(9));
         Assert.Equal(8, rules.VotosParaCassar(11));
-        Assert.Equal(2, rules.MandatoDaMesaAnos);
+        Assert.Equal(37, rules.VotosParaCassar(55));
+        Assert.Equal(90, rules.PrazoDoProcessoDias);
+        Assert.Equal(new DateOnly(2027, 5, 31), rules.PrazoDoProcesso(new DateOnly(2027, 3, 2)));
+
+        // DL 201/1967, arts. 7º e 8º: cassação de vereador pelo mesmo rito; extinção por faltas a um terço das sessões.
+        Assert.Contains("art. 7º", rules.ArtigoCassacaoVereador);
+        Assert.Equal(3, rules.MotivosCassacaoVereador.Count);
+        Assert.True(rules.CassacaoVereadorSegueORitoDoPrefeito);
+        Assert.Equal(rules.VotosParaCassar(13), rules.VotosParaCassarVereador(13));
+        Assert.Contains("art. 8º", rules.ArtigoExtincaoVereador);
+        Assert.Equal(1.0 / 3.0, rules.FaltasQueExtinguemOMandato, 12);
+        Assert.True(rules.PresidenteConvocaOSuplente);
     }
 }

@@ -51,11 +51,15 @@ public sealed record SuccessionRulesConfig
 
     /// <summary>Vaga de vereador: assume o suplente do mesmo partido ou federação.</summary>
     public LegalBasis BaseVereador { get; init; } = new(
-        "Constituição Federal, art. 56, §§ 1º e 2º (aplicado aos municípios por simetria)",
-        false,
-        "O GDD 17.20 registra leitura do art. 56 na pesquisa, mas o artigo não consta de docs/referencias/LEIS_CONFERIDAS.md: a conferir.");
+        "Constituição Federal, art. 56, §§ 1º e 2º (aplicado aos municípios por simetria); Código Eleitoral, art. 112 (quem é o suplente)",
+        true,
+        "Conferido no texto oficial em 16/11/2026 (docs/referencias/LEIS_CONFERIDAS.md, segunda leitura). O art. 56 trata de deputados e senadores: no município é simetria. O art. 113 do Código Eleitoral manda fazer eleição salvo se faltarem menos de 9 meses para o fim do mandato; o jogo fica com os 15 meses da Constituição.");
 
-    /// <summary>Sem suplente, há eleição para a cadeira se faltarem mais de tantos meses para o fim do mandato (art. 56, § 2º).</summary>
+    /// <summary>
+    /// Sem suplente, há eleição para a cadeira se faltarem mais de tantos meses para o fim do mandato (CF, art. 56,
+    /// § 2º: mais de 15 meses). Diferença registrada: o Código Eleitoral, art. 113, fala em 9 meses (eleição, salvo se
+    /// faltarem menos de 9 meses); o jogo usa os 15 da Constituição, por simetria. Para a outra leitura, basta pôr 9 aqui.
+    /// </summary>
     public int MesesParaEleicaoSemSuplente { get; init; } = 15;
 
     // ---------------------------------------------------------------- prefeito: morte, renúncia, cassação pela Câmara
@@ -65,9 +69,9 @@ public sealed record SuccessionRulesConfig
     /// Prefeitura e há nova eleição: direta na primeira parte do mandato, indireta, pela Câmara, na segunda.
     /// </summary>
     public LegalBasis BaseDuplaVacancia { get; init; } = new(
-        "Constituição Federal, art. 81, caput e § 1º (padrão do jogo, espelhado para o município; decisão do autor no GDD 17.20, item 12)",
-        false,
-        "Simplificação: a Lei Orgânica de cada município pode dispor de outro modo. O GDD 17.20 registra leitura do art. 81 na pesquisa, mas o artigo não consta de docs/referencias/LEIS_CONFERIDAS.md: a conferir.");
+        "Constituição Federal, arts. 79 a 81 (padrão do jogo, espelhado para o município; decisão do autor no GDD 17.20, item 12)",
+        true,
+        "Conferido no texto oficial em 16/11/2026 (docs/referencias/LEIS_CONFERIDAS.md, segunda leitura): o vice sucede na vaga (art. 79); vagos os dois, eleição em 90 dias, ou em 30 dias, indireta, nos dois últimos anos (art. 81, caput e § 1º); os eleitos completam o período (§ 2º). Simplificação: os artigos tratam do Presidente, e a Lei Orgânica de cada município pode dispor de outro modo.");
 
     public bool ViceAssume { get; init; } = true;
 
@@ -89,8 +93,8 @@ public sealed record SuccessionRulesConfig
     /// </summary>
     public LegalBasis BaseJusticaEleitoral { get; init; } = new(
         "Código Eleitoral (Lei 4.737/1965), art. 224, §§ 3º e 4º",
-        false,
-        "NÃO conferido: o artigo não consta de docs/referencias/LEIS_CONFERIDAS.md (o GDD 17.20 registra leitura na pesquisa e a ADI 5525 só por resumo). Os prazos em dias da nova eleição não vêm destes parágrafos: o jogo usa os mesmos do art. 81 da Constituição, como parâmetro de jogo.");
+        true,
+        "Conferido no texto oficial em 16/11/2026 (docs/referencias/LEIS_CONFERIDAS.md, segunda leitura); o acórdão da ADI 5525, a que a página remete, não foi aberto. Os prazos em dias da nova eleição não vêm destes parágrafos: o jogo usa os mesmos do art. 81 da Constituição, como parâmetro de jogo.");
 
     /// <summary>A menos de tantos meses do fim do mandato, a nova eleição é indireta (art. 224, § 4º, I).</summary>
     public int MesesFinaisComEleicaoIndireta { get; init; } = 6;

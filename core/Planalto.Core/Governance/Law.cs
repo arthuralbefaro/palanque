@@ -370,34 +370,97 @@ public sealed class ElectionConductLawConfig
 }
 
 /// <summary>
-/// Regras da Câmara usadas na Mesa, na CPI e na cassação. ATENÇÃO: estes dispositivos NÃO estão em
-/// docs/referencias/LEIS_CONFERIDAS.md; foram citados de memória e <see cref="ConferidoNoTextoOficial"/> fica falso
-/// até a conferência no texto oficial.
+/// Regras da Câmara usadas na Mesa, na CPI e na cassação, com o padrão da lei vigente e o artigo citado. Conferidas no
+/// texto oficial em 16/11/2026 (terceira leitura de docs/referencias/LEIS_CONFERIDAS.md). Os artigos da Constituição
+/// tratam do Congresso e valem no município por simetria; o rito do Decreto-Lei 201/1967 vale "se outro não for
+/// estabelecido pela legislação do Estado", e a lei orgânica de cada município pode dispor de outro modo.
 /// </summary>
 public sealed class ChamberRulesConfig
 {
     public static ChamberRulesConfig Default { get; } = new();
 
-    public bool ConferidoNoTextoOficial { get; init; }
+    /// <summary>Os números e artigos deste objeto foram conferidos no texto oficial.</summary>
+    public bool ConferidoNoTextoOficial { get; init; } = true;
 
-    public string Conferencia { get; init; } = "Artigos citados de memória; a conferir no texto oficial antes de valer como regra de lei.";
+    public string Conferencia { get; init; } = "Conferido no texto do Planalto em 16/11/2026 (docs/referencias/LEIS_CONFERIDAS.md, terceira leitura). CF, arts. 57 e 58: tratam do Congresso, aplicados por simetria.";
+
+    // ---- CPI
 
     public string ArtigoCpi { get; init; } = "CF, art. 58, § 3º (aplicado às Câmaras por simetria)";
 
-    /// <summary>Fração dos membros que precisa assinar o requerimento de CPI.</summary>
+    /// <summary>Fração dos membros que precisa assinar o requerimento de CPI (um terço), para fato determinado e por prazo certo.</summary>
     public double AssinaturasCpi { get; init; } = 1.0 / 3.0;
 
-    public string ArtigoCassacao { get; init; } = "Decreto-Lei 201/1967, art. 5º, VI";
+    // ---- Mesa Diretora
 
-    /// <summary>Fração dos membros da Câmara para cassar o mandato do prefeito.</summary>
-    public double QuorumCassacao { get; init; } = 2.0 / 3.0;
-
-    public string ArtigoMesa { get; init; } = "CF, art. 57, § 4º (mandato de dois anos, por simetria; a lei orgânica de cada município regula)";
+    public string ArtigoMesa { get; init; } = "CF, art. 57, § 4º (aplicado às Câmaras por simetria; a lei orgânica de cada município regula)";
 
     /// <summary>Duração do mandato da Mesa Diretora, em anos.</summary>
     public int MandatoDaMesaAnos { get; init; } = 2;
 
-    public int AssinaturasNecessarias(int membros) => (int)Math.Ceiling(membros * AssinaturasCpi - 1e-9);
+    /// <summary>Vedada a recondução para o mesmo cargo da Mesa na eleição imediatamente subsequente.</summary>
+    public bool VedadaReconducaoAoMesmoCargo { get; init; } = true;
 
-    public int VotosParaCassar(int membros) => (int)Math.Ceiling(membros * QuorumCassacao - 1e-9);
+    // ---- Cassação do prefeito pela Câmara
+
+    public string ArtigoInfracoes { get; init; } = "Decreto-Lei 201/1967, art. 4º";
+
+    /// <summary>Infrações político-administrativas do prefeito julgadas pela Câmara (art. 4º, I a X).</summary>
+    public int InfracoesPoliticoAdministrativas { get; init; } = 10;
+
+    public string ArtigoRito { get; init; } = "Decreto-Lei 201/1967, art. 5º, I, II e VII";
+
+    /// <summary>A denúncia pode ser feita por qualquer eleitor (art. 5º, I).</summary>
+    public bool DenunciaPorQualquerEleitor { get; init; } = true;
+
+    /// <summary>Fração dos presentes para receber a denúncia: maioria, ou seja, mais do que isto (art. 5º, II).</summary>
+    public double RecebimentoMaisQueFracaoDosPresentes { get; init; } = 0.5;
+
+    /// <summary>Vereadores sorteados para a comissão processante (art. 5º, II).</summary>
+    public int MembrosDaComissaoProcessante { get; init; } = 3;
+
+    /// <summary>Dias, da notificação do acusado, para concluir o processo; passado o prazo, é arquivado, sem impedir nova denúncia (art. 5º, VII).</summary>
+    public int PrazoDoProcessoDias { get; init; } = 90;
+
+    public string ArtigoCassacao { get; init; } = "Decreto-Lei 201/1967, art. 5º, VI";
+
+    /// <summary>Fração mínima dos membros da Câmara (não dos presentes) para o afastamento definitivo do prefeito (dois terços, pelo menos).</summary>
+    public double QuorumCassacao { get; init; } = 2.0 / 3.0;
+
+    // ---- Cassação e extinção do mandato de vereador
+
+    public string ArtigoCassacaoVereador { get; init; } = "Decreto-Lei 201/1967, art. 7º";
+
+    /// <summary>Motivos pelos quais a Câmara pode cassar vereador (art. 7º, I a III).</summary>
+    public IReadOnlyList<string> MotivosCassacaoVereador { get; init; } =
+    [
+        "Corrupção ou improbidade administrativa no uso do mandato",
+        "Residência fora do município",
+        "Procedimento incompatível com o decoro",
+    ];
+
+    /// <summary>O processo de cassação de vereador segue o rito do art. 5º, com o mesmo quórum.</summary>
+    public bool CassacaoVereadorSegueORitoDoPrefeito { get; init; } = true;
+
+    public string ArtigoExtincaoVereador { get; init; } = "Decreto-Lei 201/1967, art. 8º";
+
+    /// <summary>Fração das sessões ordinárias do ano cuja ausência extingue o mandato do vereador (art. 8º, III).</summary>
+    public double FaltasQueExtinguemOMandato { get; init; } = 1.0 / 3.0;
+
+    /// <summary>Extinto o mandato, o presidente da Câmara declara e convoca o suplente (art. 8º, § 1º).</summary>
+    public bool PresidenteConvocaOSuplente { get; init; } = true;
+
+    public int AssinaturasNecessarias(int membros) => (int)Math.Ceiling((membros * AssinaturasCpi) - 1e-9);
+
+    /// <summary>Votos para cassar o prefeito: dois terços, pelo menos, dos membros da Câmara.</summary>
+    public int VotosParaCassar(int membros) => (int)Math.Ceiling((membros * QuorumCassacao) - 1e-9);
+
+    /// <summary>Votos para cassar um vereador: o mesmo quórum, pelo rito do art. 5º.</summary>
+    public int VotosParaCassarVereador(int membros) => VotosParaCassar(membros);
+
+    /// <summary>Votos para receber a denúncia, com <paramref name="presentes"/> vereadores na sessão: a maioria deles.</summary>
+    public int VotosParaReceberDenuncia(int presentes) => (int)Math.Floor(presentes * RecebimentoMaisQueFracaoDosPresentes) + 1;
+
+    /// <summary>Último dia para concluir o processo aberto com a notificação em <paramref name="notificacao"/>.</summary>
+    public DateOnly PrazoDoProcesso(DateOnly notificacao) => notificacao.AddDays(PrazoDoProcessoDias);
 }

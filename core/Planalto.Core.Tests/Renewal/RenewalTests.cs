@@ -210,9 +210,15 @@ public class RenewalTests(ITestOutputHelper output)
     {
         Assert.Contains("art. 224", Rules.BaseJusticaEleitoral.Artigo);
         Assert.Contains("§§ 3º e 4º", Rules.BaseJusticaEleitoral.Artigo);
-        Assert.False(Rules.BaseJusticaEleitoral.Conferido);
-        Assert.Contains("art. 81", Rules.BaseDuplaVacancia.Artigo);
+        Assert.Contains("arts. 79 a 81", Rules.BaseDuplaVacancia.Artigo);
         Assert.Contains("art. 56", Rules.BaseVereador.Artigo);
+        Assert.Contains("art. 112", Rules.BaseVereador.Artigo);
+
+        // As três bases constam de docs/referencias/LEIS_CONFERIDAS.md (segunda leitura); a diferença do art. 113 fica dita.
+        Assert.All(new[] { Rules.BaseVereador, Rules.BaseDuplaVacancia, Rules.BaseJusticaEleitoral }, b => Assert.True(b.Conferido));
+        Assert.Contains("art. 113", Rules.BaseVereador.Nota);
+        Assert.Contains("9 meses", Rules.BaseVereador.Nota);
+        Assert.Contains("ADI 5525", Rules.BaseJusticaEleitoral.Nota);
         Assert.All(new[] { Rules.BaseVereador, Rules.BaseDuplaVacancia, Rules.BaseJusticaEleitoral }, b => Assert.False(string.IsNullOrWhiteSpace(b.Nota)));
         Assert.Equal(15, Rules.MesesParaEleicaoSemSuplente);
         Assert.Equal(6, Rules.MesesFinaisComEleicaoIndireta);
