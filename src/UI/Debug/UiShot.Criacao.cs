@@ -108,6 +108,84 @@ public partial class UiShot
     }
 
     /// <summary>
+    /// Troca de gênero na aba Identidade: sem edição à mão, a aparência é sorteada de novo na hora; com edição à mão,
+    /// aparece a pergunta, e cada resposta faz o que diz (sortear de novo ou manter).
+    /// </summary>
+    private async Task<bool> CheckCreatorGender(CharacterCreatorScreen creator)
+    {
+        var tabs = FindAll<TabContainer>(creator).First();
+        tabs.CurrentTab = 2;
+        await Frames(2);
+        async Task<bool> Pick(Core.Characters.Gender gender)
+        {
+            if (Named<OptionButton>(creator, "Genero") is not { } options)
+            {
+                return false;
+            }
+
+            options.Select((int)gender);
+            options.EmitSignal(OptionButton.SignalName.ItemSelected, (int)gender);
+            await Frames(3);
+            return true;
+        }
+
+        ConfirmationDialog? Question() => FindAll<ConfirmationDialog>(creator).FirstOrDefault(d => d.Name == "ConfirmarAparencia" && IsInstanceValid(d) && !d.IsQueuedForDeletion());
+        Core.Characters.Gender Other(int step) => (Core.Characters.Gender)(((int)creator.GenderForTest + step) % 3);
+
+        // 1. Aparência só sorteada: troca direto, sem pergunta.
+        var before = creator.AppearanceForTest;
+        var target = Other(1);
+        if (!await Pick(target) || Question() is not null || creator.GenderForTest != target || creator.AppearanceForTest == before)
+        {
+            Fail($"mudar o gênero sem edição à mão deveria sortear a aparência de novo, sem perguntar (gênero {creator.GenderForTest}, pergunta: {Question() is not null}).");
+            return false;
+        }
+
+        // 2. Editada à mão: pergunta; "Sortear de novo" troca a aparência.
+        creator.EditAppearanceForTest();
+        await Frames(2);
+        before = creator.AppearanceForTest;
+        target = Other(1);
+        await Pick(target);
+        if (Question() is not { } ask || creator.AppearanceForTest != before)
+        {
+            Fail("mudar o gênero com a aparência editada à mão deveria perguntar antes de sortear.");
+            return false;
+        }
+
+        ask.GetOkButton().EmitSignal(BaseButton.SignalName.Pressed);
+        await Frames(3);
+        if (Question() is not null || creator.GenderForTest != target || creator.AppearanceForTest == before)
+        {
+            Fail("\"Sortear de novo\" deveria mudar o gênero e a aparência.");
+            return false;
+        }
+
+        // 3. Editada à mão de novo: "Manter a aparência" muda só o gênero.
+        creator.EditAppearanceForTest();
+        await Frames(2);
+        before = creator.AppearanceForTest;
+        target = Other(1);
+        await Pick(target);
+        if (Question() is not { } keep)
+        {
+            Fail("a segunda troca de gênero com edição à mão deveria perguntar de novo.");
+            return false;
+        }
+
+        keep.GetCancelButton().EmitSignal(BaseButton.SignalName.Pressed);
+        await Frames(3);
+        if (Question() is not null || creator.GenderForTest != target || creator.AppearanceForTest != before)
+        {
+            Fail("\"Manter a aparência\" deveria mudar só o gênero.");
+            return false;
+        }
+
+        GD.Print("  gênero: sorteio direto sem edição à mão; pergunta com edição; \"Sortear de novo\" e \"Manter a aparência\" conferidos");
+        return true;
+    }
+
+    /// <summary>
     /// Número de urna digitado na aba Campanha: três algarismos, com zeros à esquerda e repetidos ("000", "111");
     /// menos de três ou letra não vale, o motivo aparece embaixo do campo e na base da tela, e a carreira não começa.
     /// </summary>

@@ -30,7 +30,11 @@ public partial class CharacterCreatorScreen : Control
     private WorldSetup _world = null!;
     private Rng _rng = null!;
     private Character _c = null!;
-    private readonly Stack<string> _undo = new();
+    private readonly Stack<(string Character, bool FaceEdited, bool WardrobeEdited)> _undo = new();
+
+    // O jogador mexeu à mão na aparência ou nas roupas: mudar o gênero pergunta antes de sortear de novo.
+    private bool _faceEdited;
+    private bool _wardrobeEdited;
     private List<string> _offeredTraits = [];
     private TabContainer _tabs = null!;
     private PortraitView _portrait = null!;
@@ -98,7 +102,7 @@ public partial class CharacterCreatorScreen : Control
 
     private void Change(Action action)
     {
-        _undo.Push(JsonSerializer.Serialize(_c, JsonData.Options));
+        PushUndo();
         action();
         BuildTabs();
         RefreshPreview();
@@ -106,10 +110,12 @@ public partial class CharacterCreatorScreen : Control
 
     private void Edit(Action action)
     {
-        _undo.Push(JsonSerializer.Serialize(_c, JsonData.Options));
+        PushUndo();
         action();
         RefreshPreview();
     }
+
+    private void PushUndo() => _undo.Push((JsonSerializer.Serialize(_c, JsonData.Options), _faceEdited, _wardrobeEdited));
 
     private void Undo()
     {
@@ -118,13 +124,77 @@ public partial class CharacterCreatorScreen : Control
             return;
         }
 
-        _c = JsonSerializer.Deserialize<Character>(_undo.Pop(), JsonData.Options)!;
+        var (character, faceEdited, wardrobeEdited) = _undo.Pop();
+        _c = JsonSerializer.Deserialize<Character>(character, JsonData.Options)!;
+        _faceEdited = faceEdited;
+        _wardrobeEdited = wardrobeEdited;
         _ballotDraft = null;
         BuildTabs();
         RefreshPreview();
     }
 
-    private void SetAppearance(Func<Appearance, Appearance> change) => Edit(() => _c.Appearance = change(_c.Appearance!));
+    private void SetAppearance(Func<Appearance, Appearance> change) => Edit(() =>
+    {
+        _c.Appearance = change(_c.Appearance!);
+        _faceEdited = true;
+    });
+
+    /// <summary>
+    /// Troca de gênero: a aparência e as roupas são sorteadas de novo com os pesos do gênero novo. Se o jogador já
+    /// editou alguma delas à mão, pergunta antes: sortear de novo ou manter o que ele fez.
+    /// </summary>
+    private void RequestGender(Gender gender)
+    {
+        if (gender == _c.Gender)
+        {
+            return;
+        }
+
+        if (!_faceEdited && !_wardrobeEdited)
+        {
+            Change(() => SetGender(gender, reroll: true));
+            return;
+        }
+
+        var dialog = new ConfirmationDialog
+        {
+            Name = "ConfirmarAparencia",
+            Title = Tr("Mudar o gênero"),
+            DialogText = Tr("Você já editou a aparência à mão. Sortear uma aparência nova, com os pesos do gênero escolhido, ou manter a que você fez?"),
+            OkButtonText = Tr("Sortear de novo"),
+            CancelButtonText = Tr("Manter a aparência"),
+            DialogAutowrap = true,
+            Exclusive = true,
+        };
+        bool answered = false;
+        void Answer(bool reroll)
+        {
+            if (answered)
+            {
+                return;
+            }
+
+            answered = true;
+            dialog.QueueFree();
+            Change(() => SetGender(gender, reroll));
+        }
+
+        dialog.Confirmed += () => Answer(true);
+        dialog.Canceled += () => Answer(false);
+        AddChild(dialog);
+        dialog.PopupCentered(new Vector2I(640, 0));
+    }
+
+    private void SetGender(Gender gender, bool reroll)
+    {
+        _c.Gender = gender;
+        if (reroll)
+        {
+            _c.Appearance = AppearanceGenerator.Random(_rng, People.Appearance, gender, _c.AgeOn(Today), _c.HomeUf);
+            _faceEdited = false;
+            _wardrobeEdited = false;
+        }
+    }
 
     private GameParty? CurrentPartyFromWorld()
     {
@@ -190,12 +260,14 @@ public partial class CharacterCreatorScreen : Control
             case 0:
                 var wardrobe = _c.Appearance!.Wardrobe;
                 _c.Appearance = AppearanceGenerator.Random(_rng, People.Appearance, _c.Gender, age, _c.HomeUf) with { Wardrobe = wardrobe };
+                _faceEdited = false;
                 break;
             case 1:
                 _c.Appearance = _c.Appearance! with
                 {
                     Wardrobe = Enum.GetValues<WardrobeContext>().ToDictionary(c => c, c => AppearanceGenerator.Outfit(_rng, People.Appearance, _c.Gender, c)),
                 };
+                _wardrobeEdited = false;
                 break;
             case 2:
                 Character fresh = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", _c.HomeUf!, _c.HomeMunicipio, Today, PartyId: _c.PartyId, Ages: People.Origins.StartingAge));
@@ -373,6 +445,7 @@ public partial class CharacterCreatorScreen : Control
     {
         var wardrobe = new Dictionary<WardrobeContext, OutfitChoice>(_c.Appearance!.Wardrobe) { [context] = change(_c.Appearance.Wardrobe[context]) };
         _c.Appearance = _c.Appearance with { Wardrobe = wardrobe };
+        _wardrobeEdited = true;
     }
 
     private void BuildIdentityTab(VBoxContainer t)
@@ -385,7 +458,8 @@ public partial class CharacterCreatorScreen : Control
         Ui.Button(ballotRow, "Sugerir", () => Change(() =>
             _c.BallotName = PersonGenerator.BallotName(_rng, People, _c.CivilName.Split(' ')[0], _c.CivilName.Split(' ')[^1], _c.ProfessionId ?? "", _c.Gender)));
 
-        Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => Change(() => _c.Gender = Enum.Parse<Gender>(g)));
+        Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => RequestGender(Enum.Parse<Gender>(g))).Name = "Genero";
+        Ui.Label(t, "Mudar o gênero sorteia de novo a aparência e as roupas; se você já as editou, o jogo pergunta antes.", 16, Ui.Muted);
 
         AgeRange ages = People.Origins.StartingAge;
         HBoxContainer ageRow = Ui.Field(t, "Idade");
@@ -823,6 +897,14 @@ public partial class CharacterCreatorScreen : Control
         }
     }
 
+    /// <summary>Teste de fumaça: aparência e gênero do personagem em criação.</summary>
+    public Appearance AppearanceForTest => _c.Appearance!;
+
+    public Gender GenderForTest => _c.Gender;
+
+    /// <summary>Teste de fumaça: uma edição à mão na aparência, como o controle "Pintas" da aba Aparência.</summary>
+    public void EditAppearanceForTest() => SetAppearance(a => a with { Moles = !a.Moles });
+
     /// <summary>Teste de fumaça: pendências que impedem começar a carreira, como aparecem na base da tela.</summary>
     public IReadOnlyList<string> ProblemsForTest => Problems().ToList();
 
@@ -884,7 +966,12 @@ public partial class CharacterCreatorScreen : Control
                 Appearance? loaded = JsonSerializer.Deserialize<Appearance>(FileAccess.GetFileAsString(path), JsonData.Options);
                 if (loaded is not null)
                 {
-                    Change(() => _c.Appearance = loaded);
+                    Change(() =>
+                    {
+                        _c.Appearance = loaded;
+                        _faceEdited = true;
+                        _wardrobeEdited = true;
+                    });
                 }
             }
             catch (JsonException)
