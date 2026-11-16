@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=newworld|creator|hub|picker|campaign|map [--screenshot=arquivo.png]".
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
 public partial class UiShot : Node
@@ -40,6 +40,12 @@ public partial class UiShot : Node
 
             GD.Print("Smoke picker: ok");
             GetTree().Quit(0);
+            return;
+        }
+
+        if (target == "map")
+        {
+            await ShowMaps(shot);
             return;
         }
 
@@ -84,6 +90,57 @@ public partial class UiShot : Node
         }
 
         GD.Print($"Smoke {target}: ok");
+        GetTree().Quit(0);
+    }
+
+    /// <summary>Abre o mapa 2.5D de MG (a UF com mais municípios), SP e AC; confere as malhas e mede tempo e FPS.</summary>
+    private async Task ShowMaps(string? shot)
+    {
+        Game game = Game.Instance;
+        var creator = (CharacterCreatorScreen)GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate();
+        AddChild(creator);
+        await Frames(3);
+        creator.TryStartCareer();
+        RemoveChild(creator);
+        creator.QueueFree();
+
+        foreach (string uf in new[] { "MG", "SP", "AC" })
+        {
+            var map = (UI.Map.MapScreen)GD.Load<PackedScene>(Game.Scenes.Map).Instantiate();
+            map.Uf = uf;
+            AddChild(map);
+            await Frames(10);
+            await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
+            int expected = game.Municipios.All.Count(m => m.Uf == uf);
+            GD.Print($"Mapa {uf}: {map.MeshCount}/{expected} municípios, montagem {map.BuildMilliseconds} ms, {Engine.GetFramesPerSecond():0} FPS");
+            if (map.MeshCount != expected)
+            {
+                GD.PushError($"Smoke: mapa de {uf} com {map.MeshCount} de {expected} municípios.");
+                GetTree().Quit(1);
+                return;
+            }
+
+            if (shot is not null)
+            {
+                GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", $"_mapa_{uf}.png"));
+            }
+
+            // Troca a altura para o partido presente em mais municípios e remonta as malhas.
+            var rebuild = System.Diagnostics.Stopwatch.StartNew();
+            map.ShowStrengthOf(map.MostPresentParty());
+            rebuild.Stop();
+            await Frames(10);
+            GD.Print($"Mapa {uf}: remontagem {rebuild.ElapsedMilliseconds} ms, {map.MeshCount} malhas");
+            if (shot is not null)
+            {
+                GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", $"_mapa_{uf}_forca.png"));
+            }
+
+            RemoveChild(map);
+            map.QueueFree();
+        }
+
+        GD.Print("Smoke map: ok");
         GetTree().Quit(0);
     }
 

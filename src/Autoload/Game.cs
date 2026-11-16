@@ -77,7 +77,7 @@ public partial class Game : Node
     public Core.Campaign.CampaignContext ContextFor(GameState state)
     {
         Municipio m = Municipios.All.First(x => x.CodigoIbge == state.FocusMunicipio);
-        MunicipalScenario? local = state.World?.ScenarioId == "brasil_2026" ? Brasil2026?.Municipio(m.CodigoIbge) : null;
+        MunicipalScenario? local = LocalScenario(state, m.CodigoIbge);
         return new Core.Campaign.CampaignContext
         {
             State = state,
@@ -91,6 +91,24 @@ public partial class Game : Node
             Events = Events,
             Portes = Portes,
         };
+    }
+
+    /// <summary>Dados reais do município no cenário Brasil 2026; null nos mundos gerados.</summary>
+    public MunicipalScenario? LocalScenario(GameState state, int codigoIbge) =>
+        state.World?.ScenarioId == "brasil_2026" ? Brasil2026?.Municipio(codigoIbge) : null;
+
+    private readonly Dictionary<string, Core.Geo.GeoUf> _geo = [];
+
+    /// <summary>Contornos dos municípios de uma UF (data/geo/), carregados na primeira vez que forem pedidos.</summary>
+    public Core.Geo.GeoUf Geo(string uf)
+    {
+        if (!_geo.TryGetValue(uf, out Core.Geo.GeoUf? geo))
+        {
+            geo = Core.Geo.GeoContent.Load(DataDirectory, uf).GetValueOrThrow();
+            _geo[uf] = geo;
+        }
+
+        return geo;
     }
 
     /// <summary>Cenário Brasil 2026 completo (estados e municípios), carregado na primeira vez que for pedido.</summary>
