@@ -13,6 +13,8 @@
     { "id": "semana_sem_compromisso", "nome": "Domingo com a semana seguinte sem nenhum compromisso marcado", "pausa": true, "desligavel": true },
     { "id": "lideranca_perdida", "nome": "Liderança deixa de apoiar você", "pausa": true, "desligavel": true },
     { "id": "rival_em_zona_lider", "nome": "Rival visto numa zona em que você lidera a presença", "pausa": true, "desligavel": true },
+    { "id": "ataque", "nome": "Ataque contra você (o prazo de resposta começa a correr)", "pausa": true, "desligavel": true },
+    { "id": "decisao_com_prazo", "nome": "Decisão com prazo (oferta de doação): pausa ao chegar; o prazo corre se você soltar o tempo", "pausa": true, "desligavel": false },
     { "id": "fase_nova", "nome": "Mudança de fase (início da campanha, eleição, posse)", "pausa": true, "desligavel": false },
     { "id": "noticia_comum", "nome": "Notícia comum", "pausa": false, "desligavel": true }
   ]

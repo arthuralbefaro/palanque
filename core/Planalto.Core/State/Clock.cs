@@ -100,7 +100,13 @@ public static class Clock
     /// <summary>Um rival foi visto numa zona em que o jogador lidera a presença (GDD 17.4).</summary>
     public const string RivalEmZonaLider = "rival_em_zona_lider";
 
-    public static readonly IReadOnlyList<string> PauseIds = [DecisaoImediata, PesquisaPublicada, VotacaoNaPauta, CaixaBaixo, SemanaSemCompromisso, FaseNova, NoticiaComum, LiderancaPerdida, RivalEmZonaLider];
+    /// <summary>Um ataque contra o jogador saiu e o prazo de resposta começou a correr (GDD 17.4 e 17.13).</summary>
+    public const string AtaqueContraVoce = "ataque";
+
+    /// <summary>Chegou uma decisão com prazo (oferta de doação): pausa ao chegar; o prazo corre se o jogador retomar (GDD 17.4).</summary>
+    public const string DecisaoComPrazo = "decisao_com_prazo";
+
+    public static readonly IReadOnlyList<string> PauseIds = [DecisaoImediata, PesquisaPublicada, VotacaoNaPauta, CaixaBaixo, SemanaSemCompromisso, FaseNova, NoticiaComum, LiderancaPerdida, RivalEmZonaLider, AtaqueContraVoce, DecisaoComPrazo];
 
     public static DateOnly Today(GameState state) => state.Calendar.WeekStart.AddDays(state.Time.Day);
 
