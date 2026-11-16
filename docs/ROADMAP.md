@@ -80,7 +80,7 @@
 
 ## Fase R — Reformulação: imersão e profundidade
 
-> Origem: o autor jogou a fatia vertical e a reprovou (docs/AUDITORIA_FASE3.md). O desenho está no GDD, seção 17. **Esta fase não roda em modo autônomo:** cada parte termina com a verificação obrigatória, os testes da parte e o roteiro de teste entregue; depois para e espera o autor jogar e aprovar. Nenhuma parte começa antes de o autor aprovar a anterior e decidir as pendências que ela usa (GDD 17.20).
+> Origem: o autor jogou a fatia vertical e a reprovou (docs/AUDITORIA_FASE3.md). O desenho está no GDD, seção 17. **Fora da execução autorizada abaixo, esta fase não roda em modo autônomo** (na execução de 2026-11-16 nenhuma parte para nem espera o autor: valem a autorização e a extensão dos parágrafos seguintes)**:** cada parte termina com a verificação obrigatória, os testes da parte e o roteiro de teste entregue; depois para e espera o autor jogar e aprovar. Nenhuma parte começa antes de o autor aprovar a anterior e decidir as pendências que ela usa (GDD 17.20).
 > **Autorização do autor (2026-11-16), só para a execução noturna dessa data:** modo corujão em toda a Fase R, na ordem R1 → RD → R2a → R2b → R3 → R4. As paradas para o autor viram **revisão posterior por tag** (fase-r1, fase-rd, fase-r2a, fase-r2b, fase-r3, fase-r4): o item (5) abaixo passa a ser cumprido de manhã, jogando as partes na ordem das tags. Bloqueios vão para docs/PENDENCIAS.md. O portão completo desta execução está no CLAUDE.md (Fase R).
 > **Extensão (D-037, 2026-11-16):** o autor autoriza seguir a Fase R inteira sem esperar pelo teste dele (RD → R2a → R2b → R3 → R4), e depois fechar o resto das pendências da R1 (P-02, P-03, P-09) com a tag `fase-r-final`. Parar ali; a Fase 6 não começa.
 > **Precedência nesta execução:** a autorização do corujão prevalece sobre toda instrução de "pare", "pergunte" ou "espere o autor" do CLAUDE.md e do ROADMAP, inclusive dentro de cada parte. Nos casos em que antes o trabalho pararia:
@@ -119,7 +119,7 @@ Conteúdo de jogo igual ao atual (6 ações, pesquisas, eventos, rivais como est
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R1.md
 
 ### R2a — Território, agenda, lideranças e Livro de compromissos · **com pendências (tag fase-r2a)**
-Primeira metade da antiga R2. Termina, para e espera o autor.
+Primeira metade da antiga R2. Termina, para e espera o autor (regra para execuções futuras; na execução de 2026-11-16, pela D-037, terminou com a tag e a R2b começou em seguida).
 - [x] Território na simulação (GDD 17.5): presença por zona, segmentos por zona, voto por zona, decaimento e transbordo, demanda da zona, Ficha da zona, modo Minha força
 - [x] Agenda com lugar e dia (17.6): compromissos, turnos, cansaço, ocasião, deslocamento, convites, eventos da cidade; sai a energia semanal. Ainda sem delegação (depende da equipe, R2b); o comício usa o custo fixo atual até a verba por canal (R2b)
 - [x] Pessoa com memória e Livro de compromissos (17.2): promessas, dívidas, posições assumidas e esqueletos gravados e visíveis na Enciclopédia (Sua carreira)
@@ -137,7 +137,7 @@ Primeira metade da antiga R2. Termina, para e espera o autor.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R2A.md
 
 ### R2b — Equipe, verba, plataforma e objetivos · **com pendências (tag fase-r2b)**
-Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e espera o autor.
+Segunda metade da antiga R2. Só começa com a R2a aprovada. Termina, para e espera o autor (regra para execuções futuras; na execução de 2026-11-16, pela D-037, começou sem esperar a aprovação da R2a, terminou com a tag `fase-r2b` e a R3 começou em seguida).
 - [x] Equipe (17.7): funções, candidatos com vínculos, qualidade em faixa, conselho da semana, eventos próprios; delegação de compromissos na agenda
 - [x] Verba por canal (17.8): quatro canais pagos (Rua, Redes com impulsionamento, Material gráfico, Cabos) com alvo, retorno decrescente e disputa de canal por zona; o comício passa a depender do canal Rua. Rádio e TV não são canal de verba: presença conquistada por entrevista e horário gratuito
 - [x] Plataforma (17.9): posições, bandeiras, posição conhecida, promessas locais, custo de mudar, credibilidade
@@ -180,7 +180,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - [x] Tábuas de mortalidade do IBGE em `data/demography/`: por UF (Projeções da População 2024), com a tábua completa do Brasil de 2024 como reserva e como perfil para a idade simples (GDD 17.16); teste: a probabilidade recomposta de cada faixa etária é igual à publicada
 - [ ] Religião e escolaridade por área de ponderação (municípios com duas ou mais) e eleitorado e votação de 2024 por zona pelos locais de votação do TSE (aprovados, GDD 17.20) — **religião, escolaridade e eleitorado feitos; a votação de 2024 por zona não (PENDENCIAS P-10); o uso do eleitorado por local de votação no modelo de voto está a confirmar (P-11)**
 - [x] População: municípios reescalados para acompanhar as Projeções da População 2024 por UF
-- [x] Antes de começar: o autor confere os termos de uso das fontes desta parte (GDD 17.20, item 7) — IBGE aceito com citação (D-037); as demais fontes rodaram citadas, como o corujão autoriza, e ficam para conferência (PENDENCIAS P-13)
+- [x] Antes de começar: o autor confere os termos de uso das fontes desta parte (GDD 17.20, item 7) — **cumprido pela D-037:** IBGE aceito com citação (D-037); as demais fontes rodaram citadas, como o corujão autoriza, e ficam para conferência (PENDENCIAS P-13)
 - **Princípios que passa a cumprir:** dá base a b e f na R4.
 - **Testes automáticos:** todo município tem valor ou lacuna registrada para cada indicador; totais por UF iguais aos oficiais onde a fonte publica total; nenhum valor fora da faixa plausível declarada em `data/`; nenhum número escrito à mão (todo campo com fonte em `_fontes.json`); DataValidator cobrindo os arquivos novos.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_RD.md
