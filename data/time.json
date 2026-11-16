@@ -6,11 +6,13 @@
     "mandato": [1.0, 0.5, 0.25]
   },
   "pausas": [
-    { "id": "decisao_imediata", "nome": "Decisão imediata (evento, crise, debate)", "pausa": true, "desligavel": false },
+    { "id": "decisao_imediata", "nome": "Decisão imediata (evento, crise, debate, pedido de liderança)", "pausa": true, "desligavel": false },
     { "id": "pesquisa_publicada", "nome": "Pesquisa publicada", "pausa": true, "desligavel": true },
     { "id": "votacao_na_pauta", "nome": "Votação na pauta da Câmara", "pausa": true, "desligavel": true },
-    { "id": "caixa_baixo", "nome": "Caixa abaixo do custo de uma semana de ações", "pausa": true, "desligavel": true },
-    { "id": "semana_sem_compromisso", "nome": "Semana começando sem nenhuma ação feita na anterior", "pausa": false, "desligavel": true },
+    { "id": "caixa_baixo", "nome": "Caixa abaixo do custo do compromisso mais barato", "pausa": true, "desligavel": true },
+    { "id": "semana_sem_compromisso", "nome": "Domingo com a semana seguinte sem nenhum compromisso marcado", "pausa": true, "desligavel": true },
+    { "id": "lideranca_perdida", "nome": "Liderança deixa de apoiar você", "pausa": true, "desligavel": true },
+    { "id": "rival_em_zona_lider", "nome": "Rival visto numa zona em que você lidera a presença", "pausa": true, "desligavel": true },
     { "id": "fase_nova", "nome": "Mudança de fase (início da campanha, eleição, posse)", "pausa": true, "desligavel": false },
     { "id": "noticia_comum", "nome": "Notícia comum", "pausa": false, "desligavel": true }
   ]
