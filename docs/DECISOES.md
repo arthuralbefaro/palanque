@@ -122,3 +122,28 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Data:** 2026-11-15 · **Fase:** 2
 - **Decisão:** na aba "Partido" (GDD 14.2 A) o jogador cria o partido já registrado; ele entra no mundo como nanico, sem bancadas nem força local, inclusive no cenário Brasil 2026 (exceção à D-009, porque não há dados locais a manter). Nome e sigla passam pela mesma validação da lista de bloqueio.
 - **Como reverter:** bloquear a criação nos cenários espelhados.
+
+## D-021 — Montagem da disputa de vereador
+- **Data:** 2026-11-15 · **Fase:** 3
+- **Decisão:** quando o município entra em foco, a disputa reúne os 6 partidos mais fortes nele (o do jogador sempre entra, no lugar do sexto), 10 rivais nomeados (gerados como NPCs e gravados no save) e, por partido, um candidato coletivo que representa os demais candidatos anônimos. O coletivo pesa no modelo de voto como `vagas + 1 − nomeados` candidatos (agregação log-soma-exp), para que a fatia de cada nome não seja inflada. Na apuração, o coletivo vira candidatos anônimos com votos decrescentes e 8% dos votos do partido vão para a legenda. Prefeito: 2 a 4 candidatos. Todos os números em data/campaign/config.json.
+- **Como reverter:** ajustar config.json; a regra do coletivo está em RaceSetup e VoteModel.
+
+## D-022 — Ritmo da campanha e ganhos decrescentes
+- **Data:** 2026-11-15 · **Fase:** 3
+- **Decisão:** a campanha avança por semana com 100 de energia; ações de rua e mídia só a partir de 16 de agosto (pré-campanha antes disso). Custos em dinheiro multiplicados pelo porte (0,4 no pequeno a 6 na metrópole) e reconhecimento escalado no sentido contrário (1,6 a 0,35). O ganho de reconhecimento é decrescente (`ganho × (1 − atual/100)`) e há decaimento semanal de reconhecimento, imagem e apoio, para que repetir a mesma ação não sature o jogo. NPCs fazem de 1 a 3 ações por semana com eficiência 0,6. Pesquisa pública a cada 3 semanas; ruído do resultado final com desvio 0,12.
+- **Como reverter:** config.json; a curva de ganho está em EffectApplier.Gain.
+
+## D-023 — Sorteio de eventos
+- **Data:** 2026-11-15 · **Fase:** 3
+- **Decisão:** o número de eventos da semana segue uma Poisson com média pela frequência de eventos das opções do mundo (0,3 a 1,6), limitada a 3; cada evento elegível é sorteado com peso × raridade (comum 1, incomum 0,5, raro 0,2, lendário 0,05), respeitando condições, cooldown, eventos únicos e eventos só de cadeia. A semana não avança com evento pendente. O EventLint também roda como teste do Core, então um evento quebrado reprova a verificação obrigatória.
+- **Como reverter:** data/events/config.json.
+
+## D-024 — Urna, apuração e saves
+- **Data:** 2026-11-15 · **Fase:** 3
+- **Decisão:** a urna segue a ordem real das municipais (vereador, depois prefeito), aceita voto nominal, de legenda (2 dígitos, só vereador), branco e nulo, pelo mouse ou pelo teclado; o voto do jogador entra na apuração. A noite da apuração mostra 12 parciais. Saves: autosave a cada semana, um save extra na véspera da urna (para rejogar a eleição) e slots manuais; no modo ironman só há um slot.
+- **Como reverter:** constantes em SaveManager e count_snapshots em config.json.
+
+## D-025 — Protótipo do mapa 2.5D
+- **Data:** 2026-11-15 · **Fase:** 3
+- **Decisão:** contornos de data/geo/ gerados pelo modo `geo` do importador a partir da Malha Municipal 2025 já usada para as coordenadas: simplificação por cobertura da UF (vizinhos mantêm a mesma divisa), tolerância de 0,01° (≈ 1,1 km, cerca de 1 pixel na visão de MG), coordenadas inteiras em 1/10.000 de grau e face de cima já triangulada no importador (com furos). Total de 6,3 MB para as 27 UFs. As áreas operacionais das lagoas dos Patos e Mirim, que a malha traz com código próprio, ficam de fora. No jogo, uma malha por município; altura pela força do partido escolhido (o do jogador, por padrão) com o topo da escala no percentil 95, porque a força costuma se concentrar em poucos municípios; cor pelo partido mais forte, mais viva quanto maior a margem sobre o segundo. Medido: 853 municípios de MG montados em cerca de 300 ms e 60 FPS (limite do vsync) na janela.
+- **Como reverter:** tolerância e escala em GeoImport; parâmetros visuais em MapScreen.
