@@ -1,5 +1,5 @@
 {
-  "note": "Território (GDD 17.5). Zonas por porte (o número dentro da faixa cresce com a posição do município entre os do mesmo porte, pela população); orçamento de vértices por zona na simplificação dos contornos (teto de 30 MB para data/geo/zonas/, decisão do autor); cobertura mínima de um bloco do perfil para a zona usar o próprio dado (regra de sigilo).",
+  "note": "Território (GDD 17.5). Zonas por porte (o número dentro da faixa cresce com a posição do município entre os do mesmo porte, pela população); orçamento de vértices por zona na simplificação dos contornos (teto de 30 MB para data/geo/zonas/, decisão do autor); cobertura mínima de um bloco do perfil para a zona usar o próprio dado (regra de sigilo); rural_por_distrito: a parte rural de cada distrito do IBGE vira uma zona (distrito com menos moradores rurais que populacao_minima é agrupado com o vizinho), e o município pode passar do máximo do porte em até zonas_extras_max zonas.",
   "zonas_por_porte": {
     "pequeno": { "min": 3, "max": 5 },
     "medio": { "min": 5, "max": 8 },
@@ -11,6 +11,7 @@
   "tolerancia_maxima_graus": 0.05,
   "cobertura_minima": 0.8,
   "distrito_dominante": 0.8,
+  "rural_por_distrito": { "populacao_minima": 200, "zonas_extras_max": 4 },
   "simulacao": {
     "decaimento_semanal": 0.6,
     "transbordo": 0.15,

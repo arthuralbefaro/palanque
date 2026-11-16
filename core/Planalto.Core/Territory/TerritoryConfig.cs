@@ -59,6 +59,18 @@ public sealed class TerritorySimulation
     public required List<ZoneDemandRule> Demandas { get; init; }
 }
 
+/// <summary>
+/// Divisão da zona rural pelos distritos do IBGE: a parte rural de cada distrito vira uma zona; distrito com menos
+/// moradores rurais que o mínimo é agrupado com o vizinho. O município pode passar do máximo de zonas do porte, até
+/// o número de zonas extras.
+/// </summary>
+public sealed class RuralPorDistrito
+{
+    public required long PopulacaoMinima { get; init; }
+
+    public required int ZonasExtrasMax { get; init; }
+}
+
 /// <summary>Parâmetros do território (data/territory/config.json, GDD 17.5).</summary>
 public sealed class TerritoryConfig : IValidatable
 {
@@ -79,6 +91,9 @@ public sealed class TerritoryConfig : IValidatable
 
     /// <summary>Fração da população num só distrito para a zona levar o nome dele.</summary>
     public required double DistritoDominante { get; init; }
+
+    /// <summary>Divisão da zona rural pelos distritos do IBGE (GDD 17.5, regra 2).</summary>
+    public required RuralPorDistrito RuralPorDistrito { get; init; }
 
     /// <summary>Regras do território na simulação (presença, transbordo, demanda da zona).</summary>
     public required TerritorySimulation Simulacao { get; init; }
@@ -118,6 +133,11 @@ public sealed class TerritoryConfig : IValidatable
         if (CoberturaMinima is <= 0 or > 1 || DistritoDominante is <= 0.5 or > 1)
         {
             yield return "cobertura_minima entre 0 e 1; distrito_dominante entre 0,5 e 1.";
+        }
+
+        if (RuralPorDistrito.PopulacaoMinima < 0 || RuralPorDistrito.ZonasExtrasMax < 0)
+        {
+            yield return "rural_por_distrito: população mínima e máximo de zonas extras não negativos.";
         }
     }
 }

@@ -69,14 +69,23 @@ public class ZonasDataTests
     }
 
     [Fact]
+    public void Arquivos_sao_da_divisao_em_zonas_atual()
+    {
+        // O save guarda esta versão e não abre noutra (SaveZoneCheck): dados e Core têm de concordar.
+        Assert.All(Files.Value.Values, f => Assert.Equal(ZonasPaths.Versao, f.Zonas.Versao));
+    }
+
+    [Fact]
     public void Numero_de_zonas_respeita_o_porte_e_urbano_nao_se_mistura_com_rural()
     {
         TerritoryConfig config = Config;
         var porte = CampaignKit.C.Municipios.All.ToDictionary(m => m.CodigoIbge, m => m.Porte);
         foreach (ZonasMunicipio m in Files.Value.Values.SelectMany(f => f.Zonas.Municipios))
         {
+            // A zona rural dividida pelos distritos pode passar do máximo do porte em até zonas_extras_max zonas.
             var range = config.ZonasPorPorte[porte[m.CodigoIbge]];
-            Assert.True(m.Zonas.Count <= range.Max, $"{m.CodigoIbge}: {m.Zonas.Count} zonas, máximo {range.Max}");
+            int max = range.Max + config.RuralPorDistrito.ZonasExtrasMax;
+            Assert.True(m.Zonas.Count <= max, $"{m.CodigoIbge}: {m.Zonas.Count} zonas, máximo {max}");
             Assert.All(m.Zonas, z => Assert.True(z.Situacao is Zona.Urbana or Zona.Rural));
         }
 

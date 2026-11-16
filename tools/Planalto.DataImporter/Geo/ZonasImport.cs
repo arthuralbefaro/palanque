@@ -64,6 +64,9 @@ public static class ZonasImport
         public required bool Rural { get; init; }
         public List<Setor> Setores { get; } = [];
         public HashSet<int> Neighbors { get; } = [];
+
+        /// <summary>Grupo de distritos da zona rural (<see cref="RuralDistricts"/>); -1 fora da divisão por distrito.</summary>
+        public int Group { get; set; } = -1;
         public long Pop { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
@@ -151,7 +154,7 @@ public static class ZonasImport
                 ufGeo.AddRange(geo);
             }
 
-            var file = new ZonasUf { Uf = uf, Fonte = source, Metodo = method, Municipios = ufMunicipios };
+            var file = new ZonasUf { Uf = uf, Fonte = source, Metodo = method, Versao = ZonasPaths.Versao, Municipios = ufMunicipios };
             errors.AddRange(file.Validate());
             zonasFiles[uf] = file;
             geoJson[uf] = SerializeGeo(new GeoZonasUf { Uf = uf, Source = source, Method = method, Scale = GeoImport.Scale, Zonas = ufGeo });
@@ -232,7 +235,8 @@ public static class ZonasImport
 
     public static string Method(TerritoryConfig c) =>
         string.Create(CultureInfo.InvariantCulture, $"Setores agrupados por município, sem misturar urbanos e rurais; urbanos partem dos bairros do IBGE onde existem. ")
-        + string.Create(CultureInfo.InvariantCulture, $"Agrupamento guloso: o grupo de menor população se junta ao vizinho de menor população (vizinhança por divisa comum; sem vizinho, o mais próximo) até o número de zonas do porte. ")
+        + string.Create(CultureInfo.InvariantCulture, $"Zona rural dividida pelos distritos do IBGE: a parte rural de cada distrito vira ao menos uma zona; distrito com menos de {c.RuralPorDistrito.PopulacaoMinima} moradores rurais é agrupado com o vizinho de maior divisa; o município pode passar do máximo do porte em até {c.RuralPorDistrito.ZonasExtrasMax} zonas, e acima disso os grupos menores se juntam. ")
+        + string.Create(CultureInfo.InvariantCulture, $"Agrupamento guloso: o grupo de menor população se junta ao vizinho de menor população (vizinhança por divisa comum; sem vizinho, o mais próximo) até o número de zonas do porte (na zona rural, primeiro dentro de cada grupo de distritos). ")
         + string.Create(CultureInfo.InvariantCulture, $"Contornos dissolvidos e simplificados por cobertura do município (tolerância proporcional ao tamanho de cada zona, aumentada até {c.VerticesPorZona} vértices por zona em média, entre {c.ToleranciaInicialGraus / 10}° e {c.ToleranciaMaximaGraus}°), coordenadas a 1/{GeoImport.Scale} de grau.");
 
     private static Dictionary<string, Setor> ReadBasico(string zip, Dictionary<int, Municipio> byCode)
@@ -375,11 +379,31 @@ public static class ZonasImport
             }
         }
 
-        Merge(clusters, rural: false, urbanZones);
-        Merge(clusters, rural: true, ruralZones);
+        Merge(clusters, c => !c.Rural, urbanZones);
+
+        // Zona rural por distrito: primeiro dentro de cada grupo de distritos, depois (se os grupos passam do máximo) entre eles.
+        RuralPlan plan = PlanRural(setores, adjacency, config, ruralZones);
+        if (plan.ZonasPorGrupo.Count > 1)
+        {
+            foreach (Cluster c in clusters.Values.Where(c => c.Rural))
+            {
+                c.Group = plan.GrupoDoDistrito[c.Setores[0].Distrito];
+            }
+
+            for (int g = 0; g < plan.ZonasPorGrupo.Count; g++)
+            {
+                int group = g;
+                Merge(clusters, c => c.Rural && c.Group == group, plan.ZonasPorGrupo[g]);
+            }
+        }
+
+        if (hasRural)
+        {
+            Merge(clusters, c => c.Rural, plan.Total);
+        }
 
         var final = clusters.Values.OrderByDescending(c => c.Pop).ThenBy(c => c.Id).ToList();
-        var names = Names(final, setores, config);
+        var names = Names(final, setores, plan, config);
         var zoneOf = new Dictionary<int, string>();
         for (int i = 0; i < final.Count; i++)
         {
@@ -564,17 +588,38 @@ public static class ZonasImport
         c.Y = c.Setores.Sum(s => s.Center!.Y * Math.Max(1, s.Pop)) / weight;
     }
 
-    /// <summary>Junta o grupo de menor população ao vizinho do mesmo tipo de menor população, até restarem <paramref name="count"/>.</summary>
-    private static void Merge(Dictionary<int, Cluster> clusters, bool rural, int count)
+    /// <summary>Distritos com setores rurais, divisas entre eles e o plano das zonas rurais.</summary>
+    private static RuralPlan PlanRural(List<Setor> setores, List<HashSet<int>> adjacency, TerritoryConfig config, int ruralZones)
     {
-        var queue = new SortedSet<(long Pop, int Id)>(clusters.Values.Where(c => c.Rural == rural).Select(c => (c.Pop, c.Id)));
+        var distritos = setores.Where(s => s.Rural).GroupBy(s => s.Distrito, StringComparer.Ordinal).Select(g =>
+        {
+            double weight = g.Sum(s => Math.Max(1, s.Pop));
+            return new DistritoRural(g.Key, g.Sum(s => s.Pop), g.Sum(s => s.Center!.X * Math.Max(1, s.Pop)) / weight, g.Sum(s => s.Center!.Y * Math.Max(1, s.Pop)) / weight);
+        }).ToList();
+        var divisas = new Dictionary<(string, string), int>();
+        for (int i = 0; i < setores.Count; i++)
+        {
+            foreach (int j in adjacency[i].Where(j => j > i && setores[i].Rural && setores[j].Rural && setores[i].Distrito != setores[j].Distrito))
+            {
+                var key = RuralDistricts.Key(setores[i].Distrito, setores[j].Distrito);
+                divisas[key] = divisas.GetValueOrDefault(key) + 1;
+            }
+        }
+
+        return RuralDistricts.Plan(distritos, divisas, config.RuralPorDistrito, ruralZones);
+    }
+
+    /// <summary>Entre os grupos que passam no filtro, junta o de menor população ao vizinho de menor população, até restarem <paramref name="count"/>.</summary>
+    private static void Merge(Dictionary<int, Cluster> clusters, Func<Cluster, bool> filter, int count)
+    {
+        var queue = new SortedSet<(long Pop, int Id)>(clusters.Values.Where(filter).Select(c => (c.Pop, c.Id)));
         while (queue.Count > Math.Max(count, 1))
         {
             var (_, id) = queue.Min;
             queue.Remove(queue.Min);
             Cluster small = clusters[id];
-            Cluster? into = small.Neighbors.Select(n => clusters[n]).Where(n => n.Rural == rural).OrderBy(n => n.Pop).ThenBy(n => n.Id).FirstOrDefault()
-                ?? clusters.Values.Where(c => c.Rural == rural && c.Id != id).OrderBy(c => Distance(c, small)).ThenBy(c => c.Id).First();
+            Cluster? into = small.Neighbors.Select(n => clusters[n]).Where(filter).OrderBy(n => n.Pop).ThenBy(n => n.Id).FirstOrDefault()
+                ?? clusters.Values.Where(c => filter(c) && c.Id != id).OrderBy(c => Distance(c, small)).ThenBy(c => c.Id).First();
 
             queue.Remove((into.Pop, into.Id));
             into.Setores.AddRange(small.Setores);
@@ -594,7 +639,7 @@ public static class ZonasImport
 
     private static double Distance(Cluster a, Cluster b) => Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2);
 
-    private static Dictionary<int, (string Nome, string Fonte)> Names(List<Cluster> clusters, List<Setor> setores, TerritoryConfig config)
+    private static Dictionary<int, (string Nome, string Fonte)> Names(List<Cluster> clusters, List<Setor> setores, RuralPlan plan, TerritoryConfig config)
     {
         // Sede: o distrito com mais população urbana. Centro: a zona urbana mais perto do centro populacional urbano.
         var urbanSetores = setores.Where(s => !s.Rural).ToList();
@@ -605,22 +650,52 @@ public static class ZonasImport
         double cy = reference.Sum(s => s.Center!.Y * Math.Max(1, s.Pop)) / weight;
         Cluster? centro = clusters.Where(c => !c.Rural).OrderBy(c => Math.Pow(c.X - cx, 2) + Math.Pow(c.Y - cy, 2)).FirstOrDefault();
 
+        static (string Distrito, string DistritoNome) Top(IEnumerable<Setor> list) =>
+            list.GroupBy(s => (s.Distrito, s.DistritoNome)).OrderByDescending(g => g.Sum(s => Math.Max(1, s.Pop))).ThenBy(g => g.Key.Distrito, StringComparer.Ordinal).First().Key;
+        bool Dominated(Cluster c, string distrito) =>
+            c.Setores.Where(s => s.Distrito == distrito).Sum(s => Math.Max(1, s.Pop)) >= config.DistritoDominante * c.Setores.Sum(s => Math.Max(1, s.Pop));
+
+        // Distritos fora da sede que já dão nome a uma zona urbana (a vila): a zona rural deles ganha "(rural)".
+        var urbanDistricts = clusters.Where(c => !c.Rural).Select(c => (c, Top(c.Setores).Distrito))
+            .Where(p => p.Distrito != sede && Dominated(p.c, p.Distrito)).Select(p => p.Distrito).ToHashSet(StringComparer.Ordinal);
+
+        // Zona rural dividida por distritos: a zona que só tem setores de um grupo leva o nome do distrito principal
+        // dele (o de mais moradores rurais); o grupo com mais de uma zona acrescenta a direção dentro do grupo.
+        bool Pure(Cluster c) => c.Group >= 0 && c.Setores.All(s => plan.GrupoDoDistrito.TryGetValue(s.Distrito, out int g) && g == c.Group);
+        var groups = clusters.Where(c => c.Rural && Pure(c)).GroupBy(c => c.Group).ToDictionary(
+            g => g.Key,
+            g =>
+            {
+                var all = g.SelectMany(c => c.Setores).ToList();
+                double w = all.Sum(s => Math.Max(1, s.Pop));
+                return (Head: Top(all), Zones: g.Count(), X: all.Sum(s => s.Center!.X * Math.Max(1, s.Pop)) / w, Y: all.Sum(s => s.Center!.Y * Math.Max(1, s.Pop)) / w);
+            });
+
         var result = new Dictionary<int, (string, string)>();
         var used = new Dictionary<string, int>(StringComparer.Ordinal);
         foreach (Cluster c in clusters)
         {
             (string Nome, string Fonte) name;
             var bairros = c.Setores.Where(s => s.BairroNome is not null).GroupBy(s => s.BairroNome!).OrderByDescending(g => g.Sum(s => s.Pop)).ToList();
-            var distrito = c.Setores.GroupBy(s => (s.Distrito, s.DistritoNome)).MaxBy(g => g.Sum(s => Math.Max(1, s.Pop)))!;
-            bool dominante = distrito.Sum(s => Math.Max(1, s.Pop)) >= config.DistritoDominante * c.Setores.Sum(s => Math.Max(1, s.Pop));
+            var distrito = Top(c.Setores);
+            bool dominante = Dominated(c, distrito.Distrito);
             string direction = Direction(c.X - cx, c.Y - cy);
             if (!c.Rural && bairros.Count > 0)
             {
                 name = (Clean(bairros[0].Key), Zona.NomeBairro);
             }
-            else if (dominante && distrito.Key.Distrito != sede && !string.IsNullOrWhiteSpace(distrito.Key.DistritoNome))
+            else if (c.Rural && Pure(c) && groups.TryGetValue(c.Group, out var group) && !string.IsNullOrWhiteSpace(group.Head.DistritoNome)
+                && (group.Head.Distrito != sede || group.Zones == 1))
             {
-                name = (Clean(distrito.Key.DistritoNome) + (c.Rural && clusters.Any(o => o != c && !o.Rural && o.Setores.Any(s => s.Distrito == distrito.Key.Distrito)) ? " (rural)" : ""), Zona.NomeDistrito);
+                string head = Clean(group.Head.DistritoNome);
+                string inside = Direction(c.X - group.X, c.Y - group.Y).ToLowerInvariant();
+                name = group.Head.Distrito == sede ? ($"{head} (rural)", Zona.NomeDistrito)
+                    : group.Zones > 1 ? ($"{head} (rural {inside})", Zona.NomeDistrito)
+                    : (head + (urbanDistricts.Contains(group.Head.Distrito) ? " (rural)" : ""), Zona.NomeDistrito);
+            }
+            else if (dominante && distrito.Distrito != sede && !string.IsNullOrWhiteSpace(distrito.DistritoNome))
+            {
+                name = (Clean(distrito.DistritoNome) + (c.Rural && urbanDistricts.Contains(distrito.Distrito) ? " (rural)" : ""), Zona.NomeDistrito);
             }
             else if (c.Rural)
             {
@@ -688,6 +763,7 @@ public static class ZonasImport
         sb.Append($"  \"uf\": {JsonSerializer.Serialize(file.Uf, compact)},\n");
         sb.Append($"  \"fonte\": {JsonSerializer.Serialize(file.Fonte, compact)},\n");
         sb.Append($"  \"metodo\": {JsonSerializer.Serialize(file.Metodo, compact)},\n");
+        sb.Append(CultureInfo.InvariantCulture, $"  \"versao\": {file.Versao},\n");
         sb.Append("  \"municipios\": [\n");
         for (int i = 0; i < file.Municipios.Count; i++)
         {

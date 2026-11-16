@@ -278,7 +278,7 @@ public static class ZonasRdImport
                 novos.Add(new ZonasMunicipio { CodigoIbge = zm.CodigoIbge, Zonas = zonas });
             }
 
-            var novo = new ZonasUf { Uf = file.Uf, Fonte = file.Fonte, Metodo = file.Metodo, Municipios = novos };
+            var novo = new ZonasUf { Uf = file.Uf, Fonte = file.Fonte, Metodo = file.Metodo, Versao = file.Versao, Municipios = novos };
             List<string> invalid = novo.Validate().ToList();
             if (invalid.Count > 0)
             {
