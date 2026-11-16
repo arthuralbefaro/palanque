@@ -708,10 +708,11 @@ public partial class UiShot : Node
                 Core.Events.EventEngine.Trigger(engine.Context, definition.Id, game.State.Rng);
                 hub.Refresh();
                 await Frames(3);
-                var dialog = FindAll<Widgets.EventDialog>(hub).SingleOrDefault();
+                var dialogs = FindAll<Widgets.EventDialog>(hub).ToList();
+                var dialog = dialogs.Count == 1 ? dialogs[0] : null;
                 if (dialog is null || !hub.EventOpen)
                 {
-                    Fail($"o evento {definition.Id} não abriu.");
+                    EventFailure($"o evento {definition.Id} não abriu (cartões de evento na tela: {dialogs.Count}).", hub, dialogs.FirstOrDefault(), null, definition.Id, choice);
                     return;
                 }
 
@@ -725,30 +726,23 @@ public partial class UiShot : Node
                     continue;
                 }
 
-                await Click(buttons[choice]);
+                Button option = buttons[choice];
+                Vector2 optionPoint = option.GetGlobalRect().GetCenter();
+                await Click(option);
                 var proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
-                if (proceed is null && campaign.Events.Pending.Count > 0 && IsInstanceValid(buttons[choice]) && buttons[choice].IsInsideTree())
-                {
-                    // O clique se perdeu (outra janela tirou o mouse desta entre apertar e soltar): uma segunda tentativa.
-                    await Frames(3);
-                    await Click(buttons[choice]);
-                    proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
-                }
-
                 if (proceed is null)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: sem o botão Continuar depois de escolher.");
+                    EventFailure($"{definition.Id}, opção {choice + 1}: sem o botão Continuar depois de escolher.", hub, dialog, optionPoint, definition.Id, choice);
                     return;
                 }
 
+                Vector2 proceedPoint = proceed.GetGlobalRect().GetCenter();
                 await Click(proceed);
                 await Frames(3);
-                if (IsInstanceValid(dialog) && dialog.IsInsideTree() && !dialog.IsQueuedForDeletion() && IsInstanceValid(proceed) && proceed.IsInsideTree())
+                if (IsInstanceValid(dialog) && dialog.IsInsideTree() && !dialog.IsQueuedForDeletion())
                 {
-                    // O clique se perdeu (a janela mudou de tamanho ou de foco entre apertar e soltar): uma segunda tentativa.
-                    await Frames(3);
-                    await Click(proceed);
-                    await Frames(3);
+                    EventFailure($"{definition.Id}, opção {choice + 1}: o cartão do evento não fechou com Continuar.", hub, dialog, proceedPoint, definition.Id, choice);
+                    return;
                 }
 
                 // A escolha pode gerar um fato que puxa outro evento na hora (cadeia): ele abre no lugar do primeiro.
@@ -766,32 +760,26 @@ public partial class UiShot : Node
                 // equipe): o cartão dela é legítimo e não é o objeto deste teste.
                 if (campaign.Agenda.PendingRequest is not null || campaign.Team.Pending.Count > 0)
                 {
-                    ClearInterruptions();
+                    // Só as decisões dos outros sistemas: um evento que continue pendente reprova logo abaixo.
+                    campaign.Agenda.PendingRequest = null;
+                    campaign.Team.Pending.Clear();
                     hub.Refresh();
                     await Frames(3);
                 }
 
                 if (hub.EventOpen || campaign.Events.Pending.Count > 0)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: o fundo do evento continuou na tela (cartão aberto: {hub.EventOpen}; pendentes: {string.Join(", ", campaign.Events.Pending.Select(p => p.EventId))}).");
+                    EventFailure($"{definition.Id}, opção {choice + 1}: o fundo do evento continuou na tela (cartão aberto: {hub.EventOpen}; pendentes: {string.Join(", ", campaign.Events.Pending.Select(p => p.EventId))}).", hub, null, proceedPoint, definition.Id, choice);
                     return;
                 }
 
                 var map = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
+                Vector2 mapPoint = map.GetGlobalRect().GetCenter();
                 game.ResetNavigationForTest();
                 await Click(map);
                 if (game.LastNavigation != Game.Scenes.Map)
                 {
-                    // Uma segunda tentativa, com o botão medido de novo: um fundo que ficou na tela barra as duas.
-                    await Frames(3);
-                    map = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
-                    game.ResetNavigationForTest();
-                    await Click(map);
-                }
-
-                if (game.LastNavigation != Game.Scenes.Map)
-                {
-                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}, navegação registrada: {game.LastNavigation ?? "nenhuma"}).");
+                    EventFailure($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}, navegação registrada: {game.LastNavigation ?? "nenhuma"}).", hub, null, mapPoint, definition.Id, choice);
                     return;
                 }
 
@@ -1598,6 +1586,66 @@ public partial class UiShot : Node
     {
         GD.PushError("Smoke: " + message);
         GetTree().Quit(1);
+    }
+
+    /// <summary>
+    /// Falha do alvo eventos com a prova do que estava na tela: grava uma captura e um log com o evento e a opção, o
+    /// cartão aberto, o foco, os controles sob o ponto clicado, as pausas e decisões pendentes e o quadro. Vai para a
+    /// pasta de "--saida=", ou para user://smoke/&lt;perfil&gt;/falhas/ (apagada na rodada seguinte do mesmo perfil).
+    /// </summary>
+    private void EventFailure(string message, HubScreen hub, Node? dialog, Vector2? point, string eventId, int choice)
+    {
+        try
+        {
+            string? output = OS.GetCmdlineUserArgs().FirstOrDefault(a => a.StartsWith("--saida=", StringComparison.Ordinal))?.Split('=', 2)[1];
+            string folder = (output ?? ProjectSettings.GlobalizePath(UserPaths.Of("falhas"))).TrimEnd('/', '\\') + "/";
+            DirAccess.MakeDirRecursiveAbsolute(folder);
+            string stamp = $"eventos_{DateTime.Now:yyyyMMdd_HHmmss}_{eventId}_{choice + 1}";
+            Viewport viewport = GetViewport();
+            viewport.GetTexture().GetImage().SavePng(folder + stamp + ".png");
+
+            Game game = Game.Instance;
+            var campaign = game.State?.Campaign;
+            var lines = new List<string>
+            {
+                "Falha: " + message,
+                $"Evento: {eventId}, opção {choice + 1}",
+                $"Quadro: {Engine.GetProcessFrames()} (física {Engine.GetPhysicsFrames()})",
+                $"Janela: {viewport.GetVisibleRect().Size}, com foco do sistema: {DisplayServer.WindowIsFocused()}, modo: {DisplayServer.WindowGetMode()}",
+                $"Cartão de evento aberto (fundo): {hub.EventOpen}; cartão de mandato aberto: {hub.GovCardOpen}; tempo correndo: {hub.Running}; motivo da pausa: {hub.BlockReason() ?? "nenhum"}",
+                $"Cartão da falha: {(dialog is null ? "nenhum" : !IsInstanceValid(dialog) ? "liberado" : $"{dialog.GetPath()} (na árvore: {dialog.IsInsideTree()}, na fila para sair: {dialog.IsQueuedForDeletion()}, visível: {(dialog as CanvasItem)?.IsVisibleInTree()})")}",
+                $"Cartões de evento na tela: {FindAll<Widgets.EventDialog>(hub).Count()}",
+                $"Eventos pendentes: {(campaign is null ? "sem campanha" : string.Join(", ", campaign.Events.Pending.Select(p => p.EventId)))}",
+                $"Pedido de liderança pendente: {campaign?.Agenda.PendingRequest is not null}; decisões da equipe pendentes: {campaign?.Team.Pending.Count ?? 0}",
+                $"Foco da interface: {viewport.GuiGetFocusOwner()?.GetPath().ToString() ?? "nenhum"}",
+                $"Sob o mouse: {viewport.GuiGetHoveredControl()?.GetPath().ToString() ?? "nenhum"}; mouse em {viewport.GetMousePosition()}",
+                $"Navegação registrada: {game.LastNavigation ?? "nenhuma"}",
+            };
+            if (point is { } p)
+            {
+                lines.Add($"Controles visíveis sob o ponto clicado {p} (do fundo para a frente):");
+                foreach (Control c in FindAll<Control>(GetTree().Root).Where(c => c.IsVisibleInTree() && c.GetGlobalRect().HasPoint(p)))
+                {
+                    lines.Add($"  {c.GetPath()} [{c.GetType().Name}, mouse {c.MouseFilter}{(c is BaseButton b ? $", desativado {b.Disabled}" : "")}]");
+                }
+            }
+
+            lines.Add("Janelas e popups visíveis:");
+            foreach (Window w in FindAll<Window>(GetTree().Root).Where(w => w.Visible))
+            {
+                lines.Add($"  {w.GetPath()} ({w.GetType().Name})");
+            }
+
+            using var file = Godot.FileAccess.Open(folder + stamp + ".txt", Godot.FileAccess.ModeFlags.Write);
+            file?.StoreString(string.Join("\n", lines) + "\n");
+            GD.Print($"Smoke eventos: captura e log da falha em {folder}{stamp}.png e .txt");
+        }
+        catch (Exception e)
+        {
+            GD.PushError("Smoke: não foi possível gravar a captura da falha: " + e.Message);
+        }
+
+        Fail(message);
     }
 
     /// <summary>Clique de mouse de verdade no centro do controle (passa pelo roteamento de entrada da interface).</summary>
