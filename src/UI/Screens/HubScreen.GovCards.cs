@@ -221,27 +221,20 @@ public partial class HubScreen
         {
             CrisisChoice choice = crisis.Choices[i];
             int index = i;
-            var effects = choice.Indicators.Select(x => string.Format(PtBr, "{0} {1}", LowerFirst(_game.ExecutiveContent.Config.Indicators.FirstOrDefault(d => d.Id == x.Key)?.Name ?? x.Key), Signed(x.Value, "0.#"))).ToList();
-            string does = effects.Count == 0 ? Tr("sem efeito direto nos indicadores") : string.Join("; ", effects) + " " + Tr("(pontos na escala de 0 a 100)");
-            if (Math.Abs(choice.Image) >= 0.005)
-            {
-                does += "; " + string.Format(Tr("imagem {0} (de −1 a +1)"), Signed(choice.Image, "0.00"));
-            }
-
-            does += ".";
-            string cost = choice.Cost > 0 ? string.Format(Tr("{0} do orçamento ({1}), de uma vez."), Pct(choice.Cost), ShareMoney(choice.Cost)) : Tr("nada em dinheiro.");
-            var button = Ui.Button(column, choice.Label, () =>
+            // A previsão vem do Core (mesmas regras da resposta); a resposta é certa, então ela também é o que muda.
+            GovForecast forecast = mayor.ForecastCrisis(i);
+            List<string> changes = forecast.Lines.Where(Matters).Select(l => GovLine(l)).ToList();
+            var button = GovCommandCard(column, choice.Label, choice.Label.TrimEnd('.') + ".", forecast, () =>
             {
                 string text = mayor.ResolveCrisis(index);
                 _cardResultTitle = crisis.Name;
-                _cardResult = [text, char.ToUpper(does[0], PtBr) + does[1..], string.Format(Tr("Custo: {0}"), cost)];
+                _cardResult = [text, .. changes.Select(c => char.ToUpper(c[0], PtBr) + c[1..])];
                 _log.Insert(0, $"{crisis.Name}: {text.TrimEnd('.')}.");
                 Refresh();
-            }, Palette.Tip(choice.Label.TrimEnd('.') + ".", does, cost));
+            });
             button.Name = "Crise_Opcao_" + i;
-            button.Alignment = HorizontalAlignment.Left;
-            button.ClipText = true;
-            Glossary.Rich(column, char.ToUpper(does[0], PtBr) + does[1..] + " " + Tr("Custo:") + " " + cost);
+            string line = GovDoes(forecast) + " " + Tr("Custo:") + " " + GovCost(forecast) + " " + string.Join(" ", forecast.Explanation.Select(x => x.TrimEnd('.') + "."));
+            Glossary.Rich(column, OneDot(char.ToUpper(line[0], PtBr) + line[1..]));
         }
     }
 

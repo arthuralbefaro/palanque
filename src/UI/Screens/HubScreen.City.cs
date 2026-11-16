@@ -26,9 +26,7 @@ public partial class HubScreen
 
     private static string Pct(double fraction, string format = "0.0") => (fraction * 100).ToString(format, PtBr) + "%";
 
-    private string ExecFailure(ExecutiveFailure failure) => failure == ExecutiveFailure.CamaraEmLuto
-        ? Tr("a Câmara está em luto oficial e não faz sessão nesta semana.")
-        : LowerFirst(ExecutiveTexts.Failure(failure));
+    private string ExecFailure(ExecutiveFailure failure) => LowerFirst(_game.Prefeitura?.FailureText(failure) ?? failure.ToString());
 
     // ------------------------------------------------------------------ Governo
 
@@ -118,7 +116,8 @@ public partial class HubScreen
                 ? e.Chamber.OrderByDescending(m => m.Relation).Select(m => (m.Id, string.Format(PtBr, "{0} ({1}) · {2}", m.Name, GovPartyOf(m.PartyId), Signed(m.Relation, "0")))).ToList()
                 : action.Targets.Select(t => (t.Id, t.Name)).ToList();
             string? target = targets.Count == 0 ? null : _actionTargets.TryGetValue(action.Id, out string? chosen) && targets.Any(t => t.Id == chosen) ? chosen : targets[0].Id;
-            string tip = Palette.Tip(action.Name + ".", LowerFirst(action.Description).TrimEnd('.') + ".", string.Format(Tr("{0} de energia da semana."), action.Energy));
+            GovForecast forecast = mayor.ForecastAction(action.Id, target);
+            string tip = GovTip(action.Name + ".", forecast);
             var button = Ui.Button(_left, $"{action.Name} · {action.Energy} {Tr("de energia")}", () =>
             {
                 EffectSnapshot before = ExecSnapshot(e);
@@ -130,10 +129,10 @@ public partial class HubScreen
             button.Name = "Ato_" + action.Id;
             button.Alignment = HorizontalAlignment.Left;
             button.ClipText = true;
-            if (mayor.CanExecute(action, target) is { } failure)
+            if (forecast.Blocked is not null)
             {
                 button.Disabled = true;
-                button.TooltipText = Palette.Blocked(ExecFailure(failure), tip);
+                button.TooltipText = Palette.Blocked(GovReason(forecast), tip);
             }
 
             if (targets.Count > 0)
@@ -421,9 +420,7 @@ public partial class HubScreen
             GovForecastCard(_left, forecast, "PrevisaoInaugurar", Tr("Previsão de inaugurar"));
             string workId = work.Id;
             GovCommand(_left, "Inaugurar", Tr("Entrega a obra com cerimônia, com você presente."), forecast, () => gov.Inaugurate(workId), "Inaugurar", primary: true);
-            string quietTip = Palette.Tip(Tr("Entrega a obra pronta sem cerimônia."), Tr("a obra passa a funcionar e a promessa ligada a ela é cumprida; rende menos presença do que a inauguração e é o caminho no período vedado."), Tr("nada; você só deixa de ganhar o palanque."));
-            var quiet = Ui.Button(_left, "Entregar sem cerimônia", () => { GovShow(Tr("Entregar sem cerimônia"), gov.DeliverQuietly(workId)); Refresh(); }, quietTip);
-            quiet.Name = "EntregarSemCerimonia";
+            GovCommand(_left, "Entregar sem cerimônia", Tr("Entrega a obra pronta sem cerimônia."), gov.ForecastDeliverQuietly(workId), () => gov.DeliverQuietly(workId), "EntregarSemCerimonia");
         }
 
         if (Kind == GovKind.Vereador && work.Open && State.Campaign is null)
@@ -569,19 +566,9 @@ public partial class HubScreen
         foreach (var (label, delta, name) in new[] { ("Reduzir 0,25 ponto", -0.0025, "RepasseMenos"), ("Aumentar 0,25 ponto", 0.0025, "RepasseMais") })
         {
             double target = Math.Round(f.ChamberShare + delta, 4);
-            string tip = Palette.Tip(
-                string.Format(Tr("Muda o repasse à Câmara para {0} da base de impostos."), Pct(Math.Max(0, target), "0.00")),
-                Tr(delta > 0 ? "a Câmara recebe mais; os vereadores lembram do gesto." : "sobra mais no caixa da prefeitura; os vereadores lembram do corte."),
-                Tr(delta > 0 ? "dinheiro do orçamento." : "a relação com os vereadores."));
-            var b = Ui.Button(row, label, () => { GovShow(Tr(label), gov.SetChamberTransfer(target)); Refresh(); }, tip);
-            b.Name = name;
-            b.ClipText = true;
+            GovForecast forecast = target < 0 ? GovForecast.Block(GovFailure.LimiteLegal, Tr("o repasse já está em zero")) : gov.ForecastChamberTransfer(target);
+            var b = GovCommand(row, label, string.Format(Tr("Muda o repasse à Câmara para {0} da base de impostos."), Pct(Math.Max(0, target), "0.00")), forecast, () => gov.SetChamberTransfer(target), name);
             b.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-            if (target < 0 || target > f.ChamberCap + 1e-9)
-            {
-                b.Disabled = true;
-                b.TooltipText = Palette.Blocked(target < 0 ? Tr("o repasse já está em zero.") : string.Format(Tr("passaria do teto de {0} ({1})."), Pct(f.ChamberCap, "0.00"), law.ArtigoCamara), tip);
-            }
         }
     }
 
@@ -708,8 +695,7 @@ public partial class HubScreen
         string id = a.Id;
         string? zone = _govZone;
         GovCommand(_left, "Assinar o convênio", Tr("Assina o convênio e manda fazer a obra na zona escolhida."), forecast, () => gov.SignAgreement(id, zone!), "AssinarConvenio", primary: true);
-        string declineTip = Palette.Tip(Tr("Recusa a oferta."), Tr("o dinheiro não vem e a contrapartida fica livre para outra obra; quem ofereceu toma nota."), Tr("nada em dinheiro."));
-        Ui.Button(_left, "Recusar", () => { GovShow(Tr("Recusar o convênio"), gov.DeclineAgreement(id)); Refresh(); }, declineTip).Name = "RecusarConvenio";
+        GovCommand(_left, "Recusar", Tr("Recusa a oferta."), gov.ForecastDeclineAgreement(id), () => gov.DeclineAgreement(id), "RecusarConvenio");
     }
 
     // ------------------------------------------------------------------ Câmara (prefeito)
@@ -786,6 +772,8 @@ public partial class HubScreen
 
         double sum = _budgetDraft.Values.Sum();
         ValueRow(_left, Tr("Total do rascunho"), Pct(sum), highlight: Math.Abs(sum - 1) > 0.001);
+        GovForecast budget = mayor.ForecastAllocation(_budgetDraft);
+        GovForecastCard(_left, budget, "PrevisaoOrcamento", Tr("Previsão do orçamento"));
         VBoxContainer actions = Ui.Column(_left, 6);
         var fit = Ui.Button(actions, "Ajustar para 100%", () =>
         {
@@ -794,19 +782,19 @@ public partial class HubScreen
             Refresh();
         }, Palette.Tip(Tr("Acerta o rascunho para somar 100%."), Tr("cada área mantém a proporção e o total volta a 100%."), Tr("nada.")));
         fit.Name = "AjustarOrcamento";
-        string applyTip = Palette.Tip(Tr("Aplica o rascunho do orçamento."), Tr("as fatias novas passam a valer; os indicadores de cada área seguem o gasto ao longo das semanas."), Tr("nada para aplicar; gasto abaixo do mínimo de saúde ou educação pode levar à rejeição das contas."));
+        string applyTip = GovTip(Tr("Aplica o rascunho do orçamento."), budget);
         var apply = Ui.Button(actions, "Aplicar o orçamento", () =>
         {
             ExecutiveFailure? failure = mayor.SetAllocation(_budgetDraft);
-            GovShow(Tr("Orçamento"), failure is null ? new GovResult(null, Tr("Orçamento atualizado"), [], []) : GovResult.Fail(GovFailure.Bloqueado, ExecFailure(failure.Value)));
+            GovShow(Tr("Orçamento"), failure is null ? new GovResult(null, Tr("Orçamento atualizado"), budget.Lines.Where(Matters).Select(GovLine).ToList(), []) : GovResult.Fail(GovFailure.Bloqueado, ExecFailure(failure.Value)));
             _budgetDraft = failure is null ? null : _budgetDraft;
             Refresh();
         }, applyTip);
         apply.Name = "AplicarOrcamento";
-        if (Math.Abs(sum - 1) > 0.001)
+        if (budget.Blocked is not null)
         {
             apply.Disabled = true;
-            apply.TooltipText = Palette.Blocked(string.Format(Tr("o rascunho soma {0}; precisa somar 100%."), Pct(sum)), applyTip);
+            apply.TooltipText = Palette.Blocked(Math.Abs(sum - 1) > 0.001 ? string.Format(Tr("o rascunho soma {0}; precisa somar 100%."), Pct(sum)) : GovReason(budget), applyTip);
         }
 
         ValueRow(_left, string.Format(Tr("Reserva livre para programas ({0})"), ShareMoney(Math.Max(0, mayor.FreeReserve))), Pct(mayor.FreeReserve));
@@ -833,21 +821,20 @@ public partial class HubScreen
         GovBackButton();
         NameTitle(_left, policy.Name, 22);
         Glossary.Rich(_left, policy.Description.TrimEnd('.') + ".", 18, Palette.Texto);
-        string cost = policy.Cost >= 0 ? string.Format(Tr("custa {0} do orçamento ao ano ({1})"), Pct(policy.Cost), ShareMoney(policy.Cost)) : string.Format(Tr("libera {0} do orçamento ao ano ({1})"), Pct(-policy.Cost), ShareMoney(-policy.Cost));
-        string boosts = string.Join(", ", policy.Boosts.Select(b => string.Format(PtBr, "{0} {1}", LowerFirst(_game.ExecutiveContent.Config.Indicators.FirstOrDefault(i => i.Id == b.Key)?.Name ?? b.Key), Signed(b.Value, "0.#"))));
-        string does = string.Format(Tr("em {0} semanas passa a funcionar e empurra os indicadores: {1} (pontos na escala de 0 a 100)."), policy.ImplementationWeeks, boosts.Length == 0 ? Tr("nenhum diretamente") : boosts);
-        Glossary.Rich(_left, char.ToUpper(does[0], PtBr) + does[1..]);
-        Glossary.Rich(_left, char.ToUpper(cost[0], PtBr) + cost[1..] + ". " + (policy.RequiresLaw ? string.Format(Tr("Precisa de lei ({0})."), MandateTexts.Quorum(policy.Quorum)) : Tr("Sai por decreto.")));
+        Glossary.Rich(_left, policy.RequiresLaw ? string.Format(Tr("Precisa de lei ({0})."), MandateTexts.Quorum(policy.Quorum)) : Tr("Sai por decreto."));
         EnactedPolicy? enacted = e.Policies.LastOrDefault(p => p.PolicyId == policy.Id);
         if (enacted is { Counts: true })
         {
             Glossary.Rich(_left, string.Format(Tr("Situação: {0}."), ExecutiveTexts.Status(enacted.Status)), 18, Palette.Texto);
+            GovForecast revokeForecast = mayor.ForecastRevoke(policy.Id);
+            GovForecastCard(_left, revokeForecast, "PrevisaoRevogar", Tr("Previsão de revogar"));
+            List<string> revokeChanges = revokeForecast.Lines.Where(Matters).Select(GovLine).ToList();
             var revoke = Ui.Button(_left, "Revogar", () =>
             {
                 mayor.Revoke(policy.Id);
-                GovShow(Tr("Revogar"), new GovResult(null, string.Format(Tr("{0} foi revogada"), policy.Name), [], []));
+                GovShow(Tr("Revogar"), new GovResult(null, string.Format(Tr("{0} foi revogada"), policy.Name), revokeChanges, []));
                 Refresh();
-            }, Palette.Tip(string.Format(Tr("Revoga {0}."), policy.Name), Tr("a política deixa de valer, o custo volta para a reserva e os indicadores perdem o empurrão aos poucos."), Tr("quem gostava dela nota.")));
+            }, GovTip(string.Format(Tr("Revoga {0}."), policy.Name), revokeForecast));
             revoke.Name = "Revogar";
             Palette.Danger(revoke);
             return;
@@ -865,7 +852,9 @@ public partial class HubScreen
                 Palette.Tip(Tr("Abre a contagem de votos desta política."), Tr("mostra quem vota como, por quê, e o pedido de cada indeciso, com a opção de fechar acordo antes de mandar o projeto."), Tr("nada."))).Name = "VerContagem";
         }
 
-        string tip = Palette.Tip(policy.Name + ".", does, char.ToUpper(cost[0], PtBr) + cost[1..] + "; " + string.Format(Tr("{0} de energia da semana."), _game.ExecutiveContent.Config.EnactEnergy));
+        GovForecast forecast = mayor.ForecastEnact(policy.Id);
+        GovForecastCard(_left, forecast, "PrevisaoPolitica", Tr(policy.RequiresLaw ? "Previsão de enviar à Câmara" : "Previsão de decretar"));
+        string tip = GovTip(policy.Name + ".", forecast);
         var send = Ui.Button(_left, policy.RequiresLaw ? "Enviar à Câmara" : "Decretar", () =>
         {
             EnactResult result = mayor.Enact(policy.Id);
@@ -877,10 +866,10 @@ public partial class HubScreen
         }, tip);
         send.Name = "Adotar";
         Palette.Primary(send);
-        if (mayor.CanEnact(policy) is { } failure)
+        if (forecast.Blocked is not null)
         {
             send.Disabled = true;
-            send.TooltipText = Palette.Blocked(ExecFailure(failure), tip);
+            send.TooltipText = Palette.Blocked(GovReason(forecast), tip);
         }
     }
 }

@@ -168,7 +168,7 @@ public sealed partial class ExecutiveEngine
 
     public ExecutiveFailure? SetAllocation(IReadOnlyDictionary<string, double> allocation)
     {
-        if (Config.Areas.Any(a => !allocation.ContainsKey(a.Id)) || allocation.Values.Any(v => v < 0) || Math.Abs(allocation.Values.Sum() - 1) > 0.001)
+        if (!ValidAllocation(Config, allocation))
         {
             return ExecutiveFailure.OrcamentoInvalido;
         }
@@ -182,13 +182,17 @@ public sealed partial class ExecutiveEngine
     }
 
     /// <summary>Para onde cada indicador caminha: gasto relativo à referência, políticas em vigor e reserva não usada.</summary>
-    public Dictionary<string, double> Targets()
+    public Dictionary<string, double> Targets() => TargetsFor(Executive.Allocation);
+
+    /// <summary>Os alvos com outra repartição do orçamento (a previsão do rascunho usa a mesma conta).</summary>
+    private Dictionary<string, double> TargetsFor(IReadOnlyDictionary<string, double> allocation)
     {
         ExecutiveState e = Executive;
+        double freeReserve = allocation.GetValueOrDefault(ExecutiveConfig.ReserveArea) - PolicyCost;
         var targets = Config.Indicators.ToDictionary(i => i.Id, _ => 50.0, StringComparer.Ordinal);
         foreach (BudgetArea area in Config.Areas.Where(a => a.ReferenceShare > 0))
         {
-            double relative = (e.Allocation.GetValueOrDefault(area.Id) / area.ReferenceShare) - 1;
+            double relative = (allocation.GetValueOrDefault(area.Id) / area.ReferenceShare) - 1;
             foreach (var (indicator, weight) in area.Effects)
             {
                 targets[indicator] += weight * Config.TargetSensitivity * relative;
@@ -205,7 +209,7 @@ public sealed partial class ExecutiveEngine
 
         if (targets.ContainsKey("contas"))
         {
-            targets["contas"] += Config.UnusedReserveToAccounts * Math.Max(0, FreeReserve) - (Config.UnusedReserveToAccounts * Math.Max(0, -FreeReserve) * 2);
+            targets["contas"] += Config.UnusedReserveToAccounts * Math.Max(0, freeReserve) - (Config.UnusedReserveToAccounts * Math.Max(0, -freeReserve) * 2);
         }
 
         return targets.ToDictionary(t => t.Key, t => Math.Clamp(t.Value, Config.IndicatorBounds.Min, Config.IndicatorBounds.Max), StringComparer.Ordinal);

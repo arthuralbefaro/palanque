@@ -135,6 +135,7 @@ public sealed class WorkCatalog : IValidatable
         "emenda_destinada", "emenda_liberada", "emenda_retida", "a_pedido", "periodo_vedado", "sem_obra", "emergencial_irregular", "empresa_doadora", "servico_em_vigor",
         "previsao_inauguracao", "previsao_entrega", "previsao_modalidade", "previsao_irregular", "previsao_dispensa_teto", "previsao_promessa", "previsao_folha",
         "fator_cansaco", "fator_secretario", "abre_sem_pessoal", "sem_investimento", "sem_capacidade",
+        "previsao_sem_cerimonia",
     ];
 
     public required string Note { get; init; }
@@ -566,6 +567,7 @@ public sealed class PersonnelCatalog : IValidatable
     [
         "mesa_aberta", "acordo", "fracasso", "greve", "alerta", "prudencial", "excedido", "restricoes", "normalizou", "corte", "revisao_anual", "vedado_art22", "repasse_camara",
         "repasse_acima_do_teto", "previsao_conceder", "previsao_contraproposta", "previsao_revisao_geral", "previsao_negar", "previsao_folha", "previsao_corte", "sem_resposta",
+        "previsao_repasse", "previsao_repasse_corte", "previsao_repasse_aumento",
     ];
 
     public static readonly IReadOnlyList<string> MemoryKeys = ["acordo", "fracasso", "corte", "repasse"];
@@ -696,6 +698,7 @@ public sealed class AgreementCatalog : IValidatable
     [
         "oferta", "assinado", "recusado", "expirou", "cumprido", "devolvido", "bloqueado_lrf", "bloqueado_devolucao", "bloqueado_eleicao", "previsao_assinar", "previsao_contrapartida", "previsao_prazo",
         "previsao_risco",
+        "previsao_recusar",
     ];
 
     public required string Note { get; init; }
@@ -959,6 +962,8 @@ public sealed class InstrumentCatalog : IValidatable
         "previsao_requerimento", "previsao_indicacao", "previsao_fiscalizacao", "previsao_emenda", "previsao_projeto", "previsao_negociar", "previsao_prefeito",
         "previsao_quem_lembra", "previsao_livro", "fator_cansaco", "fator_cansaco_zona", "fator_comunicacao", "fator_demanda",
         "conflito_orientacao", "conflito_base", "conflito_acordo",
+        "previsao_exonerar", "previsao_exonerar_base", "previsao_exonerar_padrinho",
+        "previsao_instrucao_orientacao", "previsao_instrucao_plataforma", "previsao_instrucao_nenhuma", "previsao_instrucao_pauta", "previsao_instrucao_igual",
     ];
 
     public static readonly IReadOnlyList<string> MemoryKeys =

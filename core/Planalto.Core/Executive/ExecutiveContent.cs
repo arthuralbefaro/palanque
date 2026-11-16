@@ -312,13 +312,41 @@ public sealed class CrisisCatalog : IValidatable
     }
 }
 
-/// <summary>Conteúdo do mandato de prefeito: configuração, políticas, crises e ações de gabinete.</summary>
+/// <summary>Textos da previsão dos comandos da prefeitura (data/executive/texts.json).</summary>
+public sealed class ExecutiveTextCatalog : IValidatable
+{
+    public static readonly IReadOnlyList<string> TextKeys =
+    [
+        "falha_sem_energia", "falha_sem_reserva", "falha_ja_adotada", "falha_crise_pendente", "falha_alvo_invalido", "falha_sem_secretarias",
+        "falha_orcamento_invalido", "falha_camara_em_luto", "falha_sem_politica", "falha_sem_crise", "previsao_decreto", "previsao_lei", "previsao_votos",
+        "previsao_empurra", "previsao_sem_empurrao", "previsao_custo", "previsao_libera", "previsao_reacao", "desfecho_aprovada", "desfecho_rejeitada",
+        "previsao_revogar", "previsao_revogar_reacao", "previsao_orcamento", "previsao_orcamento_minimo", "previsao_orcamento_igual", "previsao_crise_custo",
+        "previsao_crise_sem_custo", "previsao_crise_imediato", "previsao_ato_teste", "previsao_ato_relacao",
+    ];
+
+    public required string Note { get; init; }
+
+    public required Dictionary<string, string> Textos { get; init; }
+
+    public string Texto(string key) => Textos.TryGetValue(key, out string? text) ? text : key;
+
+    public IEnumerable<string> Validate()
+    {
+        foreach (string key in TextKeys.Where(k => !Textos.ContainsKey(k) || string.IsNullOrWhiteSpace(Textos[k])))
+        {
+            yield return $"textos: falta '{key}'.";
+        }
+    }
+}
+
+/// <summary>Conteúdo do mandato de prefeito: configuração, políticas, crises, ações de gabinete e os textos da previsão.</summary>
 public sealed class ExecutiveContent
 {
     public const string ConfigFile = "executive/config.json";
     public const string PoliciesFile = "executive/policies.json";
     public const string CrisesFile = "executive/crises.json";
     public const string ActionsFile = "executive/actions.json";
+    public const string TextsFile = "executive/texts.json";
 
     public required ExecutiveConfig Config { get; init; }
 
@@ -328,12 +356,15 @@ public sealed class ExecutiveContent
 
     public required MandateActionCatalog Actions { get; init; }
 
+    public required ExecutiveTextCatalog Texts { get; init; }
+
     public static IReadOnlyList<DataFileReport> Load(string dataDirectory, IReadOnlySet<string>? groups, out ExecutiveContent? content)
     {
         var config = JsonData.LoadFile<ExecutiveConfig>(Path.Combine(dataDirectory, ConfigFile));
         var policies = JsonData.LoadFile<PolicyCatalog>(Path.Combine(dataDirectory, PoliciesFile));
         var crises = JsonData.LoadFile<CrisisCatalog>(Path.Combine(dataDirectory, CrisesFile));
         var actions = JsonData.LoadFile<MandateActionCatalog>(Path.Combine(dataDirectory, ActionsFile));
+        var texts = JsonData.LoadFile<ExecutiveTextCatalog>(Path.Combine(dataDirectory, TextsFile));
 
         var indicators = config.Value?.Indicators.Select(i => i.Id).ToHashSet(StringComparer.Ordinal) ?? [];
         var policyErrors = policies.Errors.ToList();
@@ -354,9 +385,10 @@ public sealed class ExecutiveContent
             new(PoliciesFile, policies.Value?.Policies.Count ?? 0, policyErrors),
             new(CrisesFile, crises.Value?.Crises.Count ?? 0, crisisErrors),
             new(ActionsFile, actions.Value?.Actions.Count ?? 0, actions.Errors),
+            new(TextsFile, texts.Value?.Textos.Count ?? 0, texts.Errors),
         };
-        content = reports.All(r => r.IsValid) && config.Value is not null && policies.Value is not null && crises.Value is not null && actions.Value is not null
-            ? new ExecutiveContent { Config = config.Value, Policies = policies.Value, Crises = crises.Value, Actions = actions.Value }
+        content = reports.All(r => r.IsValid) && config.Value is not null && policies.Value is not null && crises.Value is not null && actions.Value is not null && texts.Value is not null
+            ? new ExecutiveContent { Config = config.Value, Policies = policies.Value, Crises = crises.Value, Actions = actions.Value, Texts = texts.Value }
             : null;
         return reports;
     }

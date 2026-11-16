@@ -172,6 +172,14 @@
     "fator_demanda": "Demanda trazida pelo assessor de base de {zona}",
     "conflito_orientacao": "A orientação do partido contraria a sua plataforma",
     "conflito_base": "O voto previsto desagrada os grupos que apoiam você",
-    "conflito_acordo": "Você prometeu apoiar este projeto num acordo de voto"
+    "conflito_acordo": "Você prometeu apoiar este projeto num acordo de voto",
+    "previsao_exonerar": "{nome} sai do gabinete e a vaga fica aberta: o que a função {funcao} rendia para você para de render",
+    "previsao_exonerar_base": "Sem assessor de base em {zona}, a sua presença lá volta a cair até {decaimento} ponto(s) por semana",
+    "previsao_exonerar_padrinho": "{padrinho}, que indicou {nome}, também guarda a lembrança",
+    "previsao_instrucao_orientacao": "Seu voto sai sozinho pela orientação da bancada: a fidelidade ao partido se mantém, e a sua plataforma pode ser contrariada",
+    "previsao_instrucao_plataforma": "Seu voto sai sozinho pelas suas posições: quando elas contrariam a orientação, a fidelidade ao partido cai",
+    "previsao_instrucao_nenhuma": "Você marca cada voto; projeto sem voto marcado conta como falta",
+    "previsao_instrucao_pauta": "Na pauta desta semana, {n} voto(s) sem marcação mudam: {projetos}",
+    "previsao_instrucao_igual": "Na pauta desta semana, nenhum voto muda"
   }
 }

@@ -72,6 +72,7 @@
     "previsao_promessa": "Cumpre a promessa: {promessa}",
     "previsao_folha": "Folha: +{folha} da receita corrente líquida",
     "fator_cansaco": "Rendimento de quando a obra foi pedida",
-    "fator_secretario": "Secretário da pasta: {nome}"
+    "fator_secretario": "Secretário da pasta: {nome}",
+    "previsao_sem_cerimonia": "Entregar {obra} em {zona} sem cerimônia: a obra passa a funcionar e rende {fracao} do que a inauguração renderia; é o caminho no período vedado"
   }
 }

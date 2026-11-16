@@ -479,15 +479,81 @@ public sealed partial class GovernanceEngine
             work.Yield is < 0.999 or > 1.001 ? [new YieldFactor("rendimento", Content.Works.Texto("fator_cansaco"), work.Yield)] : []) { CreatedId = work.Id };
     }
 
-    /// <summary>Entrega a obra pronta sem cerimônia (o caminho no período vedado): cumpre a promessa, rende menos.</summary>
-    public GovResult DeliverQuietly(string workId)
+    /// <summary>
+    /// Previsão de entregar a obra pronta sem cerimônia: o que rende na zona (a fração de quem não comparece), a folha
+    /// que a obra acrescenta, o indicador da área e as promessas que cumpre, pelas mesmas contas da entrega.
+    /// </summary>
+    public GovForecast ForecastDeliverQuietly(string workId)
     {
         Work? work = G.Work(workId);
         if (work is null || work.Stage != WorkStage.Pronta || (Role == GovRole.Vereador && work.SponsorId != RaceSetup.PlayerId))
         {
-            return GovResult.Fail(GovFailure.SemObraPronta, Content.Works.Texto("sem_obra"));
+            return GovForecast.Block(GovFailure.SemObraPronta, Content.Works.Texto("sem_obra"));
         }
 
+        GovernanceState g = G;
+        WorkType type = Content.Works.Type(work.TypeId);
+        int zone = g.IndexOf(work.ZoneId);
+        double credit = type.Servico ? 1 : WorkRules.PrestigioSemCerimonia;
+        List<Promise> kept = PromisesOnDelivery(work);
+        int inZone = kept.Count(p => p.ZoneId is not null);
+        var lines = new List<ForecastLine>();
+        if (Role == GovRole.Vereador)
+        {
+            double gain = ChainPresence(zone, Enumerable.Repeat(CollectionRules.PresencaPromessaCumprida, inZone).Prepend(type.Prestigio * work.Yield * credit));
+            lines.Add(new ForecastLine(GovForecast.Presenca, work.ZoneId, gain, gain, gain));
+        }
+        else
+        {
+            double gain = (type.Prestigio * WorkRules.AprovacaoPorPrestigio * credit) + (inZone * CollectionRules.PresencaPromessaCumprida);
+            double now = zone >= 0 && zone < g.ZoneApproval.Count ? g.ZoneApproval[zone] : 0;
+            gain = Math.Clamp(now + gain, -40, 40) - now;
+            lines.Add(new ForecastLine(GovForecast.AprovacaoZona, work.ZoneId, gain, gain, gain));
+        }
+
+        if (kept.Count > 0)
+        {
+            lines.Add(new ForecastLine(GovForecast.PromessaCumprida, work.ZoneId, kept.Count, kept.Count, kept.Count));
+        }
+
+        bool staffed = !(type.Folha > 0 && Context.FiscalLaw.VedadoAumentar(g.Payroll.Share));
+        if (type.Folha > 0 && staffed)
+        {
+            lines.Add(new ForecastLine(GovForecast.Folha, null, type.Folha, type.Folha, type.Folha));
+        }
+
+        bool real = type.Indicador is { } pushed && Real is not null && Context.IndicatorEvolution is { } evolution && evolution.Components(pushed).Any();
+        if (!real && type.Indicador is { } indicator && Exec is { } e && e.Indicators.TryGetValue(indicator, out double current))
+        {
+            BoundsConfig bounds = Context.Executive.Config.IndicatorBounds;
+            double delta = Math.Clamp(current + (type.IndicadorPontos * (staffed ? 1 : 0.5)), bounds.Min, bounds.Max) - current;
+            lines.Add(new ForecastLine(GovForecast.Indicador, indicator, delta, delta, delta));
+        }
+
+        var explanation = new List<string>
+        {
+            Fill(Content.Works.Texto("previsao_sem_cerimonia"), ("obra", WorkName(work)), ("zona", ZoneName(work.ZoneId)), ("fracao", Texts.Percent(credit))),
+        };
+        if (type.Folha > 0)
+        {
+            explanation.Add(staffed ? Fill(Content.Works.Texto("previsao_folha"), ("folha", Pct(type.Folha)))
+                : Fill(Content.Works.Texto("abre_sem_pessoal"), ("obra", WorkName(work)), ("artigo", Context.FiscalLaw.ArtigoPrudencial)));
+        }
+
+        explanation.AddRange(kept.Select(p => Fill(Content.Works.Texto("previsao_promessa"), ("promessa", p.Text))));
+        return new GovForecast(null, null, lines, [], explanation) { Remembered = kept.Select(PromiseHolder).Where(n => n.Length > 0).Distinct().ToList() };
+    }
+
+    /// <summary>Entrega a obra pronta sem cerimônia (o caminho no período vedado): cumpre a promessa, rende menos.</summary>
+    public GovResult DeliverQuietly(string workId)
+    {
+        GovForecast forecast = ForecastDeliverQuietly(workId);
+        if (forecast.Blocked is { } failure)
+        {
+            return GovResult.Fail(failure, forecast.BlockedReason ?? "");
+        }
+
+        Work work = G.Work(workId)!;
         List<string> changes = Deliver(work, ceremony: false, playerAttended: false);
         return new GovResult(null, Fill(Content.Works.Texto("entregue_sem_cerimonia"), ("obra", WorkName(work)), ("zona", ZoneName(work.ZoneId)), ("prefeito", MayorName), ("pedido", "")).Trim(), changes, []);
     }

@@ -886,9 +886,13 @@ public sealed partial class GovernanceEngine
     /// Voto pela instrução permanente (GDD 17.14): seguir a orientação do partido ou seguir a própria plataforma. Null
     /// sem instrução. Usado pelo motor do mandato quando o jogador não marcou o voto.
     /// </summary>
-    public static VoteChoice? InstructionVote(State.GameState state, LegislatureContent content, Bill bill)
+    public static VoteChoice? InstructionVote(State.GameState state, LegislatureContent content, Bill bill) =>
+        state.Governance is { } governance ? InstructionVote(state, content, bill, governance.Instruction) : null;
+
+    /// <summary>O voto que a instrução <paramref name="instruction"/> daria (a previsão de trocar de instrução usa a mesma regra).</summary>
+    private static VoteChoice? InstructionVote(State.GameState state, LegislatureContent content, Bill bill, VoteInstruction instruction)
     {
-        if (state.Governance is not { Instruction: not VoteInstruction.Nenhuma } g || state.Mandate is not { } mandate || content.MunicipalBills.Find(bill.TemplateId) is not { } template)
+        if (instruction == VoteInstruction.Nenhuma || state.Governance is not { } g || state.Mandate is not { } mandate || content.MunicipalBills.Find(bill.TemplateId) is not { } template)
         {
             return null;
         }
@@ -901,7 +905,7 @@ public sealed partial class GovernanceEngine
 
         ChamberMember player = mandate.Player;
         VoteChoice platform = ChamberVote.Alignment(content.Config.Vote, player.Position, template.Position) >= 0 ? VoteChoice.Sim : VoteChoice.Nao;
-        if (g.Instruction == VoteInstruction.SeguirPlataforma || player.Leader || player.PartyId is null)
+        if (instruction == VoteInstruction.SeguirPlataforma || player.Leader || player.PartyId is null)
         {
             return platform;
         }
@@ -910,11 +914,40 @@ public sealed partial class GovernanceEngine
         return ChamberVote.PartyOrientation(content.Config, state, player.PartyId, template.Position, side) switch { 1 => VoteChoice.Sim, -1 => VoteChoice.Nao, _ => platform };
     }
 
+    /// <summary>
+    /// Previsão de trocar a instrução permanente de voto: o que ela faz e quantos votos da pauta desta semana (sem voto
+    /// marcado) mudam com ela. Nada muda nos números agora; o custo é o de cada voto dado.
+    /// </summary>
+    public GovForecast ForecastInstruction(VoteInstruction instruction)
+    {
+        if (Role != GovRole.Vereador || Mandate is not { } mandate)
+        {
+            return GovForecast.Block(GovFailure.PapelErrado, "");
+        }
+
+        var explanation = new List<string>
+        {
+            Content.Instruments.Texto(instruction switch
+            {
+                VoteInstruction.SeguirOrientacao => "previsao_instrucao_orientacao",
+                VoteInstruction.SeguirPlataforma => "previsao_instrucao_plataforma",
+                _ => "previsao_instrucao_nenhuma",
+            }),
+        };
+        List<Bill> changed = mandate.Bills.Where(b => b.Stage == BillStage.Plenario && b.CommitteeUntil <= Week && b.PlayerVote is null)
+            .Where(b => (InstructionVote(State, Context.Legislature, b, G.Instruction) ?? VoteChoice.Ausente) != (InstructionVote(State, Context.Legislature, b, instruction) ?? VoteChoice.Ausente))
+            .ToList();
+        explanation.Add(changed.Count == 0 ? Content.Instruments.Texto("previsao_instrucao_igual")
+            : Fill(Content.Instruments.Texto("previsao_instrucao_pauta"), ("n", changed.Count.ToString(CultureInfo.InvariantCulture)), ("projetos", string.Join("; ", changed.Select(b => b.Title)))));
+        return new GovForecast(null, null, [], [], explanation);
+    }
+
     public GovResult SetInstruction(VoteInstruction instruction)
     {
-        if (Role != GovRole.Vereador)
+        GovForecast forecast = ForecastInstruction(instruction);
+        if (forecast.Blocked is { } failure)
         {
-            return GovResult.Fail(GovFailure.PapelErrado, "");
+            return GovResult.Fail(failure, forecast.BlockedReason ?? "");
         }
 
         G.Instruction = instruction;
@@ -1403,14 +1436,53 @@ public sealed partial class GovernanceEngine
         }
     }
 
-    public GovResult DismissAide(string personId)
+    /// <summary>
+    /// Previsão de demitir um assessor: a lembrança dele e de quem o indicou (com a mudança na relação), a função que
+    /// para de render e, no assessor de base, a presença da zona que volta a cair.
+    /// </summary>
+    public GovForecast ForecastDismissAide(string personId)
     {
-        Aide? aide = G.Cabinet.FirstOrDefault(a => a.PersonId == personId);
-        if (Role != GovRole.Vereador || aide is null)
+        if (Role != GovRole.Vereador)
         {
-            return GovResult.Fail(GovFailure.NaoEncontrado, "");
+            return GovForecast.Block(GovFailure.PapelErrado, "");
         }
 
+        if (G.Cabinet.FirstOrDefault(a => a.PersonId == personId) is not { } aide)
+        {
+            return GovForecast.Block(GovFailure.NaoEncontrado, "");
+        }
+
+        MemoryDefinition memory = Content.Instruments.Lembrancas["exonerado"];
+        string role = aide.Role is { } roleId ? Content.Instruments.Role(roleId).Nome : "";
+        double own = RememberDelta(personId, memory);
+        var lines = new List<ForecastLine> { new(GovForecast.Relacao, personId, own, own, own) };
+        var explanation = new List<string> { Fill(Content.Instruments.Texto("previsao_exonerar"), ("nome", NameOf(personId)), ("funcao", role)) };
+        var remembered = new List<string> { NameOf(personId) };
+        if (aide.Role == AideRole.Base && aide.ZoneId is { } zone)
+        {
+            explanation.Add(Fill(Content.Instruments.Texto("previsao_exonerar_base"), ("zona", ZoneName(zone)), ("decaimento", Num(CouncilRules.PresencaDecaimentoSemanal))));
+        }
+
+        if (aide.NomineeOf is { } patron && patron != RaceSetup.PlayerId && patron != Work.Prefeito)
+        {
+            double delta = RememberDelta(patron, memory);
+            lines.Add(new ForecastLine(GovForecast.Relacao, patron, delta, delta, delta));
+            explanation.Add(Fill(Content.Instruments.Texto("previsao_exonerar_padrinho"), ("padrinho", NameOf(patron)), ("nome", NameOf(personId))));
+            remembered.Add(NameOf(patron));
+        }
+
+        return new GovForecast(null, null, lines, [], explanation) { Remembered = remembered.Where(n => n.Length > 0).Distinct().ToList() };
+    }
+
+    public GovResult DismissAide(string personId)
+    {
+        GovForecast forecast = ForecastDismissAide(personId);
+        if (forecast.Blocked is { } failure)
+        {
+            return GovResult.Fail(failure, forecast.BlockedReason ?? "");
+        }
+
+        Aide aide = G.Cabinet.First(a => a.PersonId == personId);
         aide.Appointed = false;
         aide.Left = true;
         Remember(personId, PersonRole.Assessor, "exonerado", Content.Instruments.Lembrancas["exonerado"]);

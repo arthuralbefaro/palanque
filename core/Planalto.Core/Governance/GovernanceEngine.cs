@@ -132,6 +132,32 @@ public sealed record GovForecast(
     /// <summary>Esqueleto que a escolha põe no Livro (o valor é a gravidade).</summary>
     public const string Esqueleto = "skeleton";
 
+    /// <summary>Mudança imediata num indicador da prefeitura (alvo = id do indicador; pontos de 0 a 100).</summary>
+    public const string Indicador = "indicator";
+
+    /// <summary>Mudança no alvo para onde o indicador caminha semana a semana (alvo = id do indicador; pontos de 0 a 100).</summary>
+    public const string IndicadorAlvo = "indicator_target";
+
+    /// <summary>Apoio de um grupo de eleitores (alvo = id do grupo; fração de 0 a 1).</summary>
+    public const string Apoio = "support";
+
+    /// <summary>Reserva livre do orçamento (fração do orçamento por ano).</summary>
+    public const string Reserva = "reserve";
+
+    /// <summary>Energia da semana do prefeito.</summary>
+    public const string Energia = "energy";
+
+    /// <summary>Votos a favor na Câmara.</summary>
+    public const string VotosSim = "votes_yes";
+
+    public const string Reconhecimento = "recognition";
+
+    /// <summary>Relação com cada integrante da Câmara.</summary>
+    public const string RelacaoCamara = "chamber_relation";
+
+    /// <summary>Fidelidade do vereador ao partido (0 a 100).</summary>
+    public const string Fidelidade = "fidelity";
+
     public IReadOnlyList<YieldFactor> Factors { get; init; } = [];
 
     /// <summary>Quem vai lembrar da decisão (nomes), para a tela mostrar antes do clique.</summary>
@@ -592,6 +618,43 @@ public sealed partial class GovernanceEngine(GovernanceContext ctx)
         {
             member.Relation = Math.Clamp(member.Relation + memory.Pontos, -100, 100);
         }
+    }
+
+    /// <summary>
+    /// O que uma lembrança de <paramref name="points"/> pontos faria hoje na relação da pessoa com o jogador, com os
+    /// mesmos cortes de <see cref="Remember"/> (vereador: a relação na Câmara; os demais: a soma das lembranças).
+    /// </summary>
+    private double RememberDelta(string? personId, MemoryDefinition memory)
+    {
+        if (personId is null || personId == RaceSetup.PlayerId || personId == Work.Prefeito)
+        {
+            return 0;
+        }
+
+        if (Member(personId) is { IsPlayer: false } member)
+        {
+            return Math.Clamp(member.Relation + memory.Pontos, -100, 100) - member.Relation;
+        }
+
+        Person? person = State.City?.Person(personId);
+        if (person is null)
+        {
+            return Math.Clamp(memory.Pontos, Person.MinRelation, Person.MaxRelation);
+        }
+
+        // A lista cheia perde uma lembrança, pela mesma regra de Person.Remember.
+        var fresh = new Memory { Date = Week, Fact = "", Peso = Math.Clamp(memory.Peso, -3, 3), Pontos = memory.Pontos, Text = "" };
+        var after = new List<Memory>(person.Memories) { fresh };
+        while (after.Count > Context.Memory.MaxMemories)
+        {
+            Memory drop = after.Where(m => !ReferenceEquals(m, fresh) && Math.Abs(m.Peso) < 3)
+                    .OrderBy(m => Math.Abs(Person.Weight(m, Week, Context.Memory))).ThenBy(m => m.Date).FirstOrDefault()
+                ?? after.Where(m => !ReferenceEquals(m, fresh)).OrderBy(m => m.Date).First();
+            after.Remove(drop);
+        }
+
+        double Total(IEnumerable<Memory> memories) => Math.Clamp(person.Affinity + memories.Sum(m => Person.Weight(m, Week, Context.Memory)), Person.MinRelation, Person.MaxRelation);
+        return Total(after) - Total(person.Memories);
     }
 
     /// <summary>Relação de uma pessoa com o jogador hoje.</summary>

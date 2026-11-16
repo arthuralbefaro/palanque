@@ -124,10 +124,7 @@ public partial class HubScreen
             HBoxContainer votes = Ui.Row(col, 6);
             foreach (var (choice, text, what) in new[] { (VoteChoice.Sim, "Sim", "a favor"), (VoteChoice.Nao, "Não", "contra"), (VoteChoice.Abstencao, "Abstenção", "pela abstenção") })
             {
-                string tip = Palette.Tip(
-                    string.Format(Tr("Marca o seu voto {0} neste projeto."), Tr(what)),
-                    Tr("o voto vale na sessão desta semana; contrariar a orientação do partido baixa a fidelidade, e votar contra um acordo fica na memória do colega."),
-                    Tr("nada para marcar; o custo é o do voto dado."));
+                string tip = GovTip(string.Format(Tr("Marca o seu voto {0} neste projeto."), Tr(what)), engine.ForecastVote(bill.Id, choice));
                 var b = Ui.Button(votes, text, () => { engine.CastVote(bill.Id, choice); Refresh(); }, tip);
                 b.Name = $"Voto_{bill.Id}_{choice}";
                 b.ToggleMode = true;
@@ -158,16 +155,16 @@ public partial class HubScreen
     {
         Heading(_left, Tr("Instrução permanente de voto"), 20);
         Glossary.Rich(_left, Tr("Com uma instrução, o seu voto sai sozinho nas votações comuns, e o jogo só para quando orientação, plataforma, acordo ou base entram em conflito."));
-        foreach (var (instruction, label, does) in new[]
+        foreach (var (instruction, label) in new[]
         {
-            (VoteInstruction.SeguirOrientacao, "Seguir a orientação do partido", "seu voto acompanha a orientação da bancada; a fidelidade se mantém, e a sua plataforma pode ser contrariada."),
-            (VoteInstruction.SeguirPlataforma, "Seguir a minha plataforma", "seu voto segue as suas posições; quando elas contrariam a orientação, a fidelidade ao partido cai."),
-            (VoteInstruction.Nenhuma, "Sem instrução", "você marca cada voto; projeto sem voto marcado conta como falta."),
+            (VoteInstruction.SeguirOrientacao, "Seguir a orientação do partido"),
+            (VoteInstruction.SeguirPlataforma, "Seguir a minha plataforma"),
+            (VoteInstruction.Nenhuma, "Sem instrução"),
         })
         {
             bool selected = gov.G.Instruction == instruction;
             var b = Ui.Button(_left, label, () => { GovShow(Tr(label), gov.SetInstruction(instruction)); Refresh(); },
-                Palette.Tip(string.Format(Tr("Instrução de voto: {0}."), LowerFirst(Tr(label))), Tr(does), Tr("nada para trocar; o custo é o de cada voto dado.")));
+                GovTip(string.Format(Tr("Instrução de voto: {0}."), LowerFirst(Tr(label))), gov.ForecastInstruction(instruction)));
             b.Name = "Instrucao_" + instruction;
             b.Alignment = HorizontalAlignment.Left;
             b.ToggleMode = true;
@@ -353,23 +350,10 @@ public partial class HubScreen
 
         if (aide.Appointed)
         {
-            Glossary.Rich(_left, string.Format(Tr("Demitir abre a vaga. {0} vai lembrar, e quem a indicou também."), view.Name));
             string person = aide.PersonId;
-            var dismiss = Ui.Button(_left, _govConfirm == "demitir" ? "Confirmar a demissão" : "Demitir", () =>
-            {
-                if (_govConfirm != "demitir")
-                {
-                    _govConfirm = "demitir";
-                    Refresh();
-                    return;
-                }
-
-                _govConfirm = null;
-                GovShow(Tr("Demitir"), gov.DismissAide(person));
-                Refresh();
-            }, Palette.Tip(string.Format(Tr("Demite {0} do gabinete."), view.Name), Tr("a vaga fica aberta e a função deixa de render; a pessoa guarda a lembrança da demissão."), Tr("a relação com ela e com quem a indicou; nada em dinheiro.")));
-            dismiss.Name = "Demitir";
-            Palette.Danger(dismiss);
+            GovForecast dismiss = gov.ForecastDismissAide(person);
+            GovForecastCard(_left, dismiss, "PrevisaoDemitir", Tr("Previsão de demitir"));
+            GovCommand(_left, "Demitir", string.Format(Tr("Demite {0} do gabinete."), view.Name), dismiss, () => gov.DismissAide(person), "Demitir", danger: true);
             return;
         }
 

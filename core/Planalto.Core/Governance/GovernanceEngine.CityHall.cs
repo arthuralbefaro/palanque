@@ -682,21 +682,71 @@ public sealed partial class GovernanceEngine
         return new GovResult(null, text, [ChPayroll(before, g.Payroll.Share), ChApproval(PersonnelRules.CorteAprovacao)], []);
     }
 
-    /// <summary>Define o repasse à Câmara, em fração da base de impostos. Acima do teto do art. 29-A, não passa.</summary>
-    public GovResult SetChamberTransfer(double share)
+    /// <summary>
+    /// Previsão de mudar o repasse à Câmara: a relação com cada vereador (com o corte de cada um), a lembrança de quem
+    /// preside a Câmara quando o repasse cai e o peso nas contas quando sobe.
+    /// </summary>
+    public GovForecast ForecastChamberTransfer(double share)
     {
         if (Role != GovRole.Prefeito)
         {
-            return GovResult.Fail(GovFailure.PapelErrado, "");
+            return GovForecast.Block(GovFailure.PapelErrado, "");
         }
 
         GovernanceState g = G;
         FiscalLawConfig law = Context.FiscalLaw;
         if (share < 0 || share > ChamberCap + 1e-9)
         {
-            return GovResult.Fail(GovFailure.LimiteLegal, Fill(Content.Personnel.Texto("repasse_acima_do_teto"), ("teto", Pct(ChamberCap)), ("artigo", law.ArtigoCamara)));
+            return GovForecast.Block(GovFailure.LimiteLegal, Fill(Content.Personnel.Texto("repasse_acima_do_teto"), ("teto", Pct(ChamberCap)), ("artigo", law.ArtigoCamara)));
         }
 
+        double before = g.Fiscal.ChamberShare;
+        var lines = new List<ForecastLine>();
+        var explanation = new List<string> { Fill(Content.Personnel.Texto("previsao_repasse"), ("antes", Pct(before)), ("depois", Pct(share)), ("teto", Pct(ChamberCap)), ("artigo", law.ArtigoCamara)) };
+        var remembered = new List<string>();
+        bool cut = share < before - 1e-9, raise = share > before + 1e-9;
+        if (cut || raise)
+        {
+            double step = cut ? PersonnelRules.RelacaoCamaraPorCorteDeRepasse : -PersonnelRules.RelacaoCamaraPorCorteDeRepasse;
+            ChamberMember? president = cut && g.Mesa.PresidentId is { } presidentId && Member(presidentId) is { IsPlayer: false } p ? p : null;
+            List<double> deltas = Members.Where(m => !m.IsPlayer && m != president).Select(m => Math.Clamp(m.Relation + step, -100, 100) - m.Relation).ToList();
+            if (deltas.Count > 0)
+            {
+                lines.Add(new ForecastLine(GovForecast.RelacaoCamara, null, deltas.Min(), deltas.Max(), deltas.Average()));
+            }
+
+            if (president is not null)
+            {
+                double shifted = Math.Clamp(president.Relation + step, -100, 100);
+                double total = Math.Clamp(shifted + Content.Personnel.Lembrancas["repasse"].Pontos, -100, 100) - president.Relation;
+                lines.Add(new ForecastLine(GovForecast.Relacao, president.Id, total, total, total));
+                remembered.Add(NameOf(president.Id));
+            }
+
+            if (raise && Exec is { } e && e.Indicators.TryGetValue("contas", out double accounts))
+            {
+                BoundsConfig bounds = Context.Executive.Config.IndicatorBounds;
+                double delta = Math.Clamp(accounts - ((share - before) * g.Fiscal.TaxBaseShare * Context.Executive.Config.UnusedReserveToAccounts), bounds.Min, bounds.Max) - accounts;
+                lines.Add(new ForecastLine(GovForecast.Indicador, "contas", delta, delta, delta));
+            }
+
+            explanation.Add(Content.Personnel.Texto(cut ? "previsao_repasse_corte" : "previsao_repasse_aumento"));
+        }
+
+        return new GovForecast(null, null, lines, [], explanation) { Remembered = remembered.Where(n => n.Length > 0).ToList() };
+    }
+
+    /// <summary>Define o repasse à Câmara, em fração da base de impostos. Acima do teto do art. 29-A, não passa.</summary>
+    public GovResult SetChamberTransfer(double share)
+    {
+        GovForecast forecast = ForecastChamberTransfer(share);
+        if (forecast.Blocked is { } failure)
+        {
+            return GovResult.Fail(failure, forecast.BlockedReason ?? "");
+        }
+
+        GovernanceState g = G;
+        FiscalLawConfig law = Context.FiscalLaw;
         double before = g.Fiscal.ChamberShare;
         g.Fiscal.ChamberShare = share;
         var changes = new List<string> { T("mud_repasse", ("antes", Pct(before)), ("depois", Pct(share)), ("teto", Pct(ChamberCap))) };
@@ -902,14 +952,32 @@ public sealed partial class GovernanceEngine
         return work;
     }
 
-    public GovResult DeclineAgreement(string agreementId)
+    /// <summary>Previsão de recusar o convênio: o dinheiro não vem e a contrapartida fica livre; ninguém guarda lembrança.</summary>
+    public GovForecast ForecastDeclineAgreement(string agreementId)
     {
-        Agreement? a = G.Agreements.FirstOrDefault(x => x.Id == agreementId && x.State == AgreementState.Oferta);
-        if (Role != GovRole.Prefeito || a is null)
+        if (Role != GovRole.Prefeito)
         {
-            return GovResult.Fail(GovFailure.NaoEncontrado, "");
+            return GovForecast.Block(GovFailure.PapelErrado, "");
         }
 
+        if (G.Agreements.FirstOrDefault(x => x.Id == agreementId && x.State == AgreementState.Oferta) is not { } a)
+        {
+            return GovForecast.Block(GovFailure.NaoEncontrado, "");
+        }
+
+        return new GovForecast(null, null, [], [],
+            [Fill(Content.Agreements.Texto("previsao_recusar"), ("origem", OriginName(a)), ("obra", Content.Works.Type(a.TypeId).Nome), ("contrapartida", Texts.Money(CounterpartOf(a))))]);
+    }
+
+    public GovResult DeclineAgreement(string agreementId)
+    {
+        GovForecast forecast = ForecastDeclineAgreement(agreementId);
+        if (forecast.Blocked is { } failure)
+        {
+            return GovResult.Fail(failure, forecast.BlockedReason ?? "");
+        }
+
+        Agreement a = G.Agreements.First(x => x.Id == agreementId && x.State == AgreementState.Oferta);
         a.State = AgreementState.Recusado;
         string text = Fill(Content.Agreements.Texto("recusado"), ("origem", OriginName(a)), ("obra", Content.Works.Type(a.TypeId).Nome));
         News("convenio", text);

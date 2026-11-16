@@ -68,21 +68,7 @@ public sealed partial class ExecutiveEngine
             real.Pressoes.RemoveAll(p => p.Ate is null && (p.Origem.StartsWith(BudgetOrigin, StringComparison.Ordinal) || p.Origem.StartsWith(PolicyOrigin, StringComparison.Ordinal)));
         }
 
-        var budget = Config.Indicators.ToDictionary(i => i.Id, _ => 0.0, StringComparer.Ordinal);
-        foreach (BudgetArea area in Config.Areas.Where(a => a.ReferenceShare > 0))
-        {
-            double relative = (e.Allocation.GetValueOrDefault(area.Id) / area.ReferenceShare) - 1;
-            foreach (var (indicator, weight) in area.Effects)
-            {
-                budget[indicator] = budget.GetValueOrDefault(indicator) + (weight * Config.TargetSensitivity * relative);
-            }
-        }
-
-        if (budget.ContainsKey("contas"))
-        {
-            budget["contas"] += (Config.UnusedReserveToAccounts * Math.Max(0, FreeReserve)) - (Config.UnusedReserveToAccounts * Math.Max(0, -FreeReserve) * 2);
-        }
-
+        Dictionary<string, double> budget = BudgetPressure(e.Allocation);
         foreach (IndicatorDefinition indicator in Config.Indicators)
         {
             foreach (string realId in evolution.Components(indicator.Id))
@@ -119,6 +105,31 @@ public sealed partial class ExecutiveEngine
 
         ReadScores(Context, real, e);
         return true;
+    }
+
+    /// <summary>
+    /// Pressão do orçamento em cada indicador da prefeitura (pontos da escala de jogo): gasto relativo à referência e
+    /// reserva não usada. A previsão do rascunho usa a mesma conta com a repartição nova.
+    /// </summary>
+    private Dictionary<string, double> BudgetPressure(IReadOnlyDictionary<string, double> allocation)
+    {
+        double freeReserve = allocation.GetValueOrDefault(ExecutiveConfig.ReserveArea) - PolicyCost;
+        var budget = Config.Indicators.ToDictionary(i => i.Id, _ => 0.0, StringComparer.Ordinal);
+        foreach (BudgetArea area in Config.Areas.Where(a => a.ReferenceShare > 0))
+        {
+            double relative = (allocation.GetValueOrDefault(area.Id) / area.ReferenceShare) - 1;
+            foreach (var (indicator, weight) in area.Effects)
+            {
+                budget[indicator] = budget.GetValueOrDefault(indicator) + (weight * Config.TargetSensitivity * relative);
+            }
+        }
+
+        if (budget.ContainsKey("contas"))
+        {
+            budget["contas"] += (Config.UnusedReserveToAccounts * Math.Max(0, freeReserve)) - (Config.UnusedReserveToAccounts * Math.Max(0, -freeReserve) * 2);
+        }
+
+        return budget;
     }
 
     /// <summary>Choque de crise nos indicadores reais; false quando não há indicadores reais ou o indicador não tem mapa.</summary>

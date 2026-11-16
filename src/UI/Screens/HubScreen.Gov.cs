@@ -748,17 +748,30 @@ public partial class HubScreen
         GovForecast.PromessaCumprida => Tr("cumpre promessa do Livro de compromissos"),
         GovForecast.Turnos => string.Format(Tr(Math.Abs(l.Expected) == 1 ? "{0} turno da semana" : "{0} turnos da semana"), Math.Abs(l.Expected).ToString("0", PtBr)),
         GovForecast.Esqueleto => string.Format(Tr("esqueleto no Livro de compromissos, gravidade {0}"), l.Expected.ToString("0", PtBr)),
+        GovForecast.Indicador => string.Format(Tr("{0}: {1} ponto(s) na escala de 0 a 100, na hora"), IndicatorName(l.Target), GovRange(l, "0.0")),
+        GovForecast.IndicadorAlvo => string.Format(Tr("alvo de {0}: {1} ponto(s) na escala de 0 a 100"), IndicatorName(l.Target), GovRange(l, "0.0")),
+        GovForecast.Apoio => string.Format(Tr("apoio de {0}: {1} ponto(s)"), EffectSummary.GroupName(l.Target ?? ""), GovRange(l, "0.0", 100)),
+        GovForecast.Reserva => string.Format(Tr("reserva livre: {0} ponto(s) do orçamento ao ano ({1})"), GovRange(l, "0.0", 100), SignedMoney((Mayor?.AnnualRevenue ?? 0) * (decimal)l.Expected)),
+        GovForecast.Energia => string.Format(Tr("{0} de energia da semana"), Math.Abs(l.Expected).ToString("0", PtBr)),
+        GovForecast.VotosSim => Math.Abs(l.Max - l.Min) < 0.5 ? string.Format(Tr("{0} voto(s) a favor"), l.Min.ToString("0", PtBr)) : string.Format(Tr("de {0} a {1} votos a favor"), l.Min.ToString("0", PtBr), l.Max.ToString("0", PtBr)),
+        GovForecast.Reconhecimento => string.Format(Tr("reconhecimento: {0}"), GovRange(l, "0.0")),
+        GovForecast.RelacaoCamara => string.Format(Tr("relação com cada vereador: {0}"), GovRange(l, "0")),
+        GovForecast.Fidelidade => string.Format(Tr("fidelidade ao partido: {0}"), GovRange(l, "0")),
         _ => l.Kind,
     };
 
+    private string IndicatorName(string? id) => LowerFirst(_game.ExecutiveContent.Config.Indicators.FirstOrDefault(i => i.Id == id)?.Name ?? id ?? "");
+
     /// <summary>Linha que muda alguma coisa na precisão que a tela mostra (efeito que arredonda para zero não aparece).</summary>
     private static bool Matters(ForecastLine l) =>
-        l.Kind is GovForecast.Turnos or GovForecast.Esqueleto or GovForecast.PromessaCumprida
-        || Math.Max(Math.Abs(l.Min), Math.Abs(l.Max)) >= (l.Kind is GovForecast.Imagem or GovForecast.Folha || l.Kind == GovForecast.Imagem + "_later" ? 0.0005 : 0.05);
+        l.Kind is GovForecast.Turnos or GovForecast.Esqueleto or GovForecast.PromessaCumprida or GovForecast.Energia or GovForecast.VotosSim
+        || Math.Max(Math.Abs(l.Min), Math.Abs(l.Max)) >= (l.Kind is GovForecast.Imagem or GovForecast.Folha or GovForecast.Apoio or GovForecast.Reserva || l.Kind == GovForecast.Imagem + "_later" ? 0.0005 : 0.05);
 
     private static bool IsCostLine(ForecastLine l) =>
-        l.Kind is GovForecast.Turnos or GovForecast.Esqueleto
-        || (l.Kind is GovForecast.Capital or GovForecast.Dinheiro or GovForecast.Investimento or GovForecast.RelacaoPrefeito or GovForecast.Imagem or GovForecast.Aprovacao && l.Max < 0)
+        l.Kind is GovForecast.Turnos or GovForecast.Esqueleto or GovForecast.Energia
+        || (l.Kind is GovForecast.Capital or GovForecast.Dinheiro or GovForecast.Investimento or GovForecast.RelacaoPrefeito or GovForecast.Imagem or GovForecast.Aprovacao
+            or GovForecast.Indicador or GovForecast.IndicadorAlvo or GovForecast.Apoio or GovForecast.Reserva or GovForecast.RelacaoCamara or GovForecast.Reconhecimento
+            or GovForecast.Fidelidade && l.Max < 0)
         || (l.Kind == GovForecast.Folha && l.Min > 0);
 
     /// <summary>"O que faz" do tooltip, tirado da previsão do Core (nunca texto fixo).</summary>

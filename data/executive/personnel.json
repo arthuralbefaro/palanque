@@ -61,6 +61,9 @@
     "previsao_negar": "Não oferecer nada na {mesa}: {chance} de {categoria} aceitarem",
     "previsao_folha": "Folha: de {antes} para {depois} da RCL ({faixa}; prudencial em {prudencial}, limite em {limite})",
     "previsao_corte": "Cortar comissionados e horas extras: a folha vai de {antes} para {depois} da RCL ({faixa})",
-    "sem_resposta": "A prefeitura não respondeu à {mesa} no prazo: valeu só a revisão geral"
+    "sem_resposta": "A prefeitura não respondeu à {mesa} no prazo: valeu só a revisão geral",
+    "previsao_repasse": "O repasse à Câmara passa de {antes} para {depois} da base de impostos (teto de {teto}; {artigo})",
+    "previsao_repasse_corte": "Cortar o repasse esfria a relação com cada vereador, e quem preside a Câmara guarda a lembrança",
+    "previsao_repasse_aumento": "Aumentar o repasse melhora a relação com cada vereador, e o dinheiro a mais pesa nas contas da prefeitura"
   }
 }

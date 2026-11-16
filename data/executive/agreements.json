@@ -32,6 +32,7 @@
     "previsao_assinar": "Convênio com o {origem}: {valor} para {obra} em {zona}",
     "previsao_contrapartida": "O município entra com {contrapartida}; sobram {resta} de investimento no ano",
     "previsao_prazo": "Prazo de {semanas} semanas; a obra costuma levar de {min} a {max}",
-    "previsao_risco": "Se a obra não for entregue no prazo, o dinheiro volta e não há convênio novo por {bloqueio} semanas"
+    "previsao_risco": "Se a obra não for entregue no prazo, o dinheiro volta e não há convênio novo por {bloqueio} semanas",
+    "previsao_recusar": "Recusar a oferta do {origem} para {obra}: o dinheiro não vem e a contrapartida de {contrapartida} fica livre para outra obra"
   }
 }

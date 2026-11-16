@@ -21,7 +21,7 @@ public sealed record MandateActionResult(bool Ok, MandateActionFailure? Failure,
 /// jogador (eleitores, imagem, fidelidade, relações e capital político), projetos e ações de gabinete.
 /// Toda aleatoriedade vem do Rng do estado.
 /// </summary>
-public sealed class LegislatureEngine
+public sealed partial class LegislatureEngine
 {
     private readonly Dictionary<string, double> _groupShares;
 
