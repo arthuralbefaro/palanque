@@ -1,6 +1,53 @@
 # Progresso
 
-Resumo de cada etapa concluída (CLAUDE.md, seção Autonomia).
+## Relatório da manhã (corujão da Fase R, 2026-11-16)
+
+**Partes concluídas:** só a **R1**, tag local `fase-r1`, **com pendências** (docs/PENDENCIAS.md). RD, R2a, R2b, R3 e R4 não começaram. Parei de propósito: preferi entregar a R1 testada, olhada em captura e corrigida em duas rodadas, a abrir a RD pela metade.
+
+**O que jogar, nesta ordem:**
+1. `docs/ROTEIRO_TESTE_R1.md` (20 minutos). Comece pela criação com 17 anos e o material de campanha novo; depois a tela central numa cidade média que você conheça e numa cidade pequena.
+2. Se sobrar tempo, jogue uma campanha inteira em 4x e anote onde o jogo parou sozinho e se parou demais.
+
+**As 5 coisas de que menos gostei no meu próprio trabalho:**
+1. **O jogo ainda é raso.** A R1 troca a tela, mas as 6 ações continuam com efeito igual em qualquer zona; "Redes sociais" segue sendo a melhor ação quase sempre. O mapa informa, mas ainda não muda nenhuma decisão. Isso só muda na R2a.
+2. **Mandato e prefeitura ficaram nas telas antigas** (P-01). Quem chegar à posse vai sentir o salto de qualidade para trás.
+3. **Mapa de cidade pequena** (P-09): as zonas urbanas são pequenas perto da rural, os rótulos se sobrepõem e, quando um partido lidera tudo, o mapa fica de uma cor só.
+4. **A intenção por zona é uma estimativa** (P-05): a da cidade repesada por idade e situação urbana ou rural. É honesta na tela ("estimativa por zona"), mas não é o voto por zona que a R2a vai calcular.
+5. **Tooltips em três partes só na tela central e na Enciclopédia** (P-02), e não há tela de Opções para as pausas (P-03).
+
+**Pendências que precisam do autor:** P-04 (artigos de lei citados de memória nos tooltips do material de campanha), P-05 (a estimativa por zona basta até a R2a?), P-06 (termos de uso do IBGE), P-08 (15 MB de atributos de zonas no repositório).
+
+**Testes e números finais:**
+- 455 testes no Core (eram 433) e 28 no importador; DataValidator limpo; build do Godot limpo.
+- 12 alvos de fumaça com janela, todos passando: `newworld`, `creator`, `creator17` (novo), `picker`, `hub`, `campaign`, `map`, `mandate`, `prefeitura`, `eventos`, `layout`, `explicacao` (novo).
+- Zonas: 28.135 em 5.570 municípios, 20,5 MB de contornos (teto de 30 MB) e 15 MB de atributos. A população das zonas bate com o Censo sem tolerância em 5.569 municípios; Boa Esperança do Norte (criado depois do Censo) tem uma zona só. Pela regra de sigilo, 1.423 blocos de perfil (idade ou renda) usam o do município.
+- Previsão: em 1.000 execuções das ações, 100% dos resultados caíram na faixa prevista (critério: 80%).
+- Tempo: sete dias produzem exatamente o mesmo estado que uma semana do motor antigo.
+
+**Defeito de teste encontrado e corrigido:** o clique simulado dos testes de fumaça usava coordenadas da janela. Com a janela em 1965 px de largura, ele errava o botão "Mapa" da tela nova. Agora usa as coordenadas do viewport, e o teste `eventos` confere o clique num hub novo antes de tudo.
+
+## R1 — Tela central, mapa da cidade e tempo corrente (2026-11-16, com pendências)
+- **Idade inicial (D-036):** branch `wip/idade-inicial` trazido com os testes que faltavam: 17 a 45 anos, 18 aferidos em 15/8, profissões com idade mínima, Estudante, família coerente. Corrigi duas falhas do branch: validação que ainda exigia 18 anos e chave "uniao_estavel" que não carregava.
+- **Zonas:** modo `zonas` do importador, com Malha de Setores e agregados do Censo 2022 (básico, idade, renda do responsável). Setores agrupados sem misturar urbano e rural; nomes de bairro ou distrito do IBGE, ou nomes do jogo. Contornos com tolerância proporcional ao tamanho de cada zona.
+- **Core:** `Clock` (dia, semana no domingo, pausas por `data/time.json`), `Forecaster` (faixa de cada efeito e chance dos desfechos), `ZoneProjection` (intenção por zona, estimativa) e Enciclopédia em `data/encyclopedia/glossary.json`.
+- **Tela central:**
+  - barra com data, pausa, 1x/2x/4x, fase e quatro números com legenda;
+  - trilho com 7 áreas e painel da área;
+  - mapa 2D das zonas, com 4 modos, zoom, arraste e ficha da zona;
+  - notícias e intenção de voto;
+  - cartão de decisão sobre o mapa, com previsão por escolha e "O que mudou";
+  - dicas de primeira vez, F1 em qualquer tela, tooltips em três partes;
+  - fontes Inter, Oswald e Source Serif 4, e ícones próprios.
+- **Criação:** outdoor (proibido) trocado por adesivo, bandeira e peça de redes.
+
+**Autocrítica de imersão (portão 4):** joguei pelo teste de fumaça `campaign` (38 semanas, sem eleição) e pelos testes de autoplay do Core, e reli os quatro relatos do GDD 17.21. Contra o relato 1, faltam:
+- o coordenador a contratar e o vínculo com o rival;
+- o Seu Anselmo e o pedido dele;
+- a Rádio Vale e o tema em alta;
+- o rival aparecendo numa zona.
+
+O que a R1 já dá é o palco: a cidade real em zonas, o dia passando, a previsão antes do clique e o motivo de cada bloqueio. A semana 20 ainda é igual à semana 2, porque nada no mapa muda a melhor ação e nenhuma pessoa lembra de nada. O feed só mostra eventos do próprio jogador e pesquisas, então o mundo ainda não "se mexe sozinho" na tela. É exatamente o que R2a (território, agenda, lideranças, Livro) e R3 (rivais e mídia) atacam.
+
 
 ## 1C — Mundo e partidos (2026-11-15)
 Famílias, temas, lista de bloqueio (95 itens, não confirmados nas páginas do TSE, nomes contidos também bloqueados), gerador de partidos, WorldSetup com predefinições, travas, validações e cenários salvos, números de candidato.
