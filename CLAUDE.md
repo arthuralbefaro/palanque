@@ -83,3 +83,13 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando, dados invá
   4. a verificação obrigatória continuar falhando depois de 3 tentativas de correção.
 - Ao terminar cada etapa: verificação obrigatória, commits, ROADMAP marcado, resumo de 3 linhas em docs/PROGRESSO.md, e siga para a próxima sem esperar.
 - Se o contexto for compactado, releia CLAUDE.md, docs/ROADMAP.md, docs/DECISOES.md e docs/PROGRESSO.md antes de continuar.
+
+## Fase R (reformulação) — sem modo autônomo
+- A seção Autonomia acima não vale para a Fase R do ROADMAP (R1, R2, R3, RD, R4). O desenho está no GDD, seção 17; o diagnóstico, em docs/AUDITORIA_FASE3.md.
+- Uma parte por vez. Ao terminar uma parte: verificação obrigatória, testes automáticos listados na parte, roteiro de teste da parte atualizado (docs/ROTEIRO_TESTE_R1.md etc.), commits, resumo em docs/PROGRESSO.md. Depois **pare e espere o autor jogar e aprovar**. Não comece a parte seguinte sem aprovação explícita.
+- Antes de começar uma parte, confira no GDD 17.20 as decisões do autor que ela usa. Decisão pendente não é escolhida por conta própria: pergunte.
+- Todo sistema novo cumpre os princípios do GDD 17.1 (a–j) e tem os testes que os verificam. Sistema que não passa no critério não está pronto, mesmo com build e testes verdes.
+- Interface: siga docs/ART_GUIDE.md, seção Interface. Todo controle tem tooltip em três partes; todo termo do glossário tem link para o verbete; controle bloqueado diz por quê e o que falta.
+- Regras de lei novas (limites de gasto e de doação, condutas vedadas, limites fiscais, substituição de mandatários) ficam em objetos de configuração com o padrão da lei vigente e a citação do artigo. Em dúvida, pergunte.
+- Dados novos (zonas, economia, finanças, indicadores sociais, mortalidade) seguem as regras de "Dados dos municípios": só fonte oficial, via tools/Planalto.DataImporter, lacunas registradas em _fontes.json, nenhum número escrito à mão.
+- O pacote de nomes (GDD 17.18) é decisão pendente do autor: não implemente nada dele sem aprovação. Com ou sem pacote, o repositório e data/ nunca contêm nomes reais.
