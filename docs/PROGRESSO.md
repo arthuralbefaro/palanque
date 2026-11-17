@@ -1,5 +1,14 @@
 # Progresso
 
+## Tarde de 17/11 (em andamento)
+
+O autor respondeu às capturas da RL e ao relatório do meio-dia (D-059 e D-060, registradas na main). Em andamento, cada um no seu branch, com o portão completo antes de entrar na main:
+- **RL** (`rl`): as cinco correções pedidas (linhas finas no mapa, legenda de "Minha força" de 0 a 100, ficha estreita ou encaixada, número flutuante nítido, estimativa da equipe na pré-campanha); depois, integração e tag `fase-rl`.
+- **RV-A** (`rva`): noite visível, "Partido líder" pela margem, câmera abrindo no núcleo urbano.
+- **Cansaço por veículo** (`cansaco-veiculo`): baixar o pico da entrevista; o teste de cassação do `WorldLinkTests` em 10 sementes.
+- **BalanceSim** (`balancesim-amostra`): cada cidade joga os dois partidos; em seguida, a linha de base nova da régua.
+- **Para o autor, fora do repositório:** capturas da RL em `C:\dev\capturas-rl\`; guia de arte da RV e prancha das cabeças A e B em `C:\dev\capturas-rv\`.
+
 ## Relatório do meio-dia (17/11)
 
 Trabalho contínuo das 6h30 às 11h30, no modo do corujão: toda dúvida virou a escolha mais conservadora, registrada em PENDENCIAS como "a confirmar pelo autor". Nada foi enviado ao GitHub.
