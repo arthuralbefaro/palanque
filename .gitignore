@@ -20,3 +20,9 @@ Desktop.ini
 
 # Importador de dados: arquivos brutos baixados do IBGE/TSE (a saída em data/municipios/ é versionada)
 tools/Planalto.DataImporter/cache/
+
+# Claude Code: skills de terceiros instaladas por máquina, o registro delas e os worktrees locais
+.claude/skills/
+skills-lock.json
+.claude/worktrees/
+.claude/settings.local.json

@@ -65,6 +65,16 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando, dados invá
 - Se uma instrução do GDD estiver ambígua ou contraditória, pergunte em vez de inventar.
 - Ao final, resuma em poucas linhas o que mudou e o que eu devo testar no jogo.
 
+## Skills de desenvolvimento de jogos
+- Instaladas por máquina em `.claude/skills/` (pacote gamedev-skills/awesome-gamedev-agent-skills), fora do repositório (ver `.gitignore`). Os agentes dentro de `.claude/worktrees/` também as veem. Se uma não aparecer na lista de skills, leia direto `.claude/skills/<nome>/SKILL.md` na raiz do checkout principal.
+- Quando usar:
+  - `game-ui-ux`, `game-feel`, `godot-ui-control`, `godot-csharp` e `camera-systems`: na RL e na RV.
+  - `performance-optimization`: nas metas de desempenho da RV (60 FPS com zoom e arraste; mapa de base de uma metrópole pronto em menos de 3 segundos).
+  - `save-systems`: antes de convidar outros jogadores, para definir as versões de save.
+  - `game-ai` e `ai-behavior-trees-utility-ai`: só se o autor apontar rivais previsíveis ou iguais entre si.
+  - `audio-design`: Fase 9. `steam-publish`: Fase 10.
+- As skills orientam, mas não mandam. Onde divergirem do GDD, do ART_GUIDE ou deste CLAUDE.md, valem os documentos do projeto (ex.: os exemplos delas em GDScript não mudam a regra de C# com lógica só em core/Planalto.Core).
+
 ## Neutralidade e representação
 - Partidos, políticos, empresas, institutos e veículos de mídia são fictícios. Nunca use nomes reais de políticos, partidos ou marcas.
 - Municípios, estados e dados demográficos são reais; prefeitos, vereadores e personalidades locais são fictícios.
