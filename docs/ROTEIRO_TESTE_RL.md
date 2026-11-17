@@ -20,7 +20,7 @@
 3. Clique cada ícone do trilho (Campanha, Pessoas, Agenda, Território, Finanças, Mídia, Partido): o painel **Você** fica sempre no mesmo lugar.
 
 ## 3. Painel de zonas e mapa (3 min)
-1. A tela abre na área **Território**: uma linha por zona com presença (e a barrinha), **líder:** da intenção, **você: Nº**, **demanda:**, a última visita, **lideranças:** e **cansaço:**.
+1. A tela abre na área **Território**: uma linha por zona com presença (e a barrinha), **líder:** da intenção, **você: Nº**, **demanda:**, a última visita, **lideranças:** e **cansaço:** ("geral rende 62%" quer dizer que o próximo compromisso igual ali rende 62% do normal).
 2. Troque a ordem em **Ordenar por presença** (presença, eleitores, sua posição, visita mais antiga, lideranças, cansaço).
 3. Clique uma linha: a zona fica com contorno no mapa e a linha ganha a barra azul, **Fazer agora: Caminhada**, **Ver a ficha** e **Centralizar**.
 4. Clique outra zona **no mapa**: a linha dela fica destacada (a lista rola até ela) e a ficha da zona abre flutuando sobre o mapa.

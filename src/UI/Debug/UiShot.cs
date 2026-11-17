@@ -1590,7 +1590,7 @@ public partial class UiShot : Node
         string zoneName = game.Engine!.ZoneName(target);
         if (hub.SheetName != "Marcar" || zoneOptions is null || !zoneOptions.GetItemText(zoneOptions.Selected).StartsWith(zoneName, StringComparison.Ordinal))
         {
-            Fail("\"Marcar compromisso aqui\" não abriu a marcação com a zona escolhida.");
+            Fail("\"Agendar para outro dia\" não abriu a marcação com a zona escolhida.");
             return;
         }
 
@@ -1641,7 +1641,7 @@ public partial class UiShot : Node
         }
 
         Save(shot, "_zona");
-        GD.Print($"Smoke zona: ok (clique no mapa abriu a ficha de {zoneName}; Marcar compromisso aqui gravou {marked.Type}; marcador no mapa; resultado e cansaço na ficha; feed centraliza o mapa)");
+        GD.Print($"Smoke zona: ok (clique no mapa abriu a ficha de {zoneName}; Agendar para outro dia gravou {marked.Type}; marcador no mapa; resultado e cansaço na ficha; feed centraliza o mapa)");
         GetTree().Quit(0);
     }
 

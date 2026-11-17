@@ -105,7 +105,7 @@ public partial class HubScreen
     private string FatigueText(ZoneRow row) =>
         row.Fatigue.Count == 0
             ? Tr("cansaço: nenhum")
-            : Tr("cansaço:") + " " + string.Join(" · ", row.Fatigue.Take(2).Select(f => string.Format(PtBr, "{0} {1:P0}", FatiguePublico(f.Publico, false), f.Yield)));
+            : Tr("cansaço:") + " " + string.Join(" · ", row.Fatigue.Take(2).Select(f => $"{FatiguePublico(f.Publico, false)} {YieldText(f.Yield)}"));
 
     /// <summary>Uma linha do painel de zonas: cartão clicável; a zona destacada leva a barra de seleção e as ações.</summary>
     private PanelContainer ZoneCard(ZoneRow row)
@@ -173,7 +173,7 @@ public partial class HubScreen
 
             HBoxContainer actions = Ui.Row(col, 8);
             Button open = Ui.Button(actions, "Ver a ficha", () => { _map.Select(row.ZoneId); OpenSheet(Sheet.Zona, row.ZoneId); },
-                Palette.Tip(string.Format(Tr("Abre a ficha de {0}."), row.Name), Tr("mostra quem mora ali, a presença dos primeiros, as lideranças, o que você já fez e o cansaço, com Marcar compromisso aqui."), Tr("nada.")));
+                Palette.Tip(string.Format(Tr("Abre a ficha de {0}."), row.Name), Tr("mostra quem mora ali, a presença dos primeiros, as lideranças, o que você já fez e o cansaço, com Fazer agora e Agendar para outro dia."), Tr("nada.")));
             open.Name = "VerFicha";
             open.SizeFlagsHorizontal = SizeFlags.ExpandFill;
             Button center = Ui.Button(actions, "Centralizar", () => _map.CenterOn(row.ZoneId),

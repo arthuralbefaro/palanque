@@ -885,6 +885,12 @@ public partial class HubScreen
         return lines;
     }
 
+    /// <summary>
+    /// Quanto o próximo compromisso igual ainda rende, pelo cansaço ("rende 62%"): a mesma frase na previsão e no
+    /// painel de zonas, para o número nunca ser lido como o tamanho do cansaço.
+    /// </summary>
+    private string YieldText(double factor) => string.Format(PtBr, Tr("rende {0:P0}"), factor);
+
     /// <summary>A previsão numa frase, para tooltips ("o que faz", com a faixa do Core).</summary>
     private string ForecastSummary(CommitmentRequest r, CommitmentForecast f)
     {
@@ -892,7 +898,7 @@ public partial class HubScreen
         string text = lines.Count == 0 ? Tr("sem efeito nos números") : string.Join("; ", lines);
         if (HasYield(Catalog.Get(r.Type)) && f.FatigueFactor < 0.999)
         {
-            text += "; " + string.Format(PtBr, Tr("o cansaço já está na conta (rende {0:P0})"), f.FatigueFactor);
+            text += "; " + string.Format(Tr("o cansaço já está na conta ({0})"), YieldText(f.FatigueFactor));
         }
 
         return text;
