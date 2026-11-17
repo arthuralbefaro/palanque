@@ -23,7 +23,7 @@ public partial class UiShot
     private List<string> ExplainProblems(Node root, string where)
     {
         var problems = new List<string>();
-        foreach (Control c in FindAll<Control>(root).Where(c => c.IsVisibleInTree()))
+        foreach (Control c in OutsidePopups(root).Where(c => c.IsVisibleInTree()))
         {
             if (InternalReference(c) is { } reference)
             {
@@ -62,6 +62,32 @@ public partial class UiShot
         }
 
         return problems;
+    }
+
+    /// <summary>
+    /// Controles abaixo de <paramref name="root"/>, sem entrar em janelas filhas: o tooltip que o Godot abre sob o
+    /// ponteiro do mouse de verdade (quem usa a máquina pode passar o mouse sobre a janela do teste) é uma janela filha
+    /// do controle, e o texto dele não é texto da tela.
+    /// </summary>
+    private static IEnumerable<Control> OutsidePopups(Node root)
+    {
+        foreach (Node child in root.GetChildren())
+        {
+            if (child is Window)
+            {
+                continue;
+            }
+
+            if (child is Control control)
+            {
+                yield return control;
+            }
+
+            foreach (Control inner in OutsidePopups(child))
+            {
+                yield return inner;
+            }
+        }
     }
 
     private bool ThreeParts(string tip) => tip.Contains(Tr("O que faz:"), StringComparison.Ordinal) && tip.Contains(Tr("Quanto custa:"), StringComparison.Ordinal);
