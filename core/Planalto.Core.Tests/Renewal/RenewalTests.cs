@@ -179,9 +179,9 @@ public class RenewalTests(ITestOutputHelper output)
             $"eleições diretas {run.Diretas}, indiretas {run.Indiretas}; maior tempo de cadeira vaga {run.MaxDiasVaga} dias");
         Assert.All(run.Legislaturas, l => Assert.InRange(l.IdadeMedia, 30, 65));
 
-        // Câmara com 15 cadeiras ou mais: a média de uma legislatura já é estável por si. Nas menores, uma só troca
-        // mexe a média em mais de um ano, e o critério vale para o conjunto (teste abaixo).
-        if (run.Cadeiras >= 15)
+        // Câmara com 13 cadeiras ou mais: a média de uma legislatura já é estável por si (decisão do autor, D-051).
+        // Nas de 9 a 11, uma só troca mexe a média em mais de um ano: lá o critério é a média de 20 sementes (teste abaixo).
+        if (run.Cadeiras >= 13)
         {
             Assert.True(Math.Abs(tenth.IdadeMedia - first.IdadeMedia) < 5, $"{run.Nome}: {first.IdadeMedia:0.0} → {tenth.IdadeMedia:0.0}");
         }
@@ -199,8 +199,41 @@ public class RenewalTests(ITestOutputHelper output)
         output.WriteLine($"Renovação média da Câmara por eleição (não reeleitos ÷ cadeiras; só informativo): {renewal:0}%");
         output.WriteLine($"Mortes: {runs.Sum(r => r.Mortes)}; de titulares: {runs.Sum(r => r.MortesTitulares)}; vagas na Câmara: {runs.Sum(r => r.Vagas)}; maior tempo de cadeira vaga: {runs.Max(r => r.MaxDiasVaga)} dias.");
         Assert.True(Math.Abs(tenth - first) < 5, $"{first:0.0} → {tenth:0.0}");
-        Assert.All(runs.Where(r => r.Cadeiras < 15), r => Assert.True(Math.Abs(r.Legislaturas[9].IdadeMedia - r.Legislaturas[0].IdadeMedia) < 10, r.Nome));
         Assert.True(runs.Sum(r => r.MortesTitulares) > 0, "nenhuma morte de titular em 40 anos em oito municípios");
+    }
+
+    /// <summary>
+    /// Câmaras de 9 a 11 cadeiras (decisão do autor, D-051): o que se mede é a deriva da idade média, não o acaso
+    /// de uma semente. O critério de menos de 5 anos entre a 1ª e a 10ª legislatura vale para a média de 20 sementes;
+    /// uma semente isolada pode passar de 5 anos.
+    /// </summary>
+    [Fact]
+    [Trait("Categoria", "Lento")]
+    public void Idade_media_nas_Camaras_de_9_a_11_cadeiras_deriva_menos_de_5_anos_na_media_de_20_sementes()
+    {
+        const int Sementes = 20;
+        var towns = FortyYearCases().Select(c => ((string)c[0], (int)c[1], (ulong)c[2]))
+            .Where(c => Simulate(c.Item1, c.Item2, c.Item3).Cadeiras is >= 9 and <= 11)
+            .Select(c => (Porte: c.Item1, Skip: c.Item2))
+            .ToList();
+        Assert.NotEmpty(towns);
+
+        foreach (var (porte, skip) in towns)
+        {
+            var drifts = new double[Sementes];
+            string name = "";
+            int seats = 0;
+            System.Threading.Tasks.Parallel.For(0, Sementes, i =>
+            {
+                Run run = Simulate(porte, skip, 1000UL + (ulong)i);
+                drifts[i] = run.Legislaturas[9].IdadeMedia - run.Legislaturas[0].IdadeMedia;
+                name = run.Nome;
+                seats = run.Cadeiras;
+            });
+            double mean = drifts.Average();
+            output.WriteLine($"{name} ({seats} cadeiras): deriva média em {Sementes} sementes {mean:+0.0;-0.0} anos; por semente: {string.Join(" ", drifts.Select(d => d.ToString("+0.0;-0.0")))}");
+            Assert.True(Math.Abs(mean) < 5, $"{name}: deriva média de {mean:0.0} anos em {Sementes} sementes");
+        }
     }
 
     // ---------------------------------------------------------------- regra, em objeto de configuração
