@@ -206,7 +206,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 
 ## RV — Redefinição visual (protótipo e estilo; base das partes RV-A, RV-C e RV-B)
 
-> Decidida pelo autor em 16/11 (DECISOES D-041, adendos; entram como D-043, personagens 3D estilizados de formas suaves, e D-044, mapa 2D detalhado e fiel ao lugar real com a interface em janelas flutuantes). Não começa durante a Fase R. Os itens, os testes e as metas de desempenho desta parte são escritos na entrega do fim da `fase-r-final`; as metas já fixadas pelo autor são 60 FPS com zoom e arraste e mapa de base de uma metrópole pronto em menos de 3 segundos.
+> Decidida pelo autor em 16/11: **D-043** (retratos e personagens em bonecos 3D estilizados de formas suaves) e **D-044** (mapa da cidade 2D detalhado e fiel ao lugar real, com a interface em janelas flutuantes); origem na D-041 e nos adendos. O protótipo foi entregue ao fim da `fase-r-final`, no branch `rv-prototipo`, que **não entra na main antes da RL** (D-054). Esta parte não tem tag própria: seus itens entram nas partes da D-055, na ordem **RL → RV-A → RV-C → RV-B**, e cada item abaixo diz em qual. Guia: `docs/ART_GUIDE.md`, Parte 1 (proposta a aprovar pelo autor). Pendências: P-39 (fontes e tamanhos do mapa de base) e P-40 (o que o protótipo pede ao autor).
 
 **Referências de composição e de conteúdo** (não de estilo; o código delas não entra no jogo):
 - `docs/referencias/rv_tela_central.html`: a tela central sobre o mapa da cidade, com o mundo ocupando a tela inteira, janelas semitransparentes flutuando sobre ele e a interface nas bordas.
@@ -223,10 +223,14 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - Quaternius fora até a confirmação da licença por escrito.
 - Artista 3D só para cabeça, expressões e roupas, depois do protótipo aprovado e de um teste pago (`docs/BRIEFING_ARTISTA_3D.md`).
 
-**Protótipo** (entregue ao fim da `fase-r-final`):
-- Mantena (MG) e uma metrópole, com o mapa de base detalhado e os modos do jogo por cima.
-- Uma janela flutuante e o menu como cena.
-- **Teste A/B de cabeça** (D-045, adendos), as duas pelo contrato técnico do ART_GUIDE (seção RV, "Cabeça substituível"), com a cena de teste de cabeça:
+**Protótipo · entregue ao fim da `fase-r-final` (branch `rv-prototipo`; capturas, prancha e `medidas.md` em `docs/referencias/rv/` nesse branch):**
+- [x] Mantena (MG) e Belo Horizonte, com o mapa de base detalhado e os modos do jogo por cima (Minha força, Partido líder, Renda, Idosos, Urbana/rural). Relevo não feito (nenhuma fonte de elevação licenciada, P-39).
+- [x] Uma janela flutuante e o menu como cena (comitê à noite, 6 personagens, "PALANQUE").
+- [x] Teste A/B de cabeça, prancha e autocrítica (abaixo). A prancha e as cabeças A e B **esperam o julgamento do autor; nenhuma foi declarada boa o bastante.**
+
+O que foi pedido para o protótipo (registro):
+- Mantena (MG) e uma metrópole, com o mapa de base detalhado e os modos do jogo por cima; uma janela flutuante e o menu como cena.
+- **Teste A/B de cabeça** (D-045, adendos), as duas pelo contrato técnico do ART_GUIDE (Parte 1, seção 9, "Cabeça substituível"), com a cena de teste de cabeça:
   - **Cabeça A, base CC0:** a cabeça estilizada dos Human Base Meshes do Blender, adaptada ao contrato. Se a conversão exigir o Blender instalado, nada é instalado: fica a PENDENCIAS P-29 e o protótipo segue com a B.
   - **Cabeça B, gerada por código:** formas suaves (cápsula, esferas, curvas) montadas no Godot ou por um gerador em `tools/`, sem pacote novo. Expressões por troca de peças ou textura do rosto, não por deformação. Estilo de boneco de desenho animado, não low-poly facetado.
   - **Personagens:** para cada cabeça, os mesmos 3 personagens (pele clara, média e escura; gêneros e idades diferentes, um jovem e um idoso com grisalho e rugas pela Appearance), nas expressões neutra, sorriso e bravo, com cabelo e roupa trocáveis, cores por material e a cor do partido.
@@ -234,10 +238,59 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
   - **Autocrítica** de até 10 linhas no relatório da RV: o que ficou bom e ruim em cada uma, qual chega mais perto das referências com retoque, e onde só um artista resolveria. Nenhuma das duas é declarada boa o bastante: quem decide é o autor.
   - **Verificação:** as duas cabeças carregam pelo mesmo código de personagem; trocar A por B não muda nada fora do nó da cabeça; o cache de retrato funciona nos três tamanhos; 60 FPS na cena do menu com os 6 personagens.
 
-**Nome do jogo para o jogador (D-046):** junto com o menu como cena, o nome visível passa a ser "Palanque", com o subtítulo "Simulador de Carreira Política": título da janela, menu, créditos, textos do jogo e página de loja. Código, solução, namespaces e pastas continuam como Planalto.
+**Resultado do protótipo:**
+- **Verificação** (alvo de fumaça `rv_prototipo`):
+  - as duas cabeças passam no contrato (A: 7.094 triângulos, shape keys; B: 4.786 visíveis no pior caso, troca de peças do rosto, com o aviso do material `interior_boca`);
+  - cache de retratos: 54 de 54 acertos na segunda volta;
+  - troca A → B: os 19 nós fora da cabeça ficaram iguais;
+  - **60 FPS no menu: não passou.** Em qualidade cheia, 31 a 36 FPS; em qualidade leve (sem sombra nem brilho, 3D a 75% com FSR), 50 a 58.
+- **Medidas do protótipo**, três rodadas, **com a máquina dividida com outros programas** (outro Godot com janela e compilações de outros trabalhos), sincronia vertical desligada, Radeon integrada (Ryzen 5 7520U):
+
+| O que | Rodada 1 | Rodada 2 | Rodada 3 |
+|---|---|---|---|
+| Mapa de Belo Horizonte pronto | 777 ms (com a campanha) | 479 ms | 565 ms |
+| Mapa de Mantena pronto | 1.900 ms (com o mundo) | 383 ms | 81 ms |
+| Zoom e arraste em Mantena, FPS médio (1% pior) | 218 (55) | 233 (131) | 230 (124) |
+| Zoom e arraste em BH, FPS médio (1% pior) | 160 (29) | 168 (96) | 167 (96) |
+| Menu, cabeça A, cheia | 32 (27) | 32 (26) | 31 (20) |
+| Menu, cabeça A, leve | 56 (36) | 55 (31) | 56 (41) |
+| Menu, cabeça B, cheia | 34 (26) | 36 (24) | 36 (20) |
+| Menu, cabeça B, leve | 50 (8) | 58 (46) | 56 (45) |
+
+- **Arquivos e verificação do branch:** mapa de base de BH com 17,8 MB (7,1 MB com gzip), Mantena 0,54 MB. Verificação do branch: build sem avisos, 798 testes rápidos, 88 do importador, DataValidator, import e build do Godot, `rv_prototipo`, `layout` e `newworld`.
+- **Autocrítica do protótipo** (resumo): a A tem o rosto mais acabado, mas parece criança e realista demais, com sorriso e bravo fracos a 96 px e o piscar incompleto; a B chega mais perto de Two Point Hospital e Overcooked e lê melhor o bravo, mas tem rosto oval simples, nariz e orelhas colados e pescoço fino e comprido. Nas duas, as três expressões só se distinguem com esforço a 96 px; o cabelo em casca parece capacete e o preto sai acinzentado; corpos e roupas parecem sacos e as mãos, luvas. No mapa, as quadras fecham em cerca de 80% dos códigos e os nomes de rua vêm sem acento. No menu, a composição funciona, mas a luz deixa os rostos escuros e o cartaz fica atrás do painel. Com retoque, a B chega mais perto das referências; só um artista resolveria rosto, cabelos, roupas e corpo.
+
+**Itens da RV, por parte** (cada um se marca na parte em que entra; o desenho está no GDD 3.1, 3.6, 3.7, 7.4, 13, 17.3 e 17.5 e no ART_GUIDE, Parte 1):
+- [ ] **RL:** base das janelas flutuantes: ficha da zona em pilha, só a de cima recebe clique, Esc volta, foco preso no cartão de decisão; painéis atualizados por sinal do Core (é o item da RL "Base para as janelas").
+- [ ] **RV-A:** mapa de base de todo município em foco no importador: faces de logradouro, quadras remontadas, BC250 e, se licenciado, relevo, em formato compacto indexado (vértices indexados em 16 bits), recortado no município, guardado ou gerado como o autor decidir (P-39).
+- [ ] **RV-A:** rótulos por nível de zoom com desvio de colisão (zonas e localidades de longe; ruas, rios e rodovias de perto); localidades da BC250 dando nome às zonas rurais sem bairro do IBGE.
+- [ ] **RV-A:** interface em janelas flutuantes sobre o mapa, com a interface nas bordas (GDD 17.3, "Na parte RV"; ART_GUIDE, Parte 1, seção 5).
+- [ ] **RV-A:** menu como cena que muda com a carreira (comitê de vereador, gabinete de prefeito, palácio), com o menu sobre a cena; com a cabeça aprovada ou, sem julgamento até lá, com a provisória do protótipo.
+- [ ] **RV-A:** nome "Palanque" com o subtítulo "Simulador de Carreira Política" no título da janela, no menu, nos créditos e nos textos do jogo (D-046).
+- [ ] **RV-A:** qualidade gráfica nas Opções (cheia, ou leve: sem sombra nem brilho e 3D a 75% com FSR), se o autor aprovar (P-40).
+- [ ] **RV-A:** estilo final da interface (paleta do mapa de base, janelas, luz de dia e de noite) pelo ART_GUIDE, Parte 1, depois de aprovado.
+- [ ] **RV-C:** mundo vivo pelo ART_GUIDE, Parte 1, seção 10 (os itens estão na RV-C, abaixo).
+- [ ] **RV-B:** bonecos da cabeça aprovada: retratos 3D no lugar dos 2D, pelo `PortraitCache` nos três tamanhos (GDD 7.4). **Proposta**, a confirmar pelo autor (P-40).
+- [ ] **RV-B:** cenas das telas fora do jogo: estúdio de foto na criação, seção eleitoral na urna, estúdio de TV na apuração (`rv_cenas.html`). **Proposta**, a confirmar pelo autor (P-40).
+
+**Testes da RV** (crescem a cada parte):
+- **RV-A:** o alvo `rv_prototipo` vira `rv`, com janela: carga do mapa de base, FPS com zoom e arraste, contrato de cabeça, cache de retratos, troca de cabeça só no nó, rótulos sem colisão.
+- **RV-A:** nenhum texto visível ao jogador com "Planalto" como nome do jogo (D-046).
+- **RV-A:** importador: toda quadra dentro do polígono do município; nomes de zona iguais aos de `data/zonas/`; teto de tamanho por município.
+- **RV-A:** medição de FPS e de tempo de carga três vezes, **com a máquina livre**, em Mantena e numa metrópole, na placa-alvo definida pelo autor.
+- **RV-C e RV-B:** os testes de cada parte, abaixo; o alvo `rv` passa a cobrir os elementos do mundo vivo e as cenas.
+
+**Metas de desempenho:**
+- **Do autor:** 60 FPS com zoom e arraste. No protótipo: de 160 a 233 FPS de média, 1% pior de 29 a 131.
+- **Do autor:** mapa de base de uma metrópole pronto em menos de 3 s. No protótipo: Belo Horizonte de 0,48 a 0,78 s.
+- **Proposta:** 60 FPS no menu com 6 personagens na placa-alvo a definir (P-40). No protótipo, na Radeon integrada, **o menu não chegou a 60 FPS em qualidade cheia** (31 a 36); só a leve chega perto (50 a 58).
+- **Da RV-C e da RV-B:** 60 FPS com o mundo vivo ligado numa metrópole e na cena com a multidão.
+- Todas as medidas do protótipo foram feitas com a máquina dividida com outros programas; remedir com a máquina livre antes de fixar a placa-alvo.
+
+**Nome do jogo para o jogador (D-046), na RV-A:** junto com o menu como cena, o nome visível passa a ser "Palanque", com o subtítulo "Simulador de Carreira Política": título da janela, menu, créditos, textos do jogo e página de loja. Código, solução, namespaces e pastas continuam como Planalto.
 - **Teste:** nenhum texto visível ao jogador (dados de `data/`, textos de tela, título da janela, créditos) contém "Planalto" como nome do jogo; "Palácio do Planalto" como lugar continua permitido.
 
-**Critério de aprovação do protótipo** (o autor julga sem olhar o rosto):
+**Critério de aprovação do protótipo** (o autor julga sem olhar o rosto; **situação: a julgar**):
 - composição das telas conforme as referências;
 - câmera: enquadramentos e zoom da cidade inteira até a rua;
 - cor;
@@ -245,7 +298,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - 60 FPS com zoom e arraste;
 - mapa de base de uma metrópole pronto em menos de 3 segundos.
 
-**Critério do rosto** (não entra na aprovação do protótipo; vale primeiro para as cabeças A e B do teste A/B e, se o autor reprovar as duas, para o teste pago do artista):
+**Critério do rosto** (não entra na aprovação do protótipo; vale primeiro para as cabeças A e B do teste A/B e, se o autor reprovar as duas, para o teste pago do artista; **situação: A e B esperam o julgamento do autor**):
 - a cabeça passa na cena de teste de cabeça (nomes, materiais, expressões, orçamento);
 - as 3 expressões se distinguem nos retratos de 96 px e de 512 px;
 - a tintura funciona em todos os tons de pele do catálogo;
@@ -256,7 +309,7 @@ Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se 
 
 > Decidido pelo autor em 17/11, depois de jogar a `fase-r4` em Mantena ("entediante e bem confuso", "só texto", "mais fácil só realizar a ação"; e uma referência de tela com painéis e polígonos achada "pouco imersiva"). Ele quer três coisas: **(A) a cidade real desenhada no mapa; (B) gente na tela, em cenas; (C) o mundo se mexendo à volta.** Diagnóstico: os sistemas existem; falta a tela mostrar o jogo e dar a sensação de estar na cidade.
 > **Ordem:** a correção bloqueante dos traços na criação e a `fase-r-final` vêm antes de tudo; depois **RL → RV-A → RV-C → RV-B**, cada uma com tag própria. O estilo final (fontes, paleta, menu como cena, nome "Palanque") acompanha a RV-A. A Fase 6 só começa depois.
-> **Em todas:** lógica e números só no Core, a tela exibe; capturas ao autor **no meio** do trabalho, não só no fim (o autor quer corrigir o rumo cedo); dados geográficos só de fontes oficiais ou abertas, com crédito, e nomes de bairro do OpenStreetMap só com o autor liberando; assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius. Skills de apoio (orientam; GDD, ART_GUIDE e CLAUDE.md prevalecem): game-ui-ux, game-feel, godot-ui-control, godot-csharp, camera-systems, performance-optimization e audio-design.
+> **Em todas:** lógica e números só no Core, a tela exibe; capturas ao autor **no meio** do trabalho, não só no fim (o autor quer corrigir o rumo cedo); dados geográficos só de fontes oficiais ou abertas, com crédito, e nomes de bairro do OpenStreetMap só onde o IBGE não tem bairro, com crédito (liberados pela D-058); assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius. Skills de apoio (orientam; GDD, ART_GUIDE e CLAUDE.md prevalecem): game-ui-ux, game-feel, godot-ui-control, godot-csharp, camera-systems, performance-optimization e audio-design.
 
 ## RL — Leitura mínima · tag `fase-rl`
 
@@ -280,11 +333,11 @@ Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se 
 
 > O mapa de base do protótipo da RV vira o mapa do jogo. O estilo final (fontes, paleta, menu como cena, nome "Palanque") entra junto.
 
-- [ ] Ruas com nome, rios, estradas, localidades, relevo sombreado, mancha urbana, praças e quarteirões, de fonte oficial ou aberta, com crédito (pesquisa de fontes e tamanhos na PENDENCIAS, decisão do autor).
+- [ ] Ruas com nome, rios, estradas, localidades, relevo sombreado, mancha urbana, praças e quarteirões, de fonte oficial ou aberta, com crédito (pesquisa de fontes e tamanhos na PENDENCIAS P-39, decisão do autor; itens da parte RV acima).
 - [ ] Zoom da cidade inteira até a rua; câmera com zoom e arraste suaves e independentes do FPS, travada nos limites do município, com corte seco quando o feed centraliza.
 - [ ] Zonas como cor translúcida por cima do mapa de base, com os modos do jogo.
 - [ ] Luz de dia e de noite pela hora do relógio.
-- [ ] Estilo final da interface (fontes, paleta) e o menu como cena, pela parte RV abaixo.
+- [ ] Estilo final da interface (fontes, paleta) e o menu como cena, pela parte RV acima.
 - **Metas:** 60 FPS com zoom e arraste; mapa de base de uma metrópole pronto em menos de 3 s.
 - **Testes:** medição de FPS e de tempo de carga em Mantena e numa metrópole (três vezes, máquina livre); fumaça com janela do zoom até a rua e do modo de cada zona por cima; capturas em 1366×768, 1920×1080 e 2560×1080.
 - **No meio:** capturas e um **vídeo de 20 a 30 s** (Mantena, de manhã e à noite) ao autor.
@@ -349,10 +402,10 @@ Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se 
 - [ ] Eventos dinâmicos gerados pela simulação (seção 15.4)
 
 ## Fase 9 — Polimento
-- [ ] Arte final de retratos (ilustrador ou pipeline próprio)
-- [ ] Bonecos 3D parametrizados a partir de Appearance (seção 13.2): materiais tingíveis, formatos 3D de cabelo e barba mapeados dos estilos 2D
+- [ ] Arte final de retratos (ilustrador ou pipeline próprio) — com a D-043, os retratos passam a ser renderizados dos bonecos 3D (parte RV, item da RV-B)
+- [ ] Bonecos 3D parametrizados a partir de Appearance (seção 13.2): materiais tingíveis, formatos 3D de cabelo e barba mapeados dos estilos 2D — adiantado para a parte RV (D-043), com a cabeça aprovada no teste A/B ou a do artista
 - [ ] Cerimônias de posse em 3D (seção 13.2), começando pela presidencial e pela de vereador, depois os demais cargos; sempre puláveis
-- [ ] Cena da seção eleitoral (ilustração 2D com parallax), sons originais da urna e acessibilidade da urna (áudio de confirmação, fonte grande)
+- [ ] Cena da seção eleitoral (ilustração 2D com parallax; pela D-043 e `rv_cenas.html`, proposta como cena 3D estilizada na RV-B), sons originais da urna e acessibilidade da urna (áudio de confirmação, fonte grande)
 - [ ] Animações, áudio, jingles, música
 - [ ] Tutorial na primeira campanha
 - [ ] Opções e acessibilidade

@@ -1,4 +1,4 @@
-Atualizado em 2026-11-17, depois de: fase-r-final concluída com pendências (tag fase-r-final), com as correções da criação achadas pelo autor na fase-r4. Próximo: entrega da RV (decisões, GDD, ART_GUIDE, pesquisa do mapa de base, protótipo no branch rv-prototipo) e as partes RL → RV-A → RV-C → RV-B (D-055).
+Atualizado em 2026-11-17 02:01, depois de: entrega da RV como textos (D-043 e D-044, GDD, ART_GUIDE como proposta, P-39 e P-40, parte RV do ROADMAP), com o protótipo no branch rv-prototipo, fora da main até a RL. Próximo: o autor decide o que a RV pede (seção 8) e começa a RL; depois RV-A → RV-C → RV-B (D-055).
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -109,7 +109,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 10. **Fluxo de desenvolvimento.**
 11. **Riscos e cuidados.**
 12. **Municípios:** todos, com fontes oficiais, vagas reais de vereador, porte (pequeno até 20 mil, médio até 100 mil, grande até 500 mil, metrópole) e simulação por nível de detalhe (detalhado no município em foco, agregado no resto).
-13. **2.5D e 3D:** mapa do estado e do país extrudado; posses em 3D estilizado de formas suaves (o mesmo estilo dos retratos novos, parte RV), sempre puláveis.
+13. **2.5D e 3D:** mapa do estado e do país extrudado; a partir da parte RV, tudo o que mostra gente em 3D estilizado de formas suaves (D-043): retratos, menu como cena, cenas da RV-B e posses, sempre puláveis. Bases CC0 (KayKit, Human Base Meshes), Quaternius fora, artista só se o autor reprovar as duas cabeças do teste A/B (D-045). O mapa da cidade continua 2D.
 14. **Partidos:** 16 famílias ideológicas simétricas; partido criado pelo jogador, no início ou fundado durante a carreira pela Lei dos Partidos.
 15. **Eventos:** meta de 600 ou mais em 12 categorias, com condições, raridade, cooldown, cadeias e variáveis.
 16. **Novo Mundo:** predefinições de quantidade de partidos; urna jogável no dia da eleição; cenário "Brasil 2026", que espelha bancadas, prefeitos e força local reais com nomes fictícios.
@@ -121,7 +121,8 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
      - trilho com 7 áreas: Campanha ou Mandato, Pessoas, Agenda, Território, Finanças, Mídia, Partido e Câmara;
      - painel da área à esquerda e mapa 2D das zonas sempre visível no centro;
      - coluna direita com Notícias, Objetivos e Intenção de voto;
-     - decisões em cartão sobre o mapa, que pausam o jogo.
+     - decisões em cartão sobre o mapa, que pausam o jogo;
+     - na RV-A (D-044), o mapa ocupa a tela inteira e os painéis viram janelas semitransparentes sobre ele, com a interface nas bordas (barra de ícones embaixo, retrato num canto, minimapa no outro); a pilha de janelas com Esc entra antes, na RL.
    - **17.4 Tempo:**
      - o dia é a unidade, com 3 turnos;
      - campanha a 4, 2 ou 1 segundo por dia; mandato a 1, 0,5 ou 0,25;
@@ -130,7 +131,8 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
    - **17.5 Território:**
      - de 3 a 20 zonas por cidade, conforme o porte, montadas dos setores do Censo 2022; teto de 30 MB para os contornos;
      - cada candidato tem presença por zona, que decai e transborda para as vizinhas;
-     - religião e escolaridade por área de ponderação do IBGE; regra própria para dados omitidos por sigilo.
+     - religião e escolaridade por área de ponderação do IBGE; regra própria para dados omitidos por sigilo;
+     - na RV-A (D-044), um mapa de base da cidade real por baixo das zonas: ruas com nome e quadras (Faces de Logradouros 2022), rios, estradas, ferrovias e localidades (BC250 do IBGE), relevo se houver fonte licenciada; zoom até a rua, rótulos sem colisão, luz de dia e de noite. Nada de OpenStreetMap sem o autor liberar.
    - **17.6 Agenda:**
      - compromissos (caminhada, reunião, visita, comício, entrevista, gravação, jantar, evento da cidade, descanso);
      - fórmula de rendimento com cansaço (o terceiro igual rende 45%), ocasião, deslocamento e delegação.
@@ -227,8 +229,14 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - **Em branch, fora da main:** `cansaco-veiculo` (cansaço da entrevista por veículo e vagas; o par do pequeno cai para 19%, mas o tipo sobe para 82,5%, à espera da escolha do autor) e `regua-d026` (relatório da régua de dificuldade, sem ajuste).
 - **fase-r-final feita, com pendências (tag `fase-r-final`):** correções da criação (traços que não liberavam o botão, biografia, acentos); tooltips em três partes em todas as telas (P-02); Opções → Tempo e religar dicas (P-03); mapa de cidade pequena fechado (P-09); cliques dos testes de fumaça firmes (P-33); 1.024 testes no Core, 32 alvos de fumaça.
 - **Depois da Fase R (D-054 e D-055):** RL (leitura mínima: relógio, painel Você, painel de zonas, "Fazer agora", número flutuante, retratos) → RV-A (cidade real no mapa, estilo final) → RV-C (mundo vivo) → RV-B (cenas), cada uma com tag e capturas no meio.
+- **Entrega da RV (17/11), só textos na main; protótipo no branch `rv-prototipo`, que não entra na main antes da RL:**
+  - **Decisões:** D-043 (retratos e personagens em bonecos 3D estilizados de formas suaves, estilo Two Point Hospital, Overcooked e Planet Coaster, não low-poly facetado) e D-044 (mapa da cidade 2D detalhado e fiel ao lugar real; interface em janelas flutuantes sobre o mapa).
+  - **GDD** 3.1, 3.6, 3.7, 7.4, 13, 17.3 e 17.5 atualizados; **ART_GUIDE** reescrito como proposta a aprovar (Parte 1), com o guia atual intacto no Anexo A, que vale até a aprovação; **ROADMAP** com a parte RV completa: cada item diz se entra na RL, na RV-A, na RV-C ou na RV-B.
+  - **O protótipo:** mapa de base de Mantena e Belo Horizonte (ruas com nome, quadras remontadas das faces de logradouro, rios, estradas, ferrovias, localidades; sem relevo) com as zonas translúcidas por cima, uma janela flutuante e a interface nas bordas; menu como cena (comitê à noite, 6 personagens, "PALANQUE"); teste A/B de cabeça (A, de base CC0, por shape keys; B, gerada por código, por troca de peças do rosto), as duas aprovadas no contrato técnico, com prancha de retratos em 96, 256 e 512 px.
+  - **Medidas** (Radeon integrada, máquina dividida com outros programas): mapa de BH pronto em 0,5 a 0,8 s (meta: menos de 3 s); zoom e arraste de 160 a 233 FPS (meta: 60). O menu ficou em 31 a 36 FPS em qualidade cheia e 50 a 58 em leve: **não chegou a 60 em qualidade cheia**.
+  - **Autocrítica:** a A parece criança e realista demais; a B chega mais perto das referências; nas duas as expressões mal se distinguem a 96 px, o cabelo parece capacete, corpos e roupas parecem sacos e as mãos, luvas. **Nenhuma cabeça foi declarada boa o bastante; quem julga é o autor.**
 - **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4`, `fase-r-final`.
-- **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
+- **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (em vigor: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768; proposta da RV por cima, a aprovar), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
 
@@ -270,7 +278,9 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-035: decisões do autor sobre o GDD 17.20, listadas abaixo.
 - D-037: respostas do autor às pendências da R1; teto de 20 MB em `data/zonas/`; corujão estendido à Fase R inteira.
 - D-038: escolhas da RD (finanças do DF pelo ente estadual, RAIS de estabelecimentos, homicídios por agressão, declarações implausíveis descartadas, eleitores por zona pela moradia).
-- D-042 e D-048: escolhas da R3 e o balanceamento com 200 campanhas; D-041 e D-045 a D-047: respostas do autor (integração, retratos e mapa da RV, artista, nome "Palanque", autoria com colaboradores); D-043 e D-044 ficam reservados para as decisões de visual, entregues ao fim da `fase-r-final`.
+- D-042 e D-048: escolhas da R3 e o balanceamento com 200 campanhas; D-041 e D-045 a D-047: respostas do autor (integração, retratos e mapa da RV, artista, nome "Palanque", autoria com colaboradores).
+- D-043: retratos e personagens em bonecos 3D estilizados de formas suaves (não low-poly facetado), os mesmos dos retratos, do menu, das cenas e das posses; o que o protótipo mostrou e o que fica para o autor.
+- D-044: mapa da cidade 2D detalhado e fiel ao lugar real (faces de logradouro, BC250, relevo se licenciado; zoom até a rua; zonas translúcidas por cima; luz de dia e de noite) e interface em janelas flutuantes; medidas do protótipo e o que fica para o autor.
 - D-040: escolhas da R2b (equipe sem função vale o pior padrão, delegação a 50%, verba cobrada toda segunda, pré-campanha com teto, incoerência em 52 semanas, 7 tipos de objetivo).
 - D-039: escolhas da R2a (presença de partida, alcance pela fatia da cidade, reunião só com liderança do público, evento dividindo cansaço com a caminhada, dificuldade dos rivais, como o BalanceSim mede a "melhor escolha da semana").
 - D-049: zona rural por distritos e o mapa de cidade pequena; D-050: escolhas da R4 (indicadores com piso e teto nos percentis 1 e 99, parâmetros de sucessão, contas só fora de campanha, entressafra com 3 turnos).
@@ -321,6 +331,9 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - P-08: 15 MB de atributos de zonas no repositório.
 - **Da fase-r-final:** P-38 (opções sem efeito, Zona Sudoeste de Mesquita, testes lentos). P-02, P-03, P-09 fechadas.
 - **Novas, depois da R4:** P-35 (pacote de nomes privado, D-053), P-37 (itens da RL fora da leitura mínima).
+- **Da entrega da RV, decisões do autor:**
+  - P-39 (substitui as opções da P-25): licença das Faces de Logradouros (não confirmada) e termos da BC250; fonte de elevação (Topodata, ANADEM, Copernicus ou MDE do IBGE, nenhuma confirmada) ou ficar sem relevo; como guardar o mapa de base: (b) pré-gerado e baixado por município (0,3 a 3 MB cada, 1 a 3 GB no país, fora do repositório, depende da licença), (c) só cidades pequenas no repositório com teto, ou (d) gerado pelo importador no computador do jogador. Gerar na hora a partir dos brutos (a) exigiria pacote novo no jogo.
+  - P-40: julgar as cabeças A e B pela prancha (aprovando uma, o artista não é chamado; reprovando as duas, teste pago do artista); aprovar duas convenções do contrato da cabeça (sufixo numérico do Blender, como `expr_bravo.001`, ignorado; material `interior_boca` aceito); se a qualidade leve vira opção; a placa de vídeo-alvo dos 60 FPS, remedindo com a máquina livre; a licença dos Human Base Meshes na página oficial; os pontos em aberto da proposta do ART_GUIDE; em que parte entram os retratos 3D e as cenas de urna, apuração e estúdio de foto (proposta: RV-B).
 - **Do Claude Code, mais à frente:** conferir no texto oficial os artigos de lei citados de memória antes de virarem configuração (R3 e R4).
 
 ## 9. Próximos passos ao abrir um chat novo
@@ -328,8 +341,9 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 1. Colar este documento e dizer em que ponto o autor está (o que jogou, o que achou).
 2. Se o Claude Code parou por limite de uso: mandar retomar o corujão (frase na seção 10).
 3. Ler o "Relatório para o autor" no topo do PROGRESSO.md, jogar a `fase-r4` com o ROTEIRO_TESTE_R4 e trazer as impressões. Decidir a P-26 (régua da D-026 e o cansaço por veículo, caminhos 2 e 3 em medição) e a P-36.
-4. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
-5. Revisar a lista de pendências e o registro de decisões; reverter o que não agradar.
+4. Para a RV: olhar as capturas e a prancha em `docs/referencias/rv/` no branch `rv-prototipo`, julgar as cabeças A e B, ler a proposta do ART_GUIDE (Parte 1) e responder à P-39 e à P-40. A RL pode começar antes disso: ela não depende do estilo.
+5. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
+6. Revisar a lista de pendências e o registro de decisões; reverter o que não agradar.
 
 ## 10. Como pedir trabalho ao Claude Code
 
