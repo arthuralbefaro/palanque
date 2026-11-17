@@ -4,7 +4,8 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 
 ## R1 — com pendências
 
-### P-01 · Mandato de vereador e prefeitura ainda nas telas antigas
+### P-01 · Mandato de vereador e prefeitura ainda nas telas antigas — **fechada na R4 (tag fase-r4)**
+- **Fechamento:** mandato de vereador, prefeitura e entressafra estão na tela central, com as áreas do trilho, previsões montadas no Core e tooltips em três partes; as telas antigas foram removidas (D-050).
 - **Falta:** o item "Painéis com o conteúdo atual" da R1 pede que mandato e prefeitura virem áreas da tela central e que as telas antigas saiam. Só a campanha foi para a tela central.
 - **Provisório:** fora da campanha, o jogo usa as telas de mandato, prefeitura e entressafra como estavam. Na campanha de reeleição, o vereador já usa a tela central.
 - **Para fechar:** levar pauta, votos e ações de gabinete (mandato) e orçamento, políticas, secretarias e crise (prefeitura) para áreas do trilho, com tooltips em três partes; o tempo corrente do mandato (1 s por dia em 1x) já está em `data/time.json`.
@@ -136,7 +137,7 @@ Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Si
 6. **"Como te veem 0,00":** mostrar a imagem numa escala legível, seguindo o ART_GUIDE. — aberto
 7. **Cores do logotipo aparecem como quadrados vazios.** — aberto
 8. **Personagem que não pode disputar a primeira eleição** começa direto na pré-campanha da primeira que pode disputar, com a idade correspondente; a criação avisa; ajustar o alvo `creator17`. — aberto
-9. **Entressafra na tela central,** com a agenda fora de campanha (visitar lideranças, entrevistas, posições, presença nas zonas). — aberto. **Dono:** parte R4, no trabalho da interface da R4 (branch `r4-ui`), junto da P-01; entra na main com a `fase-r4`. Se não ficar pronto, é o primeiro item da `fase-r-final`.
+9. **Entressafra na tela central,** com a agenda fora de campanha (visitar lideranças, entrevistas, posições, presença nas zonas). — **feito na R4 (tag `fase-r4`)**, alvo de fumaça `entressafra`. **Dono:** parte R4, no trabalho da interface da R4 (branch `r4-ui`), junto da P-01; entra na main com a `fase-r4`. Se não ficar pronto, é o primeiro item da `fase-r-final`.
 10. **Mapa de cidade pequena (P-09):** enquadramento inicial no núcleo urbano; zona rural dividida por localidades ou distritos, quando houver; todos os nomes de zona legíveis, com desvio de colisão; contorno rural menos simplificado. Teste com Mantena (MG) e capturas antes e depois. — **feito no escopo reduzido (D-049), integrado depois da `fase-r3`.** Sobrou: na vista da cidade inteira os nomes urbanos se amontoam em volta da sede com linhas-guia; um nome deslocado pode ficar sobre outra zona; marcadores de zonas diferentes ainda podem se cobrir; uma zona urbana pode juntar a sede e vilas de distrito afastadas (em Mantena, "Zona Noroeste" junta bairros da sede e vilas a 25 km), defeito antigo da importação, para a RV ou para a divisão urbana por distrito. **Dono original:** trabalho próprio no branch `mapa-pequeno` (importador de zonas e desenho do mapa), começado antes da `fase-r3` porque muda as zonas das cidades pequenas e o BalanceSim depende delas; entra na main depois da `fase-r3` e antes da `fase-r4`, com o par (tipo, zona) do porte pequeno medido de novo antes de qualquer ajuste de parâmetro. Se não ficar pronto, é o segundo item da `fase-r-final`.
    - **Escopo reduzido pelo autor (16/11):** como o mapa de base será refeito na parte RV, faz-se agora só a divisão do rural por distritos, o enquadramento inicial no núcleo urbano e os nomes de zona sem sobreposição; contorno, estilo e rótulos por zoom ficam para a RV. Na integração: regenerar `data/zonas` e `data/geo/zonas`, rodar `zonas-rd` de novo, conferir os tetos (20 e 30 MB) e os testes do importador, conferir que lideranças, presença e o Livro apontam para zonas que existem, e só então medir o par (tipo, zona) do porte pequeno com 200 campanhas. A `fase-r3` sai com o par do porte pequeno como pendência (autorizado).
 - **Também:** corrigir os encaixes errados de brinco e cabelo da arte 2D atual (os retratos 3D ficam para depois da Fase R). — aberto
@@ -198,13 +199,22 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 - **O que o autor precisa fazer, se quiser a cabeça A:** instalar o Blender (versão estável atual, em blender.org; programa livre, GPL, que não entra no repositório) e, no Godot, apontar o caminho do executável em Editor → Configurações do Editor → Sistema de arquivos → Importação → Blender. Alternativa: abrir o `.blend` no Blender e exportar para `.glb` à mão.
 - **Sem isso:** o protótipo segue só com a cabeça B, e a prancha mostra a coluna A vazia com o motivo.
 
-## R4 — pendências já conhecidas (a parte ainda não foi integrada)
+## R4 — pendências (tag fase-r4)
 
 ### P-30 · Agenda por dia no mandato
 - O mandato de vereador e a prefeitura usam turnos por semana: inauguração e fiscalização acontecem no clique, sem dia nem lugar na agenda (GDD 17.6 e 17.14 pedem compromissos com dia, turno e zona também no mandato). Decidido pelo autor em 16/11: fica como pendência da R4.
 
 ### P-31 · Objetivos do mandato além das promessas do Livro
 - No mandato, os objetivos são só as promessas mais urgentes do Livro, sem o gerador da campanha (GDD 17.2, peça 6), sem fixar nem dispensar. Decidido pelo autor em 16/11: fica como pendência da R4.
+
+### P-34 · O que a R4 deixou de fora ou a revisar (D-050)
+- **Idade média dos vereadores:** o critério de menos de 5 anos entre a 1ª e a 10ª legislatura passa no conjunto (+1,0) e nas Câmaras de 15 cadeiras ou mais, mas não em 3 de 4 Câmaras de 9 a 11 cadeiras (+5,9 a +8,3), pelo acaso de amostras pequenas. **A decidir pelo autor:** aceitar o critério só no conjunto e nas Câmaras maiores, ou pedir uma regra de entrada mais jovem nas pequenas.
+- **Caminhos raros de sucessão:** em 40 anos simulados, toda vaga foi preenchida por suplente na mesma semana. A cadeira sem suplente e a eleição indireta só ocorrem nos testes dedicados.
+- **Parâmetros a confirmar:** piso e teto dos indicadores (percentis 1 e 99), posse do suplente em 7 dias, eleição da cadeira em 90 dias.
+- **Fora da R4:** inclinação dos indicadores pelo CAGED e pelas transferências (P-14); velório como compromisso; herdeiro que herda dívidas; licença por doença de mais de 120 dias; candidatura do jogador numa eleição suplementar (hoje ela se resolve sozinha); inelegibilidade pela Ficha Limpa.
+- **Contas na reeleição:** como as contas só andam fora de campanha, a faixa de contas da campanha não aparece durante uma campanha de reeleição.
+- **Imagem do prefeito:** o tooltip não diz que ela vai para a reeleição, porque o Core só leva a do vereador.
+- **Interface, anteriores à integração** (capturas em `docs/referencias/r4/`): na metrópole o mapa encosta nos botões de modo; a legenda cobre parte do mapa e um marcador; o cartão das contas é longo no painel de 400 px.
 
 ## R3 — fechamento (tag fase-r3)
 
@@ -229,6 +239,8 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 
 ### P-26 · Par do porte pequeno medido de novo depois do mapa (pedido do autor)
 - Com a divisão rural por distritos, 200 campanhas no porte pequeno: par (tipo, zona) **30,2%** (antes 30,5%); tipo 27,8%; canal 33,1%; partido mais forte eleito em 73 de 100, sorteado em 19 de 100. Como previsto, a mudança das zonas não move o par: ele é a entrevista no veículo de maior alcance. Nenhum parâmetro foi alterado por causa dele. **A decidir pelo autor:** cansaço da entrevista por veículo, mais veículos na cidade pequena, ou aceitar.
+- **Medido de novo na integração da R4** (200 campanhas por porte; `docs/balance/r4.md`): a R4 não muda a campanha, e o porte grande deu números idênticos numa cópia da main sem ela. Par do pequeno 30,2%. A régua da D-026 ficou pior que na `fase-r3` no partido mais forte do pequeno (76 → 73), do grande (52 → 46) e da metrópole (53 → 49), e no sorteado do médio (30 → 39). A causa é o mapa de cidade pequena, não a R4.
+- **Cansaço por veículo (pedido do autor, branch `cansaco-veiculo`, só depois da `fase-r4`):** feito e testado. Na medição preliminar, com 50 campanhas no porte pequeno, o par cai de 30,2% para 19,0%, mas o tipo sobe de 27,9% para **82,5%**: com cada veículo cansando sozinho e vagas a cada 2 a 4 dias, a entrevista chega descansada e vira a melhor opção de quase toda semana. Não integrado. Caminhos levados ao autor: entrevista mais fraca ou alcance absoluto, intervalos de semanas, ou medir o tipo por turno para opções com vaga (por turno, a entrevista fica em 29,8%).
 - **Achado na integração:** com as zonas novas, o robô da R3 encontrou uma previsão errada: a perda de imagem prevista para quem ataca ignorava o limite de −1; perto do piso a perda real era menor que a prevista. Corrigido no Core (`fix(campanha)`).
 
 ### P-24 · Itens 1 a 8 e encaixes dos retratos — **feitos** (branch `r1-teste`, integrado depois da `fase-r3`)

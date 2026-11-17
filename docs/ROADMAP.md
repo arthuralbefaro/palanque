@@ -185,13 +185,14 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - **Testes automáticos:** todo município tem valor ou lacuna registrada para cada indicador; totais por UF iguais aos oficiais onde a fonte publica total; nenhum valor fora da faixa plausível declarada em `data/`; nenhum número escrito à mão (todo campo com fonte em `_fontes.json`); DataValidator cobrindo os arquivos novos.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_RD.md
 
-### R4 — Mandatos na nova tela, com gestão nova
-- [ ] Mandato de vereador (17.14): gabinete, requerimento, indicação, fiscalização, emenda com obra no mapa, negociação de voto, contagem nominal, instrução permanente de voto, base que cobra
-- [ ] Prefeitura (17.15): secretários, obras com licitação e prazo no mapa, servidores e limite fiscal, convênios, Câmara que negocia, crises com causa
-- [ ] Indicadores ancorados em números reais e mostrados em unidade real; modelo de evolução (17.17)
-- [ ] Renovação do mundo político no município (17.16): envelhecimento, mortalidade, saídas e entradas de vereadores, prefeito, lideranças e equipe; luto, suplente e vice pela regra real
-- [ ] Eventos de mandato (legislativo e executivo), Mesa, CPI e cassação (pendências das D-027 e D-031)
-- [ ] Cobrança de promessas e dívidas do Livro de compromissos
+### R4 — Mandatos na nova tela, com gestão nova · **com pendências (tag fase-r4)**
+- [x] Mandato de vereador (17.14): gabinete, requerimento, indicação, fiscalização, emenda com obra no mapa, negociação de voto, contagem nominal, instrução permanente de voto, base que cobra
+- [x] Prefeitura (17.15): secretários, obras com licitação e prazo no mapa, servidores e limite fiscal, convênios, Câmara que negocia, crises com causa
+- [x] Indicadores ancorados em números reais e mostrados em unidade real; modelo de evolução (17.17)
+- [x] Renovação do mundo político no município (17.16): envelhecimento, mortalidade, saídas e entradas de vereadores, prefeito, lideranças e equipe; luto, suplente e vice pela regra real
+- [x] Eventos de mandato (legislativo e executivo), Mesa, CPI e cassação (pendências das D-027 e D-031)
+- [x] Cobrança de promessas e dívidas do Livro de compromissos
+- Pendências: agenda por dia no mandato (P-30), objetivos do mandato (P-31), idade média nas Câmaras pequenas e o que ficou fora (P-34); par do porte pequeno e régua da D-026 continuam na P-26.
 - **Princípios que passa a cumprir:** todos, também no mandato.
 - **Testes automáticos:**
   - Carreira (campanha + mandato) em 3 sementes: 70% ou mais das promessas geram cobrança; nenhuma inauguração sem obra entregue; nenhuma greve sem negociação anterior.
