@@ -78,6 +78,8 @@ public static class Palette
         theme.SetStylebox("normal", "Button", Box(Cartao, 8, 10, Linha));
         theme.SetStylebox("hover", "Button", Box(CartaoAlto, 8, 10, Linha));
         theme.SetStylebox("pressed", "Button", Box(new Color(Acao, 0.2f), 8, 10, Acao));
+        // Marcado com o mouse em cima (vale também para CheckBox): sem isto cai no estilo padrão, sem fundo e com outras margens.
+        theme.SetStylebox("hover_pressed", "Button", Box(new Color(Acao, 0.28f), 8, 10, Acao));
         theme.SetStylebox("disabled", "Button", Box(new Color(Cartao, 0.4f), 8, 10, new Color(Linha, 0.4f)));
         var focus = Box(new Color(0, 0, 0, 0), 8, 10, Texto, 2);
         focus.SetExpandMarginAll(2);
