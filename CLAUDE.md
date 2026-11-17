@@ -98,6 +98,14 @@ Nenhuma tarefa está concluída com build quebrado, testes falhando, dados invá
 - Ao terminar cada etapa: verificação obrigatória, commits, ROADMAP marcado, resumo de 3 linhas em docs/PROGRESSO.md, e siga para a próxima sem esperar.
 - Se o contexto for compactado, releia CLAUDE.md, docs/ROADMAP.md, docs/DECISOES.md e docs/PROGRESSO.md antes de continuar.
 
+## Memória da máquina (16 GB)
+- No máximo 2 trabalhos pesados ao mesmo tempo, somando todos os agentes. Contam como pesados: portão completo, BalanceSim, rodada de alvos de fumaça e medição de FPS.
+- Antes de começar um, conferir quantos processos dotnet e godot estão abertos; se já houver 2 trabalhos pesados, esperar.
+- O BalanceSim roda com DOTNET_gcServer=0 (o coletor de servidor reserva memória por núcleo).
+- Ao terminar, `dotnet build-server shutdown` para liberar os processos de compilação que ficam residentes.
+- Falha de memória (0xC0000005 no coletor ou OutOfMemory) com mais de 2 trabalhos pesados rodando não conta como defeito do jogo: repetir com a máquina livre e anotar a carga na P-44. Se cair com a máquina livre, é defeito e se investiga.
+- Medição de FPS e de tempo de carga só com a máquina livre (D-059).
+
 ## Fase R (reformulação)
 - **Autorização do autor (2026-11-16), válida só para a execução noturna iniciada nessa data:** modo corujão em toda a Fase R. Nesta execução, as paradas "pare e espere o autor" viram **revisão posterior por tag**: cada parte termina com a tag local (fase-r1, fase-rd, fase-r2a, fase-r2b, fase-r3, fase-r4) e o trabalho segue para a próxima; o autor joga as partes de manhã, na ordem das tags. Trabalhe sem perguntar; bloqueios e decisões novas vão para docs/PENDENCIAS.md (com a escolha provisória e como reverter) e o trabalho segue no que não depende deles. Ordem nesta execução: R1 → RD → R2a → R2b → R3 → R4. Nunca push, reset --hard, rebase ou --no-verify. Fora desta execução, valem as regras abaixo.
 - **Extensão da autorização (D-037, 2026-11-16):** o autor não testa por enquanto e autoriza seguir a Fase R inteira sem esperar pelo teste dele: RD → R2a → R2b → R3 → R4, cada uma com a sua tag, e depois o resto das pendências da R1 (P-02, P-03, P-09) com a tag `fase-r-final`. Nenhuma parte espera aprovação para começar a seguinte. Parar ao terminar a `fase-r-final`; não começar a Fase 6. O relatório único para o autor fica no topo do docs/PROGRESSO.md, atualizado a cada parte.
