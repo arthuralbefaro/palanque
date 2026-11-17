@@ -85,6 +85,11 @@ public static class ZonasImport
         CachedFile demografia = await cache.GetAsync(Path.Combine(CacheFolder, DemografiaFile), AgregadosUrl + DemografiaFile);
         CachedFile renda = await cache.GetAsync(Path.Combine(CacheFolder, RendaFile), RendaUrl + RendaFile);
 
+        // Nomes de bairro do OpenStreetMap (D-058), só para as zonas que ficariam com nome gerado.
+        Console.WriteLine("OpenStreetMap — nomes de bairro (Overpass API)");
+        var (osmLugares, osmArquivos) = await OsmBairros.LoadAsync(cache, municipios.All.Select(m => m.Uf).Distinct(), config.OsmBairros);
+        var osm = new OsmStats { Lidos = osmLugares.Count };
+
         Dictionary<string, Setor> setores = ReadBasico(basico.Path, byCode);
         ReadDemografia(demografia.Path, setores);
         ReadRenda(renda.Path, setores);
@@ -123,6 +128,7 @@ public static class ZonasImport
         var setorZona = new List<string> { "setor;zona;populacao" };
         var tolerancias = new List<double>();
         string source = $"IBGE, Malha de Setores Censitários e Agregados por Setores do Censo Demográfico 2022 ({MalhaUrl}; {AgregadosUrl}; {RendaUrl})";
+        string zonasSource = source + $"; nomes de bairro onde o IBGE não tem bairro (nome_fonte bairro_osm): {ZoneNameOrigin.CreditoOsm}, licença ODbL 1.0 ({OsmBairros.CopyrightUrl})";
         string method = Method(config);
 
         foreach (var uf in municipios.All.Select(m => m.Uf).Distinct().Order(StringComparer.Ordinal))
@@ -130,6 +136,7 @@ public static class ZonasImport
             string fileName = $"{uf}_setores_CD2022.zip";
             CachedFile malha = await cache.GetAsync(Path.Combine(CacheFolder, fileName), MalhaUrl + fileName);
             int read = ReadGeometry(Malha.ExtractedShapefile(malha.Path), setores);
+            var osmPorSetor = LocateOsm(osmLugares, municipios.All.Where(m => m.Uf == uf && porMunicipio.ContainsKey(m.CodigoIbge)).SelectMany(m => porMunicipio[m.CodigoIbge]), osm);
             var ufMunicipios = new List<ZonasMunicipio>();
             var ufGeo = new List<GeoZona>();
             foreach (Municipio m in municipios.All.Where(m => m.Uf == uf).OrderBy(m => m.CodigoIbge))
@@ -148,17 +155,18 @@ public static class ZonasImport
                     throw new ImportException($"{m.CodigoIbge}: setor sem polígono na malha ({list.First(s => s.Geometry is null).Code}).");
                 }
 
-                var (zonas, geo, tolerance) = BuildMunicipio(m, list, targets[m.CodigoIbge], config, lacunas, setorZona);
+                var (zonas, geo, tolerance) = BuildMunicipio(m, list, targets[m.CodigoIbge], config, lacunas, setorZona, osmPorSetor);
                 tolerancias.Add(tolerance);
                 ufMunicipios.Add(new ZonasMunicipio { CodigoIbge = m.CodigoIbge, Zonas = zonas });
                 ufGeo.AddRange(geo);
             }
 
-            var file = new ZonasUf { Uf = uf, Fonte = source, Metodo = method, Versao = ZonasPaths.Versao, Municipios = ufMunicipios };
+            var file = new ZonasUf { Uf = uf, Fonte = zonasSource, Metodo = method, Versao = ZonasPaths.Versao, Municipios = ufMunicipios };
             errors.AddRange(file.Validate());
             zonasFiles[uf] = file;
             geoJson[uf] = SerializeGeo(new GeoZonasUf { Uf = uf, Source = source, Method = method, Scale = GeoImport.Scale, Zonas = ufGeo });
-            Console.WriteLine($"  {uf}: {read} setores, {ufMunicipios.Sum(m => m.Zonas.Count)} zonas, {Encoding.UTF8.GetByteCount(geoJson[uf]) / 1024} KB de contornos");
+            osm.ZonasPorUf[uf] = ufMunicipios.Sum(m => m.Zonas.Count(z => z.NomeFonte == Zona.NomeOsm));
+            Console.WriteLine($"  {uf}: {read} setores, {ufMunicipios.Sum(m => m.Zonas.Count)} zonas ({osm.ZonasPorUf[uf]} com nome do OpenStreetMap), {Encoding.UTF8.GetByteCount(geoJson[uf]) / 1024} KB de contornos");
 
             // Libera a geometria da UF antes da próxima.
             foreach (Setor s in municipios.All.Where(m => m.Uf == uf && porMunicipio.ContainsKey(m.CodigoIbge)).SelectMany(m => porMunicipio[m.CodigoIbge]))
@@ -182,12 +190,22 @@ public static class ZonasImport
         var fontes = new
         {
             GeradoEm = DateTimeOffset.UtcNow,
-            Fontes = new[]
+            Fontes = new object[]
             {
                 new { Campo = "contornos", Fonte = "IBGE, Malha de Setores Censitários do Censo Demográfico 2022 (versão definitiva)", Ano = 2022, Url = MalhaUrl, BaixadoEm = basico.DownloadedAt },
                 new { Campo = "populacao, domicilios, situacao, distrito, bairro", Fonte = "IBGE, Agregados por Setores Censitários, básico", Ano = 2022, Url = basico.Url, BaixadoEm = basico.DownloadedAt },
                 new { Campo = "perfil.idade", Fonte = "IBGE, Agregados por Setores Censitários, demografia", Ano = 2022, Url = demografia.Url, BaixadoEm = demografia.DownloadedAt },
                 new { Campo = "perfil.renda_responsavel", Fonte = "IBGE, Agregados por Setores Censitários, rendimento do responsável", Ano = 2022, Url = renda.Url, BaixadoEm = renda.DownloadedAt },
+                new
+                {
+                    Campo = $"nome (só as zonas com nome_fonte {Zona.NomeOsm})",
+                    Fonte = $"OpenStreetMap ({ZoneNameOrigin.CreditoOsm}), extraído pela Overpass API",
+                    Licenca = "Open Database License (ODbL) 1.0",
+                    LicencaUrl = OsmBairros.LicencaUrl,
+                    Url = $"{OsmBairros.CopyrightUrl}; {OsmBairros.OverpassUrl}",
+                    ExtraidoEm = osmArquivos.Min(a => a.Arquivo.DownloadedAt),
+                    ExtraidoAte = osmArquivos.Max(a => a.Arquivo.DownloadedAt),
+                },
             },
             Metodo = method,
             Tolerancia = new { Minima = tolerancias.Min(), Mediana = tolerancias.Order().ElementAt(tolerancias.Count / 2), Maxima = tolerancias.Max() },
@@ -198,6 +216,27 @@ public static class ZonasImport
             Zonas = zonasFiles.Values.Sum(f => f.Municipios.Sum(m => m.Zonas.Count)),
             RegraDeSigilo = $"População e domicílios do agregado básico (sem supressão). Idade e renda: células com \"X\" ou setor sem linha não são estimados; cada bloco soma só os setores publicados, e a zona com cobertura abaixo de {config.CoberturaMinima:P0} usa o perfil do município.",
             Lacunas = lacunas,
+            Openstreetmap = new
+            {
+                Fonte = "OpenStreetMap",
+                Credito = ZoneNameOrigin.CreditoOsm,
+                Licenca = "Open Database License (ODbL) 1.0",
+                LicencaUrl = OsmBairros.LicencaUrl,
+                Url = OsmBairros.CopyrightUrl,
+                Servico = OsmBairros.OverpassUrl,
+                CampoAfetado = $"nome das zonas com nome_fonte {Zona.NomeOsm}; o resto da zona (contorno, população, perfil) vem do IBGE",
+                ExtraidoEm = osmArquivos.Min(a => a.Arquivo.DownloadedAt),
+                ExtraidoAte = osmArquivos.Max(a => a.Arquivo.DownloadedAt),
+                Consulta = $"por UF: nós, contornos e relações com place={string.Join('|', config.OsmBairros.Lugares.Keys.Order(StringComparer.Ordinal))} e nome, e relações boundary=administrative com admin_level={config.OsmBairros.AdminLevel} e nome; só nome, tipo e ponto (o do nó ou o centro do contorno)",
+                Metodo = OsmMethod(config.OsmBairros),
+                LugaresLidos = osm.Lidos,
+                LugaresDentroDeSetor = osm.Localizados,
+                ZonasComNomeOsm = osm.ZonasPorUf.Values.Sum(),
+                ZonasPorUf = osm.ZonasPorUf,
+                BaseOsmDe = osmArquivos.Select(a => a.BaseOsm).Min(StringComparer.Ordinal),
+                BaseOsmAte = osmArquivos.Select(a => a.BaseOsm).Max(StringComparer.Ordinal),
+                ExtracaoPorUf = osmArquivos.ToDictionary(a => a.Uf, a => new { ExtraidoEm = a.Arquivo.DownloadedAt, BaseOsm = a.BaseOsm, Lugares = a.Lidos }),
+            },
         };
         string fontesJson = JsonSerializer.Serialize(fontes, new JsonSerializerOptions(options) { WriteIndented = true }) + "\n";
         long zonasDirectoryBytes = zonasBytes + Encoding.UTF8.GetByteCount(fontesJson);
@@ -336,7 +375,7 @@ public static class ZonasImport
         return result;
     }
 
-    private static (List<Zona> Zonas, List<GeoZona> Geo, double Tolerance) BuildMunicipio(Municipio m, List<Setor> setores, int target, TerritoryConfig config, List<string> lacunas, List<string> setorZona)
+    private static (List<Zona> Zonas, List<GeoZona> Geo, double Tolerance) BuildMunicipio(Municipio m, List<Setor> setores, int target, TerritoryConfig config, List<string> lacunas, List<string> setorZona, IReadOnlyDictionary<string, List<OsmLugar>> osmPorSetor)
     {
         List<HashSet<int>> adjacency = Adjacency(setores);
 
@@ -403,7 +442,7 @@ public static class ZonasImport
         }
 
         var final = clusters.Values.OrderByDescending(c => c.Pop).ThenBy(c => c.Id).ToList();
-        var names = Names(final, setores, plan, config);
+        var names = Names(final, setores, plan, config, m, osmPorSetor);
         var zoneOf = new Dictionary<int, string>();
         for (int i = 0; i < final.Count; i++)
         {
@@ -639,7 +678,7 @@ public static class ZonasImport
 
     private static double Distance(Cluster a, Cluster b) => Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2);
 
-    private static Dictionary<int, (string Nome, string Fonte)> Names(List<Cluster> clusters, List<Setor> setores, RuralPlan plan, TerritoryConfig config)
+    private static Dictionary<int, (string Nome, string Fonte)> Names(List<Cluster> clusters, List<Setor> setores, RuralPlan plan, TerritoryConfig config, Municipio m, IReadOnlyDictionary<string, List<OsmLugar>> osmPorSetor)
     {
         // Sede: o distrito com mais população urbana. Centro: a zona urbana mais perto do centro populacional urbano.
         var urbanSetores = setores.Where(s => !s.Rural).ToList();
@@ -671,8 +710,7 @@ public static class ZonasImport
                 return (Head: Top(all), Zones: g.Count(), X: all.Sum(s => s.Center!.X * Math.Max(1, s.Pop)) / w, Y: all.Sum(s => s.Center!.Y * Math.Max(1, s.Pop)) / w);
             });
 
-        var result = new Dictionary<int, (string, string)>();
-        var used = new Dictionary<string, int>(StringComparer.Ordinal);
+        var bases = new List<(string Nome, string Fonte)>();
         foreach (Cluster c in clusters)
         {
             (string Nome, string Fonte) name;
@@ -706,13 +744,79 @@ public static class ZonasImport
                 name = (c == centro ? "Centro" : "Zona " + direction, Zona.NomeGerado);
             }
 
+            bases.Add(name);
+        }
+
+        // D-058: a zona que ficaria com nome gerado leva o nome de bairro do OpenStreetMap, se houver um que sirva.
+        OsmBairrosConfig osmConfig = config.OsmBairros;
+        var zonasOsm = clusters.Select((c, i) =>
+        {
+            bool elegivel = bases[i].Fonte == Zona.NomeGerado && (!c.Rural || osmConfig.ZonasRurais);
+            return new ZonaOsm
+            {
+                Key = c.Id,
+                Pop = c.Pop,
+                X = c.X,
+                Y = c.Y,
+                Elegivel = elegivel,
+                NomeGerado = bases[i].Fonte == Zona.NomeGerado ? bases[i].Nome : null,
+                Setores = c.Setores.Select(s => new SetorPonto(s.Center!.X, s.Center!.Y, s.Pop)).ToList(),
+                Lugares = !elegivel ? [] : c.Setores.SelectMany(s => osmPorSetor.GetValueOrDefault(s.Code) ?? [])
+                    .Select(l => OsmBairros.Filtrar(l.Nome, m.Nome, osmConfig) is { } nome ? l with { Nome = nome } : null)
+                    .OfType<OsmLugar>().ToList(),
+            };
+        }).ToList();
+        var reservados = setores.Where(s => s.BairroNome is not null).Select(s => s.BairroNome!)
+            .Concat(setores.Select(s => s.DistritoNome))
+            .Append(m.Nome)
+            .Concat(bases.Where(b => b.Fonte != Zona.NomeGerado).Select(b => b.Nome));
+        Dictionary<int, string> escolhidos = OsmBairros.Escolher(zonasOsm, reservados, Math.Cos(cy * Math.PI / 180));
+
+        var result = new Dictionary<int, (string, string)>();
+        var used = new Dictionary<string, int>(StringComparer.Ordinal);
+        for (int i = 0; i < clusters.Count; i++)
+        {
+            (string Nome, string Fonte) name = escolhidos.TryGetValue(clusters[i].Id, out string? osmName) ? (osmName, Zona.NomeOsm) : bases[i];
             int n = used.GetValueOrDefault(name.Nome) + 1;
             used[name.Nome] = n;
-            result[c.Id] = n == 1 ? name : ($"{name.Nome} {n}", name.Fonte);
+            result[clusters[i].Id] = n == 1 ? name : ($"{name.Nome} {n}", name.Fonte);
         }
 
         return result;
     }
+
+    /// <summary>Contadores da etapa do OpenStreetMap, para o _fontes.json.</summary>
+    private sealed class OsmStats
+    {
+        public int Lidos { get; init; }
+
+        public int Localizados { get; set; }
+
+        public SortedDictionary<string, int> ZonasPorUf { get; } = new(StringComparer.Ordinal);
+    }
+
+    /// <summary>Lugares do OpenStreetMap que caem nos setores de uma UF (ponto no polígono), por setor.</summary>
+    private static Dictionary<string, List<OsmLugar>> LocateOsm(List<OsmLugar> lugares, IEnumerable<Setor> setoresUf, OsmStats osm)
+    {
+        var list = setoresUf.Where(s => s.Geometry is not null).OrderBy(s => s.Code, StringComparer.Ordinal).Select(s => (s.Code, s.Geometry!)).ToList();
+        if (list.Count == 0)
+        {
+            return [];
+        }
+
+        var envelope = new Envelope();
+        list.ForEach(s => envelope.ExpandToInclude(s.Item2.EnvelopeInternal));
+        var result = OsmBairros.Localizar(lugares.Where(l => envelope.Contains(l.Lon, l.Lat)), list);
+        osm.Localizados += result.Values.Sum(v => v.Count);
+        return result;
+    }
+
+    public static string OsmMethod(OsmBairrosConfig c) =>
+        string.Create(CultureInfo.InvariantCulture, $"Só a zona {(c.ZonasRurais ? "" : "urbana ")}que ficaria com nome gerado (sem bairro do IBGE e sem distrito dominante) recebe nome do OpenStreetMap; onde o IBGE tem bairro ou distrito, vale o IBGE. ")
+        + "Cada lugar entra na zona cujo setor contém o ponto dele (ponto no polígono, pela malha de setores sem simplificar). "
+        + string.Create(CultureInfo.InvariantCulture, $"Nomes filtrados: vazios, sem letra, com mais de {c.ComprimentoMaximo} caracteres, com sinal de anotação ({string.Join(' ', c.SinaisExcluidos)}), iguais ao nome do município ou a um nome excluído, ou começando por um prefixo excluído (rua, quadra, edifício; lista em data/territory/config.json); nome todo em maiúsculas passa para a caixa normal, e a palavra \"Bairro\" no começo sai. ")
+        + "Com vários na zona, vale o tipo de maior prioridade (limite administrativo de bairro e suburb, depois quarter, depois neighbourhood); no mesmo tipo, o de mais moradores perto (cada setor da zona conta para o lugar mais próximo); no empate, o mais perto do centro populacional da zona e a ordem alfabética. "
+        + "Nome que repete um bairro ou distrito do IBGE do município, o próprio município, o nome de outra zona ou o nome gerado de outra zona não é usado; a zona mais populosa escolhe primeiro e a seguinte passa ao próximo candidato; sem candidato, fica o nome gerado.";
 
     private static string Clean(string name) => string.Join(' ', name.Split(' ', StringSplitOptions.RemoveEmptyEntries));
 

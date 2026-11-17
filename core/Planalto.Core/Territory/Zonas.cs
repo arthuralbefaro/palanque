@@ -51,7 +51,7 @@ public sealed class ZonasUf : IValidatable
                     yield return $"{z.Id}: situação '{z.Situacao}' desconhecida.";
                 }
 
-                if (z.NomeFonte is not (Zona.NomeBairro or Zona.NomeDistrito or Zona.NomeGerado))
+                if (z.NomeFonte is not (Zona.NomeBairro or Zona.NomeOsm or Zona.NomeDistrito or Zona.NomeGerado))
                 {
                     yield return $"{z.Id}: fonte do nome '{z.NomeFonte}' desconhecida.";
                 }
@@ -77,6 +77,9 @@ public sealed class ZonasMunicipio
     public required List<Zona> Zonas { get; init; }
 
     public long Populacao => Zonas.Sum(z => z.Populacao);
+
+    /// <summary>Alguma zona tem nome do OpenStreetMap: o mapa da cidade mostra o crédito (D-058, licença ODbL).</summary>
+    public bool UsaOpenStreetMap => Zonas.Any(z => z.NomeFonte == Zona.NomeOsm);
 }
 
 public sealed class Zona
@@ -86,6 +89,12 @@ public sealed class Zona
 
     /// <summary>Nome do bairro mais populoso da zona, pela malha de bairros do IBGE.</summary>
     public const string NomeBairro = "bairro_ibge";
+
+    /// <summary>
+    /// Nome de bairro do OpenStreetMap (D-058), só em zona urbana sem bairro do IBGE, que antes teria nome gerado.
+    /// Base derivada sob a licença ODbL; a extração está registrada em data/zonas/_fontes.json.
+    /// </summary>
+    public const string NomeOsm = "bairro_osm";
 
     /// <summary>Nome do distrito do IBGE.</summary>
     public const string NomeDistrito = "distrito_ibge";
