@@ -67,7 +67,7 @@ if (withWorld)
     report.AppendLine();
 }
 
-report.AppendLine(string.Format(culture, "Robô que marca, em cada turno livre, o compromisso de maior ganho previsto de votos (inclusive a entrevista em cada veículo e o tema em alta) e, toda semana, contrata, reparte a verba pelos canais, assume posições, faz promessas, delega caminhadas e responde aos eventos da equipe. Na R3 passa a responder às ofertas de doadores (metade das campanhas é \"limpa\": só aceita com recibo, até o teto; a outra metade é \"suja\": aceita todo dinheiro por fora), a responder aos ataques pela resposta de menor dano esperado e a atacar, de 2 em 2 semanas depois da primeira pesquisa pública, quem está logo à frente nela. Depois da eleição, o processo de contas de cada campanha (prestação final, julgamento e representação do art. 30-A) é simulado por dois anos em {3} réplicas, como se o candidato tivesse sido eleito. {0} campanhas por porte, em {1} cidades sorteadas por porte (semente {2}), metade no partido mais forte da cidade e metade num partido sorteado.", campaigns, cities, seed, CampaignRobot.AccountsReplicas));
+report.AppendLine(string.Format(culture, "Robô que marca, em cada turno livre, o compromisso de maior ganho previsto de votos (inclusive a entrevista em cada veículo e o tema em alta) e, toda semana, contrata, reparte a verba pelos canais, assume posições, faz promessas, delega caminhadas e responde aos eventos da equipe. Na R3 passa a responder às ofertas de doadores (metade das campanhas é \"limpa\": só aceita com recibo, até o teto; a outra metade é \"suja\": aceita todo dinheiro por fora), a responder aos ataques pela resposta de menor dano esperado e a atacar, de 2 em 2 semanas depois da primeira pesquisa pública, quem está logo à frente nela. Depois da eleição, o processo de contas de cada campanha (prestação final, julgamento e representação do art. 30-A) é simulado por dois anos em {3} réplicas, como se o candidato tivesse sido eleito. {0} campanhas por porte, em {1} cidades sorteadas por porte (semente {2}), metade no partido mais forte da cidade e metade num partido sorteado; toda cidade joga os dois partidos (campanhas em pares na mesma cidade).", campaigns, cities, seed, CampaignRobot.AccountsReplicas));
 report.AppendLine();
 report.AppendLine("Critérios (GDD 17.1 e 17.12; ROADMAP, R3):");
 report.AppendLine("- princípio a: nenhum tipo de compromisso é a melhor escolha em mais de 40% das semanas; nenhum par (tipo, zona) em mais de 25%;");
@@ -84,17 +84,24 @@ foreach (string porte in portes)
 {
     List<Municipio> pool = content.Municipios.All.Where(m => m.Porte == porte && m.EleicoesMunicipais).OrderBy(m => m.CodigoIbge).ToList();
     List<Municipio> chosen = new Rng(seed + (ulong)porte.Length).Shuffled(pool).Take(Math.Min(cities, pool.Count)).ToList();
+    // Amostra: as campanhas vão em pares (2k, 2k+1) na mesma cidade, uma no partido mais forte e a outra num
+    // partido sorteado, para que toda cidade jogue os dois partidos (antes, a cidade i % N jogava sempre o mesmo
+    // partido, e o sorteado de cada porte caía só nas cidades de índice ímpar). "Suja" alterna por par e por
+    // rodada das cidades, para que cada cidade tenha campanhas limpas e sujas nos dois partidos.
+    Municipio CityOf(int i) => chosen[(i / 2) % chosen.Count];
+    bool StrongestOf(int i) => i % 2 == 0;
+    bool DirtyOf(int i) => ((i / 2) + (i / 2) / chosen.Count) % 2 == 1;
     var traces = new CampaignTrace[campaigns];
     var failures = new List<string>();
     var started = DateTime.UtcNow;
     Parallel.For(0, campaigns, i =>
     {
-        Municipio m = chosen[i % chosen.Count];
+        Municipio m = CityOf(i);
         try
         {
-            var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
-            traces[i] = new CampaignRobot(engine) { Diagnose = i == 0 && Environment.GetEnvironmentVariable("PLANALTO_SIM_DIAG") == "1", Dirty = i % 4 >= 2, World = WorldOf(engine, m) }.Play();
-            traces[i].Strongest = i % 2 == 0;
+            var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: StrongestOf(i));
+            traces[i] = new CampaignRobot(engine) { Diagnose = i == 0 && Environment.GetEnvironmentVariable("PLANALTO_SIM_DIAG") == "1", Dirty = DirtyOf(i), World = WorldOf(engine, m) }.Play();
+            traces[i].Strongest = StrongestOf(i);
         }
         catch (Exception ex)
         {
@@ -112,12 +119,12 @@ foreach (string porte in portes)
     var idle = new CampaignTrace[idleCampaigns];
     Parallel.For(0, idleCampaigns, i =>
     {
-        Municipio m = chosen[i % chosen.Count];
+        Municipio m = CityOf(i);
         try
         {
-            var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
+            var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: StrongestOf(i));
             idle[i] = new CampaignRobot(engine) { World = WorldOf(engine, m) }.PlayIdle();
-            idle[i].Strongest = i % 2 == 0;
+            idle[i].Strongest = StrongestOf(i);
             idle[i].Idle = true;
         }
         catch (Exception ex)
