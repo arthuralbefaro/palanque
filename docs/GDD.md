@@ -429,6 +429,8 @@ GameState inteiro em JSON com versão de formato e migrações; 3 slots + autosa
 ## 8. ARTE, UI E ÁUDIO
 
 ### 8.1 Direção de arte
+> **Mudança decidida (D-043 e D-044, RV):** personagens e cenas passam a bonecos 3D estilizados de formas suaves, e o mapa, a 2D detalhado e fiel ao lugar real com a interface em janelas flutuantes (seções 13 e 17.5; proposta no ART_GUIDE). O texto abaixo descreve a direção atual, que vale até a parte RV-A.
+
 2D vetorial ilustrado, inspirado em material de campanha brasileiro e infográficos de jornal. Interface sóbria (azul-escuro, branco), acentos verde e amarelo neutros. Fontes OFL: sans para UI (Inter/Montserrat) e condensada para manchetes (Oswald/Bebas Neue). Retratos com diversidade real de tons de pele, cabelos e traços do Brasil.
 
 ### 8.2 Telas
