@@ -180,4 +180,23 @@ public partial class HubScreen
             _windows[^1].Close();
         }
     }
+
+    /// <summary>Número flutuante (RL): "+2,1 presença" na zona do compromisso e o transbordo nas vizinhas.</summary>
+    private void ShowResultFloats(IEnumerable<CommitmentResult> results)
+    {
+        foreach (CommitmentResult r in results)
+        {
+            if (r.Commitment.ZoneId is not { } zone || !r.Presence.TryGetValue(zone, out double here))
+            {
+                continue;
+            }
+
+            _map.ShowFloat(zone, $"{Signed(here, "0.0")} {Tr("presença")}", false, 0);
+            int i = 0;
+            foreach (var (neighbor, delta) in r.Presence.Where(p => p.Key != zone && Math.Abs(p.Value) >= 0.05))
+            {
+                _map.ShowFloat(neighbor, Signed(delta, "0.0"), true, 0.25 + (0.12 * i++));
+            }
+        }
+    }
 }

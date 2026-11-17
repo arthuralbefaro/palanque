@@ -312,6 +312,7 @@ public partial class HubScreen : Control
         UpdateClock();
         if (tick.Results.Count > 0)
         {
+            ShowResultFloats(tick.Results);
             Refresh();
         }
 
@@ -371,6 +372,7 @@ public partial class HubScreen : Control
         }
 
         CheckPauses(polls, phase, lastFeed, report);
+        ShowResultFloats(report.Results);
         Refresh();
     }
 
