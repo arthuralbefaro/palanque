@@ -372,4 +372,64 @@ public partial class HubScreen
             }
         }
     }
+
+    // ------------------------------------------------------------------ retratos pelo cache
+
+    /// <summary>Aparência e roupa de quem aparece num cartão: você, um candidato (pelo personagem) ou outra pessoa.</summary>
+    private (Appearance Appearance, PortraitOptions Options)? PortraitSource(string? id)
+    {
+        if (id is null)
+        {
+            return null;
+        }
+
+        if (id == RaceSetup.PlayerId)
+        {
+            GameParty? mine = State.Party(State.Player.PartyId ?? "");
+            return State.Player.Appearance is { } own
+                ? (own, mine is null ? new PortraitOptions() : new PortraitOptions(Planalto.Core.Characters.Expression.Neutra, WardrobeContext.Campanha, mine.Colors.Primary, "background_solido", mine.Colors.Secondary))
+                : null;
+        }
+
+        Candidate? candidate = _gov ? null : Campaign.Find(id);
+        string characterId = candidate?.CharacterId ?? id;
+        Appearance? appearance = State.Npcs.FirstOrDefault(n => n.Id == characterId)?.Appearance;
+        if (appearance is null)
+        {
+            return null;
+        }
+
+        GameParty? party = candidate is null ? null : State.Party(candidate.PartyId);
+        return (appearance, party is null ? new PortraitOptions() : new PortraitOptions(Planalto.Core.Characters.Expression.Neutra, WardrobeContext.Campanha, party.Colors.Primary, "background_solido", party.Colors.Secondary));
+    }
+
+    /// <summary>Retrato pelo PortraitCache (96 px, mostrado no tamanho pedido); a textura chega no quadro seguinte.</summary>
+    private TextureRect? CachedPortrait(Node parent, string? id, int size)
+    {
+        if (PortraitSource(id) is not { } source || PortraitCache.Instance is null)
+        {
+            return null;
+        }
+
+        var rect = parent.Add(new TextureRect
+        {
+            Name = "Retrato",
+            CustomMinimumSize = new Vector2(size, size),
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+            StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            MouseFilter = MouseFilterEnum.Ignore,
+            SizeFlagsVertical = SizeFlags.ShrinkBegin,
+        });
+        _ = FillPortrait(rect, source.Appearance, source.Options);
+        return rect;
+    }
+
+    private static async Task FillPortrait(TextureRect rect, Appearance appearance, PortraitOptions options)
+    {
+        Texture2D texture = await PortraitCache.Instance.GetAsync(appearance, options, 96);
+        if (IsInstanceValid(rect))
+        {
+            rect.Texture = texture;
+        }
+    }
 }

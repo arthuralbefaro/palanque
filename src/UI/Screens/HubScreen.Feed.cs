@@ -12,7 +12,8 @@ namespace Planalto.UI.Screens;
 /// </summary>
 public partial class HubScreen
 {
-    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId, FeedItem? Item = null);
+    /// <param name="Who">De quem o cartão fala (você, um candidato ou outra pessoa): o retrato dele vai ao lado (RL).</param>
+    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId, FeedItem? Item = null, string? Who = null);
 
     /// <summary>
     /// Resultado explicado de um compromisso (princípio f): o que mudou, onde, para quem e por quê.
@@ -84,7 +85,7 @@ public partial class HubScreen
         foreach (CommitmentResult r in Agenda.Log)
         {
             Commitment c = r.Commitment;
-            items.Add(new FeedEntry(c.Date, order++, Tr("Sua agenda"), $"{CommitmentTitle(c)} ({DayShort(c.Date)}, {TurnoName(c.Turno)})", ResultText(r), c.ZoneId));
+            items.Add(new FeedEntry(c.Date, order++, Tr("Sua agenda"), $"{CommitmentTitle(c)} ({DayShort(c.Date)}, {TurnoName(c.Turno)})", ResultText(r), c.ZoneId, Who: RaceSetup.PlayerId));
         }
 
         // Rivais vistos na mesma zona na mesma semana viram um cartão só (ART_GUIDE, densidade das notícias).
@@ -102,7 +103,7 @@ public partial class HubScreen
                 ? string.Format(Tr("{0} fez campanha em {1}."), CandidateLabel(rivals[0]), zone)
                 : string.Format(Tr("Fizeram campanha em {0}: {1}{2}."), zone, string.Join("; ", rivals.Take(3).Select(CandidateLabel)),
                     rivals.Count > 3 ? " " + string.Format(Tr("e mais {0}"), rivals.Count - 3) : "");
-            items.Add(new FeedEntry(group.Max(f => f.Date), order++, Tr("Na rua"), null, text, group.Key.ZoneId));
+            items.Add(new FeedEntry(group.Max(f => f.Date), order++, Tr("Na rua"), null, text, group.Key.ZoneId, Who: rivals[0].Id));
         }
 
         foreach (FeedItem f in Agenda.Feed.Where(f => f.Kind is not ("compromisso" or "rival_zona")))
@@ -130,7 +131,7 @@ public partial class HubScreen
                 "posicao" or "promessa" => Tr("Sua plataforma"),
                 _ => Tr("Nos bastidores"),
             };
-            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId, f));
+            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId, f, f.PersonId ?? f.CandidateId));
         }
 
         foreach (var h in Campaign.Events.History)
@@ -141,7 +142,7 @@ public partial class HubScreen
         foreach (PollRecord poll in Campaign.Polls.Where(p => !p.Internal))
         {
             var lead = poll.Candidates.MaxBy(c => c.Value);
-            items.Add(new FeedEntry(poll.Week, order++, _game.Electorate.Pollsters.Get(poll.PollsterId).Name, null, string.Format(PtBr, Tr("{0} lidera com {1:0.0}%."), Campaign.Find(lead.Key)?.Name, lead.Value), null));
+            items.Add(new FeedEntry(poll.Week, order++, _game.Electorate.Pollsters.Get(poll.PollsterId).Name, null, string.Format(PtBr, Tr("{0} lidera com {1:0.0}%."), Campaign.Find(lead.Key)?.Name, lead.Value), null, Who: lead.Key));
         }
 
         return items.OrderByDescending(i => i.Date).ThenByDescending(i => i.Order);
@@ -196,7 +197,13 @@ public partial class HubScreen
         }
 
         card.Name = "Feed_" + entry.Order;
-        var col = Ui.Column(card, 4);
+        // Retrato de quem o cartão fala, pelo cache (RL); sem pessoa, o texto ocupa a largura toda.
+        HBoxContainer line = Ui.Row(card, 10);
+        line.MouseFilter = MouseFilterEnum.Pass;
+        CachedPortrait(line, entry.Who, 48);
+        var col = Ui.Column(line, 4);
+        col.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        col.MouseFilter = MouseFilterEnum.Pass;
         Glossary.Rich(col, $"{entry.Source} · {entry.Date.ToString("dd/MM", PtBr)}", 18, Palette.Texto3);
         if (entry.Title is not null)
         {
