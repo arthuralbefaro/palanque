@@ -57,13 +57,6 @@ public partial class HubScreen
         ExpireDayTurn();
     }
 
-    /// <summary>Um turno terminou sem compromisso: só a linha do dia e o painel Você mudam.</summary>
-    private void RefreshDayPanels()
-    {
-        BuildDayLine();
-        BuildYou();
-    }
-
     /// <summary>A faixa da virada do dia fica só na primeira hora do dia novo (pelo relógio do jogo) e some quando o dia vira de novo.</summary>
     private const int DayTurnMinutes = 60;
 

@@ -171,6 +171,16 @@ public partial class HubScreen : Control
         }
 
         _engine = _game.Engine!;
+        if (_engine is not null)
+        {
+            // Painéis novos por evento do Core (RL): o motor avisa, a tela refaz só eles no quadro seguinte.
+            _engine.Changed += OnCampaignChanged;
+            CampaignEngine engine = _engine;
+            TreeExiting += () => engine.Changed -= OnCampaignChanged;
+        }
+
+        GetViewport().GuiFocusChanged += OnFocusChanged;
+        TreeExiting += () => GetViewport().GuiFocusChanged -= OnFocusChanged;
         Theme = Palette.CentralTheme();
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         var background = this.Add(new ColorRect { Color = Palette.Fundo, MouseFilter = MouseFilterEnum.Ignore });
@@ -274,6 +284,11 @@ public partial class HubScreen : Control
 
     public override void _Process(double delta)
     {
+        if (_panelsDirty && !_gov)
+        {
+            RefreshFromCore();
+        }
+
         if (!_running)
         {
             return;
@@ -298,10 +313,6 @@ public partial class HubScreen : Control
         if (tick.Results.Count > 0)
         {
             Refresh();
-        }
-        else if (tick.EndedTurns.Count > 0)
-        {
-            RefreshDayPanels();
         }
 
         if (tick.DayEnded)
@@ -575,15 +586,9 @@ public partial class HubScreen : Control
             return;
         }
 
-        // Painel de zonas aberto (RL): o clique no mapa destaca a linha da zona, sem trocar o painel.
+        // Painel de zonas (RL): o clique no mapa destaca a linha da zona e a lista rola até ela; a ficha flutua no mapa.
         _selectedZone = id;
-        if (_area == "territorio" && _sheet == Sheet.Nenhuma)
-        {
-            _scrollToZone = true;
-            Refresh();
-            return;
-        }
-
+        _scrollToZone = _area == "territorio";
         _back.Clear();
         _sheet = Sheet.Zona;
         _sheetId = id;
@@ -615,10 +620,12 @@ public partial class HubScreen : Control
         BuildTrail();
         BuildLeft();
         BuildMap();
+        BuildWindows();
         BuildRight();
         BuildObjectives();
         BuildBanner();
         ShowPendingDecision();
+        _panelsDirty = false;
     }
 
     private string Money(decimal value) => string.Create(PtBr, $"R$ {value:N0}");
@@ -887,8 +894,10 @@ public partial class HubScreen : Control
         switch (_sheet)
         {
             case Sheet.Zona when _sheetId is not null && _map.Zonas.ContainsKey(_sheetId):
-                BuildZoneSheet(_map.Zonas[_sheetId]);
-                return;
+                // A ficha da zona flutua sobre o mapa (HubScreen.Windows.cs); o painel mostra a área por baixo.
+                break;
+            case Sheet.Marcar when ScheduleFloats:
+                break;
             case Sheet.Pessoa when _sheetId is not null && _engine.City.Leader(_sheetId) is { } leader:
                 BuildPersonSheet(leader);
                 return;
