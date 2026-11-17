@@ -208,7 +208,7 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 - No mandato, os objetivos são só as promessas mais urgentes do Livro, sem o gerador da campanha (GDD 17.2, peça 6), sem fixar nem dispensar. Decidido pelo autor em 16/11: fica como pendência da R4.
 
 ### P-34 · O que a R4 deixou de fora ou a revisar (D-050)
-- **Idade média dos vereadores:** o critério de menos de 5 anos entre a 1ª e a 10ª legislatura passa no conjunto (+1,0) e nas Câmaras de 15 cadeiras ou mais, mas não em 3 de 4 Câmaras de 9 a 11 cadeiras (+5,9 a +8,3), pelo acaso de amostras pequenas. **A decidir pelo autor:** aceitar o critério só no conjunto e nas Câmaras maiores, ou pedir uma regra de entrada mais jovem nas pequenas.
+- **Idade média dos vereadores — fechada (D-051):** o critério vale no conjunto e nas Câmaras de 13 cadeiras ou mais; nas de 9 a 11, como média de 20 sementes (deriva de +0,5 a +1,1 ano).
 - **Caminhos raros de sucessão:** em 40 anos simulados, toda vaga foi preenchida por suplente na mesma semana. A cadeira sem suplente e a eleição indireta só ocorrem nos testes dedicados.
 - **Parâmetros a confirmar:** piso e teto dos indicadores (percentis 1 e 99), posse do suplente em 7 dias, eleição da cadeira em 90 dias.
 - **Fora da R4:** inclinação dos indicadores pelo CAGED e pelas transferências (P-14); velório como compromisso; herdeiro que herda dívidas; licença por doença de mais de 120 dias; candidatura do jogador numa eleição suplementar (hoje ela se resolve sozinha); inelegibilidade pela Ficha Limpa.
@@ -257,7 +257,7 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 
 ## Depois da tag fase-r4
 
-### P-35 · Pacote de nomes privado (GDD 17.18), a fazer depois da tag fase-r4 (nada foi implementado)
+### P-35 · Pacote de nomes privado (GDD 17.18, D-053), a fazer depois da tag fase-r-final (nada foi implementado)
 - O autor revê a suspensão da D-035 (item 15) só para uso privado:
   - leitor do pacote em `user://mods/nomes/`, trocando partidos (nome, sigla, número, cor) e pessoas do município por id estável (`mun.<ibge>.pref`, `.vice`, `.ver.<ordem>`);
   - marca "pacote privado" na tela; o save registra o pacote;

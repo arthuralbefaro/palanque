@@ -379,3 +379,25 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Entressafra:** 3 turnos por semana, com caminhada, visita, entrevista e posição. Não há verba nem equipe paga. Parâmetros em `data/career/offseason.json`.
 - **BalanceSim de mandato:** o robô soma a previsão em pontos de presença na cidade, um juízo do robô e não uma regra do jogo. A campanha que leva ao mandato mantém presença mínima de 60 nas zonas; depois de seis preparações sem eleição, o piso sobe para 75 e depois 90, porque os rivais da R3 são mais duros. A opção `--mundo` roda indicadores e renovação junto com a campanha; a medição de referência roda sem ela, para comparar com a `fase-r3`.
 - **Como reverter:** `data/indicators/`, `data/demography/renewal.json` e `entries.json`, `data/career/offseason.json`, `data/legislature/`, `data/executive/`, `data/works/`, `data/mandate/`, e os motores `IndicatorEvolution`, `RenewalEngine` e `WorldEngine`.
+
+## D-051 — Critério de idade média dos vereadores nas Câmaras pequenas (resposta do autor à P-34)
+- **Data:** 2026-11-16 · **Fase:** R4 · Decisão do autor.
+- **Critério:** a variação menor que 5 anos na idade média entre a 1ª e a 10ª legislatura vale no conjunto e em cada Câmara de 13 cadeiras ou mais, como estava (o teste usava 15; passou a 13). Nas Câmaras de 9 a 11 cadeiras vale como **média de 20 sementes**; uma semente isolada pode passar de 5 anos. O que se mede nelas é deriva, não acaso.
+- **Resultado** (40 anos, sementes 1000 a 1019): Manoel Urbano, 9 cadeiras, +1,1; Marcação, 9 cadeiras, +0,5; Mucajaí, 11 cadeiras, +0,8; Icapuí, 11 cadeiras, +0,6. Por semente, de −12,3 a +10,9. No conjunto, +1,0.
+- **Teste:** `Idade_media_nas_Camaras_de_9_a_11_cadeiras_deriva_menos_de_5_anos_na_media_de_20_sementes` (categoria `Lento`). Saiu a tolerância de 10 anos por semente nas Câmaras pequenas.
+- **Fecha a P-34 nesse ponto.**
+
+## D-052 — reservada para o cansaço por veículo (branch `cansaco-veiculo`, registrada quando ele entrar na main)
+
+## D-053 — Pacote de nomes privado (GDD 17.18; revê a D-035, item 15, só para uso privado)
+- **Data:** 2026-11-16 · **Fase:** depois da `fase-r-final` · Decisão do autor.
+- **Decisão:** o leitor do pacote de nomes (GDD 17.18) é construído no jogo. O pacote é de uso privado do autor e **nunca entra no repositório**, nem em `data/` nem nos builds exportados. O gerador do pacote também fica fora do repositório.
+- **A suspensão da D-035, item 15, continua valendo para tudo o que está no repositório:** nenhum nome real em `data/`, `docs/`, código, testes ou commits; a neutralidade vale como antes.
+- **O que o leitor faz:**
+  - lê `user://mods/nomes/`;
+  - troca nome, sigla, número e cor dos partidos pelo id fictício;
+  - troca nome, nome de urna, nascimento e gênero das pessoas do município por id estável: `mun.<ibge>.pref`, `mun.<ibge>.vice` e `mun.<ibge>.ver.<ordem>` (ordem dos eleitos de 2024);
+  - mostra uma marca discreta "pacote privado";
+  - o campo `protecao_eventos` (padrão `false`) decide se eventos de escândalo, vida pessoal, doença e morte podem sortear quem tem nome trocado;
+  - o save registra que foi criado com pacote.
+- **Começa depois da tag `fase-r-final`** (PENDENCIAS P-35).
