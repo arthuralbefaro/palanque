@@ -254,3 +254,13 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 - **8, 17 anos:** começa na pré-campanha da primeira eleição que pode disputar (D-036 alterada). O calendário só salta: a eleição anterior não é simulada.
 - **Retratos 2D:** encaixes de brinco, orelha e cabelo corrigidos sem redesenhar a arte (`fit` e `lobe_y` em `parts.json`).
 - **Sobrou:** Mandato e Prefeitura nas telas antigas ainda mostravam "Imagem +0.00" (somem na R4); as cores do logotipo não acompanham a troca de partido depois de sorteadas (só pelo botão "Cores do partido").
+
+## Depois da tag fase-r4
+
+### P-35 · Pacote de nomes privado (GDD 17.18), a fazer depois da tag fase-r4 (nada foi implementado)
+- O autor revê a suspensão da D-035 (item 15) só para uso privado:
+  - leitor do pacote em `user://mods/nomes/`, trocando partidos (nome, sigla, número, cor) e pessoas do município por id estável (`mun.<ibge>.pref`, `.vice`, `.ver.<ordem>`);
+  - marca "pacote privado" na tela; o save registra o pacote;
+  - campo `protecao_eventos`, padrão `false`;
+  - o pacote e o gerador ficam fora do repositório e dos builds.
+- O prompt completo está com o autor.
