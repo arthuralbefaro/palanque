@@ -8,7 +8,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Fase R, parte final: as telas fora da tela central no teste de explicação e no de layout (P-02).
+/// Fase R, parte final: as telas fora da tela central no teste de explicação (P-02) e o alvo `opcoes` (P-03).
 /// </summary>
 public partial class UiShot
 {
@@ -254,5 +254,146 @@ public partial class UiShot
         night.QueueFree();
         await Frames(2);
         return visited;
+    }
+
+    /// <summary>
+    /// Opções (P-03), com cliques de mouse: abre pelo menu e pela tela central, desliga a pausa "semana sem
+    /// compromisso", confere que ela não para mais o tempo no domingo e que a escolha ficou gravada no perfil da rodada,
+    /// e religa as dicas (a dica fechada volta). Precisa de janela.
+    /// </summary>
+    private async Task PlayOptions(string? shot)
+    {
+        Game game = Game.Instance;
+        if (NeedsWindow("opcoes"))
+        {
+            return;
+        }
+
+        // Pelo menu principal: a aba Tempo com cada pausa de data/time.json.
+        UI.Settings.Reload();
+        var menu = GD.Load<PackedScene>(Game.Scenes.MainMenu).Instantiate<Control>();
+        AddChild(menu);
+        await Frames(3);
+        await Click(menu.GetNode<Button>("%OptionsButton"), () => Widgets.OptionsDialog.IsOpen(GetTree().Root));
+        Node options = GetTree().Root.FindChild("Opcoes", recursive: true, owned: false)!;
+        foreach (PauseRule rule in game.Time.Pausas)
+        {
+            if (Named<CheckBox>(options, "Pausa_" + rule.Id) is not { } box)
+            {
+                Fail($"as Opções não mostram a pausa '{rule.Id}'.");
+                return;
+            }
+
+            if (box.ButtonPressed != Clock.ShouldPause(game.Time, rule.Id, null) || box.Disabled == rule.Desligavel || !ThreeParts(box.TooltipText)
+                || (box.Disabled && !box.TooltipText.StartsWith(Tr("Bloqueado:"), StringComparison.Ordinal)))
+            {
+                Fail($"a pausa '{rule.Id}' nas Opções não mostra o padrão, o bloqueio ou o tooltip em três partes.");
+                return;
+            }
+        }
+
+        if (ExplainProblems(options, "Opções pelo menu") is { Count: > 0 } menuProblems)
+        {
+            Fail(string.Join("; ", menuProblems));
+            return;
+        }
+
+        Save(shot, "_opcoes_menu");
+        await Click(Named<Button>(options, "FecharOpcoes")!, () => !Widgets.OptionsDialog.IsOpen(GetTree().Root));
+        RemoveChild(menu);
+        menu.QueueFree();
+
+        // Na tela central: no sábado, a pausa ligada para o tempo no domingo com a semana seguinte vazia.
+        HubScreen hub = await OpenHubIn(MediumCity, 11);
+        var campaign = game.State!.Campaign!;
+        game.State.Player.Resources.Money = 100_000;
+        foreach (PauseRule other in game.Time.Pausas.Where(p => p.Desligavel && p.Id != Clock.SemanaSemCompromisso))
+        {
+            // Só a pausa do teste fica ligada: outra pausa no mesmo dia confundiria a conferência.
+            UI.Settings.SetPause(other.Id, false);
+        }
+
+        if (!await SundayStops(hub, campaign, expected: true))
+        {
+            return;
+        }
+
+        // Desliga pela tela, com clique: abre as Opções pela barra de cima e desmarca a pausa.
+        await Click(Named<Button>(hub, "AbrirOpcoes")!, () => Widgets.OptionsDialog.IsOpen(GetTree().Root));
+        options = GetTree().Root.FindChild("Opcoes", recursive: true, owned: false)!;
+        var week = Named<CheckBox>(options, "Pausa_" + Clock.SemanaSemCompromisso)!;
+        await Click(week, () => UI.Settings.PauseOverrides.TryGetValue(Clock.SemanaSemCompromisso, out bool on) && !on);
+        await WaitUntil(() => Named<CheckBox>(options, "Pausa_" + Clock.SemanaSemCompromisso) is { ButtonPressed: false } && Named<Label>(options, "Estado_" + Clock.SemanaSemCompromisso)?.Text == Tr("desligada"), "as Opções mostrarem a pausa desligada, na caixa e em palavras");
+        Save(shot, "_opcoes_tela_central");
+        await Click(Named<Button>(options, "FecharOpcoes")!, () => !Widgets.OptionsDialog.IsOpen(GetTree().Root));
+
+        // Gravada no perfil da rodada (user://smoke/<perfil>/opcoes.cfg), não só na memória.
+        UI.Settings.Reload();
+        if (UI.Settings.PauseOverrides.GetValueOrDefault(Clock.SemanaSemCompromisso, true) || !Godot.FileAccess.FileExists(UserPaths.Of("opcoes.cfg")))
+        {
+            Fail("a pausa desligada nas Opções não ficou gravada em opcoes.cfg do perfil da rodada.");
+            return;
+        }
+
+        if (!await SundayStops(hub, campaign, expected: false))
+        {
+            return;
+        }
+
+        // Dicas: fecha a dica da Agenda com Entendi, religa pelas Opções e ela volta.
+        await Click(Named<Button>(hub, "Area_agenda")!);
+        if (Named<Control>(hub, "Dica_agenda") is not { } hint)
+        {
+            Fail("a área Agenda não mostrou a dica de primeira vez.");
+            return;
+        }
+
+        await Click(FindAll<Button>(hint).First(b => b.Text == Tr("Entendi")), () => Named<Control>(hub, "Dica_agenda") is null);
+        await Click(Named<Button>(hub, "AbrirOpcoes")!, () => Widgets.OptionsDialog.IsOpen(GetTree().Root));
+        options = GetTree().Root.FindChild("Opcoes", recursive: true, owned: false)!;
+        await Click(Named<Button>(options, "ReligarDicas")!, () => UI.Settings.HintsEnabled && !UI.Settings.HintSeen("agenda"));
+        await WaitUntil(() => Named<Button>(options, "ReligarDicas") is { Disabled: true }, "o botão de religar as dicas ficar bloqueado (já não há o que religar)");
+        await Click(Named<Button>(options, "FecharOpcoes")!, () => !Widgets.OptionsDialog.IsOpen(GetTree().Root));
+        await WaitUntil(() => Named<Control>(hub, "Dica_agenda") is not null, "a dica da Agenda voltar depois de religar as dicas");
+        Save(shot, "_dica_de_volta");
+        GD.Print("Smoke opcoes: ok (Opções pelo menu e pela tela central, com cada pausa de data/time.json; pausa da semana sem compromisso desligada com clique, gravada no perfil e sem parar o tempo no domingo; dica fechada volta ao religar as dicas)");
+        GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// Leva a carreira ao sábado sem compromissos na semana seguinte, solta o tempo em 1x com clique e passa o dia
+    /// para o domingo. Com a pausa ligada, o tempo para com o aviso da semana vazia; desligada, segue correndo.
+    /// </summary>
+    private async Task<bool> SundayStops(HubScreen hub, CampaignState campaign, bool expected)
+    {
+        Game game = Game.Instance;
+        campaign.Agenda.Scheduled.Clear();
+        while (game.State!.Time.Day != 5)
+        {
+            campaign.Events.Pending.Clear();
+            campaign.Agenda.PendingRequest = null;
+            campaign.Team.Pending.Clear();
+            game.AdvanceDay();
+        }
+
+        campaign.Events.Pending.Clear();
+        campaign.Agenda.PendingRequest = null;
+        campaign.Team.Pending.Clear();
+        campaign.Agenda.Scheduled.Clear();
+        hub.Refresh();
+        await Frames(2);
+        await Click(FindAll<Button>(hub).First(b => b.Text == "1x"), () => hub.Running);
+        string empty = Tr("A semana que vem não tem nenhum compromisso marcado.");
+        hub.StepDay();
+        await Frames(1);
+        bool stopped = !hub.Running && hub.NoticeText == empty;
+        if (game.State.Time.Day != 6 || stopped != expected || (!expected && hub.NoticeText == empty))
+        {
+            Fail($"domingo com a semana seguinte vazia e a pausa {(expected ? "ligada" : "desligada")}: tempo {(hub.Running ? "correndo" : "parado")}, aviso \"{hub.NoticeText ?? "nenhum"}\", dia {game.State.Time.Day}.");
+            return false;
+        }
+
+        await Click(Named<Button>(hub, "Pausa")!, () => !hub.Running);
+        return true;
     }
 }
