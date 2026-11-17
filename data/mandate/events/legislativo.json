@@ -1,0 +1,151 @@
+{
+  "eventos": [
+    {
+      "id": "obra_atrasada_na_base",
+      "papeis": ["vereador"],
+      "gatilho": "obra_atrasada",
+      "chance": 0.25,
+      "cooldown_semanas": 30,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} cobra a obra parada em {zona}",
+      "texto": "{pessoa}, {papel}, procurou o gabinete: {obra} em {zona} está atrasada e a comunidade quer saber de que lado você está.",
+      "opcoes": [
+        {
+          "id": "cobrar_em_publico", "rotulo": "Cobrar a prefeitura em público", "resultado": "Você foi à obra com a imprensa. A zona viu; a prefeitura também.",
+          "ganho": ["zona", "relacao"], "custo": ["posicao"],
+          "efeitos": { "presenca": 1.5, "relacao_prefeito": -3, "capital": -1, "lembranca": { "peso": 1, "pontos": 5, "texto": "Cobrou em público a obra parada em {zona}" } }
+        },
+        {
+          "id": "pedir_em_privado", "rotulo": "Pedir ao prefeito em privado", "resultado": "A prefeitura prometeu apertar a empresa. A obra anda um pouco; ninguém ficou sabendo que foi você.",
+          "ganho": ["tempo"], "custo": ["relacao"],
+          "efeitos": { "obra_semanas": -2, "lembranca": { "peso": -1, "pontos": -2, "texto": "Disse que ia resolver por dentro a obra de {zona}" } }
+        },
+        {
+          "id": "nao_se_meter", "rotulo": "Não se meter", "resultado": "Você disse que obra é assunto da prefeitura. A comunidade anotou.", "padrao": true,
+          "ganho": ["posicao"], "custo": ["relacao", "zona"],
+          "efeitos": { "capital": 1, "presenca": -1, "lembranca": { "peso": -2, "pontos": -8, "texto": "Não quis se meter na obra parada de {zona}" } }
+        }
+      ]
+    },
+    {
+      "id": "assessor_quer_espaco",
+      "papeis": ["vereador"],
+      "gatilho": "assessor_negligenciado",
+      "chance": 0.3,
+      "cooldown_semanas": 40,
+      "prazo_semanas": 3,
+      "titulo": "{pessoa} pensa em disputar a eleição",
+      "texto": "{pessoa}, que cuida da base do seu gabinete em {zona}, diz que o mandato esqueceu a zona e que já recebeu convite para disputar a próxima eleição.",
+      "opcoes": [
+        {
+          "id": "dar_atencao", "rotulo": "Passar uma semana na zona, lado a lado", "resultado": "Vocês percorreram a zona lado a lado. O gabinete segue inteiro; a sua agenda atrasou.",
+          "ganho": ["relacao", "zona"], "custo": ["tempo"],
+          "efeitos": { "presenca": 1.0, "lealdade": 10, "estresse": 6, "lembranca": { "peso": 2, "pontos": 8, "texto": "Voltou a {zona} quando reclamei" } }
+        },
+        {
+          "id": "apresentar", "rotulo": "Apresentar às lideranças como o seu nome na zona", "resultado": "Você gastou crédito com as lideranças para dar o lugar que foi pedido.",
+          "ganho": ["relacao"], "custo": ["posicao"],
+          "efeitos": { "lealdade": 8, "capital": -2, "lembranca": { "peso": 1, "pontos": 6, "texto": "Me apresentou às lideranças como o nome dele em {zona}" } }
+        },
+        {
+          "id": "deixar_sair", "rotulo": "Deixar que saia", "resultado": "O gabinete perdeu o nome que tinha na zona, que agora fala por conta própria.", "padrao": true,
+          "ganho": ["tempo"], "custo": ["relacao", "zona"],
+          "efeitos": { "sai": true, "estresse": -2, "presenca": -2, "lembranca": { "peso": -2, "pontos": -12, "texto": "Deixou que eu saísse do gabinete sem uma palavra" } }
+        }
+      ]
+    },
+    {
+      "id": "colega_pede_apoio",
+      "papeis": ["vereador"],
+      "gatilho": "vereador_com_projeto",
+      "chance": 0.12,
+      "cooldown_semanas": 16,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} pede o seu apoio",
+      "texto": "{pessoa}, {papel}, quer a sua assinatura e a sua fala em defesa de um projeto de autoria própria. Em troca, diz que fica devendo.",
+      "opcoes": [
+        {
+          "id": "apoiar", "rotulo": "Assinar e defender o projeto", "resultado": "Você subiu à tribuna pelo projeto. Isso não se esquece.",
+          "ganho": ["relacao"], "custo": ["posicao"],
+          "efeitos": { "capital": -1, "lembranca": { "peso": 2, "pontos": 10, "texto": "Defendeu o meu projeto na tribuna" } }
+        },
+        {
+          "id": "recusar", "rotulo": "Dizer que não é a sua pauta", "resultado": "Veio um agradecimento pela franqueza, sem sorriso.", "padrao": true,
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "capital": 1, "lembranca": { "peso": -1, "pontos": -5, "texto": "Negou apoio ao meu projeto" } }
+        }
+      ]
+    },
+    {
+      "id": "lideranca_pede_emprego",
+      "papeis": ["vereador"],
+      "gatilho": "lideranca_aliada",
+      "chance": 0.05,
+      "cooldown_semanas": 52,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} pede um favor",
+      "texto": "{pessoa}, {papel} em {zona}, pede que você fale com {prefeito} para arrumar um emprego na prefeitura para um sobrinho.",
+      "opcoes": [
+        {
+          "id": "interceder", "rotulo": "Interceder junto ao prefeito", "resultado": "O sobrinho foi contratado. A prefeitura anotou o favor, e mais gente ficou sabendo.",
+          "ganho": ["relacao"], "custo": ["risco"],
+          "efeitos": { "esqueleto": 1, "esqueleto_tipo": "pedido_de_emprego", "lembranca": { "peso": 2, "pontos": 12, "texto": "Conseguiu o emprego do meu sobrinho" } }
+        },
+        {
+          "id": "negar", "rotulo": "Explicar que não faz esse tipo de pedido", "resultado": "A conversa esfriou. A sua ficha continua limpa.", "padrao": true,
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "lembranca": { "peso": -1, "pontos": -8, "texto": "Negou um favor que pedi" } }
+        }
+      ]
+    },
+    {
+      "id": "promessa_cobrada_em_publico",
+      "papeis": ["vereador", "prefeito"],
+      "gatilho": "promessa_perto_do_prazo",
+      "chance": 0.1,
+      "cooldown_semanas": 26,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} cobra a promessa em público",
+      "texto": "{pessoa}, {papel}, disse no rádio que o prazo da sua promessa está acabando e que a comunidade já esperou demais.",
+      "opcoes": [
+        {
+          "id": "assumir", "rotulo": "Assumir em público que vai cumprir", "resultado": "Você repetiu a promessa no mesmo rádio. Agora todo mundo sabe a data.",
+          "ganho": ["relacao"], "custo": ["posicao"],
+          "efeitos": { "imagem": -0.01, "lembranca": { "peso": 1, "pontos": 4, "texto": "Reafirmou a promessa no rádio" } }
+        },
+        {
+          "id": "culpar", "rotulo": "Dizer que depende de outros", "resultado": "Você explicou que a decisão não é só sua. Parte do público aceitou; quem cobrava, não.",
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "imagem": 0.005, "lembranca": { "peso": -2, "pontos": -8, "texto": "Empurrou para os outros a promessa que me fez" } }
+        },
+        {
+          "id": "silenciar", "rotulo": "Não responder", "resultado": "A cobrança ficou no ar, sem resposta.", "padrao": true,
+          "ganho": ["tempo"], "custo": ["relacao", "posicao"],
+          "efeitos": { "estresse": -2, "imagem": -0.015, "lembranca": { "peso": -1, "pontos": -5, "texto": "Não respondeu quando cobrei em público" } }
+        }
+      ]
+    },
+    {
+      "id": "prefeito_pede_voto",
+      "papeis": ["vereador"],
+      "gatilho": "prefeito_pede_voto",
+      "chance": 0.15,
+      "cooldown_semanas": 20,
+      "prazo_semanas": 1,
+      "titulo": "{prefeito} telefona antes da votação",
+      "texto": "{prefeito} quer o seu voto no projeto do Executivo que está na pauta. Diz que as suas indicações e emendas andam mais depressa com quem ajuda.",
+      "opcoes": [
+        {
+          "id": "combinar", "rotulo": "Dizer que pode contar com você", "resultado": "Veio o agradecimento da prefeitura. Na sua bancada, houve quem torcesse o nariz.",
+          "ganho": ["relacao"], "custo": ["posicao"],
+          "efeitos": { "relacao_prefeito": 8, "capital": -1, "lembranca": { "peso": 1, "pontos": 6, "texto": "Disse que eu podia contar com o voto" } }
+        },
+        {
+          "id": "nao_prometer", "rotulo": "Dizer que vota pela consciência", "resultado": "A ligação terminou seca. O seu voto continua seu.", "padrao": true,
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "relacao_prefeito": -4, "capital": 1, "lembranca": { "peso": -1, "pontos": -4, "texto": "Não quis me garantir o voto" } }
+        }
+      ]
+    }
+  ]
+}

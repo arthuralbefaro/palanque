@@ -1,0 +1,227 @@
+{
+  "eventos": [
+    {
+      "id": "secretario_quer_palanque",
+      "papeis": ["prefeito"],
+      "gatilho": "secretario_candidato",
+      "chance": 0.06,
+      "cooldown_semanas": 40,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} quer aparecer",
+      "texto": "{pessoa}, {papel}, quer ir às rádios por conta própria falar das obras da pasta, e não esconde que pensa em disputar a eleição.",
+      "opcoes": [
+        {
+          "id": "deixar", "rotulo": "Deixar que apareça", "resultado": "As entrevistas foram dadas. O crédito das obras ficou com a secretaria.",
+          "ganho": ["relacao"], "custo": ["posicao"],
+          "efeitos": { "lealdade": 10, "aprovacao": -1, "lembranca": { "peso": 1, "pontos": 6, "texto": "Deixou que eu falasse pela pasta" } }
+        },
+        {
+          "id": "enquadrar", "rotulo": "Mandar que só fale ao seu lado", "resultado": "As entrevistas passaram a ser suas. A ordem foi cumprida, a contragosto.", "padrao": true,
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "lealdade": -10, "aprovacao": 1, "lembranca": { "peso": -1, "pontos": -6, "texto": "Me proibiu de falar sozinho pela pasta" } }
+        }
+      ]
+    },
+    {
+      "id": "secretario_pede_obra",
+      "papeis": ["prefeito"],
+      "gatilho": "secretario_projeto",
+      "chance": 0.06,
+      "cooldown_semanas": 52,
+      "prazo_semanas": 3,
+      "titulo": "{pessoa} insiste no projeto de estimação",
+      "texto": "{pessoa}, {papel}, voltou a pedir verba para o projeto de estimação. Diz que sem isso não vê por que continuar.",
+      "opcoes": [
+        {
+          "id": "bancar", "rotulo": "Reservar verba para o projeto", "resultado": "A verba saiu do investimento do ano. A secretaria trabalha com outro ânimo.",
+          "ganho": ["relacao"], "custo": ["dinheiro"],
+          "efeitos": { "lealdade": 15, "investimento": -0.004, "lembranca": { "peso": 2, "pontos": 10, "texto": "Bancou o meu projeto" } }
+        },
+        {
+          "id": "adiar", "rotulo": "Dizer que fica para o ano que vem", "resultado": "A resposta foi a mesma de sempre.", "padrao": true,
+          "ganho": ["dinheiro"], "custo": ["relacao"],
+          "efeitos": { "lealdade": -8, "lembranca": { "peso": -1, "pontos": -6, "texto": "Adiou de novo o meu projeto" } }
+        }
+      ]
+    },
+    {
+      "id": "secretario_desleal",
+      "papeis": ["prefeito"],
+      "gatilho": "secretario_desleal",
+      "chance": 0.08,
+      "cooldown_semanas": 30,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} fala contra o governo",
+      "texto": "{pessoa}, {papel}, tem dito a vereadores e jornalistas que as decisões da prefeitura são tomadas sem ouvir ninguém.",
+      "opcoes": [
+        {
+          "id": "demitir", "rotulo": "Demitir", "resultado": "A demissão saiu no mesmo dia. O recado chegou a todos.",
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "aprovacao": 1, "sai": true, "lembranca": { "peso": -2, "pontos": -10, "texto": "Me demitiu por dizer o que eu pensava" } }
+        },
+        {
+          "id": "conversar", "rotulo": "Chamar para uma conversa longa", "resultado": "Foram três horas de portas fechadas. A conversa acalmou os ânimos; a sua agenda do dia acabou.",
+          "ganho": ["relacao"], "custo": ["tempo"],
+          "efeitos": { "lealdade": 15, "estresse": 5, "lembranca": { "peso": 1, "pontos": 6, "texto": "Parou para me ouvir" } }
+        },
+        {
+          "id": "ignorar", "rotulo": "Ignorar", "resultado": "As queixas continuaram, agora nos jornais.", "padrao": true,
+          "ganho": ["tempo"], "custo": ["posicao"],
+          "efeitos": { "estresse": -2, "aprovacao": -2, "lembranca": { "peso": -1, "pontos": -3, "texto": "Fingiu que não ouviu as minhas queixas" } }
+        }
+      ]
+    },
+    {
+      "id": "folha_aperta",
+      "papeis": ["prefeito"],
+      "gatilho": "folha_no_prudencial",
+      "chance": 0.1,
+      "cooldown_semanas": 26,
+      "prazo_semanas": 3,
+      "titulo": "A folha passou do limite prudencial",
+      "texto": "A secretaria de Finanças avisa que a folha está acima do limite prudencial. {pessoa}, {papel}, já mandou dizer que não aceita perda para os servidores.",
+      "opcoes": [
+        {
+          "id": "congelar", "rotulo": "Congelar gratificações", "resultado": "A folha recuou um pouco. O sindicato soltou nota contra a prefeitura.",
+          "ganho": ["dinheiro"], "custo": ["relacao"],
+          "efeitos": { "folha": -0.008, "lembranca": { "peso": -2, "pontos": -10, "texto": "Congelou as gratificações dos servidores" } }
+        },
+        {
+          "id": "esperar", "rotulo": "Esperar a receita crescer", "resultado": "Nada mudou na folha. O sindicato registrou que você não cortou.", "padrao": true,
+          "ganho": ["relacao"], "custo": ["posicao"],
+          "efeitos": { "aprovacao": -1, "lembranca": { "peso": 1, "pontos": 3, "texto": "Não mexeu no que é dos servidores" } }
+        }
+      ]
+    },
+    {
+      "id": "vereador_da_base_ameaca",
+      "papeis": ["prefeito"],
+      "gatilho": "vereador_insatisfeito",
+      "chance": 0.1,
+      "cooldown_semanas": 26,
+      "prazo_semanas": 2,
+      "titulo": "{pessoa} ameaça deixar a base",
+      "texto": "{pessoa}, {papel}, diz que {zona} não viu nada do governo e que, assim, passa a votar com a oposição.",
+      "opcoes": [
+        {
+          "id": "prometer_obra", "rotulo": "Prometer uma obra em {zona}", "resultado": "A promessa ficou anotada, com o prazo combinado.",
+          "ganho": ["relacao"], "custo": ["risco"],
+          "efeitos": { "promessa_semanas": 60, "promessa_objeto": "obra_na_zona", "lembranca": { "peso": 2, "pontos": 15, "texto": "Prometeu uma obra para {zona}" } }
+        },
+        {
+          "id": "dar_cargo", "rotulo": "Dar um cargo a quem foi indicado", "resultado": "A nomeação saiu. Custa pouco na folha, e a ameaça passou.",
+          "ganho": ["relacao"], "custo": ["dinheiro"],
+          "efeitos": { "folha": 0.0005, "lembranca": { "peso": 1, "pontos": 12, "texto": "Nomeou o meu indicado" } }
+        },
+        {
+          "id": "deixar_ir", "rotulo": "Dizer que a porta está aberta", "resultado": "A cadeira mudou de lado: agora vota com a oposição.", "padrao": true,
+          "ganho": ["posicao", "dinheiro"], "custo": ["relacao"],
+          "efeitos": { "lembranca": { "peso": -2, "pontos": -15, "texto": "Mandou eu procurar a oposição" } }
+        }
+      ]
+    },
+    {
+      "id": "empresa_pede_aditivo",
+      "papeis": ["prefeito"],
+      "gatilho": "empresa_com_atraso",
+      "chance": 0.1,
+      "cooldown_semanas": 20,
+      "prazo_semanas": 2,
+      "titulo": "A {empresa} pede aditivo",
+      "texto": "{pessoa}, {papel}, diz que {obra} em {zona} só volta ao ritmo com um aditivo de preço. Sem isso, promete mais atraso.",
+      "opcoes": [
+        {
+          "id": "conceder", "rotulo": "Conceder o aditivo", "resultado": "O aditivo foi assinado e as máquinas voltaram.",
+          "ganho": ["tempo", "relacao"], "custo": ["dinheiro"],
+          "efeitos": { "obra_semanas": -3, "investimento": -0.002, "lembranca": { "peso": 1, "pontos": 8, "texto": "Assinou o aditivo quando precisei" } }
+        },
+        {
+          "id": "multar", "rotulo": "Negar e aplicar a multa do contrato", "resultado": "A multa saiu no diário oficial. A empresa reduziu ainda mais o ritmo.", "padrao": true,
+          "ganho": ["posicao", "dinheiro"], "custo": ["tempo", "relacao"],
+          "efeitos": { "obra_semanas": 3, "aprovacao": 0.5, "lembranca": { "peso": -2, "pontos": -10, "texto": "Negou o aditivo e me multou" } }
+        }
+      ]
+    },
+    {
+      "id": "cpi_contra_o_governo",
+      "papeis": ["prefeito"],
+      "gatilho": "cpi_em_curso",
+      "chance": 0.5,
+      "cooldown_semanas": 6,
+      "prazo_semanas": 2,
+      "titulo": "A CPI convoca a prefeitura",
+      "texto": "A CPI pediu documentos e quer ouvir os seus secretários. {pessoa}, {papel}, avisa que a Câmara espera uma resposta.",
+      "opcoes": [
+        {
+          "id": "cooperar", "rotulo": "Entregar tudo e depor", "resultado": "Você abriu os arquivos. Deu trabalho, e parte da suspeita se desfez.",
+          "ganho": ["posicao"], "custo": ["tempo"],
+          "efeitos": { "cpi_prova": -0.08, "estresse": 8, "lembranca": { "peso": 1, "pontos": 4, "texto": "Entregou à CPI o que pedimos" } }
+        },
+        {
+          "id": "obstruir", "rotulo": "Mandar a base esvaziar as sessões", "resultado": "As sessões caíram por falta de quórum e a CPI perdeu fôlego. A Câmara inteira viu de onde veio a ordem.",
+          "ganho": ["posicao"], "custo": ["relacao"],
+          "efeitos": { "capital": -4, "cpi_prova": -0.2, "lembranca": { "peso": -2, "pontos": -8, "texto": "Mandou esvaziar a CPI" } }
+        },
+        {
+          "id": "acerto", "rotulo": "Procurar um acerto com o relator", "resultado": "O relatório vai sair mais brando. Ficou um segredo entre vocês dois.",
+          "ganho": ["posicao"], "custo": ["risco"],
+          "efeitos": { "cpi_prova": -0.3, "esqueleto": 3, "esqueleto_tipo": "acerto_com_relator", "lembranca": { "peso": 1, "pontos": 5, "texto": "Acertou comigo o tom do relatório" } }
+        },
+        {
+          "id": "calar", "rotulo": "Não responder", "resultado": "A CPI registrou o silêncio da prefeitura.", "padrao": true,
+          "ganho": ["tempo"], "custo": ["posicao"],
+          "efeitos": { "estresse": -1, "cpi_prova": 0.1, "lembranca": { "peso": -1, "pontos": -4, "texto": "Não respondeu à convocação da CPI" } }
+        }
+      ]
+    },
+    {
+      "id": "camara_pede_repasse",
+      "papeis": ["prefeito"],
+      "gatilho": "camara_pede_repasse",
+      "chance": 0.03,
+      "cooldown_semanas": 52,
+      "prazo_semanas": 3,
+      "titulo": "{pessoa} quer mais verba para a Câmara",
+      "texto": "{pessoa}, na presidência da Câmara, pede que o repasse suba até o teto da Constituição. Lembra que os projetos da prefeitura passam pela Mesa.",
+      "opcoes": [
+        {
+          "id": "ceder", "rotulo": "Atender com verba do investimento", "resultado": "A Câmara recebeu um reforço para reformar o plenário. O agradecimento veio em público.",
+          "ganho": ["relacao"], "custo": ["dinheiro"],
+          "efeitos": { "investimento": -0.003, "lembranca": { "peso": 2, "pontos": 12, "texto": "Atendeu o pedido de verba da Câmara" } }
+        },
+        {
+          "id": "negar", "rotulo": "Manter o repasse como está", "resultado": "A resposta foi que a pauta da Câmara tem dono.", "padrao": true,
+          "ganho": ["dinheiro"], "custo": ["relacao"],
+          "efeitos": { "lembranca": { "peso": -2, "pontos": -10, "texto": "Negou verba à Câmara" } }
+        }
+      ]
+    },
+    {
+      "id": "zona_reclama",
+      "papeis": ["prefeito"],
+      "gatilho": "zona_descontente",
+      "chance": 0.15,
+      "cooldown_semanas": 20,
+      "prazo_semanas": 2,
+      "titulo": "{zona} quer ouvir a prefeitura",
+      "texto": "{pessoa}, {papel}, convoca uma reunião em {zona}: a zona se sente esquecida depois do que passou e quer ver você lá.",
+      "opcoes": [
+        {
+          "id": "ir", "rotulo": "Ir e ouvir até o fim", "resultado": "A reunião foi longa e dura. No fim, aplaudiram por você ter ido.",
+          "ganho": ["zona", "relacao"], "custo": ["tempo"],
+          "efeitos": { "aprovacao_zona": 4, "estresse": 8, "lembranca": { "peso": 2, "pontos": 8, "texto": "Veio a {zona} e ouviu até o fim" } }
+        },
+        {
+          "id": "mandar_secretario", "rotulo": "Mandar alguém do secretariado", "resultado": "As queixas foram anotadas. Perguntaram por você a noite toda.",
+          "ganho": ["tempo"], "custo": ["relacao"],
+          "efeitos": { "estresse": -1, "aprovacao_zona": 1, "lembranca": { "peso": -1, "pontos": -4, "texto": "Mandou outra pessoa no lugar a {zona}" } }
+        },
+        {
+          "id": "nao_ir", "rotulo": "Não mandar ninguém", "resultado": "A sua cadeira ficou vazia na mesa.", "padrao": true,
+          "ganho": ["tempo"], "custo": ["zona", "relacao"],
+          "efeitos": { "estresse": -2, "aprovacao_zona": -3, "lembranca": { "peso": -2, "pontos": -10, "texto": "Deixou a cadeira vazia em {zona}" } }
+        }
+      ]
+    }
+  ]
+}

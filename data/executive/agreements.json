@@ -1,0 +1,38 @@
+{
+  "note": "Convênios com o estado e a União (GDD 17.15): pagam parte de uma obra, pedem contrapartida do município e têm prazo. Convênio não executado no prazo devolve o dinheiro e bloqueia novos por um tempo. Com a folha acima do limite e o prazo do art. 23 da LC 101/2000 vencido, o município não recebe transferências voluntárias: os convênios param (a regra fica no FiscalLawConfig do Core). A relação com o governador é um número do jogo; governador, deputados aliados e prestação de contas detalhada ficam para a esfera estadual. Tudo aqui é parâmetro de jogo.",
+  "regras": {
+    "chance_oferta_semanal": 0.025,
+    "oferta_por_relacao": 0.02,
+    "contrapartida": { "min": 0.05, "max": 0.3 },
+    "folga_semanas": { "min": 4, "max": 16 },
+    "oferta_vale_semanas": 4,
+    "bloqueio_por_devolucao": 78,
+    "imagem_devolucao": -4,
+    "relacao_governador_inicial": { "min": -20, "max": 30 },
+    "relacao_por_convenio_cumprido": 6,
+    "relacao_por_devolucao": -12,
+    "maximo_abertos": 2
+  },
+  "origens": [
+    { "id": "estado", "nome": "governo do estado", "weight": 2 },
+    { "id": "uniao", "nome": "governo federal", "weight": 1 }
+  ],
+  "ganho": ["dinheiro"],
+  "custo": ["risco", "tempo"],
+  "textos": {
+    "oferta": "O {origem} oferece convênio de {valor} para {obra}: contrapartida de {contrapartida} e {semanas} semanas para entregar",
+    "assinado": "Convênio assinado com o {origem}: {obra} em {zona}",
+    "recusado": "A prefeitura recusou o convênio do {origem} para {obra}",
+    "expirou": "A oferta de convênio do {origem} para {obra} venceu sem resposta",
+    "cumprido": "Convênio cumprido: {obra} entregue e contas aceitas pelo {origem}",
+    "devolvido": "Prazo vencido: a prefeitura devolve {valor} ao {origem} pelo convênio de {obra}, e fica {semanas} semanas sem convênio novo",
+    "bloqueado_lrf": "Um convênio deixou de vir: com a folha acima do limite e o prazo vencido, o município não recebe transferências voluntárias ({artigo})",
+    "bloqueado_eleicao": "Nos três meses antes da eleição não há transferência voluntária: nenhum convênio novo ({artigo})",
+    "bloqueado_devolucao": "Um convênio deixou de vir: a prefeitura está impedida de firmar novos até {data}, por ter devolvido dinheiro",
+    "previsao_assinar": "Convênio com o {origem}: {valor} para {obra} em {zona}",
+    "previsao_contrapartida": "O município entra com {contrapartida}; sobram {resta} de investimento no ano",
+    "previsao_prazo": "Prazo de {semanas} semanas; a obra costuma levar de {min} a {max}",
+    "previsao_risco": "Se a obra não for entregue no prazo, o dinheiro volta e não há convênio novo por {bloqueio} semanas",
+    "previsao_recusar": "Recusar a oferta do {origem} para {obra}: o dinheiro não vem e a contrapartida de {contrapartida} fica livre para outra obra"
+  }
+}

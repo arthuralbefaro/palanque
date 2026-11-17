@@ -7,7 +7,8 @@ using Planalto.Core.Municipios;
 using Planalto.Core.State;
 
 // Uso: dotnet run --project tools/Planalto.BalanceSim -- [--campanhas 200] [--cidades 10] [--portes pequeno,medio,grande,metropole]
-//                                                        [--semente 1] [--paradas 0] [--saida docs/balance/r3.md]
+//                                                        [--semente 1] [--paradas 0] [--saida docs/balance/r3.md] [--mundo]
+// --mundo: o mundo da R4 (indicadores reais e renovação do mundo político) anda junto com cada campanha, como no jogo.
 // --paradas N: além das campanhas jogadas, N campanhas por porte com o robô parado (a régua "sem campanha" da D-026).
 // Joga campanhas de vereador com o robô que escolhe sempre o compromisso de maior ganho previsto de votos e, desde a
 // R2b, contrata, reparte a verba pelos canais, assume posições e faz promessas; desde a R3, responde a doadores e a
@@ -36,6 +37,7 @@ ulong seed = ulong.Parse(Arg("--semente", "1"), CultureInfo.InvariantCulture);
 int idleCampaigns = int.Parse(Arg("--paradas", "0"), CultureInfo.InvariantCulture);
 string[] portes = Arg("--portes", "pequeno,medio,grande,metropole").Split(',', StringSplitOptions.RemoveEmptyEntries);
 string? output = Array.IndexOf(args, "--saida") >= 0 ? Arg("--saida", "") : null;
+bool withWorld = Array.IndexOf(args, "--mundo") >= 0;
 
 const double MaxTypeShare = 0.40;
 const double MaxPairShare = 0.25;
@@ -43,10 +45,28 @@ const double MaxChannelShare = 0.40;
 const double MinTradeDecisions = 1.0;
 
 var content = new SimContent(dataDirectory);
+if (Array.IndexOf(args, "--mandato") >= 0)
+{
+    // BalanceSim de mandato (R4): dotnet run --project tools/Planalto.BalanceSim -- --mandato [--mandatos 24] [--cidades 6] [--saida docs/balance/r4.md]
+    return MandateSim.Run(content, portes, int.Parse(Arg("--mandatos", "24"), CultureInfo.InvariantCulture), cities, seed, output);
+}
+
+MandateSim.WorldContentSet? linked = withWorld
+    ? new(Planalto.Core.Indicators.IndicatorContent.LoadOrThrow(dataDirectory), Planalto.Core.Renewal.RenewalContent.LoadOrThrow(dataDirectory))
+    : null;
+Planalto.Core.World.WorldEngine? WorldOf(CampaignEngine engine, Municipio m) =>
+    linked is null ? null : MandateSim.NewWorld(content, linked, engine.Context.State, m);
+
 var report = new StringBuilder();
 var culture = CultureInfo.GetCultureInfo("pt-BR");
 report.AppendLine("# BalanceSim — campanha de vereador (R3)");
 report.AppendLine();
+if (withWorld)
+{
+    report.AppendLine("Com o mundo da R4 ligado: os indicadores reais da cidade evoluem e a renovação do mundo político (idade, morte, renúncia, cassação, suplente, mudança de liderança e de equipe) roda junto com cada campanha, como no jogo.");
+    report.AppendLine();
+}
+
 report.AppendLine(string.Format(culture, "Robô que marca, em cada turno livre, o compromisso de maior ganho previsto de votos (inclusive a entrevista em cada veículo e o tema em alta) e, toda semana, contrata, reparte a verba pelos canais, assume posições, faz promessas, delega caminhadas e responde aos eventos da equipe. Na R3 passa a responder às ofertas de doadores (metade das campanhas é \"limpa\": só aceita com recibo, até o teto; a outra metade é \"suja\": aceita todo dinheiro por fora), a responder aos ataques pela resposta de menor dano esperado e a atacar, de 2 em 2 semanas depois da primeira pesquisa pública, quem está logo à frente nela. Depois da eleição, o processo de contas de cada campanha (prestação final, julgamento e representação do art. 30-A) é simulado por dois anos em {3} réplicas, como se o candidato tivesse sido eleito. {0} campanhas por porte, em {1} cidades sorteadas por porte (semente {2}), metade no partido mais forte da cidade e metade num partido sorteado.", campaigns, cities, seed, CampaignRobot.AccountsReplicas));
 report.AppendLine();
 report.AppendLine("Critérios (GDD 17.1 e 17.12; ROADMAP, R3):");
@@ -73,7 +93,7 @@ foreach (string porte in portes)
         try
         {
             var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
-            traces[i] = new CampaignRobot(engine) { Diagnose = i == 0 && Environment.GetEnvironmentVariable("PLANALTO_SIM_DIAG") == "1", Dirty = i % 4 >= 2 }.Play();
+            traces[i] = new CampaignRobot(engine) { Diagnose = i == 0 && Environment.GetEnvironmentVariable("PLANALTO_SIM_DIAG") == "1", Dirty = i % 4 >= 2, World = WorldOf(engine, m) }.Play();
             traces[i].Strongest = i % 2 == 0;
         }
         catch (Exception ex)
@@ -96,7 +116,7 @@ foreach (string porte in portes)
         try
         {
             var engine = content.NewCareer(m, seed + (ulong)(1000 * (i + 1)), strongestParty: i % 2 == 0);
-            idle[i] = new CampaignRobot(engine).PlayIdle();
+            idle[i] = new CampaignRobot(engine) { World = WorldOf(engine, m) }.PlayIdle();
             idle[i].Strongest = i % 2 == 0;
             idle[i].Idle = true;
         }

@@ -21,7 +21,7 @@ public sealed record MandateActionResult(bool Ok, MandateActionFailure? Failure,
 /// jogador (eleitores, imagem, fidelidade, relações e capital político), projetos e ações de gabinete.
 /// Toda aleatoriedade vem do Rng do estado.
 /// </summary>
-public sealed class LegislatureEngine
+public sealed partial class LegislatureEngine
 {
     private readonly Dictionary<string, double> _groupShares;
 
@@ -44,6 +44,12 @@ public sealed class LegislatureEngine
     private DateOnly Week => State.Calendar.WeekStart;
 
     public bool InRecess => Config.RecessMonths.Contains(Week.Month);
+
+    /// <summary>
+    /// Luto oficial pela morte de vereador, prefeito ou vice (GDD 17.16): a Câmara não faz sessão enquanto ele alcança
+    /// a semana. A pauta espera a semana seguinte; o gabinete continua aberto.
+    /// </summary>
+    public bool InMourning => State.Renewal is { } renewal && renewal.Municipio == Context.Municipio.CodigoIbge && Renewal.RenewalQueries.InMourning(renewal, Week);
 
     public bool Over => State.Calendar.WeekStart > Mandate.End;
 
@@ -194,9 +200,11 @@ public sealed class LegislatureEngine
         State.Player.Resources.Stress += effects.Stress;
     }
 
-    private Bill File(BillTemplate template, string authorId)
+    private Bill File(BillTemplate template, string authorId) => FileBill(Mandate, Config, template, authorId, Week, Rng);
+
+    /// <summary>Protocola um projeto: entra na comissão com o prazo sorteado.</summary>
+    public static Bill FileBill(MandateState mandate, LegislatureConfig config, BillTemplate template, string authorId, DateOnly week, Rng rng)
     {
-        MandateState mandate = Mandate;
         var bill = new Bill
         {
             Id = $"pl_{mandate.NextBillNumber++}",
@@ -204,8 +212,8 @@ public sealed class LegislatureEngine
             Title = template.Title,
             AuthorId = authorId,
             AuthorKind = template.Author,
-            Filed = Week,
-            CommitteeUntil = Week.AddDays(7 * Rng.NextInt(Config.CommitteeWeeks.Min, Config.CommitteeWeeks.Max + 1)),
+            Filed = week,
+            CommitteeUntil = week.AddDays(7 * rng.NextInt(config.CommitteeWeeks.Min, config.CommitteeWeeks.Max + 1)),
         };
         mandate.Bills.Add(bill);
         return bill;
@@ -221,7 +229,7 @@ public sealed class LegislatureEngine
     public void ResolveWeek(bool automatic)
     {
         MandateState mandate = Mandate;
-        if (!InRecess)
+        if (!InRecess && !InMourning)
         {
             foreach (Bill bill in Pauta.ToList())
             {
@@ -258,9 +266,10 @@ public sealed class LegislatureEngine
         int orientation = PlayerOrientation(bill);
         bill.Orientation = orientation;
 
+        // Sem voto marcado, vale a instrução permanente (GDD 17.14); sem instrução, o jogador falta.
         VoteChoice playerVote = automatic
             ? orientation switch { 1 => VoteChoice.Sim, -1 => VoteChoice.Nao, _ => Alignment(player.Position, template) >= 0 ? VoteChoice.Sim : VoteChoice.Nao }
-            : bill.PlayerVote ?? VoteChoice.Ausente;
+            : bill.PlayerVote ?? Governance.GovernanceEngine.InstructionVote(State, Context.Content, bill) ?? VoteChoice.Ausente;
         bill.PlayerVote = playerVote;
 
         // Como líder, o jogador orienta a própria bancada.
@@ -271,7 +280,8 @@ public sealed class LegislatureEngine
         foreach (ChamberMember m in mandate.Members.Where(m => !m.IsPlayer))
         {
             int o = player.Leader && m.PartyId == player.PartyId && player.PartyId is not null ? playerSign : Orientation(m.PartyId, bill);
-            switch (ChamberVote.Decide(Config, VoteLogit(m, bill, o), Rng))
+            // Quem fechou acordo de voto com o jogador vota como combinado (GDD 17.14).
+            switch (ChamberVote.Decide(Config, VoteLogit(m, bill, o) + (State.Governance?.DealLogit(bill.Id, m.Id) ?? 0), Rng))
             {
                 case VoteChoice.Abstencao:
                     abstain++;
@@ -418,6 +428,8 @@ public sealed class LegislatureEngine
                 chance = Config.CommitteePassChance;
                 if (bill.AuthorId == RaceSetup.PlayerId)
                 {
+                    // Assessor legislativo e presidência da Câmara ajudam o projeto na comissão (GDD 17.14).
+                    chance += State.Governance?.CommitteeBonus ?? 0;
                     chance += Config.CommitteePassPerRelation * mandate.Members.Where(m => !m.IsPlayer).Average(m => m.Relation);
                     string? theme = Template(bill).Theme;
                     if (theme is not null && Config.Committees.FirstOrDefault(c => c.Id == mandate.Committee)?.Themes.Contains(theme) == true)

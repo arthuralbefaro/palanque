@@ -1,0 +1,7 @@
+{
+  "note": "Parâmetros de jogo do ciclo econômico simples da R4 (GDD 17.17); não são dados. O crescimento do momento é crescimento_tendencia + hiato, em % ao ano. O hiato parte do crescimento oficial mais recente (data/economy/start.json) menos a tendência; a cada semana perde força (persistencia_anual é a fração que sobrevive de um ano para o outro) e recebe um choque sorteado, de modo que o desvio-padrão de longo prazo seja desvio_hiato, sem passar de hiato_maximo em módulo. O hiato move emprego, receita, PIB por habitante e contas pelos pesos 'sensibilidade_ciclo' de data/indicators/model.json. O modelo nacional completo é da Fase 7.",
+  "crescimento_tendencia": 2.0,
+  "persistencia_anual": 0.6,
+  "desvio_hiato": 1.8,
+  "hiato_maximo": 6.0
+}

@@ -1,0 +1,17 @@
+{
+  "note": "Textos da previsão do voto do vereador na pauta (GDD 17.1, princípio f, e 17.14): o que o voto muda na sessão da semana, antes do clique. As chaves entre chaves são preenchidas pelo Core com os números das mesmas regras que a sessão aplica.",
+  "textos": {
+    "previsao_voto": "O voto vale na sessão desta semana, quando o projeto for votado; até lá dá para trocar.",
+    "previsao_voto_segue": "Acompanha a orientação do {partido}: a fidelidade ao partido sobe {pontos} ponto(s).",
+    "previsao_voto_contraria": "Contraria a orientação do {partido}: a fidelidade ao partido cai {pontos} ponto(s).",
+    "previsao_voto_abstem": "Abster-se quando o {partido} orienta custa {pontos} ponto(s) de fidelidade.",
+    "previsao_voto_liberado": "O {partido} liberou a bancada neste projeto: a fidelidade não muda.",
+    "previsao_voto_sem_partido": "Sem partido, você vota livre: não há fidelidade em jogo.",
+    "previsao_voto_limites": "Abaixo de {advertencia} de fidelidade o partido adverte, abaixo de {sancao} sanciona e abaixo de {expulsao} expulsa; hoje ela está em {hoje}.",
+    "previsao_voto_executivo": "Projeto da Prefeitura: votar a favor aproxima você do prefeito, votar contra afasta.",
+    "previsao_voto_autor": "{autor}, autor do projeto, lembra de como você votou.",
+    "previsao_voto_publico": "Os eleitores reagem ao voto pela popularidade do projeto em cada grupo.",
+    "previsao_voto_abstencao_publico": "A abstenção não mexe no apoio dos eleitores.",
+    "previsao_voto_acordo": "Você prometeu votar a favor deste projeto num acordo com {nome}: votar de outro jeito quebra a palavra, e {nome} lembra."
+  }
+}

@@ -7,7 +7,7 @@ using Planalto.UI.Screens;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Teste de fumaça e captura das telas: "-- --target=perfil|newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|rivais|midia|contas|mapa_pequeno [--perfil=nome] [--screenshot=arquivo.png]".
+/// Teste de fumaça e captura das telas: "-- --target=perfil|newworld|creator|creator17|hub|explicacao|picker|campaign|map|mandate|prefeitura|eventos|layout|agenda|zona|lideranca|equipe|verba|plataforma|objetivos|rivais|midia|contas|mapa_pequeno|gabinete|obras|fiscal|indicadores|entressafra [--perfil=nome] [--screenshot=arquivo.png]".
 /// Os dados de usuário da rodada ficam em user://smoke/&lt;perfil&gt;/, apagado no início; sem --perfil, vale o nome do branch git.
 /// Prepara o estado necessário, abre a tela, exercita os botões principais e fecha com código de saída.
 /// </summary>
@@ -43,8 +43,9 @@ public partial class UiShot : Node
         Game game = Game.Instance;
         game.SuppressNavigation = true;
 
-        // O ponteiro do mouse de quem roda o teste pode estar sobre a janela: sem isto, o tooltip do controle sob ele entra nas capturas.
-        ProjectSettings.SetSetting("gui/timers/tooltip_delay_sec", 3600.0);
+        // O ponteiro do mouse de verdade pode estar parado sobre a janela do teste: sem isto, o tooltip que ele abre
+        // entra na frente dos cliques simulados e nas medidas do layout. Os testes leem o texto do tooltip direto do controle.
+        ProjectSettings.SetSetting("gui/timers/tooltip_delay_sec", 100000.0);
         game.PendingSeed = 2028;
         game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
 
@@ -150,6 +151,36 @@ public partial class UiShot : Node
         if (target == "prefeitura")
         {
             await PlayMayor(shot);
+            return;
+        }
+
+        if (target == "gabinete")
+        {
+            await PlayCabinet(shot);
+            return;
+        }
+
+        if (target == "obras")
+        {
+            await PlayWorks(shot);
+            return;
+        }
+
+        if (target == "fiscal")
+        {
+            await PlayFiscal(shot);
+            return;
+        }
+
+        if (target == "indicadores")
+        {
+            await PlayIndicators(shot);
+            return;
+        }
+
+        if (target == "entressafra")
+        {
+            await PlayOffSeason(shot);
             return;
         }
 
@@ -358,6 +389,8 @@ public partial class UiShot : Node
             await CheckRealWindow(problems, shot);
         }
 
+        int govPanels = 0;
+        ClearGovSaves();
         foreach (Vector2I size in new[] { new Vector2I(1920, 1080), new Vector2I(1366, 768) })
         {
             bool framed = UI.WindowFit.ExactForCapture(size);
@@ -515,6 +548,47 @@ public partial class UiShot : Node
                 RemoveChild(hub);
                 hub.QueueFree();
             }
+
+            // Telas da R4: mandato de vereador, entressafra e prefeitura na tela central, em cidade pequena e metrópole.
+            foreach (var (code, label) in new[] { (SmallCity, "pequena"), (Metropolis, "metropole") })
+            {
+                bool visited = await VisitGovScreens(code, label, (hub, where, suffix) =>
+                {
+                    problems.AddRange(Overflow(hub, $"{where}, {tag}"));
+                    if (hub.LeftPanelWidth > 401)
+                    {
+                        problems.Add($"{where}, {tag}: o painel da área mede {hub.LeftPanelWidth:0} de largura (deveria ter 400): algum conteúdo não quebra a linha");
+                    }
+
+                    if (hub.RightPanelWidth > 401)
+                    {
+                        problems.Add($"{where}, {tag}: a coluna direita mede {hub.RightPanelWidth:0} de largura (deveria ter 400): algum conteúdo não quebra a linha");
+                    }
+
+                    if (Named<Control>(hub, "CartaoMandato") is { } govCard && govCard.Size.Y > 640 + 1)
+                    {
+                        problems.Add($"{where}, {tag}: o cartão de decisão do mandato mede {govCard.Size.Y:0} de altura (máximo 640)");
+                    }
+
+                    if (suffix is not null)
+                    {
+                        Save(shot, $"_r4_{suffix}_{label}_{tag}");
+                    }
+
+                    govPanels++;
+                    return Task.CompletedTask;
+                });
+                if (!visited)
+                {
+                    return;
+                }
+            }
+        }
+
+        if (govPanels < 240)
+        {
+            Fail($"o teste de layout só passou por {govPanels} telas da R4 (esperado: 240 ou mais).");
+            return;
         }
 
         if (problems.Count > 0)
@@ -533,7 +607,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print("Smoke layout: ok (janela real dentro da área útil do monitor, com os botões do Novo Mundo e da criação; 1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas)");
+        GD.Print("Smoke layout: ok (janela real dentro da área útil do monitor, com os botões do Novo Mundo e da criação; 1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas; e as telas da R4 em cidade pequena e metrópole: mandato de vereador, gabinete, instrumentos, achado, Mesa e CPI, Base, contagem nominal, evento de mandato, cobrança do Livro, indicadores, composição da Câmara, entressafra, e a prefeitura com Governo, Secretariado, Obras, modalidade, inauguração, Pessoal e fiscal, mesa de negociação, Convênios, Câmara, Orçamento e políticas e a crise no cartão)");
         GetTree().Quit(0);
     }
 
@@ -731,10 +805,11 @@ public partial class UiShot : Node
                 Core.Events.EventEngine.Trigger(engine.Context, definition.Id, game.State.Rng);
                 hub.Refresh();
                 await Frames(3);
-                var dialog = FindAll<Widgets.EventDialog>(hub).SingleOrDefault();
+                var dialogs = FindAll<Widgets.EventDialog>(hub).ToList();
+                var dialog = dialogs.Count == 1 ? dialogs[0] : null;
                 if (dialog is null || !hub.EventOpen)
                 {
-                    Fail($"o evento {definition.Id} não abriu.");
+                    EventFailure($"o evento {definition.Id} não abriu (cartões de evento na tela: {dialogs.Count}).", hub, dialogs.FirstOrDefault(), null, definition.Id, choice);
                     return;
                 }
 
@@ -755,16 +830,24 @@ public partial class UiShot : Node
                     continue;
                 }
 
-                await Click(buttons[choice]);
+                Button option = buttons[choice];
+                Vector2 optionPoint = option.GetGlobalRect().GetCenter();
+                await Click(option);
                 var proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
                 if (proceed is null)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: sem o botão Continuar depois de escolher.");
+                    EventFailure($"{definition.Id}, opção {choice + 1}: sem o botão Continuar depois de escolher.", hub, dialog, optionPoint, definition.Id, choice);
                     return;
                 }
 
+                Vector2 proceedPoint = proceed.GetGlobalRect().GetCenter();
                 await Click(proceed);
                 await Frames(3);
+                if (IsInstanceValid(dialog) && dialog.IsInsideTree() && !dialog.IsQueuedForDeletion())
+                {
+                    EventFailure($"{definition.Id}, opção {choice + 1}: o cartão do evento não fechou com Continuar.", hub, dialog, proceedPoint, definition.Id, choice);
+                    return;
+                }
 
                 // Evento dinâmico disparado pelo fato desta escolha (GDD 15.4): é outro cartão, que tem a própria volta
                 // neste teste. Aqui ele precisa ter aberto no lugar do primeiro; resolve-se pelo Core e a conferência segue.
@@ -782,18 +865,30 @@ public partial class UiShot : Node
                     await Frames(3);
                 }
 
+                // O efeito da escolha também pode deixar outra decisão esperando (pedido de liderança, decisão da
+                // equipe): o cartão dela é legítimo e não é o objeto deste teste.
+                if (campaign.Agenda.PendingRequest is not null || campaign.Team.Pending.Count > 0)
+                {
+                    // Só as decisões dos outros sistemas: um evento que continue pendente reprova logo abaixo.
+                    campaign.Agenda.PendingRequest = null;
+                    campaign.Team.Pending.Clear();
+                    hub.Refresh();
+                    await Frames(3);
+                }
+
                 if (hub.EventOpen || campaign.Events.Pending.Count > 0)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: o fundo do evento continuou na tela.");
+                    EventFailure($"{definition.Id}, opção {choice + 1}: o fundo do evento continuou na tela (cartão aberto: {hub.EventOpen}; pendentes: {string.Join(", ", campaign.Events.Pending.Select(p => p.EventId))}).", hub, null, proceedPoint, definition.Id, choice);
                     return;
                 }
 
                 var map = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
+                Vector2 mapPoint = map.GetGlobalRect().GetCenter();
                 game.ResetNavigationForTest();
                 await Click(map);
                 if (game.LastNavigation != Game.Scenes.Map)
                 {
-                    Fail($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}).");
+                    EventFailure($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}, navegação registrada: {game.LastNavigation ?? "nenhuma"}).", hub, null, mapPoint, definition.Id, choice);
                     return;
                 }
 
@@ -1028,6 +1123,38 @@ public partial class UiShot : Node
             GetViewport().GetTexture().GetImage().SavePng(shot);
         }
 
+        // Telas da R4: mandato de vereador, entressafra e prefeitura na tela central.
+        encyclopedia.QueueFree();
+        RemoveChild(hub);
+        hub.QueueFree();
+        await Frames(3);
+        int govPanels = 0;
+        ClearGovSaves();
+        if (!await VisitGovScreens(SmallCity, "cidade pequena", (govHub, where, _) =>
+        {
+            govPanels++;
+            Check(govHub, where);
+            return Task.CompletedTask;
+        }))
+        {
+            return;
+        }
+
+        if (govPanels < 60)
+        {
+            Fail($"o teste de explicação só passou por {govPanels} telas da R4 (esperado: 60 ou mais).");
+            return;
+        }
+
+        // Nenhum texto mostrado ao jogador cita documentos internos.
+        foreach (string text in game.Encyclopedia.Termos.Select(t => t.Texto).Concat(game.Encyclopedia.Artigos.Select(a => a.Texto)))
+        {
+            if (text.Contains("GDD", StringComparison.Ordinal) || text.Contains("docs/", StringComparison.Ordinal) || text.Contains("ROADMAP", StringComparison.Ordinal))
+            {
+                problems.Add($"Enciclopédia: texto cita documento interno: {text[..Math.Min(60, text.Length)]}");
+            }
+        }
+
         if (problems.Count > 0)
         {
             foreach (string p in problems.Distinct().Take(40))
@@ -1039,7 +1166,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, {r3} telas da R3, Enciclopédia aberta com F1)");
+        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, {r3} telas da R3, {govPanels} telas da R4, Enciclopédia aberta com F1)");
         GetTree().Quit(0);
     }
 
@@ -1649,6 +1776,66 @@ public partial class UiShot : Node
         GetTree().Quit(1);
     }
 
+    /// <summary>
+    /// Falha do alvo eventos com a prova do que estava na tela: grava uma captura e um log com o evento e a opção, o
+    /// cartão aberto, o foco, os controles sob o ponto clicado, as pausas e decisões pendentes e o quadro. Vai para a
+    /// pasta de "--saida=", ou para user://smoke/&lt;perfil&gt;/falhas/ (apagada na rodada seguinte do mesmo perfil).
+    /// </summary>
+    private void EventFailure(string message, HubScreen hub, Node? dialog, Vector2? point, string eventId, int choice)
+    {
+        try
+        {
+            string? output = OS.GetCmdlineUserArgs().FirstOrDefault(a => a.StartsWith("--saida=", StringComparison.Ordinal))?.Split('=', 2)[1];
+            string folder = (output ?? ProjectSettings.GlobalizePath(UserPaths.Of("falhas"))).TrimEnd('/', '\\') + "/";
+            DirAccess.MakeDirRecursiveAbsolute(folder);
+            string stamp = $"eventos_{DateTime.Now:yyyyMMdd_HHmmss}_{eventId}_{choice + 1}";
+            Viewport viewport = GetViewport();
+            viewport.GetTexture().GetImage().SavePng(folder + stamp + ".png");
+
+            Game game = Game.Instance;
+            var campaign = game.State?.Campaign;
+            var lines = new List<string>
+            {
+                "Falha: " + message,
+                $"Evento: {eventId}, opção {choice + 1}",
+                $"Quadro: {Engine.GetProcessFrames()} (física {Engine.GetPhysicsFrames()})",
+                $"Janela: {viewport.GetVisibleRect().Size}, com foco do sistema: {DisplayServer.WindowIsFocused()}, modo: {DisplayServer.WindowGetMode()}",
+                $"Cartão de evento aberto (fundo): {hub.EventOpen}; cartão de mandato aberto: {hub.GovCardOpen}; tempo correndo: {hub.Running}; motivo da pausa: {hub.BlockReason() ?? "nenhum"}",
+                $"Cartão da falha: {(dialog is null ? "nenhum" : !IsInstanceValid(dialog) ? "liberado" : $"{dialog.GetPath()} (na árvore: {dialog.IsInsideTree()}, na fila para sair: {dialog.IsQueuedForDeletion()}, visível: {(dialog as CanvasItem)?.IsVisibleInTree()})")}",
+                $"Cartões de evento na tela: {FindAll<Widgets.EventDialog>(hub).Count()}",
+                $"Eventos pendentes: {(campaign is null ? "sem campanha" : string.Join(", ", campaign.Events.Pending.Select(p => p.EventId)))}",
+                $"Pedido de liderança pendente: {campaign?.Agenda.PendingRequest is not null}; decisões da equipe pendentes: {campaign?.Team.Pending.Count ?? 0}",
+                $"Foco da interface: {viewport.GuiGetFocusOwner()?.GetPath().ToString() ?? "nenhum"}",
+                $"Sob o mouse: {viewport.GuiGetHoveredControl()?.GetPath().ToString() ?? "nenhum"}; mouse em {viewport.GetMousePosition()}",
+                $"Navegação registrada: {game.LastNavigation ?? "nenhuma"}",
+            };
+            if (point is { } p)
+            {
+                lines.Add($"Controles visíveis sob o ponto clicado {p} (do fundo para a frente):");
+                foreach (Control c in FindAll<Control>(GetTree().Root).Where(c => c.IsVisibleInTree() && c.GetGlobalRect().HasPoint(p)))
+                {
+                    lines.Add($"  {c.GetPath()} [{c.GetType().Name}, mouse {c.MouseFilter}{(c is BaseButton b ? $", desativado {b.Disabled}" : "")}]");
+                }
+            }
+
+            lines.Add("Janelas e popups visíveis:");
+            foreach (Window w in FindAll<Window>(GetTree().Root).Where(w => w.Visible))
+            {
+                lines.Add($"  {w.GetPath()} ({w.GetType().Name})");
+            }
+
+            using var file = Godot.FileAccess.Open(folder + stamp + ".txt", Godot.FileAccess.ModeFlags.Write);
+            file?.StoreString(string.Join("\n", lines) + "\n");
+            GD.Print($"Smoke eventos: captura e log da falha em {folder}{stamp}.png e .txt");
+        }
+        catch (Exception e)
+        {
+            GD.PushError("Smoke: não foi possível gravar a captura da falha: " + e.Message);
+        }
+
+        Fail(message);
+    }
+
     /// <summary>Clique de mouse de verdade no centro do controle (passa pelo roteamento de entrada da interface).</summary>
     private async Task Click(Control control)
     {
@@ -1679,319 +1866,6 @@ public partial class UiShot : Node
                 yield return inner;
             }
         }
-    }
-
-    /// <summary>
-    /// Prefeito numa cidade média: candidatura, debates de TV pela tela do debate, eleição, posse, orçamento,
-    /// políticas, secretaria, crise e save/load.
-    /// </summary>
-    private async Task PlayMayor(string? shot)
-    {
-        Game game = Game.Instance;
-        var world = game.PendingWorld!;
-        var city = game.Municipios.All.Where(m => m.EleicoesMunicipais && m.Porte == "medio").OrderBy(m => m.CodigoIbge).Skip(3).First();
-        var parties = Core.Campaign.CampaignContext.ElectoralParties(world.Parties.Select(GameParty.From), game.World.Parties.Generator.SizeShareWeights);
-        var local = world.Preset.Scenario == "brasil_2026" ? game.Brasil2026?.Municipio(city.CodigoIbge) : null;
-        string party = Core.Campaign.CampaignContext.PartyStrength(game.PendingSeed, city.CodigoIbge, game.Electorate, parties, local).MaxBy(x => x.Value).Key;
-        var player = Core.Characters.PersonGenerator.Generate(new Rng(7), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 40, PartyId: party));
-        foreach (var attribute in Enum.GetValues<Core.Characters.AttributeId>())
-        {
-            player.Attributes.Set(attribute, 70);
-        }
-
-        game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
-        if (game.SwitchCandidacy(Core.Elections.Office.Prefeito).Issue is { } issue)
-        {
-            GD.PushError($"Smoke: candidatura a prefeito recusada ({issue}).");
-            GetTree().Quit(1);
-            return;
-        }
-
-        var campaign = game.State!.Campaign!;
-        int debates = 0;
-        while (campaign.Phase != Core.Campaign.CampaignPhase.Votacao)
-        {
-            while (campaign.Events.Pending.Count > 0)
-            {
-                var pending = campaign.Events.Pending[0];
-                var definition = game.Events.Find(pending.EventId)!;
-                Core.Events.EventEngine.Resolve(game.Engine!.Context, pending, Enumerable.Range(0, definition.Choices.Count).First(i => Core.Events.EventEngine.Blocked(game.Engine.Context, definition.Choices[i]) is null), game.State.Rng);
-            }
-
-            if (campaign.Debate is { } debate)
-            {
-                debates++;
-                var screen = GD.Load<PackedScene>(Game.Scenes.Debate).Instantiate();
-                AddChild(screen);
-                await Frames(3);
-                while (!debate.Finished)
-                {
-                    string card = debate.Hand[0];
-                    Core.Debate.DebateEngine.Play(game.Engine!.Context, game.Debate, card, game.Debate.Card(card).Targeted ? debate.Participants[1] : null, game.State.Rng);
-                }
-
-                screen.QueueFree();
-                screen = GD.Load<PackedScene>(Game.Scenes.Debate).Instantiate();
-                AddChild(screen);
-                await Frames(3);
-                if (shot is not null && debates == 1)
-                {
-                    GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_debate.png"));
-                }
-
-                screen.QueueFree();
-                Core.Debate.DebateEngine.Close(campaign);
-            }
-
-            game.AdvanceWeek();
-        }
-
-        if (debates != game.Debate.WeeksBeforeElection.Count)
-        {
-            GD.PushError($"Smoke: {debates} debates em vez de {game.Debate.WeeksBeforeElection.Count}.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        // Só neste teste: garante a eleição para exercitar a prefeitura.
-        Array.Fill(campaign.Territory.Presence[Core.Campaign.RaceSetup.PlayerId], 100);
-        campaign.Player.Recognition = 100;
-        campaign.Player.Image = 1;
-        game.Engine!.CastPlayerVote(new Core.Campaign.UrnaVote(Core.Elections.Office.Prefeito, campaign.Player.Number, false));
-        game.Engine.ResolveElection();
-        var night = GD.Load<PackedScene>(Game.Scenes.ElectionNight).Instantiate();
-        AddChild(night);
-        await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
-        night.QueueFree();
-        if (!campaign.Outcome!.PlayerElected)
-        {
-            GD.PushError("Smoke: o jogador não se elegeu prefeito nem com reconhecimento máximo.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        game.ConcludeElection();
-        game.GoToCareer();
-        if (game.LastNavigation != Game.Scenes.Executive || game.Prefeitura is null)
-        {
-            GD.PushError("Smoke: a posse não levou à prefeitura.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        var engine = game.Prefeitura;
-        var decree = game.ExecutiveContent.Policies.Policies.First(p => !p.RequiresLaw && p.Cost > 0 && p.Cost <= engine.FreeReserve);
-        engine.Enact(decree.Id);
-        var law = game.ExecutiveContent.Policies.Policies.First(p => p.RequiresLaw && p.Cost <= engine.FreeReserve);
-        engine.Enact(law.Id);
-        if (game.State.Executive!.Chamber.Select(m => m.PartyId).FirstOrDefault(p => p is not null && !game.State.Executive.InBase(p)) is { } outsider)
-        {
-            engine.GiveSecretaria(outsider);
-        }
-
-        for (int week = 0; week < 20; week++)
-        {
-            if (game.State.Executive!.Crisis is not null)
-            {
-                engine.ResolveCrisis(0);
-            }
-
-            game.AdvanceWeek();
-        }
-
-        var executive = GD.Load<PackedScene>(Game.Scenes.Executive).Instantiate();
-        AddChild(executive);
-        await Frames(3);
-        if (shot is not null)
-        {
-            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_prefeitura.png"));
-        }
-
-        executive.QueueFree();
-        game.State.Executive!.Crisis = new Core.Executive.PendingCrisis("enchente", game.State.Calendar.WeekStart);
-        executive = GD.Load<PackedScene>(Game.Scenes.Executive).Instantiate();
-        AddChild(executive);
-        await Frames(3);
-        if (shot is not null)
-        {
-            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_crise.png"));
-        }
-
-        executive.QueueFree();
-        engine.ResolveCrisis(0);
-        SaveManager.Instance.Save("smoke_prefeitura");
-        if (SaveManager.Instance.Load("smoke_prefeitura") is not null || game.Prefeitura is null || game.State!.Executive is null)
-        {
-            GD.PushError("Smoke: save/load da prefeitura falhou.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        GD.Print($"Smoke prefeitura: ok ({debates} debates, aprovação {game.State.Executive.Approval:0}%, {game.State.Executive.Policies.Count} políticas)");
-        GetTree().Quit(0);
-    }
-
-    /// <summary>
-    /// Carreira depois da urna, pela UI: posse, semanas de mandato com votos e ações, fundação de partido,
-    /// save/load, troca de partido fora da janela (perde o mandato), entressafra e abertura da próxima campanha.
-    /// </summary>
-    private async Task PlayMandate(string? shot)
-    {
-        Game game = Game.Instance;
-        var creator = (CharacterCreatorScreen)GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate();
-        AddChild(creator);
-        await Frames(3);
-        creator.ChooseStrongestPartyForTest();
-        creator.TryStartCareer();
-        RemoveChild(creator);
-        creator.QueueFree();
-        var engine = game.Engine!;
-        var campaign = game.State!.Campaign!;
-        while (campaign.Phase != Core.Campaign.CampaignPhase.Votacao)
-        {
-            while (campaign.Events.Pending.Count > 0)
-            {
-                var pending = campaign.Events.Pending[0];
-                var definition = game.Events.Find(pending.EventId)!;
-                Core.Events.EventEngine.Resolve(engine.Context, pending, Enumerable.Range(0, definition.Choices.Count).First(i => Core.Events.EventEngine.Blocked(engine.Context, definition.Choices[i]) is null), game.State.Rng);
-            }
-
-            game.AdvanceWeek();
-        }
-
-        // Só neste teste: garante a eleição para exercitar o mandato.
-        Array.Fill(campaign.Territory.Presence[Core.Campaign.RaceSetup.PlayerId], 100);
-        campaign.Player.Recognition = 100;
-        campaign.Player.Image = 1;
-        engine.CastPlayerVote(new Core.Campaign.UrnaVote(Core.Elections.Office.Vereador, campaign.Player.Number, false));
-        engine.ResolveElection();
-        var night = GD.Load<PackedScene>(Game.Scenes.ElectionNight).Instantiate();
-        AddChild(night);
-        await Frames(3);
-        if (!campaign.Outcome!.PlayerElected)
-        {
-            GD.PushError("Smoke: o jogador não se elegeu nem com reconhecimento máximo.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        game.ConcludeElection();
-        game.GoToCareer();
-        night.QueueFree();
-        if (game.LastNavigation != Game.Scenes.Mandate || game.Mandate is null)
-        {
-            GD.PushError("Smoke: a posse não levou à tela do mandato.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        Node? screen = null;
-        int voted = 0;
-        for (int week = 0; week < 30; week++)
-        {
-            foreach (var bill in game.Mandate!.Pauta.ToList())
-            {
-                game.Mandate.CastVote(bill.Id, week % 3 == 0 ? Core.Legislature.VoteChoice.Nao : Core.Legislature.VoteChoice.Sim);
-                voted++;
-            }
-
-            if (week % 10 == 9)
-            {
-                screen?.QueueFree();
-                screen = GD.Load<PackedScene>(Game.Scenes.Mandate).Instantiate();
-                AddChild(screen);
-                await Frames(3);
-                if (shot is not null && week == 19)
-                {
-                    GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_mandato.png"));
-                }
-            }
-
-            game.Mandate.Execute("tribuna", null);
-            if (week == 5)
-            {
-                game.Mandate.Execute("propor_projeto", game.Mandate.ProposableBills().First().Id);
-            }
-
-            game.AdvanceWeek();
-        }
-
-        screen?.QueueFree();
-        if (voted == 0 || game.State!.Mandate!.Bills.Count(b => b.Decided is not null) == 0)
-        {
-            GD.PushError("Smoke: nenhuma votação em 30 semanas de mandato.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        // Fundação de partido pelo diálogo.
-        game.State.Player.Resources.PoliticalCapital = 50;
-        game.State.Player.Resources.Money = 100_000;
-        bool closed = false;
-        var dialog = new Widgets.FoundingDialog(() => closed = true);
-        AddChild(dialog);
-        await Frames(3);
-        var draft = game.FoundingEngine!.Propose(new Rng(5), game.State.Parties[0].FamilyId);
-        if (game.FoundingEngine.Start(draft) is { } failure)
-        {
-            GD.PushError($"Smoke: a fundação não começou ({failure}).");
-            GetTree().Quit(1);
-            return;
-        }
-
-        dialog.QueueFree();
-        var center = new CenterContainer();
-        AddChild(center);
-        center.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
-        center.Size = GetViewport().GetVisibleRect().Size;
-        dialog = new Widgets.FoundingDialog(() => closed = true);
-        center.AddChild(dialog);
-        await Frames(3);
-        if (shot is not null)
-        {
-            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_fundacao.png"));
-        }
-
-        center.QueueFree();
-        SaveManager.Instance.Save("smoke_mandato");
-        if (SaveManager.Instance.Load("smoke_mandato") is { } error || game.Mandate is null || game.State!.Founding is null)
-        {
-            GD.PushError("Smoke: save/load do mandato falhou.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        // Troca de partido fora da janela: o mandato acaba e a carreira vai para a entressafra.
-        game.JoinParty(game.State.Parties.First(p => p.Id != game.State.Player.PartyId).Id);
-        game.GoToCareer();
-        if (game.State.Mandate is not null || game.LastNavigation != Game.Scenes.OutOfOffice)
-        {
-            GD.PushError("Smoke: trocar de partido fora da janela não encerrou o mandato.");
-            GetTree().Quit(1);
-            return;
-        }
-
-        var outOfOffice = GD.Load<PackedScene>(Game.Scenes.OutOfOffice).Instantiate();
-        AddChild(outOfOffice);
-        await Frames(3);
-        if (shot is not null)
-        {
-            GetViewport().GetTexture().GetImage().SavePng(shot.Replace(".png", "_entressafra.png"));
-        }
-
-        outOfOffice.QueueFree();
-        Game.WeekNote note = game.SkipToNextElection();
-        if (note != Game.WeekNote.CampanhaAberta || game.Engine is null)
-        {
-            GD.PushError($"Smoke: a próxima campanha não abriu ({note}).");
-            GetTree().Quit(1);
-            return;
-        }
-
-        AddChild(GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate());
-        await Frames(3);
-        GD.Print($"Smoke mandate: ok ({voted} votos, {game.State.Calendar.WeekStart:yyyy-MM-dd}, fundação {game.State.Founding?.Stage}, aberto {closed})");
-        GetTree().Quit(0);
     }
 
     /// <summary>Joga uma campanha inteira pela UI: hub, eventos, urna com teclas simuladas, apuração e save.</summary>

@@ -87,7 +87,10 @@ public static class DataValidation
         reports.AddRange(Executive.ExecutiveContent.Load(
             dataDirectory,
             electorate?.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal),
-            out _));
+            out Executive.ExecutiveContent? executive));
+        // Mandatos da R4 (GDD 17.14 e 17.15): obras, licitação, secretários, folha, convênios, instrumentos, Câmara,
+        // cobrança e eventos de mandato, com o lint das decisões (ganho e custo de naturezas diferentes, e rastro).
+        reports.AddRange(Governance.GovernanceContent.Load(dataDirectory, executive, campaign?.Promises, out _));
         // Nenhum texto de jogo cita documento interno do projeto.
         IReadOnlyList<string> references = InternalReferenceLint.Run(dataDirectory, out int texts);
         reports.Add(new DataFileReport("lint: textos sem citar documento interno", texts, references));
@@ -97,6 +100,11 @@ public static class DataValidation
             reports.AddRange(ValidateGeo(dataDirectory, dataSet));
             reports.AddRange(Indicators.IndicadoresContent.Validate(dataDirectory, dataSet));
         }
+
+        reports.AddRange(Indicators.IndicatorContent.Validate(dataDirectory));
+        DataLoadResult<Career.OffSeasonConfig> offSeason = JsonData.LoadFile<Career.OffSeasonConfig>(Path.Combine(dataDirectory, Career.OffSeasonConfig.File));
+        reports.Add(new DataFileReport(Career.OffSeasonConfig.File, offSeason.Value?.Textos.Count ?? 0, offSeason.Errors));
+        reports.AddRange(Renewal.RenewalContent.Validate(dataDirectory));
 
         return reports;
     }

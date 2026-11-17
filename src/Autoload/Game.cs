@@ -63,6 +63,46 @@ public partial class Game : Node
     /// <summary>Motor da prefeitura; null fora do mandato de prefeito.</summary>
     public Core.Executive.ExecutiveEngine? Prefeitura { get; private set; }
 
+    /// <summary>Conteúdo dos mandatos da R4 (obras, secretários, folha, instrumentos, cobrança, eventos de mandato).</summary>
+    public Core.Governance.GovernanceContent GovernanceContent { get; private set; } = null!;
+
+    /// <summary>Governo da cidade no mandato em curso (GDD 17.14 e 17.15); null fora de mandato ou em save antigo.</summary>
+    public Core.Governance.GovernanceEngine? Governo { get; private set; }
+
+    /// <summary>Números da agenda fora de campanha (entressafra).</summary>
+    public Core.Career.OffSeasonConfig OffSeasonConfig { get; private set; } = null!;
+
+    /// <summary>Agenda fora de campanha; null em mandato ou com campanha aberta.</summary>
+    public Core.Career.OffSeasonEngine? Entressafra { get; private set; }
+
+    /// <summary>Monta a entressafra quando o jogador está sem cargo e sem eleição aberta, e a desmonta fora disso.</summary>
+    private void EnsureEntressafra(GameState state)
+    {
+        Municipio? m = Municipios.All.FirstOrDefault(x => x.CodigoIbge == state.FocusMunicipio);
+        if (m is null || !Core.Career.OffSeasonEngine.Applies(state))
+        {
+            Entressafra = null;
+            return;
+        }
+
+        if (Entressafra is not null && ReferenceEquals(Entressafra.Context.State, state) && state.OffSeason is not null)
+        {
+            return;
+        }
+
+        var context = new Core.Career.OffSeasonContext
+        {
+            State = state,
+            Municipio = m,
+            Zonas = ZonasDe(m),
+            Config = OffSeasonConfig,
+            Memory = Campaign.People,
+            Themes = World.Parties.Themes.Themes.ToDictionary(t => t.Id, t => t.Name),
+        };
+        Core.Career.OffSeasonEngine.Ensure(context);
+        Entressafra = new Core.Career.OffSeasonEngine(context);
+    }
+
     public override void _Ready()
     {
         Instance = this;
@@ -98,11 +138,65 @@ public partial class Game : Node
             World.Parties.Themes.Themes.Select(t => t.Id).ToHashSet(StringComparer.Ordinal));
         Founding = JsonData.LoadFile<Core.Career.FoundingConfig>(Path.Combine(DataDirectory, Core.Career.FoundingConfig.File)).GetValueOrThrow();
         ExecutiveContent = Core.Executive.ExecutiveContent.LoadOrThrow(DataDirectory, Electorate.Segments.Dimensions.SelectMany(d => d.Groups).Select(g => g.Id).ToHashSet(StringComparer.Ordinal));
+        GovernanceContent = Core.Governance.GovernanceContent.LoadOrThrow(DataDirectory, ExecutiveContent, Campaign.Promises);
         Debate = JsonData.LoadFile<Core.Debate.DebateContent>(Path.Combine(DataDirectory, Core.Debate.DebateContent.File)).GetValueOrThrow();
         Encyclopedia = JsonData.LoadFile<Core.Encyclopedia.EncyclopediaContent>(Path.Combine(DataDirectory, Core.Encyclopedia.EncyclopediaContent.File)).GetValueOrThrow();
         Time = JsonData.LoadFile<Core.State.TimeConfig>(Path.Combine(DataDirectory, Core.State.TimeConfig.File)).GetValueOrThrow();
         Projection = PopulationProjection.Load(DataDirectory, Municipios);
+        IndicatorModel = Core.Indicators.IndicatorContent.LoadOrThrow(DataDirectory);
+        RenewalContent = Core.Renewal.RenewalContent.LoadOrThrow(DataDirectory);
+        OffSeasonConfig = JsonData.LoadFile<Core.Career.OffSeasonConfig>(Path.Combine(DataDirectory, Core.Career.OffSeasonConfig.File)).GetValueOrThrow();
     }
+
+    /// <summary>Definições e modelo de evolução dos indicadores reais (GDD 17.17).</summary>
+    public Core.Indicators.IndicatorContent IndicatorModel { get; private set; } = null!;
+
+    /// <summary>Conteúdo da renovação do mundo político (GDD 17.16).</summary>
+    public Core.Renewal.RenewalContent RenewalContent { get; private set; } = null!;
+
+    /// <summary>
+    /// O mundo que anda sozinho no município em foco: indicadores em unidade real e renovação do mundo político; null
+    /// antes de haver município em foco.
+    /// </summary>
+    public WorldEngine? Mundo { get; private set; }
+
+    /// <summary>
+    /// Monta o mundo do estado e garante que o save tem os indicadores e a renovação do município em foco: cria os dois
+    /// num mundo novo e num save anterior a eles, sem mexer no resto.
+    /// </summary>
+    private WorldEngine? NewMundo(GameState state)
+    {
+        Municipio? m = Municipios.All.FirstOrDefault(x => x.CodigoIbge == state.FocusMunicipio);
+        if (m is null)
+        {
+            return null;
+        }
+
+        MunicipalScenario? scenario = LocalScenario(state, m.CodigoIbge);
+        var renewal = new Core.Renewal.RenewalEngine(new Core.Renewal.RenewalContext
+        {
+            State = state,
+            Municipio = m,
+            People = People,
+            Content = RenewalContent,
+            Projection = Projection,
+            Themes = World.Parties.Themes.Themes.Select(t => t.Id).ToList(),
+            Staff = Campaign.Staff,
+            InitialSeats = scenario?.Camara,
+            InitialMayorParty = scenario?.Prefeito,
+        });
+        var world = new WorldEngine(state, new Core.Indicators.IndicatorEvolution(IndicatorModel, m, Projection), renewal);
+        if (IndicadoresUf(m.Uf) is { } uf)
+        {
+            world.EnsureIndicators(uf, Municipios);
+        }
+
+        renewal.Ensure();
+        return world;
+    }
+
+    /// <summary>O mundo do estado, se é o que está montado.</summary>
+    private WorldEngine? MundoDe(GameState state) => Mundo is { } world && ReferenceEquals(world.State, state) ? world : null;
 
     /// <summary>Glossário e artigos da Enciclopédia (F1 em qualquer tela).</summary>
     public Core.Encyclopedia.EncyclopediaContent Encyclopedia { get; private set; } = null!;
@@ -189,6 +283,29 @@ public partial class Game : Node
         return file;
     }
 
+    /// <summary>Contexto do governo da cidade (R4) no município em foco.</summary>
+    public Core.Governance.GovernanceContext GovernanceContextFor(GameState state)
+    {
+        Core.Campaign.CampaignContext campaign = ContextFor(state);
+        return new Core.Governance.GovernanceContext
+        {
+            State = state,
+            Municipio = campaign.Municipio,
+            Content = GovernanceContent,
+            Legislature = Legislature,
+            Executive = ExecutiveContent,
+            People = People,
+            Campaign = Campaign,
+            Zonas = campaign.Zonas,
+            Indicadores = IndicadoresDe(campaign.Municipio),
+            IndicatorEvolution = MundoDe(state)?.Indicators,
+            Renewal = MundoDe(state)?.Renewal,
+        };
+    }
+
+    private Core.Governance.GovernanceEngine? NewGoverno(GameState state) =>
+        state.Governance is not null && (state.Mandate is not null || state.Executive is not null) ? new Core.Governance.GovernanceEngine(GovernanceContextFor(state)) : null;
+
     /// <summary>Contexto da prefeitura no município em foco.</summary>
     public Core.Executive.ExecutiveContext ExecutiveContextFor(GameState state)
     {
@@ -202,6 +319,7 @@ public partial class Game : Node
             Electorate = campaign.Electorate,
             RecognitionScale = Campaign.Config.PorteRecognitionMultiplier.GetValueOrDefault(campaign.Municipio.Porte, 1),
             Indicadores = IndicadoresDe(campaign.Municipio),
+            IndicatorEvolution = MundoDe(state)?.Indicators,
         };
     }
 
@@ -214,15 +332,19 @@ public partial class Game : Node
     private readonly Dictionary<string, Core.Indicators.IndicadoresUfFile?> _indicadores = [];
 
     /// <summary>Ponto de partida oficial do município (data/indicadores_reais/, GDD 17.17); null se o arquivo da UF faltar.</summary>
-    public Core.Indicators.IndicadoresMunicipio? IndicadoresDe(Municipio m)
+    public Core.Indicators.IndicadoresMunicipio? IndicadoresDe(Municipio m) =>
+        IndicadoresUf(m.Uf)?.Municipios.FirstOrDefault(i => i.CodigoIbge == m.CodigoIbge);
+
+    /// <summary>Arquivo de indicadores da UF, lido uma vez; null se faltar.</summary>
+    private Core.Indicators.IndicadoresUfFile? IndicadoresUf(string uf)
     {
-        if (!_indicadores.TryGetValue(m.Uf, out Core.Indicators.IndicadoresUfFile? file))
+        if (!_indicadores.TryGetValue(uf, out Core.Indicators.IndicadoresUfFile? file))
         {
-            file = Core.Indicators.IndicadoresPaths.Load(DataDirectory, m.Uf).Value;
-            _indicadores[m.Uf] = file;
+            file = Core.Indicators.IndicadoresPaths.Load(DataDirectory, uf).Value;
+            _indicadores[uf] = file;
         }
 
-        return file?.Municipios.FirstOrDefault(i => i.CodigoIbge == m.CodigoIbge);
+        return file;
     }
 
     /// <summary>Dados reais do município no cenário Brasil 2026; null nos mundos gerados.</summary>
@@ -285,17 +407,33 @@ public partial class Game : Node
             : null;
         Mandate = null;
         Prefeitura = null;
+        Governo = null;
         FoundingEngine = NewFoundingEngine(state);
+
+        // Depois da campanha montada, para a cidade já ter gente (lideranças e equipe) quando o mundo começa a andar.
+        Mundo = NewMundo(state);
+        EnsureEntressafra(state);
     }
 
     /// <summary>Retoma uma carreira salva no ponto em que estava (campanha, mandato ou entressafra).</summary>
     public void Resume(GameState state)
     {
         State = state;
+
+        // Antes dos motores de mandato, que leem o mundo pelo contexto; save antigo ganha aqui indicadores e renovação.
+        Mundo = NewMundo(state);
         Engine = state.Campaign is null ? null : Core.Campaign.CampaignEngine.Start(ContextFor(state));
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
+        if (state.Governance is null && (state.Mandate is not null || state.Executive is not null) && state.City is not null)
+        {
+            // Save anterior ao governo da cidade: o mandato em curso ganha obras, gabinete, folha e cobranças agora.
+            Core.Governance.GovernanceEngine.Start(GovernanceContextFor(state), state.Campaign?.Territory);
+        }
+
+        Governo = NewGoverno(state);
         FoundingEngine = NewFoundingEngine(state);
+        EnsureEntressafra(state);
     }
 
     private Core.Career.PartyFoundingEngine NewFoundingEngine(GameState state) =>
@@ -310,6 +448,9 @@ public partial class Game : Node
         SemPartidoNoPrazo,
         SemIdade,
         MandatoEncerrado,
+
+        /// <summary>A Justiça Eleitoral cassou o diploma pelas contas da campanha: o mandato acabou.</summary>
+        DiplomaCassado,
     }
 
     /// <summary>Avança uma semana da carreira e abre a campanha quando chega o prazo de filiação do ano da eleição.</summary>
@@ -317,14 +458,27 @@ public partial class Game : Node
     {
         GameState state = State!;
         bool hadMandate = state.Mandate is not null || state.Executive is not null;
-        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura);
+        Core.Career.CareerFlow.AdvanceWeek(state, Engine, Mandate, FoundingEngine, Prefeitura, Governo, MundoDe(state), Entressafra);
 
         // Contas da última eleição (GDD 17.12): prestação final, julgamento e representação andam por data, no
-        // mandato e fora dele; se o diploma for cassado, o mandato termina aqui.
-        AccountsNews = Core.Career.CareerFlow.AccountsWeek(state, Campaign.Finance, Core.Elections.CampaignFinanceLawConfig.Default);
+        // mandato e na entressafra. Diploma cassado, o mandato termina aqui e a cadeira ou a Prefeitura seguem a
+        // sucessão real, pela renovação do mundo.
+        bool cassado = false;
+        AccountsNews = [];
+        if (state.Campaign is null && state.Accounts is { MandateLost: false })
+        {
+            AccountsNews = Core.Career.CareerFlow.AccountsWeek(state, Campaign.Finance, Core.Elections.CampaignFinanceLawConfig.Default, renewal: MundoDe(state)?.Renewal);
+            cassado = hadMandate && state.Accounts.MandateLost;
+        }
+
         if (state.Mandate is null)
         {
             Mandate = null;
+        }
+
+        if (state.Mandate is null && state.Executive is null)
+        {
+            Governo = null;
         }
 
         if (state.Executive is null)
@@ -332,18 +486,25 @@ public partial class Game : Node
             Prefeitura = null;
         }
 
-        WeekNote note = hadMandate && state.Mandate is null && state.Executive is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
+        WeekNote note = cassado ? WeekNote.DiplomaCassado : hadMandate && state.Mandate is null && state.Executive is null ? WeekNote.MandatoEncerrado : WeekNote.Nenhuma;
         if (Core.Career.CareerFlow.ShouldStartCampaign(state))
         {
             if (Core.Career.CareerFlow.CanRun(state, state.Calendar.Year))
             {
                 Engine = Core.Campaign.CampaignEngine.Start(ContextFor(state));
+                // A presença por zona do mandato vai para a campanha de reeleição; a da entressafra, com as posições
+                // assumidas nela, para a campanha de quem estava sem cargo.
+                Core.Governance.GovernanceEngine.CarryToCampaign(state);
+                Core.Career.OffSeasonEngine.CarryToCampaign(state);
+                Entressafra = null;
                 return WeekNote.CampanhaAberta;
             }
 
+            EnsureEntressafra(state);
             return Core.Career.CareerFlow.MeetsAge(state, Core.Elections.Office.Vereador, state.Calendar.Year) ? WeekNote.SemPartidoNoPrazo : WeekNote.SemIdade;
         }
 
+        EnsureEntressafra(state);
         return note;
     }
 
@@ -416,11 +577,12 @@ public partial class Game : Node
     public void ConcludeElection()
     {
         GameState state = State!;
-        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state));
+        Core.Career.CareerFlow.ConcludeElection(Engine!.Context, LegislatureContextFor(state), ExecutiveContextFor(state), GovernanceContextFor(state), MundoDe(state)?.Renewal);
 
         // Entre a eleição e a posse o processo de contas já andou (prestação final; representação, se houver): a tela seguinte avisa.
         AccountsNews = state.Accounts?.Log.ToList() ?? [];
         Engine = null;
+        Governo = NewGoverno(state);
         Mandate = state.Mandate is null ? null : new Core.Legislature.LegislatureEngine(LegislatureContextFor(state));
         Prefeitura = state.Executive is null ? null : new Core.Executive.ExecutiveEngine(ExecutiveContextFor(state));
     }
@@ -445,19 +607,21 @@ public partial class Game : Node
         {
             Mandate = null;
         }
+
+        if (State.Mandate is null && State.Executive is null)
+        {
+            Governo = null;
+        }
+
+        EnsureEntressafra(State);
     }
 
     /// <summary>Tela certa para o momento da carreira.</summary>
     public void GoToCareer()
     {
         GameState state = State!;
-        GoTo(Core.Career.CareerFlow.Mode(state) switch
-        {
-            Core.Career.CareerMode.Mandato => Scenes.Mandate,
-            Core.Career.CareerMode.Prefeitura => Scenes.Executive,
-            Core.Career.CareerMode.ForaDeMandato => Scenes.OutOfOffice,
-            _ => state.Campaign?.Outcome is not null ? Scenes.ElectionNight : state.Campaign?.Debate is not null ? Scenes.Debate : Scenes.Hub,
-        });
+        // Mandato, prefeitura e entressafra ficam na tela central, como a campanha (GDD 17.3).
+        GoTo(state.Campaign?.Outcome is not null ? Scenes.ElectionNight : state.Campaign?.Debate is not null ? Scenes.Debate : Scenes.Hub);
     }
 
     /// <summary>Nos testes de fumaça da UI, registra a navegação em vez de trocar de cena.</summary>
@@ -486,9 +650,6 @@ public partial class Game : Node
         public const string Urna = "res://src/UI/Screens/UrnaScreen.tscn";
         public const string ElectionNight = "res://src/UI/Screens/ElectionNightScreen.tscn";
         public const string Map = "res://src/UI/Map/MapScreen.tscn";
-        public const string Mandate = "res://src/UI/Screens/MandateScreen.tscn";
-        public const string OutOfOffice = "res://src/UI/Screens/OutOfOfficeScreen.tscn";
-        public const string Executive = "res://src/UI/Screens/ExecutiveScreen.tscn";
         public const string Debate = "res://src/UI/Screens/DebateScreen.tscn";
     }
 }

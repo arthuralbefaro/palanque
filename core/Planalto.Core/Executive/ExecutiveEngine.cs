@@ -29,6 +29,15 @@ public sealed class ExecutiveContext
     /// </summary>
     public Indicators.IndicadoresMunicipio? Indicadores { get; init; }
 
+    /// <summary>
+    /// Evolução dos indicadores reais (GDD 17.17). Com ela e com <see cref="GameState.Indicators"/> no estado, os
+    /// indicadores da prefeitura passam a ser a escala de jogo derivada dos valores reais; sem ela, vale a regra da D-031.
+    /// </summary>
+    public Indicators.IndicatorEvolution? IndicatorEvolution { get; init; }
+
+    /// <summary>Mínimos de saúde e educação, com o padrão da lei vigente.</summary>
+    public Governance.FiscalLawConfig FiscalLaw { get; init; } = Governance.FiscalLawConfig.Default;
+
     public ExecutiveConfig Config => Content.Config;
 }
 
@@ -41,6 +50,9 @@ public enum ExecutiveFailure
     AlvoInvalido,
     SemSecretarias,
     OrcamentoInvalido,
+
+    /// <summary>Luto oficial (GDD 17.16): a Câmara não faz sessão, e projeto que precisa de lei espera.</summary>
+    CamaraEmLuto,
 }
 
 public sealed record EnactResult(bool Ok, ExecutiveFailure? Failure, bool Approved, int Yes, int No);
@@ -50,7 +62,7 @@ public sealed record EnactResult(bool Ok, ExecutiveFailure? Failure, bool Approv
 /// atraso, políticas (por decreto ou com lei votada na Câmara), coalizão por secretarias, aprovação ponderada pelos
 /// grupos de eleitores e crises. Toda aleatoriedade vem do Rng do estado.
 /// </summary>
-public sealed class ExecutiveEngine
+public sealed partial class ExecutiveEngine
 {
     private readonly Dictionary<string, double> _groupShares;
 
@@ -110,7 +122,7 @@ public sealed class ExecutiveEngine
         }
 
         Candidate player = campaign.Player;
-        return new ExecutiveState
+        var executive = new ExecutiveState
         {
             Municipio = campaign.Municipio,
             Start = new DateOnly(year + 1, 1, 1),
@@ -126,6 +138,8 @@ public sealed class ExecutiveEngine
             Support = new Dictionary<string, double>(player.Support, StringComparer.Ordinal),
             EnergyLeft = config.WeeklyEnergy,
         };
+        LinkRealIndicators(ctx, executive);
+        return executive;
     }
 
     // ---------------------------------------------------------------- orçamento e indicadores
@@ -136,12 +150,25 @@ public sealed class ExecutiveEngine
     /// <summary>Reserva livre: a parcela da reserva menos o custo das políticas.</summary>
     public double FreeReserve => Executive.Allocation.GetValueOrDefault(ExecutiveConfig.ReserveArea) - PolicyCost;
 
-    /// <summary>Áreas abaixo do mínimo legal (saúde 15%, educação 25%).</summary>
-    public IEnumerable<BudgetArea> BelowMinimum => Config.Areas.Where(a => Executive.Allocation.GetValueOrDefault(a.Id) + 1e-9 < a.MinimumShare);
+    /// <summary>
+    /// Fatia do orçamento que é base dos mínimos de saúde e de educação: impostos próprios mais transferências de
+    /// impostos, sobre a receita (corrige a simplificação da D-031, que aplicava os mínimos ao orçamento todo).
+    /// </summary>
+    public double TaxBaseShare => State.Governance?.Fiscal.TaxBaseShare ?? Config.TaxBaseShare.GetValueOrDefault(Context.Municipio.Porte, 1);
+
+    /// <summary>
+    /// Parcela mínima do orçamento que a área precisa ter: em saúde (15%) e educação (25%), o percentual da lei sobre
+    /// a base de impostos e transferências; nas demais, o piso de jogo de data/executive/config.json.
+    /// </summary>
+    public double MinimumShare(BudgetArea area) =>
+        Context.FiscalLaw.MinimoDaArea(area.Id) > 0 ? Context.FiscalLaw.MinimoSobreOrcamento(area.Id, TaxBaseShare) : area.MinimumShare;
+
+    /// <summary>Áreas abaixo do mínimo: saúde e educação pela lei, as demais pelo piso de jogo.</summary>
+    public IEnumerable<BudgetArea> BelowMinimum => Config.Areas.Where(a => Executive.Allocation.GetValueOrDefault(a.Id) + 1e-9 < MinimumShare(a));
 
     public ExecutiveFailure? SetAllocation(IReadOnlyDictionary<string, double> allocation)
     {
-        if (Config.Areas.Any(a => !allocation.ContainsKey(a.Id)) || allocation.Values.Any(v => v < 0) || Math.Abs(allocation.Values.Sum() - 1) > 0.001)
+        if (!ValidAllocation(Config, allocation))
         {
             return ExecutiveFailure.OrcamentoInvalido;
         }
@@ -155,13 +182,17 @@ public sealed class ExecutiveEngine
     }
 
     /// <summary>Para onde cada indicador caminha: gasto relativo à referência, políticas em vigor e reserva não usada.</summary>
-    public Dictionary<string, double> Targets()
+    public Dictionary<string, double> Targets() => TargetsFor(Executive.Allocation);
+
+    /// <summary>Os alvos com outra repartição do orçamento (a previsão do rascunho usa a mesma conta).</summary>
+    private Dictionary<string, double> TargetsFor(IReadOnlyDictionary<string, double> allocation)
     {
         ExecutiveState e = Executive;
+        double freeReserve = allocation.GetValueOrDefault(ExecutiveConfig.ReserveArea) - PolicyCost;
         var targets = Config.Indicators.ToDictionary(i => i.Id, _ => 50.0, StringComparer.Ordinal);
         foreach (BudgetArea area in Config.Areas.Where(a => a.ReferenceShare > 0))
         {
-            double relative = (e.Allocation.GetValueOrDefault(area.Id) / area.ReferenceShare) - 1;
+            double relative = (allocation.GetValueOrDefault(area.Id) / area.ReferenceShare) - 1;
             foreach (var (indicator, weight) in area.Effects)
             {
                 targets[indicator] += weight * Config.TargetSensitivity * relative;
@@ -178,7 +209,7 @@ public sealed class ExecutiveEngine
 
         if (targets.ContainsKey("contas"))
         {
-            targets["contas"] += Config.UnusedReserveToAccounts * Math.Max(0, FreeReserve) - (Config.UnusedReserveToAccounts * Math.Max(0, -FreeReserve) * 2);
+            targets["contas"] += Config.UnusedReserveToAccounts * Math.Max(0, freeReserve) - (Config.UnusedReserveToAccounts * Math.Max(0, -freeReserve) * 2);
         }
 
         return targets.ToDictionary(t => t.Key, t => Math.Clamp(t.Value, Config.IndicatorBounds.Min, Config.IndicatorBounds.Max), StringComparer.Ordinal);
@@ -206,6 +237,9 @@ public sealed class ExecutiveEngine
 
     // ---------------------------------------------------------------- políticas
 
+    /// <summary>Luto oficial em curso: a Câmara não vota nesta semana (GDD 17.16).</summary>
+    public bool ChamberInMourning => State.Renewal is { } renewal && renewal.Municipio == Context.Municipio.CodigoIbge && Renewal.RenewalQueries.InMourning(renewal, State.Calendar.WeekStart);
+
     public ExecutiveFailure? CanEnact(PolicyDefinition policy)
     {
         ExecutiveState e = Executive;
@@ -222,6 +256,11 @@ public sealed class ExecutiveEngine
         if (e.Policies.Any(p => p.PolicyId == policy.Id && p.Counts))
         {
             return ExecutiveFailure.JaAdotada;
+        }
+
+        if (policy.RequiresLaw && ChamberInMourning)
+        {
+            return ExecutiveFailure.CamaraEmLuto;
         }
 
         return policy.Cost > 0 && FreeReserve + 1e-9 < policy.Cost ? ExecutiveFailure.SemReserva : null;
@@ -245,7 +284,8 @@ public sealed class ExecutiveEngine
             {
                 int side = e.InBase(m.PartyId) ? 1 : -1;
                 int orientation = m.PartyId == e.PartyId ? 1 : ChamberVote.PartyOrientation(Context.Legislature, State, m.PartyId, policy.Position, side);
-                double logit = ChamberVote.Logit(Context.Legislature, State, m, policy.Position, orientation, side, m.Relation);
+                // Quem fechou acordo com o prefeito vota como combinado (GDD 17.15).
+                double logit = ChamberVote.Logit(Context.Legislature, State, m, policy.Position, orientation, side, m.Relation) + (State.Governance?.DealLogit(policy.Id, m.Id) ?? 0);
                 switch (ChamberVote.Decide(Context.Legislature, logit, Rng))
                 {
                     case VoteChoice.Sim:
@@ -432,6 +472,7 @@ public sealed class ExecutiveEngine
         Shift("contas", -choice.Cost * Config.UnusedReserveToAccounts);
         e.Image = Math.Clamp(e.Image + choice.Image, -1, 1);
         e.Crisis = null;
+        State.Governance?.CrisisResolved(crisis.Id, Math.Clamp(choiceIndex, 0, crisis.Choices.Count - 1));
         e.News.Add(new ExecutiveNews(Week, ExecutiveNewsKind.CriseResolvida, crisis.Name));
         return choice.Result;
     }
@@ -439,6 +480,11 @@ public sealed class ExecutiveEngine
     private void Shift(string indicator, double delta)
     {
         ExecutiveState e = Executive;
+        if (ShiftReal(indicator, delta))
+        {
+            return;
+        }
+
         if (e.Indicators.ContainsKey(indicator))
         {
             e.Indicators[indicator] = Math.Clamp(e.Indicators[indicator] + delta, Config.IndicatorBounds.Min, Config.IndicatorBounds.Max);
@@ -448,7 +494,8 @@ public sealed class ExecutiveEngine
     private void MaybeCrisis()
     {
         ExecutiveState e = Executive;
-        if (e.Crisis is not null || Rng.NextDouble() >= Config.CrisisChancePerWeek)
+        // Com o governo da R4, nenhuma crise é só sorteio: quem as dispara é a causa (GDD 17.15).
+        if (State.Governance is not null || e.Crisis is not null || Rng.NextDouble() >= Config.CrisisChancePerWeek)
         {
             return;
         }
@@ -498,9 +545,14 @@ public sealed class ExecutiveEngine
             e.News.Add(new ExecutiveNews(Week, ExecutiveNewsKind.PoliticaEmVigor, Context.Content.Policies.Find(p.PolicyId)!.Name));
         }
 
-        foreach (var (indicator, target) in Targets())
+        if (!StepRealIndicators())
         {
-            e.Indicators[indicator] += Config.IndicatorSpeedPerWeek * (target - e.Indicators[indicator]);
+            foreach (var (indicator, target) in Targets())
+            {
+                // A competência do secretário da pasta acelera ou atrasa o indicador (GDD 17.15).
+                double speed = Config.IndicatorSpeedPerWeek * (State.Governance?.AreaSpeed.GetValueOrDefault(indicator, 1) ?? 1);
+                e.Indicators[indicator] += Math.Clamp(speed, 0, 1) * (target - e.Indicators[indicator]);
+            }
         }
 
         if (BelowMinimum.Any() && !e.MinimumViolatedThisYear)

@@ -112,7 +112,38 @@ public static partial class SaveZoneCheck
             });
         }
 
+        // Governo da cidade e entressafra (R4) guardam a própria lista de zonas, com vetores na ordem dela.
+        if (state.Governance is { } governance)
+        {
+            CheckZoneList(problems, "do governo", governance.Municipio, governance.Zones, zonesOf,
+                governance.ZonePopulation.Count, governance.Presence.Count, governance.PresenceAtStart.Count, governance.ZoneApproval.Count);
+            if (governance.BaseZones.Any(i => i < 0 || i >= governance.Zones.Count))
+            {
+                problems.Add($"base do mandato: zona fora da lista de {governance.Zones.Count}");
+            }
+        }
+
+        if (state.OffSeason is { } offSeason)
+        {
+            CheckZoneList(problems, "da entressafra", offSeason.Municipio, offSeason.Zones, zonesOf, offSeason.ZonePopulation.Count, offSeason.Presence.Count);
+        }
+
         return problems;
+    }
+
+    /// <summary>Lista de zonas guardada no save igual à do município nos dados, e cada vetor dela com o mesmo tamanho.</summary>
+    private static void CheckZoneList(List<string> problems, string what, int municipio, IReadOnlyList<string> zones, Func<int, IReadOnlyList<string>?> zonesOf, params int[] lengths)
+    {
+        IReadOnlyList<string>? current = zonesOf(municipio);
+        if (current is null || !current.SequenceEqual(zones, StringComparer.Ordinal))
+        {
+            problems.Add($"as zonas {what} ({zones.Count}) não são as do município nos dados ({current?.Count ?? 0})");
+        }
+
+        if (lengths.Any(n => n != zones.Count))
+        {
+            problems.Add($"vetores {what} com tamanho diferente do número de zonas");
+        }
     }
 
     private static JsonNode Tree(GameState state) => JsonNode.Parse(GameStateSerializer.Serialize(state))!;

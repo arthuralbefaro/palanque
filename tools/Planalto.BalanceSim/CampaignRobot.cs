@@ -197,6 +197,12 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
 
     private GameState State => _engine.Context.State;
 
+    /// <summary>
+    /// Mundo que anda junto com a campanha, como no jogo (opção <c>--mundo</c>): indicadores reais e renovação do mundo
+    /// político. Sem ele, a campanha roda sozinha, como na medição da R3.
+    /// </summary>
+    public Planalto.Core.World.WorldEngine? World { get; init; }
+
     private CampaignState Campaign => State.Campaign!;
 
     public CampaignTrace Trace { get; } = new();
@@ -229,6 +235,7 @@ public sealed partial class CampaignRobot(CampaignEngine engine)
 
             // Um comando do próprio dia pode ter emitido um fato que dispara um evento (GDD 15.4): responde antes de o dia andar.
             ResolvePending();
+            World?.AdvanceTo(State.Calendar.WeekStart);
             _clock.Restart();
             _engine.AdvanceDay();
             if (sunday && !_engine.DecisionPending)

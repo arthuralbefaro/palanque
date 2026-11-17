@@ -152,13 +152,16 @@ public partial class HubScreen : Control
             return;
         }
 
-        if (_game.Engine is null)
+        // Sem campanha aberta, a mesma tela mostra o mandato, a prefeitura ou a entressafra (HubScreen.Gov.cs).
+        _gov = _game.State.Campaign is null;
+        if (_gov)
         {
-            _game.GoToCareer();
-            return;
+            _govKind = Kind;
+            _area = GovAreas[0].Id;
+            _mapMode = Kind == GovKind.Prefeito ? "obras" : "base";
         }
 
-        _engine = _game.Engine;
+        _engine = _game.Engine!;
         Theme = Palette.CentralTheme();
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         var background = this.Add(new ColorRect { Color = Palette.Fundo, MouseFilter = MouseFilterEnum.Ignore });
@@ -180,7 +183,7 @@ public partial class HubScreen : Control
         _map = _mapArea.Add(new ZoneMapView());
         _map.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         _map.ZoneClicked += OnZoneClicked;
-        _map.MarkerClicked += id => OpenAreaSheet(Sheet.Rival, id);
+        _map.MarkerClicked += id => { if (!_gov) { OpenAreaSheet(Sheet.Rival, id); } };
         _map.HoverText = ZoneTooltip;
         _modes = _mapArea.Add(new HBoxContainer { Position = new Vector2(16, 16) });
         _modes.AddThemeConstantOverride("separation", 8);
@@ -218,6 +221,14 @@ public partial class HubScreen : Control
     /// <summary>Guarda os ataques e as ofertas com prazo já avisados, para a pausa valer só para os novos.</summary>
     private void RememberDeadlines()
     {
+        // Fora de campanha (mandato, prefeitura, entressafra) não há motor de campanha nem ataque ou oferta com prazo.
+        if (_gov || _engine is null)
+        {
+            _knownAttacks = [];
+            _knownOffers = [];
+            return;
+        }
+
         _knownAttacks = _engine.PendingAttacks().Select(a => a.Attack.Id).ToHashSet(StringComparer.Ordinal);
         _knownOffers = _engine.Finance.Offers.Select(o => o.Id).ToHashSet(StringComparer.Ordinal);
     }
@@ -239,8 +250,8 @@ public partial class HubScreen : Control
 
     private void LoadZones()
     {
-        var municipio = _engine.Context.Municipio;
-        _zonas = _engine.Context.Zonas;
+        var municipio = City;
+        _zonas = _game.ZonasDe(municipio);
         string prefix = municipio.CodigoIbge.ToString(CultureInfo.InvariantCulture) + "-";
         GeoZonasUf geo = _game.GeoZonasDe(municipio.Uf);
         _map.Load(_zonas, geo.Zonas.Where(z => z.Id.StartsWith(prefix, StringComparison.Ordinal)), geo.Scale);
@@ -252,6 +263,12 @@ public partial class HubScreen : Control
     {
         if (!_running)
         {
+            return;
+        }
+
+        if (_gov)
+        {
+            GovProcess(delta);
             return;
         }
 
@@ -272,7 +289,8 @@ public partial class HubScreen : Control
 
     /// <summary>Motivo para o tempo não andar (decisão imediata ou fase que se resolve fora do mapa); null se pode.</summary>
     public string? BlockReason() =>
-        Campaign.Events.Pending.Count > 0 ? Tr("há uma decisão esperando você")
+        _gov ? GovBlockReason()
+        : Campaign.Events.Pending.Count > 0 ? Tr("há uma decisão esperando você")
         : Agenda.PendingRequest is not null ? Tr("uma liderança fez um pedido e espera a sua resposta")
         : _engine.Team.Pending.Count > 0 ? Tr("alguém da sua equipe espera uma decisão sua")
         : Campaign.Debate is not null ? Tr("há um debate na TV hoje")
@@ -286,6 +304,12 @@ public partial class HubScreen : Control
     /// </summary>
     public void StepDay()
     {
+        if (_gov)
+        {
+            StepGovDay();
+            return;
+        }
+
         if (BlockReason() is not null)
         {
             _running = false;
@@ -432,6 +456,7 @@ public partial class HubScreen : Control
         _confirmFire = null;
         _changes = null;
         _back.Clear();
+        ResetGovSheet();
         Refresh();
     }
 
@@ -481,6 +506,11 @@ public partial class HubScreen : Control
 
     private void OnZoneClicked(string? id)
     {
+        if (GovZoneClicked(id))
+        {
+            return;
+        }
+
         if (_sheet == Sheet.Marcar && _draft is not null)
         {
             // Com a marcação aberta, o clique no mapa escolhe a zona do compromisso.
@@ -529,6 +559,13 @@ public partial class HubScreen : Control
     {
         if (_top is null)
         {
+            return;
+        }
+
+        SyncMode();
+        if (_gov)
+        {
+            RefreshGov();
             return;
         }
 
@@ -701,7 +738,7 @@ public partial class HubScreen : Control
         Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos, pesquisas, a folha da equipe e a verba dos canais (as duas saem toda segunda-feira); o jantar de arrecadação traz mais."));
         Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
             string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
-        ImageStat();
+        ImageStat(Campaign.Player.Image, Tr("pesa no voto e volta aos poucos para zero sem novidades."));
         AgendaRules agendaRules = _engine.Context.Campaign.Commitments.Regras;
         bool stressed = State.Player.Resources.Stress > agendaRules.EstresseLimite;
         Stat(Tr("estresse"), string.Format(PtBr, stressed ? "{0} ▲" : "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
@@ -728,19 +765,19 @@ public partial class HubScreen : Control
 
     /// <summary>
     /// Imagem na barra de cima: a faixa nomeada (data/campaign/config.json) e uma régua com uma casa por faixa; o
-    /// número cru fica só no tooltip, com os limites da faixa.
+    /// número cru fica só no tooltip, com os limites da faixa. Serve à campanha, ao mandato e à prefeitura;
+    /// <paramref name="effect"/> diz o que a imagem faz em cada momento.
     /// </summary>
-    private void ImageStat()
+    private void ImageStat(double image, string effect)
     {
-        CampaignConfig config = _engine.Context.Config;
-        double image = Campaign.Player.Image;
+        CampaignConfig config = _game.Campaign.Config;
         int index = config.ImageBandIndex(image);
         int side = config.ImageBandSide(index);
         var (from, to) = config.ImageBandRange(index);
         Color color = side > 0 ? Palette.Positivo : side < 0 ? Palette.Negativo : Palette.Texto;
         string tip = Palette.Tip(
             Tr("Imagem: como a cidade vê você, numa régua de −1 a +1."),
-            string.Format(Tr("hoje {0}, na faixa \"{1}\" (de {2} a {3}); pesa no voto e volta aos poucos para zero sem novidades."), Signed(image, "0.00"), config.ImageScale[index].Name, Signed(from, "0.00"), Signed(to, "0.00")),
+            string.Format(Tr("hoje {0}, na faixa \"{1}\" (de {2} a {3}); {4}"), Signed(image, "0.00"), config.ImageScale[index].Name, Signed(from, "0.00"), Signed(to, "0.00"), effect),
             Tr("é um resultado, não um custo."));
         var box = _top.Add(new VBoxContainer { Name = "Imagem", MouseFilter = MouseFilterEnum.Stop, TooltipText = tip });
         box.AddThemeConstantOverride("separation", -4);
@@ -789,6 +826,8 @@ public partial class HubScreen : Control
             var b = IconButton(_trail, icon, _area == id && (_sheet == Sheet.Nenhuma || SheetArea(_sheet) == id), () => OpenArea(id), Palette.Tip($"{Tr(name)}: {Tr(tip)}", Tr("mostra esta área no painel da esquerda; o mapa continua visível."), Tr("nada.")));
             b.Name = "Area_" + id;
         }
+
+        GovTrailExtra();
     }
 
     // ------------------------------------------------------------------ painel da área
@@ -796,6 +835,11 @@ public partial class HubScreen : Control
     private void BuildLeft()
     {
         Ui.Clear(_left);
+        if (BuildGovLeft())
+        {
+            return;
+        }
+
         switch (_sheet)
         {
             case Sheet.Zona when _sheetId is not null && _map.Zonas.ContainsKey(_sheetId):
@@ -862,6 +906,11 @@ public partial class HubScreen : Control
                 _sheetId = null;
                 _back.Clear();
                 break;
+        }
+
+        if (BuildGovLeft())
+        {
+            return;
         }
 
         Heading(_left, Tr(Areas.First(a => a.Id == _area).Name));
