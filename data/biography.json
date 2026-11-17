@@ -1,14 +1,14 @@
 {
   "templates": [
     {
-      "masculine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política pelo {partido}.",
-      "feminine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política pelo {partido}.",
-      "neutral": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política pelo {partido}."
+      "masculine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política {pelo} {partido}.",
+      "feminine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política {pelo} {partido}.",
+      "neutral": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem} e trabalhou como {profissao} antes de entrar na política {pelo} {partido}."
     },
     {
-      "masculine": "Filho de {cidade} ({uf}), {nome} tem {idade} anos e é conhecido como {profissao}. Cresceu em {origem} e escolheu o {partido} para a primeira campanha.",
-      "feminine": "Filha de {cidade} ({uf}), {nome} tem {idade} anos e é conhecida como {profissao}. Cresceu em {origem} e escolheu o {partido} para a primeira campanha.",
-      "neutral": "Nascide em {cidade} ({uf}), {nome} tem {idade} anos e é conhecide como {profissao}. Cresceu em {origem} e escolheu o {partido} para a primeira campanha."
+      "masculine": "Filho de {cidade} ({uf}), {nome} tem {idade} anos e é conhecido como {profissao}. Cresceu em {origem} e escolheu {o} {partido} para a primeira campanha.",
+      "feminine": "Filha de {cidade} ({uf}), {nome} tem {idade} anos e é conhecida como {profissao}. Cresceu em {origem} e escolheu {o} {partido} para a primeira campanha.",
+      "neutral": "Nascide em {cidade} ({uf}), {nome} tem {idade} anos e é conhecide como {profissao}. Cresceu em {origem} e escolheu {o} {partido} para a primeira campanha."
     }
   ],
   "origin_phrases": {
@@ -17,5 +17,20 @@
     "familia_rica": "uma família rica",
     "zona_rural": "uma família da zona rural",
     "familia_politica": "uma família de políticos"
-  }
+  },
+  "templates_without_work": [
+    {
+      "masculine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem}, ainda estuda e entra na política {pelo} {partido}.",
+      "feminine": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem}, ainda estuda e entra na política {pelo} {partido}.",
+      "neutral": "{nome}, {idade} anos, nasceu em {cidade} ({uf}). Vem de {origem}, ainda estuda e entra na política {pelo} {partido}."
+    },
+    {
+      "masculine": "Filho de {cidade} ({uf}), {nome} tem {idade} anos e divide o tempo entre os estudos e a militância. Cresceu em {origem} e escolheu {o} {partido} para a primeira campanha.",
+      "feminine": "Filha de {cidade} ({uf}), {nome} tem {idade} anos e divide o tempo entre os estudos e a militância. Cresceu em {origem} e escolheu {o} {partido} para a primeira campanha.",
+      "neutral": "Nascide em {cidade} ({uf}), {nome} tem {idade} anos e divide o tempo entre os estudos e a militância. Cresceu em {origem} e escolheu {o} {partido} para a primeira campanha."
+    }
+  ],
+  "without_work": [
+    "estudante"
+  ]
 }

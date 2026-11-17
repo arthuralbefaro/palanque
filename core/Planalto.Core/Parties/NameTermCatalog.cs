@@ -47,6 +47,17 @@ public sealed class NameTermCatalog : IValidatable
 
     public required List<NameSuffix> Suffixes { get; init; }
 
+    /// <summary>
+    /// Gênero gramatical do nome de um partido pela primeira palavra ("União Solidária" é feminino, "Partido
+    /// Popular" é masculino), para concordar artigo e preposição ("pela União", "pelo Partido"). Nome que não começa
+    /// por um dos núcleos conhecidos fica no masculino, como "o partido".
+    /// </summary>
+    public GrammaticalGender GenderOf(string partyName)
+    {
+        string first = partyName.Trim().Split(' ', 2)[0];
+        return Heads.FirstOrDefault(h => string.Equals(h.Text, first, StringComparison.OrdinalIgnoreCase))?.Gender ?? GrammaticalGender.Masculine;
+    }
+
     public IEnumerable<string> Validate()
     {
         if (Heads is null || Heads.Count == 0)

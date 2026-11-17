@@ -34,6 +34,12 @@ public partial class CharacterCreatorScreen : Control
 
     // O jogador mexeu à mão na aparência ou nas roupas: mudar o gênero pergunta antes de sortear de novo.
     private bool _faceEdited;
+
+    /// <summary>Biografia escrita à mão: deixa de acompanhar as escolhas até "Gerar de novo".</summary>
+    private bool _bioEdited;
+
+    /// <summary>Semente do modelo de biografia: a mesma frase acompanha as escolhas; "Gerar de novo" troca.</summary>
+    private ulong _bioSeed;
     private bool _wardrobeEdited;
     private List<string> _offeredTraits = [];
     private TabContainer _tabs = null!;
@@ -104,6 +110,12 @@ public partial class CharacterCreatorScreen : Control
     {
         PushUndo();
         action();
+        if (!_bioEdited)
+        {
+            // Idade, partido, profissão, cidade e origem mudam a biografia sugerida; a escrita à mão fica.
+            _c.Biography = WriteBiography();
+        }
+
         BuildTabs();
         RefreshPreview();
     }
@@ -112,6 +124,11 @@ public partial class CharacterCreatorScreen : Control
     {
         PushUndo();
         action();
+        if (!_bioEdited)
+        {
+            _c.Biography = WriteBiography();
+        }
+
         RefreshPreview();
     }
 
@@ -242,7 +259,8 @@ public partial class CharacterCreatorScreen : Control
     {
         GameParty? party = CurrentPartyFromWorld();
         ProfessionDefinition? profession = People.Professions.Professions.FirstOrDefault(p => p.Id == _c.ProfessionId);
-        return People.Biography.Write(_c, _rng, HomeName(), party?.Name ?? "", profession?.Name.For(_c.Gender) ?? "", Today);
+        string partyName = party?.Name ?? "";
+        return People.Biography.Write(_c, new Rng(_game.PendingSeed + 11 + _bioSeed), HomeName(), partyName, profession?.Name.For(_c.Gender) ?? "", Today, _game.World.Parties.NameTerms.GenderOf(partyName));
     }
 
     private void RecomputeStats()
@@ -558,9 +576,16 @@ public partial class CharacterCreatorScreen : Control
         Ui.Value(t, string.Join(" · ", Enum.GetValues<AttributeId>().Select(a => $"{a}: {_c.Attributes.Get(a)}")));
 
         HBoxContainer bioRow = Ui.Field(t, "Biografia");
-        Ui.Button(bioRow, "Gerar de novo", () => Change(() => _c.Biography = WriteBiography()));
+        Ui.Button(bioRow, "Gerar de novo", () => Change(() => { _bioSeed++; _bioEdited = false; }));
         var bio = t.Add(new TextEdit { Text = _c.Biography ?? "", CustomMinimumSize = new Vector2(0, 110), WrapMode = TextEdit.LineWrappingMode.Boundary });
-        bio.TextChanged += () => _c.Biography = bio.Text;
+        bio.TextChanged += () =>
+        {
+            if (bio.Text != _c.Biography)
+            {
+                _bioEdited = true;
+                _c.Biography = bio.Text;
+            }
+        };
     }
 
     /// <summary>
