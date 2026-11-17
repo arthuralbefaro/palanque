@@ -1,6 +1,16 @@
 {
   "note": "Tempo corrente (GDD 17.4): segundos reais por dia de jogo em cada velocidade (1x, 2x, 4x), na campanha e no mandato, e as pausas automáticas por tipo de acontecimento. 'pausa' é o padrão; 'desligavel' diz se o jogador pode desligar nas Opções; 'explicacao' vai para o tooltip das Opções: na desligável, o que acontece com ela desligada; na fixa, por que ela não se desliga.",
   "velocidades": [1, 2, 4],
+  "dia": {
+    "note": "Relógio do dia (RL): o dia de jogo vai da hora_inicio à hora_fim; cada turno tem início e fim em horas cheias. O compromisso de um turno acontece quando o relógio chega ao fim dele.",
+    "hora_inicio": 6,
+    "hora_fim": 22,
+    "turnos": [
+      { "turno": "manha", "inicio": 6, "fim": 12 },
+      { "turno": "tarde", "inicio": 12, "fim": 18 },
+      { "turno": "noite", "inicio": 18, "fim": 22 }
+    ]
+  },
   "segundos_por_dia": {
     "campanha": [4.0, 2.0, 1.0],
     "mandato": [1.0, 0.5, 0.25]

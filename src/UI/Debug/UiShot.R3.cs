@@ -247,8 +247,7 @@ public partial class UiShot
 
         Save(shot, "_pacto");
         await Click(Named<Button>(hub, "Area_territorio")!);
-        Named<Button>(hub, "Zona_" + closed)!.EmitSignal(BaseButton.SignalName.Pressed);
-        await Frames(3);
+        await OpenZoneSheet(hub, closed);
         await Click(Named<Button>(hub, "MarcarAqui")!);
         SelectOption(hub, "Tipo", "caminhada");
         await Frames(3);
@@ -952,7 +951,7 @@ public partial class UiShot
 
         // Marcação que quebra o pacto.
         await Press(hub, "Area_territorio");
-        await Press(hub, "Zona_" + campaign.Territory.Zones[^1]);
+        await OpenZoneSheet(hub, campaign.Territory.Zones[^1]);
         await Press(hub, "MarcarAqui");
         SelectOption(hub, "Tipo", "caminhada");
         await Frames(3);

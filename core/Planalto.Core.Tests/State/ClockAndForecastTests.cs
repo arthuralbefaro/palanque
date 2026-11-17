@@ -318,4 +318,18 @@ public class ClockAndForecastTests
             }
         }
     }
+
+    [Fact]
+    public void Fim_do_dia_faz_o_mundo_andar_uma_vez_por_dia()
+    {
+        CampaignEngine engine = CampaignKit.NewCareer(3139607, 47);
+        engine.Context.State.Campaign!.Events.Pending.Clear();
+        GameState state = engine.Context.State;
+        DateOnly today = engine.Today;
+        engine.EndOfDay();
+        Assert.Equal(today, state.Campaign!.World.LastDay);
+        string once = GameStateSerializer.Serialize(state);
+        engine.EndOfDay();
+        Assert.Equal(once, GameStateSerializer.Serialize(state));
+    }
 }

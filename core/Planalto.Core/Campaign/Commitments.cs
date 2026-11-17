@@ -260,6 +260,9 @@ public enum ScheduleFailure
     SemVerbaDeRua,
     TemaInvalido,
     VeiculoInvalido,
+
+    /// <summary>O turno de hoje já passou no relógio do jogo.</summary>
+    TurnoPassou,
 }
 
 /// <summary>
@@ -380,6 +383,9 @@ public sealed class AgendaState
     public Dictionary<DateOnly, double> Rain { get; init; } = [];
 
     public List<CommitmentResult> Log { get; init; } = [];
+
+    /// <summary>Zona → dia do último compromisso pessoal do jogador nela (painel de zonas, "última visita").</summary>
+    public Dictionary<string, DateOnly> LastVisit { get; init; } = [];
 
     public List<FeedItem> Feed { get; init; } = [];
 

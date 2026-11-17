@@ -832,9 +832,14 @@ public static class ZonasImport
     /// envolvente): a zona rural enorme e o bairro pequeno ficam com detalhe parecido. O fator cresce até caber no
     /// orçamento de vértices do município. Devolve a mediana das tolerâncias usadas.
     /// </summary>
+    /// <remarks>
+    /// O tamanho soma o retângulo de cada parte, e não o da zona inteira: uma zona urbana com a vila de outro distrito
+    /// a 20 km teria o retângulo do município todo, uma tolerância quinze vezes maior, e o bairro da sede viraria uma
+    /// lasca de poucos vértices riscando o mapa (a vila sumia).
+    /// </remarks>
     private static (Geometry[] Result, double Tolerance) Simplify(Geometry[] coverage, int budget, TerritoryConfig config)
     {
-        double[] sizes = coverage.Select(g => Math.Sqrt(Math.Max(1e-12, g.EnvelopeInternal.Area))).ToArray();
+        double[] sizes = coverage.Select(Size).ToArray();
         double factor = 0.004;
         while (true)
         {
@@ -858,6 +863,10 @@ public static class ZonasImport
             factor *= 1.4;
         }
     }
+
+    /// <summary>Tamanho de uma zona para a tolerância: raiz da soma das áreas dos retângulos de cada parte.</summary>
+    private static double Size(Geometry zone) =>
+        Math.Sqrt(Math.Max(1e-12, Enumerable.Range(0, zone.NumGeometries).Sum(i => zone.GetGeometryN(i).EnvelopeInternal.Area)));
 
     /// <summary>Um município por linha, como em data/municipios/.</summary>
     public static string SerializeZonas(ZonasUf file, JsonSerializerOptions options)

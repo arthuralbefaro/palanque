@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-11-17T11:27:05.2600859+00:00",
+  "gerado_em": "2026-11-17T16:58:36.1646181+00:00",
   "fontes": [
     {
       "campo": "contornos",
@@ -42,12 +42,12 @@
   "metodo": "Setores agrupados por município, sem misturar urbanos e rurais; urbanos partem dos bairros do IBGE onde existem. Zona rural dividida pelos distritos do IBGE: a parte rural de cada distrito vira ao menos uma zona; distrito com menos de 200 moradores rurais é agrupado com o vizinho de maior divisa; o município pode passar do máximo do porte em até 4 zonas, e acima disso os grupos menores se juntam. Agrupamento guloso: o grupo de menor população se junta ao vizinho de menor população (vizinhança por divisa comum; sem vizinho, o mais próximo) até o número de zonas do porte (na zona rural, primeiro dentro de cada grupo de distritos). Contornos dissolvidos e simplificados por cobertura do município (tolerância proporcional ao tamanho de cada zona, aumentada até 34 vértices por zona em média, entre 5E-05° e 0.05°), coordenadas a 1/10000 de grau.",
   "tolerancia": {
     "minima": 5E-05,
-    "mediana": 0.0031539227970345737,
+    "mediana": 0.0022351742725671506,
     "maxima": 0.05
   },
-  "contornos_bytes": 23744877,
+  "contornos_bytes": 23717419,
   "teto_bytes": 31457280,
-  "atributos_bytes": 19610696,
+  "atributos_bytes": 19609636,
   "teto_atributos_bytes": 20971520,
   "zonas": 31026,
   "regra_de_sigilo": "População e domicílios do agregado básico (sem supressão). Idade e renda: células com \"X\" ou setor sem linha não são estimados; cada bloco soma só os setores publicados, e a zona com cobertura abaixo de 80% usa o perfil do município.",
@@ -2371,7 +2371,7 @@
     }
   },
   "zonas_rd": {
-    "gerado_em": "2026-11-17T11:27:21.9480545+00:00",
+    "gerado_em": "2026-11-17T16:59:40.0756643+00:00",
     "fontes": [
       {
         "campo": "perfil.religiao, perfil.escolaridade",

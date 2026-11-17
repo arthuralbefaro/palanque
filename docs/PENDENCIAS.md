@@ -337,6 +337,28 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 - **Acento nos nomes de rua:** a fonte não traz; restaurar exigiria uma regra ou uma lista própria. A decidir se vale.
 - **Escolha provisória:** nada da RV entra na main antes da RL; o protótipo fica no branch.
 
+## RL — leitura mínima
+
+### P-41 · Escolhas da RL — **respondida pela D-059** (aprovadas; correções na D-061)
+Cada uma era a leitura mais conservadora; o arquivo diz como reverter.
+- **Hora do dia no Core:** o dia vai das 6h às 22h, com manhã (6h–12h), tarde (12h–18h) e noite (18h–22h) em `data/time.json` ("dia"). O compromisso acontece no fim do próprio turno, não mais todo de uma vez às 22h; o resultado do dia é o mesmo (teste). O turno de hoje que já terminou não aceita compromisso; o que está em curso aceita. Reverter: `CampaignContext.Time` nulo volta ao dia inteiro de uma vez.
+- **Mundo todo dia:** a tela central não chamava o dia do mundo de segunda a sábado (rivais, doadores, ataques e mídia só agiam no domingo); agora chama (`CampaignEngine.EndOfDay`). Pode dar mais pausas por ataque ou rival na zona. Reverter: tirar a chamada em `Game.AdvanceDay`.
+- **Estresse do turno a mais:** na previsão conta o que o compromisso acrescenta ao dia (inclusive o que já foi feito); na execução, o custo cai no turno que excede (antes caía no primeiro do dia). O total do dia não muda. Reverter: `StressOf` em `AgendaEngine.cs`.
+- **"Fazer agora":** hoje, no turno em curso ou no seguinte livre; sem turno hoje, o botão vira "Fazer amanhã {de manhã, à tarde, à noite}" e só esse clique vira o dia. Os tipos da ficha são os que exigem zona (caminhada, reunião, visita, comício); a reunião usa o público de uma liderança conhecida da zona, e a visita, a primeira liderança conhecida, com escolha na ficha.
+- **Ficha da zona** (**mudou com a D-059 e a D-061:** agora encaixada no painel da esquerda, sem cobrir o mapa; só a marcação flutua sobre ele): abria sobre o mapa, a 16 px da borda esquerda, com 420 px de largura (cobria a legenda enquanto aberta). O ART_GUIDE ainda diz "Ficha de pessoa ou de zona abre no lugar do painel da área; não é janela flutuante" (guia em vigor, grade de painéis): a RL contradiz isso por pedido da D-054 e da D-055 (pilha de janelas); a proposta da RV já prevê janelas flutuantes. As demais fichas (pessoa, rival, compromisso) continuam no painel.
+- **Pilha de janelas:** hoje são duas: a ficha da zona (não modal: o mapa continua clicável) e a marcação aberta a partir dela (modal: bloqueia o mapa, escurece a ficha e prende o foco). O cartão de decisão continua como antes (fundo escurecido, Esc não fecha: a decisão é obrigatória).
+- **Painel de zonas:** a área Território é a que abre na campanha; cada zona é um cartão de 5 linhas (as 7 colunas não cabem em 400 px com texto de 18 px); os eleitores ficam no tooltip; "líder" e "você: Nº" vêm da projeção zona a zona sem ruído, só entre os candidatos nomeados; "última visita" conta só compromisso pessoal. Clicar no mapa destaca a linha e abre a ficha.
+- **Barra de cima:** data, pausa e velocidades, fase e contagem, e os botões Mapa, Salvar, Menu, Opções e Enciclopédia (controles, não números); caixa, estresse, reconhecimento, imagem e a linha da candidatura foram para o painel Você. O marcador da hora usa a cor de texto (a de atenção fica para o que pede decisão).
+- **Faixa da virada do dia:** aparece quando o dia vira e fica só até as 7h do relógio do jogo (com o jogo parado às 6h, continua à vista).
+- **Retratos:** só nos cartões do feed foram acrescentados (os cartões de decisão, pedido de liderança, equipe e as fichas já tinham); 96 px do cache, mostrados com 48 px.
+- **Mandato, prefeitura e entressafra** continuam sem relógio do dia, painel Você e "Fazer agora" (a RL foi feita na campanha, onde o autor jogou). **Próxima tarefa depois da `fase-rl`, antes da RV-C (D-059).**
+
+### P-46 · O que as correções da RL deixam para o autor (D-061)
+- **15 zonas pequenas ainda esmagadas** no contorno, quase todas encostadas numa zona rural enorme na Amazônia (Barcelos/AM, por exemplo): o orçamento de vértices leva a tolerância delas ao teto. Correção possível: limitar a tolerância de cada zona ao tamanho dela. O teste `Contorno_simplificado_guarda_a_area_dos_setores_da_zona` tolera 15 hoje.
+- **Zona Noroeste de Mantena:** o ponto do nome fica na vila de Limeira de Mantena, a 22 km; no enquadramento da sede, a parte urbana aparece sem nome (o nome está no tooltip).
+- **Estimativa da equipe baixa no começo:** com 23% de reconhecimento na semana 10, a estimativa do jogador ainda é "0,0 a 1,2%", porque a projeção de votos do vereador continua baixa nessa altura. Não é defeito da estimativa; é o que a projeção dá.
+- **Com a ficha aberta, a lista de zonas fica coberta** até Voltar ou Esc.
+
 ## Nomes de bairro do OpenStreetMap (D-058, 17/11)
 
 ### P-42 · O que a importação dos nomes do OpenStreetMap deixa para o autor

@@ -283,6 +283,12 @@ public partial class HubScreen
                 b.Disabled = true;
                 b.TooltipText = Palette.Blocked(Tr("esse dia já passou; marque de hoje em diante."), tip);
             }
+            else if (_engine.TurnoPassed(date, turno))
+            {
+                b.Text = "";
+                b.Disabled = true;
+                b.TooltipText = Palette.Blocked(string.Format(Tr("a {0} de hoje já passou no relógio; marque num turno que ainda não terminou."), TurnoName(turno)), tip);
+            }
             else if (BlockReason() is { } block)
             {
                 b.Disabled = true;
@@ -822,6 +828,8 @@ public partial class HubScreen
                 return string.Format(Tr("comício precisa de palanque e som: falta verba no canal Rua em {0} na semana do comício. Tem {1} por semana, precisa de {2} (faltam {3}). Ponha em Campanha, Verba por canal, Rua."), ZoneName(r.ZoneId), Money(has), Money(_engine.ComicioRuaMinimum), Money(Math.Max(0, _engine.ComicioRuaMinimum - has)));
             case ScheduleFailure.TemaInvalido:
                 return Tr("só você fala pela sua posição: com representante, ou neste tipo de compromisso, não há tema. Escolha Nenhum tema em especial.");
+            case ScheduleFailure.TurnoPassou:
+                return string.Format(Tr("a {0} de hoje já passou no relógio; escolha um turno que ainda não terminou."), TurnoName(r.Turno));
             default:
                 return Tr("há uma decisão aberta; resolva antes de marcar.");
         }
@@ -877,6 +885,12 @@ public partial class HubScreen
         return lines;
     }
 
+    /// <summary>
+    /// Quanto o próximo compromisso igual ainda rende, pelo cansaço ("rende 62%"): a mesma frase na previsão e no
+    /// painel de zonas, para o número nunca ser lido como o tamanho do cansaço.
+    /// </summary>
+    private string YieldText(double factor) => string.Format(PtBr, Tr("rende {0:P0}"), factor);
+
     /// <summary>A previsão numa frase, para tooltips ("o que faz", com a faixa do Core).</summary>
     private string ForecastSummary(CommitmentRequest r, CommitmentForecast f)
     {
@@ -884,7 +898,7 @@ public partial class HubScreen
         string text = lines.Count == 0 ? Tr("sem efeito nos números") : string.Join("; ", lines);
         if (HasYield(Catalog.Get(r.Type)) && f.FatigueFactor < 0.999)
         {
-            text += "; " + string.Format(PtBr, Tr("o cansaço já está na conta (rende {0:P0})"), f.FatigueFactor);
+            text += "; " + string.Format(Tr("o cansaço já está na conta ({0})"), YieldText(f.FatigueFactor));
         }
 
         return text;

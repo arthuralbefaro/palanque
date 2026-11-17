@@ -165,6 +165,20 @@ public sealed class PollConfig
     public required double UndecidedAtElection { get; init; }
 
     public required int CampaignWeeks { get; init; }
+
+    /// <summary>Faixa da estimativa da equipe, a leitura da disputa sem pesquisa (RL).</summary>
+    public required TeamEstimateConfig TeamEstimate { get; init; }
+}
+
+/// <summary>
+/// Faixa da estimativa da equipe em torno do ponto central: a maior entre uma fração do próprio ponto e um mínimo em
+/// pontos percentuais. Mais larga que a margem das pesquisas, porque ninguém foi entrevistado.
+/// </summary>
+public sealed class TeamEstimateConfig
+{
+    public required double MarginRelative { get; init; }
+
+    public required double MarginMinPoints { get; init; }
 }
 
 public sealed class VoteWeights
@@ -255,6 +269,11 @@ public sealed class VoteModelConfig : IValidatable
             || Poll.UndecidedAtCampaignStart is < 0 or > 1 || Poll.UndecidedAtElection is < 0 or > 1)
         {
             yield return "poll: confidence_z e campaign_weeks positivos; indecisos entre 0 e 1.";
+        }
+
+        if (Poll?.TeamEstimate is null || Poll.TeamEstimate.MarginRelative is <= 0 or > 1 || Poll.TeamEstimate.MarginMinPoints <= 0)
+        {
+            yield return "poll.team_estimate: margin_relative em (0, 1] e margin_min_points positivo.";
         }
     }
 }

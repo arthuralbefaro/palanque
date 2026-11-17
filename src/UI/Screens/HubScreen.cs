@@ -48,7 +48,7 @@ public partial class HubScreen : Control
         ["contas"] = "Toda campanha tem limite de gastos e presta contas. Dinheiro \"por fora\" não tem limite, mas vira esqueleto: quem sabe pode contar. O risco das contas decide o julgamento depois da eleição.",
         ["agenda"] = "Cada dia tem três turnos. Clique num turno livre, escolha o compromisso e a zona e veja a previsão antes de confirmar. Repetir o mesmo compromisso na mesma zona rende cada vez menos: é o cansaço.",
         ["territorio"] = "Sua presença muda de zona para zona e cai nas zonas em que você não aparece. Clique numa zona do mapa ou da lista para abrir a ficha.",
-        ["ficha_zona"] = "A ficha mostra quem mora aqui, a demanda da zona e quem é mais conhecido. Parte do que você ganha numa zona transborda para as vizinhas. Use Marcar compromisso aqui para agir.",
+        ["ficha_zona"] = "Fazer agora age aqui no próximo turno livre e mostra o resultado no mapa. Parte do ganho transborda para as vizinhas.",
         ["financas"] = "O bloco Contas mostra o limite de gastos, o risco e as ofertas de doação à espera de resposta. Pesquisa interna mostra onde você está; institutos publicam sozinhos durante a campanha.",
         ["midia"] = "Cada veículo tem linha editorial: ela decide o tom da notícia, nunca o fato. Clique num veículo para marcar entrevista, sugerir pauta ou anunciar. Tema em alta rende mais naquela semana.",
         ["partido"] = "Seu partido define o número de urna e pesa no voto de quem já gosta dele.",
@@ -92,6 +92,11 @@ public partial class HubScreen : Control
     private HBoxContainer _top = null!;
     private VBoxContainer _trail = null!;
     private VBoxContainer _left = null!;
+    private PanelContainer _leftPanel = null!;
+    private ScrollContainer _leftScroll = null!;
+    private Control _leftStack = null!;
+    private VBoxContainer _you = null!;
+    private HBoxContainer _dayRow = null!;
     private VBoxContainer _feed = null!;
     private VBoxContainer _poll = null!;
     private VBoxContainer _objectives = null!;
@@ -135,7 +140,7 @@ public partial class HubScreen : Control
     public string SheetName => _sheet.ToString();
 
     /// <summary>Largura do painel da área (ART_GUIDE: 400 px lógicos, fixa); o teste de layout confere que nenhum conteúdo o alarga.</summary>
-    public float LeftPanelWidth => _left.GetParent<Control>().GetParent<Control>().Size.X;
+    public float LeftPanelWidth => _leftPanel.Size.X;
 
     /// <summary>Largura da coluna direita (ART_GUIDE: 400 px lógicos, fixa).</summary>
     public float RightPanelWidth => _objectives.GetParent<Control>().GetParent<Control>().Size.X;
@@ -160,8 +165,23 @@ public partial class HubScreen : Control
             _area = GovAreas[0].Id;
             _mapMode = Kind == GovKind.Prefeito ? "obras" : "base";
         }
+        else
+        {
+            // Na campanha, a tela abre no painel de zonas (área Território), como na referência da RL.
+            _area = "territorio";
+        }
 
         _engine = _game.Engine!;
+        if (_engine is not null)
+        {
+            // Painéis novos por evento do Core (RL): o motor avisa, a tela refaz só eles no quadro seguinte.
+            _engine.Changed += OnCampaignChanged;
+            CampaignEngine engine = _engine;
+            TreeExiting += () => engine.Changed -= OnCampaignChanged;
+        }
+
+        GetViewport().GuiFocusChanged += OnFocusChanged;
+        TreeExiting += () => GetViewport().GuiFocusChanged -= OnFocusChanged;
         Theme = Palette.CentralTheme();
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         var background = this.Add(new ColorRect { Color = Palette.Fundo, MouseFilter = MouseFilterEnum.Ignore });
@@ -170,14 +190,29 @@ public partial class HubScreen : Control
         var root = this.Add(new VBoxContainer());
         root.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         root.AddThemeConstantOverride("separation", 1);
-        _top = Panel(root, new Vector2(0, 56), 8).Add(new HBoxContainer());
+        // Barra de cima em duas linhas: data, tempo, fase, números e menus; embaixo, o relógio e a linha do dia (RL).
+        var topRows = Panel(root, new Vector2(0, 56), 8).Add(new VBoxContainer());
+        topRows.AddThemeConstantOverride("separation", 6);
+        _top = topRows.Add(new HBoxContainer());
         _top.AddThemeConstantOverride("separation", 12);
+        _dayRow = topRows.Add(new HBoxContainer { Name = "LinhaDoDia" });
+        _dayRow.AddThemeConstantOverride("separation", 12);
 
         var body = root.Add(new HBoxContainer { SizeFlagsVertical = SizeFlags.ExpandFill });
         body.AddThemeConstantOverride("separation", 1);
         _trail = Panel(body, new Vector2(64, 0), 8).Add(new VBoxContainer());
         _trail.AddThemeConstantOverride("separation", 8);
-        _left = Scroll(Panel(body, new Vector2(400, 0), 16));
+        // Painel da área: o painel Você fica sempre no alto (RL); embaixo, o conteúdo da área, que rola.
+        _leftPanel = Panel(body, new Vector2(400, 0), 16);
+        var leftColumn = _leftPanel.Add(new VBoxContainer());
+        leftColumn.AddThemeConstantOverride("separation", 12);
+        _you = leftColumn.Add(new VBoxContainer { Name = "PainelVoce" });
+        // A ficha da zona abre encaixada aqui, por cima do conteúdo da área (HubScreen.Windows.cs), e o mapa fica livre.
+        _leftStack = leftColumn.Add(new Control { Name = "AreaEsquerda", SizeFlagsVertical = SizeFlags.ExpandFill });
+        _leftScroll = _leftStack.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled });
+        _leftScroll.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        _left = _leftScroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        _left.AddThemeConstantOverride("separation", 8);
 
         _mapArea = body.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(640, 0), ClipContents = true });
         _map = _mapArea.Add(new ZoneMapView());
@@ -240,14 +275,6 @@ public partial class HubScreen : Control
         return panel;
     }
 
-    private static VBoxContainer Scroll(PanelContainer panel)
-    {
-        var scroll = panel.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled, SizeFlagsVertical = SizeFlags.ExpandFill });
-        var column = scroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
-        column.AddThemeConstantOverride("separation", 8);
-        return column;
-    }
-
     private void LoadZones()
     {
         var municipio = City;
@@ -261,6 +288,11 @@ public partial class HubScreen : Control
 
     public override void _Process(double delta)
     {
+        if (_panelsDirty && !_gov)
+        {
+            RefreshFromCore();
+        }
+
         if (!_running)
         {
             return;
@@ -279,10 +311,17 @@ public partial class HubScreen : Control
             return;
         }
 
-        _accumulated += delta;
-        if (_accumulated >= Clock.SecondsPerDay(_game.Time, Clock.ModoCampanha, _speed))
+        // Relógio do dia (RL): a hora anda no Core; quando um turno fecha, o compromisso dele acontece.
+        Game.TickReport tick = _game.TickCampaignClock(delta, _speed);
+        UpdateClock();
+        if (tick.Results.Count > 0)
         {
-            _accumulated = 0;
+            ShowResultFloats(tick.Results);
+            Refresh();
+        }
+
+        if (tick.DayEnded)
+        {
             StepDay();
         }
     }
@@ -337,6 +376,7 @@ public partial class HubScreen : Control
         }
 
         CheckPauses(polls, phase, lastFeed, report);
+        ShowResultFloats(report.Results);
         Refresh();
     }
 
@@ -541,12 +581,20 @@ public partial class HubScreen : Control
             }
             else
             {
+                if (_area == "territorio" && _sheet == Sheet.Nenhuma)
+                {
+                    _selectedZone = null;
+                }
+
                 Refresh();
             }
 
             return;
         }
 
+        // Painel de zonas (RL): o clique no mapa destaca a linha da zona e a lista rola até ela; a ficha flutua no mapa.
+        _selectedZone = id;
+        _scrollToZone = _area == "territorio";
         _back.Clear();
         _sheet = Sheet.Zona;
         _sheetId = id;
@@ -565,18 +613,25 @@ public partial class HubScreen : Control
         SyncMode();
         if (_gov)
         {
+            // A linha do dia e o painel Você são da campanha; o mandato tem a barra própria.
+            _dayRow.Visible = false;
+            _you.Visible = false;
             RefreshGov();
             return;
         }
 
         BuildTop();
+        BuildDayLine();
+        BuildYou();
         BuildTrail();
         BuildLeft();
         BuildMap();
+        BuildWindows();
         BuildRight();
         BuildObjectives();
         BuildBanner();
         ShowPendingDecision();
+        _panelsDirty = false;
     }
 
     private string Money(decimal value) => string.Create(PtBr, $"R$ {value:N0}");
@@ -731,19 +786,8 @@ public partial class HubScreen : Control
         phaseLabel.SizeFlagsVertical = SizeFlags.ShrinkCenter;
         phaseLabel.ClipContents = true;
 
-        // Origem do número (ART_GUIDE, densidade): o reconhecimento é a média das presenças por zona, pela população.
-        string zones = string.Join(", ", Enumerable.Range(0, Territory.Zones.Count)
-            .OrderByDescending(z => Territory.Population[z]).Take(4)
-            .Select(z => string.Format(PtBr, "{0} {1:0}", ZoneName(Territory.Zones[z]), Territory.PresenceOf(RaceSetup.PlayerId, z))));
-        Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos, pesquisas, a folha da equipe e a verba dos canais (as duas saem toda segunda-feira); o jantar de arrecadação traz mais."));
-        Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
-            string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
-        ImageStat(Campaign.Player.Image, Tr("pesa no voto e volta aos poucos para zero sem novidades."));
-        AgendaRules agendaRules = _engine.Context.Campaign.Commitments.Regras;
-        bool stressed = State.Player.Resources.Stress > agendaRules.EstresseLimite;
-        Stat(Tr("estresse"), string.Format(PtBr, stressed ? "{0} ▲" : "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
-            string.Format(PtBr, Tr("sobe com cada compromisso e mais com o terceiro turno do mesmo dia; acima de {0}, a chance de se sair bem na entrevista cai {1:0} pontos. Descanso e família baixa."), agendaRules.EstresseLimite, agendaRules.EstressePenalidade * 100),
-            stressed ? Palette.Negativo : null);
+        // Caixa, estresse, reconhecimento e imagem ficam no painel Você, sempre visível (RL): a barra de cima fica com
+        // data, relógio, tempo, fase e a contagem até a eleição.
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));
@@ -856,8 +900,10 @@ public partial class HubScreen : Control
         switch (_sheet)
         {
             case Sheet.Zona when _sheetId is not null && _map.Zonas.ContainsKey(_sheetId):
-                BuildZoneSheet(_map.Zonas[_sheetId]);
-                return;
+                // A ficha da zona flutua sobre o mapa (HubScreen.Windows.cs); o painel mostra a área por baixo.
+                break;
+            case Sheet.Marcar when ScheduleFloats:
+                break;
             case Sheet.Pessoa when _sheetId is not null && _engine.City.Leader(_sheetId) is { } leader:
                 BuildPersonSheet(leader);
                 return;

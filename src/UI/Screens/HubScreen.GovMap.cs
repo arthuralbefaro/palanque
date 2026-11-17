@@ -21,7 +21,7 @@ public partial class HubScreen
     private static readonly (string Id, string Name, string Tip)[] GovMapModes =
     [
         ("obras", "Obras", "A etapa da obra mais adiantada de cada zona, da cidade inteira; os marcadores mostram cada obra em andamento, as prontas e as atrasadas."),
-        ("base", "Base", "A sua presença em cada zona, em 5 faixas da própria cidade; os marcadores mostram o assessor de base, as promessas com dono e as zonas que cobram."),
+        ("base", "Base", "A sua presença em cada zona, na escala de 0 a 100 da legenda; os marcadores mostram o assessor de base, as promessas com dono e as zonas que cobram."),
         ("aprovacao", "Aprovação", "A aprovação do governo da cidade em cada zona, em 5 faixas da própria cidade."),
         ("renda", "Renda", "Rendimento médio do responsável pelo domicílio (Censo 2022), em 5 faixas da própria cidade."),
         ("situacao", "Urbana/rural", "Zonas urbanas e rurais pelo Censo 2022."),
@@ -116,9 +116,8 @@ public partial class HubScreen
                 pulsing.AddRange(gov.G.Crises.Where(c => c.ZoneId is not null && !c.Resolved).Select(c => c.ZoneId!));
                 break;
             case "base" when gov is not null:
-                LegendTitle(Tr("Sua presença (0 a 100)"));
                 var standing = GovernanceQueries.Zones(gov);
-                Bands(standing.Select(z => (z.ZoneId, (double?)z.Presence)), Palette.Forca, v => v.ToString("0.0", PtBr), colors);
+                PresenceLegend(standing.Select(z => (z.ZoneId, z.Presence)), colors);
                 foreach (ZoneStanding z in standing)
                 {
                     if (z.BaseAide is not null)
@@ -148,8 +147,7 @@ public partial class HubScreen
 
                 break;
             case "base" when Off is { } off:
-                LegendTitle(Tr("Sua presença (0 a 100)"));
-                Bands(off.S.Zones.Select((id, i) => (id, (double?)off.S.Presence[i])), Palette.Forca, v => v.ToString("0.0", PtBr), colors);
+                PresenceLegend(off.S.Zones.Select((id, i) => (id, off.S.Presence[i])), colors);
                 foreach (Leader leader in off.Leaders)
                 {
                     markers.Add(new ZoneMapView.Marker(leader.Zones[0], Palette.Texto2, Palette.Icon("lider_" + leader.Type), null));

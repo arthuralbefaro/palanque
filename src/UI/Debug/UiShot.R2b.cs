@@ -85,7 +85,8 @@ public partial class UiShot
         hub.Refresh();
         await Frames(2);
 
-        // A área Campanha tem os três blocos com "ver tudo".
+        // A tela abre no Território (RL): a área Campanha, com os três blocos com "ver tudo", fica no trilho.
+        await Click(Named<Button>(hub, "Area_campanha")!);
         string area = TextOf(hub);
         if (Named<Button>(hub, "VerEquipe") is null || Named<Button>(hub, "VerVerba") is null || Named<Button>(hub, "VerPlataforma") is null
             || !area.Contains($"Equipe (0/{engine.TeamSlots})", StringComparison.Ordinal))
@@ -379,6 +380,7 @@ public partial class UiShot
         game.State.Player.Resources.Money = 60_000;
         hub.Refresh();
         await Frames(2);
+        await Click(Named<Button>(hub, "Area_campanha")!);
         await Click(Named<Button>(hub, "VerVerba")!);
         string date = campaign.CampaignStart.ToString("d 'de' MMMM", PtBr);
         Control? phase = Named<Control>(hub, "BloqueioPreCampanha");
@@ -614,6 +616,7 @@ public partial class UiShot
         var campaign = game.State!.Campaign!;
         var engine = game.Engine!;
         var themes = engine.Context.Themes.Themes;
+        await Click(Named<Button>(hub, "Area_campanha")!);
         await Click(Named<Button>(hub, "VerPlataforma")!);
         Control? matrix = Named<Control>(hub, "Matriz");
         if (hub.SheetName != "Plataforma" || matrix is null || themes.Count != 10 || themes.Any(t => Named<Control>(hub, "Tema_" + t.Id) is null || !TextOf(matrix).Contains(t.Name, StringComparison.Ordinal)))

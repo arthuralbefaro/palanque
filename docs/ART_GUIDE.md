@@ -309,7 +309,7 @@ Contraste calculado pela fórmula da WCAG 2.1. As três cores de texto têm pelo
 **Mapa**
 | Modo | Escala | Regra |
 |---|---|---|
-| Minha força | Sequencial de `#1B2A2A` a `#2FD0A5`, 5 faixas | Faixas por quintil da própria cidade; legenda com os valores |
+| Minha força | Sequencial de `#1B2A2A` a `#2FD0A5`, contínua de 0 a 100 (posição na escala pela raiz quadrada da presença, para as presenças baixas do começo não saírem da mesma cor) | Legenda compacta: a barra do gradiente com as marcas 0, 10, 25, 50 e 100, no mesmo lugar da escala; sem os valores de cada zona |
 | Partido líder | Cor primária do partido líder na zona; opacidade de 45% a 100% conforme a margem sobre o segundo | A cor vem do save (partidos fictícios). Zona empatada na margem de erro fica hachurada |
 | Perfil (renda, idade, urbano/rural) | Sequencial de `#2A2620` a `#E0A458`, 5 faixas | Nunca a mesma escala de "Minha força" |
 | Presença de rival | Cor primária do partido do rival | Só um rival por vez |
@@ -412,7 +412,7 @@ Durações curtas; nada bloqueia o clique seguinte. A opção "Reduzir animaçõ
 | Clique em botão | Desce 1 px e volta | 100 ms |
 | Troca de área no trilho | Painel desliza 16 px e aparece | 160 ms |
 | Número muda | Conta do valor antigo ao novo; pisca em `positivo` ou `negativo` | 400 ms |
-| Efeito numa zona | A zona pulsa uma vez e solta uma etiqueta ("+2,1") que sobe 24 px e some | 900 ms |
+| Efeito numa zona | A zona pulsa uma vez e solta uma etiqueta ("+2,1"), texto liso sobre uma pílula escura, sem contorno, que sobe 24 px, fica nítida até 550 ms e some | 900 ms |
 | Notícia nova | Entra por cima, as outras descem; barra de 3 px em `atencao` por 2 s | 200 ms |
 | Dia passa | A data troca com um corte seco; marcador do dia anda na agenda | 120 ms |
 | Pausa automática | Grupo de tempo pisca duas vezes em `atencao`; a faixa de decisão sobe da base do mapa | 250 ms |

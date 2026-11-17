@@ -34,6 +34,9 @@ public partial class ZoneMapView
 
     private List<LabelBox> _labels = [];
 
+    /// <summary>Folga em volta dos controles sobre o mapa em que o ponto de uma zona não ganha nome com linha-guia.</summary>
+    private const float AnchorClearance = 24;
+
     /// <summary>Retângulos sobre o mapa (seletor de modo, legenda), nas coordenadas do mapa: os nomes desviam deles.</summary>
     public Func<IEnumerable<Rect2>>? Obstacles { get; set; }
 
@@ -110,9 +113,10 @@ public partial class ZoneMapView
                 break;
             }
 
-            // Zona cujo ponto está fora do mapa ou sob a legenda: o nome ficaria preso a uma linha que sai de baixo dela.
+            // Zona cujo ponto está fora do mapa, sob a legenda ou colado num controle: o nome ficaria preso a uma
+            // linha que sai de baixo dele (em 2560x1080, a da zona rural saía de sob o seletor de modo).
             Vector2 anchor = AnchorOf(z, t, xScale);
-            if (!area.HasPoint(anchor) || controls.Any(c => c.HasPoint(anchor)))
+            if (!area.HasPoint(anchor) || controls.Any(c => c.Grow(AnchorClearance).HasPoint(anchor)))
             {
                 continue;
             }

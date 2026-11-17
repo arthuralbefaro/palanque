@@ -12,7 +12,8 @@ namespace Planalto.UI.Screens;
 /// </summary>
 public partial class HubScreen
 {
-    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId, FeedItem? Item = null);
+    /// <param name="Who">De quem o cartão fala (você, um candidato ou outra pessoa): o retrato dele vai ao lado (RL).</param>
+    private sealed record FeedEntry(DateOnly Date, int Order, string Source, string? Title, string Text, string? ZoneId, FeedItem? Item = null, string? Who = null);
 
     /// <summary>
     /// Resultado explicado de um compromisso (princípio f): o que mudou, onde, para quem e por quê.
@@ -84,7 +85,7 @@ public partial class HubScreen
         foreach (CommitmentResult r in Agenda.Log)
         {
             Commitment c = r.Commitment;
-            items.Add(new FeedEntry(c.Date, order++, Tr("Sua agenda"), $"{CommitmentTitle(c)} ({DayShort(c.Date)}, {TurnoName(c.Turno)})", ResultText(r), c.ZoneId));
+            items.Add(new FeedEntry(c.Date, order++, Tr("Sua agenda"), $"{CommitmentTitle(c)} ({DayShort(c.Date)}, {TurnoName(c.Turno)})", ResultText(r), c.ZoneId, Who: RaceSetup.PlayerId));
         }
 
         // Rivais vistos na mesma zona na mesma semana viram um cartão só (ART_GUIDE, densidade das notícias).
@@ -102,7 +103,7 @@ public partial class HubScreen
                 ? string.Format(Tr("{0} fez campanha em {1}."), CandidateLabel(rivals[0]), zone)
                 : string.Format(Tr("Fizeram campanha em {0}: {1}{2}."), zone, string.Join("; ", rivals.Take(3).Select(CandidateLabel)),
                     rivals.Count > 3 ? " " + string.Format(Tr("e mais {0}"), rivals.Count - 3) : "");
-            items.Add(new FeedEntry(group.Max(f => f.Date), order++, Tr("Na rua"), null, text, group.Key.ZoneId));
+            items.Add(new FeedEntry(group.Max(f => f.Date), order++, Tr("Na rua"), null, text, group.Key.ZoneId, Who: rivals[0].Id));
         }
 
         foreach (FeedItem f in Agenda.Feed.Where(f => f.Kind is not ("compromisso" or "rival_zona")))
@@ -130,7 +131,7 @@ public partial class HubScreen
                 "posicao" or "promessa" => Tr("Sua plataforma"),
                 _ => Tr("Nos bastidores"),
             };
-            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId, f));
+            items.Add(new FeedEntry(f.Date, order++, source, null, text.EndsWith('.') ? text : text + ".", f.ZoneId, f, f.PersonId ?? f.CandidateId));
         }
 
         foreach (var h in Campaign.Events.History)
@@ -141,7 +142,7 @@ public partial class HubScreen
         foreach (PollRecord poll in Campaign.Polls.Where(p => !p.Internal))
         {
             var lead = poll.Candidates.MaxBy(c => c.Value);
-            items.Add(new FeedEntry(poll.Week, order++, _game.Electorate.Pollsters.Get(poll.PollsterId).Name, null, string.Format(PtBr, Tr("{0} lidera com {1:0.0}%."), Campaign.Find(lead.Key)?.Name, lead.Value), null));
+            items.Add(new FeedEntry(poll.Week, order++, _game.Electorate.Pollsters.Get(poll.PollsterId).Name, null, string.Format(PtBr, Tr("{0} lidera com {1:0.0}%."), Campaign.Find(lead.Key)?.Name, lead.Value), null, Who: lead.Key));
         }
 
         return items.OrderByDescending(i => i.Date).ThenByDescending(i => i.Order);
@@ -196,7 +197,13 @@ public partial class HubScreen
         }
 
         card.Name = "Feed_" + entry.Order;
-        var col = Ui.Column(card, 4);
+        // Retrato de quem o cartão fala, pelo cache (RL); sem pessoa, o texto ocupa a largura toda.
+        HBoxContainer line = Ui.Row(card, 10);
+        line.MouseFilter = MouseFilterEnum.Pass;
+        CachedPortrait(line, entry.Who, 48);
+        var col = Ui.Column(line, 4);
+        col.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        col.MouseFilter = MouseFilterEnum.Pass;
         Glossary.Rich(col, $"{entry.Source} · {entry.Date.ToString("dd/MM", PtBr)}", 18, Palette.Texto3);
         if (entry.Title is not null)
         {
@@ -242,10 +249,10 @@ public partial class HubScreen
 
         Ui.Clear(_poll);
         PollRecord? poll = Campaign.Polls.LastOrDefault();
-        Heading(_poll, poll is null ? Tr("Intenção de voto") : string.Format(PtBr, Tr("Intenção ({0}, {1:dd/MM})"), _game.Electorate.Pollsters.Get(poll.PollsterId).Name, poll.Week));
+        Heading(_poll, poll is null ? Tr("Intenção (estimativa da equipe)") : string.Format(PtBr, Tr("Intenção ({0}, {1:dd/MM})"), _game.Electorate.Pollsters.Get(poll.PollsterId).Name, poll.Week));
         if (poll is null)
         {
-            Glossary.Rich(_poll, Tr("Nenhuma pesquisa ainda. Encomende uma em Finanças; os institutos publicam sozinhos durante a campanha."));
+            TeamEstimateRows();
             return;
         }
 
@@ -267,5 +274,39 @@ public partial class HubScreen
         }
 
         Glossary.Rich(_poll, string.Format(PtBr, Tr("margem de erro de {0:0.0} pontos"), poll.MarginOfError), 18, Palette.Texto3);
+    }
+
+    /// <summary>
+    /// Sem pesquisa: a estimativa da equipe (Core), marcada como estimativa, com a faixa de cada candidato em vez de
+    /// um número só; as mesmas cinco linhas em volta do jogador que a pesquisa mostra.
+    /// </summary>
+    private void TeamEstimateRows()
+    {
+        IntentionEstimate estimate = _engine.TeamEstimate();
+        string tip = Palette.Tip(
+            Tr("Estimativa da sua equipe, não é pesquisa: ninguém foi entrevistado."),
+            string.Format(PtBr, Tr("cada faixa é onde a equipe acha que o candidato está hoje, em % de quem iria votar, com {0:0}% de indecisos; a primeira pesquisa publicada ou encomendada substitui a estimativa."), estimate.Undecided),
+            Tr("nada; uma pesquisa em Finanças custa dinheiro e dá um número com margem de erro."));
+
+        int me = estimate.Lines.ToList().FindIndex(l => l.CandidateId == RaceSetup.PlayerId);
+        foreach (EstimateLine line in estimate.Lines.Skip(Math.Max(0, me - 2)).Take(5))
+        {
+            Candidate? c = Campaign.Find(line.CandidateId);
+            HBoxContainer row = Ui.Row(_poll, 8);
+            Label name = Ui.Value(row, $"{(c?.IsPlayer == true ? Tr("Você") : c?.Name)} ({PartySigla(c?.PartyId ?? "")})", 18);
+            name.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            name.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+            name.TooltipText = c is null ? "" : CandidateLabel(c);
+            name.MouseFilter = MouseFilterEnum.Stop;
+            name.AddThemeColorOverride("font_color", Palette.Texto2);
+            name.AddThemeFontOverride("font", Palette.Weight(Palette.Inter, c?.IsPlayer == true ? 600 : 400));
+            Label range = Ui.Value(row, string.Format(PtBr, Tr("{0:0.0} a {1:0.0}%"), line.Low, line.High), 18);
+            range.Name = "Estimativa_" + line.CandidateId;
+            range.AddThemeColorOverride("font_color", Palette.Texto2);
+            range.MouseFilter = MouseFilterEnum.Stop;
+            range.TooltipText = tip;
+        }
+
+        Glossary.Rich(_poll, Tr("Sem entrevista; uma pesquisa em Finanças dá o número com margem de erro."), 18, Palette.Texto3).Name = "EstimativaEquipe";
     }
 }
