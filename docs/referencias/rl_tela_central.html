@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Palanque — referência RL: tela central (composição e conteúdo)</title>
+<!--
+  REFERÊNCIA DE COMPOSIÇÃO E CONTEÚDO PARA A PARTE RL (leitura do jogo).
+  Não é estilo final (fontes, paleta e acabamento são da RV) e o código não entra no jogo.
+  Nomes de pessoas, zonas e números são ilustrativos.
+  Mostra: relógio andando + linha do dia, painel Você, painel de zonas sincronizado com o mapa,
+  mapa vivo (presença, hachura de disputa, rival, liderança, pulso, deslocamento, números flutuantes),
+  ficha da zona com previsão e "Fazer agora", feed com fatores, objetivos, gráfico de intenção.
+-->
+<style>
+:root{
+  --bg:#0e141b; --panel:#16202b; --panel2:#1c2836; --line:#2a3a4c; --text:#e8eef5; --muted:#93a4b8;
+  --me:#3b82f6; --rivalA:#e0613f; --rivalB:#d9a33a; --rivalC:#8b6fd6; --rivalD:#4fb3a6;
+  --good:#3fbf7f; --warn:#f2b84b; --bad:#e5534b; --accent:#ffd166;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#05080c;overflow:hidden;font-family:system-ui,Segoe UI,Roboto,sans-serif;color:var(--text)}
+#stage{width:1920px;height:1080px;transform-origin:0 0;position:absolute;background:var(--bg);display:grid;
+  grid-template-rows:116px 1fr;grid-template-columns:400px 1fr 380px;gap:0}
+/* ---------- barra superior ---------- */
+#top{grid-column:1/4;display:grid;grid-template-columns:400px 1fr 380px;border-bottom:1px solid var(--line);background:#111a24}
+.tb-left{padding:14px 20px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.date{font-size:20px;color:var(--muted)}
+.clock{font-size:44px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
+.tb-mid{padding:14px 24px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.speed{display:flex;gap:8px;align-items:center}
+.speed button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;font-size:18px;padding:6px 14px;cursor:pointer}
+.speed button.on{background:var(--me);border-color:var(--me)}
+.phase{margin-left:16px;font-size:18px;color:var(--muted)}
+.phase b{color:var(--text)}
+#day{position:relative;height:44px;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.turn{position:absolute;top:0;bottom:0;border-right:1px solid var(--line);display:flex;align-items:center;padding-left:10px;font-size:16px;color:var(--muted)}
+.turn .lbl{position:absolute;top:2px;left:8px;font-size:12px;letter-spacing:.5px;text-transform:uppercase;opacity:.7}
+.turn .act{margin-top:14px;font-size:16px}
+.turn.busy{background:rgba(59,130,246,.22);color:var(--text)}
+.turn.free .act{color:var(--good)}
+#needle{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.hours{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:0 2px}
+.tb-right{padding:14px 20px;display:flex;align-items:center;justify-content:flex-end;gap:10px;font-size:16px;color:var(--muted)}
+#banner{position:absolute;left:50%;top:130px;transform:translateX(-50%);background:var(--accent);color:#111;font-weight:700;
+  padding:10px 22px;border-radius:8px;font-size:20px;opacity:0;transition:opacity .4s;pointer-events:none;z-index:20}
+/* ---------- colunas ---------- */
+.col{padding:16px;overflow:hidden;display:flex;flex-direction:column;gap:14px}
+#left{border-right:1px solid var(--line)}
+#right{border-left:1px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{margin:0 0 10px;font-size:15px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:18px;margin:8px 0}
+.dots span{display:inline-block;width:16px;height:16px;border-radius:50%;margin-left:5px;background:var(--good)}
+.dots span.used{background:var(--line)}
+.bar{position:relative;height:12px;background:var(--panel2);border-radius:6px;overflow:hidden;margin-top:6px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+.bar .limit{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--bad)}
+.hint{font-size:14px;color:var(--muted)}
+/* painel de zonas */
+#zonas{flex:1;display:flex;flex-direction:column;min-height:0}
+.sort{display:flex;gap:6px}
+.sort button{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:5px;font-size:13px;padding:3px 8px;cursor:pointer}
+.sort button.on{color:var(--text);border-color:var(--me)}
+#zlist{overflow:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px}
+.z{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.z.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.z .t{display:flex;justify-content:space-between;font-size:18px;font-weight:600}
+.z .m{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:4px}
+.z .lead{font-size:14px}
+.tag{font-size:12px;padding:1px 6px;border-radius:4px;background:#3a2a10;color:var(--warn);margin-left:6px}
+/* ---------- mapa ---------- */
+#center{position:relative;overflow:hidden;background:radial-gradient(ellipse at center,#14212e 0%,#0c131a 100%)}
+#map{width:100%;height:100%}
+.zone{stroke:#0c131a;stroke-width:3;cursor:pointer;transition:fill .6s}
+.zone:hover{stroke:#5b7896}
+.zone.sel{stroke:var(--accent);stroke-width:4}
+.zlabel{font-size:17px;fill:#fff;font-weight:600;pointer-events:none;paint-order:stroke;stroke:#0c131a;stroke-width:4px}
+.zsub{font-size:13px;fill:#cfe0f2;pointer-events:none;paint-order:stroke;stroke:#0c131a;stroke-width:3px}
+.float{font-size:22px;font-weight:800;fill:var(--good);paint-order:stroke;stroke:#0c131a;stroke-width:4px;pointer-events:none}
+.float.small{font-size:16px}
+@keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-50px);opacity:0}}
+.rise{animation:rise 1.8s ease-out forwards}
+@keyframes pulse{0%{r:8;opacity:.9}100%{r:42;opacity:0}}
+.pulse{fill:none;stroke:var(--warn);stroke-width:3;animation:pulse 1.4s ease-out infinite}
+#token{transition:transform 1.1s ease-in-out}
+.legend{position:absolute;left:16px;bottom:14px;background:rgba(17,26,36,.92);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;color:var(--muted);display:flex;gap:16px;align-items:center}
+.modes{position:absolute;right:16px;top:14px;display:flex;gap:6px}
+.modes button{background:rgba(22,32,43,.95);border:1px solid var(--line);color:var(--muted);font-size:15px;padding:6px 10px;border-radius:6px}
+.modes button.on{color:var(--text);border-color:var(--me)}
+/* ficha da zona (janela flutuante) */
+#ficha{position:absolute;left:16px;top:14px;width:430px;background:rgba(22,32,43,.97);border:1px solid var(--line);border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);display:none}
+#ficha .bar-title{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:20px;font-weight:700}
+#ficha .x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer}
+#ficha .body{padding:12px 14px;font-size:16px}
+.vs{display:grid;grid-template-columns:90px 1fr 44px;gap:6px;align-items:center;margin:4px 0;font-size:15px}
+.acts{display:flex;gap:6px;margin:10px 0 6px}
+.acts button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:7px 4px;font-size:15px;cursor:pointer}
+.acts button.on{border-color:var(--me);background:#1d3352}
+.forecast{background:#0f1a26;border:1px dashed #36506b;border-radius:6px;padding:8px 10px;font-size:15px;margin:6px 0 10px}
+.forecast b{color:var(--good)}
+.btns{display:flex;gap:8px}
+.primary{flex:2;background:var(--me);border:none;color:#fff;font-size:19px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer}
+.primary:disabled{background:#2b3a4b;color:var(--muted);cursor:not-allowed}
+.secondary{flex:1;background:transparent;border:1px solid var(--line);color:var(--muted);font-size:16px;padding:11px;border-radius:8px}
+#why{font-size:14px;color:var(--warn);margin-top:6px;min-height:18px}
+/* coluna direita */
+.news{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.news:last-child{border-bottom:none}
+.ph{flex:0 0 44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff}
+.news .src{font-size:13px;color:var(--muted)}
+.news .hl{font-size:16px;line-height:1.3}
+.news.new{animation:flash 1.5s ease-out}
+@keyframes flash{from{background:rgba(63,191,127,.25)}to{background:transparent}}
+#feed{max-height:330px;overflow:auto}
+.obj{margin:8px 0;font-size:16px}
+.obj .src{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- ===== barra superior ===== -->
+  <div id="top">
+    <div class="tb-left">
+      <div class="date" id="date">Terça, 14 de agosto de 2028</div>
+      <div class="clock" id="clock">06:00</div>
+    </div>
+    <div class="tb-mid">
+      <div class="speed">
+        <button id="bPause" title="Pausa (Espaço)">⏸</button>
+        <button data-s="1" class="on">1x</button><button data-s="2">2x</button><button data-s="4">4x</button>
+        <span class="phase">Campanha · <b>7 semanas</b> até a eleição · Mantena (MG)</span>
+      </div>
+      <div>
+        <div id="day"><div id="needle"></div></div>
+        <div class="hours"><span>6h</span><span>9h</span><span>12h</span><span>15h</span><span>18h</span><span>22h</span></div>
+      </div>
+    </div>
+    <div class="tb-right">F1 Enciclopédia · Opções</div>
+  </div>
+  <div id="banner">Fim do dia — começa quarta-feira</div>
+
+  <!-- ===== coluna esquerda ===== -->
+  <div class="col" id="left">
+    <div class="card" title="O que limita você agora">
+      <h3>Você <span class="hint">o que limita suas ações</span></h3>
+      <div class="row"><span>Turnos livres hoje</span><span class="dots" id="dots"></span></div>
+      <div class="row"><span>Turnos livres na semana</span><b id="weekFree">11 de 21</b></div>
+      <div class="row" style="display:block">
+        <div style="display:flex;justify-content:space-between"><span>Estresse</span><b id="stressV">34</b></div>
+        <div class="bar"><i id="stressB" style="width:34%;background:var(--warn)"></i><span class="limit" style="left:70%" title="Acima de 70, os testes de atributo ficam mais difíceis"></span></div>
+        <div class="hint">3º turno no mesmo dia: +3 · acima de 70, discursos e entrevistas falham mais</div>
+      </div>
+      <div class="row"><span>Dinheiro</span><b id="money">R$ 4.820</b></div>
+      <div class="row"><span>Limite de gastos usado</span><b>38%</b></div>
+    </div>
+
+    <div class="card" id="zonas">
+      <h3>Zonas <span class="sort"><button data-k="pres" class="on">Presença</button><button data-k="pop">Eleitores</button><button data-k="dias">Sem visita</button></span></h3>
+      <div id="zlist"></div>
+    </div>
+  </div>
+
+  <!-- ===== mapa ===== -->
+  <div id="center">
+    <svg id="map" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="10" height="10" fill="transparent"/><line x1="0" y1="0" x2="0" y2="10" stroke="#e0613f" stroke-width="3" opacity=".7"/>
+        </pattern>
+      </defs>
+      <g id="zones"></g>
+      <g id="hatches"></g>
+      <g id="labels"></g>
+      <!-- marcadores -->
+      <g id="markers">
+        <!-- rival em campo hoje -->
+        <g transform="translate(450,232)" title="Daniel A. (rival) — caminhada hoje na Vila Nova">
+          <circle r="16" fill="var(--rivalA)" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">DA</text>
+        </g>
+        <!-- liderança -->
+        <g transform="translate(250,95)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)" fill="var(--me)" stroke="#fff" stroke-width="2"/></g>
+        <text x="268" y="100" class="zsub">Seu Anselmo · aliado</text>
+        <g transform="translate(470,300)"><rect x="-10" y="-10" width="20" height="20" transform="rotate(45)" fill="var(--rivalA)" stroke="#fff" stroke-width="2"/></g>
+        <!-- compromisso marcado (noite) -->
+        <g transform="translate(395,212)"><path d="M0,-22 a10,10 0 1,1 0.1,0 Z M0,-12 L0,0" stroke="#fff" stroke-width="2" fill="var(--accent)"/></g>
+        <!-- acontecimento -->
+        <circle class="pulse" cx="640" cy="330"/>
+        <circle cx="640" cy="330" r="7" fill="var(--warn)"/>
+      </g>
+      <g id="floats"></g>
+      <g id="token" transform="translate(390,350)">
+        <circle r="15" fill="#fff"/><circle r="12" fill="var(--me)"/><text y="5" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">VC</text>
+      </g>
+    </svg>
+
+    <div class="modes">
+      <button class="on">Minha força</button><button>Partido líder</button><button>Perfil</button><button>Rival</button>
+    </div>
+
+    <div id="ficha">
+      <div class="bar-title"><span id="fNome">Zona</span><button class="x" id="fClose" title="Fechar (Esc)">×</button></div>
+      <div class="body">
+        <div class="hint" id="fPerfil"></div>
+        <div style="margin-top:8px" id="fVs"></div>
+        <div style="margin-top:8px"><b>Demanda:</b> <span id="fDem"></span></div>
+        <div><b>Lideranças:</b> <span id="fLid"></span></div>
+        <div class="acts" id="acts">
+          <button data-a="Caminhada" class="on">Caminhada</button><button data-a="Reunião">Reunião</button><button data-a="Visita">Visita a liderança</button>
+        </div>
+        <div class="forecast" id="fFore"></div>
+        <div class="btns">
+          <button class="primary" id="doNow">Fazer agora</button>
+          <button class="secondary" title="Escolher outro dia e turno">Agendar…</button>
+        </div>
+        <div id="why"></div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><svg width="40" height="12"><defs><linearGradient id="lg"><stop offset="0" stop-color="#3b82f6" stop-opacity=".15"/><stop offset="1" stop-color="#3b82f6" stop-opacity=".95"/></linearGradient></defs><rect width="40" height="12" fill="url(#lg)"/></svg> sua presença</span>
+      <span><svg width="16" height="16"><rect width="16" height="16" fill="url(#hatch)" stroke="#555"/></svg> zona em disputa</span>
+      <span>● rival em campo</span><span>◆ liderança</span><span style="color:var(--warn)">◉ acontecimento</span>
+    </div>
+  </div>
+
+  <!-- ===== coluna direita ===== -->
+  <div class="col" id="right">
+    <div class="card">
+      <h3>Notícias e resultados</h3>
+      <div id="feed">
+        <div class="news"><div class="ph" style="background:var(--rivalA)">DA</div><div><div class="src">Rádio Vale (rádio local, linha governista) · 2 h</div><div class="hl">Daniel A. visita o culto de domingo na Vila Nova</div></div></div>
+        <div class="news"><div class="ph" style="background:#6b7a8c">◉</div><div><div class="src">Portal Mantena (notícias) · 5 h</div><div class="hl">Posto do Distrito Boa Vista fecha aos sábados por falta de médico</div></div></div>
+        <div class="news"><div class="ph" style="background:var(--me)">VC</div><div><div class="src">Seu resultado · ter, manhã</div><div class="hl">Caminhada no Centro: +1,2 presença (cansaço −55%)</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Objetivos</h3>
+      <div class="obj">Liderar a Vila Nova até a pesquisa de setembro<div class="src">origem: zona em disputa · prazo 6 sem.</div><div class="bar"><i id="o1" style="width:20%;background:var(--me)"></i></div></div>
+      <div class="obj">Trazer Pastor Elias para o seu lado<div class="src">origem: liderança da Vila Nova · relação −4</div><div class="bar"><i style="width:35%;background:var(--me)"></i></div></div>
+      <div class="obj">Passar Daniel A. na intenção<div class="src">origem: pesquisa de segunda</div><div class="bar"><i style="width:60%;background:var(--me)"></i></div></div>
+    </div>
+    <div class="card">
+      <h3>Intenção de voto <span class="hint">Prisma (instituto) · ±4</span></h3>
+      <svg id="chart" viewBox="0 0 340 190" width="100%"></svg>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- escala para caber na janela ----------
+const stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`scale(${s})`;
+  stage.style.left=((innerWidth-1920*s)/2)+'px';stage.style.top=((innerHeight-1080*s)/2)+'px';}
+addEventListener('resize',fit);fit();
+
+// ---------- dados ilustrativos ----------
+const P={ // pontos dos polígonos
+  rn:"40,40 760,40 760,200 520,230 300,210 40,240",
+  ro:"40,240 300,210 330,300 260,560 40,560",
+  vn:"300,210 520,230 470,350 430,280 330,300",
+  ce:"330,300 430,280 470,350 420,420 340,410",
+  bv:"520,230 760,200 760,560 500,560 470,430 470,350",
+  es:"340,410 420,420 470,350 470,430 500,560 260,560 330,300"
+};
+const C={rn:[400,125],ro:[150,410],vn:[420,250],ce:[395,355],bv:[630,400],es:[390,500]};
+const ADJ={rn:['ro','vn','bv'],ro:['rn','vn','es'],vn:['rn','ro','ce','bv'],ce:['vn','es','bv'],bv:['rn','vn','ce','es'],es:['ro','ce','bv']};
+const Z=[
+ {id:'rn',nome:'Rural Norte',pop:2900,pres:34,lider:'Você',dias:2,cans:1,lid:'Seu Anselmo (aliado)',dem:'Estrada vicinal sem cascalho (12 km)',perfil:'Rural · 2.900 eleitores · renda mediana R$ 1.320',disp:false},
+ {id:'vn',nome:'Vila Nova',pop:3400,pres:8,lider:'Daniel A.',dias:21,cans:0,lid:'Pastor Elias (com Daniel A.)',dem:'38% dos domicílios sem rede de esgoto',perfil:'Urbana · 3.400 eleitores · renda mediana R$ 1.412',disp:true},
+ {id:'ce',nome:'Centro',pop:4100,pres:27,lider:'Bruna C.',dias:0,cans:3,lid:'Dona Cida (neutra)',dem:'Comércio pede estacionamento',perfil:'Urbana · 4.100 eleitores · renda mediana R$ 1.890',disp:false},
+ {id:'bv',nome:'Distrito Boa Vista',pop:1800,pres:12,lider:'Daniel A.',dias:35,cans:0,lid:'? (ainda não descoberta)',dem:'Posto de saúde fechado aos sábados',perfil:'Distrito · 1.800 eleitores · renda mediana R$ 1.180',disp:false},
+ {id:'es',nome:'Esperança',pop:2600,pres:19,lider:'Você',dias:7,cans:2,lid:'Marta (associação, aliada)',dem:'41% das ruas sem pavimento',perfil:'Urbana · 2.600 eleitores · renda mediana R$ 1.250',disp:false},
+ {id:'ro',nome:'Rural Oeste',pop:1500,pres:4,lider:'Bruna C.',dias:99,cans:0,lid:'? (ainda não descoberta)',dem:'Seca: 3 córregos sem água',perfil:'Rural · 1.500 eleitores · renda mediana R$ 1.090',disp:false}
+];
+const leaderPres={rn:22,vn:31,ce:33,bv:24,es:15,ro:18};
+const BASE={Caminhada:[1.6,2.6],'Reunião':[1.0,1.8],Visita:[0.6,1.2]};
+let sel=null, act='Caminhada';
+
+// ---------- tempo ----------
+let min=6*60, speed=1, paused=false, day=0;
+const DAYS=['Terça, 14','Quarta, 15','Quinta, 16','Sexta, 17','Sábado, 18','Domingo, 19','Segunda, 20'];
+let turnos={m:{busy:true,txt:'Caminhada · Centro'},t:{busy:false,txt:'livre'},n:{busy:true,txt:'Reunião · Vila Nova'}};
+let weekFree=11;
+const TR=[['m',6,12,'Manhã'],['t',12,18,'Tarde'],['n',18,22,'Noite']];
+function renderDay(){
+  const d=document.getElementById('day');d.querySelectorAll('.turn').forEach(e=>e.remove());
+  TR.forEach(([k,a,b,l])=>{const e=document.createElement('div');e.className='turn '+(turnos[k].busy?'busy':'free');
+    e.style.left=((a-6)/16*100)+'%';e.style.width=((b-a)/16*100)+'%';
+    e.innerHTML=`<span class="lbl">${l}</span><span class="act">${turnos[k].txt}</span>`;d.insertBefore(e,d.firstChild);});
+  const dots=document.getElementById('dots');dots.innerHTML='';
+  TR.forEach(([k])=>{const s=document.createElement('span');if(turnos[k].busy)s.className='used';dots.appendChild(s);});
+  document.getElementById('weekFree').textContent=weekFree+' de 21';
+}
+function tick(){
+  if(!paused){min+=speed*0.5;
+    if(min>=22*60){min=6*60;day=(day+1)%7;turnos={m:{busy:false,txt:'livre'},t:{busy:false,txt:'livre'},n:{busy:false,txt:'livre'}};
+      const b=document.getElementById('banner');b.textContent='Fim do dia — começa '+DAYS[day].split(',')[0].toLowerCase();b.style.opacity=1;setTimeout(()=>b.style.opacity=0,1800);
+      document.getElementById('date').textContent=DAYS[day]+' de agosto de 2028';renderDay();updateFicha();}}
+  const h=Math.floor(min/60),m=Math.floor(min%60);
+  document.getElementById('clock').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+  document.getElementById('needle').style.left=((min-360)/960*100)+'%';
+}
+setInterval(tick,50);
+document.querySelectorAll('.speed button[data-s]').forEach(b=>b.onclick=()=>{speed=+b.dataset.s;paused=false;
+  document.querySelectorAll('.speed button').forEach(x=>x.classList.remove('on'));b.classList.add('on');});
+document.getElementById('bPause').onclick=()=>{paused=!paused;document.getElementById('bPause').classList.toggle('on',paused);};
+
+// ---------- mapa ----------
+const NS='http://www.w3.org/2000/svg';
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function renderMap(){
+  const g=document.getElementById('zones'),h=document.getElementById('hatches'),L=document.getElementById('labels');g.innerHTML=h.innerHTML=L.innerHTML='';
+  Z.forEach(z=>{
+    const p=el('polygon',{points:P[z.id],class:'zone'+(sel===z.id?' sel':''),fill:`rgba(59,130,246,${(.12+Math.min(z.pres,60)/60*.8).toFixed(2)})`});
+    p.onclick=()=>select(z.id);g.appendChild(p);
+    if(z.disp)h.appendChild(el('polygon',{points:P[z.id],fill:'url(#hatch)','pointer-events':'none'}));
+    const [x,y]=C[z.id];
+    const t=el('text',{x,y,'text-anchor':'middle',class:'zlabel'});t.textContent=z.nome;L.appendChild(t);
+    const s=el('text',{x,y:y+19,'text-anchor':'middle',class:'zsub'});s.textContent=`você ${z.pres.toFixed(0)} · líder: ${z.lider}`;L.appendChild(s);
+  });
+}
+function floatText(id,txt,small,delay){
+  setTimeout(()=>{const [x,y]=C[id];const t=el('text',{x,y:y-28,'text-anchor':'middle',class:'float rise'+(small?' small':'')});
+    t.textContent=txt;document.getElementById('floats').appendChild(t);setTimeout(()=>t.remove(),1900);},delay||0);
+}
+
+// ---------- painel de zonas ----------
+let sortK='pres';
+function renderList(){
+  const L=document.getElementById('zlist');L.innerHTML='';
+  const arr=[...Z].sort((a,b)=>sortK==='pres'?b.pres-a.pres:sortK==='pop'?b.pop-a.pop:b.dias-a.dias);
+  arr.forEach(z=>{const d=document.createElement('div');d.className='z'+(sel===z.id?' sel':'');
+    const dias=z.dias===0?'hoje':z.dias>=99?'nunca visitada':`há ${z.dias} dia${z.dias>1?'s':''}`;
+    const lc=z.lider==='Você'?'var(--good)':'var(--rivalA)';
+    d.innerHTML=`<div class="t"><span>${z.nome}${z.disp?'<span class="tag">em disputa</span>':''}</span><span>${z.pres.toFixed(1)}</span></div>
+      <div class="bar"><i style="width:${Math.min(z.pres,60)/60*100}%;background:var(--me)"></i></div>
+      <div class="m"><span class="lead">líder: <b style="color:${lc}">${z.lider}</b></span><span>${z.pop.toLocaleString('pt-BR')} eleitores</span></div>
+      <div class="m"><span>visita: ${dias}</span><span>cansaço: ${['nenhum','baixo','médio','alto'][z.cans]}</span></div>`;
+    d.onclick=()=>select(z.id);L.appendChild(d);});
+}
+document.querySelectorAll('.sort button').forEach(b=>b.onclick=()=>{sortK=b.dataset.k;
+  document.querySelectorAll('.sort button').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderList();});
+
+// ---------- ficha da zona ----------
+function select(id){sel=id;document.getElementById('ficha').style.display='block';renderMap();renderList();updateFicha();}
+function freeTurn(){const cur=min<12*60?'m':min<18*60?'t':'n';const order=['m','t','n'];
+  for(let i=order.indexOf(cur);i<3;i++)if(!turnos[order[i]].busy)return order[i];return null;}
+function factor(z){return 1/(1+0.6*z.cans);}
+function updateFicha(){
+  if(!sel)return;const z=Z.find(x=>x.id===sel);
+  document.getElementById('fNome').textContent=z.nome;
+  document.getElementById('fPerfil').textContent=z.perfil;
+  document.getElementById('fDem').textContent=z.dem;
+  document.getElementById('fLid').textContent=z.lid;
+  document.getElementById('fVs').innerHTML=
+    `<div class="vs"><span>Você</span><div class="bar"><i style="width:${z.pres/60*100}%;background:var(--me)"></i></div><b>${z.pres.toFixed(1)}</b></div>
+     <div class="vs"><span>${z.lider==='Você'?'2º':z.lider}</span><div class="bar"><i style="width:${leaderPres[z.id]/60*100}%;background:var(--rivalA)"></i></div><b>${leaderPres[z.id]}</b></div>`;
+  const [a,b]=BASE[act],f=factor(z);
+  const ft=freeTurn();const tName={m:'manhã',t:'tarde',n:'noite'};
+  document.getElementById('fFore').innerHTML=`${act} na ${z.nome}: <b>+${(a*f).toFixed(1)} a +${(b*f).toFixed(1)}</b> de presença; +15% disso nas vizinhas.<br>
+    <span class="hint">Fatores: cansaço ${Math.round(f*100)}%${z.cans?' (você já fez isso aqui recentemente)':''} · ${z.disp?'zona disputada com Daniel A.':'sem rival forte hoje'}${ft?' · turno: '+tName[ft]:''}</span>`;
+  const btn=document.getElementById('doNow'),why=document.getElementById('why');
+  if(!ft){btn.disabled=true;why.textContent='Sem turno livre hoje. Próximo: amanhã de manhã (ou use "Agendar…").';}
+  else{btn.disabled=false;why.textContent=ft!==(min<12*60?'m':min<18*60?'t':'n')?'O turno atual está ocupado: a ação será feita na '+tName[ft]+'.':'';}
+}
+document.querySelectorAll('#acts button').forEach(b=>b.onclick=()=>{act=b.dataset.a;
+  document.querySelectorAll('#acts button').forEach(x=>x.classList.remove('on'));b.classList.add('on');updateFicha();});
+function closeFicha(){document.getElementById('ficha').style.display='none';sel=null;renderMap();renderList();}
+document.getElementById('fClose').onclick=closeFicha;
+addEventListener('keydown',e=>{if(e.key==='Escape')closeFicha();if(e.key===' '){e.preventDefault();document.getElementById('bPause').click();}});
+
+// ---------- Fazer agora ----------
+document.getElementById('doNow').onclick=()=>{
+  const z=Z.find(x=>x.id===sel);const ft=freeTurn();if(!ft)return;
+  const start={m:6,t:12,n:18}[ft]*60;if(min<start)min=start;
+  turnos[ft]={busy:true,txt:act+' · '+z.nome};weekFree--;renderDay();
+  const [x,y]=C[z.id];document.getElementById('token').setAttribute('transform',`translate(${x},${y+30})`);
+  const [a,b]=BASE[act],f=factor(z);const gain=(a+Math.random()*(b-a))*f;
+  setTimeout(()=>{
+    z.pres+=gain;z.cans=Math.min(3,z.cans+1);z.dias=0;
+    floatText(z.id,'+'+gain.toFixed(1).replace('.',',')+' presença');
+    const spill=[];ADJ[z.id].forEach((n,i)=>{const zz=Z.find(q=>q.id===n);const s=gain*.15;zz.pres+=s;spill.push(zz.nome);floatText(n,'+'+s.toFixed(1).replace('.',','),true,250+i*120);});
+    if(z.pres>leaderPres[z.id]&&z.lider!=='Você'){z.lider='Você';z.disp=false;}
+    const st=document.getElementById('stressV');const sv=+st.textContent+(Object.values(turnos).filter(t=>t.busy).length===3?3:1);
+    st.textContent=sv;document.getElementById('stressB').style.width=sv+'%';
+    const tName={m:'manhã',t:'tarde',n:'noite'}[ft];
+    const n=document.createElement('div');n.className='news new';
+    n.innerHTML=`<div class="ph" style="background:var(--me)">VC</div><div><div class="src">Seu resultado · ${DAYS[day].split(',')[0].toLowerCase()}, ${tName}</div>
+      <div class="hl">${act} na ${z.nome}: +${gain.toFixed(1).replace('.',',')} presença; +${(gain*.15).toFixed(1).replace('.',',')} em ${spill.join(', ')}. Fatores: cansaço ${Math.round(f*100)}%${z.disp?', disputa com Daniel A.':''}.</div></div>`;
+    document.getElementById('feed').prepend(n);
+    if(z.id==='vn')document.getElementById('o1').style.width=Math.min(100,z.pres/leaderPres.vn*100)+'%';
+    renderMap();renderList();updateFicha();
+  },1150);
+};
+
+// ---------- gráfico de intenção ----------
+(function(){
+  const S=[['Bruna C.','var(--rivalB)',[18,17,17,16,15,15,14,14]],['Daniel A.','var(--rivalA)',[12,13,13,14,15,15,16,16]],
+           ['Você','var(--me)',[3,4,6,7,9,11,12,13]],['Ivan R.','var(--rivalC)',[9,9,10,10,10,11,11,12]],['Lia P.','var(--rivalD)',[6,6,7,7,8,8,9,9]]];
+  const g=document.getElementById('chart');const X=i=>20+i*40,Y=v=>170-v*7.5;
+  for(let v=0;v<=20;v+=5){g.appendChild(el('line',{x1:20,x2:300,y1:Y(v),y2:Y(v),stroke:'#2a3a4c'}));
+    const t=el('text',{x:2,y:Y(v)+4,'font-size':10,fill:'#93a4b8'});t.textContent=v;g.appendChild(t);}
+  S.forEach(([n,c,d])=>{g.appendChild(el('polyline',{points:d.map((v,i)=>X(i)+','+Y(v)).join(' '),fill:'none',stroke:c,'stroke-width':n==='Você'?4:2}));
+    const t=el('text',{x:X(7)+6,y:Y(d[7])+4,'font-size':n==='Você'?13:11,fill:c,'font-weight':n==='Você'?700:400});t.textContent=n+' '+d[7]+'%';g.appendChild(t);});
+  const t=el('text',{x:20,y:186,'font-size':10,fill:'#93a4b8'});t.textContent='semanas de campanha →';g.appendChild(t);
+})();
+
+renderDay();renderMap();renderList();select('vn');
+</script>
+</body>
+</html>
