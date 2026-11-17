@@ -358,6 +358,7 @@ Cada uma era a leitura mais conservadora; o arquivo diz como reverter.
 - **Zona Noroeste de Mantena:** o ponto do nome fica na vila de Limeira de Mantena, a 22 km; no enquadramento da sede, a parte urbana aparece sem nome (o nome está no tooltip).
 - **Estimativa da equipe baixa no começo:** com 23% de reconhecimento na semana 10, a estimativa do jogador ainda é "0,0 a 1,2%", porque a projeção de votos do vereador continua baixa nessa altura. Não é defeito da estimativa; é o que a projeção dá.
 - **Com a ficha aberta, a lista de zonas fica coberta** até Voltar ou Esc.
+- **Saves de antes da correção dos contornos (a confirmar pelo autor):** a versão da divisão em zonas não subiu (os ids são os mesmos), então o save antigo abre sem aviso, com os contornos novos e, na campanha em andamento, o eleitorado antigo (guardado no save). Alternativas: subir `ZonasPaths.Versao` para 3, o que recusa os saves antigos com a mensagem que já existe (`SaveZoneCheck`), ou aceitar com um aviso. Escolha provisória: aceitar sem aviso, porque nada no save aponta para zona inexistente. Reverter: `ZonasPaths.Versao` = 3 em `core/Planalto.Core/Territory/Zonas.cs` e o modo `zonas` de novo (o arquivo grava a versão).
 
 ## Nomes de bairro do OpenStreetMap (D-058, 17/11)
 
