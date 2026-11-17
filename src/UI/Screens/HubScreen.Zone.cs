@@ -394,7 +394,7 @@ public partial class HubScreen
 
     private static readonly (string Id, string Name, string Tip)[] MapModes =
     [
-        ("forca", "Minha força", "Sua presença em cada zona, em 5 faixas da própria cidade: quanto mais clara, mais você é conhecido ali."),
+        ("forca", "Minha força", "Sua presença em cada zona, na escala de 0 a 100 da legenda: quanto mais clara, mais você é conhecido ali."),
         ("lider", "Partido líder", "Cor do partido com mais voto na zona hoje, pela projeção de voto zona a zona; mais forte quanto maior a vantagem."),
         ("renda", "Renda", "Rendimento médio do responsável pelo domicílio (Censo 2022), em 5 faixas da própria cidade."),
         ("idade", "Idosos", "Parte dos eleitores com 60 anos ou mais (Censo 2022), em 5 faixas da própria cidade."),
@@ -434,8 +434,7 @@ public partial class HubScreen
         switch (_mapMode)
         {
             case "forca":
-                LegendTitle(Tr("Sua presença (0 a 100)"));
-                Bands(_zonas.Zonas.Select(z => (z.Id, (double?)Territory.PresenceOf(RaceSetup.PlayerId, Territory.IndexOf(z.Id)))), Palette.Forca, v => v.ToString("0.0", PtBr), colors);
+                PresenceLegend(_zonas.Zonas.Select(z => (z.Id, Territory.PresenceOf(RaceSetup.PlayerId, Territory.IndexOf(z.Id)))), colors);
                 break;
             case "lider":
                 LegendTitle(Tr("Partido com mais voto"));
@@ -523,6 +522,57 @@ public partial class HubScreen
                 string low = format(range.Min), high = format(range.Max);
                 LegendRow(scale(band / 4.0), low == high ? low : $"{low} {Tr("a")} {high}");
             }
+        }
+    }
+
+    /// <summary>Marcas da escala de presença na legenda.</summary>
+    private static readonly int[] PresenceTicks = [0, 10, 25, 50, 100];
+
+    private const float PresenceBarWidth = 240;
+
+    /// <summary>
+    /// Posição de uma presença (0 a 100) na escala de Minha força: raiz quadrada, para as presenças baixas do começo
+    /// da campanha não saírem todas da mesma cor. A legenda põe as marcas no mesmo lugar.
+    /// </summary>
+    private static double PresenceScale(double presence) => Math.Sqrt(Math.Clamp(presence, 0, 100) / 100);
+
+    /// <summary>
+    /// Modo Minha força (e a presença fora da campanha): cor de cada zona pela presença na escala de 0 a 100, e a
+    /// legenda é a barra do gradiente com as marcas, sem os valores soltos de cada faixa.
+    /// </summary>
+    private void PresenceLegend(IEnumerable<(string Id, double Presence)> values, Dictionary<string, Color> colors)
+    {
+        foreach (var (id, presence) in values)
+        {
+            colors[id] = Palette.Forca(PresenceScale(presence));
+        }
+
+        LegendTitle(Tr("Sua presença"));
+        var gradient = new Gradient();
+        gradient.SetColor(0, Palette.Forca(0));
+        gradient.SetColor(1, Palette.Forca(1));
+        var bar = _legend.Add(new Panel { Name = "EscalaPresenca", CustomMinimumSize = new Vector2(PresenceBarWidth, 14), SizeFlagsHorizontal = SizeFlags.ShrinkBegin, MouseFilter = MouseFilterEnum.Ignore });
+        bar.AddThemeStyleboxOverride("panel", Palette.Box(Colors.Transparent, 2, 0, Palette.Texto3));
+        var fill = bar.Add(new TextureRect
+        {
+            Texture = new GradientTexture2D { Gradient = gradient, Width = 256, Height = 1 },
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+            StretchMode = TextureRect.StretchModeEnum.Scale,
+            MouseFilter = MouseFilterEnum.Ignore,
+        });
+        // Dentro do contorno de 1 px: a ponta escura da escala quase some sobre o painel da legenda.
+        fill.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect, LayoutPresetMode.KeepSize, 1);
+
+        Font font = Palette.Inter;
+        var ticks = _legend.Add(new Control { Name = "MarcasPresenca", CustomMinimumSize = new Vector2(PresenceBarWidth, 22), SizeFlagsHorizontal = SizeFlags.ShrinkBegin, MouseFilter = MouseFilterEnum.Ignore });
+        foreach (int tick in PresenceTicks)
+        {
+            string text = tick.ToString(PtBr);
+            float width = font.GetStringSize(text, HorizontalAlignment.Left, -1, 18).X;
+            float x = Math.Clamp(((float)PresenceScale(tick) * PresenceBarWidth) - (width / 2), 0, PresenceBarWidth - width);
+            Label label = ticks.Add(new Label { Text = text, Position = new Vector2(x, -2), MouseFilter = MouseFilterEnum.Ignore });
+            label.AddThemeFontSizeOverride("font_size", 18);
+            label.AddThemeColorOverride("font_color", Palette.Texto2);
         }
     }
 

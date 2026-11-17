@@ -122,6 +122,9 @@ public partial class UiShot
         Require(hub.ClockText == $"{hour0:00}:{minute0:00}", $"{tag}: relógio da tela {hub.ClockText}, do Core {hour0:00}:{minute0:00}.");
         report.Add($"{tag}: relógio de {before} a {hub.ClockText}");
 
+        // Correção do autor: a legenda de Minha força é a escala de 0 a 100, sem os valores de cada faixa.
+        Require(Named<Control>(hub, "EscalaPresenca") is { } scale && scale.IsVisibleInTree() && Named<Control>(hub, "MarcasPresenca") is not null, $"{tag}: a legenda de Minha força não tem a escala de 0 a 100.");
+
         // 2. Painel Você com os números do Core.
         CheckYou(hub, engine, tag);
 

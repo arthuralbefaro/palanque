@@ -309,7 +309,7 @@ Contraste calculado pela fórmula da WCAG 2.1. As três cores de texto têm pelo
 **Mapa**
 | Modo | Escala | Regra |
 |---|---|---|
-| Minha força | Sequencial de `#1B2A2A` a `#2FD0A5`, 5 faixas | Faixas por quintil da própria cidade; legenda com os valores |
+| Minha força | Sequencial de `#1B2A2A` a `#2FD0A5`, contínua de 0 a 100 (posição na escala pela raiz quadrada da presença, para as presenças baixas do começo não saírem da mesma cor) | Legenda compacta: a barra do gradiente com as marcas 0, 10, 25, 50 e 100, no mesmo lugar da escala; sem os valores de cada zona |
 | Partido líder | Cor primária do partido líder na zona; opacidade de 45% a 100% conforme a margem sobre o segundo | A cor vem do save (partidos fictícios). Zona empatada na margem de erro fica hachurada |
 | Perfil (renda, idade, urbano/rural) | Sequencial de `#2A2620` a `#E0A458`, 5 faixas | Nunca a mesma escala de "Minha força" |
 | Presença de rival | Cor primária do partido do rival | Só um rival por vez |
