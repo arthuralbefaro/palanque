@@ -336,3 +336,14 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 - **Em que parte entram** os retratos 3D no lugar dos 2D e as telas fora do jogo (estúdio de foto, urna, apuração): a D-055 não diz. Proposta no ROADMAP: RV-B, com a cabeça escolhida.
 - **Acento nos nomes de rua:** a fonte não traz; restaurar exigiria uma regra ou uma lista própria. A decidir se vale.
 - **Escolha provisória:** nada da RV entra na main antes da RL; o protótipo fica no branch.
+
+## Nomes de bairro do OpenStreetMap (D-058, 17/11)
+
+### P-41 · O que a importação dos nomes do OpenStreetMap deixa para o autor
+- **Zonas rurais com nome gerado** ("Zona Rural", "Rural Norte"): **a confirmar pelo autor.** Escolha provisória: continuam com o nome gerado, porque um bairro do OSM na borda da cidade daria nome a uma zona que cobre quase todo o campo. Para reverter: `osm_bairros.zonas_rurais` = `true` em `data/territory/config.json` e o modo `zonas` (depois `zonas-rd`) de novo.
+- **Zonas com nome de distrito do IBGE:** ficam com o nome do distrito (leitura do autor, confirmada pela coordenação). Reverter seria tornar elegível a fonte `distrito_ibge` em `ZonasImport.Names`.
+- **ODbL, compartilhamento pela mesma licença:** os nomes `bairro_osm` de `data/zonas/` formam uma base derivada do OSM. Ao distribuir o jogo, a ODbL pede que essa base (ou o jeito de refazê-la) seja oferecida sob a ODbL. **A confirmar pelo autor** como cumprir: por exemplo, declarar no CREDITS que os nomes `bairro_osm` de `data/zonas/` estão sob a ODbL e publicar esses arquivos com o jogo. Vale ouvir um advogado antes da loja.
+- **Overpass API:** o servidor público respondeu várias vezes "at capacity" (HTTP 502) e diz que uso automatizado pesado deve usar instância própria; a extração foi pequena (27 consultas, 14,8 MB), com espera crescente. Para refazer a extração, considerar uma instância própria ou um recorte do Geofabrik.
+- **Qualidade dos nomes do OSM:** vêm como estão no mapa (há erros de digitação, como "Taguatintga Sul" no DF, e nomes de setor como "Setor O"). As listas de filtro em `osm_bairros` são provisórias; a revisão manual é proibida em `data/zonas`, então qualquer correção é por regra no importador.
+- **Crédito no mapa só com zona do OSM:** escolha provisória (onde o dado aparece). Alternativa: crédito sempre.
+
