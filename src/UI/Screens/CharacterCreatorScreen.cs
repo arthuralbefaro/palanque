@@ -65,7 +65,7 @@ public partial class CharacterCreatorScreen : Control
         _rng = new Rng(_game.PendingSeed + 1);
         Municipio home = _rng.Pick(_game.Municipios.All.Where(m => m.EleicoesMunicipais).ToList());
         _c = PersonGenerator.Generate(_rng, People, new PersonRequest("jogador", home.Uf, home.CodigoIbge, Today, PartyId: _rng.Pick(_world.Parties).Id, Ages: People.Origins.StartingAge));
-        _offeredTraits = OfferTraits();
+        _offeredTraits = OfferTraits(_c.TraitIds);
         _c.Campaign = NewCampaign();
         _c.Biography = WriteBiography();
 
@@ -204,8 +204,16 @@ public partial class CharacterCreatorScreen : Control
 
     // ---------- Sorteios ----------
 
-    private List<string> OfferTraits() =>
-        _rng.Shuffled(People.Traits.Traits.Where(t => t.SelectableAtCreation).Select(t => t.Id)).Take(3).ToList();
+    /// <summary>
+    /// Os 3 traços oferecidos. Os já escolhidos ficam sempre entre eles: um traço escolhido fora da lista contaria
+    /// para o limite de 2 sem aparecer na tela, e o jogador não conseguiria desmarcá-lo.
+    /// </summary>
+    private List<string> OfferTraits(IEnumerable<string>? keep = null)
+    {
+        List<string> offered = (keep ?? []).Distinct().Take(3).ToList();
+        offered.AddRange(_rng.Shuffled(People.Traits.Traits.Where(t => t.SelectableAtCreation && !offered.Contains(t.Id)).Select(t => t.Id)).Take(3 - offered.Count));
+        return offered;
+    }
 
     private CampaignIdentity NewCampaign()
     {
@@ -521,6 +529,12 @@ public partial class CharacterCreatorScreen : Control
         }
 
         Ui.Label(t, "Traços de personalidade: escolha 2 de 3", 20);
+        if (_c.TraitIds.Any(id => !_offeredTraits.Contains(id)))
+        {
+            // Desfazer e presets podem trazer traços de outra oferta: eles voltam para a lista, marcados.
+            _offeredTraits = OfferTraits(_c.TraitIds);
+        }
+
         foreach (string id in _offeredTraits)
         {
             TraitDefinition trait = People.Traits.Traits.First(x => x.Id == id);
@@ -873,7 +887,10 @@ public partial class CharacterCreatorScreen : Control
 
         if (_c.TraitIds.Count != 2)
         {
-            yield return Tr("Escolha exatamente 2 traços.");
+            List<string> names = _c.TraitIds.Select(id => People.Traits.Traits.FirstOrDefault(x => x.Id == id)?.Name.For(_c.Gender) ?? id).ToList();
+            yield return names.Count == 0
+                ? Tr("Escolha exatamente 2 traços: nenhum está marcado.")
+                : string.Format(Tr(names.Count == 1 ? "Escolha exatamente 2 traços: {0} está marcado ({1})." : "Escolha exatamente 2 traços: {0} estão marcados ({1})."), names.Count, string.Join(", ", names));
         }
 
         if (_c.HomeMunicipio is null)
