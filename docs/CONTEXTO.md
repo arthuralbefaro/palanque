@@ -1,4 +1,4 @@
-Atualizado em 2026-11-17 14:00, depois de: respostas do autor às capturas da RL e ao relatório do meio-dia (D-059 e D-060). Em andamento: as cinco correções da RL antes da tag `fase-rl`, o resto da RV-A (noite, partido líder pela margem, câmera), o cansaço por veículo pelo caminho "baixar o pico" e a amostra corrigida do BalanceSim. Próximo: integrar a RL e criar a `fase-rl`; depois mandato e prefeitura no relógio, antes da RV-C.
+Atualizado em 2026-11-17 15:55, depois de: RL integrada na main com as cinco correções do autor e a tag `fase-rl` (D-061). Em andamento: o resto da RV-A (noite, partido líder pela margem, câmera), o cansaço por veículo pelo caminho "baixar o pico" e a amostra corrigida do BalanceSim. Próximo: mandato e prefeitura no relógio, antes da RV-C.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -176,7 +176,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 ## 6. Estado atual
 
 - **Fases concluídas:** 0 (fundação), 1 (núcleo: regras eleitorais, municípios, partidos, cenário Brasil 2026, eleitorado e pesquisas), 2 (criação de personagem), 3 (fatia vertical de vereador), 4 (mandato de vereador e fundação de partido), 5 (prefeito e debate). Da Fase 6, dois itens: contornos dos municípios e população projetada com vagas por eleição.
-- **Testes na main (17/11):** 1.033 no Core (1.048 no branch `rl`), 121 no importador, 31 alvos de fumaça com janela.
+- **Testes na main (17/11, depois da RL):** 1.051 no Core, 121 no importador, 32 alvos de fumaça com janela.
 - **Teste do autor:** jogou a fatia vertical e reprovou: "pouca coisa pra fazer, confuso, feio, muito raso", "chato e saturável", "parece o Referee Simulator da Play Store".
 - **Diagnóstico** (documento de auditoria), com as 5 causas do tédio:
   1. não há decisão, só gasto: 6 ações de efeito fixo, e repetir "Redes sociais" é sempre o melhor;
@@ -239,10 +239,10 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - **Régua da D-026 em faixas (D-057, D-060):** partido mais forte eleito de 65% a 90% no pequeno e no médio e de 40% a 60% no grande e na metrópole; sorteado de 5% a 25% (no médio, até 35%, efeito do quociente com 11 vagas); sem campanha de 0% a 1%. Linha de base com a amostra antiga: mais forte 73/84/46/49%, sorteado 19/39/11/12%, sem campanha 0%. Medir de novo depois do cansaço por veículo.
   - **Sorteado do médio** (`docs/balance/sorteado_medio.md`): nenhum parâmetro mexe só nele; metade do excesso era da amostra do BalanceSim (cada cidade jogava um só partido), que está sendo corrigida (cada cidade joga os dois); com as 10 cidades nos dois partidos, 32%. O candidato C (empenho e reconhecimento do médio) não foi aplicado.
   - **Nomes de bairro do OpenStreetMap (D-058):** 4.675 zonas urbanas trocaram o nome gerado pelo bairro do OSM, com crédito no mapa e ODbL registrada; nomes do IBGE intactos; ids iguais.
-- **RL (branch `rl`, fora da main até as correções):** relógio de 6h a 22h na barra, linha do dia com marcas em 6h, 9h, 12h, 15h, 18h e 22h, painel Você fixo (turnos, estresse, caixa), zonas no painel Território, "Fazer agora" (sem turno livre hoje, vira "Fazer amanhã de manhã"; o terceiro turno do dia custa +3 de estresse), número flutuante na zona, ficha da zona flutuante em pilha com Esc. O mundo age todo dia (aprovado, D-059). O autor viu as capturas e pediu cinco correções antes da tag `fase-rl`: linhas finas soltas no mapa; legenda de "Minha força" de 0 a 100 com gradiente; ficha estreita ou encaixada, sem cobrir o resultado; número flutuante nítido; intenção de voto na pré-campanha pela estimativa da equipe, marcada como estimativa.
+- **RL, na main com a tag `fase-rl`:** relógio de 6h a 22h na barra, linha do dia com marcas em 6h, 9h, 12h, 15h, 18h e 22h, painel Você fixo (turnos, estresse, caixa), zonas no painel Território, "Fazer agora" (sem turno livre hoje, vira "Fazer amanhã de manhã"; o terceiro turno do dia custa +3 de estresse), número flutuante na zona, ficha da zona flutuante em pilha com Esc. O mundo age todo dia (aprovado, D-059). O autor viu as capturas e pediu cinco correções antes da tag, feitas (D-061): as linhas finas eram zonas com partes distantes simplificadas pelo retângulo inteiro (contornos regenerados; cerca de 2% dos eleitores trocam de zona em 1.177 municípios, com o total de cada município igual); "Minha força" na escala de 0 a 100 com legenda em gradiente; ficha da zona encaixada no painel da esquerda, com o mapa inteiro à vista; número flutuante sem contorno duplo; na pré-campanha, sem pesquisa, a intenção mostra a estimativa da equipe (centro na projeção sem ruído, faixa de 40% do ponto ou 1 ponto).
 - **Depois da `fase-rl`, antes da RV-C (D-059):** mandato e prefeitura com relógio, linha do dia e "Fazer agora".
 - **RV-A (branch `rva`, criado do `rl` com o protótipo):** mapa de base de Mantena sob as zonas translúcidas (quadras, ruas com nome, rios, rodovias, localidades), zoom da cidade à rua travado no município, luz de dia e de noite pelo relógio, crédito "Mapa de base: IBGE · © colaboradores do OpenStreetMap". Mantena pronta em 13 a 17 ms e a 277–280 FPS; Belo Horizonte em 0,21 a 0,27 s e a 199–201 FPS, na placa de referência (Ryzen 5 7520U com Radeon integrada, D-059). Direção aprovada; em andamento: noite visível (luz de rua, quarteirões com luz, rural escuro), "Partido líder" com intensidade pela margem, câmera abrindo no núcleo urbano. O mapa de base fica no cache, fora do Git, até a decisão da P-39.
-- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4`, `fase-r-final`. Próxima: `fase-rl`.
+- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4`, `fase-r-final`, `fase-rl`. Próxima: `fase-rva`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (em vigor: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768; proposta da RV por cima, a aprovar), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -300,6 +300,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-058: nomes de bairro do OpenStreetMap só onde o IBGE não tem bairro, com crédito e ODbL; o resto do OSM fora.
 - D-059: respostas às capturas da RL (cinco correções, P-41 aprovada, mandato e prefeitura no relógio antes da RV-C) e à RV-A (noite, partido líder pela margem, câmera, pontos de interesse só se liberados, placa de referência); cansaço pelo caminho "baixar o pico".
 - D-060: amostra do BalanceSim corrigida; candidato C não aplicado; sorteado do médio até 35%.
+- D-061: como as cinco correções da RL foram feitas (contornos de zona regenerados, escala de 0 a 100, ficha encaixada, flutuante liso, estimativa da equipe).
 
 **Decisões do GDD 17.20, com a escolha do autor:**
 1. Mapa da cidade em 2D plano: aprovado.
@@ -337,6 +338,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - P-40: julgar as cabeças A e B pela prancha, aprovar o ART_GUIDE da RV (Parte 1, seção 14) e as convenções do contrato da cabeça; qualidade leve. A placa de referência foi respondida (D-059);
   - P-42: zonas rurais com nome do OSM, como cumprir a ODbL na distribuição, crédito sempre ou só onde há nome do OSM, leitura de que distrito do IBGE é nome oficial;
   - P-45: pontos de interesse do OSM no zoom de rua;
+  - P-46: o que as correções da RL deixam (15 zonas pequenas ainda esmagadas no contorno, quase todas na Amazônia; nome da Zona Noroeste de Mantena longe da sede; estimativa do jogador baixa no começo; lista de zonas coberta com a ficha aberta);
   - pastas de trabalho antigas com arquivos gerados soltos (`rd-main`, `..planalto-teste`), à espera da limpeza.
 - **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3. **P-41, P-44 e a placa da P-40:** D-059 e D-060.
 - **Novas, da R4:** P-30 (agenda por dia no mandato), P-31 (objetivos do mandato), P-36 (parâmetros a confirmar, o que ficou fora), P-35 (pacote de nomes privado, D-053, depois da `fase-r-final`). P-01, P-29 e P-34 (D-051) fechadas.
@@ -360,7 +362,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 1. Colar este documento e dizer em que ponto o autor está (o que jogou, o que achou).
 2. Se o Claude Code parou por limite de uso: mandar retomar o corujão (frase na seção 10).
-3. Ler o relatório mais recente no topo do PROGRESSO.md. Conferir se a RL entrou com as cinco correções e a tag `fase-rl`, e jogar o `ROTEIRO_TESTE_RL.md`.
+3. Ler o relatório mais recente no topo do PROGRESSO.md e jogar a `fase-rl` com o `ROTEIRO_TESTE_RL.md` (capturas antigas e corrigidas fora do repositório, em `C:\dev\capturas-rl\`).
 4. Para a RV: julgar as cabeças A e B pela prancha e ler a proposta do ART_GUIDE (cópias fora do repositório em `C:\dev\capturas-rv\`), e responder à P-39, à P-40, à P-42 e à P-45. Olhar as capturas e o vídeo da RV-A no branch `rva`.
 5. Ver o resultado do cansaço por veículo com o pico da entrevista baixado e a régua medida de novo com a amostra corrigida.
 6. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
