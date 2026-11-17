@@ -6,6 +6,8 @@ using Planalto.Core.Characters;
 using Planalto.Core.Debate;
 using Planalto.Core.State;
 using Planalto.UI.Portrait;
+using Planalto.UI.Theme;
+using Planalto.UI.Widgets;
 using Expression = Planalto.Core.Characters.Expression;
 
 namespace Planalto.UI.Screens;
@@ -74,6 +76,7 @@ public partial class DebateScreen : Control
         }
 
         BuildLastRound();
+        Glossary.LinkTerms(_root);
     }
 
     /// <summary>Retratos com a expressão da última jogada e o placar de cada um.</summary>
@@ -120,7 +123,8 @@ public partial class DebateScreen : Control
         _target ??= rivals.FirstOrDefault();
         if (Debate.Hand.Any(c => _game.Debate.Card(c).Targeted))
         {
-            Ui.Options(Ui.Field(_root, "Alvo do ataque"), rivals.Select(r => (r, Campaign.Find(r)!.Name)), _target, id => _target = id, translate: false);
+            Ui.Options(Ui.Field(_root, "Alvo do ataque"), rivals.Select(r => (r, Campaign.Find(r)!.Name)), _target, id => _target = id, translate: false).TooltipText =
+                Palette.Tip(Tr("Quem recebe as cartas de ataque."), Tr("vale para a carta de ataque que você jogar nesta rodada; quem é atacado reage, e acertar tira pontos dele."), Tr("nada; o custo é o risco da carta, descrito nela."));
         }
 
         HBoxContainer hand = Ui.Row(_root, 18);
@@ -136,7 +140,10 @@ public partial class DebateScreen : Control
             {
                 _lastRound = DebateEngine.Play(_engine.Context, _game.Debate, card.Id, card.Targeted ? _target : null, _game.State!.Rng);
                 Refresh();
-            });
+            }, Palette.Tip(
+                string.Format(Tr("Carta {0}: {1}"), card.Name, card.Description),
+                card.Targeted ? Tr("joga esta carta contra o alvo escolhido; os rivais jogam as deles e o placar da rodada muda.") : Tr("joga esta carta na rodada; os rivais jogam as deles e o placar da rodada muda."),
+                Tr("a carta sai da sua mão; se errar, os pontos podem ser negativos.")));
         }
     }
 
@@ -172,6 +179,6 @@ public partial class DebateScreen : Control
             DebateEngine.Close(Campaign);
             SaveManager.Instance.Autosave();
             _game.GoTo(Game.Scenes.Hub);
-        });
+        }, Palette.Tip(Tr("Encerra o debate e volta à tela central."), Tr("o placar já mexeu na imagem de cada candidato; o que viralizou aparece no noticiário."), Tr("nada; a carreira é salva antes.")));
     }
 }

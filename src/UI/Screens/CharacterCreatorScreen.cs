@@ -11,6 +11,7 @@ using Planalto.Core.State;
 using Planalto.Core.World;
 using Planalto.UI.CampaignMaterials;
 using Planalto.UI.Portrait;
+using Planalto.UI.Theme;
 using Planalto.UI.Widgets;
 using Expression = Planalto.Core.Characters.Expression;
 using FileAccess = Godot.FileAccess;
@@ -73,11 +74,11 @@ public partial class CharacterCreatorScreen : Control
         HBoxContainer top = Ui.Row(screen, 12);
         Ui.Label(top, "Criação de personagem", 36);
         top.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill });
-        Ui.Button(top, "Aleatório", () => Change(RandomizeAll));
-        Ui.Button(top, "Aleatório só nesta aba", () => Change(() => RandomizeTab(_tabs.CurrentTab)));
-        Ui.Button(top, "Desfazer", Undo);
-        Ui.Button(top, "Salvar preset", SavePreset);
-        Ui.Button(top, "Carregar preset", LoadPreset);
+        Ui.Button(top, "Aleatório", () => Change(RandomizeAll), Tip("Sorteia o personagem inteiro.", "gera de novo aparência, roupas, identidade, campanha e, se você não criou partido, o partido; a cidade natal fica.", "nada; Desfazer volta atrás."));
+        Ui.Button(top, "Aleatório só nesta aba", () => Change(() => RandomizeTab(_tabs.CurrentTab)), Tip("Sorteia só a aba aberta.", "as outras abas ficam como estão.", "nada; Desfazer volta atrás."));
+        Ui.Button(top, "Desfazer", Undo, Tip("Desfaz a última mudança.", "volta o personagem ao estado anterior, uma mudança por clique.", "nada."));
+        Ui.Button(top, "Salvar preset", SavePreset, Tip("Grava a aparência num arquivo.", "dá para carregar a mesma aparência em outro personagem; só a aparência e as roupas vão para o arquivo.", "nada."));
+        Ui.Button(top, "Carregar preset", LoadPreset, Tip("Abre uma aparência salva antes.", "troca a aparência e as roupas pelas do arquivo; identidade, campanha e partido ficam.", "nada; Desfazer volta atrás."));
 
         HBoxContainer body = Ui.Row(screen, 16);
         body.SizeFlagsVertical = SizeFlags.ExpandFill;
@@ -91,7 +92,7 @@ public partial class CharacterCreatorScreen : Control
         HBoxContainer bottom = Ui.Row(screen, 16);
         _status = Ui.Column(bottom, 2);
         _status.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-        Ui.Button(bottom, "Voltar ao Novo Mundo", () => { _world.RemovePlayerParty(); _game.GoTo(Game.Scenes.NewWorld); });
+        Ui.Button(bottom, "Voltar ao Novo Mundo", () => { _world.RemovePlayerParty(); _game.GoTo(Game.Scenes.NewWorld); }, Tip("Volta ao Novo Mundo.", "dá para mudar os partidos e as opções do mundo; o partido que você criou aqui sai da lista.", "nada; o personagem desta tela se perde."));
         _start = Ui.Button(bottom, "Começar carreira", StartCareer);
 
         BuildTabs();
@@ -315,7 +316,39 @@ public partial class CharacterCreatorScreen : Control
         BuildIdentityTab(Tab("Identidade"));
         BuildCampaignTab(Tab("Campanha"));
         BuildPartyTab(Tab("Partido"));
+        string[] tabTips =
+        [
+            Tip("Aba Aparência: rosto, corpo, cabelo, marcas e acessórios.", "muda o retrato, o santinho e o material de campanha; aparência nunca altera votos nem atributos.", "nada."),
+            Tip("Aba Vestuário: a roupa de cada ocasião.", "escolhe o que o personagem veste no gabinete, na rua, no debate, no dia a dia e nas festas regionais; nunca altera votos nem atributos.", "nada."),
+            Tip("Aba Identidade: nome, gênero, idade, cidade, origem, profissão, família, traços e biografia.", "a origem, a profissão e os traços definem os atributos de partida; a cidade natal é o palco da primeira campanha.", "nada."),
+            Tip("Aba Campanha: número de urna, slogan, logotipo, jingle e foto.", "monta a identidade da campanha que aparece no santinho, na urna e no material.", "nada."),
+            Tip("Aba Partido: filiar-se a um partido do mundo ou criar o seu.", "o partido dá o começo do número de urna e pesa no voto de quem já gosta dele; a lista mostra a força de cada um na sua cidade.", "nada."),
+        ];
+        for (int i = 0; i < _tabs.GetTabCount() && i < tabTips.Length; i++)
+        {
+            _tabs.SetTabTooltip(i, tabTips[i]);
+        }
+
         _tabs.CurrentTab = Math.Min(current, _tabs.GetTabCount() - 1);
+        Callable.From(LinkTabs).CallDeferred();
+    }
+
+    /// <summary>Tooltip em três partes, com as três partes traduzidas.</summary>
+    private string Tip(string what, string does, string cost) => Palette.Tip(Tr(what), Tr(does), Tr(cost));
+
+    /// <summary>Tooltip dos controles de aparência: o que muda e a regra de que aparência não altera votos.</summary>
+    private string LookTip(string label) => Palette.Tip(
+        string.Format(Tr("{0} do personagem."), Tr(label)),
+        Tr("muda só a aparência no retrato, no santinho e no material de campanha; aparência nunca altera votos nem atributos."),
+        Tr("nada; Desfazer volta atrás."));
+
+    /// <summary>Os termos do glossário nas abas viram link (as abas são montadas de novo a cada mudança).</summary>
+    private void LinkTabs()
+    {
+        if (IsInstanceValid(_tabs) && _tabs.IsInsideTree())
+        {
+            Glossary.LinkTerms(_tabs);
+        }
     }
 
     private VBoxContainer Tab(string title)
@@ -336,13 +369,14 @@ public partial class CharacterCreatorScreen : Control
             items.Insert(0, ("", TranslationServer.Translate("Nenhum")));
         }
 
-        Ui.Options(row, items, current ?? "", id => set(id.Length == 0 ? null : id), translate: false);
+        Ui.Options(row, items, current ?? "", id => set(id.Length == 0 ? null : id), translate: false).TooltipText = LookTip(label);
     }
 
     private void SliderField(Node parent, string label, double value, Action<double> set, double min = 0, double max = 1)
     {
         HBoxContainer row = Ui.Field(parent, label);
         HSlider slider = Ui.Slider(row, value, _ => { }, min, max);
+        slider.TooltipText = LookTip(label);
         slider.DragEnded += changed =>
         {
             if (changed)
@@ -355,7 +389,7 @@ public partial class CharacterCreatorScreen : Control
     private void ColorField(Node parent, string label, string hex, Action<string> set)
     {
         HBoxContainer row = Ui.Field(parent, label);
-        Ui.ColorPicker(row, hex, set);
+        Ui.ColorPicker(row, hex, set).TooltipText = LookTip(label);
     }
 
     private void BuildAppearanceTab(VBoxContainer t)
@@ -365,9 +399,9 @@ public partial class CharacterCreatorScreen : Control
         SliderField(t, "Largura dos ombros", a.ShoulderWidth, v => SetAppearance(x => x with { ShoulderWidth = v }));
         HBoxContainer skin = Ui.Field(t, "Tom de pele");
         int tone = Math.Max(0, People.Appearance.Palettes.Skin.IndexOf(a.SkinColor));
-        Ui.Slider(skin, tone, v => SetAppearance(x => x with { SkinColor = People.Appearance.Palettes.Skin[(int)v] }), 0, 23, 1);
-        Ui.ColorPicker(skin, a.SkinColor, c => SetAppearance(x => x with { SkinColor = c }));
-        Ui.Options(Ui.Field(t, "Subtom"), Enum.GetValues<SkinUndertone>().Select(u => (u.ToString(), u switch { SkinUndertone.Quente => "Quente", SkinUndertone.Neutro => "Neutro", _ => "Frio" })), a.Undertone.ToString(), u => SetAppearance(x => x with { Undertone = Enum.Parse<SkinUndertone>(u) }));
+        Ui.Slider(skin, tone, v => SetAppearance(x => x with { SkinColor = People.Appearance.Palettes.Skin[(int)v] }), 0, 23, 1).TooltipText = LookTip("Tom de pele (na escala de tons)");
+        Ui.ColorPicker(skin, a.SkinColor, c => SetAppearance(x => x with { SkinColor = c })).TooltipText = LookTip("Tom de pele (cor livre)");
+        Ui.Options(Ui.Field(t, "Subtom"), Enum.GetValues<SkinUndertone>().Select(u => (u.ToString(), u switch { SkinUndertone.Quente => "Quente", SkinUndertone.Neutro => "Neutro", _ => "Frio" })), a.Undertone.ToString(), u => SetAppearance(x => x with { Undertone = Enum.Parse<SkinUndertone>(u) })).TooltipText = LookTip("Subtom da pele");
         PartField(t, "Rosto", "face", a.Face, v => SetAppearance(x => x with { Face = v! }));
         SliderField(t, "Maxilar", a.Jaw, v => SetAppearance(x => x with { Jaw = v }));
         SliderField(t, "Queixo", a.Chin, v => SetAppearance(x => x with { Chin = v }));
@@ -392,22 +426,22 @@ public partial class CharacterCreatorScreen : Control
         SliderField(t, "Olheiras", a.EyeBags, v => SetAppearance(x => x with { EyeBags = v }));
         PartField(t, "Cicatriz", "scar", a.Scar, v => SetAppearance(x => x with { Scar = v }), allowNone: true);
         HBoxContainer flags = Ui.Field(t, "Marcas");
-        var moles = flags.Add(new CheckBox { Text = Tr("Pintas"), ButtonPressed = a.Moles });
+        var moles = flags.Add(new CheckBox { Text = Tr("Pintas"), ButtonPressed = a.Moles, TooltipText = LookTip("Pintas") });
         moles.Toggled += on => SetAppearance(x => x with { Moles = on });
-        var dimples = flags.Add(new CheckBox { Text = Tr("Covinhas"), ButtonPressed = a.Dimples });
+        var dimples = flags.Add(new CheckBox { Text = Tr("Covinhas"), ButtonPressed = a.Dimples, TooltipText = LookTip("Covinhas") });
         dimples.Toggled += on => SetAppearance(x => x with { Dimples = on });
         HBoxContainer lips = Ui.Field(t, "Batom");
-        Ui.ColorPicker(lips, a.LipstickColor ?? People.Appearance.Palettes.MakeupLipstick[0], c => SetAppearance(x => x with { LipstickColor = c }));
-        Ui.Slider(lips, a.LipstickIntensity, v => SetAppearance(x => x with { LipstickIntensity = v, LipstickColor = x.LipstickColor ?? People.Appearance.Palettes.MakeupLipstick[0] }));
+        Ui.ColorPicker(lips, a.LipstickColor ?? People.Appearance.Palettes.MakeupLipstick[0], c => SetAppearance(x => x with { LipstickColor = c })).TooltipText = LookTip("Cor do batom");
+        Ui.Slider(lips, a.LipstickIntensity, v => SetAppearance(x => x with { LipstickIntensity = v, LipstickColor = x.LipstickColor ?? People.Appearance.Palettes.MakeupLipstick[0] })).TooltipText = LookTip("Intensidade do batom");
         HBoxContainer shadow = Ui.Field(t, "Sombra");
-        Ui.ColorPicker(shadow, a.EyeshadowColor ?? People.Appearance.Palettes.MakeupEyeshadow[0], c => SetAppearance(x => x with { EyeshadowColor = c }));
-        Ui.Slider(shadow, a.EyeshadowIntensity, v => SetAppearance(x => x with { EyeshadowIntensity = v, EyeshadowColor = x.EyeshadowColor ?? People.Appearance.Palettes.MakeupEyeshadow[0] }));
+        Ui.ColorPicker(shadow, a.EyeshadowColor ?? People.Appearance.Palettes.MakeupEyeshadow[0], c => SetAppearance(x => x with { EyeshadowColor = c })).TooltipText = LookTip("Cor da sombra");
+        Ui.Slider(shadow, a.EyeshadowIntensity, v => SetAppearance(x => x with { EyeshadowIntensity = v, EyeshadowColor = x.EyeshadowColor ?? People.Appearance.Palettes.MakeupEyeshadow[0] })).TooltipText = LookTip("Intensidade da sombra");
         SliderField(t, "Delineado", a.EyelinerIntensity, v => SetAppearance(x => x with { EyelinerIntensity = v }));
         PartField(t, "Óculos", "glasses", a.Glasses, v => SetAppearance(x => x with { Glasses = v }), allowNone: true);
         PartField(t, "Brincos", "earrings", a.Earrings, v => SetAppearance(x => x with { Earrings = v }), allowNone: true);
         PartField(t, "Piercing", "piercing", a.Piercing, v => SetAppearance(x => x with { Piercing = v }), allowNone: true);
         PartField(t, "Colar", "necklace", a.Necklace, v => SetAppearance(x => x with { Necklace = v }), allowNone: true);
-        var pin = Ui.Field(t, "Broche").Add(new CheckBox { Text = Tr("Broche do partido na lapela"), ButtonPressed = a.PartyPin });
+        var pin = Ui.Field(t, "Broche").Add(new CheckBox { Text = Tr("Broche do partido na lapela"), ButtonPressed = a.PartyPin, TooltipText = LookTip("Broche do partido na lapela") });
         pin.Toggled += on => SetAppearance(x => x with { PartyPin = on });
     }
 
@@ -420,12 +454,14 @@ public partial class CharacterCreatorScreen : Control
             OutfitChoice outfit = _c.Appearance!.Wardrobe[context];
             HBoxContainer row = Ui.Field(t, ContextName(context));
             var items = People.Appearance.Catalog.InCategory("outfit").Where(p => p.Contexts.Contains(context)).Select(p => (p.Id, p.Name));
-            Ui.Options(row, items, outfit.PartId, id => SetOutfit(context, o => o with { PartId = id }), translate: false);
-            Ui.ColorPicker(row, outfit.PrimaryColor, c => SetOutfit(context, o => o with { PrimaryColor = c }));
-            Ui.ColorPicker(row, outfit.SecondaryColor, c => SetOutfit(context, o => o with { SecondaryColor = c }));
+            string where = ContextName(context);
+            Ui.Options(row, items, outfit.PartId, id => SetOutfit(context, o => o with { PartId = id }), translate: false).TooltipText = LookTip(string.Format(Tr("Roupa: {0}"), where));
+            Ui.ColorPicker(row, outfit.PrimaryColor, c => SetOutfit(context, o => o with { PrimaryColor = c })).TooltipText = LookTip(string.Format(Tr("Cor principal da roupa: {0}"), where));
+            Ui.ColorPicker(row, outfit.SecondaryColor, c => SetOutfit(context, o => o with { SecondaryColor = c })).TooltipText = LookTip(string.Format(Tr("Cor secundária da roupa: {0}"), where));
             if (party is not null)
             {
-                Ui.Button(row, "Cor do partido", () => Change(() => SetOutfitRaw(context, o => o with { PrimaryColor = party.Colors.Primary, SecondaryColor = party.Colors.Secondary })));
+                Ui.Button(row, "Cor do partido", () => Change(() => SetOutfitRaw(context, o => o with { PrimaryColor = party.Colors.Primary, SecondaryColor = party.Colors.Secondary })),
+                    Palette.Tip(string.Format(Tr("Pinta a roupa ({0}) com as cores do {1}."), where, party.Sigla), Tr("troca as duas cores da roupa pelas do partido; aparência nunca altera votos nem atributos."), Tr("nada; Desfazer volta atrás.")));
             }
         }
     }
@@ -452,22 +488,29 @@ public partial class CharacterCreatorScreen : Control
     {
         var civil = Ui.Field(t, "Nome civil").Add(new LineEdit { Text = _c.CivilName, SizeFlagsHorizontal = SizeFlags.ExpandFill });
         civil.TextChanged += s => Edit(() => _c.CivilName = s);
+        civil.TooltipText = Tip("Nome civil do personagem.", "aparece nos documentos, na biografia e no noticiário; é obrigatório.", "nada.");
         HBoxContainer ballotRow = Ui.Field(t, "Nome de urna");
         var ballot = ballotRow.Add(new LineEdit { Text = _c.BallotName, SizeFlagsHorizontal = SizeFlags.ExpandFill, MaxLength = 30 });
         ballot.TextChanged += s => Edit(() => _c.BallotName = s);
+        ballot.TooltipText = Tip("Nome de urna: como o eleitor conhece você.", "aparece na urna, no santinho, no mapa e na apuração; é obrigatório.", "nada.");
         Ui.Button(ballotRow, "Sugerir", () => Change(() =>
-            _c.BallotName = PersonGenerator.BallotName(_rng, People, _c.CivilName.Split(' ')[0], _c.CivilName.Split(' ')[^1], _c.ProfessionId ?? "", _c.Gender)));
+            _c.BallotName = PersonGenerator.BallotName(_rng, People, _c.CivilName.Split(' ')[0], _c.CivilName.Split(' ')[^1], _c.ProfessionId ?? "", _c.Gender)),
+            Tip("Sugere um nome de urna.", "monta um a partir do nome civil e da profissão, como os candidatos costumam fazer.", "nada; Desfazer volta atrás."));
 
-        Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => RequestGender(Enum.Parse<Gender>(g))).Name = "Genero";
+        var gender = Ui.Options(Ui.Field(t, "Gênero e pronomes"), Enum.GetValues<Gender>().Select(g => (g.ToString(), g switch { Gender.Masculino => "Masculino (ele)", Gender.Feminino => "Feminino (ela)", _ => "Não binário (elu)" })), _c.Gender.ToString(), g => RequestGender(Enum.Parse<Gender>(g)));
+        gender.Name = "Genero";
+        gender.TooltipText = Tip("Gênero e pronomes do personagem.", "muda os pronomes em todos os textos do jogo e sorteia de novo a aparência com os pesos do gênero; se você já editou a aparência, o jogo pergunta antes. Nunca altera votos nem atributos.", "nada.");
         Ui.Label(t, "Mudar o gênero sorteia de novo a aparência e as roupas; se você já as editou, o jogo pergunta antes.", 16, Ui.Muted);
 
         AgeRange ages = People.Origins.StartingAge;
         HBoxContainer ageRow = Ui.Field(t, "Idade");
         var age = ageRow.Add(new SpinBox { MinValue = ages.Min, MaxValue = ages.Max, Value = _c.AgeOn(Today) });
         age.ValueChanged += v => Change(() => SetAge((int)v, _c.BirthDate.Month));
+        age.TooltipText = Palette.Tip(string.Format(Tr("Idade no começo do jogo, de {0} a {1} anos."), ages.Min, ages.Max), Tr("muda as profissões e a família possíveis e envelhece o rosto; sem 18 anos no registro da primeira eleição, a carreira começa na eleição seguinte."), Tr("nada."));
         Ui.Label(ageRow, "Aniversário em", color: Ui.Muted);
         Ui.Options(ageRow, Enumerable.Range(1, 12).Select(m => (m.ToString(CultureInfo.InvariantCulture), MonthName(m))), _c.BirthDate.Month.ToString(CultureInfo.InvariantCulture),
-            m => Change(() => SetAge(_c.AgeOn(Today), int.Parse(m, CultureInfo.InvariantCulture))), translate: false);
+            m => Change(() => SetAge(_c.AgeOn(Today), int.Parse(m, CultureInfo.InvariantCulture))), translate: false).TooltipText =
+            Tip("Mês do aniversário.", "decide se quem tem 17 anos chega aos 18 até o prazo do registro de candidatura (15 de agosto).", "nada.");
         foreach (string warning in AgeWarnings())
         {
             Ui.Paragraph(t, warning, 760, 15).AddThemeColorOverride("font_color", Ui.Warning);
@@ -481,10 +524,11 @@ public partial class CharacterCreatorScreen : Control
             _c.HomeUf = m.Uf;
             RecomputeStats();
             _c.Biography = WriteBiography();
-        }))));
+        }))), Tip("Abre o seletor de municípios.", "a cidade natal é o palco da primeira campanha; o seletor mostra população, eleitorado, vagas na Câmara e a dificuldade sugerida de cada uma.", "nada."));
         Ui.Label(t, "A cidade natal é também o palco da primeira campanha.", color: Ui.Muted);
 
-        Ui.Options(Ui.Field(t, "Origem social"), People.Origins.Origins.Select(o => (o.Id, o.Name.For(_c.Gender))), _c.SocialOrigin, o => Change(() => { _c.SocialOrigin = o; RecomputeStats(); }), translate: false);
+        Ui.Options(Ui.Field(t, "Origem social"), People.Origins.Origins.Select(o => (o.Id, o.Name.For(_c.Gender))), _c.SocialOrigin, o => Change(() => { _c.SocialOrigin = o; RecomputeStats(); }), translate: false).TooltipText =
+            Tip("Origem social do personagem.", "define parte dos atributos e do dinheiro de partida (os números aparecem na linha de atributos, mais abaixo).", "nada.");
         // Profissões indisponíveis na idade aparecem desativadas, com a idade mínima.
         int currentAge = _c.AgeOn(Today);
         var professions = People.Professions.Professions;
@@ -494,16 +538,19 @@ public partial class CharacterCreatorScreen : Control
             _c.ProfessionId,
             p => Change(() => { _c.ProfessionId = p; RecomputeStats(); }),
             translate: false);
+        professionOptions.TooltipText = Tip("Profissão antes da política.", "define parte dos atributos de partida e entra na biografia; as que pedem idade mínima aparecem bloqueadas na lista, com a idade.", "nada.");
         for (int i = 0; i < professions.Count; i++)
         {
             professionOptions.SetItemDisabled(i, !professions[i].AvailableAt(currentAge));
         }
 
-        Ui.Options(Ui.Field(t, "Religião"), new[] { ("", "Não declarar") }.Concat(Religions.Select(r => (r, r switch { "catolica" => "Católica", "evangelica" => "Evangélica", "outras" => "Outra religião", _ => "Sem religião" }))), _c.Religion ?? "", r => Edit(() => _c.Religion = r.Length == 0 ? null : r));
+        Ui.Options(Ui.Field(t, "Religião"), new[] { ("", "Não declarar") }.Concat(Religions.Select(r => (r, r switch { "catolica" => "Católica", "evangelica" => "Evangélica", "outras" => "Outra religião", _ => "Sem religião" }))), _c.Religion ?? "", r => Edit(() => _c.Religion = r.Length == 0 ? null : r)).TooltipText =
+            Tip("Religião do personagem, ou não declarar.", "entra na biografia e no perfil do personagem.", "nada.");
         FamilyConfig family = People.Family;
         var statuses = Enum.GetValues<MaritalStatus>();
         var marital = Ui.Options(Ui.Field(t, "Estado civil"), statuses.Select(m => (m.ToString(), m switch { MaritalStatus.Solteiro => "Solteiro(a)", MaritalStatus.Casado => "Casado(a)", MaritalStatus.UniaoEstavel => "União estável", MaritalStatus.Divorciado => "Divorciado(a)", _ => "Viúvo(a)" })), _c.MaritalStatus.ToString(),
             m => Change(() => { _c.MaritalStatus = Enum.Parse<MaritalStatus>(m); FamilyRules.Generate(_rng, People, _c, Today); }));
+        marital.TooltipText = Tip("Estado civil.", "gera de novo a família do personagem; as opções que a idade não permite aparecem bloqueadas na lista.", "nada.");
         for (int i = 0; i < statuses.Length; i++)
         {
             marital.SetItemDisabled(i, !FamilyRules.Allows(family, statuses[i], currentAge));
@@ -513,6 +560,7 @@ public partial class CharacterCreatorScreen : Control
         HBoxContainer childrenRow = Ui.Field(t, "Filhos");
         var children = childrenRow.Add(new SpinBox { MinValue = 0, MaxValue = maxChildren, Value = _c.Children });
         children.ValueChanged += v => Change(() => { _c.Children = (int)v; FamilyRules.Generate(_rng, People, _c, Today); });
+        children.TooltipText = Palette.Tip(Tr("Número de filhos."), string.Format(Tr("gera de novo a família; até {0} aos {1} anos."), maxChildren, currentAge), Tr("nada."));
         Ui.Label(childrenRow, string.Format(Tr("até {0} aos {1} anos"), maxChildren, currentAge), color: Ui.Muted);
         if (_c.Family.Count > 0)
         {
@@ -525,6 +573,7 @@ public partial class CharacterCreatorScreen : Control
         {
             TraitDefinition trait = People.Traits.Traits.First(x => x.Id == id);
             var box = t.Add(new CheckBox { Text = $"{trait.Name.For(_c.Gender)} — {trait.Description}", ButtonPressed = _c.TraitIds.Contains(id) });
+            box.TooltipText = Palette.Tip(string.Format(Tr("Traço de personalidade: {0}."), trait.Name.For(_c.Gender)), Tr("marca ou desmarca o traço; são exatamente 2 de 3, e eles mudam os atributos de partida."), Tr("nada."));
             box.Toggled += on => Change(() =>
             {
                 if (on && !_c.TraitIds.Contains(id))
@@ -540,12 +589,13 @@ public partial class CharacterCreatorScreen : Control
             });
         }
 
-        Ui.Button(t, "Outras opções de traços", () => Change(() => { _offeredTraits = OfferTraits(); _c.TraitIds.Clear(); RecomputeStats(); }));
+        Ui.Button(t, "Outras opções de traços", () => Change(() => { _offeredTraits = OfferTraits(); _c.TraitIds.Clear(); RecomputeStats(); }), Tip("Sorteia outros 3 traços para escolher.", "troca as opções de traço e desmarca os escolhidos.", "nada; Desfazer volta atrás."));
         Ui.Value(t, string.Join(" · ", Enum.GetValues<AttributeId>().Select(a => $"{a}: {_c.Attributes.Get(a)}")));
 
         HBoxContainer bioRow = Ui.Field(t, "Biografia");
-        Ui.Button(bioRow, "Gerar de novo", () => Change(() => _c.Biography = WriteBiography()));
+        Ui.Button(bioRow, "Gerar de novo", () => Change(() => _c.Biography = WriteBiography()), Tip("Escreve outra biografia.", "monta um texto novo com a cidade, a origem, a profissão e o partido.", "nada; Desfazer volta atrás."));
         var bio = t.Add(new TextEdit { Text = _c.Biography ?? "", CustomMinimumSize = new Vector2(0, 110), WrapMode = TextEdit.LineWrappingMode.Boundary });
+        bio.TooltipText = Tip("Biografia do personagem.", "dá para editar à vontade; ela aparece na Enciclopédia, na sua carreira.", "nada.");
         bio.TextChanged += () => _c.Biography = bio.Text;
     }
 
@@ -627,6 +677,8 @@ public partial class CharacterCreatorScreen : Control
             Editable = party is not null,
         });
         digits.AddThemeFontSizeOverride("font_size", 22);
+        string digitsTip = Palette.Tip(Tr("Os 3 últimos algarismos do seu número de urna."), Tr("o número completo é o do partido mais estes 3 algarismos; zeros à esquerda e algarismos repetidos valem (000, 111)."), Tr("nada."));
+        digits.TooltipText = party is null ? Palette.Blocked(Tr("escolha um partido antes, na aba Partido."), digitsTip) : digitsTip;
         digits.TextChanged += typed =>
         {
             // Só algarismos entram no campo; o resto é conferido pelo Core.
@@ -648,22 +700,29 @@ public partial class CharacterCreatorScreen : Control
         HBoxContainer sloganRow = Ui.Field(t, "Slogan");
         var slogan = sloganRow.Add(new LineEdit { Text = id.Slogan, SizeFlagsHorizontal = SizeFlags.ExpandFill, MaxLength = 60 });
         slogan.TextChanged += s => Edit(() => id.Slogan = s);
-        Ui.Button(sloganRow, "Sugerir", () => Change(() => id.Slogan = SuggestSlogan()));
+        slogan.TooltipText = Tip("Slogan da campanha, até 60 letras.", "aparece no santinho, na bandeira e na peça para redes.", "nada.");
+        Ui.Button(sloganRow, "Sugerir", () => Change(() => id.Slogan = SuggestSlogan()), Tip("Sugere um slogan.", "sorteia um slogan com o nome da sua cidade.", "nada; Desfazer volta atrás."));
 
         HBoxContainer logo = Ui.Field(t, "Logotipo");
-        Ui.Options(logo, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), id.LogoIcon, v => Edit(() => id.LogoIcon = v), translate: false);
-        Ui.Options(logo, People.Campaign.Fonts.Select(f => (f.Id, f.Name)), id.LogoFont, v => Edit(() => id.LogoFont = v), translate: false);
-        Ui.ColorPicker(logo, id.LogoPrimaryColor, c => Edit(() => id.LogoPrimaryColor = c));
-        Ui.ColorPicker(logo, id.LogoSecondaryColor, c => Edit(() => id.LogoSecondaryColor = c));
+        string material = Tr("aparece no santinho, na bandeira, no adesivo e na peça para redes; a identidade visual nunca altera votos.");
+        Ui.Options(logo, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), id.LogoIcon, v => Edit(() => id.LogoIcon = v), translate: false).TooltipText = Palette.Tip(Tr("Símbolo do logotipo da campanha."), material, Tr("nada."));
+        Ui.Options(logo, People.Campaign.Fonts.Select(f => (f.Id, f.Name)), id.LogoFont, v => Edit(() => id.LogoFont = v), translate: false).TooltipText = Palette.Tip(Tr("Letra do logotipo da campanha."), material, Tr("nada."));
+        Ui.ColorPicker(logo, id.LogoPrimaryColor, c => Edit(() => id.LogoPrimaryColor = c)).TooltipText = Palette.Tip(Tr("Cor principal do logotipo."), material, Tr("nada."));
+        Ui.ColorPicker(logo, id.LogoSecondaryColor, c => Edit(() => id.LogoSecondaryColor = c)).TooltipText = Palette.Tip(Tr("Cor secundária do logotipo."), material, Tr("nada."));
         if (party is not null)
         {
-            Ui.Button(logo, "Cores do partido", () => Change(() => { id.LogoPrimaryColor = party.Colors.Primary; id.LogoSecondaryColor = party.Colors.Secondary; }));
+            Ui.Button(logo, "Cores do partido", () => Change(() => { id.LogoPrimaryColor = party.Colors.Primary; id.LogoSecondaryColor = party.Colors.Secondary; }),
+                Palette.Tip(string.Format(Tr("Usa as cores do {0} no logotipo."), party.Sigla), Tr("troca as duas cores do logotipo pelas do partido."), Tr("nada; Desfazer volta atrás.")));
         }
 
-        Ui.Options(Ui.Field(t, "Jingle"), People.Campaign.Jingles.Select(j => (j.Id, j.Name)), id.Jingle, v => Edit(() => id.Jingle = v), translate: false);
-        Ui.Options(Ui.Field(t, "Pose da foto"), People.Campaign.Poses.Select(p => (p.Id, p.Name)), id.PhotoPose, v => Edit(() => id.PhotoPose = v), translate: false);
-        Ui.Options(Ui.Field(t, "Expressão da foto"), Enum.GetValues<Expression>().Select(e => (e.ToString(), ExpressionName(e))), id.PhotoExpression.ToString(), v => Edit(() => id.PhotoExpression = Enum.Parse<Expression>(v)));
-        Ui.Options(Ui.Field(t, "Fundo da foto"), People.Appearance.Catalog.InCategory("background").Select(b => (b.Id, b.Name)), id.PhotoBackground, v => Edit(() => id.PhotoBackground = v), translate: false);
+        Ui.Options(Ui.Field(t, "Jingle"), People.Campaign.Jingles.Select(j => (j.Id, j.Name)), id.Jingle, v => Edit(() => id.Jingle = v), translate: false).TooltipText =
+            Tip("Jingle da campanha.", "fica na identidade da campanha, junto do slogan e do logotipo; nunca altera votos.", "nada.");
+        Ui.Options(Ui.Field(t, "Pose da foto"), People.Campaign.Poses.Select(p => (p.Id, p.Name)), id.PhotoPose, v => Edit(() => id.PhotoPose = v), translate: false).TooltipText =
+            Tip("Pose da foto oficial.", "a foto aparece no santinho e no material de campanha.", "nada.");
+        Ui.Options(Ui.Field(t, "Expressão da foto"), Enum.GetValues<Expression>().Select(e => (e.ToString(), ExpressionName(e))), id.PhotoExpression.ToString(), v => Edit(() => id.PhotoExpression = Enum.Parse<Expression>(v))).TooltipText =
+            Tip("Expressão do rosto na foto oficial.", "a foto aparece no santinho e no material de campanha.", "nada.");
+        Ui.Options(Ui.Field(t, "Fundo da foto"), People.Appearance.Catalog.InCategory("background").Select(b => (b.Id, b.Name)), id.PhotoBackground, v => Edit(() => id.PhotoBackground = v), translate: false).TooltipText =
+            Tip("Fundo da foto oficial.", "a foto aparece no santinho e no material de campanha.", "nada.");
     }
 
     /// <summary>Aplica os dígitos digitados se formam um número de urna válido; senão guarda o rascunho e mantém o número anterior.</summary>
@@ -751,7 +810,9 @@ public partial class CharacterCreatorScreen : Control
     {
         HBoxContainer mode = Ui.Row(t);
         var join = mode.Add(new CheckBox { Text = Tr("Filiar-se a um partido existente"), ButtonPressed = !_ownParty, ButtonGroup = new ButtonGroup() });
+        join.TooltipText = Tip("Filia o personagem a um partido do mundo.", "mostra os partidos ordenados pela força na sua cidade; o partido dá o começo do número de urna e pesa no voto de quem já gosta dele.", "nada.");
         var create = mode.Add(new CheckBox { Text = Tr("Criar meu partido"), ButtonPressed = _ownParty, ButtonGroup = join.ButtonGroup });
+        create.TooltipText = Tip("Cria um partido seu, que entra no mundo.", "você escolhe nome, sigla, número, família, posição, cores e estatuto; o partido novo começa nanico, sem força em nenhuma cidade.", "nada; a eleição fica bem mais difícil.");
         join.Pressed += () => Change(() =>
         {
             _ownParty = false;
@@ -794,6 +855,10 @@ public partial class CharacterCreatorScreen : Control
                 // Duas linhas (nome em cima, detalhes embaixo), para a lista não alargar a tela.
                 VBoxContainer text = Ui.Column(row, 0);
                 var choose = text.Add(new CheckBox { Text = $"{p.Number} · {p.Sigla} — {p.Name}", ButtonPressed = p.Id == _c.PartyId });
+                choose.TooltipText = Palette.Tip(
+                    string.Format(Tr("{0} — {1}, partido fictício ({2}, {3})."), p.Sigla, p.Name, family, WorldTexts.Size(p.Size)),
+                    Tr("filia o personagem a este partido: o número de urna passa a começar pelo número dele, e quem gosta do partido tende a votar em você."),
+                    local is null ? Tr("nada.") : string.Format(CultureInfo.GetCultureInfo("pt-BR"), Tr("nada; partido com pouca força local ({0:0.0}% aqui) torna a eleição muito difícil."), local.GetValueOrDefault(p.Id) * 100));
                 choose.AddThemeFontSizeOverride("font_size", 18);
                 Ui.Label(text, $"{family} · {WorldTexts.Size(p.Size)}{strength}", 15, Ui.Muted);
                 choose.Pressed += () => Change(() => { _c.PartyId = p.Id; ApplyPartyNumber(); });
@@ -806,28 +871,38 @@ public partial class CharacterCreatorScreen : Control
         Ui.Label(t, "Seu partido começa nanico: sem fundo partidário relevante, pouco tempo de TV e sem bancada.", color: Ui.Muted);
         var name = Ui.Field(t, "Nome").Add(new LineEdit { Text = party.Name, SizeFlagsHorizontal = SizeFlags.ExpandFill });
         name.TextChanged += s => Edit(() => party.Name = s);
+        name.TooltipText = Tip("Nome do seu partido.", "aparece na urna, no santinho e no noticiário; não pode conter o nome de um partido real.", "nada.");
         var sigla = Ui.Field(t, "Sigla").Add(new LineEdit { Text = party.Sigla, MaxLength = 8 });
         sigla.TextChanged += s => Edit(() => party.Sigla = s);
+        sigla.TooltipText = Tip("Sigla do seu partido, de 2 a 8 letras.", "aparece no mapa, na apuração e ao lado do seu nome; nunca a de um partido real nem as mesmas letras em outra ordem.", "nada.");
         var number = Ui.Field(t, "Número").Add(new SpinBox { MinValue = 10, MaxValue = 99, Value = party.Number });
         number.ValueChanged += v => Edit(() => { party.Number = (int)v; ApplyPartyNumber(); });
+        number.TooltipText = Tip("Número do seu partido, de 10 a 99.", "é o começo do seu número de urna; não pode repetir o de outro partido.", "nada.");
         Ui.Options(Ui.Field(t, "Família ideológica"), _game.World.Parties.Families.Families.Select(f => (f.Id, f.Name)), party.FamilyId, f => Change(() =>
         {
             party.FamilyId = f;
             party.Position = new PartyGenerator(_game.World.Parties).GeneratePosition(_rng, _game.World.Parties.Families.Get(f));
-        }), translate: false);
+        }), translate: false).TooltipText = Tip("Família ideológica do seu partido.", "sorteia de novo a posição do partido dentro da faixa da família.", "nada.");
         HBoxContainer axes = Ui.Field(t, "Posição (econ., costumes)");
-        Ui.Slider(axes, party.Position.Economic, v => Edit(() => party.Position = party.Position with { Economic = (int)v }), -100, 100, 1);
-        Ui.Slider(axes, party.Position.Social, v => Edit(() => party.Position = party.Position with { Social = (int)v }), -100, 100, 1);
+        Ui.Slider(axes, party.Position.Economic, v => Edit(() => party.Position = party.Position with { Economic = (int)v }), -100, 100, 1).TooltipText =
+            Tip("Posição do partido no eixo econômico, de −100 a +100.", "pesa no voto de cada grupo de eleitores, conforme o que ele pensa sobre economia; fora da faixa da família é erro.", "nada.");
+        Ui.Slider(axes, party.Position.Social, v => Edit(() => party.Position = party.Position with { Social = (int)v }), -100, 100, 1).TooltipText =
+            Tip("Posição do partido no eixo de costumes, de −100 a +100.", "pesa no voto de cada grupo de eleitores, conforme o que ele pensa sobre costumes; fora da faixa da família é erro.", "nada.");
         HBoxContainer visual = Ui.Field(t, "Identidade visual");
-        Ui.ColorPicker(visual, party.Colors.Primary, c => Edit(() => party.Colors = party.Colors with { Primary = c }));
-        Ui.ColorPicker(visual, party.Colors.Secondary, c => Edit(() => party.Colors = party.Colors with { Secondary = c }));
-        Ui.Options(visual, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), party.LogoIcon, i => Edit(() => party.LogoIcon = i), translate: false);
+        Ui.ColorPicker(visual, party.Colors.Primary, c => Edit(() => party.Colors = party.Colors with { Primary = c })).TooltipText = Tip("Cor principal do seu partido.", "pinta o partido no mapa, na legenda e no logotipo.", "nada.");
+        Ui.ColorPicker(visual, party.Colors.Secondary, c => Edit(() => party.Colors = party.Colors with { Secondary = c })).TooltipText = Tip("Cor secundária do seu partido.", "aparece no logotipo e no material de campanha.", "nada.");
+        Ui.Options(visual, _game.World.Parties.LogoIcons.Icons.Select(i => (i.Id, i.Name)), party.LogoIcon, i => Edit(() => party.LogoIcon = i), translate: false).TooltipText = Tip("Símbolo do seu partido.", "aparece no logotipo do partido e no material de campanha.", "nada.");
         PartyCharter charter = party.Charter!;
-        Ui.Options(Ui.Field(t, "Disciplina interna"), Enum.GetValues<PartyDiscipline>().Select(d => (d.ToString(), d switch { PartyDiscipline.Rigida => "Rígida", PartyDiscipline.Moderada => "Moderada", _ => "Frouxa" })), charter.Discipline.ToString(), d => Edit(() => party.Charter = party.Charter! with { Discipline = Enum.Parse<PartyDiscipline>(d) }));
-        Ui.Options(Ui.Field(t, "Democracia interna"), Enum.GetValues<InternalDemocracy>().Select(d => (d.ToString(), d == InternalDemocracy.ConvencoesAbertas ? "Convenções abertas" : "Cúpula decide")), charter.Democracy.ToString(), d => Edit(() => party.Charter = party.Charter! with { Democracy = Enum.Parse<InternalDemocracy>(d) }));
-        Ui.Options(Ui.Field(t, "Postura"), Enum.GetValues<PartyStance>().Select(s => (s.ToString(), s switch { PartyStance.OposicaoPermanente => "Oposição permanente", PartyStance.Independente => "Independente", _ => "Adesista" })), charter.Stance.ToString(), s => Edit(() => party.Charter = party.Charter! with { Stance = Enum.Parse<PartyStance>(s) }));
+        string statute = Tr("fica gravado no estatuto do partido; nesta versão ainda não muda a simulação.");
+        Ui.Options(Ui.Field(t, "Disciplina interna"), Enum.GetValues<PartyDiscipline>().Select(d => (d.ToString(), d switch { PartyDiscipline.Rigida => "Rígida", PartyDiscipline.Moderada => "Moderada", _ => "Frouxa" })), charter.Discipline.ToString(), d => Edit(() => party.Charter = party.Charter! with { Discipline = Enum.Parse<PartyDiscipline>(d) })).TooltipText =
+            Palette.Tip(Tr("Disciplina interna: quanto o partido cobra que os filiados votem com ele."), statute, Tr("nada."));
+        Ui.Options(Ui.Field(t, "Democracia interna"), Enum.GetValues<InternalDemocracy>().Select(d => (d.ToString(), d == InternalDemocracy.ConvencoesAbertas ? "Convenções abertas" : "Cúpula decide")), charter.Democracy.ToString(), d => Edit(() => party.Charter = party.Charter! with { Democracy = Enum.Parse<InternalDemocracy>(d) })).TooltipText =
+            Palette.Tip(Tr("Democracia interna: quem escolhe os candidatos do partido."), statute, Tr("nada."));
+        Ui.Options(Ui.Field(t, "Postura"), Enum.GetValues<PartyStance>().Select(s => (s.ToString(), s switch { PartyStance.OposicaoPermanente => "Oposição permanente", PartyStance.Independente => "Independente", _ => "Adesista" })), charter.Stance.ToString(), s => Edit(() => party.Charter = party.Charter! with { Stance = Enum.Parse<PartyStance>(s) })).TooltipText =
+            Palette.Tip(Tr("Postura do partido diante dos governos."), statute, Tr("nada."));
         var partySlogan = Ui.Field(t, "Slogan do partido").Add(new LineEdit { Text = charter.Slogan, SizeFlagsHorizontal = SizeFlags.ExpandFill });
         partySlogan.TextChanged += s => party.Charter = party.Charter! with { Slogan = s };
+        partySlogan.TooltipText = Tip("Slogan do seu partido.", "fica no estatuto do partido; o slogan da sua campanha é outro, na aba Campanha.", "nada.");
     }
 
     // ---------- Pré-visualização e validação ----------
@@ -862,6 +937,12 @@ public partial class CharacterCreatorScreen : Control
 
         _start.Text = StartsLater ? string.Format(Tr("Começar carreira em {0}"), startYear) : Tr("Começar carreira");
         _start.Disabled = problems.Count > 0;
+        string startTip = Palette.Tip(
+            Tr("Começa a carreira com este personagem."),
+            StartsLater ? string.Format(Tr("a carreira começa em {0}, na pré-campanha da primeira eleição que o personagem pode disputar."), startYear) : Tr("a carreira começa na pré-campanha da próxima eleição municipal, na cidade natal."),
+            Tr("nada."));
+        _start.TooltipText = _start.Disabled ? Palette.Blocked(string.Join(" ", problems), startTip) : startTip;
+        Glossary.LinkTerms(_status);
     }
 
     private IEnumerable<string> Problems()

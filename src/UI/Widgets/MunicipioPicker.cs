@@ -3,6 +3,7 @@ using System.Text;
 using Godot;
 using Planalto.Autoload;
 using Planalto.Core.Municipios;
+using Planalto.UI.Theme;
 
 namespace Planalto.UI.Widgets;
 
@@ -86,10 +87,14 @@ public partial class MunicipioPicker : Window
         left.CustomMinimumSize = new Vector2(420, 0);
         _search = left.Add(new LineEdit { PlaceholderText = TranslationServer.Translate("Buscar município"), ClearButtonEnabled = true });
         _search.TextChanged += _ => Filter();
+        _search.TooltipText = Palette.Tip(T("Busca pelo nome do município."), T("filtra a lista enquanto você digita, sem diferença de acento ou de maiúscula; os pontos acesos no mapa são os encontrados."), T("nada."));
         HBoxContainer filters = Ui.Row(left);
-        Ui.Options(filters, new[] { ("", "Todas as UFs") }.Concat(Game.Instance.Municipios.Files.Select(f => (f.Uf, f.Uf))), "", uf => { _uf = uf.Length == 0 ? null : uf; Filter(); });
-        Ui.Options(filters, new[] { ("", "Todas as regiões") }.Concat(Regioes.Select(r => (r, Region(r)))), "", r => { _regiao = r.Length == 0 ? null : r; Filter(); });
+        Ui.Options(filters, new[] { ("", "Todas as UFs") }.Concat(Game.Instance.Municipios.Files.Select(f => (f.Uf, f.Uf))), "", uf => { _uf = uf.Length == 0 ? null : uf; Filter(); }).TooltipText =
+            Palette.Tip(T("Filtro por estado."), T("mostra só os municípios da UF escolhida."), T("nada."));
+        Ui.Options(filters, new[] { ("", "Todas as regiões") }.Concat(Regioes.Select(r => (r, Region(r)))), "", r => { _regiao = r.Length == 0 ? null : r; Filter(); }).TooltipText =
+            Palette.Tip(T("Filtro por região do país."), T("mostra só os municípios da região escolhida."), T("nada."));
         _results = left.Add(new ItemList { SizeFlagsVertical = Control.SizeFlags.ExpandFill });
+        _results.TooltipText = Palette.Tip(T("Municípios encontrados (até 300)."), T("clique num nome para ver a ficha: população, eleitorado, vagas na Câmara, porte e dificuldade sugerida."), T("nada; a escolha só vale no botão Escolher esta cidade."));
         _results.ItemSelected += i => Select(_shown[(int)i]);
 
         VBoxContainer right = Ui.Column(body, 8);
@@ -105,6 +110,7 @@ public partial class MunicipioPicker : Window
             }
         });
         _choose.Disabled = true;
+        ChooseTip();
         Filter();
     }
 
@@ -147,10 +153,22 @@ public partial class MunicipioPicker : Window
         }
     }
 
+    /// <summary>Busca e seleciona o primeiro resultado, sem confirmar a escolha (teste de explicação: a ficha aberta).</summary>
+    public void SelectFirstForTest(string query)
+    {
+        _search.Text = query;
+        Filter();
+        if (_shown.Count > 0)
+        {
+            Select(_shown[0]);
+        }
+    }
+
     private void Select(Municipio m)
     {
         _selected = m;
         _choose.Disabled = false;
+        ChooseTip();
         _map.Selected = m;
         _map.QueueRedraw();
         Ui.Clear(_card);
@@ -160,7 +178,20 @@ public partial class MunicipioPicker : Window
         Ui.Value(_card, string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0}: {1:N0} · {2}: {3:N0}", TranslationServer.Translate("População"), m.Populacao, TranslationServer.Translate("Eleitorado"), m.Eleitorado));
         Ui.Value(_card, $"{TranslationServer.Translate("Vagas na Câmara")}: {m.VagasVereador} · {TranslationServer.Translate("Porte")}: {porte.Name} · {TranslationServer.Translate("Dificuldade sugerida")}: {difficulty}");
         Ui.Value(_card, $"{TranslationServer.Translate("Região imediata")}: {m.RegiaoImediata.Nome}");
+        Glossary.LinkTerms(_card);
     }
+
+    /// <summary>Tooltip do botão de escolha: as três partes e, sem cidade selecionada, o motivo do bloqueio.</summary>
+    private void ChooseTip()
+    {
+        string tip = Palette.Tip(
+            T("Escolhe a cidade selecionada como cidade natal."),
+            T("a cidade natal é o palco da primeira campanha: o porte dela define quantos votos elegem um vereador e quantos rivais você enfrenta."),
+            T("nada; dá para trocar enquanto a carreira não começa."));
+        _choose.TooltipText = _choose.Disabled ? Palette.Blocked(T("nenhuma cidade selecionada; clique num nome da lista."), tip) : tip;
+    }
+
+    private static string T(string text) => TranslationServer.Translate(text);
 
     /// <summary>Minúsculas e sem acento, para a busca ignorar acentuação.</summary>
     private static string Fold(string text)

@@ -6,6 +6,8 @@ using Planalto.Core.Characters;
 using Planalto.Core.Elections;
 using Planalto.Core.State;
 using Planalto.UI.Portrait;
+using Planalto.UI.Theme;
+using Planalto.UI.Widgets;
 
 namespace Planalto.UI.Screens;
 
@@ -53,7 +55,7 @@ public partial class UrnaScreen : Control
         BuildKeypad(Panel(urna, "#2B2B2B", new Vector2(520, 620)));
 
         HBoxContainer skip = Ui.Row(screen, 16);
-        Ui.Button(skip, "Pular: votar em mim mesmo", () =>
+        var self = Ui.Button(skip, "Pular: votar em mim mesmo", () =>
         {
             if (_finished)
             {
@@ -64,11 +66,13 @@ public partial class UrnaScreen : Control
             _engine.CastPlayerVote(new UrnaVote(Office.Vereador, Campaign.Player.Number, false));
             Finish();
         });
-        Ui.Button(skip, "Pular: não votar", () =>
+        self.TooltipText = Palette.Tip(Tr("Vota no seu próprio número e pula o resto da urna."), Tr("registra um voto em você para vereador e segue direto para a apuração; o voto de cada eleitor pesa igual, o seu também."), Tr("nada."));
+        var none = Ui.Button(skip, "Pular: não votar", () =>
         {
             _finished = true;
             Finish();
         });
+        none.TooltipText = Palette.Tip(Tr("Sai da urna sem votar."), Tr("segue direto para a apuração sem registrar nenhum voto seu."), Tr("nada; o resultado não muda por um voto."));
         Refresh();
     }
 
@@ -96,19 +100,22 @@ public partial class UrnaScreen : Control
             }
 
             var b = Ui.Button(grid, key, () => Type(key[0]));
+            b.Name = "Tecla_" + key;
+            b.TooltipText = Palette.Tip(string.Format(Tr("Tecla {0} da urna (também pelo teclado)."), key), Tr("digita o algarismo no número do candidato; o nome, o partido e a foto aparecem quando o número fica completo."), Tr("nada; dá para corrigir antes de confirmar."));
             b.CustomMinimumSize = new Vector2(130, 80);
             b.AddThemeFontSizeOverride("font_size", 34);
         }
 
         HBoxContainer special = Ui.Row(column, 10);
-        Key(special, "BRANCO", "#F5F5F5", "#111111", PressBlank);
-        Key(special, "CORRIGE", "#E76F2E", "#111111", Correct);
-        Key(special, "CONFIRMA", "#2A9D4F", "#111111", Confirm);
+        Key(special, "BRANCO", "#F5F5F5", "#111111", PressBlank, Palette.Tip(Tr("Voto em branco."), Tr("marca o voto em branco para este cargo; com algum número já digitado, aperte CORRIGE antes."), Tr("nada; o voto em branco não vai para nenhum candidato nem partido.")));
+        Key(special, "CORRIGE", "#E76F2E", "#111111", Correct, Palette.Tip(Tr("Corrige o voto (também com Backspace)."), Tr("apaga o que foi digitado e volta ao começo do voto deste cargo."), Tr("nada.")));
+        Key(special, "CONFIRMA", "#2A9D4F", "#111111", Confirm, Palette.Tip(Tr("Confirma o voto (também com Enter)."), Tr("grava o voto deste cargo e passa para o próximo; número que não existe vira voto nulo, e os 2 algarismos de um partido, para vereador, viram voto de legenda."), Tr("nada; depois de confirmado, o voto não muda.")));
     }
 
-    private static void Key(HBoxContainer row, string text, string background, string foreground, Action action)
+    private static void Key(HBoxContainer row, string text, string background, string foreground, Action action, string tip)
     {
-        var b = Ui.Button(row, text, action);
+        var b = Ui.Button(row, text, action, tip);
+        b.Name = "Tecla_" + text;
         b.CustomMinimumSize = new Vector2(146, 70);
         b.AddThemeFontSizeOverride("font_size", 20);
         var style = new StyleBoxFlat { BgColor = new Color(background), CornerRadiusBottomLeft = 6, CornerRadiusBottomRight = 6, CornerRadiusTopLeft = 6, CornerRadiusTopRight = 6 };
@@ -287,5 +294,6 @@ public partial class UrnaScreen : Control
 
         Line("", 10);
         Line(Tr("Aperte a tecla CONFIRMA para CONFIRMAR este voto ou CORRIGE para REINICIAR este voto."), 18);
+        Glossary.LinkTerms(this);
     }
 }
