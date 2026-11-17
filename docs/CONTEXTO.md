@@ -176,7 +176,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 ## 6. Estado atual
 
 - **Fases concluídas:** 0 (fundação), 1 (núcleo: regras eleitorais, municípios, partidos, cenário Brasil 2026, eleitorado e pesquisas), 2 (criação de personagem), 3 (fatia vertical de vereador), 4 (mandato de vereador e fundação de partido), 5 (prefeito e debate). Da Fase 6, dois itens: contornos dos municípios e população projetada com vagas por eleição.
-- **Testes na main (17/11):** 1.048 no Core, 121 no importador, 31 alvos de fumaça com janela.
+- **Testes na main (17/11):** 1.033 no Core (1.048 no branch `rl`), 121 no importador, 31 alvos de fumaça com janela.
 - **Teste do autor:** jogou a fatia vertical e reprovou: "pouca coisa pra fazer, confuso, feio, muito raso", "chato e saturável", "parece o Referee Simulator da Play Store".
 - **Diagnóstico** (documento de auditoria), com as 5 causas do tédio:
   1. não há decisão, só gasto: 6 ações de efeito fixo, e repetir "Redes sociais" é sempre o melhor;
