@@ -263,6 +263,17 @@ public partial class CharacterCreatorScreen : Control
         return People.Biography.Write(_c, new Rng(_game.PendingSeed + 11 + _bioSeed), HomeName(), partyName, profession?.Name.For(_c.Gender) ?? "", Today, _game.World.Parties.NameTerms.GenderOf(partyName));
     }
 
+    /// <summary>Nome do atributo como o jogador lê, com acento.</summary>
+    private string AttributeName(AttributeId attribute) => Tr(attribute switch
+    {
+        AttributeId.Carisma => "Carisma",
+        AttributeId.Oratoria => "Oratória",
+        AttributeId.Articulacao => "Articulação",
+        AttributeId.Gestao => "Gestão",
+        AttributeId.Integridade => "Integridade",
+        _ => attribute.ToString(),
+    });
+
     private void RecomputeStats()
     {
         SocialOriginDefinition origin = People.Origins.Get(_c.SocialOrigin!);
@@ -573,7 +584,7 @@ public partial class CharacterCreatorScreen : Control
         }
 
         Ui.Button(t, "Outras opções de traços", () => Change(() => { _offeredTraits = OfferTraits(); _c.TraitIds.Clear(); RecomputeStats(); }));
-        Ui.Value(t, string.Join(" · ", Enum.GetValues<AttributeId>().Select(a => $"{a}: {_c.Attributes.Get(a)}")));
+        Ui.Value(t, string.Join(" · ", Enum.GetValues<AttributeId>().Select(a => $"{AttributeName(a)}: {_c.Attributes.Get(a)}")));
 
         HBoxContainer bioRow = Ui.Field(t, "Biografia");
         Ui.Button(bioRow, "Gerar de novo", () => Change(() => { _bioSeed++; _bioEdited = false; }));
