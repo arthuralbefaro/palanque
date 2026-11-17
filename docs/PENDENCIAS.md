@@ -274,3 +274,12 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 ### P-37 · Itens do primeiro pedido da RL fora da leitura mínima (D-055)
 - **O quê:** gráfico da intenção de voto por semana (eu, os dois acima e os dois abaixo); primeira campanha guiada por objetivos (agir numa zona, visitar uma liderança, ler a previsão; dispensável, fora do save); feed com fatores; objetivos com origem (os dois últimos vêm da referência `docs/referencias/rl_tela_central.html`).
 - **A decidir pelo autor:** em que parte cada um entra (RL, RV-A, RV-C ou depois).
+
+## fase-r-final — sobras
+
+### P-38 · O que a fase-r-final deixou para o autor (D-056)
+- **Opções sem efeito:** Dificuldade, Realismo jurídico, Cúpula e o estatuto do partido próprio não mudam a simulação; os tooltips dizem isso. **A decidir:** ganham efeito ou saem.
+- **Zona Sudoeste de Mesquita (MG):** a importação junta um pedaço da sede e uma vila afastada na mesma zona; o nome e o marcador ficam no pedaço da vila, fora do enquadramento da sede. Defeito da divisão de zonas, não do mapa; corrigir na importação (RV-A).
+- **Testes de fumaça mais lentos:** o `explicacao` joga uma carreira de prefeito até a urna (cerca de 150 s sob carga) e o `layout` faz o mesmo duas vezes (cerca de 610 s).
+- **Opções em 1366×768:** o estado "ligada" encosta na barra de rolagem; as caixas de marcar do tema da tela central são pequenas e escuras (o estado também vai em palavras). Fica para o estilo da RV-A.
+- **Tooltips repetitivos** nos controles de aparência da criação e em parte do Novo Mundo.
