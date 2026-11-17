@@ -57,15 +57,9 @@ public partial class HubScreen
         BackButton();
         NameTitle(_left, z.Nome);
         FirstTimeHint("ficha_zona");
-        string origem = z.NomeFonte switch
-        {
-            Zona.NomeBairro => Tr("nome do bairro mais populoso da zona (malha de bairros do IBGE)"),
-            Zona.NomeDistrito => Tr("nome do distrito do IBGE"),
-            _ => Tr("nome dado pelo jogo, pela posição na cidade: aqui não há bairro oficial"),
-        };
         string home = index == Territory.HomeZone ? " " + Tr("É a sua zona natal: você mora aqui.") : "";
-        Glossary.Rich(_left, string.Format(PtBr, Tr("{0}. {1:N0} moradores e {2:N0} eleitores, em {3:N1} km². Origem do nome: {4}.{5}"),
-            Tr(z.IsRural ? "Zona rural" : "Zona urbana"), z.Populacao, electorate.Voters, z.AreaKm2, origem, home));
+        Glossary.Rich(_left, string.Format(PtBr, Tr("{0}. {1:N0} moradores e {2:N0} eleitores, em {3:N1} km². {4}{5}"),
+            Tr(z.IsRural ? "Zona rural" : "Zona urbana"), z.Populacao, electorate.Voters, z.AreaKm2, Tr(ZoneNameOrigin.Frase(z)), home));
 
         var marcar = Ui.Button(_left, "Marcar compromisso aqui", () =>
         {

@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-11-16T18:31:59.0363388+00:00",
+  "gerado_em": "2026-11-17T11:27:05.2600859+00:00",
   "fontes": [
     {
       "campo": "contornos",
@@ -28,6 +28,15 @@
       "ano": 2022,
       "url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios_Rendimento_do_Responsavel/Agregados_por_setores_renda_responsavel_BR_20260508_csv.zip",
       "baixado_em": "2026-11-16T03:36:39.2148109+00:00"
+    },
+    {
+      "campo": "nome (só as zonas com nome_fonte bairro_osm)",
+      "fonte": "OpenStreetMap (© colaboradores do OpenStreetMap), extraído pela Overpass API",
+      "licenca": "Open Database License (ODbL) 1.0",
+      "licenca_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "url": "https://www.openstreetmap.org/copyright; https://overpass-api.de/api/interpreter",
+      "extraido_em": "2026-11-17T09:22:18.2979292+00:00",
+      "extraido_ate": "2026-11-17T10:03:26.4496436+00:00"
     }
   ],
   "metodo": "Setores agrupados por município, sem misturar urbanos e rurais; urbanos partem dos bairros do IBGE onde existem. Zona rural dividida pelos distritos do IBGE: a parte rural de cada distrito vira ao menos uma zona; distrito com menos de 200 moradores rurais é agrupado com o vizinho de maior divisa; o município pode passar do máximo do porte em até 4 zonas, e acima disso os grupos menores se juntam. Agrupamento guloso: o grupo de menor população se junta ao vizinho de menor população (vizinhança por divisa comum; sem vizinho, o mais próximo) até o número de zonas do porte (na zona rural, primeiro dentro de cada grupo de distritos). Contornos dissolvidos e simplificados por cobertura do município (tolerância proporcional ao tamanho de cada zona, aumentada até 34 vértices por zona em média, entre 5E-05° e 0.05°), coordenadas a 1/10000 de grau.",
@@ -38,7 +47,7 @@
   },
   "contornos_bytes": 23744877,
   "teto_bytes": 31457280,
-  "atributos_bytes": 19414750,
+  "atributos_bytes": 19610696,
   "teto_atributos_bytes": 20971520,
   "zonas": 31026,
   "regra_de_sigilo": "População e domicílios do agregado básico (sem supressão). Idade e renda: células com \"X\" ou setor sem linha não são estimados; cada bloco soma só os setores publicados, e a zona com cobertura abaixo de 80% usa o perfil do município.",
@@ -2177,8 +2186,192 @@
     "1721109-04 idade (cobertura 24%)",
     "1721208-02 idade (cobertura 56%)"
   ],
+  "openstreetmap": {
+    "fonte": "OpenStreetMap",
+    "credito": "© colaboradores do OpenStreetMap",
+    "licenca": "Open Database License (ODbL) 1.0",
+    "licenca_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "url": "https://www.openstreetmap.org/copyright",
+    "servico": "https://overpass-api.de/api/interpreter",
+    "campo_afetado": "nome das zonas com nome_fonte bairro_osm; o resto da zona (contorno, população, perfil) vem do IBGE",
+    "extraido_em": "2026-11-17T09:22:18.2979292+00:00",
+    "extraido_ate": "2026-11-17T10:03:26.4496436+00:00",
+    "consulta": "por UF: nós, contornos e relações com place=neighbourhood|quarter|suburb e nome, e relações boundary=administrative com admin_level=10 e nome; só nome, tipo e ponto (o do nó ou o centro do contorno)",
+    "metodo": "Só a zona urbana que ficaria com nome gerado (sem bairro do IBGE e sem distrito dominante) recebe nome do OpenStreetMap; onde o IBGE tem bairro ou distrito, vale o IBGE. Cada lugar entra na zona cujo setor contém o ponto dele (ponto no polígono, pela malha de setores sem simplificar). Nomes filtrados: vazios, sem letra, com mais de 60 caracteres, com sinal de anotação (: ( )), iguais ao nome do município ou a um nome excluído, ou começando por um prefixo excluído (rua, quadra, edifício; lista em data/territory/config.json); nome todo em maiúsculas passa para a caixa normal, e a palavra \"Bairro\" no começo sai. Com vários na zona, vale o tipo de maior prioridade (limite administrativo de bairro e suburb, depois quarter, depois neighbourhood); no mesmo tipo, o de mais moradores perto (cada setor da zona conta para o lugar mais próximo); no empate, o mais perto do centro populacional da zona e a ordem alfabética. Nome que repete um bairro ou distrito do IBGE do município, o próprio município, o nome de outra zona ou o nome gerado de outra zona não é usado; a zona mais populosa escolhe primeiro e a seguinte passa ao próximo candidato; sem candidato, fica o nome gerado.",
+    "lugares_lidos": 76218,
+    "lugares_dentro_de_setor": 76177,
+    "zonas_com_nome_osm": 4675,
+    "zonas_por_uf": {
+      "AC": 24,
+      "AL": 35,
+      "AM": 4,
+      "AP": 6,
+      "BA": 367,
+      "CE": 49,
+      "DF": 19,
+      "ES": 176,
+      "GO": 290,
+      "MA": 101,
+      "MG": 727,
+      "MS": 43,
+      "MT": 52,
+      "PA": 134,
+      "PB": 111,
+      "PE": 112,
+      "PI": 74,
+      "PR": 268,
+      "RJ": 148,
+      "RN": 101,
+      "RO": 12,
+      "RR": 11,
+      "RS": 267,
+      "SC": 162,
+      "SE": 32,
+      "SP": 1312,
+      "TO": 38
+    },
+    "base_osm_de": "2026-11-17T09:21:05Z",
+    "base_osm_ate": "2026-11-17T10:02:05Z",
+    "extracao_por_uf": {
+      "AC": {
+        "extraido_em": "2026-11-17T09:22:18.2979292+00:00",
+        "base_osm": "2026-11-17T09:21:05Z",
+        "lugares": 238
+      },
+      "AL": {
+        "extraido_em": "2026-11-17T09:23:18.4776426+00:00",
+        "base_osm": "2026-11-17T09:22:05Z",
+        "lugares": 252
+      },
+      "AM": {
+        "extraido_em": "2026-11-17T09:24:22.4789524+00:00",
+        "base_osm": "2026-11-17T09:23:06Z",
+        "lugares": 309
+      },
+      "AP": {
+        "extraido_em": "2026-11-17T09:25:18.7555898+00:00",
+        "base_osm": "2026-11-17T09:24:09Z",
+        "lugares": 159
+      },
+      "BA": {
+        "extraido_em": "2026-11-17T09:26:56.597423+00:00",
+        "base_osm": "2026-11-17T09:25:10Z",
+        "lugares": 2977
+      },
+      "CE": {
+        "extraido_em": "2026-11-17T09:27:58.2865917+00:00",
+        "base_osm": "2026-11-17T09:26:13Z",
+        "lugares": 1403
+      },
+      "DF": {
+        "extraido_em": "2026-11-17T09:28:57.8343225+00:00",
+        "base_osm": "2026-11-17T09:27:13Z",
+        "lugares": 689
+      },
+      "ES": {
+        "extraido_em": "2026-11-17T09:30:29.7995634+00:00",
+        "base_osm": "2026-11-17T09:28:18Z",
+        "lugares": 2535
+      },
+      "GO": {
+        "extraido_em": "2026-11-17T09:31:46.6614202+00:00",
+        "base_osm": "2026-11-17T09:30:20Z",
+        "lugares": 4528
+      },
+      "MA": {
+        "extraido_em": "2026-11-17T09:32:42.8167159+00:00",
+        "base_osm": "2026-11-17T09:31:20Z",
+        "lugares": 966
+      },
+      "MG": {
+        "extraido_em": "2026-11-17T09:34:46.5649487+00:00",
+        "base_osm": "2026-11-17T09:32:21Z",
+        "lugares": 10780
+      },
+      "MS": {
+        "extraido_em": "2026-11-17T09:37:25.969379+00:00",
+        "base_osm": "2026-11-17T09:35:27Z",
+        "lugares": 1889
+      },
+      "MT": {
+        "extraido_em": "2026-11-17T09:38:49.3432334+00:00",
+        "base_osm": "2026-11-17T09:37:27Z",
+        "lugares": 1772
+      },
+      "PA": {
+        "extraido_em": "2026-11-17T09:39:54.5416087+00:00",
+        "base_osm": "2026-11-17T09:38:28Z",
+        "lugares": 1187
+      },
+      "PB": {
+        "extraido_em": "2026-11-17T09:42:35.4467892+00:00",
+        "base_osm": "2026-11-17T09:41:28Z",
+        "lugares": 1155
+      },
+      "PE": {
+        "extraido_em": "2026-11-17T09:43:50.0608147+00:00",
+        "base_osm": "2026-11-17T09:42:34Z",
+        "lugares": 1907
+      },
+      "PI": {
+        "extraido_em": "2026-11-17T09:45:00.6831646+00:00",
+        "base_osm": "2026-11-17T09:43:36Z",
+        "lugares": 1289
+      },
+      "PR": {
+        "extraido_em": "2026-11-17T09:46:21.8342264+00:00",
+        "base_osm": "2026-11-17T09:44:38Z",
+        "lugares": 4103
+      },
+      "RJ": {
+        "extraido_em": "2026-11-17T09:47:28.4950184+00:00",
+        "base_osm": "2026-11-17T09:45:41Z",
+        "lugares": 3603
+      },
+      "RN": {
+        "extraido_em": "2026-11-17T09:48:24.9310842+00:00",
+        "base_osm": "2026-11-17T09:46:46Z",
+        "lugares": 1343
+      },
+      "RO": {
+        "extraido_em": "2026-11-17T09:50:57.7140412+00:00",
+        "base_osm": "2026-11-17T09:48:46Z",
+        "lugares": 364
+      },
+      "RR": {
+        "extraido_em": "2026-11-17T09:52:24.3185534+00:00",
+        "base_osm": "2026-11-17T09:50:47Z",
+        "lugares": 301
+      },
+      "RS": {
+        "extraido_em": "2026-11-17T09:54:13.206569+00:00",
+        "base_osm": "2026-11-17T09:52:51Z",
+        "lugares": 7348
+      },
+      "SC": {
+        "extraido_em": "2026-11-17T09:57:06.6570651+00:00",
+        "base_osm": "2026-11-17T09:54:58Z",
+        "lugares": 5559
+      },
+      "SE": {
+        "extraido_em": "2026-11-17T09:58:01.7408539+00:00",
+        "base_osm": "2026-11-17T09:57:01Z",
+        "lugares": 487
+      },
+      "SP": {
+        "extraido_em": "2026-11-17T10:00:56.7154469+00:00",
+        "base_osm": "2026-11-17T09:59:02Z",
+        "lugares": 18570
+      },
+      "TO": {
+        "extraido_em": "2026-11-17T10:03:26.4496436+00:00",
+        "base_osm": "2026-11-17T10:02:05Z",
+        "lugares": 510
+      }
+    }
+  },
   "zonas_rd": {
-    "gerado_em": "2026-11-16T18:34:51.860032+00:00",
+    "gerado_em": "2026-11-17T11:27:21.9480545+00:00",
     "fontes": [
       {
         "campo": "perfil.religiao, perfil.escolaridade",

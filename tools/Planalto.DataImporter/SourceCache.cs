@@ -91,6 +91,78 @@ public sealed class SourceCache(string directory, HttpClient http)
         return new CachedFile(path, url, downloaded.DownloadedAt);
     }
 
+    /// <summary>
+    /// Como <see cref="GetAsync"/>, para serviços que pedem nova tentativa com espera crescente quando estão cheios
+    /// (Overpass API: HTTP 429, 502, 503 e 504, ou resposta com erro de execução apontado por <paramref name="contentError"/>).
+    /// Qualquer outra recusa, ou a última tentativa sem sucesso, vira <see cref="DownloadBlockedException"/>.
+    /// </summary>
+    public async Task<CachedFile> GetWithBackoffAsync(string fileName, string url, string userAgent, Func<string, string?> contentError, int attempts, TimeSpan firstWait)
+    {
+        string path = Path.Combine(Directory, fileName);
+        if (File.Exists(path))
+        {
+            return await GetAsync(fileName, url);
+        }
+
+        System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        string partial = path + ".part";
+        TimeSpan wait = firstWait;
+        string reason = "";
+        for (int attempt = 1; attempt <= attempts; attempt++)
+        {
+            Console.WriteLine($"  baixando {fileName} (tentativa {attempt} de {attempts})");
+            bool retry;
+            try
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.UserAgent.Clear();
+                request.Headers.UserAgent.ParseAdd(userAgent);
+                using HttpResponseMessage response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                int status = (int)response.StatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    await using (FileStream output = File.Create(partial))
+                    {
+                        await response.Content.CopyToAsync(output);
+                    }
+
+                    if (contentError(partial) is not { } error)
+                    {
+                        File.Move(partial, path);
+                        var downloaded = new Meta(url, DateTimeOffset.UtcNow, new FileInfo(path).Length);
+                        await File.WriteAllTextAsync(path + ".meta.json", JsonSerializer.Serialize(downloaded, MetaOptions));
+                        return new CachedFile(path, url, downloaded.DownloadedAt);
+                    }
+
+                    reason = error;
+                    retry = true;
+                }
+                else
+                {
+                    reason = $"HTTP {status} {response.ReasonPhrase}";
+                    retry = status is 429 or 502 or 503 or 504;
+                }
+            }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or IOException)
+            {
+                reason = ex.Message;
+                retry = true;
+            }
+
+            File.Delete(partial);
+            if (!retry || attempt == attempts)
+            {
+                break;
+            }
+
+            Console.WriteLine($"    {reason}; nova tentativa em {wait.TotalSeconds:0} s");
+            await Task.Delay(wait);
+            wait *= 2;
+        }
+
+        throw new DownloadBlockedException(url, fileName, path, reason);
+    }
+
     /// <summary>Download anônimo por FTP (DATASUS), em modo binário e passivo.</summary>
     private static async Task DownloadFtpAsync(string url, string partial)
     {
