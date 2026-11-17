@@ -125,6 +125,9 @@ public partial class ZoneMapView : Control
         QueueRedraw();
     }
 
+    /// <summary>Cor de preenchimento de cada zona no modo atual (testes de fumaça: contraste entre zonas).</summary>
+    public IReadOnlyDictionary<string, Color> ZoneColors => _colors;
+
     public void SetColors(Dictionary<string, Color> colors)
     {
         _colors = colors;
