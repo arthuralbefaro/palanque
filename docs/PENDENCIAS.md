@@ -146,7 +146,7 @@ Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Si
 - **Também:** corrigir os encaixes errados de brinco e cabelo da arte 2D atual (os retratos 3D ficam para depois da Fase R). — aberto
 - **Pesquisa pedida, sem implementar:** se o IBGE publica as faces de logradouro ou as quadras do Censo 2022 para todos os municípios e quanto ocupariam simplificadas só no núcleo urbano; o resultado entra aqui como decisão do autor.
 
-### P-25 · Ruas ou quadras do IBGE no mapa das cidades (decisão do autor; nada foi implementado)
+### P-25 · Ruas ou quadras do IBGE no mapa das cidades — **continua na P-39** (pesquisa completa e protótipo da RV)
 - **O que existe (lido nas listagens oficiais do geoftp e na ficha do produto):** a "Base de Faces de Logradouros do Brasil, versão 2022 (Censo Demográfico), resultados preliminares": linhas de rua das áreas urbanizadas, expansões urbanas e aglomerados rurais, um arquivo por município (5.570), 13,85 milhões de faces, em shapefile e JSON, um zip por UF, de 2024-06-07 (`geoftp.ibge.gov.br/recortes_para_fins_estatisticos/malha_de_setores_censitarios/censo_2022/base_de_faces_de_logradouros_versao_2022_censo_demografico/`). Total nacional: cerca de 1,0 GB em zip (RR 1,7 MB; PR 38 MB; SP 377 MB).
 - **Quadras em polígono:** nenhum produto encontrado nas pastas percorridas; a quadra só aparece como atributo da face (`CD_QUADRA`) e teria de ser reconstruída. Em Roraima, 9,7% das faces não têm código de quadra.
 - **Medido em Roraima** (15 municípios, 37.917 faces): simplificado a 3 m e gravado em JSON compacto sem atributos, dá cerca de 22 bytes por face; um município pequeno fica entre 6 e 70 KB.
@@ -155,6 +155,7 @@ Um commit por item. Antes de corrigir, conferir se a `fase-r2b` já resolveu. Si
 - **Não confirmado:** se há versão definitiva mais nova; a fração de faces fora da sede; a taxa de simplificação fora de Roraima.
 - **Atualização (16/11, quarta rodada):** o autor decidiu usar as ruas no mapa novo (redefinição visual, DECISOES D-041, adendo). A pesquisa completa de fontes e tamanhos (faces, BC250, elevação) e a forma de guardar ou gerar o mapa de base são entregues ao fim da `fase-r-final`; a licença continua a conferir.
 - **A decidir pelo autor:** (a) não usar e manter as zonas; (b) usar só nas cidades pequenas, com teto próprio de tamanho; (c) baixar por município, fora do Git. Nada muda até a decisão.
+- **Atualização (17/11, entrega da RV):** o autor já decidiu usar as ruas (D-044), o que tira a opção (a). A pesquisa completa, com as medidas do protótipo, e as opções de guardar ou gerar o mapa de base estão na **P-39**, que substitui esta lista de opções.
 
 ## R3 — pendências
 
@@ -283,3 +284,54 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 - **Testes de fumaça mais lentos:** o `explicacao` joga uma carreira de prefeito até a urna (cerca de 150 s sob carga) e o `layout` faz o mesmo duas vezes (cerca de 610 s).
 - **Opções em 1366×768:** o estado "ligada" encosta na barra de rolagem; as caixas de marcar do tema da tela central são pequenas e escuras (o estado também vai em palavras). Fica para o estilo da RV-A.
 - **Tooltips repetitivos** nos controles de aparência da criação e em parte do Novo Mundo.
+
+## Entrega da RV (fim da fase-r-final, 17/11)
+
+O protótipo da RV está no branch `rv-prototipo` e não entra na main antes da RL (D-054 e D-055). Decisões: D-043 (bonecos) e D-044 (mapa e janelas). Capturas, prancha e medidas em `docs/referencias/rv/` nesse branch.
+
+### P-39 · Fontes e tamanhos do mapa de base da cidade (decisão do autor; substitui as opções da P-25)
+Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "Oficial" = publicado pelo IBGE em diretório público; nenhuma licença abaixo foi lida num termo próprio do produto.
+- **Faces de Logradouros 2022 (IBGE, Censo, resultados preliminares).**
+  - **Cobertura:** ruas com nome, tipo e título, em linhas de face de quadra, com os códigos de setor e de quadra; áreas urbanizadas e aglomerados rurais dos 5.570 municípios.
+  - **Formato:** só zip por UF (MG 110 MB; país cerca de 1,0 GB). Belo Horizonte bruto: 81.230 faces (shp 14,8 MB, dbf 12,6 MB); Mantena: 2.919 faces, 0,8 MB.
+  - **Quadras:** não existem como polígono; são remontadas das faces pelo código da quadra e fecham em cerca de 80% dos códigos (84% em Mantena, 80% em BH).
+  - **Nomes de rua** vêm em caixa alta e sem acento.
+  - **Licença: não confirmada.** As listagens dizem que os arquivos são públicos; a página de licença do IBGE recusou a leitura automática. A D-037 aceitou os termos do IBGE com citação para as fontes usadas na RD; as faces não estavam entre elas.
+  - **Tamanho no formato compacto do protótipo, BH:** quadras 11,7 MB, faces 3,3 MB, ruas para rótulos 2,3 MB, nomes 0,25 MB (17,8 MB no total, 7,1 MB com gzip). Estimado com vértices indexados em 16 bits: cerca de 5 MB (2,5 MB com gzip). Mantena: 0,54 MB.
+  - **Tempo:** o importador gera BH em 28,8 s e Mantena em 1,1 s; o jogo carrega BH em 0,48 a 0,78 s.
+- **BC250, versão 2025 (IBGE).**
+  - **Cobertura:** drenagem com nome, massas d'água, rodovias com sigla e pavimento, ferrovias, área densamente edificada, localidades. Sem curvas de nível, só pontos cotados.
+  - **Licença:** oficial e pública; os termos não foram lidos à parte.
+  - **Formato:** país só em zip de shapefiles (798 MB) ou GPKG (864 MB). Recortada por município é pequena (rios de Mantena 86 KB, rodovias 20 KB).
+  - **Tempo:** ler a drenagem leva cerca de 17 s; as massas d'água, cerca de 195 s (dá para otimizar).
+- **Elevação (relevo sombreado): nada implementado; nenhuma licença confirmada.**
+  - Topodata (INPE): SRTM refinado de 30 m, GeoTIFF por folha de 1° × 1,5°, cerca de 65 MB por folha em zip; o Brasil tem cerca de 480 folhas, cerca de 30 GB estimados; a página de termos não abriu.
+  - ANADEM (ANA), Copernicus DEM GLO-30 e o MDE do IBGE: sem confirmação de licença nem de tamanho.
+- **OpenStreetMap: fora** (licença ODbL), salvo se o autor liberar.
+- **Como guardar ou gerar o mapa de base da cidade em foco:**
+  - (a) **Gerar na hora a partir dos brutos:** exige NetTopologySuite fora do importador e o zip da UF na máquina; cerca de 30 s numa metrópole. Inviável sem aprovar pacote novo no jogo.
+  - (b) **Pré-gerado por município e baixado sob demanda:** 0,3 a 3 MB por município com gzip; o país todo, de 1 a 3 GB fora do repositório. Exige hospedar e redistribuir dados do IBGE, o que depende da licença das faces.
+  - (c) **Só cidades pequenas no repositório, com teto próprio de tamanho** (como na P-25); as outras sem mapa de base, ou por (b) ou (d).
+  - (d) **Gerado pelo importador no computador do jogador,** a partir do cache baixado por ele.
+  - Hoje o protótipo usa o cache (`cache/rv/mapa_base/{código}.rvmapa`), fora do Git. Em outra máquina é preciso rodar `dotnet run --project tools/Planalto.DataImporter -- rv baixar` e `rv mapa`, que dependem do modo `zonas` já rodado.
+- **A decidir pelo autor:**
+  1. confirmar a licença das Faces de Logradouros e os termos da BC250;
+  2. escolher a fonte de elevação, ou ficar sem relevo;
+  3. escolher entre (b), (c) e (d), ou uma combinação;
+  4. se libera o OpenStreetMap para algo (hoje, não).
+- **Escolha provisória até lá:** o mapa de base fica no cache, fora do Git, e não entra na main sem a decisão sobre a licença e a forma de guardar.
+- **Como reverter:** o mapa de base é uma camada abaixo das zonas; sem o arquivo, o mapa de zonas atual continua funcionando.
+
+### P-40 · O que o protótipo da RV pede ao autor (além da P-39)
+- **Julgar as cabeças A e B pela prancha** (`prancha_retratos_{512,256,96}.png`, `menu_cabeca_{a,b}_*.png` e `teste_cabeca_{a,b}_*.png` no branch), pelo critério do rosto do ROADMAP. **Nenhuma das duas foi declarada boa o bastante.** Aprovando uma, o briefing do artista fica arquivado; reprovando as duas, vale o teste pago (D-045).
+- **Aprovar as duas convenções que o protótipo adotou no contrato da cabeça** (ART_GUIDE, Parte 1, seção 9):
+  1. o sufixo numérico do Blender (`expr_bravo.001`) é ignorado ao comparar nomes;
+  2. o material extra `interior_boca`, não tingível, é aceito.
+  E a forma de contar o orçamento no modo de troca de peças (pior caso visível).
+- **Qualidade leve:** decidir se vira opção nas Opções e qual é o padrão. Leve = sem sombra nem brilho, 3D a 75% com FSR; no menu, 50 a 58 FPS contra 31 a 36 da cheia.
+- **Placa de vídeo-alvo dos 60 FPS:** as medidas foram feitas na Radeon integrada (Ryzen 5 7520U) **com a máquina dividida com outros programas**; remedir com a máquina livre. Nessa placa, o menu não chegou a 60 FPS em qualidade cheia.
+- **Licenças dos assets 3D:** a cabeça A parte do asset "Head - Stylized" dos Human Base Meshes v1.4.1 (Julien Kaspar), CC0 pelos metadados do arquivo e pelo LEIA-ME; a página do blender.org deu erro 403 e não pôde ser lida. O `.blend` traz também uma licença CC BY 4.0 do "Rain Rig" (corpos Rain e Snow, não usados), registrada no CREDITS do branch. A cabeça B, os corpos, as roupas, os cabelos, o cenário e as texturas foram gerados por código do projeto. Nada de Quaternius, Mixamo, Ready Player Me, VRoid ou pacote novo. **A confirmar pelo autor:** a licença dos Human Base Meshes na página oficial, antes de integrar.
+- **ART_GUIDE:** a Parte 1 é proposta; os pontos em aberto estão na seção 14 dela (bordas, regra dos 40% com janelas translúcidas, caixa alta no nome do jogo, cor das praças, horários do dia e da noite).
+- **Em que parte entram** os retratos 3D no lugar dos 2D e as telas fora do jogo (estúdio de foto, urna, apuração): a D-055 não diz. Proposta no ROADMAP: RV-B, com a cabeça escolhida.
+- **Acento nos nomes de rua:** a fonte não traz; restaurar exigiria uma regra ou uma lista própria. A decidir se vale.
+- **Escolha provisória:** nada da RV entra na main antes da RL; o protótipo fica no branch.
