@@ -1321,6 +1321,15 @@ public partial class UiShot
             await check("mandato, área " + area, suffix);
         }
 
+        // Fundação de partido (proposta), aberta pela área Partido sobre o mapa.
+        await Press(hub, "Fundar");
+        await check("fundação de partido", "fundacao");
+        if (FindAll<Widgets.FoundingDialog>(hub).FirstOrDefault() is { } founding)
+        {
+            FindAll<Button>(founding).First(b => b.Text == TranslationServer.Translate("Fechar")).EmitSignal(BaseButton.SignalName.Pressed);
+            await Frames(2);
+        }
+
         foreach (string mode in new[] { "obras", "aprovacao", "renda", "situacao", "base" })
         {
             await Press(hub, "Modo_" + mode);

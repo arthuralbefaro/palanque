@@ -437,8 +437,23 @@ public partial class UiShot : Node
             await Frames(5);
             problems.AddRange(Overflow(first, $"Hub {tag}"));
             Save(shot, $"_hub_{tag}");
+
+            // Opções abertas sobre a tela central (P-03).
+            Widgets.OptionsDialog.Open(GetTree().Root);
+            await Frames(4);
+            problems.AddRange(Overflow(GetTree().Root.FindChild("Opcoes", recursive: true, owned: false)!, $"Opções sobre a tela central, {tag}"));
+            Save(shot, $"_rfinal_opcoes_central_{tag}");
+            GetTree().Root.FindChild("OpcoesCamada", recursive: true, owned: false)?.QueueFree();
+            await Frames(2);
             RemoveChild(first);
             first.QueueFree();
+
+            // Telas fora da tela central (P-02): menu, Opções, Novo Mundo, criação, seletor, mapa do estado, debate, urna e apuração.
+            await VisitOutsideScreens((root, where, slug) =>
+            {
+                problems.AddRange(Overflow(root, $"{where}, {tag}"));
+                Save(shot, $"_rfinal_{slug}_{tag}");
+            });
 
             // Tela central da R2a em três portes: cada área do trilho, as fichas, a marcação, o pedido e os modos do mapa.
             foreach (var (code, label) in new[] { (SmallCity, "pequena"), (MediumCity, "media"), (Metropolis, "metropole") })
@@ -608,7 +623,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print("Smoke layout: ok (janela real dentro da área útil do monitor, com os botões do Novo Mundo e da criação; 1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas; e as telas da R4 em cidade pequena e metrópole: mandato de vereador, gabinete, instrumentos, achado, Mesa e CPI, Base, contagem nominal, evento de mandato, cobrança do Livro, indicadores, composição da Câmara, entressafra, e a prefeitura com Governo, Secretariado, Obras, modalidade, inauguração, Pessoal e fiscal, mesa de negociação, Convênios, Câmara, Orçamento e políticas e a crise no cartão)");
+        GD.Print("Smoke layout: ok (janela real dentro da área útil do monitor, com os botões do Novo Mundo e da criação; 1920x1080 e 1366x768: criação em todas as abas, Novo Mundo e a tela central em cidade pequena, média e metrópole, com as 7 áreas, 3 modos do mapa, ficha da zona, marcação, ficha da pessoa, cartão do pedido, as telas da R2b: Campanha com os três blocos, Equipe, decisão da equipe, Verba, canais, modo Verba, Plataforma, tema, prometer e Objetivos, e as da R3: Pessoas com a chapa, painel da chapa, ficha do rival, atacar, Mídia, ficha de veículo, entrevista com veículo, ataque com prazo, Finanças com o bloco Contas, painel Contas, oferta de doação, modo Disputa e cartão de evento com pessoas; e as telas da R4 em cidade pequena e metrópole: mandato de vereador, gabinete, instrumentos, achado, Mesa e CPI, Base, contagem nominal, evento de mandato, cobrança do Livro, indicadores, composição da Câmara, entressafra, e a prefeitura com Governo, Secretariado, Obras, modalidade, inauguração, Pessoal e fiscal, mesa de negociação, Convênios, Câmara, Orçamento e políticas e a crise no cartão; e as telas fora da tela central: menu, Opções, Novo Mundo, criação com partido próprio, seletor de cidade, mapa do estado, debate, urna e apuração)");
         GetTree().Quit(0);
     }
 
@@ -933,35 +948,7 @@ public partial class UiShot : Node
         await Frames(5);
 
         var problems = new List<string>();
-        void Check(Node root, string where)
-        {
-            foreach (Control c in FindAll<Control>(root).Where(c => c.IsVisibleInTree()))
-            {
-                if (InternalReference(c) is { } reference)
-                {
-                    problems.Add($"{where}: {reference}");
-                }
-
-                if (c is BaseButton or LineEdit or SpinBox or PanelContainer { MouseDefaultCursorShape: Control.CursorShape.PointingHand })
-                {
-                    string tip = c.TooltipText;
-                    string name = c is Button b ? b.Text : c.Name;
-                    if (!tip.Contains(Tr("O que faz:"), StringComparison.Ordinal) || !tip.Contains(Tr("Quanto custa:"), StringComparison.Ordinal))
-                    {
-                        problems.Add($"{where}: controle '{name}' sem tooltip em três partes");
-                    }
-
-                    if (c is BaseButton { Disabled: true } && !tip.StartsWith(Tr("Bloqueado:"), StringComparison.Ordinal))
-                    {
-                        problems.Add($"{where}: controle bloqueado '{name}' sem motivo");
-                    }
-                }
-                else if (c is Label label && !label.Name.ToString().StartsWith("TituloVerbete", StringComparison.Ordinal) && Widgets.Glossary.TermsIn(label.Text).FirstOrDefault() is { } term)
-                {
-                    problems.Add($"{where}: termo '{term}' sem link em \"{label.Text}\"");
-                }
-            }
-        }
+        void Check(Node root, string where) => problems.AddRange(ExplainProblems(root, where));
 
         PrepareBusyWeek(hub);
         int areas = AreaIds.Length;
@@ -1085,38 +1072,12 @@ public partial class UiShot : Node
             return;
         }
 
-        // Novo Mundo e criação do personagem (todas as abas): nenhum texto cita documento interno do projeto.
-        game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
-        foreach (string scene in new[] { Game.Scenes.NewWorld, Game.Scenes.CharacterCreator })
-        {
-            var screen = GD.Load<PackedScene>(scene).Instantiate<Control>();
-            AddChild(screen);
-            await Frames(4);
-            var tabs = FindAll<TabContainer>(screen).FirstOrDefault();
-            for (int tab = 0; tab < (tabs?.GetTabCount() ?? 1); tab++)
-            {
-                if (tabs is not null)
-                {
-                    tabs.CurrentTab = tab;
-                    await Frames(2);
-                }
+        // Opções abertas pela barra de cima da tela central.
+        await Click(Named<Button>(hub, "AbrirOpcoes")!, () => Widgets.OptionsDialog.IsOpen(GetTree().Root));
+        Check(GetTree().Root.FindChild("Opcoes", recursive: true, owned: false)!, "Opções pela tela central");
+        await Click(Named<Button>(GetTree().Root, "FecharOpcoes")!, () => !Widgets.OptionsDialog.IsOpen(GetTree().Root));
 
-                foreach (Control c in FindAll<Control>(screen).Where(c => c.IsVisibleInTree()))
-                {
-                    if (InternalReference(c) is { } reference)
-                    {
-                        problems.Add($"{screen.GetType().Name}, aba {tab + 1}: {reference}");
-                    }
-                }
-            }
-
-            RemoveChild(screen);
-            screen.QueueFree();
-            await Frames(2);
-        }
-
-        Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
-        await Frames(4);
+        await PressF1();
         if (!Widgets.EncyclopediaDialog.IsOpen(GetTree().Root))
         {
             Fail("F1 não abriu a Enciclopédia.");
@@ -1138,7 +1099,8 @@ public partial class UiShot : Node
         }
 
         // Telas da R4: mandato de vereador, entressafra e prefeitura na tela central.
-        encyclopedia.QueueFree();
+        // A camada inteira (o fundo escuro também): sem isso o fundo ficaria sobre a tela e pegaria os cliques seguintes.
+        GetTree().Root.FindChild("EnciclopediaCamada", recursive: true, owned: false)?.QueueFree();
         RemoveChild(hub);
         hub.QueueFree();
         await Frames(3);
@@ -1157,6 +1119,15 @@ public partial class UiShot : Node
         if (govPanels < 60)
         {
             Fail($"o teste de explicação só passou por {govPanels} telas da R4 (esperado: 60 ou mais).");
+            return;
+        }
+
+        // Telas fora da tela central (P-02): menu e Opções, Novo Mundo, criação com o seletor de cidade, mapa do
+        // estado, debate, urna e apuração.
+        int outside = await VisitOutsideScreens((root, where, _) => Check(root, where));
+        if (outside < OutsideScreensMinimum)
+        {
+            Fail($"o teste de explicação só passou por {outside} telas fora da tela central (esperado: {OutsideScreensMinimum} ou mais).");
             return;
         }
 
@@ -1180,7 +1151,7 @@ public partial class UiShot : Node
             return;
         }
 
-        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, {r3} telas da R3, {govPanels} telas da R4, Enciclopédia aberta com F1)");
+        GD.Print($"Smoke explicacao: ok ({areas} áreas, {zoneMap.Zonas.Count} zonas, {panels} telas da R2b, {r3} telas da R3, {govPanels} telas da R4, {outside} telas fora da tela central, Opções e Enciclopédia aberta com F1)");
         GetTree().Quit(0);
     }
 
