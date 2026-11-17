@@ -277,13 +277,14 @@ O que foi pedido para o protótipo (registro):
 - **RV-A:** o alvo `rv_prototipo` vira `rv`, com janela: carga do mapa de base, FPS com zoom e arraste, contrato de cabeça, cache de retratos, troca de cabeça só no nó, rótulos sem colisão.
 - **RV-A:** nenhum texto visível ao jogador com "Planalto" como nome do jogo (D-046).
 - **RV-A:** importador: toda quadra dentro do polígono do município; nomes de zona iguais aos de `data/zonas/`; teto de tamanho por município.
-- **RV-A:** medição de FPS e de tempo de carga três vezes, **com a máquina livre**, em Mantena e numa metrópole, na placa-alvo definida pelo autor.
+- **RV-A:** medição de FPS e de tempo de carga três vezes, **com a máquina livre**, em Mantena e numa metrópole, na placa de referência (D-059: Ryzen 5 7520U com Radeon integrada).
 - **RV-C e RV-B:** os testes de cada parte, abaixo; o alvo `rv` passa a cobrir os elementos do mundo vivo e as cenas.
 
 **Metas de desempenho:**
+- **Placa de referência (D-059):** Ryzen 5 7520U com a Radeon integrada. As duas metas do mapa abaixo já são cumpridas nela (RV-A, 17/11: Mantena a 277–280 FPS e pronta em 13–17 ms; Belo Horizonte a 199–201 FPS e pronta em 0,21–0,27 s, com a máquina dividida com outros programas).
 - **Do autor:** 60 FPS com zoom e arraste. No protótipo: de 160 a 233 FPS de média, 1% pior de 29 a 131.
 - **Do autor:** mapa de base de uma metrópole pronto em menos de 3 s. No protótipo: Belo Horizonte de 0,48 a 0,78 s.
-- **Proposta:** 60 FPS no menu com 6 personagens na placa-alvo a definir (P-40). No protótipo, na Radeon integrada, **o menu não chegou a 60 FPS em qualidade cheia** (31 a 36); só a leve chega perto (50 a 58).
+- **Proposta:** 60 FPS no menu com 6 personagens na placa de referência (P-40). No protótipo, na Radeon integrada, **o menu não chegou a 60 FPS em qualidade cheia** (31 a 36); só a leve chega perto (50 a 58).
 - **Da RV-C e da RV-B:** 60 FPS com o mundo vivo ligado numa metrópole e na cena com a multidão.
 - Todas as medidas do protótipo foram feitas com a máquina dividida com outros programas; remedir com a máquina livre antes de fixar a placa-alvo.
 
@@ -308,7 +309,7 @@ Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se 
 ## Depois da Fase R: leitura e imersão (D-054, reorganizada pela D-055)
 
 > Decidido pelo autor em 17/11, depois de jogar a `fase-r4` em Mantena ("entediante e bem confuso", "só texto", "mais fácil só realizar a ação"; e uma referência de tela com painéis e polígonos achada "pouco imersiva"). Ele quer três coisas: **(A) a cidade real desenhada no mapa; (B) gente na tela, em cenas; (C) o mundo se mexendo à volta.** Diagnóstico: os sistemas existem; falta a tela mostrar o jogo e dar a sensação de estar na cidade.
-> **Ordem:** a correção bloqueante dos traços na criação e a `fase-r-final` vêm antes de tudo; depois **RL → RV-A → RV-C → RV-B**, cada uma com tag própria. O estilo final (fontes, paleta, menu como cena, nome "Palanque") acompanha a RV-A. A Fase 6 só começa depois.
+> **Ordem:** a correção bloqueante dos traços na criação e a `fase-r-final` vêm antes de tudo; depois **RL → RV-A → RV-C → RV-B**, cada uma com tag própria. Logo depois da `fase-rl` e antes da RV-C entram o mandato e a prefeitura no relógio (D-059, seção abaixo da RL). O estilo final (fontes, paleta, menu como cena, nome "Palanque") acompanha a RV-A. A Fase 6 só começa depois.
 > **Em todas:** lógica e números só no Core, a tela exibe; capturas ao autor **no meio** do trabalho, não só no fim (o autor quer corrigir o rumo cedo); dados geográficos só de fontes oficiais ou abertas, com crédito, e nomes de bairro do OpenStreetMap só onde o IBGE não tem bairro, com crédito (liberados pela D-058); assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius. Skills de apoio (orientam; GDD, ART_GUIDE e CLAUDE.md prevalecem): game-ui-ux, game-feel, godot-ui-control, godot-csharp, camera-systems, performance-optimization e audio-design.
 
 ## RL — Leitura mínima · tag `fase-rl`
@@ -327,6 +328,15 @@ Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se 
 - **No meio:** capturas ao autor quando relógio, painel Você e painel de zonas estiverem prontos, lado a lado com a referência.
 - **Fora da leitura mínima** (do pedido anterior da RL; o autor encaixa, PENDENCIAS P-37): gráfico da intenção por semana, primeira campanha guiada por objetivos, feed com fatores e objetivos com origem.
 - **Entrega:** `docs/ROTEIRO_TESTE_RL.md` e capturas em `docs/referencias/rl/`.
+- **Correções pedidas pelo autor antes da tag (D-059):** linhas finas soltas atravessando o mapa; legenda de "Minha força" em escala de 0 a 100 com gradiente, compacta; ficha da zona estreita ou encaixada no painel esquerdo, sem cobrir o resultado do "Fazer agora"; número flutuante nítido, sem contorno duplo; intenção de voto na pré-campanha, sem pesquisa, pela estimativa da equipe, marcada como estimativa.
+
+## Mandato e prefeitura no relógio (depois da `fase-rl`, antes da RV-C; D-059)
+
+> O que a RL fez na campanha passa para as telas do mandato de vereador e da prefeitura.
+
+- [ ] Relógio andando na barra superior e linha do dia com os turnos, no mandato e na prefeitura.
+- [ ] "Fazer agora" como ação principal, com previsão antes do clique e o motivo quando bloqueado, como na campanha.
+- **Testes:** os alvos de fumaça `mandate`, `prefeitura` e `gabinete` conferem o relógio andando e o "Fazer agora" concluindo; capturas em 1366×768, 1920×1080 e 2560×1080.
 
 ## RV-A — Cidade real · tag `fase-rva`
 
@@ -335,9 +345,12 @@ Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se 
 - [ ] Ruas com nome, rios, estradas, localidades, relevo sombreado, mancha urbana, praças e quarteirões, de fonte oficial ou aberta, com crédito (pesquisa de fontes e tamanhos na PENDENCIAS P-39, decisão do autor; itens da parte RV acima).
 - [ ] Zoom da cidade inteira até a rua; câmera com zoom e arraste suaves e independentes do FPS, travada nos limites do município, com corte seco quando o feed centraliza.
 - [ ] Zonas como cor translúcida por cima do mapa de base, com os modos do jogo.
-- [ ] Luz de dia e de noite pela hora do relógio.
+- [ ] Luz de dia e de noite pela hora do relógio; **noite visível** (D-059): iluminação de rua, quarteirões com luz, rural escuro.
+- [ ] Modo "Partido líder" com intensidade pela margem de vantagem, nunca uma cor chapada na cidade toda (D-059).
+- [ ] A câmera abre com o núcleo urbano enquadrado e o rural visível nas bordas (D-059).
+- [ ] Pontos de interesse (igreja, praça, escola, posto de saúde, prefeitura, mercado) como ícones no zoom de rua: **só se o autor liberar** o OpenStreetMap para isso (PENDENCIAS P-45).
 - [ ] Estilo final da interface (fontes, paleta) e o menu como cena, pela parte RV acima.
-- **Metas:** 60 FPS com zoom e arraste; mapa de base de uma metrópole pronto em menos de 3 s.
+- **Metas:** 60 FPS com zoom e arraste; mapa de base de uma metrópole pronto em menos de 3 s; na placa de referência (Ryzen 5 7520U com Radeon integrada, D-059), onde já são cumpridas.
 - **Testes:** medição de FPS e de tempo de carga em Mantena e numa metrópole (três vezes, máquina livre); fumaça com janela do zoom até a rua e do modo de cada zona por cima; capturas em 1366×768, 1920×1080 e 2560×1080.
 - **No meio:** capturas e um **vídeo de 20 a 30 s** (Mantena, de manhã e à noite) ao autor.
 

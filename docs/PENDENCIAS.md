@@ -330,7 +330,7 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
   2. o material extra `interior_boca`, não tingível, é aceito.
   E a forma de contar o orçamento no modo de troca de peças (pior caso visível).
 - **Qualidade leve:** decidir se vira opção nas Opções e qual é o padrão. Leve = sem sombra nem brilho, 3D a 75% com FSR; no menu, 50 a 58 FPS contra 31 a 36 da cheia.
-- **Placa de vídeo-alvo dos 60 FPS:** as medidas foram feitas na Radeon integrada (Ryzen 5 7520U) **com a máquina dividida com outros programas**; remedir com a máquina livre. Nessa placa, o menu não chegou a 60 FPS em qualidade cheia.
+- **Placa de vídeo-alvo dos 60 FPS** (**respondido pela D-059:** a placa de referência é a Radeon integrada do Ryzen 5 7520U, onde as metas do mapa já são cumpridas; a do menu continua a medir)**:** as medidas foram feitas na Radeon integrada (Ryzen 5 7520U) **com a máquina dividida com outros programas**; remedir com a máquina livre. Nessa placa, o menu não chegou a 60 FPS em qualidade cheia.
 - **Licenças dos assets 3D:** a cabeça A parte do asset "Head - Stylized" dos Human Base Meshes v1.4.1, CC0 pelos metadados do arquivo e pelo LEIA-ME; a página do blender.org deu erro 403 e não pôde ser lida. O `.blend` traz também uma licença CC BY 4.0 do "Rain Rig" (corpos Rain e Snow, não usados), registrada no CREDITS do branch. A cabeça B, os corpos, as roupas, os cabelos, o cenário e as texturas foram gerados por código do projeto. Nada de Quaternius, Mixamo, Ready Player Me, VRoid ou pacote novo. **A confirmar pelo autor:** a licença dos Human Base Meshes na página oficial, antes de integrar.
 - **ART_GUIDE:** a Parte 1 é proposta; os pontos em aberto estão na seção 14 dela (bordas, regra dos 40% com janelas translúcidas, caixa alta no nome do jogo, cor das praças, horários do dia e da noite).
 - **Em que parte entram** os retratos 3D no lugar dos 2D e as telas fora do jogo (estúdio de foto, urna, apuração): a D-055 não diz. Proposta no ROADMAP: RV-B, com a cabeça escolhida.
@@ -341,7 +341,7 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 
 ### P-42 · O que a importação dos nomes do OpenStreetMap deixa para o autor
 - **Zonas rurais com nome gerado** ("Zona Rural", "Rural Norte"): **a confirmar pelo autor.** Escolha provisória: continuam com o nome gerado, porque um bairro do OSM na borda da cidade daria nome a uma zona que cobre quase todo o campo. Para reverter: `osm_bairros.zonas_rurais` = `true` em `data/territory/config.json` e o modo `zonas` (depois `zonas-rd`) de novo.
-- **Zonas com nome de distrito do IBGE:** ficam com o nome do distrito (leitura do autor, confirmada pela coordenação). Reverter seria tornar elegível a fonte `distrito_ibge` em `ZonasImport.Names`.
+- **Zonas com nome de distrito do IBGE:** ficam com o nome do distrito (leitura conservadora, a confirmar pelo autor: `distrito_ibge` é nome oficial). Reverter seria tornar elegível a fonte `distrito_ibge` em `ZonasImport.Names`.
 - **ODbL, compartilhamento pela mesma licença:** os nomes `bairro_osm` de `data/zonas/` formam uma base derivada do OSM. Ao distribuir o jogo, a ODbL pede que essa base (ou o jeito de refazê-la) seja oferecida sob a ODbL. **A confirmar pelo autor** como cumprir: por exemplo, declarar no CREDITS que os nomes `bairro_osm` de `data/zonas/` estão sob a ODbL e publicar esses arquivos com o jogo. Vale ouvir um advogado antes da loja.
 - **Overpass API:** o servidor público respondeu várias vezes "at capacity" (HTTP 502) e diz que uso automatizado pesado deve usar instância própria; a extração foi pequena (27 consultas, 14,8 MB), com espera crescente. Para refazer a extração, considerar uma instância própria ou um recorte do Geofabrik.
 - **Qualidade dos nomes do OSM:** vêm como estão no mapa (há erros de digitação, como "Taguatintga Sul" no DF, e nomes de setor como "Setor O"). As listas de filtro em `osm_bairros` são provisórias; a revisão manual é proibida em `data/zonas`, então qualquer correção é por regra no importador.
@@ -351,6 +351,13 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 ## Trabalho contínuo de 17/11 (até o meio-dia)
 
 ### P-44 · Sorteado do porte médio e uma queda intermitente da fumaça
-- **Amostra do BalanceSim (a confirmar pelo autor):** cada cidade joga só um dos dois partidos (`strongestParty` pela paridade da campanha), e isso explica metade do sorteado do médio fora da faixa (`docs/balance/sorteado_medio.md`). Escolha conservadora: a ferramenta não mudou, para as medições continuarem comparáveis com as anteriores. Para mudar, cada cidade passa a jogar os dois partidos (`(i / cidades) % 2 == 0`), e a linha de base da régua precisa ser medida de novo.
-- **Candidato C (a confirmar pelo autor):** só no médio, `npc_effort_by_porte.medio` 1,7 e `porte_recognition_multiplier.medio` 0,8. Não aplicado.
+- **Amostra do BalanceSim** (**respondido pela D-060:** corrigida; cada cidade joga os dois partidos, em pares de campanhas na mesma cidade): cada cidade jogava só um dos dois partidos (`strongestParty` pela paridade da campanha), e isso explicava metade do sorteado do médio fora da faixa (`docs/balance/sorteado_medio.md`).
+- **Candidato C** (**respondido pela D-060:** não aplicado; a faixa do sorteado no médio vai até 35%): só no médio, `npc_effort_by_porte.medio` 1,7 e `porte_recognition_multiplier.medio` 0,8.
 - **Queda intermitente do alvo `objetivos`:** em 17/11, na main `3f648fc`, o Godot caiu uma vez com 0xC0000005 no finalizador do .NET (`GodotObject.Dispose` → `godotsharp_internal_object_get_associated_gchandle`). Repetido duas vezes, passou. Sem correção; se voltar, investigar objetos do Godot liberados pelo coletor depois de saírem da árvore.
+
+## Respostas do autor de 17/11, à tarde (D-059, D-060)
+
+### P-45 · Pontos de interesse do OpenStreetMap no zoom de rua (espera o autor liberar)
+- **O quê:** igreja, praça, escola, posto de saúde, prefeitura e mercado como ícones no zoom de rua da RV-A.
+- **Situação:** **não implementado.** A D-058 só libera do OSM os nomes de bairro onde o IBGE não tem; os pontos de interesse esperam o autor liberar (D-059).
+- **A decidir pelo autor:** se libera, e com quais condições (crédito, ODbL, só onde não há fonte oficial). Fontes oficiais possíveis para parte deles: escolas no Censo Escolar (INEP) e estabelecimentos de saúde no CNES, com endereço e, em parte, coordenadas.

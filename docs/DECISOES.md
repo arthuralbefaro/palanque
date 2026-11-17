@@ -487,7 +487,7 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Pergunta:** a régua da D-026 guardava os números da medição de 2026-11-15 (96%, 96%, 67% e 58% no partido mais forte; 13%, 13%, 8% e 0% no sorteado), feita com um robô que sorteava ações. Com o robô de hoje nenhuma alavanca testada fechava esses números sozinha.
 - **Decisão:** a régua passa a ser em faixas, pelo texto original da D-026 ("grande maioria", "cerca de metade", "raramente", "nunca"):
   - **partido mais forte eleito:** pequeno e médio de 65% a 90%; grande e metrópole de 40% a 60%;
-  - **partido sorteado eleito:** de 5% a 25% em todos os portes;
+  - **partido sorteado eleito:** de 5% a 25% em todos os portes (no médio, até 35%: D-060);
   - **sem campanha:** de 0% a 1%.
 - **Nenhuma das alavancas A, B, C ou D do relatório é aplicada.** A B (reconhecimento herdado da força do partido) fica descartada: o jogador parado no partido forte da cidade pequena se elegia em 7 de 50 campanhas, o que viola "sem campanha, nunca".
 - **Como fica a linha de base** (200 campanhas por porte, `main` em `fd873bc`): mais forte 73%, 84%, 46% e 49% (dentro); sorteado 19%, **39%**, 11% e 12% (o médio fora); sem campanha 0% nos quatro (dentro).
@@ -514,3 +514,38 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
   - **Filtros:** nome vazio, sem letra, com mais de 60 caracteres, com dois-pontos ou parênteses (anotação), igual ao município, igual a um nome excluído ("Zona Rural", "Bairro", "Loteamento") ou começando por rua, avenida, quadra, lote, bloco, edifício e semelhantes. Nome todo em maiúsculas passa para a caixa normal; a palavra "Bairro" no começo sai. Listas em `data/territory/config.json`, bloco `osm_bairros`.
   - **Jogo:** `nome_fonte` `bairro_osm` no Core e no DataValidator (que confere o registro ODbL em `_fontes.json`); a Ficha da zona diz a origem do nome pelo Core (`ZoneNameOrigin`); o mapa da cidade mostra "© colaboradores do OpenStreetMap" no canto inferior direito **só quando o município tem zona com nome do OSM** (crédito onde o dado aparece, sem dizer que há OSM onde não há).
   - **Os ids das zonas não mudam** (só os nomes): a divisão continua a 2 e os saves continuam abrindo. `data/geo/zonas/` sai idêntico.
+
+## D-059 — Respostas do autor às capturas da RL e ao relatório do meio-dia
+- **Data:** 2026-11-17 · **Fase:** RL e RV-A · Decisão do autor.
+- **RL:** integra na main **depois de cinco correções**, e então ganha a tag `fase-rl`:
+  1. as linhas finas soltas que atravessam o mapa (em 1920 e 2560, da borda até o Centro) são achadas e corrigidas;
+  2. a legenda de "Minha força" vira uma escala de 0 a 100 com o gradiente, compacta, sem valores soltos;
+  3. a ficha da zona não cobre metade do mapa: fica mais estreita ou encaixada no painel esquerdo, e o resultado do "Fazer agora" fica visível no mapa;
+  4. o número flutuante ("+2,4 presença") fica nítido, sem contorno duplo;
+  5. na pré-campanha, sem pesquisa, a intenção de voto mostra a estimativa da equipe, marcada como estimativa.
+- **Escolhas da RL (P-41) aprovadas:** o mundo age todo dia; a ficha da zona flutuante fica, nas condições do item 3 (isso prevalece sobre o ART_GUIDE em vigor nesse ponto).
+- **Próxima tarefa depois da `fase-rl`, antes da RV-C:** mandato e prefeitura com relógio, linha do dia e "Fazer agora".
+- **RV-A, direção aprovada.** Para o resto da parte:
+  - noite visível: iluminação de rua, quarteirões com luz, rural escuro;
+  - "Partido líder" com intensidade pela margem de vantagem, nunca uma cor chapada na cidade toda;
+  - a câmera abre com o núcleo urbano enquadrado e o rural visível nas bordas;
+  - pontos de interesse do OpenStreetMap (igreja, praça, escola, posto de saúde, prefeitura, mercado) como ícones no zoom de rua: **só se o autor liberar**; até lá, pendência (P-45), e a D-058 continua valendo (do OSM, só os nomes de bairro);
+  - **placa de referência do desempenho:** Ryzen 5 7520U com Radeon integrada, onde as metas do mapa (60 FPS com zoom e arraste, metrópole em menos de 3 s) já são cumpridas.
+- **Cansaço por veículo:** segue o caminho "baixar o pico" da entrevista (a vaga que expira não bastou). O teste de cassação do `WorldLinkTests` cuja semente foi trocada no branch passa a valer em várias sementes (por exemplo 10), em vez de uma escolhida.
+- **Ainda vão ao autor:** o guia de arte da RV (ART_GUIDE, Parte 1) e a prancha das cabeças A e B.
+- **Como reverter:** cada item é uma mudança própria no branch dele; os critérios das metas voltam à placa "a definir".
+
+## D-060 — Faixa do partido sorteado no porte médio até 35% (atualiza a D-057)
+- **Data:** 2026-11-17 · **Fase:** depois da `fase-r-final` · Decisão do autor, em resposta a `docs/balance/sorteado_medio.md`.
+- **Decisão:**
+  - **a amostra do BalanceSim é corrigida:** cada cidade joga os dois partidos (as campanhas vão em pares na mesma cidade, uma no partido mais forte e outra num sorteado). Antes, a cidade `i % 10` jogava sempre o mesmo partido, e o sorteado do médio caía só nas 5 cidades menores da amostra;
+  - **o candidato C não é aplicado** (`npc_effort_by_porte.medio` e `porte_recognition_multiplier.medio` ficam como estão);
+  - **a faixa do partido sorteado eleito no porte médio passa a ir de 5% a 35%;** as outras faixas da D-057 continuam.
+- **Por quê (efeito estrutural do quociente com 11 vagas, números do relatório):**
+  - a chapa sorteada faz cerca de 9% dos votos válidos no pequeno e no médio (9,2% e 9,4%), mas o quociente é 1/vagas: 11,1% com 9 vagas e **9,1% com 11**; a mesma chapa chega a 0,83 do quociente no pequeno e a 1,03 no médio, e passa da cláusula de 80% em 24% contra 50% das campanhas;
+  - as cidades médias têm de 7 a 20 partidos com voto em 2024, e o sorteado com voto próprio, fora dos 6 da disputa, entra no lugar do 6º em 22% das campanhas (eleito em 48% delas);
+  - quando a chapa sorteada faz cadeira, ela fica com o jogador em 78% das vezes no médio (no grande, em 18%);
+  - pelo número de vagas, nas 10 cidades: 9 vagas, 15%; 11 vagas, 38%; 15 vagas, 25%;
+  - **com as 10 cidades nos dois partidos, o sorteado do médio fica em 32% (26–39)** e o mais forte em 74,5%; sem campanha, 0%.
+  - Nenhum parâmetro mexe só no sorteado do médio: os dados que o fazem alto são reais (vagas do TSE e força de 2024) e as regras são globais.
+- **Como reverter:** a faixa volta a 25% e o médio fica fora; nenhum número do jogo mudou. A correção da amostra é da ferramenta.
