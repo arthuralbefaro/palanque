@@ -1,13 +1,17 @@
 # Progresso
 
+## RL — Leitura mínima · tag `fase-rl` (2026-11-17)
+- **Na tela central da campanha:** relógio de 6h a 22h e linha do dia com os três turnos; painel Você fixo (turnos, estresse, dinheiro, reconhecimento, imagem, eleição); zonas no painel Território, sincronizadas com o mapa; "Fazer agora" (sem turno hoje, "Fazer amanhã de manhã"; o terceiro turno do dia custa +3 de estresse); número flutuante na zona; retratos no noticiário; pilha de janelas com Esc; o mundo age todo dia.
+- **Cinco correções do autor (D-059, D-061):** linhas finas eram zonas com partes distantes simplificadas pelo retângulo inteiro (contornos regenerados; cerca de 2% dos eleitores trocam de zona em 1.177 municípios, total igual); legenda de "Minha força" de 0 a 100 com gradiente; ficha da zona encaixada no painel da esquerda; número flutuante sem contorno duplo; estimativa da equipe na intenção de voto sem pesquisa (no Core).
+- **Portão na main (`cbe401a`):** builds sem avisos, 1.051 testes do Core, 121 do importador, validador, EventLint, import e build do Godot, 32 alvos de fumaça com janela em `--perfil=main`, todos passando. Roteiro: `docs/ROTEIRO_TESTE_RL.md`. Pendências: P-46. Próximo: mandato e prefeitura no relógio, antes da RV-C.
+
 ## Tarde de 17/11 (em andamento)
 
-O autor respondeu às capturas da RL e ao relatório do meio-dia (D-059 e D-060, registradas na main). Em andamento, cada um no seu branch, com o portão completo antes de entrar na main:
-- **RL** (`rl`): as cinco correções pedidas (linhas finas no mapa, legenda de "Minha força" de 0 a 100, ficha estreita ou encaixada, número flutuante nítido, estimativa da equipe na pré-campanha); depois, integração e tag `fase-rl`.
+O autor respondeu às capturas da RL e ao relatório do meio-dia (D-059 e D-060, registradas na main). A RL entrou (seção acima). Em andamento, cada um no seu branch, com o portão completo antes de entrar na main:
 - **RV-A** (`rva`): noite visível, "Partido líder" pela margem, câmera abrindo no núcleo urbano.
 - **Cansaço por veículo** (`cansaco-veiculo`): baixar o pico da entrevista; o teste de cassação do `WorldLinkTests` em 10 sementes.
-- **BalanceSim** (`balancesim-amostra`): cada cidade joga os dois partidos; em seguida, a linha de base nova da régua.
-- **Para o autor, fora do repositório:** capturas da RL em `C:\dev\capturas-rl\`; guia de arte da RV e prancha das cabeças A e B em `C:\dev\capturas-rv\`.
+- **BalanceSim** (`balancesim-amostra`): cada cidade joga os dois partidos. Medida informativa com 200 campanhas por porte na main de antes da RL: mais forte 73 / 64 / 58 / 54% e sorteado 20 / 26 / 7 / 5% (pequeno, médio, grande, metrópole); o mais forte do médio fica 1 ponto abaixo do piso. A régua oficial é medida depois do cansaço, com as paradas.
+- **Para o autor, fora do repositório:** capturas da RL em `C:\dev\capturas-rl\` (as corrigidas em `correcoes\`); guia de arte da RV e prancha das cabeças A e B em `C:\dev\capturas-rv\`.
 
 ## Relatório do meio-dia (17/11)
 
