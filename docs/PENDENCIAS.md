@@ -347,3 +347,10 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 - **Qualidade dos nomes do OSM:** vêm como estão no mapa (há erros de digitação, como "Taguatintga Sul" no DF, e nomes de setor como "Setor O"). As listas de filtro em `osm_bairros` são provisórias; a revisão manual é proibida em `data/zonas`, então qualquer correção é por regra no importador.
 - **Crédito no mapa só com zona do OSM:** escolha provisória (onde o dado aparece). Alternativa: crédito sempre.
 
+
+## Trabalho contínuo de 17/11 (até o meio-dia)
+
+### P-44 · Sorteado do porte médio e uma queda intermitente da fumaça
+- **Amostra do BalanceSim (a confirmar pelo autor):** cada cidade joga só um dos dois partidos (`strongestParty` pela paridade da campanha), e isso explica metade do sorteado do médio fora da faixa (`docs/balance/sorteado_medio.md`). Escolha conservadora: a ferramenta não mudou, para as medições continuarem comparáveis com as anteriores. Para mudar, cada cidade passa a jogar os dois partidos (`(i / cidades) % 2 == 0`), e a linha de base da régua precisa ser medida de novo.
+- **Candidato C (a confirmar pelo autor):** só no médio, `npc_effort_by_porte.medio` 1,7 e `porte_recognition_multiplier.medio` 0,8. Não aplicado.
+- **Queda intermitente do alvo `objetivos`:** em 17/11, na main `3f648fc`, o Godot caiu uma vez com 0xC0000005 no finalizador do .NET (`GodotObject.Dispose` → `godotsharp_internal_object_get_associated_gchandle`). Repetido duas vezes, passou. Sem correção; se voltar, investigar objetos do Godot liberados pelo coletor depois de saírem da árvore.

@@ -1,5 +1,65 @@
 # Progresso
 
+## Relatório do meio-dia (17/11)
+
+Trabalho contínuo das 6h30 às 11h30, no modo do corujão: toda dúvida virou a escolha mais conservadora, registrada em PENDENCIAS como "a confirmar pelo autor". Nada foi enviado ao GitHub.
+
+### 1. Olhe primeiro: as capturas da RL
+A RL está pronta, mas **fora da main até você ver as capturas** (branch `rl`, HEAD `656839f`, com a main de hoje dentro).
+- **Capturas do meio, com as suas quatro respostas:** `.claude/worktrees/rl/docs/referencias/rl/meio/` (`tela_central_*`, e `lado_a_lado_tela_central_*` ao lado da referência `rl_tela_central.html`).
+- **Semanas 1, 10 e 20 em Mantena,** nas três resoluções: `.claude/worktrees/rl/docs/referencias/rl/semana_*`; lado a lado em `rl/lado_a_lado/`.
+- **Roteiro:** `docs/ROTEIRO_TESTE_RL.md` no branch (12 minutos).
+- **Portão completo no HEAD:** 1.048 testes do Core, 121 do importador, validador e EventLint sem erro, 32 alvos de fumaça com janela em `--perfil=rl`, todos passando.
+- **Com o seu "pode", eu integro e crio a tag `fase-rl`.**
+
+### 2. O que entrou na main e o que ficou em branch
+| O quê | Onde | Estado |
+|---|---|---|
+| D-057 (régua em faixas) e D-058 (OSM liberado) | main `3e68f2d` | entrou |
+| Relatório do sorteado do porte médio | main `5473fc9` | entrou (só documento) |
+| Nomes de bairro do OpenStreetMap | main `eedca06`, `3f648fc` | entrou; portão completo passou |
+| RL (leitura mínima) | branch `rl` | pronta; espera você ver as capturas |
+| RV-A (começo: mapa de base, câmera, luz) | branch `rva` (criado do `rl`, com o protótipo da RV) | em andamento; portão passou |
+| Cansaço por veículo, vaga que expira | branch `cansaco-veiculo` | **fora do critério**; não entra |
+| Protótipo da RV | branch `rv-prototipo` | dentro do `rva`; não entra sozinho |
+
+A `fase-r-final` já estava na main com a tag desde ontem.
+
+### 3. Cansaço por veículo: vaga que expira (200 campanhas por porte)
+Feito como você pediu: cada vaga vale 3 dias (`entrevista_vagas.validade_dias` em `data/media/outlets.json`); não usada, some e o veículo só oferece outra depois do intervalo; a previsão diz "vaga em {veículo} até {dia}". **Mas a fração de semanas com vaga não caiu a 50%**: a cidade tem de 2 a 6,5 veículos com vagas desencontradas, e nem validade de 1 dia chegaria lá. Sem isso, a trava não vale e o critério segue por semana.
+
+| Porte | Tipo por semana | Entrevista por turno | Semanas com vaga | Par | Canal |
+|---|---|---|---|---|---|
+| pequeno | **61,6%** | 8,2% | 78,4% | 14,4% | 38,6% |
+| médio | **65,5%** | 13,6% | 85,3% | 9,4% | 31,0% |
+| grande | **73,3%** | 17,1% | 88,6% | 6,9% | **40,4%** |
+| metrópole | **70,0%** | 19,9% | 87,9% | 6,3% | 34,2% |
+
+Critério: tipo e canal até 40%, par até 25%; em negrito, fora. Pela regra, nada mais mudou (nem o pico da entrevista). Relatório: `docs/balance/cansaco_veiculo.md` no branch. Eleitos nesse branch (só informativo): mais forte 97/99/82/83%, sorteado 33/49/21/29%, sem campanha 0%.
+
+### 4. Régua da D-057
+**Não foi medida de novo,** porque o cansaço não entrou (a medição fica para depois dele, como você decidiu). A linha de base vigente, na main: mais forte 73 / 84 / 46 / 49% (dentro das faixas); sorteado 19 / **39** / 11 / 12% (o médio fora); sem campanha 0% nos quatro (dentro).
+
+### 5. Sorteado do porte médio (`docs/balance/sorteado_medio.md`)
+- **Nenhum parâmetro mexe só nele.**
+- **Metade do excesso é da amostra do BalanceSim:** cada cidade joga só um dos dois partidos, e no médio o sorteado caiu nas 5 cidades menores (11 vagas). Com as 10 cidades nos dois partidos, o sorteado fica em 32% (7 pontos acima da faixa, não 14).
+- **O resto é próprio do médio:** com 11 vagas o quociente cai a 9,1% dos válidos, a chapa fraca faz cerca de 9%, há mais partidos com voto real na cidade, e a cadeira da chapa fica com o jogador (78%), não com um anônimo como no grande e na metrópole.
+- **O candidato mais perto:** só no médio, empenho dos rivais 1,7 e reconhecimento × 0,8. Sorteado 24%, mais forte 75% (68% nas 10 cidades), perto do piso de 65%. Não aplicado.
+
+### 6. Nomes de bairro do OpenStreetMap
+4.675 zonas trocaram o nome gerado pelo bairro do OSM (Mantena: "Zona Sul" → "Loteamento Maulaz", "Zona Sudeste" → "Esplanada"). Nomes do IBGE intactos; ids iguais (saves abrem). A Ficha da zona diz a origem; o crédito aparece no mapa só onde há nome do OSM. Brutos no cache (14,8 MB), fora do Git; extração de 17/11, registrada em `data/zonas/_fontes.json`.
+
+### 7. RV-A (começo, branch `rva`)
+Mapa de base de Mantena (quadras, ruas com nome, rios, rodovias, localidades) sob as zonas translúcidas; zoom da cidade até a rua, travado no município; luz de dia e de noite pelo relógio. Metas passaram na máquina compartilhada: Mantena pronta em 15–20 ms e 224–228 FPS; Belo Horizonte em 0,27–0,29 s e 166–168 FPS. Capturas em `.claude/worktrees/rva/docs/referencias/rva/meio/`; vídeo de 28 s em `.claude/worktrees/rva/docs/referencias/rva/rva_mantena_manha_noite.mp4`. Mapa de base só no cache (licença das faces não confirmada); estilo final, menu como cena e "Palanque" esperam o ART_GUIDE.
+
+### 8. Decisões pendentes
+1. **RL:** ver as capturas e dizer se integra (tag `fase-rl`); confirmar as escolhas da P-41 (mundo age todo dia; ficha da zona flutuante, que contradiz o ART_GUIDE em vigor; mandato e prefeitura ainda sem relógio).
+2. **Cansaço por veículo:** qual caminho, já que a vaga que expira não basta: baixar o pico da entrevista; medir a fração de vaga por veículo e não por cidade; ou outra definição de "semana com vaga". Conferir também a troca de semente num teste de cassação (`WorldLinkTests`) feita no branch.
+3. **Sorteado do médio:** corrigir a amostra do BalanceSim (cada cidade joga os dois partidos; muda a ferramenta, não o jogo)? Aplicar o candidato C, ou aceitar o médio fora?
+4. **OSM (P-42):** zonas rurais com nome gerado também recebem nome do OSM?; como cumprir a ODbL na distribuição (advogado antes da loja); crédito sempre ou só onde há nome do OSM.
+5. **RV-A (P-43, P-39, P-40):** licença das Faces de Logradouros e onde guardar o mapa de base de cada cidade; aprovar o ART_GUIDE da RV (estilo, menu como cena, "Palanque"); cabeça A ou B; placa de vídeo-alvo.
+6. **Queda intermitente:** o alvo `objetivos` caiu uma vez com falha de memória no coletor de lixo do .NET, ao liberar um objeto do Godot; repetido duas vezes, passou. Fica registrada, sem correção.
+
 ## Relatório para o autor (atualizado a cada parte)
 
 **Estado em 2026-11-17, depois da `fase-r-final`.** Este bloco é reescrito ao fim de cada parte.
