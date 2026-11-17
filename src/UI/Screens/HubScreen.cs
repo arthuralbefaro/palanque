@@ -747,7 +747,20 @@ public partial class HubScreen : Control
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));
+        OptionsButton();
         IconButton(_top, "ajuda", false, () => EncyclopediaDialog.Open(GetTree().Root), Palette.Tip(Tr("Enciclopédia (F1)."), Tr("explica termos, regras eleitorais reais, quem é quem neste mundo e o seu Livro de compromissos."), Tr("nada; o jogo fica pausado.")));
+    }
+
+    /// <summary>Opções (aba Tempo) na barra de cima: pausa o tempo, abre por cima da tela e redesenha ao fechar.</summary>
+    private void OptionsButton()
+    {
+        var options = Ui.Button(_top, "Opções", () =>
+        {
+            _running = false;
+            Refresh();
+            OptionsDialog.Open(GetTree().Root, Refresh);
+        }, Palette.Tip(Tr("Abre as Opções."), Tr("na aba Tempo, liga ou desliga cada pausa automática e religa as dicas de primeira vez; o tempo para enquanto as Opções estão abertas."), Tr("nada.")));
+        options.Name = "AbrirOpcoes";
     }
 
     private void Stat(string caption, string value, string what, string does, Color? color = null)
@@ -941,8 +954,8 @@ public partial class HubScreen : Control
         var col = Ui.Column(card, 8);
         Glossary.Rich(col, Tr(text), 18, Palette.Texto);
         var row = Ui.Row(col, 8);
-        Ui.Button(row, "Entendi", () => { Settings.MarkHintSeen(key); Refresh(); }, Palette.Tip(Tr("Fecha esta dica."), Tr("ela não volta; tudo o que ela diz está na Enciclopédia (F1)."), Tr("nada.")));
-        Ui.Button(row, "Sem dicas", () => { Settings.DisableHints(); Refresh(); }, Palette.Tip(Tr("Desliga todas as dicas de primeira vez."), Tr("nenhuma dica volta."), Tr("nada.")));
+        Ui.Button(row, "Entendi", () => { Settings.MarkHintSeen(key); Refresh(); }, Palette.Tip(Tr("Fecha esta dica."), Tr("ela não volta sozinha (dá para religar as dicas em Opções); tudo o que ela diz está na Enciclopédia (F1)."), Tr("nada.")));
+        Ui.Button(row, "Sem dicas", () => { Settings.DisableHints(); Refresh(); }, Palette.Tip(Tr("Desliga todas as dicas de primeira vez."), Tr("nenhuma dica volta, a não ser que você as religue em Opções."), Tr("nada.")));
     }
 
     private void BuildCampaign()
