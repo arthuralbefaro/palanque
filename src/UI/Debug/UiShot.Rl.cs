@@ -320,7 +320,7 @@ public partial class UiShot
     }
 
     /// <summary>
-    /// Campanha em Mantena jogada por um robô simples (caminhadas na zona de menor presença, o resto pelo Core) e
+    /// Campanha em Mantena jogada por um robô simples (caminhadas nas zonas menos cansadas e de menor presença, o resto pelo Core) e
     /// capturas da tela central nas semanas 1, 10 e 20, nas três resoluções, com a ficha da zona e o "Fazer agora".
     /// </summary>
     private async Task CaptureWeeks(string folder, List<string> report)
@@ -336,7 +336,7 @@ public partial class UiShot
             {
                 ClearDecisions();
                 game.State.Player.Resources.Money = Math.Max(game.State.Player.Resources.Money, 30_000);
-                var rows = engine.ZoneBoard().OrderBy(r => r.Presence).ToList();
+                var rows = engine.ZoneBoard().OrderByDescending(r => Math.Round(r.WorstYield, 1)).ThenBy(r => r.Presence).ToList();
                 engine.Schedule(new CommitmentRequest("caminhada", rows[0].ZoneId, engine.Today, Turno.Manha));
                 engine.Schedule(new CommitmentRequest("caminhada", rows[1].ZoneId, engine.Today, Turno.Tarde));
                 Game.DayReport day = game.AdvanceDay();
