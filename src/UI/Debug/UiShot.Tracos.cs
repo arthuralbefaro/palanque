@@ -1,4 +1,6 @@
 using Godot;
+using Planalto.Autoload;
+using Planalto.Core.World;
 using Planalto.UI.Screens;
 
 namespace Planalto.UI.Debug;
@@ -70,6 +72,75 @@ public partial class UiShot
         }
 
         GD.Print("Smoke: traços marcados com o mouse; o botão libera com 2 e bloqueia com 3, com a contagem e os nomes.");
+
+        // Traço marcado com o mouse em cima: mesmo fundo e mesmas margens do marcado, sem cair no estilo padrão.
+        CheckBox first = TraitBoxes(creator).First(b => b.ButtonPressed);
+        StyleBox hoverPressed = first.GetThemeStylebox("hover_pressed"), pressed = first.GetThemeStylebox("pressed");
+        if (hoverPressed is not StyleBoxFlat || hoverPressed.GetMargin(Side.Left) != pressed.GetMargin(Side.Left))
+        {
+            Fail($"traço marcado com o mouse em cima usa {hoverPressed.GetType().Name} com margem {hoverPressed.GetMargin(Side.Left)} (marcado: {pressed.GetMargin(Side.Left)}).");
+            return false;
+        }
+
+        // Atributos com acento.
+        if (!VisibleTexts(creator).Any(t => t.Contains("Oratória:", StringComparison.Ordinal) && t.Contains("Articulação:", StringComparison.Ordinal) && t.Contains("Gestão:", StringComparison.Ordinal)))
+        {
+            Fail("os atributos não aparecem com acento (Oratória, Articulação, Gestão).");
+            return false;
+        }
+
+        return await CheckCreatorBiography(creator, tabs);
+    }
+
+    /// <summary>
+    /// A biografia sugerida acompanha as escolhas: com a idade mudada para 18 e cada partido escolhido na aba Partido,
+    /// ela traz "18 anos" e o nome do partido com o artigo que concorda com ele ("pela União", "pelo Partido").
+    /// </summary>
+    private async Task<bool> CheckCreatorBiography(CharacterCreatorScreen creator, TabContainer tabs)
+    {
+        tabs.CurrentTab = 0;
+        await Frames(2);
+        for (int i = 0; i < tabs.GetTabCount() && FindAll<TextEdit>(creator).All(e => !e.IsVisibleInTree()); i++)
+        {
+            tabs.CurrentTab = i;
+            await Frames(2);
+        }
+
+        int bioTab = tabs.CurrentTab;
+        if (FindAll<SpinBox>(creator).FirstOrDefault(b => b.IsVisibleInTree()) is not { } age)
+        {
+            Fail("a aba da biografia não tem o campo de idade.");
+            return false;
+        }
+
+        age.Value = age.Value == 18 ? 19 : 18;
+        await Frames(2);
+        age = FindAll<SpinBox>(creator).First(b => b.IsVisibleInTree());
+        age.Value = 18;
+        await Frames(2);
+
+        WorldSetup world = Game.Instance.PendingWorld!;
+        foreach (PartyDraft party in world.Parties.Take(4))
+        {
+            tabs.CurrentTab = tabs.GetTabCount() - 1;
+            await Frames(2);
+            CheckBox box = FindAll<CheckBox>(creator).First(b => b.Text == $"{party.Number} · {party.Sigla} — {party.Name}");
+            box.ButtonPressed = true;
+            box.EmitSignal(BaseButton.SignalName.Pressed);
+            await Frames(2);
+            tabs.CurrentTab = bioTab;
+            await Frames(2);
+            string bio = FindAll<TextEdit>(creator).First(e => e.IsVisibleInTree()).Text;
+            bool feminine = Game.Instance.World.Parties.NameTerms.GenderOf(party.Name) == Core.Parties.GrammaticalGender.Feminine;
+            string pelo = (feminine ? "pela " : "pelo ") + party.Name, artigo = (feminine ? "escolheu a " : "escolheu o ") + party.Name;
+            if (!bio.Contains("18 anos", StringComparison.Ordinal) || !(bio.Contains(pelo, StringComparison.Ordinal) || bio.Contains(artigo, StringComparison.Ordinal)))
+            {
+                Fail($"com 18 anos e o partido {party.Name}, a biografia diz: {bio}");
+                return false;
+            }
+        }
+
+        GD.Print("Smoke: a biografia acompanha a idade e o partido, com o artigo certo.");
         return true;
     }
 
