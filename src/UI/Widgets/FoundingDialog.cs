@@ -5,6 +5,7 @@ using Planalto.Core.Career;
 using Planalto.Core.Parties;
 using Planalto.Core.State;
 using Planalto.UI.Screens;
+using Planalto.UI.Theme;
 
 namespace Planalto.UI.Widgets;
 
@@ -79,7 +80,8 @@ public partial class FoundingDialog : PanelContainer
         {
             QueueFree();
             _onClosed();
-        });
+        }, Palette.Tip(Tr("Fecha a fundação de partido."), Tr("volta à tela central; o que já foi feito na fundação continua valendo."), Tr("nada.")));
+        Glossary.LinkTerms(column);
     }
 
     private void BuildProposal(VBoxContainer column)
@@ -93,26 +95,29 @@ public partial class FoundingDialog : PanelContainer
         {
             _draft = Engine.Propose(new Rng(State.Rng.NextUInt64()), id);
             Refresh();
-        }, translate: false);
+        }, translate: false).TooltipText = Palette.Tip(Tr("Família ideológica do partido novo."), Tr("define a posição de partida do partido e sugere de novo o nome, a sigla e o número."), Tr("nada até reunir os fundadores."));
         var name = Ui.Field(column, "Nome").Add(new LineEdit { Text = draft.Name, SizeFlagsHorizontal = SizeFlags.ExpandFill });
         name.TextChanged += t => draft.Name = t;
+        name.TooltipText = Palette.Tip(Tr("Nome do partido novo."), Tr("é o nome que aparece na urna, no santinho e no noticiário; não pode coincidir com o de um partido real."), Tr("nada."));
         var sigla = Ui.Field(column, "Sigla").Add(new LineEdit { Text = draft.Sigla, MaxLength = 8, CustomMinimumSize = new Vector2(160, 0) });
         sigla.TextChanged += t => draft.Sigla = t.ToUpperInvariant();
+        sigla.TooltipText = Palette.Tip(Tr("Sigla do partido novo, até 8 letras."), Tr("aparece no mapa, na apuração e ao lado do nome dos candidatos; não pode coincidir com a de um partido real."), Tr("nada."));
         var number = Ui.Field(column, "Número").Add(new SpinBox { MinValue = 10, MaxValue = 99, Value = draft.Number });
         number.ValueChanged += v => draft.Number = (int)v;
+        number.TooltipText = Palette.Tip(Tr("Número do partido novo, de 10 a 99."), Tr("é o começo do número de urna de todos os candidatos do partido; não pode repetir o de outro partido."), Tr("nada."));
 
         HBoxContainer actions = Ui.Row(column, 12);
         Ui.Button(actions, "Sugerir outro", () =>
         {
             _draft = Engine.Propose(new Rng(State.Rng.NextUInt64()), draft.FamilyId);
             Refresh();
-        });
+        }, Palette.Tip(Tr("Sugere outro nome, sigla e número."), Tr("sorteia uma proposta nova dentro da mesma família ideológica."), Tr("nada.")));
         Ui.Button(actions, "Reunir fundadores e começar", () =>
         {
             FoundingFailure? failure = Engine.Start(draft);
             _message = failure is null ? Tr("Fundadores reunidos. A coleta de apoio começou.") : MandateTexts.Founding(failure.Value);
             Refresh();
-        });
+        }, Palette.Tip(Tr("Reúne os fundadores e abre a coleta de apoio."), Tr("começa o prazo de dois anos para colher as assinaturas de eleitores não filiados nos estados."), string.Format(PtBr, Tr("{0} de capital político e R$ {1:N0}."), _game.Founding.CapitalCost, _game.Founding.MoneyCost)));
     }
 
     private void BuildCollection(VBoxContainer column, PartyFoundingState founding)
@@ -127,14 +132,18 @@ public partial class FoundingDialog : PanelContainer
             Ui.Label(column, string.Format(Tr("Impugnações: {0}. Parte das assinaturas foi invalidada."), founding.Impugnations), 16, Ui.Warning);
         }
 
-        Ui.Options(Ui.Field(column, "Coleta"), _game.Founding.Intensities.Select(i => (i.Id, string.Format(PtBr, "{0} · {1} {2} · R$ {3:N0}", i.Name, i.Energy, Tr("energia"), i.Money))), _intensity, id => { _intensity = id; Refresh(); }, translate: false);
+        Ui.Options(Ui.Field(column, "Coleta"), _game.Founding.Intensities.Select(i => (i.Id, string.Format(PtBr, "{0} · {1} {2} · R$ {3:N0}", i.Name, i.Energy, Tr("energia"), i.Money))), _intensity, id => { _intensity = id; Refresh(); }, translate: false).TooltipText =
+            Palette.Tip(Tr("Quanto esforço a coleta desta semana leva."), Tr("coleta mais intensa colhe mais assinaturas nos estados marcados."), Tr("a energia e o dinheiro ao lado de cada opção."));
         Ui.Label(column, string.Format(Tr("Estados desta semana (até {0}):"), _game.Founding.FocusStatesMax), 16);
         var grid = column.Add(new GridContainer { Columns = 9 });
         foreach (string uf in Engine.States.Order(StringComparer.Ordinal))
         {
             bool done = founding.Signatures.GetValueOrDefault(uf) >= Engine.StateRequired(uf);
             var check = grid.Add(new CheckBox { Text = uf + (done ? " ✓" : ""), ButtonPressed = _states.Contains(uf) });
-            check.TooltipText = string.Format(PtBr, "{0:N0} / {1:N0}", founding.Signatures.GetValueOrDefault(uf), Engine.StateRequired(uf));
+            check.TooltipText = Palette.Tip(
+                string.Format(PtBr, Tr("{0}: {1:N0} de {2:N0} assinaturas necessárias."), uf, founding.Signatures.GetValueOrDefault(uf), Engine.StateRequired(uf)),
+                Tr("marca o estado para a coleta desta semana; o partido precisa do mínimo em vários estados."),
+                Tr("nada ao marcar; a coleta custa o que diz a opção de Coleta."));
             check.Toggled += on =>
             {
                 if (on)
@@ -157,14 +166,19 @@ public partial class FoundingDialog : PanelContainer
                 ? string.Format(PtBr, Tr("{0:N0} assinaturas colhidas."), Engine.Collect(intensity.Id, _states))
                 : MandateTexts.Founding(failure.Value);
             Refresh();
-        });
+        }, Palette.Tip(Tr("Faz a coleta de assinaturas desta semana."), Tr("colhe apoio nos estados marcados, com a intensidade escolhida; parte das assinaturas pode ser impugnada depois."), string.Format(PtBr, Tr("{0} de energia e R$ {1:N0}."), intensity.Energy, intensity.Money)));
+        string submitTip = Palette.Tip(Tr("Pede o registro do partido ao TSE."), Tr("com as assinaturas e os estados mínimos, o pedido vai à análise; a decisão sai em algumas semanas."), Tr("nada."));
         var submit = Ui.Button(actions, "Pedir registro ao TSE", () =>
         {
             FoundingFailure? failure = Engine.Submit();
             _message = failure is null ? Tr("Pedido de registro protocolado no TSE.") : MandateTexts.Founding(failure.Value);
             Refresh();
-        });
+        }, submitTip);
         submit.Disabled = !Engine.Ready;
+        if (submit.Disabled)
+        {
+            submit.TooltipText = Palette.Blocked(string.Format(PtBr, Tr("faltam assinaturas: {0:N0} de {1:N0}, com o mínimo em {2} de {3} estados."), founding.Total, Engine.NationalRequired, Engine.StatesDone, _game.Founding.MinStates), submitTip);
+        }
     }
 
     private void BuildRegistered(VBoxContainer column, PartyFoundingState founding)
@@ -183,7 +197,7 @@ public partial class FoundingDialog : PanelContainer
             Ui.Label(column, "Fora da janela partidária, trocar de partido custa o seu mandato.", 16, Ui.Error);
         }
 
-        Ui.Button(column, string.Format(Tr(loses && _confirmLoss ? "Confirmar: filiar-se ao {0} e perder o mandato" : "Filiar-se ao {0}"), party.Sigla), () =>
+        var join = Ui.Button(column, string.Format(Tr(loses && _confirmLoss ? "Confirmar: filiar-se ao {0} e perder o mandato" : "Filiar-se ao {0}"), party.Sigla), () =>
         {
             if (loses && !_confirmLoss)
             {
@@ -197,5 +211,9 @@ public partial class FoundingDialog : PanelContainer
             _message = string.Format(Tr("Você se filiou ao {0}."), party.Sigla);
             Refresh();
         });
+        join.TooltipText = Palette.Tip(
+            string.Format(Tr("Filia você ao {0}, o partido que você fundou."), party.Sigla),
+            loses ? Tr("pede um segundo clique: fora da janela partidária, a troca de partido custa o mandato.") : Tr("você passa a disputar as próximas eleições pelo partido novo."),
+            loses ? Tr("o mandato.") : Tr("nada."));
     }
 }

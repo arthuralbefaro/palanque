@@ -1,21 +1,26 @@
 {
-  "note": "Tempo corrente (GDD 17.4): segundos reais por dia de jogo em cada velocidade (1x, 2x, 4x), na campanha e no mandato, e as pausas automáticas por tipo de acontecimento. 'pausa' é o padrão; 'desligavel' diz se o jogador pode desligar nas Opções.",
+  "note": "Tempo corrente (GDD 17.4): segundos reais por dia de jogo em cada velocidade (1x, 2x, 4x), na campanha e no mandato, e as pausas automáticas por tipo de acontecimento. 'pausa' é o padrão; 'desligavel' diz se o jogador pode desligar nas Opções; 'explicacao' vai para o tooltip das Opções: na desligável, o que acontece com ela desligada; na fixa, por que ela não se desliga.",
   "velocidades": [1, 2, 4],
   "segundos_por_dia": {
     "campanha": [4.0, 2.0, 1.0],
     "mandato": [1.0, 0.5, 0.25]
   },
   "pausas": [
-    { "id": "decisao_imediata", "nome": "Decisão imediata (evento, crise, debate, pedido de liderança)", "pausa": true, "desligavel": false },
-    { "id": "pesquisa_publicada", "nome": "Pesquisa publicada", "pausa": true, "desligavel": true },
-    { "id": "votacao_na_pauta", "nome": "Votação na pauta da Câmara", "pausa": true, "desligavel": true },
-    { "id": "caixa_baixo", "nome": "Caixa abaixo do custo do compromisso mais barato", "pausa": true, "desligavel": true },
-    { "id": "semana_sem_compromisso", "nome": "Domingo com a semana seguinte sem nenhum compromisso marcado", "pausa": true, "desligavel": true },
-    { "id": "lideranca_perdida", "nome": "Liderança deixa de apoiar você", "pausa": true, "desligavel": true },
-    { "id": "rival_em_zona_lider", "nome": "Rival visto numa zona em que você lidera a presença", "pausa": true, "desligavel": true },
-    { "id": "ataque", "nome": "Ataque contra você (o prazo de resposta começa a correr)", "pausa": true, "desligavel": true },
-    { "id": "decisao_com_prazo", "nome": "Decisão com prazo (oferta de doação): pausa ao chegar; o prazo corre se você soltar o tempo", "pausa": true, "desligavel": false },
-    { "id": "fase_nova", "nome": "Mudança de fase (início da campanha, eleição, posse)", "pausa": true, "desligavel": false },
-    { "id": "noticia_comum", "nome": "Notícia comum", "pausa": false, "desligavel": true }
+    { "id": "decisao_imediata", "nome": "Decisão imediata (evento, crise, debate, pedido de liderança, evento do mandato)", "pausa": true, "desligavel": false, "explicacao": "o tempo não pode correr com uma decisão na mesa: o cartão fica sobre o mapa até você escolher." },
+    { "id": "pesquisa_publicada", "nome": "Pesquisa publicada", "pausa": true, "desligavel": true, "explicacao": "a pesquisa sai do mesmo jeito, na coluna Intenção de voto e no noticiário, e o tempo segue correndo." },
+    { "id": "votacao_na_pauta", "nome": "Votação na pauta da Câmara sem o seu voto marcado", "pausa": true, "desligavel": true, "explicacao": "a pauta continua na área Mandato; sem voto marcado e sem instrução de voto, a sessão conta como falta." },
+    { "id": "caixa_baixo", "nome": "Caixa abaixo do custo do compromisso mais barato", "pausa": true, "desligavel": true, "explicacao": "o aviso de caixa continua no noticiário e o caixa fica à vista na barra de cima; o tempo segue correndo." },
+    { "id": "semana_sem_compromisso", "nome": "Domingo com a semana seguinte sem nenhum compromisso marcado", "pausa": true, "desligavel": true, "explicacao": "a semana começa vazia sem aviso; a sua presença cai nas zonas em que você não aparece." },
+    { "id": "lideranca_perdida", "nome": "Liderança deixa de apoiar você", "pausa": true, "desligavel": true, "explicacao": "a notícia continua no noticiário e na ficha da pessoa, na área Pessoas." },
+    { "id": "rival_em_zona_lider", "nome": "Rival visto numa zona em que você lidera a presença", "pausa": true, "desligavel": true, "explicacao": "o rival continua aparecendo no noticiário e no mapa, no modo Disputa." },
+    { "id": "ataque", "nome": "Ataque contra você (o prazo de resposta começa a correr)", "pausa": true, "desligavel": true, "explicacao": "o ataque fica na área Mídia, com o prazo; se o prazo vencer sem resposta, vale o silêncio." },
+    { "id": "decisao_com_prazo", "nome": "Decisão com prazo (oferta de doação): pausa ao chegar; o prazo corre se você soltar o tempo", "pausa": true, "desligavel": false, "explicacao": "a oferta de doação tem prazo e pede uma resposta sua; o jogo para quando ela chega para você não perdê-la sem ver." },
+    { "id": "fase_nova", "nome": "Mudança de fase (início da campanha, eleição, posse)", "pausa": true, "desligavel": false, "explicacao": "a mudança de fase muda as regras (o que pode ser feito, o que é vedado); o jogo para para você ver o que mudou." },
+    { "id": "noticia_comum", "nome": "Notícia comum", "pausa": false, "desligavel": true, "explicacao": "as notícias continuam chegando na coluna da direita sem parar o tempo." },
+    { "id": "achado_fiscalizacao", "nome": "Achado da fiscalização do vereador esperando decisão", "pausa": true, "desligavel": true, "explicacao": "o achado espera em \"Pede atenção\", na área Mandato, até você decidir o que fazer com ele." },
+    { "id": "mesa_negociacao", "nome": "Data-base dos servidores: pedido de reajuste na mesa da prefeitura", "pausa": true, "desligavel": true, "explicacao": "a mesa fica em \"Pede atenção\", na área Governo, e na área Pessoal e fiscal; sem resposta até o prazo, vale só a revisão geral anual." },
+    { "id": "cobranca_do_livro", "nome": "Cobrança de promessa ou dívida do Livro de compromissos", "pausa": true, "desligavel": true, "explicacao": "o cartão da cobrança não abre sozinho; a promessa continua no Livro de compromissos e em \"Pede atenção\", e o prazo segue correndo." },
+    { "id": "luto_oficial", "nome": "Luto oficial, sem sessão da Câmara", "pausa": true, "desligavel": true, "explicacao": "o aviso de luto continua no alto da área Mandato e a pauta passa para a semana seguinte." },
+    { "id": "obra_pronta", "nome": "Obra sua pronta para a entrega", "pausa": true, "desligavel": true, "explicacao": "a obra pronta espera em \"Pede atenção\" (área Mandato ou Governo) e no mapa, no modo Obras, para você inaugurar ou entregar." }
   ]
 }

@@ -216,7 +216,7 @@ public partial class UiShot
         await Frames(2);
         Save(shot, "_aviso");
         bool warned = creator.AgeWarningsForTest.Any(w => w.Contains("2032", StringComparison.Ordinal) && w.Contains("2028", StringComparison.Ordinal));
-        bool atBottom = Named<Label>(creator, "AvisoComecoTardio") is { Visible: true } notice && notice.Text.Contains("2032", StringComparison.Ordinal);
+        bool atBottom = Named<Control>(creator, "AvisoComecoTardio") is { Visible: true } notice && TextOf(notice).Contains("2032", StringComparison.Ordinal);
         bool onButton = FindAll<Button>(creator).Any(b => b.Text.StartsWith(Tr("Começar carreira"), StringComparison.Ordinal) && b.Text.Contains("2032", StringComparison.Ordinal));
         bool started = creator.TryStartCareer();
         if (!warned || !atBottom || !onButton || !started || game.State is not { } state)

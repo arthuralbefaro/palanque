@@ -5,6 +5,8 @@ using Planalto.Core.Campaign;
 using Planalto.Core.Characters;
 using Planalto.Core.Elections;
 using Planalto.Core.State;
+using Planalto.UI.Theme;
+using Planalto.UI.Widgets;
 
 namespace Planalto.UI.Screens;
 
@@ -74,7 +76,8 @@ public partial class ElectionNightScreen : Control
         header.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill });
         if (!final)
         {
-            Ui.Button(header, "Pular para o resultado", () => { _step = outcome.Vereador.Snapshots.Count - 1; Refresh(); });
+            Ui.Button(header, "Pular para o resultado", () => { _step = outcome.Vereador.Snapshots.Count - 1; Refresh(); },
+                Palette.Tip(Tr("Pula a contagem seção a seção."), Tr("mostra na hora o resultado final: os eleitos, as cadeiras de cada partido e a prefeitura."), Tr("nada; o resultado é o mesmo, só não sobe aos poucos.")));
         }
 
         var bar = _root.Add(new ProgressBar { MinValue = 0, MaxValue = 100, Value = vereador.PercentCounted, CustomMinimumSize = new Vector2(0, 30) });
@@ -132,6 +135,8 @@ public partial class ElectionNightScreen : Control
             Ui.Value(right, string.Format(PtBr, "{0}: {1:N0}", Tr("Quociente eleitoral"), outcome.Vereador.ElectoralQuotient), 16);
             BuildVerdict(outcome);
         }
+
+        Glossary.LinkTerms(_root);
     }
 
     private void BuildVerdict(ElectionOutcome outcome)
@@ -166,7 +171,10 @@ public partial class ElectionNightScreen : Control
             _game.ConcludeElection();
             SaveManager.Instance.Autosave();
             _game.GoToCareer();
-        });
-        Ui.Button(actions, "Nova carreira", () => _game.GoTo(Game.Scenes.MainMenu));
+        }, outcome.PlayerElected
+            ? Palette.Tip(Tr("Toma posse do cargo."), Tr("o calendário salta para a posse e o mandato começa na tela central, com as áreas do cargo."), Tr("nada; a carreira é salva antes."))
+            : Palette.Tip(Tr("Segue a carreira sem mandato."), Tr("o calendário salta para o fim da eleição e a carreira continua na entressafra, até a próxima pré-campanha."), Tr("nada; a carreira é salva antes.")));
+        Ui.Button(actions, "Nova carreira", () => _game.GoTo(Game.Scenes.MainMenu),
+            Palette.Tip(Tr("Volta ao menu principal para começar outra carreira."), Tr("sai desta carreira; o resultado desta eleição fica no save automático."), Tr("nada.")));
     }
 }

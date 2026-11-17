@@ -681,8 +681,7 @@ public partial class UiShot
         }
 
         // A posição assumida está no Livro, na Enciclopédia.
-        Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
-        await Frames(4);
+        await PressF1();
         Node? encyclopedia = GetTree().Root.FindChild("Enciclopedia", recursive: true, owned: false);
         if (encyclopedia is null)
         {

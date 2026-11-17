@@ -21,6 +21,12 @@ public sealed class PauseRule
 
     /// <summary>O jogador pode desligar nas Opções.</summary>
     public required bool Desligavel { get; init; }
+
+    /// <summary>
+    /// Para as Opções: na desligável, o que acontece quando ela está desligada (onde o acontecimento continua à vista);
+    /// na que não se desliga, por que ela é fixa.
+    /// </summary>
+    public required string Explicacao { get; init; }
 }
 
 /// <summary>Ritmo do tempo e pausas automáticas (GDD 17.4, data/time.json).</summary>
@@ -67,6 +73,11 @@ public sealed class TimeConfig : IValidatable
         {
             yield return $"pausa '{rule.Id}': não desligável precisa pausar.";
         }
+
+        foreach (PauseRule rule in Pausas.Where(p => string.IsNullOrWhiteSpace(p.Nome) || string.IsNullOrWhiteSpace(p.Explicacao)))
+        {
+            yield return $"pausa '{rule.Id}': precisa de nome e de explicação para a tela de Opções.";
+        }
     }
 }
 
@@ -106,7 +117,26 @@ public static class Clock
     /// <summary>Chegou uma decisão com prazo (oferta de doação): pausa ao chegar; o prazo corre se o jogador retomar (GDD 17.4).</summary>
     public const string DecisaoComPrazo = "decisao_com_prazo";
 
-    public static readonly IReadOnlyList<string> PauseIds = [DecisaoImediata, PesquisaPublicada, VotacaoNaPauta, CaixaBaixo, SemanaSemCompromisso, FaseNova, NoticiaComum, LiderancaPerdida, RivalEmZonaLider, AtaqueContraVoce, DecisaoComPrazo];
+    /// <summary>Mandato: a fiscalização trouxe um achado que espera decisão (GDD 17.14).</summary>
+    public const string AchadoFiscalizacao = "achado_fiscalizacao";
+
+    /// <summary>Prefeitura: abriu a data-base dos servidores, com pedido de reajuste na mesa (GDD 17.15).</summary>
+    public const string MesaNegociacao = "mesa_negociacao";
+
+    /// <summary>Mandato e prefeitura: alguém cobra uma promessa ou dívida do Livro de compromissos (GDD 17.2).</summary>
+    public const string CobrancaDoLivro = "cobranca_do_livro";
+
+    /// <summary>Mandato: luto oficial sem sessão da Câmara (GDD 17.16).</summary>
+    public const string LutoOficial = "luto_oficial";
+
+    /// <summary>Mandato e prefeitura: uma obra sua ficou pronta para a entrega (GDD 17.14 e 17.15).</summary>
+    public const string ObraPronta = "obra_pronta";
+
+    public static readonly IReadOnlyList<string> PauseIds =
+    [
+        DecisaoImediata, PesquisaPublicada, VotacaoNaPauta, CaixaBaixo, SemanaSemCompromisso, FaseNova, NoticiaComum, LiderancaPerdida, RivalEmZonaLider, AtaqueContraVoce, DecisaoComPrazo,
+        AchadoFiscalizacao, MesaNegociacao, CobrancaDoLivro, LutoOficial, ObraPronta,
+    ];
 
     public static DateOnly Today(GameState state) => state.Calendar.WeekStart.AddDays(state.Time.Day);
 

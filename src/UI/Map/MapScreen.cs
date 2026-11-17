@@ -5,6 +5,8 @@ using Planalto.Autoload;
 using Planalto.Core.Geo;
 using Planalto.Core.Municipios;
 using Planalto.Core.State;
+using Planalto.UI.Theme;
+using Planalto.UI.Widgets;
 
 namespace Planalto.UI.Map;
 
@@ -84,7 +86,7 @@ public partial class MapScreen : Control
         _subtitle = Ui.Value(top, "", 18);
         top.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill });
         _fps = Ui.Value(top, "", 16);
-        Ui.Button(top, "Voltar", _game.GoToCareer);
+        Ui.Button(top, "Voltar", _game.GoToCareer, Palette.Tip(Tr("Volta à tela central."), Tr("fecha o mapa do estado; a carreira continua de onde estava."), Tr("nada.")));
 
         HBoxContainer body = Ui.Row(screen, 12);
         body.SizeFlagsVertical = SizeFlags.ExpandFill;
@@ -305,6 +307,7 @@ public partial class MapScreen : Control
                 BuildMeshes();
             },
             translate: false);
+        _partyOptions.TooltipText = Palette.Tip(Tr("O partido que dá a altura dos municípios no mapa."), Tr("cada município sobe conforme a força desse partido nele; a cor continua sendo a do partido mais forte. Arraste para mover e use a roda do mouse para aproximar."), Tr("nada; o tempo do jogo não anda no mapa."));
 
         _tooltip = Ui.Paragraph(side, Tr("Passe o mouse sobre um município."), 340, 18);
         Ui.Label(side, "Partido mais forte", 18);
@@ -315,6 +318,8 @@ public partial class MapScreen : Control
             row.Add(new ColorRect { Color = party is null ? Neutral : new Color(party.Colors.Primary), CustomMinimumSize = new Vector2(22, 22) });
             Ui.Value(row, string.Format(PtBr, "{0}: {1} {2}", party?.Sigla ?? group.Key, group.Count(), Tr("municípios")), 16);
         }
+
+        Glossary.LinkTerms(side);
     }
 
     /// <summary>Troca o partido que define a altura (usado pelo teste de fumaça).</summary>

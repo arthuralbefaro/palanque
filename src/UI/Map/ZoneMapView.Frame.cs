@@ -48,22 +48,20 @@ public partial class ZoneMapView
 
         var pieces = _shapes.Where(s => _zonas.TryGetValue(s.Id, out Zona? z) && !z.IsRural)
             .SelectMany(s => s.Rings.Select(r => (s.Id, Bounds: RingBounds(r)))).ToList();
-        // Bairros encostados ou separados por pouco (até meio núcleo) entram; a vila de distrito a quilômetros, não.
-        Rect2 box = coreShape.Rings.Select(RingBounds).MaxBy(b => b.Area);
-        float gap = NucleusGap * Math.Max(box.Size.X, box.Size.Y);
-        var inside = new HashSet<int>();
-        bool grew = true;
-        while (grew)
+
+        // A zona urbana mais populosa pode juntar bairros da sede e uma vila de distrito afastada (Zona Sudoeste, em
+        // Mesquita/MG): cada pedaço dela é uma semente, e vale a mancha que reúne mais zonas urbanas (a sede), com o
+        // maior pedaço como desempate.
+        Rect2 box = default;
+        HashSet<int> inside = [];
+        int most = -1;
+        foreach (Rect2 seed in coreShape.Rings.Select(RingBounds).OrderByDescending(b => b.Area))
         {
-            grew = false;
-            for (int i = 0; i < pieces.Count; i++)
+            var grown = Grow(seed, pieces.Select(p => p.Bounds).ToList());
+            int zones = grown.Inside.Select(i => pieces[i].Id).Distinct().Count();
+            if (zones > most)
             {
-                if (!inside.Contains(i) && pieces[i].Bounds.Intersects(box.Grow(gap), includeBorders: true))
-                {
-                    inside.Add(i);
-                    box = box.Merge(pieces[i].Bounds);
-                    grew = true;
-                }
+                (box, inside, most) = (grown.Box, grown.Inside, zones);
             }
         }
 
@@ -74,6 +72,33 @@ public partial class ZoneMapView
             _home = box.Grow(Math.Max(box.Size.X, box.Size.Y) * NucleusMargin);
             _view = _home;
         }
+    }
+
+    /// <summary>
+    /// Mancha urbana a partir de um pedaço: bairros encostados ou separados por pouco (até meio pedaço inicial) entram,
+    /// e a mancha cresce com eles; a vila de distrito a quilômetros fica de fora.
+    /// </summary>
+    private static (Rect2 Box, HashSet<int> Inside) Grow(Rect2 seed, IReadOnlyList<Rect2> pieces)
+    {
+        Rect2 box = seed;
+        float gap = NucleusGap * Math.Max(seed.Size.X, seed.Size.Y);
+        var inside = new HashSet<int>();
+        bool grew = true;
+        while (grew)
+        {
+            grew = false;
+            for (int i = 0; i < pieces.Count; i++)
+            {
+                if (!inside.Contains(i) && pieces[i].Intersects(box.Grow(gap), includeBorders: true))
+                {
+                    inside.Add(i);
+                    box = box.Merge(pieces[i]);
+                    grew = true;
+                }
+            }
+        }
+
+        return (box, inside);
     }
 
     private static Rect2 RingBounds(Vector2[] ring)

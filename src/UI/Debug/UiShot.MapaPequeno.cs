@@ -8,8 +8,8 @@ using FileAccess = Godot.FileAccess;
 namespace Planalto.UI.Debug;
 
 /// <summary>
-/// Alvo "mapa_pequeno": abre a tela central em Mantena (MG), em duas cidades pequenas com distritos de outras regiões
-/// e numa metrópole, em 1366×768 e 1920×1080. Confere por código que nenhum nome de zona cobre outro nome ou um
+/// Alvo "mapa_pequeno": abre a tela central em Mantena (MG), em Mesquita (MG), em duas cidades pequenas com distritos de
+/// outras regiões e numa metrópole, em 1366×768 e 1920×1080. Confere por código que nenhum nome de zona cobre outro nome ou um
 /// marcador, que todos ficam dentro do mapa, que o enquadramento inicial mostra o núcleo urbano ocupando boa parte
 /// da vista e que o botão de enquadramento vai ao município inteiro e volta (clicado de verdade); tira as capturas.
 /// Por fim, um save da divisão de zonas anterior é recusado na tela inicial com a mensagem ao jogador.
@@ -19,6 +19,7 @@ public partial class UiShot
     private static readonly (int Codigo, string Label)[] MapaPequenoCities =
     [
         (3139607, "mantena_mg"),
+        (3141702, "mesquita_mg"),
         (2313005, "solonopole_ce"),
         (4314605, "piratini_rs"),
         (3106200, "belo_horizonte_mg"),
@@ -54,6 +55,12 @@ public partial class UiShot
                     {
                         problems.Add($"{where}: núcleo urbano {nucleus} fora do mapa ou pequeno ({share:P0} do mapa)");
                     }
+
+                    // O núcleo é a sede: a zona "Centro", quando existe, está nele (não uma vila afastada).
+                    if (map.Zonas.Values.FirstOrDefault(z => z.Nome == "Centro" && !z.IsRural) is { } centro && !map.Nucleus.Contains(centro.Id))
+                    {
+                        problems.Add($"{where}: o enquadramento inicial deixou o Centro de fora (núcleo: {string.Join(", ", map.Nucleus.Select(id => map.Zonas[id].Nome))})");
+                    }
                 }
                 else if (label != "belo_horizonte_mg")
                 {
@@ -61,6 +68,10 @@ public partial class UiShot
                 }
 
                 Save(shot, $"_{label}_{tag}");
+                if (label is "mantena_mg" or "mesquita_mg")
+                {
+                    problems.AddRange(await CheckContrast(hub, where, shot, $"_{label}_{tag}"));
+                }
 
                 // O botão de enquadramento: município inteiro e de volta ao núcleo.
                 if (Named<Button>(hub, "Enquadrar") is not { } frame)
@@ -106,8 +117,41 @@ public partial class UiShot
             return;
         }
 
-        GD.Print("Smoke mapa_pequeno: ok (Mantena, Solonópole, Piratini e Belo Horizonte em 1366x768 e 1920x1080: nomes sem sobreposição e dentro do mapa, núcleo urbano enquadrado, cidade inteira e volta; save da divisão de zonas anterior recusado com a mensagem)");
+        GD.Print("Smoke mapa_pequeno: ok (Mantena, Mesquita, Solonópole, Piratini e Belo Horizonte em 1366x768 e 1920x1080: nomes sem sobreposição e dentro do mapa, núcleo urbano enquadrado, cidade inteira e volta; save da divisão de zonas anterior recusado com a mensagem)");
         GetTree().Quit(0);
+    }
+
+    /// <summary>
+    /// P-09: em cidade pequena o modo Minha força (o da abertura) separa as zonas em faixas, e o modo Partido líder,
+    /// mesmo com um partido à frente em todas as zonas, varia a intensidade da cor pela vantagem; captura os dois modos.
+    /// </summary>
+    private async Task<List<string>> CheckContrast(HubScreen hub, string where, string? shot, string suffix)
+    {
+        var problems = new List<string>();
+        ZoneMapView map = hub.ZoneMap;
+        if (Named<Button>(hub, "Modo_forca") is not { ButtonPressed: true })
+        {
+            problems.Add($"{where}: a tela central não abre no modo Minha força");
+        }
+
+        int strength = map.ZoneColors.Values.Distinct().Count();
+        await Click(Named<Button>(hub, "Modo_lider")!);
+        var leaders = map.ZoneColors.Values.Select(c => new Color(c, 1)).Distinct().Count();
+        int shades = map.ZoneColors.Values.Distinct().Count();
+        GD.Print($"  {where}: {map.Zonas.Count} zonas; Minha força em {strength} faixas; Partido líder com {leaders} partido(s) e {shades} tons");
+        Save(shot, suffix + "_lider");
+        if (map.Zonas.Count > 1 && strength < 2)
+        {
+            problems.Add($"{where}: o modo Minha força pinta todas as zonas da mesma cor");
+        }
+
+        if (map.Zonas.Count > 1 && shades < 2)
+        {
+            problems.Add($"{where}: o modo Partido líder pinta todas as zonas da mesma cor e do mesmo tom");
+        }
+
+        await Click(Named<Button>(hub, "Modo_forca")!);
+        return problems;
     }
 
     /// <summary>Nenhum nome cobre outro nome, um marcador ou um controle sobre o mapa, e todos ficam dentro do mapa.</summary>

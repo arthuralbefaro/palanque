@@ -93,6 +93,23 @@ public class ClockAndForecastTests
         Assert.Equal(7.0, 7 * Clock.SecondsPerDay(config, Clock.ModoCampanha, 4), 3);
     }
 
+    [Fact]
+    public void Pausas_do_mandato_e_da_prefeitura_sao_desligaveis_e_toda_pausa_se_explica_nas_opcoes()
+    {
+        TimeConfig config = Time;
+        var off = Clock.PauseIds.ToDictionary(id => id, _ => false);
+        foreach (string id in new[] { Clock.AchadoFiscalizacao, Clock.MesaNegociacao, Clock.CobrancaDoLivro, Clock.LutoOficial, Clock.ObraPronta, Clock.AtaqueContraVoce })
+        {
+            Assert.True(Clock.ShouldPause(config, id, null));
+            Assert.False(Clock.ShouldPause(config, id, off));
+        }
+
+        // A decisão com prazo e a mudança de fase não se desligam: a escolha do jogador não vale para elas.
+        Assert.True(Clock.ShouldPause(config, Clock.DecisaoComPrazo, off));
+        Assert.All(config.Pausas, p => Assert.False(string.IsNullOrWhiteSpace(p.Explicacao)));
+        Assert.Equal(Clock.PauseIds.Order(), config.Pausas.Select(p => p.Id).Order());
+    }
+
     /// <summary>Leva a campanha, sem compromissos, até a propaganda liberada (todo tipo de compromisso pode ser marcado).</summary>
     internal static CampaignEngine InCampaign(int ibge, ulong seed)
     {

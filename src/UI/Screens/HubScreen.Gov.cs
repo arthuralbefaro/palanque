@@ -360,7 +360,7 @@ public partial class HubScreen
         _notice ??= notice;
     }
 
-    /// <summary>Pausas automáticas do mandato (GDD 17.4): decisão que chegou, votação em conflito, achado, mesa aberta, cobrança e luto.</summary>
+    /// <summary>Pausas automáticas do mandato (GDD 17.4): decisão que chegou, votação em conflito, achado, mesa aberta, cobrança, luto e obra pronta; as desligáveis seguem as Opções.</summary>
     private void CheckGovPauses()
     {
         var overrides = Settings.PauseOverrides;
@@ -397,30 +397,30 @@ public partial class HubScreen
             }
         }
 
-        if (g.Inspections.FirstOrDefault(i => i.Pending) is { } finding)
+        if (g.Inspections.FirstOrDefault(i => i.Pending) is { } finding && Pause(Clock.AchadoFiscalizacao))
         {
             GovStop("achado:" + finding.Id, new Notice(Tr("A fiscalização trouxe um achado e espera a sua decisão."), "Ver o achado", () => OpenGov("achado", finding.Id),
                 Palette.Tip(Tr("Abre o achado da fiscalização."), Tr("mostra o que foi encontrado e as três saídas, cada uma com a previsão."), Tr("nada."))));
         }
 
-        if (Kind == GovKind.Prefeito && gov.PendingNegotiation is { } negotiation)
+        if (Kind == GovKind.Prefeito && gov.PendingNegotiation is { } negotiation && Pause(Clock.MesaNegociacao))
         {
             GovStop("mesa:" + negotiation.Id, new Notice(Tr("Abriu a data-base dos servidores: há um pedido de reajuste na mesa."), "Abrir a mesa", () => { OpenGovArea("fiscal"); OpenGov("negociacao", negotiation.Id); },
                 Palette.Tip(Tr("Abre a mesa de negociação."), Tr("mostra o pedido, a folha de hoje contra os limites da lei e as respostas possíveis."), Tr("nada."))));
         }
 
-        if (g.Demands.LastOrDefault(d => d.Met is null && d.Kind != Demand.Presenca && d.Date >= State.Calendar.WeekStart.AddDays(-7)) is { } demand && _govSeen.Add("cobranca:" + demand.Id))
+        if (g.Demands.LastOrDefault(d => d.Met is null && d.Kind != Demand.Presenca && d.Date >= State.Calendar.WeekStart.AddDays(-7)) is { } demand && Pause(Clock.CobrancaDoLivro) && _govSeen.Add("cobranca:" + demand.Id))
         {
             _running = false;
             _govDemand = demand.Id;
         }
 
-        if (State.Renewal is { } renewal && Core.Renewal.RenewalQueries.InMourning(renewal, State.Calendar.WeekStart) && renewal.LutoAte is { } until)
+        if (State.Renewal is { } renewal && Core.Renewal.RenewalQueries.InMourning(renewal, State.Calendar.WeekStart) && renewal.LutoAte is { } until && Pause(Clock.LutoOficial))
         {
             GovStop("luto:" + until.DayNumber, new Notice(string.Format(Tr("Luto oficial até {0}: a Câmara não faz sessão nesta semana."), until.ToString("d 'de' MMMM", PtBr))));
         }
 
-        if (g.Works.FirstOrDefault(w => w.Stage == WorkStage.Pronta && GovernanceQueries.Works(gov).Any(v => v.Work.Id == w.Id && v.ByPlayer)) is { } ready)
+        if (g.Works.FirstOrDefault(w => w.Stage == WorkStage.Pronta && GovernanceQueries.Works(gov).Any(v => v.Work.Id == w.Id && v.ByPlayer)) is { } ready && Pause(Clock.ObraPronta))
         {
             GovStop("pronta:" + ready.Id, new Notice(string.Format(Tr("Obra pronta para a entrega: {0} em {1}."), gov.WorkName(ready), GZone(ready.ZoneId)), "Ver a obra", () => OpenGov("obra", ready.Id),
                 Palette.Tip(Tr("Abre a ficha da obra."), Tr("mostra a previsão de inaugurar e de entregar sem cerimônia."), Tr("nada."))));
@@ -542,6 +542,7 @@ public partial class HubScreen
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));
+        OptionsButton();
         IconButton(_top, "ajuda", false, () => EncyclopediaDialog.Open(GetTree().Root), Palette.Tip(Tr("Enciclopédia (F1)."), Tr("explica termos, as regras reais do mandato e da prefeitura, quem é quem neste mundo e o seu Livro de compromissos."), Tr("nada; o jogo fica pausado.")));
     }
 
@@ -606,8 +607,8 @@ public partial class HubScreen
         var col = Ui.Column(card, 8);
         Glossary.Rich(col, Tr(text), 18, Palette.Texto);
         var row = Ui.Row(col, 8);
-        Ui.Button(row, "Entendi", () => { Settings.MarkHintSeen(key); Refresh(); }, Palette.Tip(Tr("Fecha esta dica."), Tr("ela não volta; tudo o que ela diz está na Enciclopédia (F1)."), Tr("nada.")));
-        Ui.Button(row, "Sem dicas", () => { Settings.DisableHints(); Refresh(); }, Palette.Tip(Tr("Desliga todas as dicas de primeira vez."), Tr("nenhuma dica volta."), Tr("nada.")));
+        Ui.Button(row, "Entendi", () => { Settings.MarkHintSeen(key); Refresh(); }, Palette.Tip(Tr("Fecha esta dica."), Tr("ela não volta sozinha (dá para religar as dicas em Opções); tudo o que ela diz está na Enciclopédia (F1)."), Tr("nada.")));
+        Ui.Button(row, "Sem dicas", () => { Settings.DisableHints(); Refresh(); }, Palette.Tip(Tr("Desliga todas as dicas de primeira vez."), Tr("nenhuma dica volta, a não ser que você as religue em Opções."), Tr("nada.")));
     }
 
     /// <summary>

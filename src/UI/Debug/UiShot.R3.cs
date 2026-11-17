@@ -126,7 +126,7 @@ public partial class UiShot
             return;
         }
 
-        await ClickAt(hub.ZoneMap.GlobalPosition + marker);
+        await ClickAt(hub.ZoneMap, hub.ZoneMap.GlobalPosition + marker);
         if (hub.SheetName != "Rival")
         {
             Fail("o clique no marcador do rival no mapa não abriu a ficha dele.");
