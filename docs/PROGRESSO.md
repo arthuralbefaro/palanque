@@ -19,7 +19,7 @@ A RL está pronta, mas **fora da main até você ver as capturas** (branch `rl`,
 | Relatório do sorteado do porte médio | main `5473fc9` | entrou (só documento) |
 | Nomes de bairro do OpenStreetMap | main `eedca06`, `3f648fc` | entrou; portão completo passou |
 | RL (leitura mínima) | branch `rl` | pronta; espera você ver as capturas |
-| RV-A (começo: mapa de base, câmera, luz) | branch `rva` (criado do `rl`, com o protótipo da RV) | em andamento; portão passou |
+| RV-A (começo: mapa de base, câmera, luz) | branch `rva` (criado do `rl`, com o protótipo da RV), HEAD `e55220d` | começo feito; portão passou; sem tag |
 | Cansaço por veículo, vaga que expira | branch `cansaco-veiculo` | **fora do critério**; não entra |
 | Protótipo da RV | branch `rv-prototipo` | dentro do `rva`; não entra sozinho |
 
@@ -50,7 +50,7 @@ Critério: tipo e canal até 40%, par até 25%; em negrito, fora. Pela regra, na
 4.675 zonas trocaram o nome gerado pelo bairro do OSM (Mantena: "Zona Sul" → "Loteamento Maulaz", "Zona Sudeste" → "Esplanada"). Nomes do IBGE intactos; ids iguais (saves abrem). A Ficha da zona diz a origem; o crédito aparece no mapa só onde há nome do OSM. Brutos no cache (14,8 MB), fora do Git; extração de 17/11, registrada em `data/zonas/_fontes.json`.
 
 ### 7. RV-A (começo, branch `rva`)
-Mapa de base de Mantena (quadras, ruas com nome, rios, rodovias, localidades) sob as zonas translúcidas; zoom da cidade até a rua, travado no município; luz de dia e de noite pelo relógio. Metas passaram na máquina compartilhada: Mantena pronta em 15–20 ms e 224–228 FPS; Belo Horizonte em 0,27–0,29 s e 166–168 FPS. Capturas em `.claude/worktrees/rva/docs/referencias/rva/meio/`; vídeo de 28 s em `.claude/worktrees/rva/docs/referencias/rva/rva_mantena_manha_noite.mp4`. Mapa de base só no cache (licença das faces não confirmada); estilo final, menu como cena e "Palanque" esperam o ART_GUIDE.
+Mapa de base de Mantena (quadras, ruas com nome, rios, rodovias, localidades) sob as zonas translúcidas; zoom da cidade até a rua, travado no município; luz de dia e de noite pelo relógio. Depois das 10h: o chão do mapa de base segue as zonas (sem frestas na borda) e a noite ficou mais escura e azulada (tons provisórios, P-43); as capturas foram refeitas já com os nomes do OSM e o crédito junto ("Mapa de base: IBGE · © colaboradores do OpenStreetMap"). Metas passaram na máquina compartilhada (última rodada, 1920×1080): Mantena pronta em 13–17 ms e 277–280 FPS com zoom e arraste; Belo Horizonte em 0,21–0,27 s e 199–201 FPS. Branch `rva` em `e55220d`, portão passou. Capturas em `.claude/worktrees/rva/docs/referencias/rva/meio/`; vídeo de 28 s em `.claude/worktrees/rva/docs/referencias/rva/rva_mantena_manha_noite.mp4`. Mapa de base só no cache (licença das faces não confirmada); estilo final, menu como cena e "Palanque" esperam o ART_GUIDE.
 
 ### 8. Decisões pendentes
 1. **RL:** ver as capturas e dizer se integra (tag `fase-rl`); confirmar as escolhas da P-41 (mundo age todo dia; ficha da zona flutuante, que contradiz o ART_GUIDE em vigor; mandato e prefeitura ainda sem relógio).
