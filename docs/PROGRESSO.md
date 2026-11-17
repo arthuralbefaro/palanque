@@ -2,10 +2,10 @@
 
 ## Relatório para o autor (atualizado a cada parte)
 
-**Estado em 2026-11-16, depois da R4.** Este bloco é reescrito ao fim de cada parte.
+**Estado em 2026-11-17, depois da `fase-r-final`.** Este bloco é reescrito ao fim de cada parte.
 
-- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3` e `fase-r4`, todas com pendências.
-- **Por qual tag começar a testar:** `fase-r4`, com `docs/ROTEIRO_TESTE_R4.md` (20 minutos). Ela contém tudo das anteriores, o mapa de cidade pequena e as correções do seu teste da `fase-r1` (itens 1 a 9 da P-24). Acrescenta o mandato de vereador, a prefeitura e a entressafra na tela central, os indicadores reais e a renovação do mundo político. **Comece uma carreira nova:** saves anteriores à divisão rural por distritos são recusados com aviso.
+- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4` e `fase-r-final`, todas com pendências.
+- **Por qual tag começar a testar:** `fase-r-final`, com `docs/ROTEIRO_TESTE_R_FINAL.md` (10 minutos) e, para o mandato, `docs/ROTEIRO_TESTE_R4.md` (20 minutos). A `fase-r-final` traz as correções que você achou na criação de personagem jogando a `fase-r4` (traços, biografia, acentos), tooltips em todas as telas, a tela de Opções e o mapa de Mesquita na sede. A `fase-r4` Ela contém tudo das anteriores, o mapa de cidade pequena e as correções do seu teste da `fase-r1` (itens 1 a 9 da P-24). Acrescenta o mandato de vereador, a prefeitura e a entressafra na tela central, os indicadores reais e a renovação do mundo político. **Comece uma carreira nova:** saves anteriores à divisão rural por distritos são recusados com aviso.
 - **BalanceSim de cada tag** (critério do princípio a: tipo de compromisso e canal de verba até 40% das semanas; par tipo e zona até 25%; no mandato, instrumento até 40%):
 
 | Tag | Campanhas por porte | Tipo (pequeno / médio / grande / metrópole) | Par | Canal de verba | Outros critérios |
@@ -14,7 +14,7 @@
 | `fase-r2a` | 48 | 30,2% / 34,1% / **41,4%** / **59,8%** | 22,6% / 15,5% / 12,6% / 11,5% | (não existia) | — |
 | `fase-r2b` | 48 | 27,0% / 35,9% / 36,3% / **60,6%** | **29,8%** / 18,1% / 14,2% / 12,8% | **45,0%** / **49,0%** / **49,5%** / 39,2% | decisões com troca 1,8 a 2,4 por semana (passa) |
 | `fase-r3` | **200** | 27,9% / 27,2% / 27,6% / 36,9% | **30,5%** / 22,6% / 19,0% / 17,5% | 33,6% / 30,2% / 37,0% / 29,1% | decisões com troca 2,7 a 2,9 (passa); contas: limpa 0,00%, "por fora" 36,2% (passa); sem campanha nunca eleito (passa); régua da D-026 **não fecha** (P-26) |
-| `fase-r4` | **200** | 27,8% / 26,8% / 27,5% / 37,2% | **30,2%** / 22,0% / 19,0% / 17,7% | 33,1% / 31,3% / 35,4% / 29,9% | decisões com troca 2,7 a 2,9 (passa); contas: limpa 0,00%, "por fora" 35,6% (passa); sem campanha nunca eleito (passa); **mandato: instrumento mais escolhido 28,1% / 29,8% / 28,9% / 28,8% (passa)**; régua da D-026 **não fecha** (P-26) |
+| `fase-r4`, `fase-r-final` | **200** | 27,8% / 26,8% / 27,5% / 37,2% | **30,2%** / 22,0% / 19,0% / 17,7% | 33,1% / 31,3% / 35,4% / 29,9% | decisões com troca 2,7 a 2,9 (passa); contas: limpa 0,00%, "por fora" 35,6% (passa); sem campanha nunca eleito (passa); **mandato: instrumento mais escolhido 28,1% / 29,8% / 28,9% / 28,8% (passa)**; régua da D-026 **não fecha** (P-26) |
 
   Em negrito, fora do critério. O par do porte pequeno é a entrevista no veículo de maior alcance, não uma zona; as tags saíram com ele pendente, como autorizado. Na `fase-r4`, a régua ficou pior que na `fase-r3` em três portes por causa do mapa de cidade pequena, não da R4 (P-26).
 - **Seus pedidos desta rodada:**
@@ -43,6 +43,33 @@
   9. Rural por distritos: 200 moradores mínimos por zona e até 4 zonas extras por município (D-049).
   10. R4: piso e teto dos indicadores nos percentis 1 e 99; posse do suplente em 7 dias e eleição da cadeira em 90; eleição suplementar resolvida sozinha; contas julgadas só fora de campanha (D-050).
   11. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos.
+
+## fase-r-final — Tooltips, Opções, mapa de cidade pequena e correções da criação (2026-11-17, com pendências)
+
+**O que entrou**
+- **Correções da criação achadas pelo autor na `fase-r4`:**
+  - traços: os 2 sorteados com o personagem ficavam escondidos e contavam, então "Começar carreira" não liberava; a mensagem agora diz quantos e quais estão marcados;
+  - fundo do traço marcado com o mouse em cima;
+  - biografia: acompanha idade, partido, profissão e cidade até ser editada à mão, com "pelo"/"pela" pelo nome do partido e frase própria para estudante;
+  - atributos com acento.
+- **P-02:** tooltips em três partes e links do glossário no menu, Novo Mundo, criação (5 abas e partido próprio), seletor de cidade, mapa do estado, debate, urna, apuração e fundação de partido. Opções que ainda não mudam a simulação dizem isso (P-38).
+- **P-03:** tela de Opções pelo menu e pela tela central, aba Tempo com cada pausa (cinco novas desligáveis) e "Religar as dicas".
+- **P-09:** fechada; Mesquita (MG) abre na sede, e os modos Minha força e Partido líder dão contraste.
+- **P-33:** cliques dos testes de fumaça esperam o controle pronto e conferem que chegaram, sem repetir; carreiras de teste com semente fixa; um teste do Core que dependia do hash de texto do .NET ficou estável.
+
+**Números dos testes**
+- 1.024 testes no Core, todos passando; 88 no importador; DataValidator e EventLint limpos; build do Godot limpo.
+- 32 alvos de fumaça com janela, todos com código 0 na mesma rodada, com `--perfil=main`: os 29 da R4 mais `opcoes`, `tracos` (traços clicados com o mouse, biografia, acentos) e Mesquita no `mapa_pequeno`.
+- Capturas em `docs/referencias/r-final/`.
+
+**BalanceSim:** a parte não mexe em campanha nem em parâmetros; vale o da `fase-r4`.
+
+**As 5 coisas de que menos gostei no meu próprio trabalho**
+1. **O bloqueio dos traços passou por quatro partes sem teste com o mouse:** o alvo `creator` sorteava tudo antes de conferir e escondia o defeito.
+2. **A biografia errada voltou porque o item 5 da R1 foi conferido só no santinho;** agora o alvo `tracos` confere a biografia também.
+3. **A Zona Sudoeste de Mesquita** junta sede e vila; corrigi só o enquadramento (P-38).
+4. **Os testes de fumaça ficaram mais lentos:** `explicacao` e `layout` jogam uma carreira de prefeito até a urna.
+5. **Opções sem efeito ainda à vista** (Dificuldade, Realismo jurídico, Cúpula, estatuto do partido): o tooltip avisa, mas é ruído na tela.
 
 ## R4 — Mandatos na nova tela, com gestão nova (2026-11-16, com pendências)
 

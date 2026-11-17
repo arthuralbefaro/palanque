@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 23:30, depois de: R4 concluída com pendências (tag fase-r4), com o mapa de cidade pequena e as correções do teste do autor na fase-r1 já integrados. Próximo: fase-r-final (P-02, P-03, P-09) e as entregas da RV; a Fase 6 não começa.
+Atualizado em 2026-11-17, depois de: fase-r-final concluída com pendências (tag fase-r-final), com as correções da criação achadas pelo autor na fase-r4. Próximo: entrega da RV (decisões, GDD, ART_GUIDE, pesquisa do mapa de base, protótipo no branch rv-prototipo) e as partes RL → RV-A → RV-C → RV-B (D-055).
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -225,7 +225,9 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - BalanceSim de mandato: instrumento mais escolhido de 28% a 30% (passa); campanha igual à da `fase-r3`;
   - 1.014 testes no Core, 88 no importador, 29 alvos de fumaça com janela.
 - **Em branch, fora da main:** `cansaco-veiculo` (cansaço da entrevista por veículo e vagas; o par do pequeno cai para 19%, mas o tipo sobe para 82,5%, à espera da escolha do autor) e `regua-d026` (relatório da régua de dificuldade, sem ajuste).
-- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4`.
+- **fase-r-final feita, com pendências (tag `fase-r-final`):** correções da criação (traços que não liberavam o botão, biografia, acentos); tooltips em três partes em todas as telas (P-02); Opções → Tempo e religar dicas (P-03); mapa de cidade pequena fechado (P-09); cliques dos testes de fumaça firmes (P-33); 1.024 testes no Core, 32 alvos de fumaça.
+- **Depois da Fase R (D-054 e D-055):** RL (leitura mínima: relógio, painel Você, painel de zonas, "Fazer agora", número flutuante, retratos) → RV-A (cidade real no mapa, estilo final) → RV-C (mundo vivo) → RV-B (cenas), cada uma com tag e capturas no meio.
+- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4`, `fase-r-final`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -317,10 +319,8 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - P-05: a intenção por zona estimada (a da cidade repesada por idade e situação) basta até a R2a?;
   - P-06: termos de uso do IBGE;
   - P-08: 15 MB de atributos de zonas no repositório.
-- **Trabalho pendente da R1:**
-  - P-02: tooltips só na tela central;
-  - P-03: sem tela de Opções das pausas;
-  - P-09: mapa de cidade pequena (rótulos sobrepostos, uma cor só).
+- **Da fase-r-final:** P-38 (opções sem efeito, Zona Sudoeste de Mesquita, testes lentos). P-02, P-03, P-09 fechadas.
+- **Novas, depois da R4:** P-35 (pacote de nomes privado, D-053), P-37 (itens da RL fora da leitura mínima).
 - **Do Claude Code, mais à frente:** conferir no texto oficial os artigos de lei citados de memória antes de virarem configuração (R3 e R4).
 
 ## 9. Próximos passos ao abrir um chat novo
