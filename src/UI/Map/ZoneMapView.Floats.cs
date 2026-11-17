@@ -33,15 +33,24 @@ public partial class ZoneMapView
             HorizontalAlignment = HorizontalAlignment.Center,
             Modulate = new Color(1, 1, 1, delay > 0 ? 0 : 1),
         };
+        // Texto liso sobre uma pílula escura, sem contorno: o contorno do tema sobre o verde do mapa desenhava cada
+        // letra duas vezes. A pílula dá o contraste em qualquer cor de zona.
         label.AddThemeFontSizeOverride("font_size", small ? 18 : 24);
         label.AddThemeFontOverride("font", Palette.Weight(Palette.Inter, 600));
         label.AddThemeColorOverride("font_color", text.StartsWith('−') ? Palette.Negativo : Palette.Positivo);
-        label.AddThemeColorOverride("font_outline_color", Palette.Fundo);
-        label.AddThemeConstantOverride("outline_size", 6);
+        label.AddThemeConstantOverride("outline_size", 0);
+        label.AddThemeConstantOverride("shadow_outline_size", 0);
+        label.AddThemeColorOverride("font_shadow_color", Colors.Transparent);
+        StyleBoxFlat pill = Palette.Box(new Color(Palette.Fundo, 0.9f), 8, 0, Palette.Linha);
+        pill.ContentMarginLeft = pill.ContentMarginRight = small ? 6 : 8;
+        pill.ContentMarginTop = pill.ContentMarginBottom = 1;
+        label.AddThemeStyleboxOverride("normal", pill);
         AddChild(label);
         Vector2 size = label.GetMinimumSize();
         label.Size = size;
-        label.Position = ScreenCenterOf(zoneId) - new Vector2(size.X / 2, size.Y + 16);
+
+        // Posição em pixel inteiro: o texto não borra na subida.
+        label.Position = (ScreenCenterOf(zoneId) - new Vector2(size.X / 2, size.Y + 16)).Round();
         Tween tween = label.CreateTween();
         if (delay > 0)
         {
@@ -49,8 +58,9 @@ public partial class ZoneMapView
             tween.TweenProperty(label, "modulate:a", 1.0, 0.05);
         }
 
-        tween.TweenProperty(label, "position:y", label.Position.Y - 24, 0.9);
-        tween.Parallel().TweenProperty(label, "modulate:a", 0.0, 0.9).SetEase(Tween.EaseType.In);
+        // Sobe 24 px em 900 ms, nítido até 550 ms e some no resto (ART_GUIDE, "Efeito numa zona").
+        tween.TweenMethod(Callable.From<float>(y => label.Position = new Vector2(label.Position.X, Mathf.Round(y))), label.Position.Y, label.Position.Y - 24, 0.9);
+        tween.Parallel().TweenProperty(label, "modulate:a", 0.0, 0.35).SetDelay(0.55).SetEase(Tween.EaseType.In);
         tween.TweenCallback(Callable.From(label.QueueFree));
     }
 }

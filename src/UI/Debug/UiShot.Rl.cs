@@ -259,10 +259,14 @@ public partial class UiShot
                 $"{tag}: Fazer agora fez o compromisso em {done.Commitment.Turno} (previsto {plan.Turno}) com estresse {done.Stress} (previsto {plan.Forecast.Stress}).");
             if (i == 0)
             {
-                // Correção do autor: a ficha fica no painel da esquerda, fora do mapa.
+                // Correções do autor: a ficha fica no painel da esquerda, fora do mapa, e o número flutuante aparece
+                // inteiro no mapa, liso (sem contorno).
                 Rect2 mapRect = hub.ZoneMap.GetGlobalRect();
                 Control ficha = Named<Control>(hub, "FichaZona")!;
                 Require(!ficha.GetGlobalRect().Intersects(mapRect), $"{tag}: a ficha da zona cobre o mapa ({ficha.GetGlobalRect()} sobre {mapRect}).");
+                Label? number = FindAll<Label>(hub.ZoneMap).FirstOrDefault(l => l.Name.ToString().StartsWith("Flutuante", StringComparison.Ordinal) && l.Text.Contains(Tr("presença"), StringComparison.Ordinal));
+                Require(number is not null && mapRect.Encloses(number.GetGlobalRect()) && number.GetThemeConstant("outline_size") == 0,
+                    $"{tag}: o número flutuante não está inteiro no mapa ou tem contorno ({number?.GetGlobalRect()}).");
                 Save(shot, "_" + tag);
             }
         }

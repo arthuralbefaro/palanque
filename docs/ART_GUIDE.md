@@ -412,7 +412,7 @@ Durações curtas; nada bloqueia o clique seguinte. A opção "Reduzir animaçõ
 | Clique em botão | Desce 1 px e volta | 100 ms |
 | Troca de área no trilho | Painel desliza 16 px e aparece | 160 ms |
 | Número muda | Conta do valor antigo ao novo; pisca em `positivo` ou `negativo` | 400 ms |
-| Efeito numa zona | A zona pulsa uma vez e solta uma etiqueta ("+2,1") que sobe 24 px e some | 900 ms |
+| Efeito numa zona | A zona pulsa uma vez e solta uma etiqueta ("+2,1"), texto liso sobre uma pílula escura, sem contorno, que sobe 24 px, fica nítida até 550 ms e some | 900 ms |
 | Notícia nova | Entra por cima, as outras descem; barra de 3 px em `atencao` por 2 s | 200 ms |
 | Dia passa | A data troca com um corte seco; marcador do dia anda na agenda | 120 ms |
 | Pausa automática | Grupo de tempo pisca duas vezes em `atencao`; a faixa de decisão sobe da base do mapa | 250 ms |
