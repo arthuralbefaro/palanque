@@ -11,11 +11,13 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - **Para fechar:** levar pauta, votos e ações de gabinete (mandato) e orçamento, políticas, secretarias e crise (prefeitura) para áreas do trilho, com tooltips em três partes; o tempo corrente do mandato (1 s por dia em 1x) já está em `data/time.json`.
 - **Do autor:** nada; é trabalho pendente.
 
-### P-02 · Tooltips em três partes só na tela central e na Enciclopédia
+### P-02 · Tooltips em três partes só na tela central e na Enciclopédia — **fechada na fase-r-final**
+- **Fechamento:** menu, Opções, Novo Mundo, criação (as cinco abas e o partido próprio), seletor de cidade, mapa do estado, debate, urna, apuração e fundação de partido ganharam tooltip em três partes, motivo nos bloqueados e link nos termos do glossário (sem mudar o visual); o `explicacao` percorre essas telas e falha se faltar um.
 - **Falta:** o teste `explicacao` percorre a tela central (7 áreas, 4 modos do mapa, ficha de zona) e a Enciclopédia. Criação de personagem, Novo Mundo, urna, apuração, debate, mandato e prefeitura ainda têm tooltips antigos ou nenhum.
 - **Para fechar:** estender o teste a essas telas e preencher os tooltips.
 
-### P-03 · Opções → Tempo sem tela
+### P-03 · Opções → Tempo sem tela — **fechada na fase-r-final**
+- **Fechamento:** tela de Opções (menu e barra da tela central) com a aba Tempo: cada pausa de `data/time.json`, inclusive as cinco novas do mandato e da prefeitura, liga e desliga com tooltip em três partes, e o botão Religar as dicas; grava por `Settings`; alvo `opcoes`.
 - **Falta:** as pausas automáticas são configuráveis no código (`Settings.SetPause`, padrões em `data/time.json`), mas não há tela de Opções para o jogador ligar ou desligar cada uma, nem para religar as dicas.
 - **Provisório:** valem os padrões de `data/time.json`.
 
@@ -41,7 +43,8 @@ Bloqueios e decisões novas surgidos durante o corujão da Fase R (autorização
 - **O quê:** os atributos das zonas (`data/zonas/`, cerca de 15 MB) não tinham teto; o teto de 30 MB do autor vale para os contornos (`data/geo/zonas/`, 20,5 MB).
 - **Decisão do autor (D-037):** 15 MB aceitos; teto de 20 MB para `data/zonas/`. O importador mede a saída e falha, sem gravar, se passar (`ZonasPaths.MaxZonasBytes`); o teste `Toda_zona_tem_contorno_e_os_contornos_cabem_no_teto` confere a pasta.
 
-### P-09 · Mapa em cidade pequena (autocrítica visual, segunda rodada)
+### P-09 · Mapa em cidade pequena (autocrítica visual, segunda rodada) — **fechada na fase-r-final**
+- **Fechamento:** conferido com capturas de Mesquita (MG) e Mantena (MG) em 1366×768 e 1920×1080 (`docs/referencias/r-final/`): nomes sem sobreposição, abertura em Minha força com as zonas em faixas, e Partido líder com o tom pela vantagem (Mesquita hoje tem 3 líderes; Mantena, 2). Corrigido o enquadramento: em Mesquita o mapa abria numa vila afastada (a Zona Sudoeste junta sede e vila) e agora abre na sede; o `mapa_pequeno` inclui Mesquita e confere o Centro no núcleo e o contraste dos dois modos.
 - **O quê:** em cidade pequena, as zonas urbanas são minúsculas perto da zona rural; o enquadramento inicial aproxima o núcleo urbano, mas os rótulos de zonas vizinhas se sobrepõem ("Centro" e "Zona Nordeste" em Mesquita/MG) e, quando um partido lidera em todas as zonas, o modo Partido líder fica de uma cor só. Captura: `docs/referencias/r1/central_cidade_pequena_1920.png`.
 - **Para fechar:** rótulos com desvio de colisão; o modo "Minha força" da R2a (presença do jogador por zona) dá contraste mesmo quando o líder é o mesmo; considerar subdividir a zona rural em cidades pequenas com rural dominante.
 
@@ -236,6 +239,7 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 ### P-33 · Ambiente compartilhado dos testes de fumaça (corrigido em parte)
 - Até o commit `c898e4e`, rodadas de fumaça de vários agentes gravavam no mesmo `user://`; agora cada rodada usa `user://smoke/<perfil>/`. **As rodadas da R4 anteriores à correção gravaram na pasta real do jogo** (`%APPDATA%\Godot\app_userdata\Planalto\saves`: `autosave.json` de 16/11 15h37 e cinco `smoke*.json`); se o autor tinha um autosave ali, ele pode ter sido trocado. Nada foi apagado.
 - Alvos com falha intermitente sob carga (`agenda`, `lideranca`, `verba`, `eventos`), todos depois de um clique simulado; com a máquina livre, `eventos` passou 10 de 10 seguidas. Endurecer o clique do UiShot depois da integração da R4.
+- **Cliques: fechado na fase-r-final.** O clique espera o controle visível, habilitado, dentro da janela e parado, confere que nada o cobre, entra num só quadro e confirma que chegou (senão falha com diagnóstico, sem repetir); a semente dos testes não depende mais do relógio do Novo Mundo.
 
 ### P-26 · Par do porte pequeno medido de novo depois do mapa (pedido do autor)
 - Com a divisão rural por distritos, 200 campanhas no porte pequeno: par (tipo, zona) **30,2%** (antes 30,5%); tipo 27,8%; canal 33,1%; partido mais forte eleito em 73 de 100, sorteado em 19 de 100. Como previsto, a mudança das zonas não move o par: ele é a entrevista no veículo de maior alcance. Nenhum parâmetro foi alterado por causa dele. **A decidir pelo autor:** cansaço da entrevista por veículo, mais veículos na cidade pequena, ou aceitar.
