@@ -206,26 +206,33 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 
 ## RL — Leitura do jogo
 
-> Decidida pelo autor em 17/11 (DECISOES D-054), depois de jogar a `fase-r4` em Mantena: "entediante e bem confuso", "não tem o horário passando pra saber quanto o dia dura e quando acaba", "não tem controle sobre cada região de forma organizada na tela", "tudo é só texto, não tem visual", "nem dá pra saber minha energia". Diagnóstico: os sistemas da Fase R existem, mas a tela não os mostra; é a causa 5 da AUDITORIA_FASE3, ainda aberta. Os testes mediam se os sistemas funcionam, não se o jogador vê.
+> Decidida pelo autor em 17/11 (DECISOES D-054), depois de jogar a `fase-r4` em Mantena: "entediante e bem confuso", "não tem o horário passando pra saber quanto o dia dura e quando acaba", "não tem controle sobre cada região de forma organizada na tela", "tudo é só texto, não tem visual", "nem dá pra saber minha energia", "mais fácil só realizar a ação". Diagnóstico: os sistemas da Fase R existem, mas a tela não os mostra; é a causa 5 da AUDITORIA_FASE3, ainda aberta. Os testes mediam se os sistemas funcionam, não se o jogador vê.
 > **Começa depois da `fase-r-final`** e vem **antes de qualquer trabalho de estilo** da RV. O protótipo da RV continua no branch próprio, mas não entra na main antes da RL. Tudo na tela central atual, **sem trocar fontes nem paleta**: só leitura, disposição e retorno visual. Lógica e números vêm do Core; a tela só exibe. Branch próprio; tag `fase-rl`.
 
 - [ ] **Relógio** na barra superior, andando de verdade (6h às 22h no ritmo do tempo corrente), e **linha do tempo do dia** com os três turnos, o compromisso em andamento e os próximos; a passagem para o dia seguinte é visível.
 - [ ] **Painel "Você"**, sempre visível: turnos livres hoje e na semana, estresse com o limite que derruba os testes, dinheiro e semanas até a eleição; cada um com tooltip dizendo o que limita.
-- [ ] **Painel de zonas:** todas as zonas em cartões ou tabela ordenável, com presença, líder da intenção, minha posição, lideranças conhecidas, demanda principal, última visita, cansaço por público e o botão "Marcar compromisso aqui". Clicar destaca a zona no mapa, e o contrário também.
+- [ ] **Painel de zonas:** todas as zonas em cartões ou tabela ordenável, com presença, líder da intenção, minha posição, lideranças conhecidas, demanda principal, última visita e cansaço por público. Clicar destaca a zona no mapa, e o contrário também.
 - [ ] **Mapa vivo:**
   - ícones dos meus compromissos (hoje e na semana), dos rivais em campo e das lideranças, pela cor do alinhamento;
-  - pulso onde acontece um fato;
+  - pulso onde acontece um fato, no máximo 3 por segundo;
   - número flutuante na zona depois de cada ação ("+2,1 presença");
   - zona em disputa hachurada;
-  - o personagem se deslocando até a zona do compromisso.
+  - o personagem se deslocando até a zona da ação.
 - [ ] **Gráfico da intenção de voto** por semana: eu, os dois acima e os dois abaixo.
 - [ ] **Retrato da pessoa** em toda notícia e todo cartão que fala de alguém.
-- [ ] **Primeira campanha guiada por objetivos:** os 3 primeiros objetivos ensinam, em ordem, marcar um compromisso numa zona, visitar uma liderança e ler a previsão. Dispensável; guardado fora do save.
+- [ ] **Primeira campanha guiada por objetivos:** os 3 primeiros objetivos ensinam, em ordem, agir numa zona, visitar uma liderança e ler a previsão. Dispensável; guardado fora do save.
 - [ ] **Ação direta:** na ficha da zona e no painel de zonas, o botão principal é "Fazer agora". Ele executa a ação no próximo turno livre, avança o tempo até lá e mostra o resultado no mapa. Agendar para outro dia vira opção secundária, para planejar e para convites com data. O limite de turnos e o estresse continuam valendo, e a previsão aparece antes do clique, como hoje.
+- [ ] **Das skills de jogo** (aprovadas pelo autor; orientam, mas o GDD, o ART_GUIDE e o CLAUDE.md prevalecem):
+  - janelas flutuantes em pilha: só a de cima recebe clique, Esc volta, foco preso no modal;
+  - painéis atualizados por sinal do Core, sem ler o estado a cada quadro;
+  - efeito proporcional à importância: quase nada no clique comum, grande na apuração; sem tremer a tela;
+  - opção "Reduzir piscadas";
+  - câmera do mapa com zoom e arraste suaves e independentes do FPS, travada nos limites do município, com corte seco quando o feed centraliza.
 - **Testes:**
-  - fumaça com janela que confere, em 1366×768 e 1920×1080, o relógio andando, o painel Você, o painel de zonas sincronizado com o mapa e os números flutuantes depois de uma ação;
+  - fumaça com janela que confere, em 1366×768, 1920×1080 e 2560×1080: o relógio andando, o painel Você, o painel de zonas sincronizado com o mapa, "Fazer agora" concluindo sem abrir a agenda, o número flutuante depois da ação e a pilha de janelas com Esc;
   - capturas da tela central nas semanas 1, 10 e 20 de uma campanha em Mantena, para o autor.
 - **Autocrítica de leitura:** para cada captura, três linhas respondendo às perguntas do princípio i (o que acontece, o que pede atenção, o que posso fazer), como um jogador novo.
+- **Capturas no meio da RL:** quando o relógio, o painel Você e o painel de zonas estiverem prontos, as capturas vão ao autor **antes** de seguir para o mapa vivo; o autor quer corrigir o rumo cedo.
 - **Entrega:** roteiro `docs/ROTEIRO_TESTE_RL.md` e capturas em `docs/referencias/rl/`.
 
 ## RV — Redefinição visual
