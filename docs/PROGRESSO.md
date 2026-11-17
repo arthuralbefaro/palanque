@@ -58,7 +58,7 @@
 
 **Números dos testes**
 - 1.014 testes no Core (778 na R3), dos quais 798 rápidos rodam em cerca de 30 s; 88 no importador; DataValidator e EventLint limpos; build do Godot limpo.
-- 29 alvos de fumaça com janela, todos com código 0 na mesma rodada, com `--perfil=main`: os 24 anteriores mais `gabinete`, `obras`, `fiscal`, `indicadores` e `entressafra`; `mandate` e `prefeitura` passaram a exercitar a tela central.
+- 29 alvos de fumaça com janela, com `--perfil=main`: os 24 anteriores mais `gabinete`, `obras`, `fiscal`, `indicadores` e `entressafra`; `mandate` e `prefeitura` passaram a exercitar a tela central. Na rodada da main, 28 passaram e o `explicacao` falhou uma vez: a etapa "licitação" na ficha da obra saía sem o link do glossário, e só aparecia quando a obra estava nessa etapa ao abrir a ficha. Corrigido no jogo; depois disso `explicacao` passou 3 de 3 seguidas, e `obras`, `gabinete` e `layout` também passaram.
 - Capturas em 1366×768 e 1920×1080 em `docs/referencias/r4/`, em cidade pequena e metrópole.
 - Renovação em 40 anos e 8 municípios: nenhuma cadeira vaga além da regra (maior tempo, 0 dias); toda morte de titular com o desfecho da regra; idade média +1,0 ano no conjunto (P-34 para as Câmaras pequenas). Indicadores: ida e volta sem perda (erro relativo de 6e-15) e 40 anos dentro dos limites.
 
