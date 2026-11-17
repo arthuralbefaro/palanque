@@ -8,9 +8,9 @@
 ## Tarde de 17/11 (em andamento)
 
 O autor respondeu às capturas da RL e ao relatório do meio-dia (D-059 e D-060, registradas na main). A RL entrou (seção acima). Em andamento, cada um no seu branch, com o portão completo antes de entrar na main:
-- **RV-A** (`rva`): noite visível, "Partido líder" pela margem, câmera abrindo no núcleo urbano.
+- **RV-A** (`rva`, sem tag e fora da main): feitos a noite visível (luz de rua, quarteirões com luz, campo escuro), o "Partido líder" com o tom pela vantagem sobre o segundo partido (no Core) e a abertura no núcleo urbano, conferidos em Mantena, Belo Horizonte e Mesquita (MG); a main com a RL foi juntada e o portão passou (1.054 testes do Core, 35 alvos). Medidas com a máquina livre: Mantena pronta em 17–20 ms, ~275 FPS de dia e de noite; Belo Horizonte em 0,38–0,44 s, ~198 FPS de dia e ~134 à noite. Escolhas na P-43 do branch. Capturas e vídeo fora do repositório em `C:\dev\capturas-rv\rva\`.
 - **Cansaço por veículo** (`cansaco-veiculo`): baixar o pico da entrevista; o teste de cassação do `WorldLinkTests` em 10 sementes.
-- **BalanceSim** (`balancesim-amostra`): cada cidade joga os dois partidos. Medida informativa com 200 campanhas por porte na main de antes da RL: mais forte 73 / 64 / 58 / 54% e sorteado 20 / 26 / 7 / 5% (pequeno, médio, grande, metrópole); o mais forte do médio fica 1 ponto abaixo do piso. A régua oficial é medida depois do cansaço, com as paradas.
+- **BalanceSim, na main (`b348506`, portão completo passou):** cada cidade joga os dois partidos. Medida informativa com 200 campanhas por porte na main de antes da RL: mais forte 73 / 64 / 58 / 54% e sorteado 20 / 26 / 7 / 5% (pequeno, médio, grande, metrópole); o mais forte do médio fica 1 ponto abaixo do piso. A régua oficial é medida depois do cansaço, com as paradas.
 - **Para o autor, fora do repositório:** capturas da RL em `C:\dev\capturas-rl\` (as corrigidas em `correcoes\`); guia de arte da RV e prancha das cabeças A e B em `C:\dev\capturas-rv\`.
 
 ## Relatório do meio-dia (17/11)

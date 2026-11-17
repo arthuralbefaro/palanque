@@ -376,6 +376,7 @@ Cada uma era a leitura mais conservadora; o arquivo diz como reverter.
 - **Amostra do BalanceSim** (**respondido pela D-060:** corrigida; cada cidade joga os dois partidos, em pares de campanhas na mesma cidade): cada cidade jogava só um dos dois partidos (`strongestParty` pela paridade da campanha), e isso explicava metade do sorteado do médio fora da faixa (`docs/balance/sorteado_medio.md`).
 - **Candidato C** (**respondido pela D-060:** não aplicado; a faixa do sorteado no médio vai até 35%): só no médio, `npc_effort_by_porte.medio` 1,7 e `porte_recognition_multiplier.medio` 0,8.
 - **Queda intermitente do alvo `objetivos`:** em 17/11, na main `3f648fc`, o Godot caiu uma vez com 0xC0000005 no finalizador do .NET (`GodotObject.Dispose` → `godotsharp_internal_object_get_associated_gchandle`). Repetido duas vezes, passou. Sem correção; se voltar, investigar objetos do Godot liberados pelo coletor depois de saírem da árvore.
+- **Carga quando caiu (regra de memória do CLAUDE.md):** a queda do `objetivos` e uma do `godot --headless --import` (17/11, 13h, no branch `balancesim-amostra`) foram com mais de 2 trabalhos pesados rodando (portões e BalanceSim de vários agentes ao mesmo tempo). Desde a regra (no máximo 2), os portões da main (`cbe401a`, `b348506`) e do `rva` passaram inteiros, inclusive o `objetivos` e a importação. Não conta como defeito do jogo enquanto não cair com a máquina livre.
 
 ## Respostas do autor de 17/11, à tarde (D-059, D-060)
 
