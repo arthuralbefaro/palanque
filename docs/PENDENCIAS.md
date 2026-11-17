@@ -230,6 +230,7 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
   - **Par (tipo, zona) no porte pequeno: 30,5%** (critério 25%). Não é zona: é a entrevista no veículo de maior alcance (rádio comunitária 13,9 pontos, página de notícias 6,3, entrevista sem veículo 5,4). A mudança das zonas (branch `mapa-pequeno`) sozinha não deve movê-lo; o que o move é o número de veículos por cidade, o alcance deles ou um cansaço da entrevista por veículo, que hoje não existe. Medir de novo depois da integração do mapa, como o autor pediu, antes de mexer em parâmetro. A `fase-r3` sai com esta pendência (autorizado pelo autor).
   - **Régua da D-026:** partido mais forte eleito em 76%, 84%, 52% e 53% (régua: 96%, 96%, 67%, 58%); partido sorteado em 19%, 30%, 11% e 15% (régua: 13%, 13%, 8%, 0%). Os dois andam juntos: o que derruba o sorteado derruba quase o mesmo o mais forte. Só nas campanhas limpas o sorteado fica em 12%, 20%, 8% e 0%. A régua foi medida em 2026-11-15 com um robô que sorteava ações; o de hoje escolhe a melhor opção e usa equipe, verba e doadores.
 - **A decidir pelo autor:** se a régua da D-026 continua valendo para o robô atual; e, se sim, qual alavanca usar: empenho do candidato coletivo por porte, peso do partido no modelo de voto (mexe na D-015) ou número de partidos na disputa.
+- **Respondido pela D-057 (17/11):** a régua passa a ser em faixas (mais forte: pequeno e médio de 65% a 90%, grande e metrópole de 40% a 60%; sorteado de 5% a 25%; sem campanha de 0% a 1%); nenhuma alavanca aplicada. Fica fora só o sorteado do médio (39%), em investigação antes de mudar número; a régua se mede de novo depois que o cansaço por veículo entrar.
 - **Também:** o robô simples do `CampaignBalanceTests` ficou no limite do teste (3 de 7 cidades); rivais mais duros o quebram.
 
 ### P-32 · Sobras da interface da R3
@@ -307,7 +308,7 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 - **Elevação (relevo sombreado): nada implementado; nenhuma licença confirmada.**
   - Topodata (INPE): SRTM refinado de 30 m, GeoTIFF por folha de 1° × 1,5°, cerca de 65 MB por folha em zip; o Brasil tem cerca de 480 folhas, cerca de 30 GB estimados; a página de termos não abriu.
   - ANADEM (ANA), Copernicus DEM GLO-30 e o MDE do IBGE: sem confirmação de licença nem de tamanho.
-- **OpenStreetMap: fora** (licença ODbL), salvo se o autor liberar.
+- **OpenStreetMap: fora** (licença ODbL), salvo se o autor liberar. **Liberado só para nomes de bairro onde o IBGE não tem bairro oficial (D-058).**
 - **Como guardar ou gerar o mapa de base da cidade em foco:**
   - (a) **Gerar na hora a partir dos brutos:** exige NetTopologySuite fora do importador e o zip da UF na máquina; cerca de 30 s numa metrópole. Inviável sem aprovar pacote novo no jogo.
   - (b) **Pré-gerado por município e baixado sob demanda:** 0,3 a 3 MB por município com gzip; o país todo, de 1 a 3 GB fora do repositório. Exige hospedar e redistribuir dados do IBGE, o que depende da licença das faces.
@@ -318,7 +319,7 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
   1. confirmar a licença das Faces de Logradouros e os termos da BC250;
   2. escolher a fonte de elevação, ou ficar sem relevo;
   3. escolher entre (b), (c) e (d), ou uma combinação;
-  4. se libera o OpenStreetMap para algo (hoje, não).
+  4. se libera o OpenStreetMap para algo (**respondido pela D-058:** só nomes de bairro, onde o IBGE não tem).
 - **Escolha provisória até lá:** o mapa de base fica no cache, fora do Git, e não entra na main sem a decisão sobre a licença e a forma de guardar.
 - **Como reverter:** o mapa de base é uma camada abaixo das zonas; sem o arquivo, o mapa de zonas atual continua funcionando.
 

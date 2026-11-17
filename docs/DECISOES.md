@@ -355,7 +355,7 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
   - localidades da BC250 podem nomear zonas onde não há bairro do IBGE;
   - luz de dia e de noite pela hora do relógio (D-055, RV-A).
 - **Decisão, interface:** o mundo ocupa a tela inteira; janelas semitransparentes flutuam sobre ele; a interface fica nas bordas (barra de ícones embaixo, retrato e aprovação num canto, minimapa com data e velocidade no outro, poucos números no topo). Continuam as regras de clareza do ART_GUIDE: texto mínimo de 18 px, um destaque por vez, todo número explicado.
-- **Restrições:** dados geográficos só de fontes oficiais ou abertas, com crédito; nada de OpenStreetMap sem o autor liberar (licença ODbL); nenhum pacote de código novo.
+- **Restrições:** dados geográficos só de fontes oficiais ou abertas, com crédito; nada de OpenStreetMap sem o autor liberar (licença ODbL; os nomes de bairro foram liberados pela D-058); nenhum pacote de código novo.
 - **Quando (D-055):** a pilha de janelas com Esc entra na RL; o mapa de base, a câmera suave travada no município, a luz de dia e de noite e o estilo final da interface entram na RV-A; os marcadores vivos e o mundo se mexendo, na RV-C.
 - **O que o protótipo mostrou** (branch `rv-prototipo`; capturas em `docs/referencias/rv/` nesse branch):
   - O importador ganhou o modo `rv` (`rv baixar` e `rv mapa`), que baixa as faces de logradouro de MG e a BC250 e monta o mapa de base de cada município num arquivo compacto no cache (`cache/rv/mapa_base/{código}.rvmapa`), fora do Git.
@@ -472,7 +472,7 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Antes de tudo:** a correção bloqueante dos traços na criação (feita em 17/11) e a `fase-r-final`.
 - **Rumo cedo:** capturas ao autor no meio de cada parte; na RV-A e na RV-C, também um vídeo de 20 a 30 s em Mantena, de manhã e à noite.
 - **O que muda na D-054:** a RL fica só com a leitura mínima. As propostas das skills foram repartidas: pilha de janelas com Esc e painéis por sinal do Core ficam na RL; câmera suave e travada no município vai para a RV-A; pulso, hachura de disputa, marcadores, efeito proporcional à importância e "Reduzir piscadas" vão para a RV-C. O gráfico da intenção, a primeira campanha guiada, o feed com fatores e os objetivos com origem ficam para o autor encaixar (PENDENCIAS P-37). O protótipo da RV continua no branch próprio e não entra na main antes da RL.
-- **Restrições:** dados geográficos só de fontes oficiais ou abertas, com crédito; nomes de bairro do OpenStreetMap só com o autor liberando; assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius.
+- **Restrições:** dados geográficos só de fontes oficiais ou abertas, com crédito; nomes de bairro do OpenStreetMap só com o autor liberando (liberados pela D-058); assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius.
 
 ## D-056 — Escolhas da fase-r-final (tooltips, Opções, mapa de cidade pequena e testes de fumaça)
 - **Data:** 2026-11-17 · **Fase:** R (`fase-r-final`) · Tomadas no corujão. Cada uma se reverte no arquivo ou método citado.
@@ -481,3 +481,27 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Links do glossário fora da tela central:** o texto vira um rótulo com link do mesmo estilo (`Glossary.LinkTerms`), sem tocar no tema. "Realismo jurídico" fica sem link, porque "jurídico" no glossário remete ao advogado de campanha.
 - **Núcleo urbano da cidade pequena:** passa a ser a mancha com mais zonas urbanas a partir de qualquer pedaço da zona urbana mais populosa (Mesquita/MG abria na vila afastada). Reverter: só o maior pedaço em `ZoneMapView.FrameNucleus`.
 - **Cliques dos testes de fumaça:** o clique espera o controle pronto (até 20 s em tempo real) e confere que chegou; clique que não chega é falha com diagnóstico, nunca repetido. Toda carreira de teste usa a semente fixa 2028 (o Novo Mundo sorteava pelo relógio). A conferência do `explicacao` ignora o tooltip aberto pelo ponteiro real do mouse.
+
+## D-057 — Régua da D-026 em faixas (resposta do autor ao relatório `docs/balance/regua_d026.md`)
+- **Data:** 2026-11-17 · **Fase:** depois da `fase-r-final` · Decisão do autor.
+- **Pergunta:** a régua da D-026 guardava os números da medição de 2026-11-15 (96%, 96%, 67% e 58% no partido mais forte; 13%, 13%, 8% e 0% no sorteado), feita com um robô que sorteava ações. Com o robô de hoje nenhuma alavanca testada fechava esses números sozinha.
+- **Decisão:** a régua passa a ser em faixas, pelo texto original da D-026 ("grande maioria", "cerca de metade", "raramente", "nunca"):
+  - **partido mais forte eleito:** pequeno e médio de 65% a 90%; grande e metrópole de 40% a 60%;
+  - **partido sorteado eleito:** de 5% a 25% em todos os portes;
+  - **sem campanha:** de 0% a 1%.
+- **Nenhuma das alavancas A, B, C ou D do relatório é aplicada.** A B (reconhecimento herdado da força do partido) fica descartada: o jogador parado no partido forte da cidade pequena se elegia em 7 de 50 campanhas, o que viola "sem campanha, nunca".
+- **Como fica a linha de base** (200 campanhas por porte, `main` em `fd873bc`): mais forte 73%, 84%, 46% e 49% (dentro); sorteado 19%, **39%**, 11% e 12% (o médio fora); sem campanha 0% nos quatro (dentro).
+- **O sorteado do porte médio** é investigado antes de qualquer mudança: por que a chapa fraca faz cadeira tanto nesse porte (vagas, quociente, tamanho das listas, número de partidos) e qual parâmetro mexe só nisso. O resultado vai ao autor antes de mudar número.
+- **Quando medir de novo:** só depois de o cansaço por veículo (branch `cansaco-veiculo`, D-052 reservada) entrar na main, porque lá o robô passou a pesar a imagem e os eleitos subiram.
+- **Como reverter:** o critério é do BalanceSim e dos documentos; nenhum número do jogo mudou.
+
+## D-058 — Nomes de bairro do OpenStreetMap liberados para as zonas e o mapa (atualiza a D-044)
+- **Data:** 2026-11-17 · **Fase:** depois da `fase-r-final` · Decisão do autor. Atualiza a D-044 (e as restrições da D-055 e da P-39), que deixavam o OpenStreetMap fora sem o autor liberar.
+- **Decisão:**
+  - os nomes de bairro do OpenStreetMap entram **só onde o IBGE não tem bairro oficial**; onde o IBGE tem, vale o IBGE;
+  - crédito "© colaboradores do OpenStreetMap" no mapa e em `assets/CREDITS.md`;
+  - a base derivada segue a licença ODbL: `data/zonas/_fontes.json` registra o que veio do OSM, com a data da extração;
+  - os nomes de zona do OSM entram com `nome_fonte` `"bairro_osm"`, e a Ficha da zona diz a origem do nome;
+  - os brutos do OSM ficam no cache, fora do Git; se o download for bloqueado, o trabalho para e o autor é informado.
+- **O que continua fora:** o resto do OpenStreetMap (ruas, quadras, edificações) segue fora; o mapa de base da RV continua pelas fontes do IBGE (D-044, P-39).
+- **Como reverter:** o importador volta a dar o nome gerado às zonas sem bairro do IBGE e o crédito sai; os nomes vêm todos do arquivo de zonas.
