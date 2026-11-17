@@ -402,7 +402,7 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
   - o save registra que foi criado com pacote.
 - **Começa depois da tag `fase-r-final`** (PENDENCIAS P-35).
 
-## D-054 — Parte RL (leitura do jogo) antes do estilo da RV
+## D-054 — Parte RL (leitura do jogo) antes do estilo da RV · **escopo reorganizado pela D-055**
 - **Data:** 2026-11-17 · **Fase:** depois da `fase-r-final` · Decisão do autor, depois de jogar a `fase-r4` em Mantena.
 - **Pergunta:** o autor não conseguiu jogar a campanha ("entediante e bem confuso"; sem relógio, sem controle organizado das regiões, tudo em texto, sem saber a energia). Os sistemas da Fase R existem, mas a tela não os mostra (causa 5 da AUDITORIA_FASE3, ainda aberta).
 - **Decisão:**
@@ -413,3 +413,16 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
 - **Rumo cedo:** capturas ao autor quando relógio, painel Você e painel de zonas estiverem prontos, antes do mapa vivo.
 - **Também nesta mensagem:** `.claude/settings.json` passa a ser versionado (não tem caminho local nem segredo); as skills `card-game` e `visual-novel` foram removidas da cópia local.
 - **Muda o critério de pronto:** além de os sistemas funcionarem, o teste de fumaça confere que o jogador os vê (relógio andando, painel Você, painel de zonas sincronizado com o mapa, "Fazer agora" sem abrir a agenda, números flutuantes depois de uma ação, pilha de janelas com Esc), em 1366×768, 1920×1080 e 2560×1080.
+
+## D-055 — Leitura e imersão em quatro partes: RL, RV-A, RV-C e RV-B
+- **Data:** 2026-11-17 · **Fase:** depois da `fase-r-final` · Decisão do autor.
+- **Pergunta:** o autor achou a `fase-r4` entediante, confusa e "só texto", e uma referência de tela com painéis e polígonos "pouco imersiva". Ele quer (A) a cidade real desenhada no mapa, (B) gente na tela em cenas e (C) o mundo se mexendo à volta.
+- **Decisão:** entre a `fase-r-final` e a Fase 6, quatro partes, cada uma com tag própria, nesta ordem:
+  1. **RL, leitura mínima** (`fase-rl`): relógio e linha do dia, painel "Você", painel de zonas sincronizado com o mapa, "Fazer agora" como ação principal, número flutuante depois da ação, retrato em notícia e cartão. Sem trocar estilo.
+  2. **RV-A, cidade real** (`fase-rva`): o mapa de base do protótipo da RV vira o mapa do jogo (ruas com nome, rios, estradas, localidades, relevo sombreado, mancha urbana, praças e quarteirões; zoom até a rua; zonas translúcidas por cima; luz de dia e de noite pelo relógio). O estilo final (fontes, paleta, menu como cena, nome "Palanque") acompanha a RV-A. Metas: 60 FPS com zoom e arraste; metrópole em menos de 3 s.
+  3. **RV-C, mundo vivo** (`fase-rvc`): carros e pedestres pela densidade, carro de som e cabos do rival em campo, multidão do tamanho do público, chuva por zona quando muda a previsão, personagens andando até o compromisso, áudio ambiente com volume nas Opções. Tudo pela hora e pelo estado do Core; nada sorteado só para enfeite que contradiga o Core.
+  4. **RV-B, cenas** (`fase-rvb`): cenas curtas e puláveis em 3D estilizado, primeiro caminhada e comício, depois reunião, entrevista e notícia; resultado no fim da cena; opção para desligar; com a cabeça escolhida no teste A/B.
+- **Antes de tudo:** a correção bloqueante dos traços na criação (feita em 17/11) e a `fase-r-final`.
+- **Rumo cedo:** capturas ao autor no meio de cada parte; na RV-A e na RV-C, também um vídeo de 20 a 30 s em Mantena, de manhã e à noite.
+- **O que muda na D-054:** a RL fica só com a leitura mínima. As propostas das skills foram repartidas: pilha de janelas com Esc e painéis por sinal do Core ficam na RL; câmera suave e travada no município vai para a RV-A; pulso, hachura de disputa, marcadores, efeito proporcional à importância e "Reduzir piscadas" vão para a RV-C. O gráfico da intenção, a primeira campanha guiada, o feed com fatores e os objetivos com origem ficam para o autor encaixar (PENDENCIAS P-37). O protótipo da RV continua no branch próprio e não entra na main antes da RL.
+- **Restrições:** dados geográficos só de fontes oficiais ou abertas, com crédito; nomes de bairro do OpenStreetMap só com o autor liberando; assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius.

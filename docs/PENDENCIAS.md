@@ -266,3 +266,7 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
   - campo `protecao_eventos`, padrão `false`;
   - o pacote e o gerador ficam fora do repositório e dos builds.
 - O prompt completo está com o autor.
+
+### P-37 · Itens do primeiro pedido da RL fora da leitura mínima (D-055)
+- **O quê:** gráfico da intenção de voto por semana (eu, os dois acima e os dois abaixo); primeira campanha guiada por objetivos (agir numa zona, visitar uma liderança, ler a previsão; dispensável, fora do save); feed com fatores; objetivos com origem (os dois últimos vêm da referência `docs/referencias/rl_tela_central.html`).
+- **A decidir pelo autor:** em que parte cada um entra (RL, RV-A, RV-C ou depois).

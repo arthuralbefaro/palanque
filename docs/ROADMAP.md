@@ -204,38 +204,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
   - BalanceSim de mandato: nenhum instrumento é a melhor escolha em mais de 40% das semanas.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R4.md
 
-## RL — Leitura do jogo
-
-> Decidida pelo autor em 17/11 (DECISOES D-054), depois de jogar a `fase-r4` em Mantena: "entediante e bem confuso", "não tem o horário passando pra saber quanto o dia dura e quando acaba", "não tem controle sobre cada região de forma organizada na tela", "tudo é só texto, não tem visual", "nem dá pra saber minha energia", "mais fácil só realizar a ação". Diagnóstico: os sistemas da Fase R existem, mas a tela não os mostra; é a causa 5 da AUDITORIA_FASE3, ainda aberta. Os testes mediam se os sistemas funcionam, não se o jogador vê.
-> **Começa depois da `fase-r-final`** e vem **antes de qualquer trabalho de estilo** da RV. O protótipo da RV continua no branch próprio, mas não entra na main antes da RL. Tudo na tela central atual, **sem trocar fontes nem paleta**: só leitura, disposição e retorno visual. Lógica e números vêm do Core; a tela só exibe. Branch próprio; tag `fase-rl`.
-
-- [ ] **Relógio** na barra superior, andando de verdade (6h às 22h no ritmo do tempo corrente), e **linha do tempo do dia** com os três turnos, o compromisso em andamento e os próximos; a passagem para o dia seguinte é visível.
-- [ ] **Painel "Você"**, sempre visível: turnos livres hoje e na semana, estresse com o limite que derruba os testes, dinheiro e semanas até a eleição; cada um com tooltip dizendo o que limita.
-- [ ] **Painel de zonas:** todas as zonas em cartões ou tabela ordenável, com presença, líder da intenção, minha posição, lideranças conhecidas, demanda principal, última visita e cansaço por público. Clicar destaca a zona no mapa, e o contrário também.
-- [ ] **Mapa vivo:**
-  - ícones dos meus compromissos (hoje e na semana), dos rivais em campo e das lideranças, pela cor do alinhamento;
-  - pulso onde acontece um fato, no máximo 3 por segundo;
-  - número flutuante na zona depois de cada ação ("+2,1 presença");
-  - zona em disputa hachurada;
-  - o personagem se deslocando até a zona da ação.
-- [ ] **Gráfico da intenção de voto** por semana: eu, os dois acima e os dois abaixo.
-- [ ] **Retrato da pessoa** em toda notícia e todo cartão que fala de alguém.
-- [ ] **Primeira campanha guiada por objetivos:** os 3 primeiros objetivos ensinam, em ordem, agir numa zona, visitar uma liderança e ler a previsão. Dispensável; guardado fora do save.
-- [ ] **Ação direta:** na ficha da zona e no painel de zonas, o botão principal é "Fazer agora". Ele executa a ação no próximo turno livre, avança o tempo até lá e mostra o resultado no mapa. Agendar para outro dia vira opção secundária, para planejar e para convites com data. O limite de turnos e o estresse continuam valendo, e a previsão aparece antes do clique, como hoje.
-- [ ] **Das skills de jogo** (aprovadas pelo autor; orientam, mas o GDD, o ART_GUIDE e o CLAUDE.md prevalecem):
-  - janelas flutuantes em pilha: só a de cima recebe clique, Esc volta, foco preso no modal;
-  - painéis atualizados por sinal do Core, sem ler o estado a cada quadro;
-  - efeito proporcional à importância: quase nada no clique comum, grande na apuração; sem tremer a tela;
-  - opção "Reduzir piscadas";
-  - câmera do mapa com zoom e arraste suaves e independentes do FPS, travada nos limites do município, com corte seco quando o feed centraliza.
-- **Testes:**
-  - fumaça com janela que confere, em 1366×768, 1920×1080 e 2560×1080: o relógio andando, o painel Você, o painel de zonas sincronizado com o mapa, "Fazer agora" concluindo sem abrir a agenda, o número flutuante depois da ação e a pilha de janelas com Esc;
-  - capturas da tela central nas semanas 1, 10 e 20 de uma campanha em Mantena, para o autor.
-- **Autocrítica de leitura:** para cada captura, três linhas respondendo às perguntas do princípio i (o que acontece, o que pede atenção, o que posso fazer), como um jogador novo.
-- **Capturas no meio da RL:** quando o relógio, o painel Você e o painel de zonas estiverem prontos, as capturas vão ao autor **antes** de seguir para o mapa vivo; o autor quer corrigir o rumo cedo.
-- **Entrega:** roteiro `docs/ROTEIRO_TESTE_RL.md` e capturas em `docs/referencias/rl/`.
-
-## RV — Redefinição visual
+## RV — Redefinição visual (protótipo e estilo; base das partes RV-A, RV-C e RV-B)
 
 > Decidida pelo autor em 16/11 (DECISOES D-041, adendos; entram como D-043, personagens 3D estilizados de formas suaves, e D-044, mapa 2D detalhado e fiel ao lugar real com a interface em janelas flutuantes). Não começa durante a Fase R. Os itens, os testes e as metas de desempenho desta parte são escritos na entrega do fim da `fase-r-final`; as metas já fixadas pelo autor são 60 FPS com zoom e arraste e mapa de base de uma metrópole pronto em menos de 3 segundos.
 
@@ -282,6 +251,69 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - a tintura funciona em todos os tons de pele do catálogo;
 - o estilo bate com as referências.
 Se o autor aprovar a cabeça A ou a B, o briefing do artista fica arquivado. Se reprovar as duas, o briefing é usado; aprovado o teste do artista, o contrato cobre as demais cabeças, as 8 expressões, os cabelos, as barbas e as roupas.
+
+## Depois da Fase R: leitura e imersão (D-054, reorganizada pela D-055)
+
+> Decidido pelo autor em 17/11, depois de jogar a `fase-r4` em Mantena ("entediante e bem confuso", "só texto", "mais fácil só realizar a ação"; e uma referência de tela com painéis e polígonos achada "pouco imersiva"). Ele quer três coisas: **(A) a cidade real desenhada no mapa; (B) gente na tela, em cenas; (C) o mundo se mexendo à volta.** Diagnóstico: os sistemas existem; falta a tela mostrar o jogo e dar a sensação de estar na cidade.
+> **Ordem:** a correção bloqueante dos traços na criação e a `fase-r-final` vêm antes de tudo; depois **RL → RV-A → RV-C → RV-B**, cada uma com tag própria. O estilo final (fontes, paleta, menu como cena, nome "Palanque") acompanha a RV-A. A Fase 6 só começa depois.
+> **Em todas:** lógica e números só no Core, a tela exibe; capturas ao autor **no meio** do trabalho, não só no fim (o autor quer corrigir o rumo cedo); dados geográficos só de fontes oficiais ou abertas, com crédito, e nomes de bairro do OpenStreetMap só com o autor liberando; assets 3D e de som só CC0 ou CC BY, com crédito, nada da Quaternius. Skills de apoio (orientam; GDD, ART_GUIDE e CLAUDE.md prevalecem): game-ui-ux, game-feel, godot-ui-control, godot-csharp, camera-systems, performance-optimization e audio-design.
+
+## RL — Leitura mínima · tag `fase-rl`
+
+> Na tela central atual, **sem trocar estilo**. Referência de disposição e comportamento: `docs/referencias/rl_tela_central.html` (composição e conteúdo, não estilo; o código dela não entra no jogo).
+
+- [ ] **Relógio** andando na barra superior (6h às 22h, no ritmo do tempo corrente) e **linha do dia** com os três turnos, o compromisso em andamento e os próximos; a virada do dia é visível.
+- [ ] **Painel "Você"**, sempre visível: turnos livres hoje e na semana, estresse com o limite que derruba os testes, dinheiro e semanas até a eleição; tooltip dizendo o que cada um limita.
+- [ ] **Painel de zonas** ordenável e sincronizado com o mapa (clicar na lista destaca no mapa, e o contrário): presença, líder da intenção, minha posição, lideranças conhecidas, demanda principal, última visita, cansaço por público.
+- [ ] **"Fazer agora"** como ação principal na ficha da zona e no painel de zonas: executa no próximo turno livre, avança o tempo até lá e mostra o resultado no mapa. Agendar vira opção secundária (planejar, convites com data). Limite de turnos, estresse e previsão antes do clique continuam valendo; bloqueado, diz o motivo.
+- [ ] **Número flutuante** na zona depois da ação ("+2,1 presença"), com transbordo para as vizinhas.
+- [ ] **Retrato** da pessoa em toda notícia e todo cartão que fala de alguém.
+- [ ] Base para as janelas: ficha da zona flutuante em pilha (só a de cima recebe clique, Esc volta, foco preso no modal); painéis atualizados por sinal do Core, sem ler o estado a cada quadro.
+- **Testes:** fumaça com janela em 1366×768, 1920×1080 e 2560×1080: relógio andando, painel Você, painel de zonas sincronizado com o mapa, "Fazer agora" concluindo sem abrir a agenda, número flutuante depois da ação, pilha de janelas com Esc. Capturas da tela central nas semanas 1, 10 e 20 de uma campanha em Mantena.
+- **Autocrítica de leitura:** para cada captura, três linhas como jogador novo (princípio i: o que acontece, o que pede atenção, o que posso fazer).
+- **No meio:** capturas ao autor quando relógio, painel Você e painel de zonas estiverem prontos, lado a lado com a referência.
+- **Fora da leitura mínima** (do pedido anterior da RL; o autor encaixa, PENDENCIAS P-37): gráfico da intenção por semana, primeira campanha guiada por objetivos, feed com fatores e objetivos com origem.
+- **Entrega:** `docs/ROTEIRO_TESTE_RL.md` e capturas em `docs/referencias/rl/`.
+
+## RV-A — Cidade real · tag `fase-rva`
+
+> O mapa de base do protótipo da RV vira o mapa do jogo. O estilo final (fontes, paleta, menu como cena, nome "Palanque") entra junto.
+
+- [ ] Ruas com nome, rios, estradas, localidades, relevo sombreado, mancha urbana, praças e quarteirões, de fonte oficial ou aberta, com crédito (pesquisa de fontes e tamanhos na PENDENCIAS, decisão do autor).
+- [ ] Zoom da cidade inteira até a rua; câmera com zoom e arraste suaves e independentes do FPS, travada nos limites do município, com corte seco quando o feed centraliza.
+- [ ] Zonas como cor translúcida por cima do mapa de base, com os modos do jogo.
+- [ ] Luz de dia e de noite pela hora do relógio.
+- [ ] Estilo final da interface (fontes, paleta) e o menu como cena, pela parte RV abaixo.
+- **Metas:** 60 FPS com zoom e arraste; mapa de base de uma metrópole pronto em menos de 3 s.
+- **Testes:** medição de FPS e de tempo de carga em Mantena e numa metrópole (três vezes, máquina livre); fumaça com janela do zoom até a rua e do modo de cada zona por cima; capturas em 1366×768, 1920×1080 e 2560×1080.
+- **No meio:** capturas e um **vídeo de 20 a 30 s** (Mantena, de manhã e à noite) ao autor.
+
+## RV-C — Mundo vivo · tag `fase-rvc`
+
+> Tudo pela hora e pelo estado do Core; nada sorteado só para enfeite que contradiga o Core.
+
+- [ ] Carros nas ruas e pedestres pela densidade de população da zona.
+- [ ] Carro de som e cabos do rival no reduto dele, quando ele está em campo.
+- [ ] Multidão no lugar do evento e do comício, do tamanho do público.
+- [ ] Chuva por zona quando ela muda a previsão.
+- [ ] Meu personagem e os rivais com ícone andando pelas ruas até o compromisso.
+- [ ] Marcadores dos meus compromissos, dos rivais em campo e das lideranças pela cor do alinhamento; pulso onde acontece um fato (no máximo 3 por segundo); zona em disputa hachurada.
+- [ ] Efeito proporcional à importância (quase nada no clique comum, grande na apuração; sem tremer a tela) e a opção "Reduzir piscadas".
+- [ ] Áudio ambiente (rua, multidão, rádio) com volume nas Opções; assets CC0 ou CC BY com crédito.
+- **Metas:** 60 FPS com o mundo vivo ligado numa metrópole.
+- **Testes:** cada elemento confere com o estado do Core (carro de som só com o rival em campo naquela zona, multidão do tamanho do público, chuva só onde muda a previsão); fumaça com janela; capturas.
+- **No meio:** capturas e um **vídeo de 20 a 30 s** (Mantena, de manhã e à noite) ao autor.
+
+## RV-B — Cenas · tag `fase-rvb`
+
+> Cenas curtas e puláveis em 3D estilizado de formas suaves, com a cabeça escolhida no teste A/B (parte RV).
+
+- [ ] Primeiro: **caminhada** (personagem na rua, eleitores reagindo) e **comício** (palco, multidão do tamanho do público, bandeiras do partido).
+- [ ] Depois: reunião com liderança; entrevista no estúdio de rádio ou TV; notícia como telejornal ou capa de jornal.
+- [ ] O resultado da ação aparece no fim da cena.
+- [ ] Opção para desligar as cenas; toda cena se pula com um clique ou Esc.
+- **Testes:** cada cena abre, pula e mostra o mesmo resultado que o Core aplicou; desligadas, o jogo segue igual; 60 FPS na cena com a multidão.
+- **No meio:** capturas ao autor.
 
 ## Fase 6 — Esfera estadual e federal
 > Só começa depois da Fase R aprovada. As esferas estadual e federal usam a tela central, o tempo corrente e os sistemas da seção 17 do GDD.
