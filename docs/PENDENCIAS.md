@@ -339,7 +339,7 @@ Pesquisa feita para a D-044 e medida no protótipo (Mantena e Belo Horizonte). "
 
 ## Nomes de bairro do OpenStreetMap (D-058, 17/11)
 
-### P-41 · O que a importação dos nomes do OpenStreetMap deixa para o autor
+### P-42 · O que a importação dos nomes do OpenStreetMap deixa para o autor
 - **Zonas rurais com nome gerado** ("Zona Rural", "Rural Norte"): **a confirmar pelo autor.** Escolha provisória: continuam com o nome gerado, porque um bairro do OSM na borda da cidade daria nome a uma zona que cobre quase todo o campo. Para reverter: `osm_bairros.zonas_rurais` = `true` em `data/territory/config.json` e o modo `zonas` (depois `zonas-rd`) de novo.
 - **Zonas com nome de distrito do IBGE:** ficam com o nome do distrito (leitura do autor, confirmada pela coordenação). Reverter seria tornar elegível a fonte `distrito_ibge` em `ZonasImport.Names`.
 - **ODbL, compartilhamento pela mesma licença:** os nomes `bairro_osm` de `data/zonas/` formam uma base derivada do OSM. Ao distribuir o jogo, a ODbL pede que essa base (ou o jeito de refazê-la) seja oferecida sob a ODbL. **A confirmar pelo autor** como cumprir: por exemplo, declarar no CREDITS que os nomes `bairro_osm` de `data/zonas/` estão sob a ODbL e publicar esses arquivos com o jogo. Vale ouvir um advogado antes da loja.
