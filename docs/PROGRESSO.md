@@ -24,7 +24,7 @@
 - **Atenção:** rodadas de fumaça da R4 anteriores ao perfil isolado gravaram na pasta real do jogo (`%APPDATA%\Godot\app_userdata\Planalto\saves`). Se você tinha um autosave seu ali, ele pode ter sido trocado (P-33). Nada foi apagado.
 - **Pendências que precisam de você** (docs/PENDENCIAS.md):
   - **P-26:** régua da D-026 (qual alavanca, se ela continua valendo) e o caminho do cansaço por veículo.
-  - **P-34:** critério de idade média dos vereadores nas Câmaras de 9 a 11 cadeiras; piso e teto dos indicadores.
+  - **P-36:** piso e teto dos indicadores e os prazos de sucessão a confirmar. A P-34 (idade média nas Câmaras pequenas) foi fechada pela D-051.
   - **P-27:** tabela de limites de gastos do TSE (baixar à mão), acórdãos não lidos, 15 meses (Constituição) ou 9 meses (Código Eleitoral) para vaga de vereador sem suplente, lista de bloqueio de veículos escrita de memória.
   - **P-30 e P-31:** agenda por dia e objetivos no mandato (ficaram para depois, como você decidiu).
   - **P-25:** ruas do IBGE no mapa (agora parte da RV) e a licença.
@@ -60,7 +60,7 @@
 - 1.014 testes no Core (778 na R3), dos quais 798 rápidos rodam em cerca de 30 s; 88 no importador; DataValidator e EventLint limpos; build do Godot limpo.
 - 29 alvos de fumaça com janela, com `--perfil=main`: os 24 anteriores mais `gabinete`, `obras`, `fiscal`, `indicadores` e `entressafra`; `mandate` e `prefeitura` passaram a exercitar a tela central. Na rodada da main, 28 passaram e o `explicacao` falhou uma vez: a etapa "licitação" na ficha da obra saía sem o link do glossário, e só aparecia quando a obra estava nessa etapa ao abrir a ficha. Corrigido no jogo; depois disso `explicacao` passou 3 de 3 seguidas, e `obras`, `gabinete` e `layout` também passaram.
 - Capturas em 1366×768 e 1920×1080 em `docs/referencias/r4/`, em cidade pequena e metrópole.
-- Renovação em 40 anos e 8 municípios: nenhuma cadeira vaga além da regra (maior tempo, 0 dias); toda morte de titular com o desfecho da regra; idade média +1,0 ano no conjunto (P-34 para as Câmaras pequenas). Indicadores: ida e volta sem perda (erro relativo de 6e-15) e 40 anos dentro dos limites.
+- Renovação em 40 anos e 8 municípios: nenhuma cadeira vaga além da regra (maior tempo, 0 dias); toda morte de titular com o desfecho da regra; idade média +1,0 ano no conjunto (nas Câmaras de 9 a 11 cadeiras, pela média de 20 sementes: D-051). Indicadores: ida e volta sem perda (erro relativo de 6e-15) e 40 anos dentro dos limites.
 
 **BalanceSim**
 - **Campanha** (200 por porte; `docs/balance/r4.md`): tabela no Relatório acima. A R4 não muda a campanha; tipo, canal, decisões, contas e "sem campanha" passam nos quatro portes; o par do pequeno segue pendente (30,2%, não piorou).

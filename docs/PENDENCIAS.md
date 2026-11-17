@@ -207,8 +207,10 @@ Pesquisa de 16/11 para a parte RV. "Lido" = na página oficial; o resto é avali
 ### P-31 · Objetivos do mandato além das promessas do Livro
 - No mandato, os objetivos são só as promessas mais urgentes do Livro, sem o gerador da campanha (GDD 17.2, peça 6), sem fixar nem dispensar. Decidido pelo autor em 16/11: fica como pendência da R4.
 
-### P-34 · O que a R4 deixou de fora ou a revisar (D-050)
-- **Idade média dos vereadores — fechada (D-051):** o critério vale no conjunto e nas Câmaras de 13 cadeiras ou mais; nas de 9 a 11, como média de 20 sementes (deriva de +0,5 a +1,1 ano).
+### P-34 · Idade média dos vereadores nas Câmaras pequenas — **fechada (D-051)**
+- O critério vale no conjunto e nas Câmaras de 13 cadeiras ou mais; nas de 9 a 11, como média de 20 sementes (deriva de +0,5 a +1,1 ano).
+
+### P-36 · O que a R4 deixou de fora ou a revisar (D-050; separado da P-34 quando ela fechou)
 - **Caminhos raros de sucessão:** em 40 anos simulados, toda vaga foi preenchida por suplente na mesma semana. A cadeira sem suplente e a eleição indireta só ocorrem nos testes dedicados.
 - **Parâmetros a confirmar:** piso e teto dos indicadores (percentis 1 e 99), posse do suplente em 7 dias, eleição da cadeira em 90 dias.
 - **Fora da R4:** inclinação dos indicadores pelo CAGED e pelas transferências (P-14); velório como compromisso; herdeiro que herda dívidas; licença por doença de mais de 120 dias; candidatura do jogador numa eleição suplementar (hoje ela se resolve sozinha); inelegibilidade pela Ficha Limpa.

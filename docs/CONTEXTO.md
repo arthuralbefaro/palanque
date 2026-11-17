@@ -307,7 +307,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 - **Do autor:** jogar os roteiros da R1 e da RD (tags `fase-r1` e `fase-rd`); o corujão segue sem esperar (D-037).
 - **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3.
-- **Novas, da R4:** P-30 (agenda por dia no mandato), P-31 (objetivos do mandato), P-34 (idade média nas Câmaras pequenas, parâmetros a confirmar, o que ficou fora). P-01 e P-29 fechadas.
+- **Novas, da R4:** P-30 (agenda por dia no mandato), P-31 (objetivos do mandato), P-36 (parâmetros a confirmar, o que ficou fora), P-35 (pacote de nomes privado, D-053, depois da `fase-r-final`). P-01, P-29 e P-34 (D-051) fechadas.
 - **Novas, da R3:** P-26 (BalanceSim: par do pequeno e régua da D-026), P-27 (o que ficou para o autor: tabela do TSE, acórdãos, 15 ou 9 meses, lista de veículos), P-32 (sobras da interface), P-33 (ambiente compartilhado dos testes de fumaça).
 - **Novas, da R2b:** P-20 (BalanceSim fora em parte dos portes), P-21 (caixa não comporta equipe e verba), P-22 (o que depende da R3), P-23 (sobras da interface).
 - **Novas, da R2a:** P-15 (princípio a não passa em cidade grande e metrópole), P-16 (lint de rastro e eventos antigos), P-17 (números de jogo ainda no código), P-18 (caixa aperta nas cidades maiores), P-19 (sobras da interface; quintil ou intervalo no mapa).
@@ -327,7 +327,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 1. Colar este documento e dizer em que ponto o autor está (o que jogou, o que achou).
 2. Se o Claude Code parou por limite de uso: mandar retomar o corujão (frase na seção 10).
-3. Ler o "Relatório para o autor" no topo do PROGRESSO.md, jogar a `fase-r4` com o ROTEIRO_TESTE_R4 e trazer as impressões. Decidir a P-26 (régua da D-026 e o caminho do cansaço por veículo) e a P-34.
+3. Ler o "Relatório para o autor" no topo do PROGRESSO.md, jogar a `fase-r4` com o ROTEIRO_TESTE_R4 e trazer as impressões. Decidir a P-26 (régua da D-026 e o cansaço por veículo, caminhos 2 e 3 em medição) e a P-36.
 4. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
 5. Revisar a lista de pendências e o registro de decisões; reverter o que não agradar.
 

@@ -192,7 +192,7 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
 - [x] Renovação do mundo político no município (17.16): envelhecimento, mortalidade, saídas e entradas de vereadores, prefeito, lideranças e equipe; luto, suplente e vice pela regra real
 - [x] Eventos de mandato (legislativo e executivo), Mesa, CPI e cassação (pendências das D-027 e D-031)
 - [x] Cobrança de promessas e dívidas do Livro de compromissos
-- Pendências: agenda por dia no mandato (P-30), objetivos do mandato (P-31), idade média nas Câmaras pequenas e o que ficou fora (P-34); par do porte pequeno e régua da D-026 continuam na P-26.
+- Pendências: agenda por dia no mandato (P-30), objetivos do mandato (P-31), o que ficou fora (P-36; a idade média nas Câmaras pequenas foi resolvida pela D-051); par do porte pequeno e régua da D-026 continuam na P-26.
 - **Princípios que passa a cumprir:** todos, também no mandato.
 - **Testes automáticos:**
   - Carreira (campanha + mandato) em 3 sementes: 70% ou mais das promessas geram cobrança; nenhuma inauguração sem obra entregue; nenhuma greve sem negociação anterior.
