@@ -25,6 +25,7 @@ public partial class UiShot
     private async Task<bool> TakeOffice(int codigoIbge, bool mayor, ulong seed = 7)
     {
         Game game = Game.Instance;
+        game.PendingSeed = SmokeSeed;
         game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
         var world = game.PendingWorld!;
         var city = game.Municipios.All.First(m => m.CodigoIbge == codigoIbge);
@@ -155,7 +156,7 @@ public partial class UiShot
             Vector2 at = map.ScreenCenterOf(zona.Id);
             if (map.Hit(at) == zona.Id && safe.HasPoint(map.GlobalPosition + at) && at.Y < map.Size.Y - 420 && (accept is null || accept(zona.Id)))
             {
-                await ClickAt(map.GlobalPosition + at);
+                await ClickAt(map, map.GlobalPosition + at);
                 return zona.Id;
             }
         }

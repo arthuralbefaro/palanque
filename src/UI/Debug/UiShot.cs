@@ -46,7 +46,7 @@ public partial class UiShot : Node
         // O ponteiro do mouse de verdade pode estar parado sobre a janela do teste: sem isto, o tooltip que ele abre
         // entra na frente dos cliques simulados e nas medidas do layout. Os testes leem o texto do tooltip direto do controle.
         ProjectSettings.SetSetting("gui/timers/tooltip_delay_sec", 100000.0);
-        game.PendingSeed = 2028;
+        game.PendingSeed = SmokeSeed;
         game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
 
         if (target == "picker")
@@ -416,6 +416,7 @@ public partial class UiShot : Node
             world.QueueFree();
 
             game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+            game.PendingSeed = SmokeSeed;
             var creator = GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate<CharacterCreatorScreen>();
             AddChild(creator);
             await Frames(5);
@@ -629,6 +630,7 @@ public partial class UiShot : Node
         world.QueueFree();
 
         game.PendingWorld = WorldSetup.Create(game.World, "brasil_2026", new Rng(2028)).Setup;
+        game.PendingSeed = SmokeSeed;
         var creator = GD.Load<PackedScene>(Game.Scenes.CharacterCreator).Instantiate<CharacterCreatorScreen>();
         AddChild(creator);
         await Frames(5);
@@ -771,6 +773,7 @@ public partial class UiShot : Node
         var world = game.PendingWorld!;
         var city = game.Municipios.All.First(m => m.CodigoIbge == 3139607);
         var player = Core.Characters.PersonGenerator.Generate(new Rng(11), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 35, PartyId: world.Parties[0].Id));
+        game.PendingSeed = SmokeSeed;
         game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
         var engine = game.Engine!;
         var campaign = game.State!.Campaign!;
@@ -832,7 +835,12 @@ public partial class UiShot : Node
 
                 Button option = buttons[choice];
                 Vector2 optionPoint = option.GetGlobalRect().GetCenter();
-                await Click(option);
+                if (await ClickOrExplain(option) is { } optionMiss)
+                {
+                    EventFailure($"{definition.Id}, opção {choice + 1}: {optionMiss}", hub, dialog, optionPoint, definition.Id, choice);
+                    return;
+                }
+
                 var proceed = FindAll<Button>(dialog).FirstOrDefault(b => b.Text == Tr("Continuar"));
                 if (proceed is null)
                 {
@@ -841,8 +849,13 @@ public partial class UiShot : Node
                 }
 
                 Vector2 proceedPoint = proceed.GetGlobalRect().GetCenter();
-                await Click(proceed);
-                await Frames(3);
+                if (await ClickOrExplain(proceed) is { } proceedMiss)
+                {
+                    EventFailure($"{definition.Id}, opção {choice + 1}: {proceedMiss}", hub, dialog, proceedPoint, definition.Id, choice);
+                    return;
+                }
+
+                await Frames(1);
                 if (IsInstanceValid(dialog) && dialog.IsInsideTree() && !dialog.IsQueuedForDeletion())
                 {
                     EventFailure($"{definition.Id}, opção {choice + 1}: o cartão do evento não fechou com Continuar.", hub, dialog, proceedPoint, definition.Id, choice);
@@ -885,10 +898,10 @@ public partial class UiShot : Node
                 var map = FindAll<Button>(hub).First(b => b.Text == Tr("Mapa"));
                 Vector2 mapPoint = map.GetGlobalRect().GetCenter();
                 game.ResetNavigationForTest();
-                await Click(map);
-                if (game.LastNavigation != Game.Scenes.Map)
+                string? mapMiss = await ClickOrExplain(map);
+                if (mapMiss is not null || game.LastNavigation != Game.Scenes.Map)
                 {
-                    EventFailure($"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}, navegação registrada: {game.LastNavigation ?? "nenhuma"}).", hub, null, mapPoint, definition.Id, choice);
+                    EventFailure((mapMiss is null ? "" : mapMiss + " ") + $"{definition.Id}, opção {choice + 1}: o hub não aceitou o clique depois do evento (botão em {map.GetGlobalRect()}, sob o mouse: {GetViewport().GuiGetHoveredControl()?.GetPath()}, janela {GetViewport().GetVisibleRect().Size}, navegação registrada: {game.LastNavigation ?? "nenhuma"}).", hub, null, mapPoint, definition.Id, choice);
                     return;
                 }
 
@@ -912,6 +925,7 @@ public partial class UiShot : Node
         var world = game.PendingWorld!;
         var city = game.Municipios.All.First(m => m.CodigoIbge == 3106200);
         var player = Core.Characters.PersonGenerator.Generate(new Rng(5), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 35, PartyId: world.Parties[0].Id));
+        game.PendingSeed = SmokeSeed;
         game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
         game.State!.Campaign!.Events.Pending.Clear();
         var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
@@ -1193,6 +1207,12 @@ public partial class UiShot : Node
             : null;
     }
 
+    /// <summary>
+    /// Semente de toda carreira dos testes. O Novo Mundo sorteia uma semente nova pelo relógio ao abrir (é o jogo
+    /// normal); sem voltar a esta, o que vem depois dele mudaria de uma rodada para outra.
+    /// </summary>
+    private const ulong SmokeSeed = 2028;
+
     private const int SmallCity = 3102803;
     private const int MediumCity = 3139607;
     private const int Metropolis = 3106200;
@@ -1207,6 +1227,7 @@ public partial class UiShot : Node
         var world = game.PendingWorld!;
         var city = game.Municipios.All.First(m => m.CodigoIbge == codigoIbge);
         var player = Core.Characters.PersonGenerator.Generate(new Rng(seed), game.People, new Core.Characters.PersonRequest(Core.Campaign.RaceSetup.PlayerId, city.Uf, city.CodigoIbge, new DateOnly(world.Options.StartYear, 1, 1), Age: 35, PartyId: world.Parties[0].Id));
+        game.PendingSeed = SmokeSeed;
         game.StartCareer(NewGame.Create(world, player, game.PendingSeed));
         game.State!.Campaign!.Events.Pending.Clear();
         var hub = (HubScreen)GD.Load<PackedScene>(Game.Scenes.Hub).Instantiate();
@@ -1419,7 +1440,9 @@ public partial class UiShot : Node
             return;
         }
 
-        for (int waited = 0; waited < 600 && campaign.Agenda.Log.Count == 0; waited++)
+        // Espera pelo primeiro dia em tempo real (1 s por dia em 4x), com prazo; quadros contados variam com a carga.
+        ulong dayLimit = Time.GetTicksMsec() + ClickWaitMs;
+        while (campaign.Agenda.Log.Count == 0 && hub.Running && Time.GetTicksMsec() < dayLimit)
         {
             await Frames(1);
         }
@@ -1531,7 +1554,7 @@ public partial class UiShot : Node
             return;
         }
 
-        await ClickAt(map.GlobalPosition + map.ScreenCenterOf(target));
+        await ClickAt(map, map.GlobalPosition + map.ScreenCenterOf(target));
         if (hub.SheetName != "Zona" || map.Selected != target)
         {
             Fail($"o clique na zona não abriu a ficha (ficha: {hub.SheetName}, selecionada: {map.Selected}).");
@@ -1716,8 +1739,7 @@ public partial class UiShot : Node
         }
 
         // A promessa está no Livro de compromissos, na Enciclopédia (F1 → Sua carreira).
-        Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
-        await Frames(4);
+        await PressF1();
         Node? encyclopedia = GetTree().Root.FindChild("Enciclopedia", recursive: true, owned: false);
         if (encyclopedia is null)
         {
@@ -1753,22 +1775,192 @@ public partial class UiShot : Node
     }
 
     /// <summary>Clique no canto de um cartão clicável, fora do texto (um termo sublinhado abriria o verbete).</summary>
-    private async Task ClickCard(Control card)
+    private async Task ClickCard(Control card) => await ClickOn(card, () => card.GetGlobalRect().Position + new Vector2(30, 30), "cartão " + card.Name);
+
+    /// <summary>
+    /// Clique de mouse de verdade num ponto de <paramref name="target"/> (o mapa, por exemplo), com as mesmas garantias de
+    /// <see cref="Click"/>: o alvo pronto, o ponto sobre ele e a confirmação de que o clique chegou.
+    /// </summary>
+    private async Task ClickAt(Control target, Vector2 point) => await ClickOn(target, () => point, target.Name);
+
+    /// <summary>Clique com as garantias de <see cref="Click"/>; devolve o motivo, em vez de parar o teste, quando ele não chega.</summary>
+    private async Task<string?> ClickOrExplain(Control control)
     {
-        await Reveal(card);
-        await ClickAt(card.GlobalPosition + new Vector2(30, 30));
+        try
+        {
+            await Click(control);
+            return null;
+        }
+        catch (InvalidOperationException e)
+        {
+            return e.Message;
+        }
     }
 
-    /// <summary>Clique de mouse de verdade num ponto da janela (coordenadas do viewport).</summary>
-    private async Task ClickAt(Vector2 point)
+    /// <summary>Tempo máximo, em tempo real, para um controle ficar pronto para o clique ou para a tela responder.</summary>
+    private const ulong ClickWaitMs = 20_000;
+
+    /// <summary>
+    /// Clique de mouse de verdade no centro do controle (passa pelo roteamento de entrada da interface). Antes, espera o
+    /// controle estar na tela, visível, habilitado, dentro da janela e parado no lugar, e o ponto ficar sobre ele (nada
+    /// cobrindo); depois confere que o clique chegou ao controle. Movimento, aperto e soltura entram juntos, no mesmo
+    /// quadro: um movimento do mouse de verdade ou a perda de foco da janela (outro programa abrindo janela) não
+    /// cabem entre eles. Clique que não chega é falha com o diagnóstico, nunca repetido às cegas.
+    /// </summary>
+    private async Task Click(Control control, Func<bool>? until = null, string? what = null)
     {
-        Viewport viewport = GetViewport();
-        viewport.PushInput(new InputEventMouseMotion { Position = point, GlobalPosition = point }, inLocalCoords: true);
-        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = point, GlobalPosition = point }, inLocalCoords: true);
-        await Frames(1);
-        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point }, inLocalCoords: true);
-        await Frames(2);
+        // O nome vem antes do clique: o controle pode sair da tela com ele (o botão de fechar, por exemplo).
+        string label = what ?? (control is Button b && b.Text.Length > 0 ? $"botão \"{b.Text}\"" : control.Name.ToString());
+        await ClickOn(control, () => control.GetGlobalRect().GetCenter(), label);
+        if (until is not null)
+        {
+            await WaitUntil(until, $"a tela responder ao clique em {label}");
+        }
     }
+
+    private async Task ClickOn(Control control, Func<Vector2> pointOf, string what)
+    {
+        await Reveal(control);
+        await WaitClickable(control, what);
+        Viewport viewport = control.GetViewport();
+        Vector2 point = pointOf();
+
+        // O ponto precisa estar sobre o controle (ou um filho dele que deixa o clique passar): se outra coisa estiver por
+        // cima (um cartão, uma janela), o movimento é refeito no quadro seguinte até o fim do prazo.
+        ulong deadline = Time.GetTicksMsec() + ClickWaitMs;
+        while (true)
+        {
+            viewport.PushInput(new InputEventMouseMotion { Position = point, GlobalPosition = point }, inLocalCoords: true);
+            Control? hovered = viewport.GuiGetHoveredControl();
+            if (hovered is not null && (hovered == control || control.IsAncestorOf(hovered)))
+            {
+                break;
+            }
+
+            if (Time.GetTicksMsec() > deadline)
+            {
+                throw new InvalidOperationException($"clique em {what}: o ponto {point} está coberto por {hovered?.GetPath().ToString() ?? "nada"} ({UnderPoint(point)}).");
+            }
+
+            await Frames(1);
+            await WaitClickable(control, what);
+            point = pointOf();
+        }
+
+        bool received = false;
+        Action onPressed = () => received = true;
+        Control.GuiInputEventHandler onInput = e => received |= e is InputEventMouseButton { ButtonIndex: MouseButton.Left };
+        if (control is BaseButton button)
+        {
+            button.Pressed += onPressed;
+        }
+        else
+        {
+            control.GuiInput += onInput;
+        }
+
+        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = point, GlobalPosition = point }, inLocalCoords: true);
+        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = point, GlobalPosition = point }, inLocalCoords: true);
+        if (IsInstanceValid(control))
+        {
+            if (control is BaseButton pressed)
+            {
+                pressed.Pressed -= onPressed;
+            }
+            else
+            {
+                control.GuiInput -= onInput;
+            }
+        }
+
+        if (!received)
+        {
+            throw new InvalidOperationException($"o clique em {what} não chegou ao controle (sob o mouse: {viewport.GuiGetHoveredControl()?.GetPath().ToString() ?? "nada"}; {UnderPoint(point)}).");
+        }
+
+        // O que o clique fez já está no estado; um quadro para a tela liberar o que saiu e arrumar o que entrou.
+        await Frames(1);
+    }
+
+    /// <summary>
+    /// Espera o controle poder receber o clique: na tela, visível, habilitado, com tamanho, com o centro dentro da janela
+    /// e no mesmo lugar em dois quadros seguidos (o contêiner já arrumou os filhos).
+    /// </summary>
+    private async Task WaitClickable(Control control, string what)
+    {
+        ulong deadline = Time.GetTicksMsec() + ClickWaitMs;
+        Rect2? last = null;
+        while (true)
+        {
+            string? why = NotClickable(control);
+            if (why is null)
+            {
+                Rect2 rect = control.GetGlobalRect();
+                if (last == rect)
+                {
+                    return;
+                }
+
+                last = rect;
+            }
+            else
+            {
+                last = null;
+            }
+
+            if (Time.GetTicksMsec() > deadline)
+            {
+                throw new InvalidOperationException($"clique em {what}: {why ?? "o controle não parou no lugar"}.");
+            }
+
+            await Frames(1);
+        }
+    }
+
+    private static string? NotClickable(Control c)
+    {
+        if (!IsInstanceValid(c) || !c.IsInsideTree() || c.IsQueuedForDeletion())
+        {
+            return "o controle saiu da tela";
+        }
+
+        if (!c.IsVisibleInTree())
+        {
+            return "o controle não está visível";
+        }
+
+        if (c is BaseButton { Disabled: true })
+        {
+            return "o controle está desativado (" + c.TooltipText.Split('\n')[0] + ")";
+        }
+
+        Rect2 rect = c.GetGlobalRect();
+        if (rect.Size.X < 1 || rect.Size.Y < 1)
+        {
+            return "o controle ainda não tem tamanho";
+        }
+
+        return c.GetViewport().GetVisibleRect().HasPoint(rect.GetCenter()) ? null : $"o controle está fora da janela ({rect})";
+    }
+
+    /// <summary>Espera uma condição da tela, em tempo real, com prazo; sem ela, o teste para com o motivo.</summary>
+    private async Task WaitUntil(Func<bool> condition, string what)
+    {
+        ulong deadline = Time.GetTicksMsec() + ClickWaitMs;
+        while (!condition())
+        {
+            if (Time.GetTicksMsec() > deadline)
+            {
+                throw new InvalidOperationException($"passou o prazo esperando {what}.");
+            }
+
+            await Frames(1);
+        }
+    }
+
+    /// <summary>Controles visíveis sob um ponto, do fundo para a frente (diagnóstico de clique que não chegou).</summary>
+    private string UnderPoint(Vector2 point) =>
+        "sob o ponto: " + string.Join(", ", FindAll<Control>(GetTree().Root).Where(c => c.IsVisibleInTree() && c.MouseFilter != Control.MouseFilterEnum.Ignore && c.GetGlobalRect().HasPoint(point)).Select(c => $"{c.Name} [{c.GetType().Name}]").TakeLast(4));
 
     private void Fail(string message)
     {
@@ -1834,21 +2026,6 @@ public partial class UiShot : Node
         }
 
         Fail(message);
-    }
-
-    /// <summary>Clique de mouse de verdade no centro do controle (passa pelo roteamento de entrada da interface).</summary>
-    private async Task Click(Control control)
-    {
-        // Direto na janela: sem janela de verdade (headless), Input.ParseInputEvent não chega à interface.
-        await Reveal(control);
-        Vector2 center = control.GetGlobalRect().GetCenter();
-        Viewport viewport = GetViewport();
-        // Coordenadas do próprio viewport: com a janela num tamanho diferente da tela base, as da janela erram o alvo.
-        viewport.PushInput(new InputEventMouseMotion { Position = center, GlobalPosition = center }, inLocalCoords: true);
-        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = center, GlobalPosition = center }, inLocalCoords: true);
-        await Frames(1);
-        viewport.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = center, GlobalPosition = center }, inLocalCoords: true);
-        await Frames(2);
     }
 
     private static IEnumerable<T> FindAll<T>(Node root)
@@ -2039,6 +2216,15 @@ public partial class UiShot : Node
 
         GD.Print($"Smoke campaign: ok ({week} semanas, eleito: {game.State.Campaign.Outcome.PlayerElected})");
         GetTree().Quit(0);
+    }
+
+    /// <summary>F1 como tecla, e a espera (com prazo) até a Enciclopédia abrir.</summary>
+    private async Task PressF1()
+    {
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = true });
+        Input.ParseInputEvent(new InputEventKey { Keycode = Key.F1, PhysicalKeycode = Key.F1, Pressed = false });
+        await WaitUntil(() => Widgets.EncyclopediaDialog.IsOpen(GetTree().Root), "F1 abrir a Enciclopédia");
+        await Frames(1);
     }
 
     private static void Press(Key key)
