@@ -249,10 +249,10 @@ public partial class HubScreen
 
         Ui.Clear(_poll);
         PollRecord? poll = Campaign.Polls.LastOrDefault();
-        Heading(_poll, poll is null ? Tr("Intenção de voto") : string.Format(PtBr, Tr("Intenção ({0}, {1:dd/MM})"), _game.Electorate.Pollsters.Get(poll.PollsterId).Name, poll.Week));
+        Heading(_poll, poll is null ? Tr("Intenção (estimativa da equipe)") : string.Format(PtBr, Tr("Intenção ({0}, {1:dd/MM})"), _game.Electorate.Pollsters.Get(poll.PollsterId).Name, poll.Week));
         if (poll is null)
         {
-            Glossary.Rich(_poll, Tr("Nenhuma pesquisa ainda. Encomende uma em Finanças; os institutos publicam sozinhos durante a campanha."));
+            TeamEstimateRows();
             return;
         }
 
@@ -274,5 +274,39 @@ public partial class HubScreen
         }
 
         Glossary.Rich(_poll, string.Format(PtBr, Tr("margem de erro de {0:0.0} pontos"), poll.MarginOfError), 18, Palette.Texto3);
+    }
+
+    /// <summary>
+    /// Sem pesquisa: a estimativa da equipe (Core), marcada como estimativa, com a faixa de cada candidato em vez de
+    /// um número só; as mesmas cinco linhas em volta do jogador que a pesquisa mostra.
+    /// </summary>
+    private void TeamEstimateRows()
+    {
+        IntentionEstimate estimate = _engine.TeamEstimate();
+        string tip = Palette.Tip(
+            Tr("Estimativa da sua equipe, não é pesquisa: ninguém foi entrevistado."),
+            string.Format(PtBr, Tr("cada faixa é onde a equipe acha que o candidato está hoje, em % de quem iria votar, com {0:0}% de indecisos; a primeira pesquisa publicada ou encomendada substitui a estimativa."), estimate.Undecided),
+            Tr("nada; uma pesquisa em Finanças custa dinheiro e dá um número com margem de erro."));
+
+        int me = estimate.Lines.ToList().FindIndex(l => l.CandidateId == RaceSetup.PlayerId);
+        foreach (EstimateLine line in estimate.Lines.Skip(Math.Max(0, me - 2)).Take(5))
+        {
+            Candidate? c = Campaign.Find(line.CandidateId);
+            HBoxContainer row = Ui.Row(_poll, 8);
+            Label name = Ui.Value(row, $"{(c?.IsPlayer == true ? Tr("Você") : c?.Name)} ({PartySigla(c?.PartyId ?? "")})", 18);
+            name.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            name.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+            name.TooltipText = c is null ? "" : CandidateLabel(c);
+            name.MouseFilter = MouseFilterEnum.Stop;
+            name.AddThemeColorOverride("font_color", Palette.Texto2);
+            name.AddThemeFontOverride("font", Palette.Weight(Palette.Inter, c?.IsPlayer == true ? 600 : 400));
+            Label range = Ui.Value(row, string.Format(PtBr, Tr("{0:0.0} a {1:0.0}%"), line.Low, line.High), 18);
+            range.Name = "Estimativa_" + line.CandidateId;
+            range.AddThemeColorOverride("font_color", Palette.Texto2);
+            range.MouseFilter = MouseFilterEnum.Stop;
+            range.TooltipText = tip;
+        }
+
+        Glossary.Rich(_poll, Tr("Sem entrevista; uma pesquisa em Finanças dá o número com margem de erro."), 18, Palette.Texto3).Name = "EstimativaEquipe";
     }
 }

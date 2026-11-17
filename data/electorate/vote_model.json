@@ -17,6 +17,7 @@
     "confidence_z": 1.96,
     "undecided_at_campaign_start": 0.25,
     "undecided_at_election": 0.04,
-    "campaign_weeks": 12
+    "campaign_weeks": 12,
+    "team_estimate": { "margin_relative": 0.4, "margin_min_points": 1.0 }
   }
 }

@@ -122,8 +122,11 @@ public partial class UiShot
         Require(hub.ClockText == $"{hour0:00}:{minute0:00}", $"{tag}: relógio da tela {hub.ClockText}, do Core {hour0:00}:{minute0:00}.");
         report.Add($"{tag}: relógio de {before} a {hub.ClockText}");
 
-        // Correção do autor: a legenda de Minha força é a escala de 0 a 100, sem os valores de cada faixa.
+        // Correções do autor: a legenda de Minha força é a escala de 0 a 100, sem os valores de cada faixa; sem
+        // pesquisa, a intenção de voto mostra a estimativa da equipe, com faixa.
         Require(Named<Control>(hub, "EscalaPresenca") is { } scale && scale.IsVisibleInTree() && Named<Control>(hub, "MarcasPresenca") is not null, $"{tag}: a legenda de Minha força não tem a escala de 0 a 100.");
+        Require(game.State.Campaign!.Polls.Count > 0 || (Named<Label>(hub, "Estimativa_" + RaceSetup.PlayerId) is { } mine && mine.Text.Contains(" a ", StringComparison.Ordinal) && ThreePartTip(mine) && Named<Control>(hub, "EstimativaEquipe") is not null),
+            $"{tag}: sem pesquisa, a intenção de voto não mostra a estimativa da equipe com a faixa e o tooltip.");
 
         // 2. Painel Você com os números do Core.
         CheckYou(hub, engine, tag);
