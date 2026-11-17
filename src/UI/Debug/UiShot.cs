@@ -1527,7 +1527,7 @@ public partial class UiShot : Node
 
     /// <summary>
     /// Ficha da zona (GDD 17.3), com cliques de mouse: clica numa zona no mapa, confere a ficha (demanda, presença,
-    /// lideranças, cansaço), usa "Marcar compromisso aqui", confirma e confere o marcador no mapa.
+    /// lideranças, cansaço), usa "Agendar para outro dia", confirma e confere o marcador no mapa.
     /// </summary>
     private async Task PlayZone(string? shot)
     {
@@ -1575,7 +1575,7 @@ public partial class UiShot : Node
         }
 
         string sheet = TextOf(hub);
-        foreach (string expected in new[] { "Demanda da zona", "Presença aqui (0 a 100)", "Lideranças", "O que você já fez aqui", "Cansaço", "Marcar compromisso aqui" })
+        foreach (string expected in new[] { "Demanda da zona", "Presença aqui (0 a 100)", "Lideranças", "O que você já fez aqui", "Cansaço", "Agendar para outro dia", "Fazer agora" })
         {
             if (!sheet.Contains(Tr(expected), StringComparison.Ordinal))
             {
