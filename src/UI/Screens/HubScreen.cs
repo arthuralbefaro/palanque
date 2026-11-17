@@ -92,6 +92,9 @@ public partial class HubScreen : Control
     private HBoxContainer _top = null!;
     private VBoxContainer _trail = null!;
     private VBoxContainer _left = null!;
+    private PanelContainer _leftPanel = null!;
+    private ScrollContainer _leftScroll = null!;
+    private VBoxContainer _you = null!;
     private HBoxContainer _dayRow = null!;
     private VBoxContainer _feed = null!;
     private VBoxContainer _poll = null!;
@@ -136,7 +139,7 @@ public partial class HubScreen : Control
     public string SheetName => _sheet.ToString();
 
     /// <summary>Largura do painel da área (ART_GUIDE: 400 px lógicos, fixa); o teste de layout confere que nenhum conteúdo o alarga.</summary>
-    public float LeftPanelWidth => _left.GetParent<Control>().GetParent<Control>().Size.X;
+    public float LeftPanelWidth => _leftPanel.Size.X;
 
     /// <summary>Largura da coluna direita (ART_GUIDE: 400 px lógicos, fixa).</summary>
     public float RightPanelWidth => _objectives.GetParent<Control>().GetParent<Control>().Size.X;
@@ -183,7 +186,14 @@ public partial class HubScreen : Control
         body.AddThemeConstantOverride("separation", 1);
         _trail = Panel(body, new Vector2(64, 0), 8).Add(new VBoxContainer());
         _trail.AddThemeConstantOverride("separation", 8);
-        _left = Scroll(Panel(body, new Vector2(400, 0), 16));
+        // Painel da área: o painel Você fica sempre no alto (RL); embaixo, o conteúdo da área, que rola.
+        _leftPanel = Panel(body, new Vector2(400, 0), 16);
+        var leftColumn = _leftPanel.Add(new VBoxContainer());
+        leftColumn.AddThemeConstantOverride("separation", 12);
+        _you = leftColumn.Add(new VBoxContainer { Name = "PainelVoce" });
+        _leftScroll = leftColumn.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled, SizeFlagsVertical = SizeFlags.ExpandFill });
+        _left = _leftScroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        _left.AddThemeConstantOverride("separation", 8);
 
         _mapArea = body.Add(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(640, 0), ClipContents = true });
         _map = _mapArea.Add(new ZoneMapView());
@@ -244,14 +254,6 @@ public partial class HubScreen : Control
         var panel = parent.Add(new PanelContainer { CustomMinimumSize = minimum });
         panel.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Painel, 0, margin));
         return panel;
-    }
-
-    private static VBoxContainer Scroll(PanelContainer panel)
-    {
-        var scroll = panel.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled, SizeFlagsVertical = SizeFlags.ExpandFill });
-        var column = scroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
-        column.AddThemeConstantOverride("separation", 8);
-        return column;
     }
 
     private void LoadZones()
@@ -581,14 +583,16 @@ public partial class HubScreen : Control
         SyncMode();
         if (_gov)
         {
-            // A linha do dia é da campanha; o mandato tem a barra própria.
+            // A linha do dia e o painel Você são da campanha; o mandato tem a barra própria.
             _dayRow.Visible = false;
+            _you.Visible = false;
             RefreshGov();
             return;
         }
 
         BuildTop();
         BuildDayLine();
+        BuildYou();
         BuildTrail();
         BuildLeft();
         BuildMap();
@@ -754,15 +758,10 @@ public partial class HubScreen : Control
         string zones = string.Join(", ", Enumerable.Range(0, Territory.Zones.Count)
             .OrderByDescending(z => Territory.Population[z]).Take(4)
             .Select(z => string.Format(PtBr, "{0} {1:0}", ZoneName(Territory.Zones[z]), Territory.PresenceOf(RaceSetup.PlayerId, z))));
-        Stat(Tr("caixa"), Money(State.Player.Resources.Money), Tr("Dinheiro em caixa da campanha."), Tr("paga compromissos, pesquisas, a folha da equipe e a verba dos canais (as duas saem toda segunda-feira); o jantar de arrecadação traz mais."));
         Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
             string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
         ImageStat(Campaign.Player.Image, Tr("pesa no voto e volta aos poucos para zero sem novidades."));
-        AgendaRules agendaRules = _engine.Context.Campaign.Commitments.Regras;
-        bool stressed = State.Player.Resources.Stress > agendaRules.EstresseLimite;
-        Stat(Tr("estresse"), string.Format(PtBr, stressed ? "{0} ▲" : "{0}", State.Player.Resources.Stress), Tr("Estresse do personagem, de 0 a 100."),
-            string.Format(PtBr, Tr("sobe com cada compromisso e mais com o terceiro turno do mesmo dia; acima de {0}, a chance de se sair bem na entrevista cai {1:0} pontos. Descanso e família baixa."), agendaRules.EstresseLimite, agendaRules.EstressePenalidade * 100),
-            stressed ? Palette.Negativo : null);
+        // Caixa e estresse ficam no painel Você, sempre visível (RL): a barra de cima fica com até 5 números.
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));

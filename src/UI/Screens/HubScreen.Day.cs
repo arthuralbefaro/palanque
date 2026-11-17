@@ -55,8 +55,12 @@ public partial class HubScreen
         }
     }
 
-    /// <summary>Um turno terminou sem compromisso: só a linha do dia muda.</summary>
-    private void RefreshDayPanels() => BuildDayLine();
+    /// <summary>Um turno terminou sem compromisso: só a linha do dia e o painel Você mudam.</summary>
+    private void RefreshDayPanels()
+    {
+        BuildDayLine();
+        BuildYou();
+    }
 
     private string SlotLabel(TurnoSlot slot)
     {
