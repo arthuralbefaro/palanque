@@ -530,6 +530,13 @@ public partial class Game : Node
             {
                 return new DayReport(results, false, WeekNote.Nenhuma, true);
             }
+
+            // O mundo também anda no fim de cada dia (rivais, doadores, ataques, mídia), não só no domingo.
+            Engine.EndOfDay();
+            if (Engine.DecisionPending)
+            {
+                return new DayReport(results, false, WeekNote.Nenhuma, true);
+            }
         }
 
         WeekNote note = WeekNote.Nenhuma;

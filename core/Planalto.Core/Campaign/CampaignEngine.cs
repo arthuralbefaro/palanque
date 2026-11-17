@@ -107,6 +107,19 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
     }
 
     /// <summary>
+    /// Fim do dia para o mundo (rivais, doadores, ataques, mídia), na mesma ordem do <see cref="AdvanceDay"/>: a tela
+    /// central chama depois dos compromissos de hoje e antes de virar o dia, para o mundo andar todo dia e não só no
+    /// domingo. Roda uma vez por dia.
+    /// </summary>
+    public void EndOfDay()
+    {
+        if (!DecisionPending)
+        {
+            WorldDay(Today);
+        }
+    }
+
+    /// <summary>
     /// Fecha a semana: acontecem os compromissos que restam nela, rivais e lideranças agem, a presença decai nas
     /// zonas sem compromisso, o calendário anda, e a semana que entra ganha chuva prevista, eventos da cidade,
     /// convites, pesquisa pública e eventos.
