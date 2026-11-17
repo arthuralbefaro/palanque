@@ -502,7 +502,9 @@ public class R3SystemsTests
                     Assert.Equal(pending.Attack.Date.AddDays(2), pending.Deadline);
                     Assert.Equal(5, pending.Options.Count);
                     Assert.All(pending.Options, o => Assert.True(o.Label.Length is > 0 and <= 40));
-                    if (pending.Attack.Id.GetHashCode(StringComparison.Ordinal) % 5 == 0 || day % 4 == 3)
+                    // Soma dos caracteres, e não GetHashCode: o hash de texto do .NET muda a cada execução, e o teste
+                    // pulava ataques diferentes em cada rodada.
+                    if (pending.Attack.Id.Sum(ch => ch) % 5 == 0 || day % 4 == 3)
                     {
                         continue;
                     }
