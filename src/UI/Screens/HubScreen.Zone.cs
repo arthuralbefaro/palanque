@@ -152,6 +152,25 @@ public partial class HubScreen
 
         if (selected)
         {
+            CommitmentRequest request = NowRequest(row.ZoneId);
+            NowPlan plan = _engine.PlanNow(request);
+            string label = NowLabel(plan) + ": " + Catalog.Get(request.Type).Nome;
+            string nowTip = Palette.Tip(string.Format(Tr("{0} em {1}."), label, row.Name), NowWhen(plan) + (plan.Forecast is { } f ? " " + ForecastSummary(request with { Date = plan.Date, Turno = plan.Turno }, f) + "." : ""), CostText(Catalog.Get(request.Type)));
+            Button now = Ui.Button(col, label, () => DoNow(request), nowTip);
+            now.Name = "FazerAgoraLinha";
+            now.CustomMinimumSize = new Vector2(0, 48);
+            Palette.Primary(now);
+            if (plan.Failure is { } failure)
+            {
+                now.Disabled = true;
+                now.TooltipText = Palette.Blocked(FailureText(failure, request with { Date = plan.Date, Turno = plan.Turno }), nowTip);
+            }
+            else if (BlockReason() is { } block)
+            {
+                now.Disabled = true;
+                now.TooltipText = Palette.Blocked(string.Format(Tr("{0}; resolva antes."), block), nowTip);
+            }
+
             HBoxContainer actions = Ui.Row(col, 8);
             Button open = Ui.Button(actions, "Ver a ficha", () => { _map.Select(row.ZoneId); OpenSheet(Sheet.Zona, row.ZoneId); },
                 Palette.Tip(string.Format(Tr("Abre a ficha de {0}."), row.Name), Tr("mostra quem mora ali, a presença dos primeiros, as lideranças, o que você já fez e o cansaço, com Marcar compromisso aqui."), Tr("nada.")));
@@ -251,7 +270,8 @@ public partial class HubScreen
         Glossary.Rich(_left, string.Format(PtBr, Tr("{0}. {1:N0} moradores e {2:N0} eleitores, em {3:N1} km². Origem do nome: {4}.{5}"),
             Tr(z.IsRural ? "Zona rural" : "Zona urbana"), z.Populacao, electorate.Voters, z.AreaKm2, origem, home));
 
-        var marcar = Ui.Button(_left, "Marcar compromisso aqui", () =>
+        ZoneNowBlock(z);
+        var marcar = Ui.Button(_left, "Agendar para outro dia", () =>
         {
             var (date, turno) = _engine.NextFreeSlot();
             StartSchedule(date, turno, zoneId: z.Id);
@@ -260,7 +280,6 @@ public partial class HubScreen
             Tr("começa no primeiro turno livre a partir de hoje; você escolhe o tipo e vê a previsão antes de confirmar."),
             Tr("nada para abrir; o custo de cada compromisso aparece na previsão.")));
         marcar.Name = "MarcarAqui";
-        Palette.Primary(marcar);
         if (BlockReason() is { } block)
         {
             marcar.Disabled = true;

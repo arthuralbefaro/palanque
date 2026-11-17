@@ -48,7 +48,7 @@ public partial class HubScreen : Control
         ["contas"] = "Toda campanha tem limite de gastos e presta contas. Dinheiro \"por fora\" não tem limite, mas vira esqueleto: quem sabe pode contar. O risco das contas decide o julgamento depois da eleição.",
         ["agenda"] = "Cada dia tem três turnos. Clique num turno livre, escolha o compromisso e a zona e veja a previsão antes de confirmar. Repetir o mesmo compromisso na mesma zona rende cada vez menos: é o cansaço.",
         ["territorio"] = "Sua presença muda de zona para zona e cai nas zonas em que você não aparece. Clique numa zona do mapa ou da lista para abrir a ficha.",
-        ["ficha_zona"] = "A ficha mostra quem mora aqui, a demanda da zona e quem é mais conhecido. Parte do que você ganha numa zona transborda para as vizinhas. Use Marcar compromisso aqui para agir.",
+        ["ficha_zona"] = "A ficha mostra quem mora aqui, a demanda da zona e quem é mais conhecido. Parte do que você ganha numa zona transborda para as vizinhas. Fazer agora age no próximo turno livre; Agendar para outro dia marca com antecedência.",
         ["financas"] = "O bloco Contas mostra o limite de gastos, o risco e as ofertas de doação à espera de resposta. Pesquisa interna mostra onde você está; institutos publicam sozinhos durante a campanha.",
         ["midia"] = "Cada veículo tem linha editorial: ela decide o tom da notícia, nunca o fato. Clique num veículo para marcar entrevista, sugerir pauta ou anunciar. Tema em alta rende mais naquela semana.",
         ["partido"] = "Seu partido define o número de urna e pesa no voto de quem já gosta dele.",
