@@ -1,4 +1,4 @@
-Atualizado em 2026-11-16 19:09, depois de: R3 concluída com pendências (tag fase-r3); integração do mapa de cidade pequena, das correções da fase-r1 e da R4 em andamento.
+Atualizado em 2026-11-16 23:30, depois de: R4 concluída com pendências (tag fase-r4), com o mapa de cidade pequena e as correções do teste do autor na fase-r1 já integrados. Próximo: fase-r-final (P-02, P-03, P-09) e as entregas da RV; a Fase 6 não começa.
 
 # Planalto — contexto para retomar o projeto num chat novo
 
@@ -218,7 +218,14 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - 32 eventos ligados a pessoas, zonas e fatos; EventLint cobra rastro, troca e texto de morte; lei de campanha conferida no texto oficial (`docs/referencias/LEIS_CONFERIDAS.md`);
   - BalanceSim com 200 campanhas: tipo e canal passam nos quatro portes; par do porte pequeno (entrevista) e régua da D-026 não fecham (P-26);
   - testes de fumaça com perfil isolado (`--perfil`); testes lentos com a categoria `Lento`.
-- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`.
+- **Depois da R3, na main:** mapa de cidade pequena (rural pelos distritos do IBGE, 31.026 zonas, versão 2 dos ids; save antigo recusado com aviso; abertura no núcleo urbano) e correções do teste do autor na `fase-r1` (P-24, itens 1 a 8 e encaixes dos retratos 2D).
+- **R4 feita, com pendências (tag `fase-r4`):**
+  - mandato de vereador, prefeitura e entressafra na tela central (fecha a P-01); gabinete, indicação, emenda, fiscalização, contagem nominal, Mesa e CPI, base que cobra o Livro; secretariado, obras com licitação, folha e mesa de negociação, mínimos, repasse, convênios, crises com causa;
+  - 11 indicadores em unidade real com evolução semanal; renovação do mundo político (morte pela tábua da UF, suplente, vice, vacância pela CF e pelo Código Eleitoral, luto);
+  - BalanceSim de mandato: instrumento mais escolhido de 28% a 30% (passa); campanha igual à da `fase-r3`;
+  - 1.014 testes no Core, 88 no importador, 29 alvos de fumaça com janela.
+- **Em branch, fora da main:** `cansaco-veiculo` (cansaço da entrevista por veículo e vagas; o par do pequeno cai para 19%, mas o tipo sobe para 82,5%, à espera da escolha do autor) e `regua-d026` (relatório da régua de dificuldade, sem ajuste).
+- **Tags:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3`, `fase-r4`.
 - **Documentos novos:** auditoria, seção 17 do GDD, guia de arte (interface: paleta escura, Inter/Oswald/Source Serif 4, grade de 400 + mapa + 400 px, regras para nada cortar em 1366×768), roteiros de teste de cada parte e lista de pendências.
 
 ## 7. Decisões
@@ -264,6 +271,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 - D-042 e D-048: escolhas da R3 e o balanceamento com 200 campanhas; D-041 e D-045 a D-047: respostas do autor (integração, retratos e mapa da RV, artista, nome "Palanque", autoria com colaboradores); D-043 e D-044 ficam reservados para as decisões de visual, entregues ao fim da `fase-r-final`.
 - D-040: escolhas da R2b (equipe sem função vale o pior padrão, delegação a 50%, verba cobrada toda segunda, pré-campanha com teto, incoerência em 52 semanas, 7 tipos de objetivo).
 - D-039: escolhas da R2a (presença de partida, alcance pela fatia da cidade, reunião só com liderança do público, evento dividindo cansaço com a caminhada, dificuldade dos rivais, como o BalanceSim mede a "melhor escolha da semana").
+- D-049: zona rural por distritos e o mapa de cidade pequena; D-050: escolhas da R4 (indicadores com piso e teto nos percentis 1 e 99, parâmetros de sucessão, contas só fora de campanha, entressafra com 3 turnos).
 - D-036: idade inicial de 17 a 45 anos (NPCs 25 a 45), 18 anos aferidos em 15/8 para vereador, profissões com idade mínima, Estudante, família coerente com a idade.
 
 **Decisões do GDD 17.20, com a escolha do autor:**
@@ -299,6 +307,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 - **Do autor:** jogar os roteiros da R1 e da RD (tags `fase-r1` e `fase-rd`); o corujão segue sem esperar (D-037).
 - **Respondidas pelo autor (D-037):** P-05, P-06 e P-08 fechadas; P-04 adiada para a R3.
+- **Novas, da R4:** P-30 (agenda por dia no mandato), P-31 (objetivos do mandato), P-34 (idade média nas Câmaras pequenas, parâmetros a confirmar, o que ficou fora). P-01 e P-29 fechadas.
 - **Novas, da R3:** P-26 (BalanceSim: par do pequeno e régua da D-026), P-27 (o que ficou para o autor: tabela do TSE, acórdãos, 15 ou 9 meses, lista de veículos), P-32 (sobras da interface), P-33 (ambiente compartilhado dos testes de fumaça).
 - **Novas, da R2b:** P-20 (BalanceSim fora em parte dos portes), P-21 (caixa não comporta equipe e verba), P-22 (o que depende da R3), P-23 (sobras da interface).
 - **Novas, da R2a:** P-15 (princípio a não passa em cidade grande e metrópole), P-16 (lint de rastro e eventos antigos), P-17 (números de jogo ainda no código), P-18 (caixa aperta nas cidades maiores), P-19 (sobras da interface; quintil ou intervalo no mapa).
@@ -309,7 +318,6 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
   - P-06: termos de uso do IBGE;
   - P-08: 15 MB de atributos de zonas no repositório.
 - **Trabalho pendente da R1:**
-  - P-01: mandato e prefeitura ainda nas telas antigas;
   - P-02: tooltips só na tela central;
   - P-03: sem tela de Opções das pausas;
   - P-09: mapa de cidade pequena (rótulos sobrepostos, uma cor só).
@@ -319,7 +327,7 @@ Este documento é para quem não vê o repositório. Ele resume o que importa; o
 
 1. Colar este documento e dizer em que ponto o autor está (o que jogou, o que achou).
 2. Se o Claude Code parou por limite de uso: mandar retomar o corujão (frase na seção 10).
-3. Ler o "Relatório da manhã" no topo do PROGRESSO.md, jogar a R1 com o roteiro e trazer as impressões. Decidir se a próxima rodada fecha as pendências da R1 (P-01, P-02, P-03, P-09) antes da RD e da R2a, ou se segue a ordem R1 → RD → R2a.
+3. Ler o "Relatório para o autor" no topo do PROGRESSO.md, jogar a `fase-r4` com o ROTEIRO_TESTE_R4 e trazer as impressões. Decidir a P-26 (régua da D-026 e o caminho do cansaço por veículo) e a P-34.
 4. Transformar as impressões em ajustes: por parte, o que manter, cortar ou mudar, e quais decisões tomar.
 5. Revisar a lista de pendências e o registro de decisões; reverter o que não agradar.
 

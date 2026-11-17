@@ -2,11 +2,11 @@
 
 ## Relatório para o autor (atualizado a cada parte)
 
-**Estado em 2026-11-16, depois da R3.** Este bloco é reescrito ao fim de cada parte.
+**Estado em 2026-11-16, depois da R4.** Este bloco é reescrito ao fim de cada parte.
 
-- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b` e `fase-r3`, todas com pendências.
-- **Por qual tag começar a testar:** `fase-r3`, com `docs/ROTEIRO_TESTE_R3.md` (20 minutos). Contém tudo das anteriores e acrescenta rivais com plano, mídia local, ataques com prazo, doadores e contas. Comece uma carreira nova.
-- **BalanceSim de cada tag** (critério do princípio a: tipo de compromisso e canal de verba até 40% das semanas, par tipo e zona até 25%):
+- **Tags prontas:** `fase-r1`, `fase-rd`, `fase-r2a`, `fase-r2b`, `fase-r3` e `fase-r4`, todas com pendências.
+- **Por qual tag começar a testar:** `fase-r4`, com `docs/ROTEIRO_TESTE_R4.md` (20 minutos). Ela contém tudo das anteriores, o mapa de cidade pequena e as correções do seu teste da `fase-r1` (itens 1 a 9 da P-24). Acrescenta o mandato de vereador, a prefeitura e a entressafra na tela central, os indicadores reais e a renovação do mundo político. **Comece uma carreira nova:** saves anteriores à divisão rural por distritos são recusados com aviso.
+- **BalanceSim de cada tag** (critério do princípio a: tipo de compromisso e canal de verba até 40% das semanas; par tipo e zona até 25%; no mandato, instrumento até 40%):
 
 | Tag | Campanhas por porte | Tipo (pequeno / médio / grande / metrópole) | Par | Canal de verba | Outros critérios |
 |---|---|---|---|---|---|
@@ -14,29 +14,68 @@
 | `fase-r2a` | 48 | 30,2% / 34,1% / **41,4%** / **59,8%** | 22,6% / 15,5% / 12,6% / 11,5% | (não existia) | — |
 | `fase-r2b` | 48 | 27,0% / 35,9% / 36,3% / **60,6%** | **29,8%** / 18,1% / 14,2% / 12,8% | **45,0%** / **49,0%** / **49,5%** / 39,2% | decisões com troca 1,8 a 2,4 por semana (passa) |
 | `fase-r3` | **200** | 27,9% / 27,2% / 27,6% / 36,9% | **30,5%** / 22,6% / 19,0% / 17,5% | 33,6% / 30,2% / 37,0% / 29,1% | decisões com troca 2,7 a 2,9 (passa); contas: limpa 0,00%, "por fora" 36,2% (passa); sem campanha nunca eleito (passa); régua da D-026 **não fecha** (P-26) |
+| `fase-r4` | **200** | 27,8% / 26,8% / 27,5% / 37,2% | **30,2%** / 22,0% / 19,0% / 17,7% | 33,1% / 31,3% / 35,4% / 29,9% | decisões com troca 2,7 a 2,9 (passa); contas: limpa 0,00%, "por fora" 35,6% (passa); sem campanha nunca eleito (passa); **mandato: instrumento mais escolhido 28,1% / 29,8% / 28,9% / 28,8% (passa)**; régua da D-026 **não fecha** (P-26) |
 
-  Em negrito, fora do critério. O par do porte pequeno na `fase-r3` é a entrevista no veículo de maior alcance, não uma zona; a tag saiu com ele pendente, como autorizado.
-- **Em andamento:** integração do mapa de cidade pequena (rural por distritos; muda os ids de zona, e saves antigos são recusados com aviso), das correções do seu teste da `fase-r1` (itens 1 a 8 e encaixes dos retratos) e da R4 (mandato, prefeitura e entressafra na tela central). Depois, a `fase-r4` e a `fase-r-final`.
-- **Atenção:** rodadas de fumaça da R4 anteriores ao perfil isolado gravaram na pasta real do jogo (`%APPDATA%\Godot\app_userdata\Planalto\saves`); se você tinha um autosave seu ali, ele pode ter sido trocado (P-33). Nada foi apagado.
+  Em negrito, fora do critério. O par do porte pequeno é a entrevista no veículo de maior alcance, não uma zona; as tags saíram com ele pendente, como autorizado. Na `fase-r4`, a régua ficou pior que na `fase-r3` em três portes por causa do mapa de cidade pequena, não da R4 (P-26).
+- **Seus pedidos desta rodada:**
+  - **Cansaço por veículo:** está pronto e testado no branch `cansaco-veiculo`, mas **não foi integrado**. O par do pequeno cai para 19,0%, só que o tipo sobe para 82,5%, porque a entrevista vira a melhor opção de quase toda semana. Há três caminhos para você escolher (P-26).
+  - **Régua da D-026:** o relatório com a tabela, os parâmetros, o mecanismo e as alavancas testadas fica em `docs/balance/regua_d026.md` quando a medição terminar. Nada foi ajustado; a decisão é sua.
+  - **Blender:** importação de teste conferida; a P-29 está fechada e o protótipo da RV vai montar as duas cabeças do teste A/B.
+- **Atenção:** rodadas de fumaça da R4 anteriores ao perfil isolado gravaram na pasta real do jogo (`%APPDATA%\Godot\app_userdata\Planalto\saves`). Se você tinha um autosave seu ali, ele pode ter sido trocado (P-33). Nada foi apagado.
 - **Pendências que precisam de você** (docs/PENDENCIAS.md):
-  - **P-26:** a régua de dificuldade da D-026 vale para o robô atual? Se sim, qual alavanca usar.
+  - **P-26:** régua da D-026 (qual alavanca, se ela continua valendo) e o caminho do cansaço por veículo.
+  - **P-34:** critério de idade média dos vereadores nas Câmaras de 9 a 11 cadeiras; piso e teto dos indicadores.
   - **P-27:** tabela de limites de gastos do TSE (baixar à mão), acórdãos não lidos, 15 meses (Constituição) ou 9 meses (Código Eleitoral) para vaga de vereador sem suplente, lista de bloqueio de veículos escrita de memória.
-  - **P-25:** ruas do IBGE no mapa (agora parte da RV) e a licença; **P-29:** instalar o Blender, se quiser a cabeça A do teste A/B.
-  - **P-11, P-12, P-13:** eleitores por zona onde se mora; parâmetros novos da RD; termos das fontes que não são do IBGE.
-  - **P-19, P-23, P-32:** quintil ou intervalo no mapa; o que ficou fora do ART_GUIDE nas telas.
+  - **P-30 e P-31:** agenda por dia e objetivos no mandato (ficaram para depois, como você decidiu).
+  - **P-25:** ruas do IBGE no mapa (agora parte da RV) e a licença.
+  - **P-11, P-12 e P-13:** eleitores por zona onde se mora; parâmetros novos da RD; termos das fontes que não são do IBGE.
+  - **P-19, P-23 e P-32:** quintil ou intervalo no mapa; o que ficou fora do ART_GUIDE nas telas.
   - **P-10 e P-14:** votação de 2024 por zona; transferências e CAGED.
-- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038 a D-042 e D-048):
+- **Decisões conservadoras tomadas sozinho, a revisar** (DECISOES D-038 a D-042, D-048 a D-050):
   1. Reunião com apoiadores só onde há liderança conhecida daquele público; apoio de conversa com teto.
   2. Evento da cidade divide o cansaço com a caminhada; alcance de um turno limitado a 10 vezes a base.
   3. Pedido de dinheiro de liderança aceito vira esqueleto; o jogo avisa e não julga.
   4. Equipe: sem marqueteiro o rendimento é 1,0; delegado rende 50% e quem recebe lembra.
   5. Verba: na pré-campanha só Redes sem impulsionamento e material institucional, com teto.
   6. Plataforma: incoerência conta as mudanças em 52 semanas; posição desconhecida vale a do partido.
-  7. Ataque: o dano é penalidade separada da imagem; responder não pausa (vencido o prazo, vale o silêncio); prazo de 48 horas do GDD, com os do art. 58 no objeto de lei.
-  8. Tema em alta só com fatos sem autor; notícia mexe pouco na imagem; verba dos rivais só disputa o canal.
-  9. Recursos próprios acima de 10% do limite viram irregularidade.
-  10. Balanceamento da R3: canais e rivais recalibrados (D-048); a régua da D-026 não fechou.
+  7. Ataque: o dano é penalidade separada da imagem; responder não pausa (vencido o prazo, vale o silêncio).
+  8. Balanceamento da R3: canais e rivais recalibrados (D-048); a régua da D-026 não fechou.
+  9. Rural por distritos: 200 moradores mínimos por zona e até 4 zonas extras por município (D-049).
+  10. R4: piso e teto dos indicadores nos percentis 1 e 99; posse do suplente em 7 dias e eleição da cadeira em 90; eleição suplementar resolvida sozinha; contas julgadas só fora de campanha (D-050).
   11. As da RD: declarações implausíveis descartadas; Brasília pelo ente estadual; RAIS de estabelecimentos.
+
+## R4 — Mandatos na nova tela, com gestão nova (2026-11-16, com pendências)
+
+**O que entrou**
+- **Tela central para o mandato, a prefeitura e a entressafra** (fecha a P-01 e o item 9 da P-24): mesma moldura da campanha, trilho de áreas, mapa no centro; as telas antigas foram removidas. As previsões da prefeitura são montadas no Core.
+- **Vereador (17.14):** gabinete com assessores nomeados e quem lembra; indicação, emenda com obra no mapa, fiscalização com achados e três saídas, requerimento de informação; contagem nominal com negociação de voto; instrução permanente de voto; Mesa e CPI; base que cobra as promessas do Livro, com o caminho para cumprir.
+- **Prefeitura (17.15):** secretariado com competência e coalizão; obras com licitação (modalidades, prazo e base legal) e prazo no mapa; inauguração vedada nos três meses antes da eleição (art. 77 da Lei 9.504); folha com as faixas de alerta, prudencial e limite e a mesa de negociação (art. 22 da LRF); mínimos de saúde e educação; repasse à Câmara (art. 29-A); convênios; Câmara que negocia; crises com causa.
+- **Indicadores reais (17.17):** 11 indicadores em unidade real, com fonte, estimativa marcada, variação no mandato, comparação com o estado e "por que mudou".
+- **Renovação do mundo político (17.16):** idade, morte pela tábua da UF, saídas e entradas, luto oficial, suplente e vice pela regra, vacância no Executivo pelos arts. 79 a 81 da CF e pelo art. 224 do Código Eleitoral.
+- **Eventos de mandato** legislativo e executivo; contas de campanha julgadas no mandato e na entressafra, com sucessão real na cassação.
+- **Entressafra:** agenda fora de campanha com caminhada, visita, entrevista e posição; a ida à pré-campanha leva a presença.
+- **Integração com a main:** o save confere as zonas do governo e da entressafra; a imagem aparece em faixa nomeada no mandato e na prefeitura; o mapa usa o enquadramento do núcleo urbano; o BalanceSim ganhou a opção `--mundo`.
+
+**Números dos testes**
+- 1.014 testes no Core (778 na R3), dos quais 798 rápidos rodam em cerca de 30 s; 88 no importador; DataValidator e EventLint limpos; build do Godot limpo.
+- 29 alvos de fumaça com janela, todos com código 0 na mesma rodada, com `--perfil=main`: os 24 anteriores mais `gabinete`, `obras`, `fiscal`, `indicadores` e `entressafra`; `mandate` e `prefeitura` passaram a exercitar a tela central.
+- Capturas em 1366×768 e 1920×1080 em `docs/referencias/r4/`, em cidade pequena e metrópole.
+- Renovação em 40 anos e 8 municípios: nenhuma cadeira vaga além da regra (maior tempo, 0 dias); toda morte de titular com o desfecho da regra; idade média +1,0 ano no conjunto (P-34 para as Câmaras pequenas). Indicadores: ida e volta sem perda (erro relativo de 6e-15) e 40 anos dentro dos limites.
+
+**BalanceSim**
+- **Campanha** (200 por porte; `docs/balance/r4.md`): tabela no Relatório acima. A R4 não muda a campanha; tipo, canal, decisões, contas e "sem campanha" passam nos quatro portes; o par do pequeno segue pendente (30,2%, não piorou).
+- **Mandato** (24 mandatos por porte, mundo ligado): instrumento mais escolhido em 28,1%, 29,8%, 28,9% e 28,8% das semanas (limite 40%); os seis instrumentos aparecem como melhor escolha; nenhum mandato com erro.
+
+**As 5 coisas de que menos gostei no meu próprio trabalho**
+1. **O mandato ainda é por semana, não por dia:** inaugurar e fiscalizar acontecem no clique, sem lugar na agenda (P-30).
+2. **Os objetivos do mandato são só o Livro:** falta o gerador de objetivos que a campanha tem (P-31).
+3. **Os caminhos raros de sucessão nunca aparecem sozinhos:** em 40 anos toda vaga teve suplente; a eleição indireta só existe nos testes.
+4. **A tela do prefeito é densa:** nove áreas no trilho, e o cartão das contas fica longo no painel de 400 px; na metrópole o mapa encosta nos botões de modo.
+5. **O robô do BalanceSim de mandato julga por uma conta minha** (pontos de presença por linha da previsão); o critério passa, mas mede o meu juízo tanto quanto o jogo.
+
+**Autocrítica de imersão (GDD 17.21)**
+- **Relato 3 (prefeitura em crise), já acontece:** crise num cartão com a causa; mesa de negociação com o pedido e a folha; vedações citando o artigo; obra atrasada no mapa com "+N sem". **Falta:** a crise vir de uma escolha antiga nomeada ("o corte da saúde em março"); o secretário com agenda própria agir contra você na Câmara.
+- **Relatos 1, 2 e 4, no mandato:** a base cobra com nome, prazo e caminho; o luto chega num cartão sóbrio e suspende a sessão. **Falta:** a cobrança acontecer num lugar e num dia, não só num cartão (P-30).
 
 ## R3 — Rivais com estratégia, mídia local e doadores (2026-11-16, com pendências)
 
