@@ -384,6 +384,9 @@ public sealed class AgendaState
 
     public List<CommitmentResult> Log { get; init; } = [];
 
+    /// <summary>Zona → dia do último compromisso pessoal do jogador nela (painel de zonas, "última visita").</summary>
+    public Dictionary<string, DateOnly> LastVisit { get; init; } = [];
+
     public List<FeedItem> Feed { get; init; } = [];
 
     /// <summary>Liderança cujo pedido espera resposta do jogador (decisão imediata).</summary>

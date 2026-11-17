@@ -524,6 +524,10 @@ public sealed partial class CampaignEngine
         if (zone >= 0)
         {
             Territory.MarkActive(RaceSetup.PlayerId, zone);
+            if (!c.Delegado)
+            {
+                Agenda.LastVisit[c.ZoneId!] = c.Date;
+            }
         }
 
         double support = 0;

@@ -16,6 +16,37 @@ namespace Planalto.UI.Screens;
 /// </summary>
 public partial class HubScreen
 {
+    /// <summary>Critérios de ordem do painel de zonas (RL): um por coluna.</summary>
+    private static readonly (string Id, string Name)[] ZoneSorts =
+    [
+        ("presenca", "Ordenar por presença"),
+        ("eleitores", "Ordenar por eleitores"),
+        ("posicao", "Ordenar pela sua posição"),
+        ("visita", "Ordenar pela visita mais antiga"),
+        ("liderancas", "Ordenar por lideranças conhecidas"),
+        ("cansaco", "Ordenar pelo cansaço"),
+    ];
+
+    private string _zoneSort = "presenca";
+    private string? _selectedZone;
+
+    /// <summary>Zona destacada no painel de zonas (testes de fumaça conferem a sincronia com o mapa).</summary>
+    public string? SelectedZoneRow => _selectedZone;
+
+    private IEnumerable<ZoneRow> SortZones(IEnumerable<ZoneRow> rows) => _zoneSort switch
+    {
+        "eleitores" => rows.OrderByDescending(r => r.Voters),
+        "posicao" => rows.OrderBy(r => r.PlayerRank <= 0 ? int.MaxValue : r.PlayerRank).ThenByDescending(r => r.PlayerShare),
+        "visita" => rows.OrderByDescending(r => r.DaysSinceVisit ?? int.MaxValue).ThenByDescending(r => r.Voters),
+        "liderancas" => rows.OrderByDescending(r => r.KnownLeaders).ThenByDescending(r => r.AlliedLeaders),
+        "cansaco" => rows.OrderBy(r => r.WorstYield).ThenByDescending(r => r.Voters),
+        _ => rows.OrderByDescending(r => r.Presence),
+    };
+
+    /// <summary>
+    /// Painel de zonas (RL): uma linha por zona com presença, líder da intenção, a sua posição, lideranças conhecidas,
+    /// demanda principal, última visita e cansaço por público; ordenável e sincronizado com o mapa nos dois sentidos.
+    /// </summary>
     private void BuildTerritory()
     {
         if (_zonas is null)
@@ -23,19 +54,172 @@ public partial class HubScreen
             return;
         }
 
-        Glossary.Rich(_left, string.Format(Tr("{0} zonas, montadas com setores do Censo 2022 do IBGE. À direita de cada nome, a sua presença (0 a 100). Clique numa zona do mapa ou da lista."), _zonas.Zonas.Count));
-        foreach (Zona z in _zonas.Zonas.OrderByDescending(z => Territory.PresenceOf(RaceSetup.PlayerId, Territory.IndexOf(z.Id))))
+        IReadOnlyList<ZoneRow> rows = _engine.ZoneBoard();
+        Glossary.Rich(_left, string.Format(Tr("{0} zonas, montadas com setores do Censo 2022 do IBGE. Clique numa linha para destacar a zona no mapa; clique no mapa para achar a linha."), rows.Count));
+        var sort = Ui.Options(_left, ZoneSorts.Select(z => (z.Id, z.Name)), _zoneSort, id => { _zoneSort = id; Refresh(); });
+        sort.Name = "OrdemZonas";
+        sort.CustomMinimumSize = new Vector2(0, 44);
+        sort.TooltipText = Palette.Tip(Tr("Ordem das zonas na lista."), Tr("reordena a lista por presença, eleitores, sua posição na intenção, visita mais antiga, lideranças conhecidas ou cansaço; o mapa não muda."), Tr("nada."));
+        Control? selected = null;
+        foreach (ZoneRow row in SortZones(rows))
         {
-            int index = Territory.IndexOf(z.Id);
-            string home = index == Territory.HomeZone ? " · " + Tr("onde você mora") : "";
-            var b = Ui.Button(_left, string.Format(PtBr, "{0}{1}\n{2} {3:0.0} · {4:N0} {5}", z.Nome, home, Tr("presença"), Territory.PresenceOf(RaceSetup.PlayerId, index), _engine.Context.ZoneElectorates[index].Voters, Tr("eleitores")),
-                () => { _map.Select(z.Id); OpenSheet(Sheet.Zona, z.Id); },
-                Palette.Tip(string.Format(Tr("Zona {0}."), z.Nome), Tr("abre a ficha da zona e a destaca no mapa."), Tr("nada.")));
-            b.Name = "Zona_" + z.Id;
-            b.Alignment = HorizontalAlignment.Left;
-            b.ClipText = true;
-            Palette.ListRow(b);
+            PanelContainer card = ZoneCard(row);
+            if (row.ZoneId == _selectedZone)
+            {
+                selected = card;
+            }
         }
+
+        if (selected is not null && _scrollToZone)
+        {
+            // A linha destacada pelo mapa aparece na lista: rola até ela no quadro seguinte, com a lista já arrumada.
+            _scrollToZone = false;
+            Control target = selected;
+            GetTree().CreateTimer(0.02).Timeout += () =>
+            {
+                if (IsInstanceValid(target) && target.IsInsideTree() && IsInstanceValid(_leftScroll))
+                {
+                    _leftScroll.EnsureControlVisible(target);
+                }
+            };
+        }
+    }
+
+    /// <summary>A próxima montagem do painel de zonas rola até a linha destacada (o destaque veio do mapa).</summary>
+    private bool _scrollToZone;
+
+    private string WhoLabel(string? candidateId) =>
+        candidateId is null ? Tr("ninguém ainda") : candidateId == RaceSetup.PlayerId ? Tr("você") : Campaign.Find(candidateId) is { } c ? $"{c.Name} ({PartySigla(c.PartyId)})" : candidateId;
+
+    private string VisitText(ZoneRow row) => row.DaysSinceVisit switch
+    {
+        null => Tr("nunca visitada"),
+        0 => Tr("visita: hoje"),
+        1 => Tr("visita: ontem"),
+        { } d => string.Format(PtBr, Tr("visita: há {0} dias"), d),
+    };
+
+    private string FatiguePublico(string publico, bool full) =>
+        publico == CommitmentType.PublicoGeral ? Tr(full ? "público geral" : "geral") : EffectSummary.GroupName(publico);
+
+    private string FatigueText(ZoneRow row) =>
+        row.Fatigue.Count == 0
+            ? Tr("cansaço: nenhum")
+            : Tr("cansaço:") + " " + string.Join(" · ", row.Fatigue.Take(2).Select(f => string.Format(PtBr, "{0} {1:P0}", FatiguePublico(f.Publico, false), f.Yield)));
+
+    /// <summary>Uma linha do painel de zonas: cartão clicável; a zona destacada leva a barra de seleção e as ações.</summary>
+    private PanelContainer ZoneCard(ZoneRow row)
+    {
+        bool selected = row.ZoneId == _selectedZone;
+        string demand = $"{row.Demand.Rule.Nome}: {DemandText(row.Demand)}";
+        string fatigue = row.Fatigue.Count == 0 ? Tr("nenhum: o próximo compromisso aqui rende inteiro")
+            : string.Join("; ", row.Fatigue.Select(f => string.Format(PtBr, Tr("{0} ({1}): o próximo igual rende {2:P0}"), Catalog.Tipos.FirstOrDefault(t => t.Id == f.TypeId)?.Nome ?? f.TypeId, FatiguePublico(f.Publico, true), f.Yield)));
+        string tip = Palette.Tip(
+            string.Format(PtBr, Tr("{0}: {1:N0} eleitores. Sua presença: {2:0.0} de 100. Lidera a intenção de voto aqui: {3} ({4:P0}); você está em {5}º de {6} ({7:P1})."),
+                row.Name, row.Voters, row.Presence, WhoLabel(row.LeaderId), row.LeaderShare, row.PlayerRank, row.Ranked, row.PlayerShare),
+            string.Format(PtBr, Tr("clique para destacar a zona no mapa. Lideranças: {0} conhecidas ({1} com você) e {2} por descobrir. Demanda: {3}. {4}. Cansaço: {5}."),
+                row.KnownLeaders, row.AlliedLeaders, row.UnknownLeaders, demand, VisitText(row), fatigue),
+            Tr("nada. A intenção é a projeção do jogo zona a zona, não pesquisa; os dados da zona são do IBGE, Censo 2022."));
+        PanelContainer card = ClickCard(_left, () => SelectZoneRow(row.ZoneId), tip, "ZonaLinha_" + row.ZoneId);
+        if (selected)
+        {
+            StyleBoxFlat box = Palette.Box(Palette.CartaoAlto, 8, 12);
+            box.BorderColor = Palette.Acao;
+            box.BorderWidthLeft = 3;
+            card.AddThemeStyleboxOverride("panel", box);
+            card.MouseExited += () => card.AddThemeStyleboxOverride("panel", box);
+        }
+
+        VBoxContainer col = Ui.Column(card, 2);
+        col.MouseFilter = MouseFilterEnum.Pass;
+
+        HBoxContainer top = ZoneLine(col);
+        ZoneText(top, row.Name + (row.Home ? " · " + Tr("sua casa") : ""), 20, Palette.Texto, tip, expand: true).AddThemeFontOverride("font", Palette.Weight(Palette.Inter, 600));
+        ZoneText(top, row.Presence.ToString("0.0", PtBr), 20, Palette.Texto, tip).AddThemeFontOverride("font", Palette.Weight(Palette.Inter, 600));
+        PresenceBar(col, row.Presence);
+
+        HBoxContainer second = ZoneLine(col);
+        ZoneText(second, Tr("líder:") + " " + WhoLabel(row.LeaderId), 18, row.LeaderId == RaceSetup.PlayerId ? Palette.Texto : Palette.Texto2, tip, expand: true);
+        ZoneText(second, row.PlayerRank > 0 ? string.Format(PtBr, Tr("você: {0}º"), row.PlayerRank) : Tr("você: —"), 18, Palette.Texto, tip);
+
+        ZoneText(ZoneLine(col), Tr("demanda:") + " " + row.Demand.Rule.Nome, 18, Palette.Texto2, tip, expand: true);
+
+        HBoxContainer fourth = ZoneLine(col);
+        ZoneText(fourth, VisitText(row), 18, Palette.Texto2, tip, expand: true);
+        ZoneTerm(fourth, row.UnknownLeaders > 0 ? string.Format(PtBr, Tr("lideranças: {0} + ?"), row.KnownLeaders) : string.Format(PtBr, Tr("lideranças: {0}"), row.KnownLeaders), tip, expand: false);
+
+        ZoneTerm(ZoneLine(col), FatigueText(row), tip, expand: true);
+
+        if (selected)
+        {
+            HBoxContainer actions = Ui.Row(col, 8);
+            Button open = Ui.Button(actions, "Ver a ficha", () => { _map.Select(row.ZoneId); OpenSheet(Sheet.Zona, row.ZoneId); },
+                Palette.Tip(string.Format(Tr("Abre a ficha de {0}."), row.Name), Tr("mostra quem mora ali, a presença dos primeiros, as lideranças, o que você já fez e o cansaço, com Marcar compromisso aqui."), Tr("nada.")));
+            open.Name = "VerFicha";
+            open.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            Button center = Ui.Button(actions, "Centralizar", () => _map.CenterOn(row.ZoneId),
+                Palette.Tip(string.Format(Tr("Centraliza o mapa em {0}."), row.Name), Tr("move o mapa até a zona; o destaque continua."), Tr("nada.")));
+            center.Name = "Centralizar";
+            center.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        }
+
+        return card;
+    }
+
+    private static HBoxContainer ZoneLine(Node parent)
+    {
+        var line = parent.Add(new HBoxContainer { MouseFilter = MouseFilterEnum.Pass });
+        line.AddThemeConstantOverride("separation", 8);
+        return line;
+    }
+
+    /// <summary>Texto de uma linha da zona: corta com reticências e mostra o texto inteiro no tooltip.</summary>
+    private static Label ZoneText(Node parent, string text, int size, Color color, string tip, bool expand = false)
+    {
+        Label label = Ui.Value(parent, text, size);
+        label.AddThemeColorOverride("font_color", color);
+        label.MouseFilter = MouseFilterEnum.Pass;
+        label.TooltipText = text + "\n\n" + tip;
+        if (expand)
+        {
+            label.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            label.ClipText = true;
+            label.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+        }
+
+        return label;
+    }
+
+    /// <summary>Texto da linha da zona que cita um termo do glossário (liderança, cansaço): o termo vira link para o verbete.</summary>
+    private static void ZoneTerm(Node parent, string text, string tip, bool expand)
+    {
+        RichTextLabel label = Glossary.Rich(parent, text, 18, Palette.Texto2);
+        label.TooltipText = text + "\n\n" + tip;
+        if (!expand)
+        {
+            label.AutowrapMode = TextServer.AutowrapMode.Off;
+            label.SizeFlagsHorizontal = SizeFlags.ShrinkEnd;
+        }
+    }
+
+    /// <summary>Barra fina da presença na zona (0 a 100), na escala do modo Minha força.</summary>
+    private static void PresenceBar(Node parent, double presence)
+    {
+        var bar = parent.Add(new Control { CustomMinimumSize = new Vector2(0, 6), MouseFilter = MouseFilterEnum.Ignore });
+        var back = bar.Add(new ColorRect { Color = Palette.Linha, MouseFilter = MouseFilterEnum.Ignore });
+        back.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        var fill = bar.Add(new ColorRect { Color = Palette.Forca(0.85), MouseFilter = MouseFilterEnum.Ignore });
+        fill.SetAnchorsAndOffsetsPreset(LayoutPreset.LeftWide);
+        fill.AnchorRight = (float)Math.Clamp(presence / 100, 0, 1);
+        fill.OffsetRight = 0;
+    }
+
+    /// <summary>Clique na linha: destaca a zona no mapa e na lista (o mapa não se move).</summary>
+    private void SelectZoneRow(string zoneId)
+    {
+        _selectedZone = zoneId;
+        _map.Select(zoneId);
+        Refresh();
     }
 
     /// <summary>Texto da demanda da zona na unidade real, comparada com a cidade (GDD 17.5).</summary>

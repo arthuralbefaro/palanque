@@ -559,9 +559,23 @@ public partial class HubScreen : Control
             }
             else
             {
+                if (_area == "territorio" && _sheet == Sheet.Nenhuma)
+                {
+                    _selectedZone = null;
+                }
+
                 Refresh();
             }
 
+            return;
+        }
+
+        // Painel de zonas aberto (RL): o clique no mapa destaca a linha da zona, sem trocar o painel.
+        _selectedZone = id;
+        if (_area == "territorio" && _sheet == Sheet.Nenhuma)
+        {
+            _scrollToZone = true;
+            Refresh();
             return;
         }
 

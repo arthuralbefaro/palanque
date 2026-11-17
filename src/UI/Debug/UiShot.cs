@@ -506,8 +506,7 @@ public partial class UiShot : Node
                 string zone = game.State!.Campaign!.Territory.Zones[game.State.Campaign.Territory.HomeZone];
                 Named<Button>(hub, "Area_territorio")!.EmitSignal(BaseButton.SignalName.Pressed);
                 await Frames(2);
-                Named<Button>(hub, "Zona_" + zone)!.EmitSignal(BaseButton.SignalName.Pressed);
-                await Frames(3);
+                await OpenZoneSheet(hub, zone);
                 problems.AddRange(Overflow(hub, $"Hub {label}, ficha da zona, {tag}"));
                 Save(shot, $"_ficha_zona_{label}_{tag}");
                 Named<Button>(hub, "MarcarAqui")!.EmitSignal(BaseButton.SignalName.Pressed);
@@ -995,8 +994,7 @@ public partial class UiShot : Node
 
         Named<Button>(hub, "Area_territorio")!.EmitSignal(BaseButton.SignalName.Pressed);
         await Frames(2);
-        Named<Button>(hub, "Zona_" + biggest)!.EmitSignal(BaseButton.SignalName.Pressed);
-        await Frames(2);
+        await OpenZoneSheet(hub, biggest);
         if (hub.SheetName != "Zona")
         {
             Fail("a ficha da zona não abriu.");
@@ -1264,6 +1262,27 @@ public partial class UiShot : Node
     private static T? Named<T>(Node root, string name)
         where T : Node =>
         FindAll<T>(root).FirstOrDefault(n => n.Name == name && IsInstanceValid(n) && !n.IsQueuedForDeletion());
+
+    /// <summary>
+    /// Abre a ficha de uma zona pelo painel de zonas da área Território (aberta): destaca a zona como o clique no mapa
+    /// faz e aperta "Ver a ficha" na linha dela.
+    /// </summary>
+    private async Task OpenZoneSheet(HubScreen hub, string zoneId)
+    {
+        hub.ZoneMap.EmitZoneClickForTest(zoneId);
+        await Frames(2);
+        if (ZoneCard(hub, zoneId) is { } card && Named<Button>(card, "VerFicha") is { } open)
+        {
+            open.EmitSignal(BaseButton.SignalName.Pressed);
+        }
+
+        await Frames(3);
+    }
+
+    private static List<PanelContainer> ZoneCards(Node hub) =>
+        FindAll<PanelContainer>(hub).Where(p => p.Name.ToString().StartsWith("ZonaLinha_", StringComparison.Ordinal) && IsInstanceValid(p) && !p.IsQueuedForDeletion()).ToList();
+
+    private static PanelContainer? ZoneCard(Node hub, string zoneId) => ZoneCards(hub).FirstOrDefault(c => c.Name == "ZonaLinha_" + zoneId);
 
     /// <summary>Escolhe um item de uma lista de escolha pelo começo do texto ou pela posição do id (como o jogador faria no menu).</summary>
     private static bool SelectOption(Node root, string name, string typeId)
