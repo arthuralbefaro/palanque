@@ -56,7 +56,7 @@ public sealed partial class CampaignEngine
             DateOnly date = Today.AddDays(d);
             foreach (Turno turno in Enum.GetValues<Turno>())
             {
-                if (Agenda.Scheduled.All(c => c.Delegado || c.Date != date || !TurnsOf(Commitments.Get(c.Type), c.Turno).Contains(turno)))
+                if (!TurnoPassed(date, turno) && Agenda.Scheduled.All(c => c.Delegado || c.Date != date || !TurnsOf(Commitments.Get(c.Type), c.Turno).Contains(turno)))
                 {
                     return (date, turno);
                 }

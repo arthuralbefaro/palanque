@@ -283,6 +283,12 @@ public partial class HubScreen
                 b.Disabled = true;
                 b.TooltipText = Palette.Blocked(Tr("esse dia já passou; marque de hoje em diante."), tip);
             }
+            else if (_engine.TurnoPassed(date, turno))
+            {
+                b.Text = "";
+                b.Disabled = true;
+                b.TooltipText = Palette.Blocked(string.Format(Tr("a {0} de hoje já passou no relógio; marque num turno que ainda não terminou."), TurnoName(turno)), tip);
+            }
             else if (BlockReason() is { } block)
             {
                 b.Disabled = true;
@@ -822,6 +828,8 @@ public partial class HubScreen
                 return string.Format(Tr("comício precisa de palanque e som: falta verba no canal Rua em {0} na semana do comício. Tem {1} por semana, precisa de {2} (faltam {3}). Ponha em Campanha, Verba por canal, Rua."), ZoneName(r.ZoneId), Money(has), Money(_engine.ComicioRuaMinimum), Money(Math.Max(0, _engine.ComicioRuaMinimum - has)));
             case ScheduleFailure.TemaInvalido:
                 return Tr("só você fala pela sua posição: com representante, ou neste tipo de compromisso, não há tema. Escolha Nenhum tema em especial.");
+            case ScheduleFailure.TurnoPassou:
+                return string.Format(Tr("a {0} de hoje já passou no relógio; escolha um turno que ainda não terminou."), TurnoName(r.Turno));
             default:
                 return Tr("há uma decisão aberta; resolva antes de marcar.");
         }

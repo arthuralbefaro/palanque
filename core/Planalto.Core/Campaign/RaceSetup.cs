@@ -42,6 +42,13 @@ public sealed class CampaignContext
 
     public PorteCatalog? Portes { get; init; }
 
+    /// <summary>
+    /// Ritmo e relógio do dia (data/time.json). Com ele, um turno de hoje que o relógio já passou não aceita
+    /// compromisso, e o compromisso acontece no fim do próprio turno; sem ele (testes de motor), o dia inteiro
+    /// acontece de uma vez na virada, como antes.
+    /// </summary>
+    public TimeConfig? Time { get; init; }
+
     /// <summary>Regras de lei dos canais pagos (limite de cabos, impulsionamento, gastos vedados).</summary>
     public ChannelLawConfig ChannelLaw { get; init; } = ChannelLawConfig.Default;
 

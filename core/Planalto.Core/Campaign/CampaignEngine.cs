@@ -200,6 +200,7 @@ public sealed partial class CampaignEngine(CampaignContext ctx)
         State.Ledger.Expire(next);
         State.Calendar.AdvanceWeek();
         State.Time.Day = 0;
+        State.Time.Minute = 0;
         UpdatePhase();
         ChannelsWeekStart();
         try

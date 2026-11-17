@@ -92,6 +92,12 @@ public sealed partial class CampaignEngine
             return ScheduleFailure.ForaDoPrazo;
         }
 
+        // Relógio do dia: o turno de hoje que já terminou não volta (o que está em curso ainda aceita).
+        if (TurnoPassed(r.Date, r.Turno))
+        {
+            return ScheduleFailure.TurnoPassou;
+        }
+
         if (r.OutletId is not null && (type.Id != CommitmentCatalog.Entrevista || City.Outlet(r.OutletId) is null || r.Delegado))
         {
             return ScheduleFailure.VeiculoInvalido;

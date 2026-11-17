@@ -51,6 +51,9 @@ internal static class CampaignKit
         /// <summary>Projeção como o jogo a carrega: reescalada pela projeção por UF de data/demography/.</summary>
         public PopulationProjection Projection { get; }
 
+        /// <summary>Ritmo e relógio do dia (data/time.json), para os testes do relógio da tela central.</summary>
+        public TimeConfig Time { get; } = JsonData.LoadFile<TimeConfig>(Path.Combine(TestContent.DataDirectory, TimeConfig.File)).GetValueOrThrow();
+
         public Planalto.Core.Debate.DebateContent Debate { get; } = JsonData.LoadFile<Planalto.Core.Debate.DebateContent>(Path.Combine(TestContent.DataDirectory, Planalto.Core.Debate.DebateContent.File)).GetValueOrThrow();
 
         public Planalto.Core.Executive.ExecutiveContent Executive { get; } = Planalto.Core.Executive.ExecutiveContent.LoadOrThrow(TestContent.DataDirectory);
@@ -82,7 +85,8 @@ internal static class CampaignKit
 
     /// <summary>Carreira nova no município, com a predefinição pedida, pronta para a campanha.</summary>
     /// <param name="strongestParty">Filia o jogador ao partido mais forte da cidade, como a aba Partido sugere.</param>
-    public static CampaignEngine NewCareer(int ibge, ulong seed, string preset = "brasil_2026", bool strongestParty = false)
+    /// <param name="clock">Liga o relógio do dia (data/time.json), como na tela central.</param>
+    public static CampaignEngine NewCareer(int ibge, ulong seed, string preset = "brasil_2026", bool strongestParty = false, bool clock = false)
     {
         Municipio m = Municipio(ibge);
         WorldSetup world = WorldSetup.Create(C.World, preset, new Rng(seed)).Setup!;
@@ -110,7 +114,7 @@ internal static class CampaignKit
             PhotoBackground = "background_solido",
         };
         GameState state = NewGame.Create(world, player, seed);
-        return CampaignEngine.Start(Context(state));
+        return CampaignEngine.Start(Context(state, time: clock ? C.Time : null));
     }
 
     /// <summary>Contexto do mandato no município em foco, com o mesmo eleitorado da campanha.</summary>
@@ -203,7 +207,8 @@ internal static class CampaignKit
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> LargestElectorate = new();
 
     /// <param name="law">Regras de lei dos canais, para os testes que trocam o padrão.</param>
-    public static CampaignContext Context(GameState state, ChannelLawConfig? law = null)
+    /// <param name="time">Relógio do dia; sem ele, o dia inteiro acontece de uma vez na virada.</param>
+    public static CampaignContext Context(GameState state, ChannelLawConfig? law = null, TimeConfig? time = null)
     {
         Municipio m = Municipio(state.FocusMunicipio);
         MunicipalScenario? local = state.World?.ScenarioId == "brasil_2026" ? C.Brasil2026.Municipio(m.CodigoIbge) : null;
@@ -223,6 +228,7 @@ internal static class CampaignKit
             Projection = C.Projection,
             Zonas = Zonas(m),
             ChannelLaw = law ?? ChannelLawConfig.Default,
+            Time = time,
             CamaraSeats = state.World?.ScenarioId == "brasil_2026" ? C.Brasil2026.National.Camara.ByParty : null,
             MaiorEleitoradoUf = LargestElectorate.GetOrAdd(m.Uf, uf => C.Municipios.All.Where(x => x.Uf == uf).Max(x => x.Eleitorado)),
         };

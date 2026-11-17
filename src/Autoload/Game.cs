@@ -234,6 +234,7 @@ public partial class Game : Node
             Themes = World.Parties.Themes,
             Events = Events,
             Portes = Portes,
+            Time = Time,
             Debate = Debate,
             Projection = Projection,
             Zonas = ZonasDe(m),
@@ -542,6 +543,20 @@ public partial class Game : Node
         WeekNote note = WeekNote.Nenhuma;
         bool turned = Clock.AdvanceDay(state, () => note = AdvanceWeek());
         return new DayReport(results, turned, note, false);
+    }
+
+    /// <summary>O que um pedaço de tempo corrente trouxe na campanha: os compromissos que aconteceram e se o dia acabou.</summary>
+    public sealed record TickReport(IReadOnlyList<Core.Campaign.CommitmentResult> Results, IReadOnlyList<Turno> EndedTurns, bool DayEnded);
+
+    /// <summary>
+    /// Relógio do dia na campanha (RL): faz a hora correr os segundos reais na velocidade escolhida; quando um turno
+    /// termina, o compromisso dele acontece. Virar o dia continua com <see cref="AdvanceDay"/>.
+    /// </summary>
+    public TickReport TickCampaignClock(double seconds, int speed)
+    {
+        ClockTick tick = Clock.Tick(Time, State!, Clock.ModoCampanha, speed, seconds);
+        IReadOnlyList<Core.Campaign.CommitmentResult> results = tick.EndedTurns.Count > 0 && Engine is not null ? Engine.RunDue() : [];
+        return new TickReport(results, tick.EndedTurns, tick.DayEnded);
     }
 
     /// <summary>Na pré-campanha, avança até surgir evento, mudar a fase ou acontecer algo na carreira.</summary>

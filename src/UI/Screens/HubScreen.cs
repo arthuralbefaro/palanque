@@ -92,6 +92,7 @@ public partial class HubScreen : Control
     private HBoxContainer _top = null!;
     private VBoxContainer _trail = null!;
     private VBoxContainer _left = null!;
+    private HBoxContainer _dayRow = null!;
     private VBoxContainer _feed = null!;
     private VBoxContainer _poll = null!;
     private VBoxContainer _objectives = null!;
@@ -170,8 +171,13 @@ public partial class HubScreen : Control
         var root = this.Add(new VBoxContainer());
         root.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         root.AddThemeConstantOverride("separation", 1);
-        _top = Panel(root, new Vector2(0, 56), 8).Add(new HBoxContainer());
+        // Barra de cima em duas linhas: data, tempo, fase, números e menus; embaixo, o relógio e a linha do dia (RL).
+        var topRows = Panel(root, new Vector2(0, 56), 8).Add(new VBoxContainer());
+        topRows.AddThemeConstantOverride("separation", 6);
+        _top = topRows.Add(new HBoxContainer());
         _top.AddThemeConstantOverride("separation", 12);
+        _dayRow = topRows.Add(new HBoxContainer { Name = "LinhaDoDia" });
+        _dayRow.AddThemeConstantOverride("separation", 12);
 
         var body = root.Add(new HBoxContainer { SizeFlagsVertical = SizeFlags.ExpandFill });
         body.AddThemeConstantOverride("separation", 1);
@@ -279,10 +285,20 @@ public partial class HubScreen : Control
             return;
         }
 
-        _accumulated += delta;
-        if (_accumulated >= Clock.SecondsPerDay(_game.Time, Clock.ModoCampanha, _speed))
+        // Relógio do dia (RL): a hora anda no Core; quando um turno fecha, o compromisso dele acontece.
+        Game.TickReport tick = _game.TickCampaignClock(delta, _speed);
+        UpdateClock();
+        if (tick.Results.Count > 0)
         {
-            _accumulated = 0;
+            Refresh();
+        }
+        else if (tick.EndedTurns.Count > 0)
+        {
+            RefreshDayPanels();
+        }
+
+        if (tick.DayEnded)
+        {
             StepDay();
         }
     }
@@ -565,11 +581,14 @@ public partial class HubScreen : Control
         SyncMode();
         if (_gov)
         {
+            // A linha do dia é da campanha; o mandato tem a barra própria.
+            _dayRow.Visible = false;
             RefreshGov();
             return;
         }
 
         BuildTop();
+        BuildDayLine();
         BuildTrail();
         BuildLeft();
         BuildMap();

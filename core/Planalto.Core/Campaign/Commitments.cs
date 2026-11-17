@@ -260,6 +260,9 @@ public enum ScheduleFailure
     SemVerbaDeRua,
     TemaInvalido,
     VeiculoInvalido,
+
+    /// <summary>O turno de hoje já passou no relógio do jogo.</summary>
+    TurnoPassou,
 }
 
 /// <summary>
