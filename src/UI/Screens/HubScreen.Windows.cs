@@ -10,7 +10,8 @@ using Planalto.UI.Widgets;
 namespace Planalto.UI.Screens;
 
 /// <summary>
-/// Leitura mínima (RL): a ficha da zona flutua sobre o mapa numa pilha de janelas (só a de cima recebe clique, Esc
+/// Leitura mínima (RL): a ficha da zona flutua encaixada no painel da esquerda, sem cobrir o mapa, numa pilha de
+/// janelas (só a de cima recebe clique, Esc
 /// volta, foco preso na janela modal), com "Fazer agora" como ação principal; o número flutuante sobe da zona depois
 /// da ação; retratos pelo cache; e os painéis novos se atualizam pelo evento Changed do Core.
 /// </summary>
@@ -19,7 +20,7 @@ public partial class HubScreen
     private sealed record FloatingWindow(Control Window, bool Modal, Action Close);
 
     private readonly List<FloatingWindow> _windows = [];
-    private Control? _windowLayer;
+    private readonly List<Control> _windowLayers = [];
     private bool _panelsDirty;
     private string? _nowZone;
     private string _nowType = "caminhada";
@@ -59,30 +60,34 @@ public partial class HubScreen
 
     // ------------------------------------------------------------------ pilha de janelas
 
-    /// <summary>Monta as janelas flutuantes do estado atual: a ficha da zona e, por cima dela, a marcação.</summary>
+    /// <summary>
+    /// Monta as janelas flutuantes do estado atual: a ficha da zona, encaixada no painel da esquerda por cima do
+    /// conteúdo da área (o mapa fica livre e mostra o resultado do "Fazer agora"), e, por cima dela, a marcação, modal
+    /// sobre o mapa.
+    /// </summary>
     private void BuildWindows()
     {
         _windows.Clear();
-        if (_windowLayer is not null && IsInstanceValid(_windowLayer))
+        foreach (Control layer in _windowLayers.Where(IsInstanceValid))
         {
-            _windowLayer.GetParent()?.RemoveChild(_windowLayer);
-            _windowLayer.QueueFree();
+            layer.GetParent()?.RemoveChild(layer);
+            layer.QueueFree();
         }
 
-        _windowLayer = null;
+        _windowLayers.Clear();
         string? zone = ZoneFloats ? _sheetId : ScheduleFloats ? _back.Peek().Id : null;
         if (_gov || zone is null || !_map.Zonas.TryGetValue(zone, out Zona? z))
         {
             return;
         }
 
-        _windowLayer = _mapArea.Add(new Control { Name = "Janelas", MouseFilter = MouseFilterEnum.Ignore });
-        _windowLayer.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        PushWindow("FichaZona", false, Back, () => BuildZoneSheet(z));
+        PushWindow(Layer(_leftStack, "Janelas"), "FichaZona", false, Back, () => BuildZoneSheet(z));
+        Control? mapLayer = null;
         if (ScheduleFloats)
         {
             Draft draft = _draft!;
-            PushWindow("JanelaAgendar", true, Back, () => BuildScheduleSheet(draft));
+            mapLayer = Layer(_mapArea, "JanelasMapa");
+            PushWindow(mapLayer, "JanelaAgendar", true, Back, () => BuildScheduleSheet(draft));
         }
 
         // Só a de cima recebe clique: as de baixo ficam escurecidas atrás de um bloqueio; a modal bloqueia o mapa.
@@ -93,28 +98,50 @@ public partial class HubScreen
         }
 
         FloatingWindow top = _windows[^1];
-        if (top.Modal)
+        if (top.Modal && mapLayer is not null)
         {
-            var under = _windowLayer.Add(new ColorRect { Name = "FundoModal", Color = new Color(Palette.Fundo, 0.3f), MouseFilter = MouseFilterEnum.Stop });
+            var under = mapLayer.Add(new ColorRect { Name = "FundoModal", Color = new Color(Palette.Fundo, 0.3f), MouseFilter = MouseFilterEnum.Stop });
             under.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-            _windowLayer.MoveChild(under, top.Window.GetIndex());
+            mapLayer.MoveChild(under, top.Window.GetIndex());
             Callable.From(() => FocusFirst(top.Window)).CallDeferred();
         }
     }
 
-    /// <summary>Janela flutuante sobre o mapa, com o conteúdo de uma ficha do painel (montada no lugar de _left).</summary>
-    private void PushWindow(string name, bool modal, Action close, Action build)
+    private Control Layer(Control parent, string name)
+    {
+        var layer = parent.Add(new Control { Name = name, MouseFilter = MouseFilterEnum.Ignore });
+        layer.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        _windowLayers.Add(layer);
+        return layer;
+    }
+
+    /// <summary>
+    /// Janela flutuante com o conteúdo de uma ficha do painel (montada no lugar de _left). A primeira ocupa a camada
+    /// inteira (o painel da esquerda, sob o Você); a de cima fica sobre o mapa, à esquerda, com 420 de largura.
+    /// </summary>
+    private void PushWindow(Control layer, string name, bool modal, Action close, Action build)
     {
         int level = _windows.Count;
-        var window = _windowLayer!.Add(new PanelContainer { Name = name, MouseFilter = MouseFilterEnum.Stop });
-        window.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Painel, 12, 16, modal ? Palette.Texto3 : Palette.Linha));
-        window.AnchorLeft = window.AnchorRight = 0;
-        window.AnchorTop = 0;
-        window.AnchorBottom = 1;
-        window.OffsetLeft = 16 + (level * 40);
-        window.OffsetRight = window.OffsetLeft + 420;
-        window.OffsetTop = 72 + (level * 40);
-        window.OffsetBottom = -16;
+        var window = layer.Add(new PanelContainer { Name = name, MouseFilter = MouseFilterEnum.Stop });
+        window.AddThemeStyleboxOverride("panel", Palette.Box(Palette.Painel, 12, level == 0 ? 12 : 16, modal ? Palette.Texto3 : Palette.Linha));
+        if (level == 0)
+        {
+            // Encaixada no painel: passa 8 px para dentro da margem dele, e o conteúdo fica com a largura da área.
+            window.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+            window.OffsetLeft = -8;
+            window.OffsetRight = 8;
+        }
+        else
+        {
+            window.AnchorLeft = window.AnchorRight = 0;
+            window.AnchorTop = 0;
+            window.AnchorBottom = 1;
+            window.OffsetLeft = 16;
+            window.OffsetRight = window.OffsetLeft + 420;
+            window.OffsetTop = 72;
+            window.OffsetBottom = -16;
+        }
+
         var scroll = window.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled });
         var content = scroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
         content.AddThemeConstantOverride("separation", 8);

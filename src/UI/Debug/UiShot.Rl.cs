@@ -259,6 +259,10 @@ public partial class UiShot
                 $"{tag}: Fazer agora fez o compromisso em {done.Commitment.Turno} (previsto {plan.Turno}) com estresse {done.Stress} (previsto {plan.Forecast.Stress}).");
             if (i == 0)
             {
+                // Correção do autor: a ficha fica no painel da esquerda, fora do mapa.
+                Rect2 mapRect = hub.ZoneMap.GetGlobalRect();
+                Control ficha = Named<Control>(hub, "FichaZona")!;
+                Require(!ficha.GetGlobalRect().Intersects(mapRect), $"{tag}: a ficha da zona cobre o mapa ({ficha.GetGlobalRect()} sobre {mapRect}).");
                 Save(shot, "_" + tag);
             }
         }

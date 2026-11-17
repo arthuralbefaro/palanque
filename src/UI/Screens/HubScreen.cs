@@ -94,6 +94,7 @@ public partial class HubScreen : Control
     private VBoxContainer _left = null!;
     private PanelContainer _leftPanel = null!;
     private ScrollContainer _leftScroll = null!;
+    private Control _leftStack = null!;
     private VBoxContainer _you = null!;
     private HBoxContainer _dayRow = null!;
     private VBoxContainer _feed = null!;
@@ -206,7 +207,10 @@ public partial class HubScreen : Control
         var leftColumn = _leftPanel.Add(new VBoxContainer());
         leftColumn.AddThemeConstantOverride("separation", 12);
         _you = leftColumn.Add(new VBoxContainer { Name = "PainelVoce" });
-        _leftScroll = leftColumn.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled, SizeFlagsVertical = SizeFlags.ExpandFill });
+        // A ficha da zona abre encaixada aqui, por cima do conteúdo da área (HubScreen.Windows.cs), e o mapa fica livre.
+        _leftStack = leftColumn.Add(new Control { Name = "AreaEsquerda", SizeFlagsVertical = SizeFlags.ExpandFill });
+        _leftScroll = _leftStack.Add(new ScrollContainer { HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled });
+        _leftScroll.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         _left = _leftScroll.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
         _left.AddThemeConstantOverride("separation", 8);
 
