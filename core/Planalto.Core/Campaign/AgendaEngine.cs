@@ -265,14 +265,25 @@ public sealed partial class CampaignEngine
         return (factors, factors.Aggregate(1.0, (acc, f) => acc * f.Multiplier));
     }
 
-    private int StressOf(CommitmentType type, CommitmentRequest r)
+    /// <summary>
+    /// Estresse de um compromisso pessoal: o do tipo mais o dos turnos além dos que não custam no dia. Na previsão
+    /// (<paramref name="running"/> falso) conta o que ele acrescenta ao dia, com o que já foi feito e o que está
+    /// marcado; na execução, só os turnos que vieram antes dele no dia, para o total do dia ser o mesmo em qualquer
+    /// ordem de execução (o dia de uma vez ou turno a turno pelo relógio).
+    /// </summary>
+    private int StressOf(CommitmentType type, CommitmentRequest r, bool running = false)
     {
         if (r.Delegado)
         {
             return 0;
         }
 
-        int sameDay = Agenda.Scheduled.Where(c => c.Date == r.Date && !c.Delegado).Sum(c => Commitments.Get(c.Type).Turnos);
+        int Turns(Commitment c) => Commitments.Get(c.Type).Turnos;
+        IEnumerable<Commitment> done = Agenda.Log.Select(x => x.Commitment).Where(c => c.Date == r.Date && !c.Delegado);
+        IEnumerable<Commitment> marked = Agenda.Scheduled.Where(c => c.Date == r.Date && !c.Delegado);
+        int sameDay = running
+            ? done.Sum(Turns) + marked.Where(c => c.Turno < r.Turno).Sum(Turns)
+            : done.Sum(Turns) + marked.Sum(Turns);
         int extra = Math.Max(0, sameDay + type.Turnos - Rules.TurnosSemCusto) - Math.Max(0, sameDay - Rules.TurnosSemCusto);
         return type.Estresse + (extra * Rules.EstresseTurnoExtra);
     }
@@ -435,6 +446,7 @@ public sealed partial class CampaignEngine
             invite.Answered = true;
         }
 
+        NotifyChanged();
         return (null, commitment);
     }
 
@@ -461,11 +473,21 @@ public sealed partial class CampaignEngine
             DeclineInvite(invite.Id);
         }
 
+        NotifyChanged();
         return true;
     }
 
     /// <summary>Executa os compromissos de hoje, na ordem dos turnos, e devolve os resultados explicados.</summary>
-    public List<CommitmentResult> RunToday() => RunUntil(Today);
+    public List<CommitmentResult> RunToday()
+    {
+        List<CommitmentResult> results = RunUntil(Today);
+        if (results.Count > 0)
+        {
+            NotifyChanged();
+        }
+
+        return results;
+    }
 
     private List<CommitmentResult> RunUntil(DateOnly lastDay)
     {
@@ -494,7 +516,7 @@ public sealed partial class CampaignEngine
         CommitmentType type = Commitments.Get(c.Type);
         CommitmentRequest request = RequestOf(c);
         var (factors, yield) = Plan(request, c.TemaEmAlta);
-        int stress = StressOf(type, request);
+        int stress = StressOf(type, request, running: true);
         var luckRange = LuckRange(Rules.Sorte);
         double luck = Rng.NextDouble(luckRange.Min, luckRange.Max);
         factors.Add(Factor("sorte", "Sorte do dia", luck));

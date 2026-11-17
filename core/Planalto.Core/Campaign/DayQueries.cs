@@ -69,6 +69,8 @@ public sealed partial class CampaignEngine
             results.Add(Run(c));
         }
 
+        // Um turno fechou: a linha do dia e o painel Você mudam mesmo sem compromisso.
+        NotifyChanged();
         return results;
     }
 

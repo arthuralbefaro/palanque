@@ -542,7 +542,18 @@ public partial class Game : Node
 
         WeekNote note = WeekNote.Nenhuma;
         bool turned = Clock.AdvanceDay(state, () => note = AdvanceWeek());
+        Engine?.NotifyChanged();
         return new DayReport(results, turned, note, false);
+    }
+
+    /// <summary>
+    /// "Fazer agora" (RL): o Core marca o compromisso no próximo turno livre e avança o relógio até ele acontecer; se o
+    /// turno é amanhã (escolha explícita do jogador), o dia vira pelo avanço da carreira inteira.
+    /// </summary>
+    public Core.Campaign.NowResult DoNow(Core.Campaign.CommitmentRequest request)
+    {
+        Core.Campaign.CampaignEngine engine = Engine!;
+        return engine.DoNow(request, () => !AdvanceDay().Stopped && ReferenceEquals(Engine, engine));
     }
 
     /// <summary>O que um pedaço de tempo corrente trouxe na campanha: os compromissos que aconteceram e se o dia acabou.</summary>
