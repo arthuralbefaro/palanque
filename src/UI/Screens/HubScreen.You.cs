@@ -1,6 +1,8 @@
 using Godot;
 using Planalto.Core.Campaign;
+using Planalto.Core.Elections;
 using Planalto.UI.Theme;
+using Planalto.UI.Widgets;
 
 namespace Planalto.UI.Screens;
 
@@ -29,6 +31,11 @@ public partial class HubScreen
         NameTitle(title, Tr("Você"), 22).SizeFlagsHorizontal = SizeFlags.ExpandFill;
         Label hint = Ui.Label(title, "o que limita você agora", 18);
         hint.AddThemeColorOverride("font_color", Palette.Texto3);
+
+        // Quem você é nesta eleição, sempre à vista (a área Campanha deixou de ser a que abre).
+        Office office = Campaign.Player.Office;
+        RichTextLabel candidacy = Glossary.Rich(col, string.Format(Tr("Candidatura: {0} · {1} · número {2}"), _game.People.Offices.Name(office, State.Player.Gender), PartySigla(Campaign.Player.PartyId), Campaign.Player.Number), 18, Palette.Texto2);
+        candidacy.Name = "Voce_Candidatura";
 
         // Turnos livres hoje: uma bolinha por turno, na cor do que ele é.
         string turnsWhat = string.Format(PtBr, Tr("Turnos livres hoje: {0} de {1} (manhã, tarde e noite)."), you.FreeToday, you.Today.Count);
