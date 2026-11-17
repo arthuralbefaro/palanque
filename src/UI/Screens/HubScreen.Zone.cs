@@ -168,7 +168,7 @@ public partial class HubScreen
     }
 
     /// <summary>Linha de lista: nome à esquerda (cede e quebra), um valor à direita (nunca cortado).</summary>
-    private static void ValueRow(Node parent, string name, string value, bool highlight = false, bool link = false)
+    private static void ValueRow(Node parent, string name, string value, bool highlight = false, bool link = false, bool linkValue = false)
     {
         HBoxContainer row = Ui.Row(parent, 8);
         if (link)
@@ -178,6 +178,14 @@ public partial class HubScreen
         else
         {
             Glossary.Plain(row, name, 18, highlight ? Palette.Texto : Palette.Texto2);
+        }
+
+        if (linkValue)
+        {
+            // Valor que pode ser termo do glossário (a etapa "licitação" de uma obra): leva o link e o tooltip.
+            RichTextLabel rich = Glossary.Rich(row, value, 18, Palette.Texto);
+            rich.SizeFlagsVertical = SizeFlags.ShrinkBegin;
+            return;
         }
 
         Label v = Ui.Value(row, value, 18);

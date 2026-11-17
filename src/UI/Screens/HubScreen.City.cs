@@ -332,7 +332,7 @@ public partial class HubScreen
             _ => Tr("decisão da prefeitura"),
         };
         Glossary.Rich(_left, string.Format(Tr("Custo: {0}. Origem: {1}. Responsável político: {2}."), GovMoney(work.Cost), origin, w.ByPlayer ? Tr("você") : w.Sponsor), 18, Palette.Texto);
-        ValueRow(_left, Tr("Etapa"), w.StageName, highlight: true);
+        ValueRow(_left, Tr("Etapa"), w.StageName, highlight: true, linkValue: true);
         if (work.Open && work.Stage is not (WorkStage.Pronta or WorkStage.Modalidade))
         {
             Bar(_left, w.StageProgress, Palette.Acao).CustomMinimumSize = new Vector2(48, 8);
