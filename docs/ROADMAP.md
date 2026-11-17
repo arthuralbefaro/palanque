@@ -204,6 +204,30 @@ Entra antes da R4, que usa os indicadores. Só importação e validação; nada 
   - BalanceSim de mandato: nenhum instrumento é a melhor escolha em mais de 40% das semanas.
 - **Roteiro do autor:** docs/ROTEIRO_TESTE_R4.md
 
+## RL — Leitura do jogo
+
+> Decidida pelo autor em 17/11 (DECISOES D-054), depois de jogar a `fase-r4` em Mantena: "entediante e bem confuso", "não tem o horário passando pra saber quanto o dia dura e quando acaba", "não tem controle sobre cada região de forma organizada na tela", "tudo é só texto, não tem visual", "nem dá pra saber minha energia". Diagnóstico: os sistemas da Fase R existem, mas a tela não os mostra; é a causa 5 da AUDITORIA_FASE3, ainda aberta. Os testes mediam se os sistemas funcionam, não se o jogador vê.
+> **Começa depois da `fase-r-final`** e vem **antes de qualquer trabalho de estilo** da RV. O protótipo da RV continua no branch próprio, mas não entra na main antes da RL. Tudo na tela central atual, **sem trocar fontes nem paleta**: só leitura, disposição e retorno visual. Lógica e números vêm do Core; a tela só exibe. Branch próprio; tag `fase-rl`.
+
+- [ ] **Relógio** na barra superior, andando de verdade (6h às 22h no ritmo do tempo corrente), e **linha do tempo do dia** com os três turnos, o compromisso em andamento e os próximos; a passagem para o dia seguinte é visível.
+- [ ] **Painel "Você"**, sempre visível: turnos livres hoje e na semana, estresse com o limite que derruba os testes, dinheiro e semanas até a eleição; cada um com tooltip dizendo o que limita.
+- [ ] **Painel de zonas:** todas as zonas em cartões ou tabela ordenável, com presença, líder da intenção, minha posição, lideranças conhecidas, demanda principal, última visita, cansaço por público e o botão "Marcar compromisso aqui". Clicar destaca a zona no mapa, e o contrário também.
+- [ ] **Mapa vivo:**
+  - ícones dos meus compromissos (hoje e na semana), dos rivais em campo e das lideranças, pela cor do alinhamento;
+  - pulso onde acontece um fato;
+  - número flutuante na zona depois de cada ação ("+2,1 presença");
+  - zona em disputa hachurada;
+  - o personagem se deslocando até a zona do compromisso.
+- [ ] **Gráfico da intenção de voto** por semana: eu, os dois acima e os dois abaixo.
+- [ ] **Retrato da pessoa** em toda notícia e todo cartão que fala de alguém.
+- [ ] **Primeira campanha guiada por objetivos:** os 3 primeiros objetivos ensinam, em ordem, marcar um compromisso numa zona, visitar uma liderança e ler a previsão. Dispensável; guardado fora do save.
+- [ ] **Ação direta:** na ficha da zona e no painel de zonas, o botão principal é "Fazer agora". Ele executa a ação no próximo turno livre, avança o tempo até lá e mostra o resultado no mapa. Agendar para outro dia vira opção secundária, para planejar e para convites com data. O limite de turnos e o estresse continuam valendo, e a previsão aparece antes do clique, como hoje.
+- **Testes:**
+  - fumaça com janela que confere, em 1366×768 e 1920×1080, o relógio andando, o painel Você, o painel de zonas sincronizado com o mapa e os números flutuantes depois de uma ação;
+  - capturas da tela central nas semanas 1, 10 e 20 de uma campanha em Mantena, para o autor.
+- **Autocrítica de leitura:** para cada captura, três linhas respondendo às perguntas do princípio i (o que acontece, o que pede atenção, o que posso fazer), como um jogador novo.
+- **Entrega:** roteiro `docs/ROTEIRO_TESTE_RL.md` e capturas em `docs/referencias/rl/`.
+
 ## RV — Redefinição visual
 
 > Decidida pelo autor em 16/11 (DECISOES D-041, adendos; entram como D-043, personagens 3D estilizados de formas suaves, e D-044, mapa 2D detalhado e fiel ao lugar real com a interface em janelas flutuantes). Não começa durante a Fase R. Os itens, os testes e as metas de desempenho desta parte são escritos na entrega do fim da `fase-r-final`; as metas já fixadas pelo autor são 60 FPS com zoom e arraste e mapa de base de uma metrópole pronto em menos de 3 segundos.

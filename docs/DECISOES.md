@@ -401,3 +401,13 @@ Registro das decisões tomadas durante o desenvolvimento (CLAUDE.md, seção Aut
   - o campo `protecao_eventos` (padrão `false`) decide se eventos de escândalo, vida pessoal, doença e morte podem sortear quem tem nome trocado;
   - o save registra que foi criado com pacote.
 - **Começa depois da tag `fase-r-final`** (PENDENCIAS P-35).
+
+## D-054 — Parte RL (leitura do jogo) antes do estilo da RV
+- **Data:** 2026-11-17 · **Fase:** depois da `fase-r-final` · Decisão do autor, depois de jogar a `fase-r4` em Mantena.
+- **Pergunta:** o autor não conseguiu jogar a campanha ("entediante e bem confuso"; sem relógio, sem controle organizado das regiões, tudo em texto, sem saber a energia). Os sistemas da Fase R existem, mas a tela não os mostra (causa 5 da AUDITORIA_FASE3, ainda aberta).
+- **Decisão:**
+  - cria-se a parte **RL — Leitura do jogo** no ROADMAP, entre a `fase-r-final` e o estilo da RV;
+  - a RL vem **antes de qualquer trabalho de estilo**;
+  - o protótipo da RV continua no branch próprio, mas **não entra na main antes da RL**.
+- **O que a RL faz:** relógio e linha do tempo do dia; painel "Você"; painel de zonas sincronizado com o mapa; mapa vivo; gráfico da intenção; retratos nas notícias e cartões; primeira campanha guiada por objetivos; "Fazer agora" como ação principal. Tudo na tela central atual, sem trocar fontes nem paleta, com a lógica no Core.
+- **Muda o critério de pronto:** além de os sistemas funcionarem, o teste de fumaça confere que o jogador os vê (relógio andando, painel Você, painel de zonas sincronizado com o mapa, números flutuantes depois de uma ação).
