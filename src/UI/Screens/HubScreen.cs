@@ -164,6 +164,11 @@ public partial class HubScreen : Control
             _area = GovAreas[0].Id;
             _mapMode = Kind == GovKind.Prefeito ? "obras" : "base";
         }
+        else
+        {
+            // Na campanha, a tela abre no painel de zonas (área Território), como na referência da RL.
+            _area = "territorio";
+        }
 
         _engine = _game.Engine!;
         Theme = Palette.CentralTheme();
@@ -768,14 +773,8 @@ public partial class HubScreen : Control
         phaseLabel.SizeFlagsVertical = SizeFlags.ShrinkCenter;
         phaseLabel.ClipContents = true;
 
-        // Origem do número (ART_GUIDE, densidade): o reconhecimento é a média das presenças por zona, pela população.
-        string zones = string.Join(", ", Enumerable.Range(0, Territory.Zones.Count)
-            .OrderByDescending(z => Territory.Population[z]).Take(4)
-            .Select(z => string.Format(PtBr, "{0} {1:0}", ZoneName(Territory.Zones[z]), Territory.PresenceOf(RaceSetup.PlayerId, z))));
-        Stat(Tr("conhecem você"), string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition), Tr("Reconhecimento: quanto da cidade sabe quem você é."),
-            string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones));
-        ImageStat(Campaign.Player.Image, Tr("pesa no voto e volta aos poucos para zero sem novidades."));
-        // Caixa e estresse ficam no painel Você, sempre visível (RL): a barra de cima fica com até 5 números.
+        // Caixa, estresse, reconhecimento e imagem ficam no painel Você, sempre visível (RL): a barra de cima fica com
+        // data, relógio, tempo, fase e a contagem até a eleição.
         Ui.Button(_top, "Mapa", () => _game.GoTo(Game.Scenes.Map), Palette.Tip(Tr("Mapa do seu estado em 2.5D, com a força dos partidos por município."), Tr("abre o mapa do estado; Voltar retorna a esta tela."), Tr("nada; o jogo fica pausado.")));
         Ui.Button(_top, "Salvar", ShowSaveMenu, Palette.Tip(Tr("Grava a carreira."), Tr("salva num dos slots manuais (no Ironman, no save único)."), Tr("nada.")));
         Ui.Button(_top, "Menu", () => { SaveManager.Instance.Autosave(); _game.GoTo(Game.Scenes.MainMenu); }, Palette.Tip(Tr("Volta ao menu principal."), Tr("salva automaticamente e sai da carreira."), Tr("nada.")));

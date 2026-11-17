@@ -73,6 +73,17 @@ public partial class HubScreen
             Tr("abaixo do custo de um compromisso, ele fica bloqueado; o jantar de arrecadação traz mais.")));
         YouValue(money, Money(you.Money), you.Money < you.CheapestCommitment ? Palette.Negativo : null);
 
+        // Reconhecimento e imagem saíram da barra de cima (resposta do autor à RL): ficam aqui, sempre à vista.
+        string zones = string.Join(", ", Enumerable.Range(0, Territory.Zones.Count)
+            .OrderByDescending(z => Territory.Population[z]).Take(4)
+            .Select(z => string.Format(PtBr, "{0} {1:0}", ZoneName(Territory.Zones[z]), Territory.PresenceOf(RaceSetup.PlayerId, z))));
+        HBoxContainer known = YouRow(col, "Voce_Reconhecimento", Tr("Conhecem você"), Palette.Tip(
+            Tr("Reconhecimento: quanto da cidade sabe quem você é."),
+            string.Format(Tr("é a média da sua presença nas zonas, pesada pela população (nas maiores: {0}); o eleitor só vota em quem conhece."), zones),
+            Tr("é um resultado, não um custo.")));
+        YouValue(known, string.Format(PtBr, "{0:0}%", Campaign.Player.Recognition));
+        YouImageRow(col, Campaign.Player.Image);
+
         string start = you.Phase == CampaignPhase.PreCampanha
             ? string.Format(Tr("a campanha oficial começa em {0} e libera o comício; até lá é pré-campanha."), you.CampaignStart.ToString("d 'de' MMMM", PtBr))
             : Tr("a campanha oficial já começou: comício liberado.");
@@ -81,6 +92,39 @@ public partial class HubScreen
             start,
             Tr("nada; o tempo corre sozinho.")));
         YouValue(election, string.Format(PtBr, Tr(you.WeeksToElection == 1 ? "em {0} semana" : "em {0} semanas"), you.WeeksToElection));
+    }
+
+    /// <summary>
+    /// Imagem no painel Você: a faixa nomeada (data/campaign/config.json) e a régua com uma casa por faixa; o número cru
+    /// fica só no tooltip, com os limites da faixa.
+    /// </summary>
+    private void YouImageRow(Node parent, double image)
+    {
+        CampaignConfig config = _game.Campaign.Config;
+        int index = config.ImageBandIndex(image);
+        int side = config.ImageBandSide(index);
+        var (from, to) = config.ImageBandRange(index);
+        Color color = side > 0 ? Palette.Positivo : side < 0 ? Palette.Negativo : Palette.Texto;
+        string tip = Palette.Tip(
+            Tr("Imagem: como a cidade vê você, numa régua de −1 a +1."),
+            string.Format(Tr("hoje {0}, na faixa \"{1}\" (de {2} a {3}); pesa no voto e volta aos poucos para zero sem novidades."), Signed(image, "0.00"), config.ImageScale[index].Name, Signed(from, "0.00"), Signed(to, "0.00")),
+            Tr("é um resultado, não um custo."));
+        HBoxContainer row = YouRow(parent, "Imagem", Tr("Como te veem"), tip);
+        var ruler = row.Add(new HBoxContainer { Name = "Regua", MouseFilter = MouseFilterEnum.Pass, SizeFlagsVertical = SizeFlags.ShrinkCenter });
+        ruler.AddThemeConstantOverride("separation", 3);
+        for (int i = 0; i < config.ImageScale.Count; i++)
+        {
+            ruler.Add(new ColorRect { Color = i == index ? color : new Color(Palette.Texto3, 0.5f), CustomMinimumSize = new Vector2(8, i == index ? 18 : 10), SizeFlagsVertical = SizeFlags.ShrinkCenter, MouseFilter = MouseFilterEnum.Ignore });
+        }
+
+        // Cor de significado vem sempre com sinal (ART_GUIDE): seta para cima ou para baixo antes do nome da faixa.
+        string sign = side > 0 ? "▲ " : side < 0 ? "▼ " : "";
+        Label value = Ui.Value(row, sign + config.ImageScale[index].Name, 20);
+        value.Name = "Faixa";
+        value.AddThemeFontOverride("font", Palette.Weight(Palette.Inter, 600));
+        value.AddThemeColorOverride("font_color", color);
+        value.VerticalAlignment = VerticalAlignment.Center;
+        value.MouseFilter = MouseFilterEnum.Pass;
     }
 
     /// <summary>Linha do painel Você: rótulo à esquerda (cede), valor à direita (nunca cortado), tooltip em três partes.</summary>

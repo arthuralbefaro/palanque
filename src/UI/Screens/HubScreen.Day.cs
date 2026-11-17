@@ -53,6 +53,8 @@ public partial class HubScreen
             _needle.AnchorLeft = fraction;
             _needle.AnchorRight = fraction;
         }
+
+        ExpireDayTurn();
     }
 
     /// <summary>Um turno terminou sem compromisso: só a linha do dia e o painel Você mudam.</summary>
@@ -60,6 +62,25 @@ public partial class HubScreen
     {
         BuildDayLine();
         BuildYou();
+    }
+
+    /// <summary>A faixa da virada do dia fica só na primeira hora do dia novo (pelo relógio do jogo) e some quando o dia vira de novo.</summary>
+    private const int DayTurnMinutes = 60;
+
+    private PanelContainer? _dayToast;
+    private DateOnly _dayToastDay;
+
+    /// <summary>A faixa da virada do dia está na tela (testes de fumaça).</summary>
+    public bool DayTurnVisible => _dayToast is not null && IsInstanceValid(_dayToast) && !_dayToast.IsQueuedForDeletion();
+
+    private void ExpireDayTurn()
+    {
+        if (DayTurnVisible && (_engine.Today != _dayToastDay || State.Time.Minute >= DayTurnMinutes))
+        {
+            _dayToast!.GetParent()?.RemoveChild(_dayToast);
+            _dayToast.QueueFree();
+            _dayToast = null;
+        }
     }
 
     private string SlotLabel(TurnoSlot slot)
@@ -118,7 +139,10 @@ public partial class HubScreen
             Tr("nada; pause para planejar com calma."));
         _clockText = _clock.Text;
 
-        var line = _dayRow.Add(new Control { Name = "Turnos", SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(0, 44) });
+        var lineColumn = _dayRow.Add(new VBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill });
+        lineColumn.AddThemeConstantOverride("separation", 0);
+        var line = lineColumn.Add(new Control { Name = "Turnos", SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(0, 44) });
+        HourMarks(lineColumn);
         var segments = line.Add(new HBoxContainer());
         segments.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         segments.AddThemeConstantOverride("separation", 2);
@@ -159,6 +183,8 @@ public partial class HubScreen
         {
             ShowDayTurn(today);
         }
+
+        ExpireDayTurn();
 
         _shownDay = today;
     }
@@ -224,8 +250,16 @@ public partial class HubScreen
     /// <summary>Virada do dia visível: uma faixa curta no alto do mapa com o dia que começa.</summary>
     private void ShowDayTurn(DateOnly today)
     {
+        if (DayTurnVisible)
+        {
+            _dayToast!.GetParent()?.RemoveChild(_dayToast);
+            _dayToast.QueueFree();
+        }
+
         DayTurnText = string.Format(Tr("Fim do dia · começa {0}"), DayLong(today));
         var toast = _mapArea.Add(new PanelContainer { Name = "ViradaDoDia", MouseFilter = MouseFilterEnum.Ignore });
+        _dayToast = toast;
+        _dayToastDay = today;
         toast.AddThemeStyleboxOverride("panel", Palette.Box(Palette.CartaoAlto, 8, 12, Palette.Texto2));
         toast.SetAnchorsAndOffsetsPreset(LayoutPreset.CenterTop);
         toast.GrowHorizontal = GrowDirection.Both;
@@ -233,9 +267,30 @@ public partial class HubScreen
         Label text = Ui.Value(toast, DayTurnText, 20);
         text.AddThemeFontOverride("font", Palette.Weight(Palette.Oswald, 500));
         text.AddThemeColorOverride("font_color", Palette.Texto);
-        Tween tween = toast.CreateTween();
-        tween.TweenInterval(1.4);
-        tween.TweenProperty(toast, "modulate:a", 0.0, 0.4);
-        tween.TweenCallback(Callable.From(toast.QueueFree));
+    }
+
+    /// <summary>
+    /// Marcas de hora sob a linha do dia: o início, de três em três horas e o fim (6h, 9h, 12h, 15h, 18h e 22h com o
+    /// data/time.json atual); a marca a menos de duas horas do fim fica de fora para não encostar na do fim.
+    /// </summary>
+    private void HourMarks(Node parent)
+    {
+        DayHours day = _game.Time.Dia;
+        var hours = Enumerable.Range(0, ((day.HoraFim - day.HoraInicio) / 3) + 1).Select(i => day.HoraInicio + (3 * i))
+            .Where(h => h <= day.HoraFim - 2).Append(day.HoraFim).Distinct().ToList();
+        var marks = parent.Add(new Control { Name = "Horas", CustomMinimumSize = new Vector2(0, 24), MouseFilter = MouseFilterEnum.Ignore });
+        foreach (int hour in hours)
+        {
+            Label mark = Ui.Value(marks, $"{hour}h", 18);
+            mark.Name = $"Hora_{hour}";
+            mark.AddThemeColorOverride("font_color", Palette.Texto3);
+            mark.MouseFilter = MouseFilterEnum.Ignore;
+            float at = (float)(hour - day.HoraInicio) / (day.HoraFim - day.HoraInicio);
+            mark.AnchorLeft = mark.AnchorRight = at;
+            mark.AnchorTop = 0;
+            mark.AnchorBottom = 1;
+            mark.GrowHorizontal = hour == day.HoraInicio ? GrowDirection.End : hour == day.HoraFim ? GrowDirection.Begin : GrowDirection.Both;
+            mark.HorizontalAlignment = hour == day.HoraInicio ? HorizontalAlignment.Left : hour == day.HoraFim ? HorizontalAlignment.Right : HorizontalAlignment.Center;
+        }
     }
 }
