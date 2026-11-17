@@ -7,7 +7,8 @@ using Planalto.DataImporter;
 // Uso: dotnet run --project tools/Planalto.DataImporter
 // Baixa as fontes oficiais para o cache (uma vez só) e gera data/municipios/.
 // Com o argumento "cenario", gera data/parties/scenarios/brasil_2026/; com "aparencia", data/appearance/cor_raca_uf.json; com "nomes", data/names/first_names.json;
-// com "geo", data/geo/ (contornos simplificados para o mapa); com "zonas", data/zonas/ e data/geo/zonas/ (setores do Censo 2022 agrupados em zonas).
+// com "geo", data/geo/ (contornos simplificados para o mapa); com "zonas", data/zonas/ e data/geo/zonas/ (setores do Censo 2022 agrupados em zonas,
+// com nomes de bairro do OpenStreetMap onde o IBGE não tem; "zonas-osm" só baixa esses nomes para o cache).
 
 // O .dbf da malha do IBGE pode declarar páginas de código que o .NET só lê com este provedor.
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -42,7 +43,7 @@ if (args.Length > 1 && args[0] == "rd" && args[1] == "mortalidade")
 }
 
 // Modos "cenario" (Brasil 2026, GDD 16.4) e "aparencia" (cor ou raça por UF, GDD 3.8).
-if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas" or "zonas-rd" or "rd")
+if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" or "zonas" or "zonas-rd" or "zonas-osm" or "rd")
 {
     try
     {
@@ -50,6 +51,8 @@ if (args.Length > 0 && args[0] is "cenario" or "aparencia" or "nomes" or "geo" o
         {
             // "rd": monta data/indicadores_reais/ e data/economy/start.json (depois de "rd siconfi-baixar").
             "rd" => await Planalto.DataImporter.Rd.RdImport.RunAsync(cache, dataDirectory),
+            // "zonas-osm": só baixa para o cache os nomes de bairro do OpenStreetMap (o modo "zonas" também baixa o que faltar).
+            "zonas-osm" => await Planalto.DataImporter.Geo.OsmBairros.DownloadOnlyAsync(cache, dataDirectory),
             "zonas-rd" => await Planalto.DataImporter.Rd.ZonasRdImport.RunAsync(cache, dataDirectory),
             "cenario" => await Planalto.DataImporter.Scenario.ScenarioImport.RunAsync(cache, dataDirectory),
             "aparencia" => await Planalto.DataImporter.Appearance.CorRacaImport.RunAsync(cache, dataDirectory),

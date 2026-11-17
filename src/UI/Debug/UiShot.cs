@@ -1584,6 +1584,14 @@ public partial class UiShot : Node
             }
         }
 
+        // A Ficha diz de onde vem o nome da zona (D-058): IBGE, OpenStreetMap ou nome gerado.
+        string origem = Tr(Planalto.Core.Territory.ZoneNameOrigin.Frase(map.Zonas[target]));
+        if (!sheet.Contains(origem, StringComparison.Ordinal))
+        {
+            Fail($"a ficha da zona não diz a origem do nome (\"{origem}\").");
+            return;
+        }
+
         Save(shot, "_ficha_zona");
         await Click(Named<Button>(hub, "MarcarAqui")!);
         var zoneOptions = Named<OptionButton>(hub, "Zona");

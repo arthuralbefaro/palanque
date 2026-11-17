@@ -71,6 +71,41 @@ public sealed class RuralPorDistrito
     public required int ZonasExtrasMax { get; init; }
 }
 
+/// <summary>
+/// Nomes de bairro do OpenStreetMap (D-058) para as zonas urbanas que, sem bairro do IBGE, teriam nome gerado. Só o
+/// importador usa: o jogo lê o nome pronto de data/zonas/.
+/// </summary>
+public sealed class OsmBairrosConfig
+{
+    /// <summary>Valores de <c>place</c> aceitos e a prioridade de cada um (0 primeiro).</summary>
+    public required Dictionary<string, int> Lugares { get; init; }
+
+    /// <summary><c>admin_level</c> do limite administrativo de bairro e a prioridade dele.</summary>
+    public required string AdminLevel { get; init; }
+
+    public required int AdminLevelPrioridade { get; init; }
+
+    /// <summary>Zonas rurais com nome gerado também recebem nome do OpenStreetMap.</summary>
+    public required bool ZonasRurais { get; init; }
+
+    public required int ComprimentoMaximo { get; init; }
+
+    /// <summary>Início de nome que não é bairro (rua, quadra), comparado sem acento e sem caixa.</summary>
+    public required List<string> PrefixosExcluidos { get; init; }
+
+    /// <summary>Nomes inteiros que não são bairro, comparados sem acento e sem caixa.</summary>
+    public required List<string> NomesExcluidos { get; init; }
+
+    /// <summary>Palavras tiradas do começo do nome ("Bairro Esplanada" vira "Esplanada"), comparadas sem acento e sem caixa.</summary>
+    public required List<string> PrefixosRemovidos { get; init; }
+
+    /// <summary>Sinais que marcam anotação, não nome (CEP, comentário entre parênteses).</summary>
+    public required List<string> SinaisExcluidos { get; init; }
+
+    /// <summary>Palavras que ficam em minúscula quando um nome todo em maiúsculas é passado para a caixa normal.</summary>
+    public required List<string> Minusculas { get; init; }
+}
+
 /// <summary>Parâmetros do território (data/territory/config.json, GDD 17.5).</summary>
 public sealed class TerritoryConfig : IValidatable
 {
@@ -94,6 +129,9 @@ public sealed class TerritoryConfig : IValidatable
 
     /// <summary>Divisão da zona rural pelos distritos do IBGE (GDD 17.5, regra 2).</summary>
     public required RuralPorDistrito RuralPorDistrito { get; init; }
+
+    /// <summary>Nomes de bairro do OpenStreetMap onde o IBGE não tem bairro (D-058).</summary>
+    public required OsmBairrosConfig OsmBairros { get; init; }
 
     /// <summary>Regras do território na simulação (presença, transbordo, demanda da zona).</summary>
     public required TerritorySimulation Simulacao { get; init; }
@@ -138,6 +176,12 @@ public sealed class TerritoryConfig : IValidatable
         if (RuralPorDistrito.PopulacaoMinima < 0 || RuralPorDistrito.ZonasExtrasMax < 0)
         {
             yield return "rural_por_distrito: população mínima e máximo de zonas extras não negativos.";
+        }
+
+        OsmBairrosConfig o = OsmBairros;
+        if (o.Lugares.Count == 0 || o.Lugares.Values.Any(p => p < 0) || o.AdminLevelPrioridade < 0 || string.IsNullOrWhiteSpace(o.AdminLevel) || o.ComprimentoMaximo < 3)
+        {
+            yield return "osm_bairros: ao menos um lugar, prioridades não negativas, admin_level e comprimento máximo de 3 ou mais.";
         }
     }
 }

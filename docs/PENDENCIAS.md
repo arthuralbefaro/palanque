@@ -352,3 +352,14 @@ Cada uma é a leitura mais conservadora; o arquivo diz como reverter.
 - **Faixa da virada do dia:** aparece quando o dia vira e fica só até as 7h do relógio do jogo (com o jogo parado às 6h, continua à vista).
 - **Retratos:** só nos cartões do feed foram acrescentados (os cartões de decisão, pedido de liderança, equipe e as fichas já tinham); 96 px do cache, mostrados com 48 px.
 - **Mandato, prefeitura e entressafra** continuam sem relógio do dia, painel Você e "Fazer agora" (a RL foi feita na campanha, onde o autor jogou).
+
+## Nomes de bairro do OpenStreetMap (D-058, 17/11)
+
+### P-42 · O que a importação dos nomes do OpenStreetMap deixa para o autor
+- **Zonas rurais com nome gerado** ("Zona Rural", "Rural Norte"): **a confirmar pelo autor.** Escolha provisória: continuam com o nome gerado, porque um bairro do OSM na borda da cidade daria nome a uma zona que cobre quase todo o campo. Para reverter: `osm_bairros.zonas_rurais` = `true` em `data/territory/config.json` e o modo `zonas` (depois `zonas-rd`) de novo.
+- **Zonas com nome de distrito do IBGE:** ficam com o nome do distrito (leitura conservadora, a confirmar pelo autor). Reverter seria tornar elegível a fonte `distrito_ibge` em `ZonasImport.Names`.
+- **ODbL, compartilhamento pela mesma licença:** os nomes `bairro_osm` de `data/zonas/` formam uma base derivada do OSM. Ao distribuir o jogo, a ODbL pede que essa base (ou o jeito de refazê-la) seja oferecida sob a ODbL. **A confirmar pelo autor** como cumprir: por exemplo, declarar no CREDITS que os nomes `bairro_osm` de `data/zonas/` estão sob a ODbL e publicar esses arquivos com o jogo. Vale ouvir um advogado antes da loja.
+- **Overpass API:** o servidor público respondeu várias vezes "at capacity" (HTTP 502) e diz que uso automatizado pesado deve usar instância própria; a extração foi pequena (27 consultas, 14,8 MB), com espera crescente. Para refazer a extração, considerar uma instância própria ou um recorte do Geofabrik.
+- **Qualidade dos nomes do OSM:** vêm como estão no mapa (há erros de digitação, como "Taguatintga Sul" no DF, e nomes de setor como "Setor O"). As listas de filtro em `osm_bairros` são provisórias; a revisão manual é proibida em `data/zonas`, então qualquer correção é por regra no importador.
+- **Crédito no mapa só com zona do OSM:** escolha provisória (onde o dado aparece). Alternativa: crédito sempre.
+

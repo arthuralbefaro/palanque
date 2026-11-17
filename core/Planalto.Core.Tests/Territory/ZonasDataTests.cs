@@ -132,6 +132,30 @@ public class ZonasDataTests
         }
     }
 
+    /// <summary>
+    /// D-058: nome do OpenStreetMap só em zona urbana (a configuração deixa as rurais de fora), nomes de zona sem
+    /// repetição no município e a base derivada registrada em _fontes.json com a mesma contagem.
+    /// </summary>
+    [Fact]
+    public void Nomes_do_OpenStreetMap_so_em_zona_urbana_sem_repetir_nome_e_registrados_em_fontes()
+    {
+        bool rurais = Config.OsmBairros.ZonasRurais;
+        int osm = 0;
+        foreach (ZonasMunicipio m in Files.Value.Values.SelectMany(f => f.Zonas.Municipios))
+        {
+            Assert.Equal(m.Zonas.Count, m.Zonas.Select(z => z.Nome).Distinct(StringComparer.Ordinal).Count());
+            foreach (Zona z in m.Zonas.Where(z => z.NomeFonte == Zona.NomeOsm))
+            {
+                osm++;
+                Assert.True(rurais || !z.IsRural, $"{z.Id} ({z.Nome}): zona rural com nome do OpenStreetMap");
+            }
+        }
+
+        Assert.True(osm > 0, "nenhuma zona com nome do OpenStreetMap");
+        string fontes = File.ReadAllText(Path.Combine(TestContent.DataDirectory, ZonasPaths.Directory, ZonasValidation.FontesFile));
+        Assert.Empty(ZonasValidation.CheckOsmRecord(fontes, osm));
+    }
+
     [Fact]
     public void Vizinhanca_e_simetrica()
     {

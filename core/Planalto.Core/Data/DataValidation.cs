@@ -98,6 +98,7 @@ public static class DataValidation
         if (dataSet is not null)
         {
             reports.AddRange(ValidateGeo(dataDirectory, dataSet));
+            reports.AddRange(Territory.ZonasValidation.Validate(dataDirectory, dataSet));
             reports.AddRange(Indicators.IndicadoresContent.Validate(dataDirectory, dataSet));
         }
 

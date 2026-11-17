@@ -1,5 +1,5 @@
 {
-  "note": "Território (GDD 17.5). Zonas por porte (o número dentro da faixa cresce com a posição do município entre os do mesmo porte, pela população); orçamento de vértices por zona na simplificação dos contornos (teto de 30 MB para data/geo/zonas/, decisão do autor); cobertura mínima de um bloco do perfil para a zona usar o próprio dado (regra de sigilo); rural_por_distrito: a parte rural de cada distrito do IBGE vira uma zona (distrito com menos moradores rurais que populacao_minima é agrupado com o vizinho), e o município pode passar do máximo do porte em até zonas_extras_max zonas.",
+  "note": "Território (GDD 17.5). Zonas por porte (o número dentro da faixa cresce com a posição do município entre os do mesmo porte, pela população); orçamento de vértices por zona na simplificação dos contornos (teto de 30 MB para data/geo/zonas/, decisão do autor); cobertura mínima de um bloco do perfil para a zona usar o próprio dado (regra de sigilo); rural_por_distrito: a parte rural de cada distrito do IBGE vira uma zona (distrito com menos moradores rurais que populacao_minima é agrupado com o vizinho), e o município pode passar do máximo do porte em até zonas_extras_max zonas; osm_bairros (D-058): nome de bairro do OpenStreetMap para a zona urbana sem bairro do IBGE que teria nome gerado (lugares com a prioridade de cada tipo, limite administrativo de bairro, zonas rurais de fora e filtros de nome), só no importador.",
   "zonas_por_porte": {
     "pequeno": { "min": 3, "max": 5 },
     "medio": { "min": 5, "max": 8 },
@@ -12,6 +12,18 @@
   "cobertura_minima": 0.8,
   "distrito_dominante": 0.8,
   "rural_por_distrito": { "populacao_minima": 200, "zonas_extras_max": 4 },
+  "osm_bairros": {
+    "lugares": { "suburb": 0, "quarter": 1, "neighbourhood": 2 },
+    "admin_level": "10",
+    "admin_level_prioridade": 0,
+    "zonas_rurais": false,
+    "comprimento_maximo": 60,
+    "prefixos_excluidos": ["rua ", "avenida ", "av ", "travessa ", "alameda ", "rodovia ", "quadra ", "qd ", "lote ", "bloco ", "shopping ", "edificio ", "predio "],
+    "nomes_excluidos": ["zona rural", "area rural", "rural", "zona urbana", "area urbana", "urbano", "sem nome", "bairro", "loteamento"],
+    "prefixos_removidos": ["bairro"],
+    "sinais_excluidos": [":", "(", ")"],
+    "minusculas": ["a", "as", "o", "os", "de", "da", "das", "do", "dos", "e", "em", "na", "nas", "no", "nos"]
+  },
   "simulacao": {
     "decaimento_semanal": 0.6,
     "transbordo": 0.15,

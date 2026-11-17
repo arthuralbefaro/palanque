@@ -88,6 +88,7 @@ public partial class ZoneMapView : Control
     {
         _scale = scale;
         _zonas = municipio.Zonas.ToDictionary(z => z.Id);
+        LoadCredit(municipio);
         _shapes.Clear();
         double latRad = municipio.Zonas.Average(z => z.Lat) * Math.PI / 180;
         float xScale = (float)Math.Cos(latRad);
@@ -209,6 +210,7 @@ public partial class ZoneMapView : Control
         Font font = Palette.Weight(Palette.Inter, 500);
         DrawLabels(font);
         DrawMarkers(t, font);
+        DrawCredit();
     }
 
     private const float MarkerHeight = 28;

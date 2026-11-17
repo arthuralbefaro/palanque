@@ -25,6 +25,9 @@ public partial class UiShot
         (3106200, "belo_horizonte_mg"),
     ];
 
+    /// <summary>Cidade da lista com zona de nome do OpenStreetMap (D-058): o teste exige o crédito e a origem na Ficha.</summary>
+    private const string MapaPequenoOsm = "mantena_mg";
+
     /// <summary>Fração mínima da largura ou da altura do mapa que o núcleo urbano ocupa no enquadramento inicial.</summary>
     private const float NucleusMinShare = 0.5f;
 
@@ -73,6 +76,8 @@ public partial class UiShot
                     problems.AddRange(await CheckContrast(hub, where, shot, $"_{label}_{tag}"));
                 }
 
+                problems.AddRange(await CheckOsmNames(hub, where, expectOsm: label == MapaPequenoOsm));
+
                 // O botão de enquadramento: município inteiro e de volta ao núcleo.
                 if (Named<Button>(hub, "Enquadrar") is not { } frame)
                 {
@@ -117,7 +122,7 @@ public partial class UiShot
             return;
         }
 
-        GD.Print("Smoke mapa_pequeno: ok (Mantena, Mesquita, Solonópole, Piratini e Belo Horizonte em 1366x768 e 1920x1080: nomes sem sobreposição e dentro do mapa, núcleo urbano enquadrado, cidade inteira e volta; save da divisão de zonas anterior recusado com a mensagem)");
+        GD.Print("Smoke mapa_pequeno: ok (Mantena, Mesquita, Solonópole, Piratini e Belo Horizonte em 1366x768 e 1920x1080: nomes sem sobreposição e dentro do mapa, núcleo urbano enquadrado, cidade inteira e volta; crédito do OpenStreetMap só onde há zona com nome de lá e a origem do nome na Ficha em Mantena; save da divisão de zonas anterior recusado com a mensagem)");
         GetTree().Quit(0);
     }
 

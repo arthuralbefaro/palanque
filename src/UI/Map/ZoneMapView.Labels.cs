@@ -97,6 +97,11 @@ public partial class ZoneMapView
         var area = new Rect2(Vector2.Zero, Size).Grow(-4);
         List<Rect2> controls = Obstacles?.Invoke().ToList() ?? [];
         List<Rect2> blocked = MarkerBoxes().Concat(controls).ToList();
+        if (CreditRect() is { } credit)
+        {
+            blocked.Add(credit);
+        }
+
         float line = font.GetHeight(LabelFontSize) + (2 * LabelPad);
         foreach (Zona z in _zonas.Values.OrderByDescending(z => z.Populacao).ThenBy(z => z.Id, StringComparer.Ordinal))
         {
