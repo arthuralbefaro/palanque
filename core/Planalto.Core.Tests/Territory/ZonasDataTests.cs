@@ -14,6 +14,12 @@ public class ZonasDataTests
             uf => uf,
             uf => (ZonasPaths.Load(TestContent.DataDirectory, uf).GetValueOrThrow(), ZonasPaths.LoadGeo(TestContent.DataDirectory, uf).GetValueOrThrow())));
 
+    /// <summary>Fração mínima da área dos setores que o contorno simplificado de uma zona guarda.</summary>
+    private const double MinimaFracaoDaArea = 0.5;
+
+    /// <summary>Zonas que ainda ficam abaixo dessa fração (pequenas, ao lado de uma zona rural enorme).</summary>
+    private const int MaximoDeZonasEsmagadas = 15;
+
     private static TerritoryConfig Config => JsonData.LoadFile<TerritoryConfig>(Path.Combine(TestContent.DataDirectory, TerritoryConfig.File)).GetValueOrThrow();
 
     [Fact]
@@ -130,6 +136,41 @@ public class ZonasDataTests
             var ids = geo.Zonas.Select(z => z.Id).ToHashSet(StringComparer.Ordinal);
             Assert.All(zonas.Municipios.SelectMany(m => m.Zonas), z => Assert.Contains(z.Id, ids));
         }
+    }
+
+    /// <summary>
+    /// O contorno simplificado de cada zona guarda a área dos setores dela. Uma zona urbana com a vila de outro
+    /// distrito a 20 km era simplificada com a tolerância do retângulo das duas partes juntas: o bairro da sede virava
+    /// uma lasca de seis vértices que riscava o mapa até o Centro (Mantena), e a vila sumia. Em Mantena, toda zona
+    /// guarda ao menos metade da área e a Zona Noroeste tem as três partes. No país sobram poucas zonas pequenas
+    /// encostadas numa zona rural enorme (o orçamento de vértices leva a tolerância delas ao teto): no máximo
+    /// <see cref="MaximoDeZonasEsmagadas"/>, até a simplificação limitar a tolerância de cada zona ao tamanho dela.
+    /// </summary>
+    [Fact]
+    public void Contorno_simplificado_guarda_a_area_dos_setores_da_zona()
+    {
+        const double KmPorGrau = 111.32;
+        var falhas = new List<string>();
+        var mantena = new List<string>();
+        foreach (var (_, (zonas, geo)) in Files.Value)
+        {
+            var area = zonas.Municipios.SelectMany(m => m.Zonas).ToDictionary(z => z.Id, StringComparer.Ordinal);
+            foreach (GeoZona contorno in geo.Zonas)
+            {
+                Zona z = area[contorno.Id];
+                double km2 = contorno.Polygons.Sum(p => p.Area(geo.Scale)) * KmPorGrau * KmPorGrau * Math.Cos(z.Lat * Math.PI / 180);
+                if (z.AreaKm2 > 0 && km2 < MinimaFracaoDaArea * z.AreaKm2)
+                {
+                    string falha = $"{z.Id} ({z.Nome}): contorno com {km2:0.00} km², setores com {z.AreaKm2:0.00} km²";
+                    (z.Id.StartsWith("3139607-", StringComparison.Ordinal) ? mantena : falhas).Add(falha);
+                }
+            }
+        }
+
+        Assert.True(mantena.Count == 0, string.Join("; ", mantena));
+        GeoZona noroeste = Files.Value["MG"].Geo.Zonas.Single(z => z.Id == "3139607-04");
+        Assert.Equal(3, noroeste.Polygons.Count);
+        Assert.True(falhas.Count <= MaximoDeZonasEsmagadas, $"{falhas.Count} zonas com contorno muito menor que a área: {string.Join("; ", falhas.Take(10))}");
     }
 
     /// <summary>
