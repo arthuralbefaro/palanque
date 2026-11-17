@@ -48,7 +48,14 @@ A criação acontece em 4 abas com pré-visualização ao vivo do retrato e do "
 
 ### 3.1 Aba "Aparência"
 
-Retrato em busto (cabeça e ombros), estilo vetorial ilustrado, composto por camadas.
+Retrato em busto (cabeça e ombros). Até a troca na parte RV, em estilo vetorial ilustrado, composto por camadas.
+
+**Na parte RV (DECISOES D-043):** o retrato passa a ser renderizado de um **boneco 3D estilizado, de formas suaves e proporções de desenho animado** (referências: Two Point Hospital, Overcooked, Planet Coaster; não é low-poly facetado). É o mesmo boneco que aparece no menu como cena, nas cenas da RV-B e nas posses (13.2). Pela proposta da RV (`docs/referencias/rv_cenas.html`), a criação acontece num estúdio de foto, com o santinho impresso ao lado. As categorias da tabela continuam; muda como cada uma é feita:
+- **Forma** (corpo, formato do rosto, nariz, orelhas): variações dos corpos e das cabeças base.
+- **Cor** (pele, olhos, cabelo e pelos, maquiagem, roupa, cor do partido): material tingível.
+- **Peça** (cabelo, barba, óculos, brincos, broche): modelo trocável, preso aos pontos de troca da cabeça (`docs/ART_GUIDE.md`, contrato da cabeça substituível). Cada estilo do catálogo aponta para a peça 3D mais próxima.
+- **Marcas** (rugas, olheiras, sardas, pintas): textura de detalhe da pele, com intensidade.
+A aparência continua sem efeito em votos e atributos, com a diversidade do Censo (D-016).
 
 | Categoria | Opções |
 |---|---|
@@ -132,11 +139,14 @@ Traços podem ser **ganhos ou perdidos** ao longo da carreira por escolhas repet
 ### 3.6 Expressões
 Todo retrato (jogador e NPCs) suporta expressões: neutra, sorriso, sorriso largo, preocupado, bravo, triste, surpreso, cansado. As expressões mudam sobrancelhas, olhos e boca e são usadas automaticamente em eventos, debates, apuração e manchetes.
 
+No boneco 3D (D-043), cada expressão tem um nome fixo (`expr_sorriso`, `expr_bravo` etc., mais `piscar`, que se soma às outras), e a cabeça declara como a realiza: por animação do rosto (shape keys) ou por troca de peças do rosto (olhos, sobrancelhas, boca). O jogo pede a expressão pelo nome e não sabe qual dos dois modos a cabeça usa. As mesmas expressões valem nos retratos e nas cenas. Critério: as expressões se distinguem nos retratos de 96 px e de 512 px.
+
 ### 3.7 Envelhecimento e mudança de visual
 - O personagem envelhece com o calendário: rugas, grisalho, entradas e olheiras evoluem com a idade e com o **estresse** acumulado (mandatos executivos e crises envelhecem mais rápido).
 - A qualquer momento fora de campanha, o jogador pode visitar o **"Espelho"** para mudar cabelo, barba, maquiagem, óculos e roupas. Mudanças de rosto/corpo não são permitidas depois da criação, exceto por eventos (ex.: cirurgia plástica, com reação da mídia).
 - Mudanças grandes de visual podem gerar uma manchete leve (sem efeito em votos, só reconhecimento).
 - A tela final de carreira mostra uma **linha do tempo de retratos** (posse em cada cargo).
+- **No boneco 3D (D-043):** rugas, olheiras e marcas são uma textura de detalhe da pele cuja intensidade vem da idade e do estresse; o grisalho é uma máscara nas texturas de cabelo, barba e sobrancelha. O "Espelho" troca peças (cabelo, barba, óculos, roupas) e cores, sem mexer nas formas do corpo e do rosto. O retrato de cada posse é renderizado do boneco na idade daquele momento e guardado como imagem no save, para a linha do tempo não mudar quando o boneco envelhece.
 
 ### 3.8 NPCs
 O mesmo sistema gera todos os NPCs (rivais, aliados, família, jornalistas, caciques) por sorteio com pesos realistas por região do Brasil. Rivais persistentes envelhecem junto com o jogador.
@@ -351,7 +361,7 @@ UI → Game.Execute(comando)
 ### 7.4 Sistema de retratos
 **Modelo (Core):** `Appearance` é um record serializável com IDs de peça por camada, cores (hex) e parâmetros numéricos (grisalho, rugas, intensidade de maquiagem). `AppearanceAging` calcula a evolução por idade e estresse. Nada de Godot no Core.
 
-**Renderização (Godot):** `PortraitRenderer` empilha camadas na ordem:
+**Renderização 2D (Godot), a de hoje, válida até a troca na parte RV:** `PortraitRenderer` empilha camadas na ordem:
 ```
 fundo → corpo/roupa (trás) → pescoço → cabeça (formato + pele) → orelhas
 → marcas (sardas, pintas, rugas) → olhos → sobrancelhas → nariz → boca
@@ -378,6 +388,14 @@ fundo → corpo/roupa (trás) → pescoço → cabeça (formato + pele) → orel
   "balding_compatible": false
 }
 ```
+
+**Renderização 3D, na parte RV (DECISOES D-043):** o modelo do Core não muda (`Appearance` e `AppearanceAging` continuam sendo a fonte); muda só quem desenha.
+- **Montagem:** corpo base pelo tipo de corpo; cabeça pelo contrato da cabeça substituível (`docs/ART_GUIDE.md`); cabelo, barba, óculos e brincos presos aos pontos de troca da cabeça; roupa do guarda-roupa do contexto (3.2). Trocar uma cabeça por outra mexe só no nó da cabeça.
+- **Cor:** os materiais tingíveis (`pele`, `labios`, `sobrancelha`, `cabelo`, `barba`, `iris`, roupas) recebem as cores da Appearance por shader, a partir de texturas em tons de cinza, como no 2D. Grisalho pela máscara; rugas e marcas pela textura de detalhe da pele, com a intensidade da idade.
+- **Expressão:** pedida pelo nome (3.6); a cabeça a realiza por shape keys ou por troca de peças do rosto.
+- **Retrato:** o boneco é renderizado em `SubViewport` com luz de estúdio fixa e enquadramento em busto; o `PortraitCache` guarda as imagens nos mesmos tamanhos (512, 256, 96), pela aparência, expressão, idade e tamanho, para listas, notícias, cartões e mapa sem custo. O retrato oficial de cada posse continua salvo como imagem no save.
+- **Catálogo:** cada peça de `data/appearance/parts.json` ganha a referência à peça 3D correspondente, sem apagar a 2D enquanto as duas convivem.
+- **Arte:** as peças são glTF 2.0 (`.glb`), de bases CC0 ou CC BY montadas no projeto ou de um artista (13.3 e D-045). O protótipo da RV gerou as cabeças, cabelos, corpos e roupas por scripts do Blender em `tools/rv/`, com o Blender fora do repositório.
 
 ### 7.5 Formato de evento (exemplo)
 ```json
@@ -560,7 +578,7 @@ Créditos das fontes em assets/CREDITS.md.
 
 ## 13. ELEMENTOS 2.5D E 3D
 
-O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimônias de posse. Ambos rodam em SubViewport 3D embutido na interface 2D.
+O jogo continua 2D na interface e no mapa da cidade (17.5; DECISOES D-044). O 3D aparece no mapa eleitoral do estado e do país e, a partir da parte RV (D-043), em tudo o que mostra gente: retratos, menu como cena, cenas da RV-B e cerimônias de posse. Tudo isso roda em SubViewport 3D embutido na interface 2D, no mesmo estilo de formas suaves.
 
 ### 13.1 Mapa 2.5D
 - **Construção:** polígonos da Malha Municipal 2025 do IBGE, simplificados no DataImporter, extrudados em malhas 3D (uma por município, agrupadas por UF). Malhas geradas em tempo de execução a partir de data/geo/ ou pré-geradas como recursos, o que for mais rápido de carregar.
@@ -592,20 +610,23 @@ O jogo continua 2D. O 3D aparece em dois pontos: o mapa eleitoral e as cerimôni
 | Presidente | Rampa e palácio estilizados, carro aberto, multidão | Desfile, subida da rampa, faixa presidencial, discurso |
 
 - **Arquitetura:** estilizada e inspirada na arquitetura brasileira, sem réplicas de edifícios reais, coerente com o universo fictício do jogo.
-- **Estilo visual:** 3D estilizado com formas suaves, proporções de desenho animado e iluminação suave (referências de estilo: Two Point Hospital, Overcooked, Planet Coaster); não é low-poly facetado. É o mesmo estilo dos retratos e personagens do jogo (decisão do autor de 16/11; a reescrita completa desta seção é entregue com a parte RV).
-- **Personagem 3D:** boneco estilizado parametrizado a partir de Appearance:
+- **Estilo visual:** 3D estilizado com formas suaves, proporções de desenho animado e iluminação suave (referências de estilo: Two Point Hospital, Overcooked, Planet Coaster); não é low-poly facetado (DECISOES D-043). É o mesmo estilo dos retratos, do menu como cena e das cenas da RV-B.
+- **Personagem 3D:** o mesmo boneco dos retratos (7.4), parametrizado a partir de Appearance:
   - Tom de pele, cor de cabelo/barba, grisalho, cores da roupa e cor do partido aplicados por material.
   - 8–12 formatos de cabelo e 4–6 de barba em 3D, mapeados a partir dos estilos 2D (cada estilo 2D aponta para o formato 3D mais próximo em data/appearance/parts.json).
-  - Corpo pelo tipo escolhido na criação; roupa institucional do guarda-roupa.
-  - Planos sempre abertos ou médios; no clímax, corte para o **retrato oficial 2D** em moldura, que é salvo na linha do tempo da carreira.
-- **NPCs:** família, aliados e multidão com o mesmo sistema de bonecos, em variações aleatórias.
+  - Corpo pelo tipo escolhido na criação; roupa institucional do guarda-roupa; cabeça pelo contrato da cabeça substituível (ART_GUIDE), com as expressões da 3.6.
+  - Planos sempre abertos ou médios; no clímax, corte para o **retrato oficial** em moldura, renderizado do boneco e salvo na linha do tempo da carreira.
+- **NPCs:** família e aliados com nome usam o mesmo boneco e a mesma cabeça do contrato. A multidão e os figurantes usam corpos e cabeças de base CC0 com os mesmos materiais tingíveis, sem expressões no rosto e com orçamento próprio (ART_GUIDE, multidão), para que uma plateia grande não pese como um personagem com nome.
+- **Relação com as cenas da RV-B (D-055):** as cenas de campanha (caminhada, comício, reunião, entrevista, notícia) e as posses usam o mesmo conjunto de bonecos, cenários e câmera; as posses entram depois, sobre o que a RV-B deixar pronto.
 - **Elementos dinâmicos:** tamanho da multidão proporcional à votação; bandeiras e cores do partido; vice e família presentes quando existirem; clima e hora do dia.
 - **Técnica:** cenas em .tscn com AnimationPlayer para caminhos de câmera e personagens; modelos em glTF; tudo carregado sob demanda e descarregado ao fim.
 - **Ordem de produção:** primeiro a posse presidencial e a de vereador (os dois extremos da escala); depois os demais cargos.
 
 ### 13.3 Assets 3D
-- Base: pacotes 3D estilizados CC0 ou CC BY para pessoas, carros, árvores e mobiliário, adaptados ao estilo de formas suaves; a pesquisa de bases, com licença, qualidade e cobertura, e o que exigiria um artista 3D, está em docs/PENDENCIAS.md.
-- Cenários de posse e bonecos parametrizáveis: modelagem própria ou por um modelador 3D seguindo docs/ART_GUIDE.md (seção 3D: escala, número de polígonos, nomes de materiais tingíveis).
+- **Bases (DECISOES D-045):** só CC0 ou CC BY, com a licença conferida, a prova guardada e o crédito item a item em `assets/CREDITS.md`, adaptadas ao estilo de formas suaves. Cenários, animações, corpos e multidão: KayKit e os Human Base Meshes do Blender (cabeça e corpo estilizados, ponto de partida). MPFB só como referência de expressões e de diversidade (o programa e o addon não entram no repositório). **Quaternius fora** até a confirmação da licença por escrito. Fora também: Mixamo, Ready Player Me e VRoid. Uso de ferramentas generativas: a definir pelo autor (D-045, adendo); o protótipo não usou nenhuma. A pesquisa de bases está na PENDENCIAS P-28 (fechada).
+- **Cabeça, expressões e roupas:** o teste A/B do protótipo (cabeça A, de base CC0; cabeça B, gerada por código) vem antes de qualquer artista. Se o autor aprovar uma das duas, ela é usada; se reprovar as duas, um artista 3D é contratado depois de um teste pago (`docs/BRIEFING_ARTISTA_3D.md`). Em qualquer caso, a cabeça segue o contrato da cabeça substituível do ART_GUIDE (arquivos, eixos, encaixe do pescoço, pontos de troca, malhas, expressões, materiais tingíveis, orçamento), e a troca não exige mudança de código.
+- **Modelagem por código:** o que o projeto gera (peças provisórias, corpos, roupas e cenários simples) sai de scripts do Blender em `tools/`, rodados com o Blender instalado na máquina e fora do repositório; o repositório guarda os scripts e os `.glb` resultantes.
+- **Cenários:** posses, menu como cena (comitê, gabinete, palácio), seção eleitoral, estúdio de TV, estúdio de foto e os lugares das cenas da RV-B, sempre estilizados e sem réplica de edifício real, brasão ou marca oficial.
 - A montagem das cenas, materiais, animações de câmera e a lógica de parametrização é feita no código do projeto; a modelagem de qualidade fica com assets ou com um artista.
 
 ## 14. PARTIDOS: ESPECTRO COMPLETO E CRIAÇÃO PELO JOGADOR
@@ -867,7 +888,7 @@ Para que os sistemas se entrelacem em vez de se somarem, todos são construídos
 
 ### 17.3 Tela central
 
-**O que é.** Uma tela só para campanha e mandato, no desenho de `docs/referencias/tela_central.png` e com as medidas de `docs/ART_GUIDE.md`:
+**O que é.** Uma tela só para campanha e mandato, no desenho de `docs/referencias/tela_central.png` e com as medidas de `docs/ART_GUIDE.md` (guia em vigor). Esta é a disposição até a RL; a da parte RV vem no fim desta seção:
 - **Barra superior:** data com dia da semana, pausa, 1x/2x/4x, fase e contagem ("Pré-campanha · 29 sem. até a eleição"); à direita, dinheiro, reconhecimento, imagem e estresse.
 - **Trilho** com 7 áreas: Campanha (no mandato, Mandato), Pessoas, Agenda, Território, Finanças, Mídia, Partido e Câmara.
 - **Painel da área** (esquerda): o conteúdo da área escolhida. Em Campanha: Equipe (3/6), Verba por canal, Plataforma e próximos compromissos.
@@ -888,6 +909,19 @@ Para que os sistemas se entrelacem em vez de se somarem, todos são construídos
 **Interage com** todos os sistemas: é a única porta de entrada. **Princípios:** b, f, h, i. **Dados:** nenhum novo além dos contornos de zona (17.5).
 
 **Reaproveita:** `Game.Execute`, `EffectSummary` (vira a explicação), `EventDialog` (vira o cartão de decisão), `PortraitView` e cache, save e autosave, o código de malhas do `MapScreen`. **Muda:** `HubScreen`, `MandateScreen` e `ExecutiveScreen` deixam de existir como telas; seu conteúdo vira painéis. O mapa da cidade é 2D plano, como na referência; o mapa 2.5D do estado (13.1) continua previsto para as esferas estadual e federal e para a apuração.
+
+**Na parte RV: o mundo na tela inteira e a interface em janelas flutuantes (DECISOES D-044 e D-055).** O conteúdo descrito acima não muda; muda onde ele fica. Referências de composição: `docs/referencias/rv_tela_central.html` e o Geopolitical Simulator. Medidas e cores na proposta do ART_GUIDE para a RV, a aprovar pelo autor.
+- **O mapa ocupa a tela inteira,** com o mapa de base da cidade real por baixo das zonas (17.5) e luz de dia e de noite pela hora do relógio.
+- **Painel da área, fichas e coluna direita viram janelas semitransparentes** que flutuam sobre o mapa: arrastáveis, em pilha (só a de cima recebe clique; Esc fecha a de cima e volta à anterior; o foco fica preso no cartão de decisão). O mapa continua visível por trás.
+- **A interface fica nas bordas:**
+  - em cima, poucos números (no máximo 5, princípio i), com a fase e a contagem;
+  - embaixo, a barra de ícones com as 7 áreas do trilho;
+  - num canto, o retrato do jogador com o cargo ou a candidatura e a aprovação;
+  - no outro canto, o minimapa da cidade com a legenda do modo, a data e a velocidade;
+  - a faixa de decisão fica acima da barra de ícones, no centro.
+- **O cartão de decisão** continua sobre o mapa escurecido, com previsão e "O que mudou".
+- **Ordem (D-055):** a RL faz, na tela atual e sem trocar o estilo, a ficha da zona flutuante em pilha com Esc e os painéis atualizados por sinal do Core. A RV-A troca a disposição inteira pela de cima, junto com o mapa de base, a câmera suave travada no município, a luz de dia e de noite, o estilo final (fontes e paleta), o menu como cena e o nome "Palanque" (D-046). A RV-C põe o mundo vivo sobre o mapa (marcadores, pulso, hachura de disputa, carros, pedestres, multidão, chuva). A RV-B abre cenas curtas a partir do mapa.
+- **O que o protótipo mostrou** (branch `rv-prototipo`): a composição foi montada e capturada em 1366×768 e 1920×1080, com a ficha da zona e as notícias abertas como janelas e o mapa visível entre elas. O protótipo deixou a data e a velocidade no topo, e não no canto do minimapa; com as duas janelas laterais abertas, elas cobrem cerca de metade da largura. Os dois pontos ficam para a aprovação do ART_GUIDE.
 
 ### 17.4 Tempo
 
@@ -981,13 +1015,28 @@ Arquivos gerados: `data/zonas/{UF}.json` (atributos) e `data/geo/zonas/{UF}.json
 - Eleitores por zona: até a RD, o eleitorado do TSE é repartido pela população de 16 anos ou mais de cada zona; na RD entram os locais de votação do TSE com coordenada, que também dão a votação real de 2024 por zona no cenário Brasil 2026.
 - Termos de uso: o FTP do IBGE declara os arquivos públicos; a página de licença não pôde ser aberta. A R1 usa a Malha de Setores e os agregados citando a fonte; o autor confere os termos antes da RD.
 
+**Mapa de base da cidade real (DECISOES D-044; entra na RV-A, D-055).** Por baixo das zonas, o mapa desenha a cidade como ela é. As zonas, a simulação e os dados de `data/zonas/` não mudam: o mapa de base é só o que se vê.
+- **Camadas, de baixo para cima:** chão do município (área rural); área densamente edificada; mancha urbana; quadras (os quarteirões; as praças, pelo tipo de logradouro das faces, a conferir na RV-A); massas d'água; relevo sombreado (se houver fonte licenciada); faces de quadra, só de perto; rios; ferrovias; estradas de terra; rodovias pavimentadas; borda do município. Por cima, as zonas como cor translúcida do modo do mapa, as fronteiras das zonas, a zona sob o mouse, a selecionada, os marcadores e os rótulos.
+- **Fontes, todas oficiais do IBGE, com crédito:**
+  - **Faces de Logradouros 2022** (Censo, resultados preliminares): ruas com nome, tipo e título, nas faces de quadra das áreas urbanizadas e dos aglomerados rurais dos 5.570 municípios, com os códigos de setor e de quadra. As quadras não existem como polígono: são remontadas das faces pelo código da quadra.
+  - **BC250, versão 2025:** rios com nome, massas d'água, rodovias com sigla e pavimento, ferrovias, área densamente edificada e localidades (vilas, povoados, lugarejos). Não tem curvas de nível, só pontos cotados.
+  - **Elevação:** a definir. Candidatas: Topodata (INPE), ANADEM (ANA), Copernicus DEM GLO-30 e o modelo digital de elevação do IBGE; nenhuma teve a licença confirmada.
+  - **Nada de OpenStreetMap** (licença ODbL) sem o autor liberar.
+- **Formato:** o DataImporter gera, por município, um arquivo compacto já triangulado (áreas) e em linhas (ruas, rios, estradas), com os nomes para os rótulos, recortado no polígono do município. Onde os arquivos ficam (no repositório, baixados por município ou gerados no computador do jogador a partir do cache) é decisão do autor (PENDENCIAS P-39); até lá, ficam no cache, fora do Git.
+- **Zoom e rótulos:** da cidade inteira até a rua. Cada camada de detalhe aparece a partir de uma aproximação; as linhas têm largura constante na tela. Rótulos por nível (zonas e localidades de longe; ruas, rios e rodovias de perto), com desvio de colisão e no máximo 12 nomes de zona visíveis na cidade inteira. As localidades da BC250 podem dar nome às zonas rurais que hoje levam nome gerado (item 2 acima).
+- **Zonas por cima:** cor translúcida do modo, mais forte na cidade inteira e mais fraca na rua, para as ruas continuarem legíveis; fronteiras sempre por cima.
+- **Luz de dia e de noite:** a hora do relógio (17.4) muda as cores do mapa de base, nunca as cores de dado (modos, partidos, marcadores).
+- **Metas:** 60 FPS com zoom e arraste; mapa de base de uma metrópole pronto em menos de 3 segundos depois de a cidade entrar em foco.
+- **Testes do importador:** toda quadra dentro do polígono do município; nomes de zona iguais aos de `data/zonas/`; teto de tamanho por município.
+- **Medido no protótipo** (Mantena e Belo Horizonte, máquina dividida com outros programas): quadras remontadas em cerca de 80% dos códigos; BH pronta em 0,5 a 0,8 s e Mantena em menos de 0,4 s depois da primeira carga; zoom e arraste acima de 160 FPS de média; arquivo de BH com 17,8 MB (7,1 MB com gzip) no formato do protótipo, estimado em cerca de 5 MB (2,5 MB com gzip) com vértices indexados em 16 bits. Os nomes de rua vêm da fonte em caixa alta e sem acento.
+
 **A demanda da zona.** Cada zona mostra a maior carência medida, em unidade real: "38% dos domicílios sem rede de esgoto", "renda mediana do responsável: R$ 1.412". Ela pesa nos temas dos eleitores dali e é o assunto que lideranças e imprensa levantam.
 
 **O que o jogador decide.** Onde abrir frente e onde consolidar. A presença decai 0,6 ponto por semana em zona sem compromisso nem cabos (metade disso com cabos); 15% de cada ganho transborda para as zonas vizinhas.
 
 **A troca.** Turno gasto numa zona não é gasto em outra. Zona populosa e disputada rende menos por turno do que zona pequena e abandonada, mas vale mais votos. Entrar no reduto de um rival provoca resposta (17.11).
 
-**Interage com:** Agenda (todo compromisso tem zona), Verba (canais com alvo de zona), Lideranças e Rivais (têm zona), Mandato e Prefeitura (obras e promessas têm zona). **Princípios:** a, b, f, g, h. **Dados:** `data/zonas/`, `data/geo/zonas/`, `data/territory/config.json` (zonas por porte, decaimento, transbordo).
+**Interage com:** Agenda (todo compromisso tem zona), Verba (canais com alvo de zona), Lideranças e Rivais (têm zona), Mandato e Prefeitura (obras e promessas têm zona). **Princípios:** a, b, f, g, h. **Dados:** `data/zonas/`, `data/geo/zonas/`, `data/territory/config.json` (zonas por porte, decaimento, transbordo); na RV-A, o mapa de base por município (lugar a decidir, P-39).
 
 **Reaproveita:** construção de segmentos a partir de um perfil (`ElectorateBuilder`), `VoteModel` sem mudança na fórmula, curva de ganho decrescente (`EffectApplier.Gain`), pipeline de contornos da D-025, NetTopologySuite só no importador. **Muda:** `Candidate.Recognition` passa a ser derivado das presenças; o apoio por grupo passa a valer por zona.
 
